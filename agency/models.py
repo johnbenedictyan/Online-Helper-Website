@@ -4,6 +4,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator, URLValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
@@ -62,6 +64,26 @@ class Agency(models.Model):
 
     active = models.BooleanField(
         default=True,
+        editable=False
+    )
+
+    complete = models.BooleanField(
+        default=False,
+        editable=False
+    )
+
+    location_complete = models.BooleanField(
+        default=False,
+        editable=False
+    )
+
+    contact_information_complete = models.BooleanField(
+        default=False,
+        editable=False
+    )
+
+    operating_hours_complete = models.BooleanField(
+        default=False,
         editable=False
     )
 
@@ -128,19 +150,22 @@ class AgencyLocation(models.Model):
     address_1 = models.TextField(
         verbose_name=_('Street Address'),
         max_length=100,
-        blank=False
+        blank=False,
+        null=True
     )
 
     address_2 = models.TextField(
         verbose_name=_('Unit Number'),
         max_length=50,
-        blank=False
+        blank=False,
+        null=True
     )
 
     postal_code = models.TextField(
         verbose_name=_('Postal Code'),
         max_length=25,
-        blank=False
+        blank=False,
+        null=True
     )
 
     area = models.TextField(
@@ -162,6 +187,7 @@ class AgencyContactInformation(models.Model):
         verbose_name=_('Office Number'),
         max_length=10,
         blank=False,
+        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -175,7 +201,8 @@ class AgencyContactInformation(models.Model):
     mobile_number = models.TextField(
         verbose_name=_('Mobile Number'),
         max_length=10,
-        blank=True,
+        blank=False,
+        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -187,7 +214,8 @@ class AgencyContactInformation(models.Model):
     )
 
     sales_email = models.EmailField(
-        blank=False
+        blank=False,
+        null=True
     )
 
 class AgencyPlan(models.Model):
@@ -345,3 +373,56 @@ class Advertisement(models.Model):
         verbose_name=_('Advertisment end date'),
         editable=False
     )
+
+# Django Signals
+@receiver(post_save, sender=AgencyLocation)
+@receiver(post_save, sender=AgencyContactInformation)
+@receiver(post_save, sender=AgencyOperatingHours)
+def agency_completed(sender, instance, **kwargs):
+    agency = instance.agency
+    if(
+        agency.location_complete == True and 
+        agency.contact_information_complete == True and 
+        agency.location_complete == True
+    ):
+        agency.completed = True
+        agency.save()
+
+@receiver(post_save, sender=AgencyLocation)
+def agency_location_completed(sender, instance, **kwargs):
+    agency = instance.agency
+    location_valid = True
+
+    while location_valid == True:
+        for i in sender.values():
+            if not i:
+                location_valid = False
+    
+    agency.location_complete = location_valid
+    agency.save()
+
+@receiver(post_save, sender=AgencyContactInformation)
+def agency_contact_information_completed(sender, instance, **kwargs):
+    agency = instance.agency
+    contact_information_valid = True
+    
+    while contact_information_valid == True:
+        for i in sender.values():
+            if not i:
+                contact_information_valid = False
+    
+    agency.contact_information_complete = contact_information_valid
+    agency.save()
+
+@receiver(post_save, sender=AgencyOperatingHours)
+def agency_operating_hours_completed(sender, instance, **kwargs):
+    agency = instance.agency
+    operating_hours_valid = True
+    
+    while operating_hours_valid == True:
+        for i in sender.values():
+            if not i:
+                operating_hours_valid = False
+    
+    agency.operating_hours_complete = operating_hours_valid
+    agency.save()
