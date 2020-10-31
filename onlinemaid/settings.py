@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'agency',
     'dashboard',
+    'maid',
     'crispy_forms'
 ]
 
