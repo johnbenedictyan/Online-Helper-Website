@@ -234,3 +234,17 @@ class MaidDelete(LoginRequiredMixin, DeleteView):
                 pk = self.request.user.pk
             )
         )
+
+class MaidFoodHandlingPreferenceDelete(DeleteView):
+    context_object_name = 'maid_food_handling_preference'
+    http_method_names = ['get','post']
+    model = MaidFoodHandlingPreference
+    template_name = 'maid-food-handling-preference-delete.html'
+    success_url = reverse_lazy('')
+
+class MaidDietaryRestrictionDelete(DeleteView):
+    context_object_name = 'maid_dietary_restriction'
+    http_method_names = ['get','post']
+    model = MaidDietaryRestriction
+    template_name = 'maid-dietary-restriction-delete.html'
+    success_url = reverse_lazy('')
