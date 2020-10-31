@@ -224,10 +224,9 @@ class AgencyPlan(models.Model):
         BIODATA_200 = 'B200', _('200 Biodata')
         BIODATA_300 = 'B300', _('300 Biodata')
         
-    agency = models.OneToOneField(
+    agency = models.ForeignKey(
         Agency,
-        on_delete=models.CASCADE,
-        primary_key=True
+        on_delete=models.CASCADE
     )
 
     choice = models.TextField(
