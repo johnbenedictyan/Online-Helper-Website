@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Start of Constants
 
-class FullNationalityChoices(models.TextChoices):
+class FullNationsChoices(models.TextChoices):
     AFGHANISTAN	                = 'AFG', _('Afghanistan')
     ALBANIA	                    = 'ALB', _('Albania')
     ALGERIA	                    = 'DZA', _('Algeria')
@@ -261,3 +261,13 @@ class FullNationalityChoices(models.TextChoices):
     ZAMBIA	                    = 'ZMB', _('Zambia')
     ZIMBABWE	                = 'ZWE', _('Zimbabwe')
     ALAND_ISLANDS	            = 'ALA', _('Åland Islands')
+
+class CommonNationsChoices(models.TextChoices):
+    BANGLADESH  = 'BGD', _('Bangladesh')
+    CAMBODIA    = 'KHM', _('Cambodia')
+    INDIA       = 'IND', _('India')
+    INDONESIA   = 'IDN', _('Indonesia')
+    MYANMAR	    = 'MMR', _('Myanmar')
+    PHILIPPINES = 'PHL', _('Philippines (the)')
+    SRI_LANKA   = 'LKA', _('Sri Lanka')
+    OTHERS      = 'OTH', _('Others')
