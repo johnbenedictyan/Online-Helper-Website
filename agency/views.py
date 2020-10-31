@@ -97,8 +97,13 @@ class AgencyUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
     template_name = 'agency-update.html'
     success_url = reverse_lazy('')
 
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.request.user.pk
+    )
+
 class AgencyContactInformationUpdate(
-    LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
+    LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_contact_information'
     form_class = AgencyContactInformationForm
     http_method_names = ['get','post']
@@ -106,7 +111,12 @@ class AgencyContactInformationUpdate(
     template_name = 'agency-contact-information-update.html'
     success_url = reverse_lazy('')
 
-class AgencyLocationUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
+    def get_object(self, queryset=None):
+        return AgencyContactInformation.objects.get(
+            pk = self.request.user.pk
+        )
+
+class AgencyLocationUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_location'
     form_class = AgencyLocationForm
     http_method_names = ['get','post']
@@ -114,10 +124,12 @@ class AgencyLocationUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
     template_name = 'agency-location-update.html'
     success_url = reverse_lazy('')
 
-class AgencyOperatingHoursUpdate(
-    LoginRequiredMixin, 
-    AgencyVerifiedMixin, 
-    UpdateView):
+    def get_object(self, queryset=None):
+        return AgencyLocation.objects.get(
+            pk = self.request.user.pk
+        )
+
+class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
     form_class = AgencyOperatingHoursForm
     http_method_names = ['get','post']
@@ -125,7 +137,12 @@ class AgencyOperatingHoursUpdate(
     template_name = 'agency-operating-hours-update.html'
     success_url = reverse_lazy('')
 
-class AgencyEmployeeUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
+    def get_object(self, queryset=None):
+        return AgencyOperatingHours.objects.get(
+            pk = self.request.user.pk
+        )
+
+class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
@@ -133,7 +150,12 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
     template_name = 'agency-employee-update.html'
     success_url = reverse_lazy('')
 
-class AgencyPlanUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.request.user.pk
+        )
+
+class AgencyPlanUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
@@ -142,23 +164,44 @@ class AgencyPlanUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
     # Do we want to allow users to 'upgrade' their plans
 
 # Delete Views
-class AgencyDelete(LoginRequiredMixin, AgencyVerifiedMixin, DeleteView):
+class AgencyDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency'
     http_method_names = ['get','post']
     model = Agency
     template_name = 'agency-delete.html'
     success_url = reverse_lazy('')
 
-class AgencyEmployeeDelete(LoginRequiredMixin, AgencyVerifiedMixin, DeleteView):
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.request.user.pk
+        )
+
+class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency_employee'
     http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'agency-employee-delete.html'
     success_url = reverse_lazy('')
 
-class AgencyPlanDelete(LoginRequiredMixin, AgencyVerifiedMixin, DeleteView):
+    def get_object(self, queryset=None):
+        return AgencyEmployee.objects.get(
+            pk = self.pk_url_kwarg,
+            agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        )
+
+class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
     template_name = 'agency-plan-delete.html'
     success_url = reverse_lazy('')
+
+    def get_object(self, queryset=None):
+        return AgencyPlan.objects.get(
+            pk = self.kwargs.pk_url_kwarg,
+            agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        )
