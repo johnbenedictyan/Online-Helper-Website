@@ -271,3 +271,10 @@ class CommonNationsChoices(models.TextChoices):
     PHILIPPINES = 'PHL', _('Philippines (the)')
     SRI_LANKA   = 'LKA', _('Sri Lanka')
     OTHERS      = 'OTH', _('Others')
+
+class PreferenceChoices(models.IntegerChoices):
+    LEAST_PREFERRED = 1, _('Least preferred')
+    LESS_PREFERRED = 2, _('Less preferred')
+    NO_PREFERENCE = 3, _('No preference')
+    MORE_PREFERRED = 4, _('More preferred')
+    MOST_PREFERRED = 5, _('Most preferred')
