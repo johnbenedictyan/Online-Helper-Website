@@ -69,6 +69,34 @@ class MaidCreate(CreateView):
             maid=self.object
         )
 
+class MaidFoodHandlingPreferenceCreate(CreateView):
+    context_object_name = 'maid_food_handling_preference'
+    form_class = MaidFoodHandlingPreferenceForm
+    http_method_names = ['get','post']
+    model = MaidFoodHandlingPreference
+    template_name = 'maid-food-handling-preference-create.html'
+    success_url = reverse_lazy('')
+
+    def form_valid(self, form):
+        form.instance.maid = Maid.objects.get(
+            pk = self.kwargs.pk_url_kwarg
+        )
+        return super().form_valid(form)
+
+class MaidDietaryRestrictionCreate(CreateView):
+    context_object_name = 'maid_dietary_restriction'
+    form_class = MaidDietaryRestrictionForm
+    http_method_names = ['get','post']
+    model = MaidDietaryRestriction
+    template_name = 'maid-dietary-restriction-create.html'
+    success_url = reverse_lazy('')
+
+    def form_valid(self, form):
+        form.instance.maid = Maid.objects.get(
+            pk = self.kwargs.pk_url_kwarg
+        )
+        return super().form_valid(form)
+
 # Update Views
 class MaidUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'maid'
