@@ -56,12 +56,12 @@ urlpatterns = [
                 name='agency_delete'
             ),
             path(
-                'employee/',
+                'employee/<int:pk>/',
                 AgencyEmployeeDelete.as_view(),
                 name='agency_employee_delete'
             ),
             path(
-                'plan/',
+                'plan/<int:pk>/',
                 AgencyPlanDelete.as_view(),
                 name='agency_plan_delete'
             )
