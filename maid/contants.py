@@ -278,3 +278,19 @@ class PreferenceChoices(models.IntegerChoices):
     NO_PREFERENCE = 3, _('No preference')
     MORE_PREFERRED = 4, _('More preferred')
     MOST_PREFERRED = 5, _('Most preferred')
+
+class MaidCareRemarkChoices(models.TextChoices):
+    def __init__(self, name):
+        self.name = name
+
+    OWN_COUNTRY = 'OC', _('Experience in own country')
+    OVERSEAS = 'OV', _('Experience in overseas')
+    SINGAPORE = 'SG', _('Experience in Singapore')
+    OWN_COUNTRY_SINGAPORE = 'OC_SG', _('Experience in own country and Singapore')
+    OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+        'Experience in own country, overseas and Singapore'
+    )
+    NO_EXP = 'NE', _('No experience, but willing to learn')
+    NOT_WILLING = 'NW', _(f'Not willing to care for {name}')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
