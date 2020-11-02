@@ -18,36 +18,7 @@ from maid.models import Maid
 # Template Views
 
 # Redirect Views
-class DashboardMaidTogglePublished(LoginRequiredMixin, RedirectView):
-    pattern_name = ''
 
-    def get_redirect_url(self, *args, **kwargs):
-        try:
-            maid = Maid.objects.get(
-                pk = kwargs.get('pk')
-            )
-        except Maid.DoesNotExist:
-            messages.error(
-                self.request,
-                'This maid does not exist'
-            )
-        else:
-            if maid.agency != Agency.objects.get(
-                pk = self.request.user.pk
-            ):
-                messages.error(
-                    self.request,
-                    '''
-                        You do not have the permission to modify the status 
-                        of this maid
-                    '''
-                )
-
-            maid.published = not maid.published
-            maid.save()
-            kwargs.pop('pk')
-        return super().get_redirect_url(*args, **kwargs)
-        
 # List Views
 class DashboardMaidList(LoginRequiredMixin, ListView):
     context_object_name = 'maids'

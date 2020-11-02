@@ -5,6 +5,9 @@ from django.urls import include, path
 
 # Imports from local app
 
+## Redirect Views
+from .views import MaidTogglePublished
+
 ## List Views
 from .views import MaidList
 
@@ -110,5 +113,10 @@ urlpatterns = [
                 name='maid_detail'
             )
         ])
+    ),
+    path(
+        'togglepublished/<int:pk>/',
+        MaidTogglePublished.as_view(),
+        name='maid_toggle_published'
     )
 ]
