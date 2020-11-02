@@ -1,4 +1,5 @@
 # Imports from python
+import datetime
 
 # Imports from django
 from django.db import models
@@ -149,6 +150,28 @@ class Maid(models.Model):
         blank=False
     )
 
+class MaidWorkDuty(models.Model):
+    class WorkDutyChoices(models.TextChoices):
+        HOUSEWORK = 'H', _('Housework')
+        HOUSEWORK_HDB = 'H_HDB', _('Housework (HDB)')
+        HOUSEWORK_CONDO = 'H_CON', _('Housework (Condo)')
+        HOUSEWORK_PRIVATE = 'H_PLP', _('Housework (Landed Property)')
+        COOKING = 'CO', _('Cooking')
+        COOKING_CHINESE = 'CO_C', _('Cooking (Chinese Food)')
+        COOKING_INDIAN = 'CO_I', _('Cooking (Indian Food)')
+        COOKING_MALAY = 'CO_M', _('Cooking (Malay Food)')
+        CARE_INFANT_CHILD = 'CA_IC', _('Infant child care')
+        CARE_ELDERLY = 'CA_E', _('Elderly care')
+        CARE_DISABLED = 'CA_D', _('Disabled care')
+        CARE_PETS = 'CA_P', _('Pet care')
+
+    name = models.TextField(
+        verbose_name=_("Maid's work duties"),
+        max_length=5,
+        blank=False,
+        choices=WorkDutyChoices.choices
+    )
+
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     class FoodPreferenceChoices(models.TextChoices):
@@ -191,6 +214,45 @@ class MaidDietaryRestriction(models.Model):
         choices=DietaryRestrictionChoices.choices,
         default=DietaryRestrictionChoices.PORK
     )
+
+class MaidEmploymentHistory(models.Model):
+    class MaidEmploymentCounty(models.TextChoices):
+        SINGAPORE = 'SG', _('SINGAPORE')
+
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='employment_history'
+    )
+
+    start_date = models.DateTimeField(
+        verbose_name="Maid employment's start date"
+    )
+
+    end_date = models.DateTimeField(
+        verbose_name="Maid employment's end date"
+    )
+
+    country = models.TextField(
+        verbose_name=_("Country of employment"),
+        max_length=3,
+        blank=False,
+        choices=MaidEmploymentCounty.choices
+    )
+
+    work_duration = models.DurationField(
+        verbose_name=_('Employment duration'),
+        blank=True,
+        editable=False
+    )
+
+    work_duties = models.ManyToManyField(
+        MaidWorkDuty
+    )
+
+    def save(self, *args, **kwargs):
+        self.work_duration = self.end_date - self.start_date
+        super().save(self, *args, **kwargs)
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
