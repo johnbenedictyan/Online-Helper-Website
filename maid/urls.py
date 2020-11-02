@@ -5,6 +5,12 @@ from django.urls import include, path
 
 # Imports from local app
 
+## List Views
+from .views import MaidList
+
+## Detail Views
+from .views import MaidDetail
+
 ## Create Views
 from .views import (
     MaidCreate
@@ -87,6 +93,21 @@ urlpatterns = [
                 'c/',
                 MaidCookingUpdate.as_view(),
                 name='maid_cooking_update'
+            )
+        ])
+    ),
+    path(
+        'view/',
+        include([
+            path(
+                '',
+                MaidList.as_view(),
+                name='maid_list'
+            ),
+            path(
+                '<int:pk>/',
+                MaidDetail.as_view(),
+                name='maid_detail'
             )
         ])
     )
