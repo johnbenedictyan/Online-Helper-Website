@@ -18,13 +18,13 @@ from .forms import (
     MaidCreationForm, MaidBiodataForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
-    MaidDietaryRestrictionForm
+    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm
 )
 
 from .models import (
     Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidFoodHandlingPreference, MaidDietaryRestriction
+    MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
 
 # Start of Views
@@ -69,6 +69,20 @@ class MaidList(ListView):
     model = Maid
     queryset = Maid.objects.filter(published=True)
     template_name = 'maid-list.html'
+
+class MaidEmploymentHistoryList(ListView):
+    context_object_name = 'maid_employment_history_list'
+    http_method_names = ['get']
+    model = MaidEmploymentHistory
+    template_name = 'maid-employment-history-list.html'
+
+    def get_queryset(self):
+        return MaidEmploymentHistory.objects.filter(
+            maid__pk = self.kwargs['maid_id'],
+            maid__agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        )
 
 # Detail Views
 class MaidDetail(DetailView):
@@ -131,6 +145,20 @@ class MaidDietaryRestrictionCreate(CreateView):
     http_method_names = ['get','post']
     model = MaidDietaryRestriction
     template_name = 'maid-dietary-restriction-create.html'
+    success_url = reverse_lazy('')
+
+    def form_valid(self, form):
+        form.instance.maid = Maid.objects.get(
+            pk = self.kwargs.pk_url_kwarg
+        )
+        return super().form_valid(form)
+
+class MaidEmploymentHistoryCreate(CreateView):
+    context_object_name = 'maid_employment_history'
+    form_class = MaidEmploymentHistoryForm
+    http_method_names = ['get','post']
+    model = MaidEmploymentHistory
+    template_name = 'maid-employment-history-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
@@ -261,6 +289,22 @@ class MaidCookingUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
+class MaidEmploymentHistoryUpdate(LoginRequiredMixin, UpdateView):
+    context_object_name = 'maid_employment_history'
+    form_class = MaidEmploymentHistoryForm
+    http_method_names = ['get','post']
+    model = MaidEmploymentHistory
+    template_name = 'maid-employment-history-update.html'
+    success_url = reverse_lazy('')
+
+    def get_object(self, queryset=None):
+        return MaidEmploymentHistory.objects.get(
+            pk = self.pk_url_kwarg,
+            maid__agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        )
+
 # Delete Views
 class MaidDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'maid'
@@ -290,3 +334,18 @@ class MaidDietaryRestrictionDelete(DeleteView):
     model = MaidDietaryRestriction
     template_name = 'maid-dietary-restriction-delete.html'
     success_url = reverse_lazy('')
+
+class MaidEmploymentHistoryDelete(DeleteView):
+    context_object_name = 'maid_employment_history'
+    http_method_names = ['get','post']
+    model = MaidEmploymentHistory
+    template_name = 'maid-employment-history-delete.html'
+    success_url = reverse_lazy('')
+
+    def get_object(self, queryset=None):
+        return MaidEmploymentHistory.objects.get(
+            pk = self.pk_url_kwarg,
+            maid__agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        )
