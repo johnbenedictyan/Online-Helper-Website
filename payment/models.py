@@ -6,7 +6,7 @@ from django.db import models
 # Imports from project
 
 # Imports from other apps
-from project.agency.models import Agency
+from agency.models import Agency
 
 # Imports from within the app
 

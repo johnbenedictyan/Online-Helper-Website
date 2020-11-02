@@ -1,10 +1,8 @@
 # Imports from python
-import datetime
 
 # Imports from django
 from django.db import models
-from django.contrib.auth import get_user_model
-from django.core.validators import RegexValidator, URLValidator
+from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _

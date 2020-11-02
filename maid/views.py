@@ -1,20 +1,17 @@
 # Imports from django
 from django.contrib import messages
-from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
-from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from project-wide files
-from project.onlinemaid.mixins import ListFilteredMixin
+from onlinemaid.mixins import ListFilteredMixin
 
 # Imports from foreign installed apps
-from project.agency.models import Agency
+from agency.models import Agency
 
 # Imports from local app
 from .filters import MaidFilter
@@ -76,7 +73,7 @@ class MaidList(ListFilteredMixin, ListView):
     template_name = 'maid-list.html'
     filter_set = MaidFilter
 
-class MaidEmploymentHistoryList(ListView):
+class MaidEmploymentHistoryList(LoginRequiredMixin, ListView):
     context_object_name = 'maid_employment_history_list'
     http_method_names = ['get']
     model = MaidEmploymentHistory
@@ -91,14 +88,14 @@ class MaidEmploymentHistoryList(ListView):
         )
 
 # Detail Views
-class MaidDetail(DetailView):
+class MaidDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
     template_name = 'maid-detail.html'
 
 # Create Views
-class MaidCreate(CreateView):
+class MaidCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'maid'
     form_class = MaidCreationForm
     http_method_names = ['get','post']
@@ -131,7 +128,7 @@ class MaidCreate(CreateView):
             maid=self.object
         )
 
-class MaidFoodHandlingPreferenceCreate(CreateView):
+class MaidFoodHandlingPreferenceCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'maid_food_handling_preference'
     form_class = MaidFoodHandlingPreferenceForm
     http_method_names = ['get','post']
@@ -145,7 +142,7 @@ class MaidFoodHandlingPreferenceCreate(CreateView):
         )
         return super().form_valid(form)
 
-class MaidDietaryRestrictionCreate(CreateView):
+class MaidDietaryRestrictionCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'maid_dietary_restriction'
     form_class = MaidDietaryRestrictionForm
     http_method_names = ['get','post']
@@ -159,7 +156,7 @@ class MaidDietaryRestrictionCreate(CreateView):
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(CreateView):
+class MaidEmploymentHistoryCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
@@ -327,21 +324,21 @@ class MaidDelete(LoginRequiredMixin, DeleteView):
             )
         )
 
-class MaidFoodHandlingPreferenceDelete(DeleteView):
+class MaidFoodHandlingPreferenceDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'maid_food_handling_preference'
     http_method_names = ['get','post']
     model = MaidFoodHandlingPreference
     template_name = 'maid-food-handling-preference-delete.html'
     success_url = reverse_lazy('')
 
-class MaidDietaryRestrictionDelete(DeleteView):
+class MaidDietaryRestrictionDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'maid_dietary_restriction'
     http_method_names = ['get','post']
     model = MaidDietaryRestriction
     template_name = 'maid-dietary-restriction-delete.html'
     success_url = reverse_lazy('')
 
-class MaidEmploymentHistoryDelete(DeleteView):
+class MaidEmploymentHistoryDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'maid_employment_history'
     http_method_names = ['get','post']
     model = MaidEmploymentHistory

@@ -4,9 +4,6 @@ from django.urls import include, path
 # Imports from foreign installed apps
 
 # Imports from local app
-# from .forms import (
-    
-# )
 
 ## List Views
 from .views import AgencyList

@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div
+from crispy_forms.layout import Layout, Submit, Row, Column
 
 # Imports from local apps
 from .models import Employer, User

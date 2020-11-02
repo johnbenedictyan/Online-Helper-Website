@@ -1,12 +1,8 @@
 # Imports from django
 from django.contrib import messages
-from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
-from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -22,8 +18,6 @@ from .models import (
     Agency, AgencyContactInformation, AgencyEmployee, AgencyLocation, 
     AgencyOperatingHours, AgencyPlan
 )
-
-from .mixins import AgencyVerifiedMixin
 
 # Start of Views
 
@@ -69,7 +63,7 @@ class AgencyCreate(CreateView):
 
         return response
 
-class AgencyEmployeeCreate(CreateView):
+class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
@@ -77,7 +71,7 @@ class AgencyEmployeeCreate(CreateView):
     template_name = 'agency-employee-create.html'
     success_url = reverse_lazy('')
 
-class AgencyPlanCreate(CreateView):
+class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_plan'
     form_class = AgencyPlanForm
     http_method_names = ['get','post']
@@ -101,7 +95,7 @@ class AgencyPlanCreate(CreateView):
             return self.form_invalid(form)
 
 # Update Views
-class AgencyUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
+class AgencyUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
@@ -114,8 +108,7 @@ class AgencyUpdate(LoginRequiredMixin, AgencyVerifiedMixin, UpdateView):
             pk = self.request.user.pk
     )
 
-class AgencyContactInformationUpdate(
-    LoginRequiredMixin, UpdateView):
+class AgencyContactInformationUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_contact_information'
     form_class = AgencyContactInformationForm
     http_method_names = ['get','post']
