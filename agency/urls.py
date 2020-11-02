@@ -8,18 +8,24 @@ from django.urls import include, path
     
 # )
 
-# Create Views
+## List Views
+from .views import AgencyList
+
+## Detail Views
+from .views import AgencyDetail
+
+## Create Views
 from .views import (
     AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate,
 )
 
-# Update Views
+## Update Views
 from .views import (
     AgencyUpdate, AgencyContactInformationUpdate, AgencyEmployeeUpdate,
     AgencyLocationUpdate, AgencyOperatingHoursUpdate, AgencyPlanUpdate
 )
 
-# Delete Views
+## Delete Views
 from .views import (
     AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
 )
@@ -99,6 +105,21 @@ urlpatterns = [
                 'plan/',
                 AgencyPlanUpdate.as_view(),
                 name='agency_plan_update'
+            )
+        ])
+    ),
+    path(
+        'view/',
+        include([
+            path(
+                '',
+                AgencyList.as_view(),
+                name='agency_list'
+            ),
+            path(
+                '<int:pk>/',
+                AgencyDetail.as_view(),
+                name='agency_detail'
             )
         ])
     )
