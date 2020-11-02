@@ -27,7 +27,7 @@ class User(AbstractUser):
         _('Email Address'), 
         unique=True
     )
-    role = models.TextField(
+    role = models.CharField(
         verbose_name=_('Role'),
         max_length=2,
         choices=RoleChoices.choices,
@@ -49,19 +49,19 @@ class Employer(models.Model):
         primary_key=True
     )
 
-    first_name = models.TextField(
+    first_name = models.CharField(
         verbose_name=_('First Name'),
         max_length=50,
         blank=False
     )
 
-    last_name = models.TextField(
+    last_name = models.CharField(
         verbose_name=_('Last Name'),
         max_length=50,
         blank=False
     )
 
-    contact_number = models.TextField(
+    contact_number = models.CharField(
         verbose_name=_('Contact Number'),
         max_length=10,
         blank=False,

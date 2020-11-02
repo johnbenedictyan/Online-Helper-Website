@@ -27,19 +27,19 @@ class Agency(models.Model):
         blank=False
     )
 
-    name = models.TextField(
+    name = models.CharField(
         verbose_name=_('Name'),
         max_length=100,
         blank=False
     )
 
-    license_number = models.TextField(
+    license_number = models.CharField(
         verbose_name=_('License number'),
         max_length=100,
         blank=False
     )
 
-    website_uri = models.TextField(
+    website_uri = models.CharField(
         verbose_name=_('Website URL'),
         max_length=100,
         blank=False,
@@ -52,7 +52,7 @@ class Agency(models.Model):
 
     logo_uri = None
 
-    uen = models.TextField(
+    uen = models.CharField(
         verbose_name=_('Company\'s UEN code'),
         max_length=10,
         blank=False
@@ -92,19 +92,19 @@ class AgencyEmployee(models.Model):
         primary_key=True
     )
 
-    first_name = models.TextField(
+    first_name = models.CharField(
         verbose_name=_('First Name'),
         max_length=50,
         blank=False
     )
 
-    last_name = models.TextField(
+    last_name = models.CharField(
         verbose_name=_('Last Name'),
         max_length=50,
         blank=False
     )
 
-    contact_number = models.TextField(
+    contact_number = models.CharField(
         verbose_name=_('Contact Number'),
         max_length=50,
         blank=False,
@@ -118,7 +118,7 @@ class AgencyEmployee(models.Model):
         # numbers.
     )
 
-    ea_personnel_number = models.TextField(
+    ea_personnel_number = models.CharField(
         verbose_name=_('EA personnel number'),
         max_length=50,
         blank=False
@@ -145,28 +145,28 @@ class AgencyLocation(models.Model):
         primary_key=True
     )
 
-    address_1 = models.TextField(
+    address_1 = models.CharField(
         verbose_name=_('Street Address'),
         max_length=100,
         blank=False,
         null=True
     )
 
-    address_2 = models.TextField(
+    address_2 = models.CharField(
         verbose_name=_('Unit Number'),
         max_length=50,
         blank=False,
         null=True
     )
 
-    postal_code = models.TextField(
+    postal_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
         blank=False,
         null=True
     )
 
-    area = models.TextField(
+    area = models.CharField(
         verbose_name=_('Area'),
         max_length=2,
         blank=False,
@@ -181,7 +181,7 @@ class AgencyContactInformation(models.Model):
         primary_key=True
     )
 
-    office_number = models.TextField(
+    office_number = models.CharField(
         verbose_name=_('Office Number'),
         max_length=10,
         blank=False,
@@ -196,7 +196,7 @@ class AgencyContactInformation(models.Model):
         # numbers.
     )
 
-    mobile_number = models.TextField(
+    mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
         blank=False,
@@ -227,7 +227,7 @@ class AgencyPlan(models.Model):
         on_delete=models.CASCADE
     )
 
-    choice = models.TextField(
+    choice = models.CharField(
         verbose_name=_('Plan type'),
         max_length=4,
         blank=False,
@@ -240,7 +240,7 @@ class AgencyPlan(models.Model):
         editable=False
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks'),
         max_length=100,
         blank=True
@@ -257,7 +257,7 @@ class AgencyOperatingHours(models.Model):
         primary_key=True
     )
 
-    operating_type = models.TextField(
+    operating_type = models.CharField(
         verbose_name=_('Agency\'s operating hours type'),
         max_length=2,
         blank=False,
@@ -265,49 +265,49 @@ class AgencyOperatingHours(models.Model):
         default=OperatingHoursChoices.OPENING_HOURS
     )
 
-    monday = models.TextField(
+    monday = models.CharField(
         verbose_name=_('Monday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    tuesday = models.TextField(
+    tuesday = models.CharField(
         verbose_name=_('Tuesday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    wednesday = models.TextField(
+    wednesday = models.CharField(
         verbose_name=_('Wednesday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    thursday = models.TextField(
+    thursday = models.CharField(
         verbose_name=_('Thursday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    friday = models.TextField(
+    friday = models.CharField(
         verbose_name=_('Friday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    saturday = models.TextField(
+    saturday = models.CharField(
         verbose_name=_('Saturday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    sunday = models.TextField(
+    sunday = models.CharField(
         verbose_name=_('Sunday\'s opening hours'),
         max_length=30,
         blank=True
     )
 
-    public_holiday = models.TextField(
+    public_holiday = models.CharField(
         verbose_name=_('Public holiday opening hours'),
         max_length=30,
         blank=True

@@ -20,13 +20,13 @@ class AdvertisementLocation(models.Model):
         TIER_2 = 'TIER2', _('Tier 2')
         TIER_3 = 'TIER3', _('Tier 3')
 
-    name = models.TextField(
+    name = models.CharField(
         verbose_name=_('Page name'),
         max_length=30,
         blank=False
     )
 
-    tier = models.TextField(
+    tier = models.CharField(
         verbose_name=_('Advertisment tier'),
         max_length=5,
         blank=False,
@@ -52,7 +52,7 @@ class Advertisement(models.Model):
         related_name='advertisements'
     )
 
-    ad_type = models.TextField(
+    ad_type = models.CharField(
         verbose_name=_('Advertisment type'),
         max_length=6,
         blank=False,
