@@ -1,3 +1,26 @@
+# Imports from python
+
+# Imports from django
 from django.db import models
 
-# Create your models here.
+# Imports from project
+
+# Imports from other apps
+from project.agency.models import Agency
+
+# Imports from within the app
+
+# Utiliy Classes and Functions
+
+# Start of Models
+
+class Invoice(models.Model):
+    agency = models.ForeignKey(
+        Agency,
+        on_delete=models.SET_NULL,
+        related_name='invoices'
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True
+    )
+
