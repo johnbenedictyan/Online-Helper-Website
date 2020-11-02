@@ -11,7 +11,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div
 from .models import (
     Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidFoodHandlingPreference, MaidDietaryRestriction
+    MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
 
 # Start of Forms
@@ -520,4 +520,47 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
             )
         )
 
+class MaidEmploymentHistoryForm(forms.ModelForm):
+    class Meta:
+        model = MaidEmploymentHistory
+        exclude = ['maid']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'country',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'work_duties',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'start_date',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'end_date',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Purchase',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
 # Generic Forms (forms.Form)
