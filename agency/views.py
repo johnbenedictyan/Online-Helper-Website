@@ -31,6 +31,13 @@ from .mixins import AgencyVerifiedMixin
 
 # Redirect Views
 
+# List Views
+class AgencyList(ListView):
+    context_object_name = 'agency'
+    http_method_names = ['get']
+    model = Agency
+    template_name = 'agency-list.html'
+
 # Detail Views
     
 # Create Views
