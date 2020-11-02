@@ -39,6 +39,11 @@ class AgencyList(ListView):
     template_name = 'agency-list.html'
 
 # Detail Views
+class AgencyDetail(DetailView):
+    context_object_name = 'agency'
+    http_method_names = ['get']
+    model = Agency
+    template_name = 'agency-detail.html'
     
 # Create Views
 class AgencyCreate(CreateView):
