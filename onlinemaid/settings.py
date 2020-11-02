@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'maid',
     'shortlist',
     'website',
-    'crispy_forms'
+    'crispy_forms',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
