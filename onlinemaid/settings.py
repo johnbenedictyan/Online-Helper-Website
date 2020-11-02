@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'agency',
     'dashboard',
     'maid',
+    'payment',
     'shortlist',
     'website',
     'crispy_forms',
