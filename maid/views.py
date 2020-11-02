@@ -33,6 +33,14 @@ from .models import (
 
 # Redirect Views
 
+# List Views
+class MaidList(ListView):
+    context_object_name = 'maid'
+    http_method_names = ['get']
+    model = Maid
+    queryset = Maid.objects.filter(published=True)
+    template_name = 'maid-list.html'
+    
 # Detail Views
     
 # Create Views
