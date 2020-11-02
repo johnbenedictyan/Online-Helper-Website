@@ -18,8 +18,10 @@ class Invoice(models.Model):
     agency = models.ForeignKey(
         Agency,
         on_delete=models.SET_NULL,
-        related_name='invoices'
+        related_name='invoices',
+        null=True
     )
+    
     created_on = models.DateTimeField(
         auto_now_add=True
     )
