@@ -144,6 +144,11 @@ class Maid(models.Model):
         editable=False
     )
 
+    published = models.BooleanField(
+        default=False,
+        blank=False
+    )
+
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     class FoodPreferenceChoices(models.TextChoices):
