@@ -40,9 +40,14 @@ class MaidList(ListView):
     model = Maid
     queryset = Maid.objects.filter(published=True)
     template_name = 'maid-list.html'
-    
+
 # Detail Views
-    
+class MaidDetail(DetailView):
+    context_object_name = 'maid'
+    http_method_names = ['get']
+    model = Maid
+    template_name = 'maid-detail.html'
+
 # Create Views
 class MaidCreate(CreateView):
     context_object_name = 'maid'
