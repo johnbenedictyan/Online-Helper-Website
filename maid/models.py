@@ -41,13 +41,15 @@ class Maid(models.Model):
         related_name='maid'
     )
 
-    reference_number = models.TextField(
+    reference_number = models.CharField(
         verbose_name=_('Reference Number'),
+        max_length=255,
         blank=False
     )
 
-    maid_type = models.TextField(
+    maid_type = models.CharField(
         verbose_name=_('Maid Type'),
+        max_length=3,
         blank=False,
         choices=TypeOfMaidChoices.choices,
         default=TypeOfMaidChoices.NEW
@@ -73,15 +75,15 @@ class Maid(models.Model):
         default=PassportStatusChoices.NOT_READY
     )
 
-    repatraition_airport = models.TextField(
+    repatraition_airport = models.CharField(
         verbose_name=_('Repatraition airport'),
         max_length=100,
         blank=False
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks'),
-        max_length=250,
+        max_length=255,
         blank=False
     )
 
@@ -165,7 +167,7 @@ class MaidWorkDuty(models.Model):
         CARE_DISABLED = 'CA_D', _('Disabled care')
         CARE_PETS = 'CA_P', _('Pet care')
 
-    name = models.TextField(
+    name = models.CharField(
         verbose_name=_("Maid's work duties"),
         max_length=5,
         blank=False,
@@ -186,7 +188,7 @@ class MaidFoodHandlingPreference(models.Model):
         related_name='food_handling_preferences'
     )
 
-    preference = models.TextField(
+    preference = models.CharField(
         verbose_name = _('Food preference'),
         max_length=1,
         blank=False,
@@ -207,7 +209,7 @@ class MaidDietaryRestriction(models.Model):
         related_name='dietary_restrictions'
     )
 
-    restriction = models.TextField(
+    restriction = models.CharField(
         verbose_name = _('Dietary restriction'),
         max_length=1,
         blank=False,
@@ -233,7 +235,7 @@ class MaidEmploymentHistory(models.Model):
         verbose_name="Maid employment's end date"
     )
 
-    country = models.TextField(
+    country = models.CharField(
         verbose_name=_("Country of employment"),
         max_length=3,
         blank=False,
@@ -289,7 +291,7 @@ class MaidBiodata(models.Model):
         null=True
     )
 
-    country_of_origin = models.TextField(
+    country_of_origin = models.CharField(
         verbose_name=_('Country of Origin'),
         max_length=3,
         blank=False,
@@ -309,28 +311,28 @@ class MaidBiodata(models.Model):
         null=True
     )
     
-    place_of_birth = models.TextField(
+    place_of_birth = models.CharField(
         verbose_name=_('Place of birth'),
         max_length=25,
         blank=False,
         null=True
     )
 
-    address_1 = models.TextField(
+    address_1 = models.CharField(
         verbose_name=_('Address 1'),
         max_length=100,
         blank=False,
         null=True
     )
 
-    address_2 = models.TextField(
+    address_2 = models.CharField(
         verbose_name=_('Address 2'),
         max_length=100,
         blank=False,
         null=True
     )
 
-    religion = models.TextField(
+    religion = models.CharField(
         verbose_name=_('Religion'),
         max_length=4,
         blank=False,
@@ -352,7 +354,7 @@ class MaidFamilyDetails(models.Model):
         related_name='family_details'
     )
 
-    marital_status = models.TextField(
+    marital_status = models.CharField(
         verbose_name=_('Marital Status'),
         max_length=2,
         blank=False,
@@ -365,7 +367,7 @@ class MaidFamilyDetails(models.Model):
         default=0
     )
 
-    age_of_children = models.TextField(
+    age_of_children = models.CharField(
         verbose_name=_('Age of children'),
         max_length=50,
         blank=False,
@@ -408,7 +410,7 @@ class MaidInfantChildCare(models.Model):
         related_name='infant_child_care'
     )
 
-    preference = models.TextField(
+    preference = models.IntegerField(
         verbose_name=_('Infant child care preference'),
         blank=False,
         choices=InfantChildCarePreferenceChoices.choices,
@@ -429,8 +431,9 @@ class MaidInfantChildCare(models.Model):
         default=True,
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks for infant child care'),
+        max_length=7,
         blank=False,
         choices=InfantChildCareRemarksChoices.choices,
         null=True
@@ -472,7 +475,7 @@ class MaidElderlyCare(models.Model):
         related_name='elderyly_care'
     )
 
-    preference = models.TextField(
+    preference = models.IntegerField(
         verbose_name=_('Elderly care preference'),
         blank=False,
         choices=ElderlyCarePreferenceChoices.choices,
@@ -493,8 +496,9 @@ class MaidElderlyCare(models.Model):
         default=True,
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks for elderly care'),
+        max_length=7,
         blank=False,
         choices=ElderlyCareRemarksChoices.choices,
         null=True
@@ -537,7 +541,7 @@ class MaidDisabledCare(models.Model):
         related_name='disabled_care'
     )
 
-    preference = models.TextField(
+    preference = models.IntegerField(
         verbose_name=_('Disabled care preference'),
         blank=False,
         choices=DisabledCarePreferenceChoices.choices,
@@ -558,8 +562,9 @@ class MaidDisabledCare(models.Model):
         default=True,
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks for disabled care'),
+        max_length=7,
         blank=False,
         choices=DisabledCareRemarksChoices.choices,
         null=True
@@ -588,7 +593,7 @@ class MaidGeneralHousework(models.Model):
         related_name='general_housework'
     )
 
-    preference = models.TextField(
+    preference = models.IntegerField(
         verbose_name=_('General housework preference'),
         blank=False,
         choices=GeneralHouseworkPreferenceChoices.choices,
@@ -609,8 +614,9 @@ class MaidGeneralHousework(models.Model):
         default=True,
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks for general housework'),
+        max_length=7,
         blank=False,
         choices=GeneralHouseworkRemarksChoices.choices,
         null=True
@@ -675,7 +681,7 @@ class MaidCooking(models.Model):
         related_name='cooking'
     )
 
-    preference = models.TextField(
+    preference = models.IntegerField(
         verbose_name=_('Cooking preference'),
         blank=False,
         choices=CookingPreferenceChoices.choices,
@@ -696,8 +702,9 @@ class MaidCooking(models.Model):
         default=True,
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks for cooking'),
+        max_length=8,
         blank=False,
         choices=CookingRemarksChoices.choices,
         null=True
