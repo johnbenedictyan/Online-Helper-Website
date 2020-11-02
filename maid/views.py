@@ -10,10 +10,15 @@ from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+# Imports from project-wide files
+from project.onlinemaid.mixins import ListFilteredMixin
+
 # Imports from foreign installed apps
-from agency.models import Agency
+from project.agency.models import Agency
 
 # Imports from local app
+from .filters import MaidFilter
+
 from .forms import (
     MaidCreationForm, MaidBiodataForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
@@ -63,12 +68,13 @@ class MaidTogglePublished(LoginRequiredMixin, RedirectView):
         return super().get_redirect_url(*args, **kwargs)
         
 # List Views
-class MaidList(ListView):
+class MaidList(ListFilteredMixin, ListView):
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
     queryset = Maid.objects.filter(published=True)
     template_name = 'maid-list.html'
+    filter_set = MaidFilter
 
 class MaidEmploymentHistoryList(ListView):
     context_object_name = 'maid_employment_history_list'
