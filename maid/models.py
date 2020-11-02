@@ -282,16 +282,9 @@ class MaidBiodata(models.Model):
         related_name='biodata'
     )
 
-    first_name = models.TextField(
-        verbose_name=_('First Name'),
-        max_length=100,
-        blank=False,
-        null=True
-    )
-
-    last_name = models.TextField(
-        verbose_name=_('Last Name'),
-        max_length=100,
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
         blank=False,
         null=True
     )

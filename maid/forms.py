@@ -104,12 +104,8 @@ class MaidBiodataForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'first_name',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'last_name',
-                    css_class='form-group col-md-6'
+                    'name',
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
