@@ -31,7 +31,12 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ## Detail Views
-    
+class EmployerDetail(DetailView):
+    context_object_name = 'employer'
+    http_method_names = ['get']
+    model = Employer
+    template_name = 'employer-detail.html'
+
 ## Create Views
 class EmployerCreate(CreateView):
     context_object_name = 'employer'

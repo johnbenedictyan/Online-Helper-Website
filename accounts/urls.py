@@ -10,6 +10,9 @@ from .forms import SignInForm
 ## Redirect Views 
 from .views import SignOutView
 
+## Detail Views
+from .views import EmployerDetail
+
 ## Create Views
 from .views import EmployerCreate
 
@@ -51,6 +54,11 @@ urlpatterns = [
                 name='employer_update'
             )
         ])
+    ),
+    path(
+        'view/',
+        EmployerDetail.as_view(),
+        name='employer_detail'
     ),
     path(
         'sign-in/',
