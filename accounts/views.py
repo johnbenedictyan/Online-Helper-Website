@@ -1,7 +1,9 @@
 # Imports from django
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -17,6 +19,16 @@ from .mixins import EmployerVerifiedMixin
 ## Template Views
 
 ## Redirect Views
+class SignOutView(LoginRequiredMixin, RedirectView):
+    pattern_name = 'home'
+
+    def get_redirect_url(self, *args, **kwargs):
+        logout(self.request)
+        messages.success(
+            self.request,
+            'Log out successful'
+        )
+        return super().get_redirect_url(*args, **kwargs)
 
 ## Detail Views
     
