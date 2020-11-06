@@ -39,7 +39,7 @@ class EmployerCreate(CreateView):
     http_method_names = ['get','post']
     model = Employer
     template_name = 'employer-create.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
 ## Update Views
 class EmployerUpdate(LoginRequiredMixin, EmployerVerifiedMixin, UpdateView):
@@ -58,10 +58,9 @@ class EmployerUpdate(LoginRequiredMixin, EmployerVerifiedMixin, UpdateView):
 ## Delete Views
 class EmployerDelete(LoginRequiredMixin, EmployerVerifiedMixin, DeleteView):
     context_object_name = 'employer'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = Employer
-    template_name = 'employer-delete.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
         return Employer.objects.get(
