@@ -7,6 +7,9 @@ from django.contrib.auth import views as auth_views
 # Imports from local app
 from .forms import SignInForm
 
+## Redirect Views 
+from .views import SignOutView
+
 ## Create Views
 from .views import EmployerCreate
 
@@ -57,4 +60,9 @@ urlpatterns = [
         ),
         name='sign_in'
     ),
+    path(
+        'sign-out/',
+        SignOutView.as_view(),
+        name='sign_out'
+    )
 ]
