@@ -11,7 +11,7 @@ from maid.models import Maid
 # Start of Views
 
 ## Redirect Views
-class AddTo(ProductNotDeletedMixin, RedirectView):
+class AddTo(RedirectView):
     pattern_name = 'maid_list'
 
     def get_redirect_url(self, *args, **kwargs):
@@ -38,7 +38,7 @@ class AddTo(ProductNotDeletedMixin, RedirectView):
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
-class RemoveFrom(ProductNotDeletedMixin, RedirectView):
+class RemoveFrom(RedirectView):
     pattern_name = 'maid_list'
 
     def get_redirect_url(self, *args, **kwargs):
