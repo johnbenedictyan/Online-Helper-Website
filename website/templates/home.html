@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block main_content %}
 <section>
     <div class="container">
@@ -145,7 +146,6 @@
                 <div class="card-deck mt-3">
                     <div class="card maid-experience mt-2 ml-4 mr-1 shadow-dark">
                         <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Elderly">
-                            <!-- url 'searchmaidr' responsibility='Care for Elderly' -->
                             <img class="card-img-top" src="{% static 'images/homepage_preference/elderly.jpg' %}" alt="Card image cap">
                             <div class="card-body">
                                 <h4 class="card-title" style="color:#0571bb"><b>Care for Elderly</b></h4>
@@ -155,7 +155,6 @@
                     </div>
                     <div class="card maid-experience mt-2 ml-4 mr-1 shadow-dark">
                         <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Disabled">
-                            <!-- url 'searchmaidr' responsibility='Care for Disabled' -->
                             <img class="card-img-top" src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" alt="Card image cap">
                             <div class="card-body maid-experience">
                                 <h4 class="card-title" style="color:#0571bb"><b>Care for Disabled</b></h4>
@@ -165,7 +164,6 @@
                     </div>
                     <div class="card maid-experience mt-2 ml-4 shadow-dark">
                         <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Pets">
-                            <!-- url 'searchmaidr' responsibility='Care for Pets' -->
                             <img class="card-img-top" src="{% static 'images/homepage_preference/pets.jpg' %}" alt="Card image cap">
                             <div class="card-body maid-experience">
                                 <h4 class="card-title" style="color:#0571bb"><b>Care for Pets</b></h4>
