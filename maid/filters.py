@@ -14,6 +14,6 @@ class MaidFilter(django_filters.FilterSet):
         fields = {
             'biodata__country_of_origin': ['exact'],
             'maid_type': ['exact'],
-            'age': ['lt', 'gt'],
-            'marital_status': ['exact']
+            'biodata__age': ['lt', 'gt'],
+            'family_details__marital_status': ['exact']
         }
