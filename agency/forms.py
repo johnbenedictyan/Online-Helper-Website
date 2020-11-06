@@ -21,6 +21,7 @@ from .models import (
 class AgencyCreationForm(forms.ModelForm):
     class Meta:
         model = Agency
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -80,7 +81,7 @@ class AgencyCreationForm(forms.ModelForm):
 class AgencyEmployeeCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),
-        blank=False
+        required=True
     )
 
     class Meta:
