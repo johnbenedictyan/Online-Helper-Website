@@ -49,6 +49,7 @@ class SignInForm(AuthenticationForm):
 class EmployerCreationForm(forms.ModelForm):
     class Meta:
         model = Employer
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
