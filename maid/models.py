@@ -289,6 +289,12 @@ class MaidBiodata(models.Model):
         null=True
     )
 
+    age = models.IntegerField(
+        verbose_name=_('Age'),
+        blank=False,
+        null=True
+    )
+
     country_of_origin = models.CharField(
         verbose_name=_('Country of Origin'),
         max_length=3,
