@@ -104,7 +104,11 @@ class MaidBiodataForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'age',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
