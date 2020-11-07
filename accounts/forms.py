@@ -24,7 +24,7 @@ class SignInForm(AuthenticationForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'email',
+                    'username',
                     css_class='form-group col-12'
                 ),
                 css_class='form-row'
@@ -145,7 +145,6 @@ class EmployerCreationForm(forms.ModelForm):
         self.email = None
         self.password = None
         self.user = new_user
-
         employer_group = Group.objects.get(
             name='Employers'
         ) 
