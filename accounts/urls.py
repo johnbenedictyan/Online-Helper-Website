@@ -7,6 +7,9 @@ from django.contrib.auth import views as auth_views
 # Imports from local app
 from .forms import SignInForm
 
+## Views that extend inbuilt django views
+from .views import SignInView
+
 ## Redirect Views 
 from .views import SignOutView
 
@@ -62,10 +65,7 @@ urlpatterns = [
     ),
     path(
         'sign-in/',
-        auth_views.LoginView.as_view(
-            template_name='base/sign-in.html',
-            authentication_form=SignInForm
-        ),
+        SignInView.as_view(),
         name='sign_in'
     ),
     path(
