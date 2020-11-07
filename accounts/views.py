@@ -31,7 +31,7 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ## Detail Views
-class EmployerDetail(DetailView):
+class EmployerDetail(LoginRequiredMixin, VerifiedEmployerMixin, DetailView):
     context_object_name = 'employer'
     http_method_names = ['get']
     model = Employer
