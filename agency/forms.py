@@ -1,6 +1,8 @@
 # Imports from django
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -19,9 +21,22 @@ from .models import (
 
 # Model Forms
 class AgencyCreationForm(forms.ModelForm):
+    email = forms.CharField(
+        label=_('Email Address'),
+        required=True,
+        max_length=255
+    )
+
+    password = forms.CharField(
+        label=_('Password'),
+        required=True,
+        max_length=255,
+        widget=forms.PasswordInput()
+    )
+
     class Meta:
         model = Agency
-        fields = '__all__'
+        exclude = ['user']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -40,19 +55,30 @@ class AgencyCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'first_name',
+                    'name',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'last_name',
+                    'company_email',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'contact_number',
-                    css_class='form-group col'
+                    'license_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'website_uri',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'uen',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -72,11 +98,44 @@ class AgencyCreationForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
+        password = cleaned_data.get("password")
 
         UserModel = get_user_model()
-        if UserModel.objects.get(email=email):
+        try:
+            UserModel.objects.get(
+                email=email
+            )
+        except UserModel.DoesNotExist:
+            pass
+        else:
             msg = _('This email is taken')
             self.add_error('email', msg)
+
+        if validate_password(password):
+            msg = _('This password does not meet our requirements')
+            self.add_error('password', msg)
+
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        cleaned_data = super().clean()
+        try:
+            new_user = get_user_model().objects.create_user(
+                email=cleaned_data.get('email'),
+                password=cleaned_data.get('password'),
+                role='A'
+            )
+        except Exception as e:
+            pass
+        else:
+            agency_group = Group.objects.get(
+                name='Agencies'
+            ) 
+            agency_group.user_set.add(
+                new_user
+            )
+            self.instance.user = new_user
+            return super().save(*args, **kwargs)
 
 class AgencyEmployeeCreationForm(forms.ModelForm):
     email = forms.EmailField(
