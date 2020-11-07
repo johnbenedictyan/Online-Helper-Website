@@ -90,6 +90,7 @@ class AgencyEmployee(models.Model):
     class EmployeeRoleChoices(models.TextChoices):
         MANAGER = 'M', _('Manager')
         SALES_STAFF = 'S', _('Sales staff')
+        ADMINISTRATOR = 'A', _('Agency administrator')
 
     user = models.OneToOneField(
         get_user_model(),
