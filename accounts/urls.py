@@ -63,7 +63,7 @@ urlpatterns = [
     path(
         'sign-in/',
         auth_views.LoginView.as_view(
-            template_name='sign-in.html',
+            template_name='base/sign-in.html',
             authentication_form=SignInForm
         ),
         name='sign_in'
