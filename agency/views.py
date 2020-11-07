@@ -30,14 +30,14 @@ class AgencyList(ListView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
-    template_name = 'agency-list.html'
+    template_name = 'list/agency-list.html'
 
 # Detail Views
 class AgencyDetail(DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
-    template_name = 'agency-detail.html'
+    template_name = 'detail/agency-detail.html'
     
 # Create Views
 class AgencyCreate(CreateView):
@@ -45,7 +45,7 @@ class AgencyCreate(CreateView):
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
     model = Agency
-    template_name = 'agency-create.html'
+    template_name = 'create/agency-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self,form):
@@ -68,7 +68,7 @@ class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
     model = AgencyEmployee
-    template_name = 'agency-employee-create.html'
+    template_name = 'create/agency-employee-create.html'
     success_url = reverse_lazy('')
 
 class AgencyPlanCreate(LoginRequiredMixin, CreateView):
@@ -76,7 +76,7 @@ class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     form_class = AgencyPlanForm
     http_method_names = ['get','post']
     model = AgencyPlan
-    template_name = 'agency-plan-create.html'
+    template_name = 'create/agency-plan-create.html'
     success_url = reverse_lazy('')
 
     def post(self, request, *args, **kwargs):
@@ -100,7 +100,7 @@ class AgencyUpdate(LoginRequiredMixin, UpdateView):
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
     model = Agency
-    template_name = 'agency-update.html'
+    template_name = 'update/agency-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -113,7 +113,7 @@ class AgencyContactInformationUpdate(LoginRequiredMixin, UpdateView):
     form_class = AgencyContactInformationForm
     http_method_names = ['get','post']
     model = AgencyContactInformation
-    template_name = 'agency-contact-information-update.html'
+    template_name = 'update/agency-contact-information-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -126,7 +126,7 @@ class AgencyLocationUpdate(LoginRequiredMixin, UpdateView):
     form_class = AgencyLocationForm
     http_method_names = ['get','post']
     model = AgencyLocation
-    template_name = 'agency-location-update.html'
+    template_name = 'update/agency-location-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -139,7 +139,7 @@ class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
     form_class = AgencyOperatingHoursForm
     http_method_names = ['get','post']
     model = AgencyOperatingHours
-    template_name = 'agency-operating-hours-update.html'
+    template_name = 'update/agency-operating-hours-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -152,7 +152,7 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
     model = AgencyEmployee
-    template_name = 'agency-employee-update.html'
+    template_name = 'update/agency-employee-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -164,7 +164,7 @@ class AgencyPlanUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
-    template_name = 'agency-plan-update.html'
+    template_name = 'update/agency-plan-update.html'
     success_url = reverse_lazy('')
     # Do we want to allow users to 'upgrade' their plans
 
