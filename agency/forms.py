@@ -11,8 +11,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 # Imports from local apps
 from .models import (
-    Agency, AgencyEmployee, AgencyLocation, AgencyOperatingHours, AgencyPlan,
-    AgencyContactInformation
+    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan
 )
 
 # Start of Forms
@@ -224,15 +223,22 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
 
         new_employee.save()
 
-class AgencyLocationForm(forms.ModelForm):
+class AgencyBranchForm(forms.ModelForm):
     class Meta:
-        model = AgencyLocation
+        model = AgencyBranch
         exclude = ['agency']
-
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Row(
+                Column(
+                    'name',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
             Row(
                 Column(
                     'address_1',
@@ -257,41 +263,12 @@ class AgencyLocationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class AgencyContactInformationForm(forms.ModelForm):
-    class Meta:
-        model = AgencyContactInformation
-        exclude = ['agency']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
                     'office_number',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     'mobile_number',
                     css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'sales_email',
-                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
