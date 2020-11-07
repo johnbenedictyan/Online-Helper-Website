@@ -56,7 +56,7 @@ urlpatterns = [
         ])
     ),
     path(
-        'view/',
+        'profile/',
         EmployerDetail.as_view(),
         name='employer_detail'
     ),
