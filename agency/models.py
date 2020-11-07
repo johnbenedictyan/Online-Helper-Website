@@ -24,6 +24,12 @@ class Agency(models.Model):
     )
 
     company_email = models.EmailField(
+        verbose_name=_('Company Email Address'),
+        blank=False
+    )
+
+    sales_email = models.EmailField(
+        verbose_name=_('Company Sales Email Address'),
         blank=False
     )
 
@@ -70,12 +76,7 @@ class Agency(models.Model):
         editable=False
     )
 
-    location_complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
-    contact_information_complete = models.BooleanField(
+    branch_complete = models.BooleanField(
         default=False,
         editable=False
     )
@@ -86,6 +87,10 @@ class Agency(models.Model):
     )
 
 class AgencyEmployee(models.Model):
+    class EmployeeRoleChoices(models.TextChoices):
+        MANAGER = 'M', _('Manager')
+        SALES_STAFF = 'S', _('Sales staff')
+
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,
@@ -130,122 +135,15 @@ class AgencyEmployee(models.Model):
         related_name='employees'
     )
 
-# Models which are one to one field with Agency
-class AgencyLocation(models.Model):
-    class AreaChoices(models.TextChoices):
-        CENTRAL = 'C', _('Central')
-        NORTH = 'N', _('North')
-        NORTH_EAST = 'NE', _('North East')
-        EAST = 'E', _('East')
-        WEST = 'W', _('West')
-
-    agency = models.OneToOneField(
-        Agency,
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-
-    address_1 = models.CharField(
-        verbose_name=_('Street Address'),
-        max_length=100,
+    role = models.CharField(
+        verbose_name=_('Employee\'s Role'),
+        max_length=1,
         blank=False,
-        null=True
+        choices=EmployeeRoleChoices.choices,
+        default=EmployeeRoleChoices.SALES_STAFF
     )
 
-    address_2 = models.CharField(
-        verbose_name=_('Unit Number'),
-        max_length=50,
-        blank=False,
-        null=True
-    )
-
-    postal_code = models.CharField(
-        verbose_name=_('Postal Code'),
-        max_length=25,
-        blank=False,
-        null=True
-    )
-
-    area = models.CharField(
-        verbose_name=_('Area'),
-        max_length=2,
-        blank=False,
-        choices=AreaChoices.choices,
-        default=AreaChoices.CENTRAL
-    )
-    
-class AgencyContactInformation(models.Model):
-    agency = models.OneToOneField(
-        Agency,
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-
-    office_number = models.CharField(
-        verbose_name=_('Office Number'),
-        max_length=10,
-        blank=False,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
-    )
-
-    mobile_number = models.CharField(
-        verbose_name=_('Mobile Number'),
-        max_length=10,
-        blank=False,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
-    )
-
-    sales_email = models.EmailField(
-        blank=False,
-        null=True
-    )
-
-class AgencyPlan(models.Model):
-    class PlanTypeChoices(models.TextChoices):
-        BIODATA_100 = 'B100', _('100 Biodata')
-        BIODATA_200 = 'B200', _('200 Biodata')
-        BIODATA_300 = 'B300', _('300 Biodata')
-        
-    agency = models.ForeignKey(
-        Agency,
-        on_delete=models.CASCADE
-    )
-
-    choice = models.CharField(
-        verbose_name=_('Plan type'),
-        max_length=4,
-        blank=False,
-        choices=PlanTypeChoices.choices,
-        default=PlanTypeChoices.BIODATA_100
-    )
-
-    expiry_date = models.DateTimeField(
-        verbose_name=_('Plan expiry date'),
-        editable=False
-    )
-
-    remarks = models.CharField(
-        verbose_name=_('Remarks'),
-        max_length=100,
-        blank=True
-    )
-
+# Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
     class OperatingHoursChoices(models.TextChoices):
         OPENING_HOURS = 'OH', _('Opening Hours')
@@ -313,47 +211,148 @@ class AgencyOperatingHours(models.Model):
         blank=True
     )
 
+# Models which are many to one with Agency
+class AgencyBranch(models.Model):
+    class AreaChoices(models.TextChoices):
+        CENTRAL = 'C', _('Central')
+        NORTH = 'N', _('North')
+        NORTH_EAST = 'NE', _('North East')
+        EAST = 'E', _('East')
+        WEST = 'W', _('West')
+
+    agency = models.ForeignKey(
+        Agency,
+        on_delete=models.CASCADE,
+        related_name='branches'
+    )
+
+    name = models.CharField(
+        verbose_name=_('Branch Name'),
+        max_length=50,
+        blank=False,
+        null=True
+    )
+
+    address_1 = models.CharField(
+        verbose_name=_('Street Address'),
+        max_length=100,
+        blank=False,
+        null=True
+    )
+
+    address_2 = models.CharField(
+        verbose_name=_('Unit Number'),
+        max_length=50,
+        blank=False,
+        null=True
+    )
+
+    postal_code = models.CharField(
+        verbose_name=_('Postal Code'),
+        max_length=25,
+        blank=False,
+        null=True
+    )
+
+    area = models.CharField(
+        verbose_name=_('Area'),
+        max_length=2,
+        blank=False,
+        choices=AreaChoices.choices,
+        default=AreaChoices.CENTRAL
+    )
+
+    office_number = models.CharField(
+        verbose_name=_('Office Number'),
+        max_length=10,
+        blank=False,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+        # This regex validator checks if the contact number provided is all 
+        # numbers.
+    )
+
+    mobile_number = models.CharField(
+        verbose_name=_('Mobile Number'),
+        max_length=10,
+        blank=False,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+        # This regex validator checks if the contact number provided is all 
+        # numbers.
+    )
+
+class AgencyPlan(models.Model):
+    class PlanTypeChoices(models.TextChoices):
+        BIODATA_100 = 'B100', _('100 Biodata')
+        BIODATA_200 = 'B200', _('200 Biodata')
+        BIODATA_300 = 'B300', _('300 Biodata')
+        
+    agency = models.ForeignKey(
+        Agency,
+        on_delete=models.CASCADE
+    )
+
+    choice = models.CharField(
+        verbose_name=_('Plan type'),
+        max_length=4,
+        blank=False,
+        choices=PlanTypeChoices.choices,
+        default=PlanTypeChoices.BIODATA_100
+    )
+
+    expiry_date = models.DateTimeField(
+        verbose_name=_('Plan expiry date'),
+        editable=False
+    )
+
+    remarks = models.CharField(
+        verbose_name=_('Remarks'),
+        max_length=100,
+        blank=True
+    )
+
 # Django Signals
-@receiver(post_save, sender=AgencyLocation)
-@receiver(post_save, sender=AgencyContactInformation)
-@receiver(post_save, sender=AgencyOperatingHours)
-def agency_completed(sender, instance, **kwargs):
-    agency = instance.agency
+def agency_completed(agency):
+    """ This function will check if the branch_complete and
+        operating_hours_complete booleans are True.
+        If they are both true then the function will set the agency complete
+        field to True.
+
+    Args:
+        agency ([obj]): [The agency model object]
+    """
     if(
-        agency.location_complete == True and 
-        agency.contact_information_complete == True and 
-        agency.location_complete == True
+        agency.branch_complete == True and 
+        agency.operating_hours_complete == True
     ):
         agency.completed = True
         agency.save()
 
-@receiver(post_save, sender=AgencyLocation)
+@receiver(post_save, sender=AgencyBranch)
 def agency_location_completed(sender, instance, created, **kwargs):
     if created == False:
         agency = instance.agency
-        location_valid = True
+        branch_valid = True
 
-        while location_valid == True:
+        while branch_valid == True:
             for i in sender.values():
                 if not i:
-                    location_valid = False
+                    branch_valid = False
         
-        agency.location_complete = location_valid
+        agency.branch_complete = branch_valid
         agency.save()
-
-@receiver(post_save, sender=AgencyContactInformation)
-def agency_contact_information_completed(sender, instance, created, **kwargs):
-    if created == False:
-        agency = instance.agency
-        contact_information_valid = True
-        
-        while contact_information_valid == True:
-            for i in sender.values():
-                if not i:
-                    contact_information_valid = False
-        
-        agency.contact_information_complete = contact_information_valid
-        agency.save()
+        agency_completed(agency)
 
 @receiver(post_save, sender=AgencyOperatingHours)
 def agency_operating_hours_completed(sender, instance, created, **kwargs):
@@ -368,15 +367,13 @@ def agency_operating_hours_completed(sender, instance, created, **kwargs):
         
         agency.operating_hours_complete = operating_hours_valid
         agency.save()
+        agency_completed(agency)
 
 @receiver(post_save, sender=Agency)
 def new_agency_created(sender, instance, created, **kwargs):
     if created == True:
         agency = instance
-        AgencyContactInformation.objects.create(
-            agency=agency
-        )
-        AgencyLocation.objects.create(
+        AgencyBranch.objects.create(
             agency=agency
         )
         AgencyOperatingHours.objects.create(
