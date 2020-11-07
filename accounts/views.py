@@ -12,7 +12,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from local app
 from .forms import EmployerCreationForm
 from .models import Employer
-from .mixins import EmployerVerifiedMixin
+from .mixins import VerifiedEmployerMixin
 
 # Start of Views
 
@@ -47,7 +47,7 @@ class EmployerCreate(CreateView):
     success_url = reverse_lazy('home')
 
 ## Update Views
-class EmployerUpdate(LoginRequiredMixin, EmployerVerifiedMixin, UpdateView):
+class EmployerUpdate(LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
@@ -55,19 +55,9 @@ class EmployerUpdate(LoginRequiredMixin, EmployerVerifiedMixin, UpdateView):
     template_name = 'update/employer-update.html'
     success_url = reverse_lazy('')
 
-    def get_object(self, queryset=None):
-        return Employer.objects.get(
-            pk = self.request.user.pk
-        )
-
 ## Delete Views
-class EmployerDelete(LoginRequiredMixin, EmployerVerifiedMixin, DeleteView):
+class EmployerDelete(LoginRequiredMixin, VerifiedEmployerMixin, DeleteView):
     context_object_name = 'employer'
     http_method_names = ['post']
     model = Employer
     success_url = reverse_lazy('home')
-
-    def get_object(self, queryset=None):
-        return Employer.objects.get(
-            pk = self.request.user.pk
-        )

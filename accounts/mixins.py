@@ -11,7 +11,7 @@ from .models import Employer
 
 # Start of Mixins
 
-class EmployerVerifiedMixin:
+class VerifiedEmployerMixin:
     def get_object(self, queryset=None):
         return Employer.objects.get(
             pk = self.request.user.pk
