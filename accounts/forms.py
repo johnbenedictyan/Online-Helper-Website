@@ -119,11 +119,12 @@ class EmployerCreationForm(forms.ModelForm):
         email = cleaned_data.get("email")
         password = cleaned_data.get("password")
 
+        UserModel = get_user_model()
         try:
-            User.objects.get(
+            UserModel.objects.get(
                 email=email
             )
-        except User.DoesNotExist:
+        except UserModel.DoesNotExist:
             pass
         else:
             msg = _('This email is taken')
@@ -137,20 +138,22 @@ class EmployerCreationForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         cleaned_data = super().clean()
-        new_user = get_user_model().objects.create_user(
-            email=cleaned_data.get('email'),
-            password=cleaned_data.get('password'),
-            role='E'
-        )
-        self.email = None
-        self.password = None
-        self.user = new_user
-        employer_group = Group.objects.get(
-            name='Employers'
-        ) 
-        employer_group.user_set.add(
-            new_user
-        )
-        return super().save(*args, **kwargs)
+        try:
+            new_user = get_user_model().objects.create_user(
+                email=cleaned_data.get('email'),
+                password=cleaned_data.get('password'),
+                role='E'
+            )
+        except Exception as e:
+            pass
+        else:
+            employer_group = Group.objects.get(
+                name='Employers'
+            ) 
+            employer_group.user_set.add(
+                new_user
+            )
+            self.instance.user = new_user
+            return super().save(*args, **kwargs)
 
 # Generic Forms (forms.Form)
