@@ -35,7 +35,7 @@ class EmployerDetail(DetailView):
     context_object_name = 'employer'
     http_method_names = ['get']
     model = Employer
-    template_name = 'employer-detail.html'
+    template_name = 'detail/employer-detail.html'
 
 ## Create Views
 class EmployerCreate(CreateView):
@@ -43,7 +43,7 @@ class EmployerCreate(CreateView):
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
     model = Employer
-    template_name = 'employer-create.html'
+    template_name = 'create/employer-create.html'
     success_url = reverse_lazy('home')
 
 ## Update Views
@@ -52,7 +52,7 @@ class EmployerUpdate(LoginRequiredMixin, EmployerVerifiedMixin, UpdateView):
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
     model = Employer
-    template_name = 'employer-update.html'
+    template_name = 'update/employer-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
