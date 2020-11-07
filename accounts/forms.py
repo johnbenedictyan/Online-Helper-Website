@@ -60,7 +60,8 @@ class EmployerCreationForm(forms.ModelForm):
     password = forms.CharField(
         label=_('Password'),
         required=True,
-        max_length=255
+        max_length=255,
+        widget=forms.PasswordInput()
     )
 
     class Meta:
