@@ -46,22 +46,7 @@ class AgencyCreate(CreateView):
     http_method_names = ['get','post']
     model = Agency
     template_name = 'create/agency-create.html'
-    success_url = reverse_lazy('')
-
-    def form_valid(self,form):
-        response = super().form_valid(form)
-
-        AgencyContactInformation.objects.create(
-            user=self.object
-        )
-        AgencyLocation.objects.create(
-            user=self.object
-        )
-        AgencyOperatingHours.objects.create(
-            user=self.object
-        )
-
-        return response
+    success_url = reverse_lazy('home')
 
 class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_employee'

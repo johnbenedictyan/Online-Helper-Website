@@ -28,7 +28,7 @@ class Agency(models.Model):
     )
 
     name = models.CharField(
-        verbose_name=_('Name'),
+        verbose_name=_('Company Name'),
         max_length=100,
         blank=False
     )
@@ -328,40 +328,57 @@ def agency_completed(sender, instance, **kwargs):
         agency.save()
 
 @receiver(post_save, sender=AgencyLocation)
-def agency_location_completed(sender, instance, **kwargs):
-    agency = instance.agency
-    location_valid = True
+def agency_location_completed(sender, instance, created, **kwargs):
+    if created == False:
+        agency = instance.agency
+        location_valid = True
 
-    while location_valid == True:
-        for i in sender.values():
-            if not i:
-                location_valid = False
-    
-    agency.location_complete = location_valid
-    agency.save()
+        while location_valid == True:
+            for i in sender.values():
+                if not i:
+                    location_valid = False
+        
+        agency.location_complete = location_valid
+        agency.save()
 
 @receiver(post_save, sender=AgencyContactInformation)
-def agency_contact_information_completed(sender, instance, **kwargs):
-    agency = instance.agency
-    contact_information_valid = True
-    
-    while contact_information_valid == True:
-        for i in sender.values():
-            if not i:
-                contact_information_valid = False
-    
-    agency.contact_information_complete = contact_information_valid
-    agency.save()
+def agency_contact_information_completed(sender, instance, created, **kwargs):
+    if created == False:
+        agency = instance.agency
+        contact_information_valid = True
+        
+        while contact_information_valid == True:
+            for i in sender.values():
+                if not i:
+                    contact_information_valid = False
+        
+        agency.contact_information_complete = contact_information_valid
+        agency.save()
 
 @receiver(post_save, sender=AgencyOperatingHours)
-def agency_operating_hours_completed(sender, instance, **kwargs):
-    agency = instance.agency
-    operating_hours_valid = True
-    
-    while operating_hours_valid == True:
-        for i in sender.values():
-            if not i:
-                operating_hours_valid = False
-    
-    agency.operating_hours_complete = operating_hours_valid
-    agency.save()
+def agency_operating_hours_completed(sender, instance, created, **kwargs):
+    if created == False:
+        agency = instance.agency
+        operating_hours_valid = True
+        
+        while operating_hours_valid == True:
+            for i in sender.values():
+                if not i:
+                    operating_hours_valid = False
+        
+        agency.operating_hours_complete = operating_hours_valid
+        agency.save()
+
+@receiver(post_save, sender=Agency)
+def new_agency_created(sender, instance, created, **kwargs):
+    if created == True:
+        agency = instance
+        AgencyContactInformation.objects.create(
+            agency=agency
+        )
+        AgencyLocation.objects.create(
+            agency=agency
+        )
+        AgencyOperatingHours.objects.create(
+            agency=agency
+        )
