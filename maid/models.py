@@ -145,6 +145,12 @@ class Maid(models.Model):
         editable=False
     )
 
+    status_complete = models.BooleanField(
+        default=False,
+        blank=True,
+        editable=False
+    )
+
     published = models.BooleanField(
         default=False,
         blank=False
@@ -342,6 +348,43 @@ class MaidBiodata(models.Model):
         blank=False,
         choices=ReligionChoices.choices,
         default=ReligionChoices.NONE
+    )
+
+class MaidStatus(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='status'
+    )
+
+    ipa_arroved = models.BooleanField(
+        verbose_name=_('IPA approved'),
+        blank=False,
+        default=False
+    )
+
+    bond_date = models.DateField(
+        verbose_name=_('Bond Date'),
+        blank=False,
+        null=True
+    )
+
+    sip_date = models.DateField(
+        verbose_name=_('SIP Date'),
+        blank=False,
+        null=True
+    )
+
+    thumbprint_date = models.DateField(
+        verbose_name=_('Thumbprint Date'),
+        blank=False,
+        null=True
+    )
+
+    deployment_date = models.DateField(
+        verbose_name=_('Deployment Date'),
+        blank=False,
+        null=True
     )
 
 class MaidFamilyDetails(models.Model):
@@ -720,15 +763,7 @@ class MaidCooking(models.Model):
     )
 
 # Django Signals
-@receiver(post_save, sender=MaidBiodata)
-@receiver(post_save, sender=MaidFamilyDetails)
-@receiver(post_save, sender=MaidInfantChildCare)
-@receiver(post_save, sender=MaidElderlyCare)
-@receiver(post_save, sender=MaidDisabledCare)
-@receiver(post_save, sender=MaidGeneralHousework)
-@receiver(post_save, sender=MaidCooking)
-def maid_completed(sender, instance, **kwargs):
-    maid = instance.maid
+def maid_completed(maid):
     if(
         maid.biodata_complete == True and 
         maid.family_details_complete == True and 
@@ -753,6 +788,7 @@ def maid_biodata_completed(sender, instance, **kwargs):
     
     maid.biodata_complete = biodata_valid
     maid.save()
+    maid_completed(maid)
 
 @receiver(post_save, sender=MaidFamilyDetails)
 def maid_family_details_completed(sender, instance, **kwargs):
@@ -766,6 +802,7 @@ def maid_family_details_completed(sender, instance, **kwargs):
     
     maid.family_details_complete = family_details_valid
     maid.save()
+    maid_completed(maid)
 
 @receiver(post_save, sender=MaidInfantChildCare)
 def maid_infant_child_care_completed(sender, instance, **kwargs):
@@ -779,6 +816,7 @@ def maid_infant_child_care_completed(sender, instance, **kwargs):
     
     maid.infant_child_care_complete = infant_child_care_valid
     maid.save()
+    maid_completed(maid)
 
 @receiver(post_save, sender=MaidElderlyCare)
 def maid_elderly_care_completed(sender, instance, **kwargs):
@@ -792,6 +830,7 @@ def maid_elderly_care_completed(sender, instance, **kwargs):
     
     maid.elderly_care_complete = elderly_care_valid
     maid.save()
+    maid_completed(maid)
 
 @receiver(post_save, sender=MaidDisabledCare)
 def maid_disabled_care_completed(sender, instance, **kwargs):
@@ -805,6 +844,7 @@ def maid_disabled_care_completed(sender, instance, **kwargs):
     
     maid.disabled_care_complete = disabled_care_valid
     maid.save()
+    maid_completed(maid)
 
 @receiver(post_save, sender=MaidGeneralHousework)
 def maid_general_housework_completed(sender, instance, **kwargs):
@@ -818,6 +858,7 @@ def maid_general_housework_completed(sender, instance, **kwargs):
     
     maid.general_housework_complete = general_housework_valid
     maid.save()
+    maid_completed(maid)
 
 @receiver(post_save, sender=MaidCooking)
 def maid_cooking_completed(sender, instance, **kwargs):
@@ -830,4 +871,18 @@ def maid_cooking_completed(sender, instance, **kwargs):
                 cooking_valid = False
     
     maid.cooking_complete = cooking_valid
+    maid.save()
+    maid_completed(maid)
+
+@receiver(post_save, sender=MaidStatus)
+def maid_status_completed(sender, instance, **kwargs):
+    maid = instance.maid
+    status_valid = True
+    
+    while status_valid == True:
+        for i in sender.values():
+            if not i:
+                status_valid = False
+    
+    maid.status_complete = status_valid
     maid.save()
