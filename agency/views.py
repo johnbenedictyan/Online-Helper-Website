@@ -10,13 +10,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from local app
 from .forms import (
-    AgencyCreationForm, AgencyContactInformationForm, AgencyLocationForm,
-    AgencyEmployeeCreationForm, AgencyOperatingHoursForm, AgencyPlanForm
+    AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
+     AgencyOperatingHoursForm, AgencyPlanForm
 )
 
 from .models import (
-    Agency, AgencyContactInformation, AgencyEmployee, AgencyLocation, 
-    AgencyOperatingHours, AgencyPlan
+    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan
 )
 
 # Start of Views
@@ -93,31 +92,13 @@ class AgencyUpdate(LoginRequiredMixin, UpdateView):
             pk = self.request.user.pk
     )
 
-class AgencyContactInformationUpdate(LoginRequiredMixin, UpdateView):
-    context_object_name = 'agency_contact_information'
-    form_class = AgencyContactInformationForm
+class AgencyBranchUpdate(LoginRequiredMixin, UpdateView):
+    context_object_name = 'agency_branch'
+    form_class = AgencyBranchForm
     http_method_names = ['get','post']
-    model = AgencyContactInformation
-    template_name = 'update/agency-contact-information-update.html'
+    model = AgencyBranch
+    template_name = 'update/agency-branch-update.html'
     success_url = reverse_lazy('')
-
-    def get_object(self, queryset=None):
-        return AgencyContactInformation.objects.get(
-            pk = self.request.user.pk
-        )
-
-class AgencyLocationUpdate(LoginRequiredMixin, UpdateView):
-    context_object_name = 'agency_location'
-    form_class = AgencyLocationForm
-    http_method_names = ['get','post']
-    model = AgencyLocation
-    template_name = 'update/agency-location-update.html'
-    success_url = reverse_lazy('')
-
-    def get_object(self, queryset=None):
-        return AgencyLocation.objects.get(
-            pk = self.request.user.pk
-        )
 
 class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
