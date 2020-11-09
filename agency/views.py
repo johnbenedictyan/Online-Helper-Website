@@ -204,16 +204,26 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
             ):
                 authority = 'administrator'
 
-            # Checks if user is the employee's branch manager
-            if AgencyEmployee.objects.get(
-                pk = self.request.user.pk,
-                branch = employee.branch
-            ).role == 'M':
-                authority = 'manager'
+            # Checks if the employee being updated is a manager
+            if employee.role == 'M':
+                
+                #Checks if the manager is trying to update their own details
+                if employee.user == self.request.user:
+                    authority = 'manager'
 
-            # Checks if user is the employee themselves
-            if employee.user == self.request.user:
-                authority = 'employee'
+            # Else means that both managers from the same branch can 
+            # edit sales staff's details
+            else:
+                # Checks if user is the employee's branch manager
+                if AgencyEmployee.objects.get(
+                    pk = self.request.user.pk,
+                    branch = employee.branch
+                ).role == 'M':
+                    authority = 'manager'
+
+                # Checks if user is the employee themselves
+                if employee.user == self.request.user:
+                    authority = 'employee'
 
             if authority:
                 valid = True
