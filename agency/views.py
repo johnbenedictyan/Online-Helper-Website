@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from local app
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
-    AgencyOperatingHoursForm, AgencyPlanForm
+    AgencyOperatingHoursForm, AgencyPlanForm, AgencyAdministratorCreationForm
 )
 
 from .models import (
@@ -69,6 +69,22 @@ class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
         kwargs.update({
             'agency_id': self.pk_url_kwarg
         })
+
+class AgencyAdministratorCreate(LoginRequiredMixin, CreateView):
+    context_object_name = 'agency_administrator'
+    form_class = AgencyAdministratorCreationForm
+    http_method_names = ['get','post']
+    model = AgencyAdministrator
+    template_name = 'create/agency-administrator-create.html'
+    success_url = reverse_lazy('')
+    pk_url_kwarg = 'agency_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner should be able to create employee accounts
+        if self.pk_url_kwarg == self.request.user.pk:
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
 class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_plan'
