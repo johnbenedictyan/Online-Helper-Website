@@ -11,11 +11,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from local app
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
-     AgencyOperatingHoursForm, AgencyPlanForm
+    AgencyOperatingHoursForm, AgencyPlanForm
 )
 
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan
+    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
+    AgencyAdministrator
 )
 
 # Start of Views
@@ -54,6 +55,20 @@ class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     model = AgencyEmployee
     template_name = 'create/agency-employee-create.html'
     success_url = reverse_lazy('')
+    pk_url_kwarg = 'agency_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner should be able to create employee accounts
+        if self.pk_url_kwarg == self.request.user.pk:
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.pk_url_kwarg
+        })
 
 class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_plan'
@@ -62,6 +77,14 @@ class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     model = AgencyPlan
     template_name = 'create/agency-plan-create.html'
     success_url = reverse_lazy('')
+    pk_url_kwarg = 'agency_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # Only the owner should be able to create agency plan(Buy biodata space)
+        if self.pk_url_kwarg == self.request.user.pk:
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """
@@ -86,6 +109,14 @@ class AgencyUpdate(LoginRequiredMixin, UpdateView):
     model = Agency
     template_name = 'update/agency-update.html'
     success_url = reverse_lazy('')
+    pk_url_kwarg = 'agency_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner should be able to update agency details
+        if self.pk_url_kwarg == self.request.user.pk:
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         return Agency.objects.get(
@@ -99,6 +130,14 @@ class AgencyBranchUpdate(LoginRequiredMixin, UpdateView):
     model = AgencyBranch
     template_name = 'update/agency-branch-update.html'
     success_url = reverse_lazy('')
+    pk_url_kwarg = 'agency_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner should be able to update agency details
+        if self.pk_url_kwarg == self.request.user.pk:
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
 class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
@@ -107,6 +146,14 @@ class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
     model = AgencyOperatingHours
     template_name = 'update/agency-operating-hours-update.html'
     success_url = reverse_lazy('')
+    pk_url_kwarg = 'agency_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner should be able to update agency details
+        if self.pk_url_kwarg == self.request.user.pk:
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         return AgencyOperatingHours.objects.get(
@@ -121,10 +168,66 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'update/agency-employee-update.html'
     success_url = reverse_lazy('')
 
-    def get_object(self, queryset=None):
-        return Agency.objects.get(
-            pk = self.request.user.pk
-        )
+    def authority_checker(self):
+        authority = None
+        try:
+            employee = AgencyEmployee.objects.get(
+                pk = self.pk_url_kwarg
+            )
+        except AgencyEmployee.DoesNotExist:
+            pass
+        else:
+            # Checks if user is the owner
+            if employee.agency.pk == self.request.user.pk:
+                authority = 'owner'
+
+            # Checks if user is the agency's administrator
+            if AgencyAdministrator.objects.get(
+                pk = self.request.user.pk,
+                agency = employee.agency
+            ):
+                authority = 'administrator'
+
+            # Checks if user is the employee's branch manager
+            if AgencyEmployee.objects.get(
+                pk = self.request.user.pk,
+                branch = employee.branch
+            ).role == 'M':
+                authority = 'manager'
+
+            # Checks if user is the employee themselves
+            if employee.user == self.request.user:
+                authority = 'employee'
+
+            if authority:
+                valid = True
+            else:
+                valid = False
+
+            authority_dict = {
+                'valid': valid,
+                'authority': authority
+            }
+
+            return authority_dict
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner/administrator and employee should be able to update
+        # the employees details
+        if self.authority_checker().valid == False:
+            return self.handle_no_permission(request)
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employee_authority': self.authority_checker().authority
+        })
+        return context
 
 class AgencyPlanUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
@@ -154,13 +257,16 @@ class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
     template_name = 'agency-employee-delete.html'
     success_url = reverse_lazy('')
 
-    def get_object(self, queryset=None):
-        return AgencyEmployee.objects.get(
-            pk = self.pk_url_kwarg,
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
-        )
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the user is the agency owner of the employee's agency
+        # As only the owner should be able to delete employee accounts
+        if AgencyEmployee.objects.get(
+            pk = self.pk_url_kwarg
+        ).agency != Agency.objects.get(
+            pk = self.request.user.pk
+        ):
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
 class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
@@ -169,10 +275,14 @@ class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
     template_name = 'agency-plan-delete.html'
     success_url = reverse_lazy('')
 
-    def get_object(self, queryset=None):
-        return AgencyPlan.objects.get(
-            pk = self.kwargs.pk_url_kwarg,
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
-        )
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the user is the agency owner 
+        # As only the owner should be able to delete agency plans (biodata
+        # subscriptions)
+        if AgencyPlan.objects.get(
+            pk = self.pk_url_kwarg
+        ).agency != Agency.objects.get(
+            pk = self.request.user.pk
+        ):
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
