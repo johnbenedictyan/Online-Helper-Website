@@ -93,7 +93,6 @@ class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     model = AgencyPlan
     template_name = 'create/agency-plan-create.html'
     success_url = reverse_lazy('')
-    pk_url_kwarg = 'agency_id'
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the agency id is the same as the request user id
@@ -125,7 +124,6 @@ class AgencyUpdate(LoginRequiredMixin, UpdateView):
     model = Agency
     template_name = 'update/agency-update.html'
     success_url = reverse_lazy('')
-    pk_url_kwarg = 'agency_id'
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the agency id is the same as the request user id
