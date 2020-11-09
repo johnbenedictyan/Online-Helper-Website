@@ -11,7 +11,8 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 # Imports from local apps
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan
+    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
+    AgencyAdministrator
 )
 
 # Start of Forms
@@ -148,6 +149,107 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # Limit the choices of the foreign key branch to just the branches
+        # under the current agency
+        agency_id = kwargs.pop('agency_id')
+        self.fields['branch'].queryset = AgencyBranch.objects.filter(
+            agency = Agency.objects.get(
+                pk = agency_id
+            )
+        )
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'email',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'first_name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'last_name',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'ea_personnel_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'branch',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+
+        UserModel = get_user_model()
+        if not UserModel.objects.get(email=email):
+            msg = _('This user does not exist')
+            self.add_error('email', msg)
+        
+        if UserModel.objects.get(email=email).agency:
+            msg = _('This user is already part of an agency')
+            self.add_error('email', msg)
+
+    def save(self):
+        # There is a cleaner way to write this save method
+        data = self.cleaned_data
+        UserModel = get_user_model()
+        employee_user_account = UserModel.objects.get(
+            email=data['email']
+        )
+
+        new_employee = AgencyEmployee(
+            user=employee_user_account,
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            contact_number=data['contact_number'],
+            ea_personnel_number=data['ea_personnel_number']
+        )
+
+        new_employee.save()
+
+class AgencyAdministratorCreationForm(forms.ModelForm):
+    email = forms.EmailField(
+        label=_('Email Address'),
+        required=True
+    )
+
+    class Meta:
+        model = AgencyAdministrator
+        exclude = ['agency','user']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -213,7 +315,7 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
             email=data['email']
         )
 
-        new_employee = AgencyEmployee(
+        new_employee = AgencyAdministrator(
             user=employee_user_account,
             first_name=data['first_name'],
             last_name=data['last_name'],
