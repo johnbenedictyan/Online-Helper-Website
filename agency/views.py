@@ -176,6 +176,62 @@ class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
             pk = self.request.user.pk
         )
 
+class AgencyAdministratorUpdate(LoginRequiredMixin, UpdateView):
+    context_object_name = 'agency_administrator'
+    form_class = AgencyAdministratorCreationForm
+    http_method_names = ['get','post']
+    model = AgencyAdministrator
+    template_name = 'update/agency-administrator-update.html'
+    success_url = reverse_lazy('')
+
+    def authority_checker(self):
+        authority = None
+        try:
+            administrator = AgencyAdministrator.objects.get(
+                pk = self.pk_url_kwarg
+            )
+        except AgencyAdministrator.DoesNotExist:
+            pass
+        else:
+            # Checks if user is the owner
+            if administrator.agency.pk == self.request.user.pk:
+                authority = 'owner'
+
+            # Checks if administrator details being updated is the user's own
+            # details
+            if administrator.user == self.request.user:
+                authority = 'administrator'
+
+            if authority:
+                valid = True
+            else:
+                valid = False
+
+            authority_dict = {
+                'valid': valid,
+                'authority': authority
+            }
+
+            return authority_dict
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner/administrator and employee should be able to update
+        # the employees details
+        if self.authority_checker().valid == False:
+            return self.handle_no_permission(request)
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employee_authority': self.authority_checker().authority
+        })
+        return context
+
 class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
@@ -275,6 +331,24 @@ class AgencyDelete(LoginRequiredMixin, DeleteView):
         return Agency.objects.get(
             pk = self.request.user.pk
         )
+
+class AgencyAdministratorDelete(LoginRequiredMixin, DeleteView):
+    context_object_name = 'agency_administrator'
+    http_method_names = ['get','post']
+    model = AgencyAdministrator
+    template_name = 'agency-administrator-delete.html'
+    success_url = reverse_lazy('')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the user is the agency owner of the administrator's agency
+        # As only the owner should be able to delete administrator accounts
+        if AgencyAdministrator.objects.get(
+            pk = self.pk_url_kwarg
+        ).agency != Agency.objects.get(
+            pk = self.request.user.pk
+        ):
+            return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
 
 class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency_employee'
