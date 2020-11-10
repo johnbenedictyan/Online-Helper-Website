@@ -1,3 +1,6 @@
+# Imports from python
+from itertools import chain
+
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +11,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
-from agency.models import Agency
+from agency.models import Agency, AgencyEmployee, AgencyAdministrator
 from maid.models import Maid
 
 # Imports from local app
@@ -27,6 +30,50 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
     http_method_names = ['get']
     model = Maid
     template_name = 'list/dashboard-account-list.html'
+
+    def authority_checker(self):
+        # Checks if user is the owner
+        if self.pk_url_kwarg == self.request.user.pk:
+            authority = 'owner'
+
+        # Checks if user is the agency's administrator
+        if AgencyAdministrator.objects.get(
+            pk = self.request.user.pk,
+            agency = Agency.objects.get(
+                pk = self.pk_url_kwarg
+            )
+        ):
+            authority = 'administrator'
+
+        if authority:
+            valid = True
+        else:
+            valid = False
+
+        authority_dict = {
+            'valid': valid,
+            'authority': authority
+        }
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.authority_checker().valid == False:
+            return self.handle_no_permission(request)
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return chain(
+            AgencyAdministrator.objects.filter(
+                agency = Agency.objects.get(
+                    pk = self.pk_url_kwarg
+                )
+            ),
+            AgencyEmployee.objects.filter(
+                agency = Agency.objects.get(
+                    pk = self.pk_url_kwarg
+                )
+            )
+        )
 
 class DashboardMaidList(LoginRequiredMixin, ListView):
     context_object_name = 'maids'
