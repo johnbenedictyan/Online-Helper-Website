@@ -47,7 +47,7 @@ urlpatterns = [
             ),
             path(
                 '<int:agency_id>',
-                include[(
+                include([
                     path(
                         'admin/',
                         AgencyAdministratorCreate.as_view(),
@@ -58,7 +58,7 @@ urlpatterns = [
                         AgencyEmployeeCreate.as_view(),
                         name='agency_employee_create'
                     )
-                )]
+                ])
             )
         ])
     ),
