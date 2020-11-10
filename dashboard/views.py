@@ -75,18 +75,81 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
             )
         )
 
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employee_authority': self.authority_checker().authority
+        })
+        return context
+
 class DashboardMaidList(LoginRequiredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     template_name = 'list/dashboard-maid-list.html'
 
+    def authority_checker(self):
+        # Checks if user is the owner
+        if self.pk_url_kwarg == self.request.user.pk:
+            authority = 'owner'
+
+        # Checks if user is the agency's administrator
+        if AgencyAdministrator.objects.get(
+            pk = self.request.user.pk,
+            agency = Agency.objects.get(
+                pk = self.pk_url_kwarg
+            )
+        ):
+            authority = 'administrator'
+
+        # Checks if the employee being updated is a manager
+        try:
+            employee = AgencyEmployee.objects.get(
+                pk = self.request.user.pk,
+                agency = self.pk_url_kwarg
+            )
+        except AgencyEmployee.DoesNotExist:
+            pass
+        else:
+            # Checks if user is the employee's branch manager
+            if employee.role == 'M':
+                authority = 'manager'
+            else:
+                authority = 'employee'
+
+        if authority:
+            valid = True
+        else:
+            valid = False
+
+        authority_dict = {
+            'valid': valid,
+            'authority': authority
+        }
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.authority_checker().valid == False:
+            return self.handle_no_permission(request)
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         return Maid.objects.filter(
             agency = Agency.objects.get(
-                pk = self.request.user.pk
+                pk = self.pk_url_kwarg
             )
         )
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employee_authority': self.authority_checker().authority
+        })
+        return context
 
 # Detail Views
 
