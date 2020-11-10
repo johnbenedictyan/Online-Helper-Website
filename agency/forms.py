@@ -59,18 +59,18 @@ class AgencyCreationForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'company_email',
+                    'license_number',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'license_number',
+                    'company_email',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'website_uri',
+                    'sales_email',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -78,6 +78,10 @@ class AgencyCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'uen',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'website_uri',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
