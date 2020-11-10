@@ -24,9 +24,21 @@ class SignInView(LoginView):
 
     def get_success_url(self):
         URL_DICT = {
-            'A': reverse_lazy('agency_detail'),
-            'AE': reverse_lazy('agency_detail'),
-            'E': reverse_lazy('employer_detail'),
+            'A': reverse_lazy(
+                'agency_detail',
+                kwargs={
+                    'pk':self.request.user.pk
+                }),
+            'AE': reverse_lazy(
+                'agency_detail',
+                kwargs={
+                    'pk':self.request.user.agency.pk
+                }),
+            'E': reverse_lazy(
+                'employer_detail',
+                kwargs={
+                    'pk':self.request.user.pk
+                })
         }
         if self.request.user.role in URL_DICT:
             return URL_DICT[self.request.user.role]
