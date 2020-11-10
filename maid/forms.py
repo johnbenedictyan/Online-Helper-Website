@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
+from agency.models import Agency
 
 # Imports from local apps
 from .models import (
@@ -24,17 +25,22 @@ class MaidCreationForm(forms.ModelForm):
         exclude = ['agency', 'created_on', 'updated_on']
 
     def __init__(self, *args, **kwargs):
+        self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
                     'reference_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-4'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'days_off',
+                    css_class='form-group col-md-4'
                 ),
                 css_class='form-row'
             ),
@@ -83,11 +89,16 @@ class MaidCreationForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         reference_number = cleaned_data.get('reference_numnber')
-
-        if Maid.objects.get(
-            agency=self.request.user.id,
-            reference_number=reference_number
-        ):
+        try:
+            existing_maid = Maid.objects.get(
+                agency = Agency.objects.get(
+                    pk = self.agency_id
+                ),
+                reference_number = reference_number
+            )
+        except Maid.DoesNotExist:
+            pass
+        else:
             msg = _('A maid with this reference number already exist')
             self.add_error('reference_number', msg)
 
