@@ -8,11 +8,14 @@ from django.urls import include, path
 ## Redirect Views
 
 ## List Views
-from .views import DashboardMaidList
+from .views import DashboardMaidList, DashboardAccountList
 
 ## Detail Views
 
 ## Create Views
+
+## Template Views
+from .views import DashboardHomePage
 
 ## Update Views
 
@@ -22,8 +25,23 @@ from .views import DashboardMaidList
 
 urlpatterns = [
     path(
+        'view/',
+        include([
+            path(
+                'maids',
+                DashboardMaidList.as_view(),
+                name='dashboard_maid_list'
+            ),
+            path(
+                'accounts',
+                DashboardAccountList.as_view(),
+                name='dashboard_account_list'
+            )
+        ])
+    ),
+    path(
         '',
-        DashboardMaidList.as_view(),
-        name='dashboard_maid_list'
+        DashboardHomePage.as_view(),
+        name='dashboard_home'
     )
 ]
