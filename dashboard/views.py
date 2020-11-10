@@ -35,7 +35,7 @@ class DashboardMaidList(LoginRequiredMixin, ListView):
     template_name = 'list/dashboard-maid-list.html'
 
     def get_queryset(self):
-        return Maid.objects.get(
+        return Maid.objects.filter(
             agency = Agency.objects.get(
                 pk = self.request.user.pk
             )
