@@ -70,14 +70,14 @@ class MaidList(ListFilteredMixin, ListView):
     http_method_names = ['get']
     model = Maid
     queryset = Maid.objects.filter(published=True)
-    template_name = 'maid-list.html'
+    template_name = 'list/maid-list.html'
     filter_set = MaidFilter
 
 class MaidEmploymentHistoryList(LoginRequiredMixin, ListView):
     context_object_name = 'maid_employment_history_list'
     http_method_names = ['get']
     model = MaidEmploymentHistory
-    template_name = 'maid-employment-history-list.html'
+    template_name = 'list/maid-employment-history-list.html'
 
     def get_queryset(self):
         return MaidEmploymentHistory.objects.filter(
@@ -92,7 +92,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
-    template_name = 'maid-detail.html'
+    template_name = 'detail/maid-detail.html'
 
 # Create Views
 class MaidCreate(LoginRequiredMixin, CreateView):
@@ -100,7 +100,7 @@ class MaidCreate(LoginRequiredMixin, CreateView):
     form_class = MaidCreationForm
     http_method_names = ['get','post']
     model = Maid
-    template_name = 'maid-create.html'
+    template_name = 'create/maid-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
@@ -133,7 +133,7 @@ class MaidFoodHandlingPreferenceCreate(LoginRequiredMixin, CreateView):
     form_class = MaidFoodHandlingPreferenceForm
     http_method_names = ['get','post']
     model = MaidFoodHandlingPreference
-    template_name = 'maid-food-handling-preference-create.html'
+    template_name = 'create/maid-food-handling-preference-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
@@ -147,7 +147,7 @@ class MaidDietaryRestrictionCreate(LoginRequiredMixin, CreateView):
     form_class = MaidDietaryRestrictionForm
     http_method_names = ['get','post']
     model = MaidDietaryRestriction
-    template_name = 'maid-dietary-restriction-create.html'
+    template_name = 'create/maid-dietary-restriction-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
@@ -161,7 +161,7 @@ class MaidEmploymentHistoryCreate(LoginRequiredMixin, CreateView):
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
     model = MaidEmploymentHistory
-    template_name = 'maid-employment-history-create.html'
+    template_name = 'create/maid-employment-history-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
@@ -176,7 +176,7 @@ class MaidUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidCreationForm
     http_method_names = ['get','post']
     model = Maid
-    template_name = 'maid-update.html'
+    template_name = 'update/maid-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -192,7 +192,7 @@ class MaidBiodataUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidBiodataForm
     http_method_names = ['get','post']
     model = MaidBiodata
-    template_name = 'maid-biodata-update.html'
+    template_name = 'update/maid-biodata-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -207,7 +207,7 @@ class MaidFamilyDetailsUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidFamilyDetailsForm
     http_method_names = ['get','post']
     model = MaidFamilyDetails
-    template_name = 'maid-family-details-update.html'
+    template_name = 'update/maid-family-details-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -222,7 +222,7 @@ class MaidInfantChildCareUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidInfantChildCareForm
     http_method_names = ['get','post']
     model = MaidInfantChildCare
-    template_name = 'maid-infant-child-care-update.html'
+    template_name = 'update/maid-infant-child-care-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -237,7 +237,7 @@ class MaidElderlyCareUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidElderlyCareForm
     http_method_names = ['get','post']
     model = MaidElderlyCare
-    template_name = 'maid-elderly-care-update.html'
+    template_name = 'update/maid-elderly-care-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -252,7 +252,7 @@ class MaidDisabledCareUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidDisabledCareForm
     http_method_names = ['get','post']
     model = MaidDisabledCare
-    template_name = 'maid-disabled-care-update.html'
+    template_name = 'update/maid-disabled-care-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -267,7 +267,7 @@ class MaidGeneralHouseworkUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidGeneralHouseworkForm
     http_method_names = ['get','post']
     model = MaidGeneralHousework
-    template_name = 'maid-general-housework-update.html'
+    template_name = 'update/maid-general-housework-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -282,7 +282,7 @@ class MaidCookingUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidCookingForm
     http_method_names = ['get','post']
     model = MaidCooking
-    template_name = 'maid-cooking-update.html'
+    template_name = 'update/maid-cooking-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
@@ -297,7 +297,7 @@ class MaidEmploymentHistoryUpdate(LoginRequiredMixin, UpdateView):
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
     model = MaidEmploymentHistory
-    template_name = 'maid-employment-history-update.html'
+    template_name = 'update/maid-employment-history-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
