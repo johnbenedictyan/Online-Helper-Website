@@ -104,7 +104,11 @@ class MaidCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
-        form.instance.agency = self.request.user
+        form.instance.agency = Agency.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
         response = super().form_valid(form)
         MaidBiodata.objects.create(
             maid=self.object
@@ -127,6 +131,15 @@ class MaidCreate(LoginRequiredMixin, CreateView):
         MaidCooking.objects.create(
             maid=self.object
         )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return kwargs
 
 class MaidFoodHandlingPreferenceCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'maid_food_handling_preference'
