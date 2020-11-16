@@ -1,0 +1,12 @@
+{% extends 'agency-base.html' %}
+{% block agency_section %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% for agency in agencies %}
+                {{agency}}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock agency_section %}
