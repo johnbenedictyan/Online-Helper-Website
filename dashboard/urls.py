@@ -11,6 +11,7 @@ from django.urls import include, path
 from .views import DashboardMaidList, DashboardAccountList
 
 ## Detail Views
+from .views import DashboardAgencyDetail
 
 ## Create Views
 
@@ -36,6 +37,11 @@ urlpatterns = [
                 'accounts',
                 DashboardAccountList.as_view(),
                 name='dashboard_account_list'
+            ),
+            path(
+                'agency-details',
+                DashboardAgencyDetail.as_view(),
+                name='dashboard_agency_detail'
             )
         ])
     ),
