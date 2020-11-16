@@ -38,6 +38,23 @@ class AgencyDetail(DetailView):
     http_method_names = ['get']
     model = Agency
     template_name = 'detail/agency-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        agency_operating_hours = AgencyOperatingHours.objects.get(
+            agency = self.model
+        )
+
+        agency_branches = AgencyBranch.objects.filter(
+            agency = self.model
+        )
+
+        context.update({
+            'agency_operating_hours': agency_operating_hours,
+            'agency_branches': agency_branches
+        })
+        return context
     
 # Create Views
 class AgencyCreate(CreateView):
