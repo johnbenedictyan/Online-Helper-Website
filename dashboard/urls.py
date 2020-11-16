@@ -26,7 +26,7 @@ from .views import DashboardHomePage
 
 urlpatterns = [
     path(
-        'view/<int:pk>/',
+        'view/',
         include([
             path(
                 'maids',
