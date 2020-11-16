@@ -1,6 +1,8 @@
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -42,12 +44,22 @@ class AgencyDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        agency = get_object_or_404(
+            self.model,
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+
+        # if agency.complete == False:
+        #     raise Http404()
+
         agency_operating_hours = AgencyOperatingHours.objects.get(
-            agency = self.model
+            agency = agency
         )
 
         agency_branches = AgencyBranch.objects.filter(
-            agency = self.model
+            agency = agency
         )
 
         context.update({
