@@ -1,0 +1,8 @@
+{% extends 'maid-base.html' %}
+{% block maid_section %}
+    <div class="container">
+        {% for maid in maids %}
+            {{maid}}
+        {% endfor %}
+    </div>
+{% endblock maid_section %}
