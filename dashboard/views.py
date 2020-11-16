@@ -2,6 +2,7 @@
 from itertools import chain
 
 # Imports from django
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -84,40 +85,53 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         })
         return context
 
-class DashboardMaidList(LoginRequiredMixin, ListView):
+class DashboardMaidList(ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     template_name = 'list/dashboard-maid-list.html'
+    pk_url_kwarg = 'pk'
 
     def authority_checker(self):
+        authority = None
+
+        agency = Agency.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+
         # Checks if user is the owner
-        if self.pk_url_kwarg == self.request.user.pk:
+        if self.kwargs.get(
+            self.pk_url_kwarg
+        ) == self.request.user.pk:
             authority = 'owner'
 
         # Checks if user is the agency's administrator
-        if AgencyAdministrator.objects.get(
-            pk = self.request.user.pk,
-            agency = Agency.objects.get(
-                pk = self.pk_url_kwarg
-            )
-        ):
-            authority = 'administrator'
-
-        # Checks if the employee being updated is a manager
         try:
-            employee = AgencyEmployee.objects.get(
+            agency_administrator = AgencyAdministrator.objects.get(
                 pk = self.request.user.pk,
-                agency = self.pk_url_kwarg
+                agency = agency
             )
-        except AgencyEmployee.DoesNotExist:
+        except AgencyAdministrator.DoesNotExist:
             pass
         else:
-            # Checks if user is the employee's branch manager
-            if employee.role == 'M':
-                authority = 'manager'
+            authority = 'administrator'
+
+        # Checks if the employee being updated is an employee
+            try:
+                employee = AgencyEmployee.objects.get(
+                    pk = self.request.user.pk,
+                    agency = agency
+                )
+            except AgencyEmployee.DoesNotExist:
+                pass
             else:
-                authority = 'employee'
+                # Checks if user is the employee's branch manager
+                if employee.role == 'M':
+                    authority = 'manager'
+                else:
+                    authority = 'employee'
 
         if authority:
             valid = True
@@ -129,16 +143,23 @@ class DashboardMaidList(LoginRequiredMixin, ListView):
             'authority': authority
         }
 
+        return authority_dict
+
     def dispatch(self, request, *args, **kwargs):
-        if self.authority_checker().valid == False:
-            return self.handle_no_permission(request)
+        if not request.user.is_authenticated:
+            raise PermissionDenied()
+
+        if self.authority_checker()['valid'] == False:
+            raise PermissionDenied()
 
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Maid.objects.filter(
             agency = Agency.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -147,7 +168,7 @@ class DashboardMaidList(LoginRequiredMixin, ListView):
         # restricted based on who is editing the agency employee object.
         context = super().get_context_data(**kwargs)
         context.update({
-            'employee_authority': self.authority_checker().authority
+            'employee_authority': self.authority_checker()['authority']
         })
         return context
 
