@@ -29,7 +29,7 @@ from .models import (
 
 # List Views
 class AgencyList(ListView):
-    context_object_name = 'agency'
+    context_object_name = 'agencies'
     http_method_names = ['get']
     model = Agency
     template_name = 'list/agency-list.html'
