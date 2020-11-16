@@ -41,32 +41,12 @@ class AgencyDetail(DetailView):
     model = Agency
     template_name = 'detail/agency-detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_object(self):
+        obj = super().get_object()
+        # if obj.complete == False:
+        #     raise Http404
 
-        agency = get_object_or_404(
-            self.model,
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
-
-        # if agency.complete == False:
-        #     raise Http404()
-
-        agency_operating_hours = AgencyOperatingHours.objects.get(
-            agency = agency
-        )
-
-        agency_branches = AgencyBranch.objects.filter(
-            agency = agency
-        )
-
-        context.update({
-            'agency_operating_hours': agency_operating_hours,
-            'agency_branches': agency_branches
-        })
-        return context
+        return obj
     
 # Create Views
 class AgencyCreate(CreateView):
