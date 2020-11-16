@@ -29,21 +29,31 @@ class DashboardHomePage(LoginRequiredMixin, TemplateView):
 class DashboardAccountList(LoginRequiredMixin, ListView):
     context_object_name = 'accounts'
     http_method_names = ['get']
-    model = Maid
     template_name = 'list/dashboard-account-list.html'
+    pk_url_kwarg = 'pk'
 
     def authority_checker(self):
+        authority = None
+
         # Checks if user is the owner
-        if self.pk_url_kwarg == self.request.user.pk:
+        if self.kwargs.get(
+            self.pk_url_kwarg
+        ) == self.request.user.pk:
             authority = 'owner'
 
         # Checks if user is the agency's administrator
-        if AgencyAdministrator.objects.get(
-            pk = self.request.user.pk,
-            agency = Agency.objects.get(
-                pk = self.pk_url_kwarg
+        try:
+            AgencyAdministrator.objects.get(
+                pk = self.request.user.pk,
+                agency = Agency.objects.get(
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    )
+                )
             )
-        ):
+        except AgencyAdministrator.DoesNotExist:
+            pass
+        else:
             authority = 'administrator'
 
         if authority:
@@ -56,9 +66,11 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
             'authority': authority
         }
 
+        return authority_dict
+
     def dispatch(self, request, *args, **kwargs):
-        if self.authority_checker().valid == False:
-            return self.handle_no_permission(request)
+        if self.authority_checker()['valid'] == False:
+            raise PermissionDenied()
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -66,12 +78,16 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         return chain(
             AgencyAdministrator.objects.filter(
                 agency = Agency.objects.get(
-                    pk = self.pk_url_kwarg
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    )
                 )
             ),
             AgencyEmployee.objects.filter(
                 agency = Agency.objects.get(
-                    pk = self.pk_url_kwarg
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    )
                 )
             )
         )
@@ -81,7 +97,7 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         # restricted based on who is editing the agency employee object.
         context = super().get_context_data(**kwargs)
         context.update({
-            'employee_authority': self.authority_checker().authority
+            'employee_authority': self.authority_checker()['authority']
         })
         return context
 
