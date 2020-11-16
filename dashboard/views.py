@@ -160,10 +160,10 @@ class DashboardMaidList(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            raise PermissionDenied()
+            return PermissionDenied
 
         if self.authority_checker()['valid'] == False:
-            raise PermissionDenied()
+            return PermissionDenied
 
         return super().dispatch(request, *args, **kwargs)
 
