@@ -189,6 +189,18 @@ class DashboardMaidList(ListView):
         return context
 
 # Detail Views
+class DashboardAgencyDetail(DetailView):
+    context_object_name = 'agency'
+    http_method_names = ['get']
+    model = Agency
+    template_name = 'detail/dashboard-agency-detail.html'
+
+    def get_object(self):
+        agency = super().get_object()
+
+        # Checks if the user who is trying to access this view the owner
+        if agency != self.request.user:
+            return PermissionDenied()
 
 # Create Views
 
