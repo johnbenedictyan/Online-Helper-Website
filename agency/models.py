@@ -95,7 +95,8 @@ class AgencyOperatingHours(models.Model):
     agency = models.OneToOneField(
         Agency,
         on_delete=models.CASCADE,
-        primary_key=True
+        primary_key=True,
+        related_name='operating_hours'
     )
 
     operating_type = models.CharField(
