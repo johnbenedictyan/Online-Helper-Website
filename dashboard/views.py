@@ -75,20 +75,17 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
+        if self.authority_checker()['authority'] == 'owner':
+            agency = self.request.user
+        else:
+            agency = self.request.user.agency
+
         return chain(
             AgencyAdministrator.objects.filter(
-                agency = Agency.objects.get(
-                    pk = self.kwargs.get(
-                        self.pk_url_kwarg
-                    )
-                )
+                agency = agency
             ),
             AgencyEmployee.objects.filter(
-                agency = Agency.objects.get(
-                    pk = self.kwargs.get(
-                        self.pk_url_kwarg
-                    )
-                )
+                agency = agency
             )
         )
 
@@ -171,12 +168,13 @@ class DashboardMaidList(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
+        if self.authority_checker()['authority'] == 'owner':
+            agency = self.request.user
+        else:
+            agency = self.request.user.agency
+            
         return Maid.objects.filter(
-            agency = Agency.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
+            agency = agency
         )
 
     def get_context_data(self, **kwargs):
@@ -198,9 +196,12 @@ class DashboardAgencyDetail(DetailView):
     def get_object(self):
         agency = super().get_object()
 
-        # Checks if the user who is trying to access this view the owner
-        if agency != self.request.user:
-            return PermissionDenied()
+        # Checks if the user who is trying to access this view the owner or 
+        # the agency's employees.
+        if self.request.user == agency or self.request.user.agency == agency:
+            return agency
+        else:
+            return PermissionDenied
 
 # Create Views
 
