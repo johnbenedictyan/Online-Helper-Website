@@ -1,6 +1,7 @@
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -63,21 +64,32 @@ class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'create/agency-employee-create.html'
-    success_url = reverse_lazy('')
-    pk_url_kwarg = 'agency_id'
+    success_url = reverse_lazy('dashboard_account_list')
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the agency id is the same as the request user id
         # As only the owner should be able to create employee accounts
-        if self.pk_url_kwarg == self.request.user.pk:
-            return self.handle_no_permission(request)
+        try:
+            Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        except Agency.DoesNotExist:
+            raise PermissionDenied()
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.pk_url_kwarg
+            'agency_id': self.request.user.pk
         })
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.agency = Agency.objects.get(
+            pk = self.request.user.pk
+        )
+        return super().form_valid(form)
 
 class AgencyAdministratorCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_administrator'
@@ -86,7 +98,6 @@ class AgencyAdministratorCreate(LoginRequiredMixin, CreateView):
     model = AgencyAdministrator
     template_name = 'create/agency-administrator-create.html'
     success_url = reverse_lazy('')
-    pk_url_kwarg = 'agency_id'
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the agency id is the same as the request user id
