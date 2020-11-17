@@ -46,19 +46,14 @@ urlpatterns = [
                 name='agency_plan_create'
             ),
             path(
-                '<int:agency_id>',
-                include([
-                    path(
-                        'admin/',
-                        AgencyAdministratorCreate.as_view(),
-                        name='agency_administrator_create'
-                    ),
-                    path(
-                        'employee/',
-                        AgencyEmployeeCreate.as_view(),
-                        name='agency_employee_create'
-                    )
-                ])
+                'admin/',
+                AgencyAdministratorCreate.as_view(),
+                name='agency_administrator_create'
+            ),
+            path(
+                'employee/',
+                AgencyEmployeeCreate.as_view(),
+                name='agency_employee_create'
             )
         ])
     ),
