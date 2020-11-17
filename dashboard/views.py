@@ -24,10 +24,7 @@ from maid.models import Maid
 class DashboardHomePage(LoginRequiredMixin, TemplateView):
     template_name = 'base/dashboard-home-page.html'
 
-# Redirect Views
-
-# List Views
-class DashboardAccountList(LoginRequiredMixin, ListView):
+class DashboardAccountList(LoginRequiredMixin, TemplateView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     template_name = 'list/dashboard-account-list.html'
@@ -79,7 +76,11 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
 
         return super().dispatch(request, *args, **kwargs)
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+
         if self.authority_dict['authority'] == 'owner':
             agency = Agency.objects.get(
                 pk = self.request.user.pk
@@ -87,24 +88,20 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         else:
             agency = self.request.user.agency
 
-        return chain(
-            AgencyAdministrator.objects.filter(
+        context.update({
+            'employee_authority': self.authority_dict['authority'],
+            'administrators': AgencyAdministrator.objects.filter(
                 agency = agency
             ),
-            AgencyEmployee.objects.filter(
+            'employees': AgencyEmployee.objects.filter(
                 agency = agency
             )
-        )
-
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'employee_authority': self.authority_dict['authority']
         })
         return context
 
+# Redirect Views
+
+# List Views
 class DashboardMaidList(LoginRequiredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
