@@ -1,11 +1,26 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <div class="container">
+    <p>{{ employee_authority }}</p>
     <div class="row">
         <div class="col">
-            <p>{{ employee_authority }}</p>
-            {% for account in accounts %}
-                {{account}}
+            <h1>administrators</h1>
+            {% for administrator in administrators %}
+                <div>
+                    {{administrator.first_name}} {{administrator.last_name}}
+                    <a href="{% url 'agency_administrator_update' pk=administrator.pk %}">Update</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1>employees</h1>
+            {% for employee in employees %}
+                <div>
+                    {{employee.first_name}} {{employee.last_name}}
+                    <a href="{% url 'agency_employee_update' pk=employee.pk %}">Update</a>
+                </div>
             {% endfor %}
         </div>
     </div>
