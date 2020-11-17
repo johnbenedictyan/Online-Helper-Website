@@ -72,9 +72,6 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
             return authority_dict
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            raise PermissionDenied()
-        
         self.authority_dict = self.authority_checker()
         
         if self.authority_dict['valid'] == False:
@@ -108,7 +105,7 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         })
         return context
 
-class DashboardMaidList(ListView):
+class DashboardMaidList(LoginRequiredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
@@ -168,9 +165,6 @@ class DashboardMaidList(ListView):
             return authority_dict
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            raise PermissionDenied()
-
         self.authority_dict = self.authority_checker()
         
         if self.authority_dict['valid'] == False:
@@ -200,7 +194,7 @@ class DashboardMaidList(ListView):
         return context
 
 # Detail Views
-class DashboardAgencyDetail(DetailView):
+class DashboardAgencyDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
