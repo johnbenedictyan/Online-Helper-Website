@@ -299,7 +299,14 @@ class AgencyAdministratorCreationForm(forms.ModelForm):
         exclude = ['agency','user']
 
     def __init__(self, *args, **kwargs):
+        employee_authority = kwargs.pop('employee_authority')
         super().__init__(*args, **kwargs)
+        if employee_authority == 'administrator':
+            self.fields['email'].disabled = True
+            self.fields['first_name'].disabled = True
+            self.fields['last_name'].disabled = True
+            self.fields['ea_personnel_number'].disabled = True
+            
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
