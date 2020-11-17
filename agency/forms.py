@@ -287,6 +287,13 @@ class AgencyAdministratorCreationForm(forms.ModelForm):
         required=True
     )
 
+    password = forms.CharField(
+        label=_('Password'),
+        required=True,
+        max_length=255,
+        widget=forms.PasswordInput()
+    )
+
     class Meta:
         model = AgencyAdministrator
         exclude = ['agency','user']
@@ -301,7 +308,7 @@ class AgencyAdministratorCreationForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'contact_number',
+                    'password',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -309,11 +316,15 @@ class AgencyAdministratorCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'first_name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-4'
                 ),
                 Column(
                     'last_name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group col-md-4'
                 ),
                 css_class='form-row'
             ),
@@ -340,33 +351,58 @@ class AgencyAdministratorCreationForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
-
+        password = cleaned_data.get("password")
         UserModel = get_user_model()
-        if not UserModel.objects.get(email=email):
-            msg = _('This user does not exist')
-            self.add_error('email', msg)
-        
-        if UserModel.objects.get(email=email).agency:
-            msg = _('This user is already part of an agency')
+
+        try:
+            user = UserModel.objects.get(
+                email=email
+            )
+        except UserModel.DoesNotExist:
+            pass
+        else:
+            if hasattr(user, 'agency'):
+                msg = _('This user is already part of an agency')
+            else:
+                msg = _('This email is taken by an employer')
             self.add_error('email', msg)
 
-    def save(self):
+        if validate_password(password):
+            msg = _('This password does not meet our requirements')
+            self.add_error('password', msg)
+            
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
         # There is a cleaner way to write this save method
-        data = self.cleaned_data
-        UserModel = get_user_model()
-        employee_user_account = UserModel.objects.get(
-            email=data['email']
-        )
+        cleaned_data = self.cleaned_data
+        try:
+            new_user = get_user_model().objects.create_user(
+                email=cleaned_data.get('email'),
+                password=cleaned_data.get('password'),
+                role='AA'
+            )
+        except Exception as e:
+            pass
+        else:
+            agency_employee_group = Group.objects.get(
+                name='Agency Administrators'
+            ) 
+            agency_employee_group.user_set.add(
+                new_user
+            )
 
-        new_employee = AgencyAdministrator(
-            user=employee_user_account,
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            contact_number=data['contact_number'],
-            ea_personnel_number=data['ea_personnel_number']
-        )
+            self.instance.user = new_user
+            self.instance.first_name = cleaned_data.get('first_name')
+            self.instance.last_name = cleaned_data.get('last_name')
+            self.instance.contact_number = cleaned_data.get(
+                'contact_number'
+            )
+            self.instance.ea_personnel_number = cleaned_data.get(
+                'ea_personnel_number'
+            )
 
-        new_employee.save()
+            return super().save(*args, **kwargs)
 
 class AgencyBranchForm(forms.ModelForm):
     class Meta:
