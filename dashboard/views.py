@@ -12,6 +12,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
+from accounts.models import Employer
 from agency.models import Agency, AgencyEmployee, AgencyAdministrator
 from maid.models import Maid
 
@@ -30,53 +31,62 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     template_name = 'list/dashboard-account-list.html'
-    pk_url_kwarg = 'pk'
+    authority_dict = {}
 
     def authority_checker(self):
-        authority = None
-
-        # Checks if user is the owner
-        if self.kwargs.get(
-            self.pk_url_kwarg
-        ) == self.request.user.pk:
-            authority = 'owner'
-
-        # Checks if user is the agency's administrator
         try:
-            AgencyAdministrator.objects.get(
-                pk = self.request.user.pk,
-                agency = Agency.objects.get(
-                    pk = self.kwargs.get(
-                        self.pk_url_kwarg
-                    )
-                )
+            employer = Employer.objects.get(
+                pk = self.request.user.pk
             )
-        except AgencyAdministrator.DoesNotExist:
-            pass
-        else:
-            authority = 'administrator'
+        except Employer.DoesNotExist:
+            # Checks if user is the owner
+            try:
+                Agency.objects.get(
+                    pk = self.request.user.pk
+                )
+            except Agency.DoesNotExist:
+                pass
+            else:
+                authority = 'owner'
 
-        if authority:
-            valid = True
-        else:
-            valid = False
+            # Checks if user is the agency's administrator
+            try:
+                AgencyAdministrator.objects.get(
+                    pk = self.request.user.pk
+                )
+            except AgencyAdministrator.DoesNotExist:
+                pass
+            else:
+                authority = 'administrator'
 
-        authority_dict = {
-            'valid': valid,
-            'authority': authority
-        }
+        finally:
+            if authority:
+                valid = True
+            else:
+                valid = False
 
-        return authority_dict
+            authority_dict = {
+                'valid': valid,
+                'authority': authority
+            }
+            return authority_dict
 
     def dispatch(self, request, *args, **kwargs):
-        if self.authority_checker()['valid'] == False:
+        if not request.user.is_authenticated:
+            raise PermissionDenied()
+        
+        self.authority_dict = self.authority_checker()
+        
+        if self.authority_dict['valid'] == False:
             raise PermissionDenied()
 
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        if self.authority_checker()['authority'] == 'owner':
-            agency = self.request.user
+        if self.authority_dict['authority'] == 'owner':
+            agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
         else:
             agency = self.request.user.agency
 
@@ -94,7 +104,7 @@ class DashboardAccountList(LoginRequiredMixin, ListView):
         # restricted based on who is editing the agency employee object.
         context = super().get_context_data(**kwargs)
         context.update({
-            'employee_authority': self.authority_checker()['authority']
+            'employee_authority': self.authority_dict['authority']
         })
         return context
 
@@ -103,39 +113,38 @@ class DashboardMaidList(ListView):
     http_method_names = ['get']
     model = Maid
     template_name = 'list/dashboard-maid-list.html'
-    pk_url_kwarg = 'pk'
+    authority_dict = {}
 
     def authority_checker(self):
-        authority = None
-
-        agency = Agency.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
-
-        # Checks if user is the owner
-        if self.kwargs.get(
-            self.pk_url_kwarg
-        ) == self.request.user.pk:
-            authority = 'owner'
-
-        # Checks if user is the agency's administrator
         try:
-            agency_administrator = AgencyAdministrator.objects.get(
-                pk = self.request.user.pk,
-                agency = agency
+            employer = Employer.objects.get(
+                pk = self.request.user.pk
             )
-        except AgencyAdministrator.DoesNotExist:
-            pass
-        else:
-            authority = 'administrator'
+        except Employer.DoesNotExist:
+            # Checks if user is the owner
+            try:
+                Agency.objects.get(
+                    pk = self.request.user.pk
+                )
+            except Agency.DoesNotExist:
+                pass
+            else:
+                authority = 'owner'
 
-        # Checks if the employee being updated is an employee
+            # Checks if user is the agency's administrator
+            try:
+                AgencyAdministrator.objects.get(
+                    pk = self.request.user.pk
+                )
+            except AgencyAdministrator.DoesNotExist:
+                pass
+            else:
+                authority = 'administrator'
+
+            # Checks if the user is an Agency employee
             try:
                 employee = AgencyEmployee.objects.get(
-                    pk = self.request.user.pk,
-                    agency = agency
+                    pk = self.request.user.pk
                 )
             except AgencyEmployee.DoesNotExist:
                 pass
@@ -146,30 +155,34 @@ class DashboardMaidList(ListView):
                 else:
                     authority = 'employee'
 
-        if authority:
-            valid = True
-        else:
-            valid = False
+        finally:
+            if authority:
+                valid = True
+            else:
+                valid = False
 
-        authority_dict = {
-            'valid': valid,
-            'authority': authority
-        }
-
-        return authority_dict
+            authority_dict = {
+                'valid': valid,
+                'authority': authority
+            }
+            return authority_dict
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return PermissionDenied
+            raise PermissionDenied()
 
-        if self.authority_checker()['valid'] == False:
-            return PermissionDenied
+        self.authority_dict = self.authority_checker()
+        
+        if self.authority_dict['valid'] == False:
+            raise PermissionDenied()
 
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        if self.authority_checker()['authority'] == 'owner':
-            agency = self.request.user
+        if self.authority_dict['authority'] == 'owner':
+            agency = Agency.objects.get(
+                pk = self.request.user.pk
+            )
         else:
             agency = self.request.user.agency
             
@@ -182,7 +195,7 @@ class DashboardMaidList(ListView):
         # restricted based on who is editing the agency employee object.
         context = super().get_context_data(**kwargs)
         context.update({
-            'employee_authority': self.authority_checker()['authority']
+            'employee_authority': self.authority_dict['authority']
         })
         return context
 
