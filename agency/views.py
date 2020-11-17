@@ -97,14 +97,25 @@ class AgencyAdministratorCreate(LoginRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = AgencyAdministrator
     template_name = 'create/agency-administrator-create.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_account_list')
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the agency id is the same as the request user id
         # As only the owner should be able to create employee accounts
-        if self.pk_url_kwarg == self.request.user.pk:
-            return self.handle_no_permission(request)
+        try:
+            Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        except Agency.DoesNotExist:
+            raise PermissionDenied()
+
         return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.agency = Agency.objects.get(
+            pk = self.request.user.pk
+        )
+        return super().form_valid(form)
 
 class AgencyPlanCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_plan'
