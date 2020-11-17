@@ -18,6 +18,7 @@ class User(AbstractUser):
     class RoleChoices(models.TextChoices):
         EMPLOYER = 'E', _('Employer')
         AGENCY = 'A', _('Agency')
+        AGENCYADMINISTRATOR = 'AA', _('Agency Administrator')
         AGENCYEMPLOYEE = 'AE', _('Agency Employee')
 
     username = None
