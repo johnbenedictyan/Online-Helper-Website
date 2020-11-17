@@ -214,7 +214,7 @@ class DashboardAgencyDetail(DetailView):
         if self.request.user == agency or self.request.user.agency == agency:
             return agency
         else:
-            return PermissionDenied
+            raise PermissionDenied()
 
 # Create Views
 
