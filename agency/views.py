@@ -212,12 +212,14 @@ class AgencyAdministratorUpdate(LoginRequiredMixin, UpdateView):
     model = AgencyAdministrator
     template_name = 'update/agency-administrator-update.html'
     success_url = reverse_lazy('')
+    authority_dict = {}
 
     def authority_checker(self):
-        authority = None
         try:
             administrator = AgencyAdministrator.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         except AgencyAdministrator.DoesNotExist:
             pass
@@ -247,17 +249,25 @@ class AgencyAdministratorUpdate(LoginRequiredMixin, UpdateView):
         # Checks if the agency id is the same as the request user id
         # As only the owner/administrator and employee should be able to update
         # the employees details
-        if self.authority_checker().valid == False:
-            return self.handle_no_permission(request)
+        self.authority_dict = self.authority_checker()
+        if self.authority_dict['valid'] == False:
+            raise PermissionDenied()
 
         return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'employee_authority': self.authority_dict['authority']
+        })
+        return kwargs
 
     def get_context_data(self, **kwargs):
         # Passes the authority to the template so that certain fields can be 
         # restricted based on who is editing the agency employee object.
         context = super().get_context_data(**kwargs)
         context.update({
-            'employee_authority': self.authority_checker().authority
+            'employee_authority': self.authority_dict['authority']
         })
         return context
 
