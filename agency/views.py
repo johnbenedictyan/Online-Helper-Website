@@ -15,13 +15,15 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
     AgencyOperatingHoursForm, AgencyPlanForm, AgencyAdministratorCreationForm,
-    AgencyManagerCreationForm
+    AgencyManagerCreationForm, AgencyOwnerCreationForm
 )
 
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
-    AgencyAdministrator, AgencyManager
+    AgencyAdministrator, AgencyManager, AgencyOwner
 )
+
+from .mixins import SuperUserRequiredMixin
 
 # Start of Views
 
@@ -58,6 +60,14 @@ class AgencyCreate(CreateView):
     model = Agency
     template_name = 'create/agency-create.html'
     success_url = reverse_lazy('home')
+
+class AgencyOwnerCreate(SuperUserRequiredMixin, CreateView):
+    context_object_name = 'agency_owner'
+    form_class = AgencyOwnerCreationForm
+    http_method_names = ['get','post']
+    model = AgencyOwner
+    template_name = 'create/agency-owner-create.html'
+    success_url = reverse_lazy('home_page')
 
 class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_employee'
