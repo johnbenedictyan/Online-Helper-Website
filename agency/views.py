@@ -67,7 +67,7 @@ class AgencyOwnerCreate(SuperUserRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = AgencyOwner
     template_name = 'create/agency-owner-create.html'
-    success_url = reverse_lazy('home_page')
+    success_url = reverse_lazy('home')
 
 class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     context_object_name = 'agency_employee'
