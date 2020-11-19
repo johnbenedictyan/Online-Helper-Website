@@ -21,38 +21,14 @@ from .models import (
 
 # Model Forms
 class AgencyCreationForm(forms.ModelForm):
-    email = forms.CharField(
-        label=_('Email Address'),
-        required=True,
-        max_length=255
-    )
-
-    password = forms.CharField(
-        label=_('Password'),
-        required=True,
-        max_length=255,
-        widget=forms.PasswordInput()
-    )
-
     class Meta:
         model = Agency
-        exclude = ['user']
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(
-                Column(
-                    'email',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'password',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
             Row(
                 Column(
                     'name',
@@ -98,48 +74,6 @@ class AgencyCreationForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        password = cleaned_data.get("password")
-
-        UserModel = get_user_model()
-        try:
-            UserModel.objects.get(
-                email=email
-            )
-        except UserModel.DoesNotExist:
-            pass
-        else:
-            msg = _('This email is taken')
-            self.add_error('email', msg)
-
-        if validate_password(password):
-            msg = _('This password does not meet our requirements')
-            self.add_error('password', msg)
-
-        return cleaned_data
-
-    def save(self, *args, **kwargs):
-        cleaned_data = super().clean()
-        try:
-            new_user = get_user_model().objects.create_user(
-                email=cleaned_data.get('email'),
-                password=cleaned_data.get('password'),
-                role='A'
-            )
-        except Exception as e:
-            pass
-        else:
-            agency_group = Group.objects.get(
-                name='Agencies'
-            ) 
-            agency_group.user_set.add(
-                new_user
-            )
-            self.instance.user = new_user
-            return super().save(*args, **kwargs)
 
 class AgencyEmployeeCreationForm(forms.ModelForm):
     email = forms.EmailField(
