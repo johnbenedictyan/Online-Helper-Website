@@ -14,7 +14,7 @@ from .views import AgencyDetail
 ## Create Views
 from .views import (
     AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate, 
-    AgencyAdministratorCreate, AgencyManagerCreate
+    AgencyAdministratorCreate, AgencyManagerCreate, AgencyOwnerCreate
 )
 
 ## Update Views
@@ -60,6 +60,11 @@ urlpatterns = [
                 'manager/',
                 AgencyManagerCreate.as_view(),
                 name='agency_manager_create'
+            ),
+            path(
+                'owner/',
+                AgencyOwnerCreate.as_view(),
+                name='agency_owner_create'
             )
         ])
     ),
