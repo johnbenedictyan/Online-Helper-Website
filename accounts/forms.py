@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, Hidden
 
 # Imports from local apps
 from .managers import CustomUserManager
@@ -18,6 +18,17 @@ from .models import Employer, User
 
 # Forms that inherit from inbuilt Django forms
 class SignInForm(AuthenticationForm):
+    # This is done because the success_url in the loginview does not seem
+    # to override the default settings.login_redirect_url which is
+    # accounts.profile
+
+    # Will need to see if this affects the next url when passed in from a 
+    # mixin like login required
+
+    # We cannot have it to be a static redirect, the next url must take
+    # precedence
+    redirect_named_url = 'home'
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
         self.helper = FormHelper()
@@ -38,6 +49,15 @@ class SignInForm(AuthenticationForm):
             ),
             Row(
                 Column(
+                    Hidden(
+                        'next',
+                        f"{{% url '{self.redirect_named_url}' %}}"
+                    )
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
                         'Sign In',
@@ -50,6 +70,17 @@ class SignInForm(AuthenticationForm):
         )
 
 class AgencySignInForm(AuthenticationForm):
+    # This is done because the success_url in the loginview does not seem
+    # to override the default settings.login_redirect_url which is
+    # accounts.profile
+
+    # Will need to see if this affects the next url when passed in from a 
+    # mixin like login required
+
+    # We cannot have it to be a static redirect, the next url must take
+    # precedence
+    redirect_named_url = 'dashboard_home'
+
     agency_license_number = forms.CharField(
         label=_('Agency License Number'),
         required=True,
@@ -78,6 +109,15 @@ class AgencySignInForm(AuthenticationForm):
                 Column(
                     'password',
                     css_class='form-group col-12'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Hidden(
+                        'next',
+                        f"{{% url '{self.redirect_named_url}' %}}"
+                    )
                 ),
                 css_class='form-row'
             ),
