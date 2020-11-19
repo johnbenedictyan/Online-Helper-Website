@@ -21,12 +21,10 @@ from .mixins import VerifiedEmployerMixin
 class SignInView(LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
-    success_url = reverse_lazy('home_page')
 
 class AgencySignInView(LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = AgencySignInForm
-    success_url = reverse_lazy('dashboard_home')
     
 ## Template Views
 
