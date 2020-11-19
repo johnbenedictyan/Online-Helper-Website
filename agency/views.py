@@ -14,12 +14,13 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from local app
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
-    AgencyOperatingHoursForm, AgencyPlanForm, AgencyAdministratorCreationForm
+    AgencyOperatingHoursForm, AgencyPlanForm, AgencyAdministratorCreationForm,
+    AgencyManagerCreationForm
 )
 
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
-    AgencyAdministrator
+    AgencyAdministrator, AgencyManager
 )
 
 # Start of Views
@@ -64,6 +65,39 @@ class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'create/agency-employee-create.html'
+    success_url = reverse_lazy('dashboard_account_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner should be able to create employee accounts
+        try:
+            Agency.objects.get(
+                pk = self.request.user.pk
+            )
+        except Agency.DoesNotExist:
+            raise PermissionDenied()
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.request.user.pk
+        })
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.agency = Agency.objects.get(
+            pk = self.request.user.pk
+        )
+        return super().form_valid(form)
+
+class AgencyManagerCreate(LoginRequiredMixin, CreateView):
+    context_object_name = 'agency_manager'
+    form_class = AgencyManagerCreationForm
+    http_method_names = ['get','post']
+    model = AgencyManager
+    template_name = 'create/agency-manager-create.html'
     success_url = reverse_lazy('dashboard_account_list')
 
     def dispatch(self, request, *args, **kwargs):
