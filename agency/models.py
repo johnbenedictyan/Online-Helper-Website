@@ -80,6 +80,9 @@ class Agency(models.Model):
         editable=False
     )
 
+    def __str__(self):
+        return self.name
+
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
     class OperatingHoursChoices(models.TextChoices):
