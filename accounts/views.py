@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from foreign installed apps
 
 # Imports from local app
-from .forms import EmployerCreationForm, SignInForm
+from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
 from .models import Employer
 from .mixins import VerifiedEmployerMixin
 
@@ -21,30 +21,13 @@ from .mixins import VerifiedEmployerMixin
 class SignInView(LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
+    success_url = reverse_lazy('home_page')
 
-    def get_success_url(self):
-        URL_DICT = {
-            'A': reverse_lazy(
-                'agency_detail',
-                kwargs={
-                    'pk':self.request.user.pk
-                }),
-            'AE': reverse_lazy(
-                'agency_detail',
-                kwargs={
-                    'pk':self.request.user.agency.pk
-                }),
-            'E': reverse_lazy(
-                'employer_detail',
-                kwargs={
-                    'pk':self.request.user.pk
-                })
-        }
-        if self.request.user.role in URL_DICT:
-            return URL_DICT[self.request.user.role]
-
-        return super().get_success_url()
-
+class AgencySignInView(LoginView):
+    template_name = 'base/sign-in.html'
+    authentication_form = AgencySignInForm
+    success_url = reverse_lazy('dashboard_home')
+    
 ## Template Views
 
 ## Redirect Views
