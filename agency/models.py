@@ -17,12 +17,6 @@ from django.utils.translation import ugettext_lazy as _
 # Start of Models
 
 class Agency(models.Model):
-    user = models.OneToOneField(
-        get_user_model(),
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-
     company_email = models.EmailField(
         verbose_name=_('Company Email Address'),
         blank=False
@@ -156,6 +150,19 @@ class AgencyOperatingHours(models.Model):
     )
 
 # Models which are many to one with Agency
+class AgencyOwner(models.Model):
+    user = models.OneToOneField(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+
+    agency = models.ForeignKey(
+        Agency,
+        on_delete=models.CASCADE,
+        related_name='owners'
+    )
+
 class AgencyBranch(models.Model):
     class AreaChoices(models.TextChoices):
         CENTRAL = 'C', _('Central')
@@ -313,10 +320,6 @@ class AgencyAdministrator(models.Model):
     )
 
 class AgencyEmployee(models.Model):
-    class EmployeeRoleChoices(models.TextChoices):
-        MANAGER = 'M', _('Manager')
-        SALES_STAFF = 'S', _('Sales staff')
-
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,
@@ -367,12 +370,55 @@ class AgencyEmployee(models.Model):
         related_name='employees'
     )
 
-    role = models.CharField(
-        verbose_name=_('Employee\'s Role'),
-        max_length=1,
+class AgencyManager(models.Model):
+    user = models.OneToOneField(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+
+    first_name = models.CharField(
+        verbose_name=_('First Name'),
+        max_length=50,
+        blank=False
+    )
+
+    last_name = models.CharField(
+        verbose_name=_('Last Name'),
+        max_length=50,
+        blank=False
+    )
+
+    contact_number = models.CharField(
+        verbose_name=_('Contact Number'),
+        max_length=50,
         blank=False,
-        choices=EmployeeRoleChoices.choices,
-        default=EmployeeRoleChoices.SALES_STAFF
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+        # This regex validator checks if the contact number provided is all 
+        # numbers.
+    )
+
+    ea_personnel_number = models.CharField(
+        verbose_name=_('EA personnel number'),
+        max_length=50,
+        blank=False
+    )
+
+    agency = models.ForeignKey(
+        Agency,
+        on_delete=models.CASCADE,
+        related_name='managers'
+    )
+
+    branch = models.ForeignKey(
+        AgencyBranch,
+        on_delete=models.CASCADE,
+        related_name='managers'
     )
 
 # Django Signals
