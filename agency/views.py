@@ -384,6 +384,71 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
         })
         return context
 
+class AgencyManagerUpdate(LoginRequiredMixin, UpdateView):
+    context_object_name = 'agency_manager'
+    form_class = AgencyManagerCreationForm
+    http_method_names = ['get','post']
+    model = AgencyManager
+    template_name = 'update/agency-manager-update.html'
+    success_url = reverse_lazy('')
+    authority_dict = {}
+
+    def authority_checker(self):
+        authority = None
+        try:
+            manager = AgencyManager.objects.get(
+                pk = self.pk_url_kwarg
+            )
+        except AgencyManager.DoesNotExist:
+            pass
+        else:
+            # Checks if user is the owner
+            if manager.agency == self.request.user.agency:
+                authority = 'owner'
+
+            # Checks if user is the agency's administrator
+            if AgencyAdministrator.objects.get(
+                pk = self.request.user.pk,
+                agency = manager.agency
+            ):
+                authority = 'administrator'
+
+            # Checks if the manager being updated is a manager
+            if manager.user == self.request.user:
+                authority = 'manager'
+
+            if authority:
+                valid = True
+            else:
+                valid = False
+
+            authority_dict = {
+                'valid': valid,
+                'authority': authority
+            }
+
+            return authority_dict
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the agency id is the same as the request user id
+        # As only the owner/administrator and manager should be able to update
+        # the managers details
+        self.authority_dict = self.authority_checker()
+
+        if self.authority_dict['valid'] == False:
+            raise PermissionDenied()
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency manager object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employee_authority': self.authority_dict['authority']
+        })
+        return context
+
 class AgencyPlanUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
@@ -439,6 +504,24 @@ class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
             pk = self.request.user.pk
         ):
             return self.handle_no_permission(request)
+        return super().dispatch(request, *args, **kwargs)
+
+class AgencyManagerDelete(LoginRequiredMixin, DeleteView):
+    context_object_name = 'agency_manager'
+    http_method_names = ['get','post']
+    model = AgencyManager
+    template_name = 'agency-manager-delete.html'
+    success_url = reverse_lazy('')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Checks if the user is the agency owner of the manager's agency
+        # As only the owner should be able to delete manager accounts
+        if AgencyManager.objects.get(
+            pk = self.pk_url_kwarg
+        ).agency != Agency.objects.get(
+            user = self.request.user
+        ):
+            raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
 class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
