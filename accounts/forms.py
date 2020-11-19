@@ -49,6 +49,71 @@ class SignInForm(AuthenticationForm):
             ),
         )
 
+class AgencySignInForm(AuthenticationForm):
+    agency_license_number = forms.CharField(
+        label=_('Agency License Number'),
+        required=True,
+        max_length=255,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'agency_license_number',
+                    css_class='form-group col-12'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'username',
+                    css_class='form-group col-12'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'password',
+                    css_class='form-group col-12'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Sign In',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            ),
+        )
+
+        def clean(self):
+            cleaned_data = super().clean()
+            agency = get_user_model().objects.get(
+                email = cleaned_data.get('email')
+            )
+            
+            if agency.license_number != cleaned_data.get(
+                'agency_license_number'
+            ):
+                raise forms.ValidationError(
+                    self.error_messages['invalid_login'],
+                    code='invalid_login',
+                    params={
+                        'agency_license_number': 
+                            self.agency_license_number_field.verbose_name
+                    },
+                )
+            else:
+                return cleaned_data
+
 # Model Forms
 class EmployerCreationForm(forms.ModelForm):
     email = forms.CharField(
