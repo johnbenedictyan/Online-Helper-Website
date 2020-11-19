@@ -20,6 +20,7 @@ class User(AbstractUser):
         AGENCY = 'A', _('Agency')
         AGENCYADMINISTRATOR = 'AA', _('Agency Administrator')
         AGENCYEMPLOYEE = 'AE', _('Agency Employee')
+        AGENCYMANAGER = 'AM', _('Agency Manager')
 
     username = None
     first_name = None
