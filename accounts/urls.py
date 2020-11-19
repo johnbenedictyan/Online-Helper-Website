@@ -8,7 +8,7 @@ from django.contrib.auth import views as auth_views
 from .forms import SignInForm
 
 ## Views that extend inbuilt django views
-from .views import SignInView
+from .views import SignInView, AgencySignInView
 
 ## Redirect Views 
 from .views import SignOutView
@@ -65,8 +65,18 @@ urlpatterns = [
     ),
     path(
         'sign-in/',
-        SignInView.as_view(),
-        name='sign_in'
+        include([
+            path(
+                'employers',
+                SignInView.as_view(),
+                name='sign_in'
+            ),
+            path(
+                'agency',
+                AgencySignInView.as_view(),
+                name='agency_sign_in'
+            )
+        ])
     ),
     path(
         'sign-out/',
