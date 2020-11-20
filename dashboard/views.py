@@ -13,7 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
 from accounts.models import Employer
-from agency.models import Agency, AgencyEmployee, AgencyAdministrator
+from agency.models import Agency, AgencyEmployee
 from maid.models import Maid
 
 # Imports from local app
@@ -45,16 +45,6 @@ class DashboardAccountList(LoginRequiredMixin, TemplateView):
                 pass
             else:
                 authority = 'owner'
-
-            # Checks if user is the agency's administrator
-            try:
-                AgencyAdministrator.objects.get(
-                    pk = self.request.user.pk
-                )
-            except AgencyAdministrator.DoesNotExist:
-                pass
-            else:
-                authority = 'administrator'
 
         finally:
             if authority:
