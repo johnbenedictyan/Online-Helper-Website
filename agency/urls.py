@@ -13,21 +13,18 @@ from .views import AgencyDetail
 
 ## Create Views
 from .views import (
-    AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate, 
-    AgencyAdministratorCreate, AgencyManagerCreate, AgencyOwnerCreate
+    AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate, AgencyOwnerCreate
 )
 
 ## Update Views
 from .views import (
-    AgencyUpdate, AgencyEmployeeUpdate,AgencyBranchUpdate, 
-    AgencyOperatingHoursUpdate, AgencyPlanUpdate, AgencyAdministratorUpdate,
-    AgencyManagerUpdate
+    AgencyUpdate, AgencyEmployeeUpdate,AgencyBranchUpdate, AgencyPlanUpdate,
+    AgencyOperatingHoursUpdate
 )
 
 ## Delete Views
 from .views import (
-    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete, 
-    AgencyAdministratorDelete, AgencyManagerDelete
+    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
 )
 
 # Start of Urls
@@ -47,19 +44,9 @@ urlpatterns = [
                 name='agency_plan_create'
             ),
             path(
-                'admin/',
-                AgencyAdministratorCreate.as_view(),
-                name='agency_administrator_create'
-            ),
-            path(
                 'employee/',
                 AgencyEmployeeCreate.as_view(),
                 name='agency_employee_create'
-            ),
-            path(
-                'manager/',
-                AgencyManagerCreate.as_view(),
-                name='agency_manager_create'
             ),
             path(
                 'owner/',
@@ -77,19 +64,9 @@ urlpatterns = [
                 name='agency_delete'
             ),
             path(
-                'administrator/<int:pk>',
-                AgencyAdministratorDelete.as_view(),
-                name='agency_administrator_delete'
-            ),
-            path(
                 'employee/<int:pk>/',
                 AgencyEmployeeDelete.as_view(),
                 name='agency_employee_delete'
-            ),
-            path(
-                'manager/<int:pk>/',
-                AgencyManagerDelete.as_view(),
-                name='agency_manager_delete'
             ),
             path(
                 'plan/<int:pk>/',
@@ -107,19 +84,9 @@ urlpatterns = [
                 name='agency_update'
             ),
             path(
-                'administrator/<int:pk>',
-                AgencyAdministratorUpdate.as_view(),
-                name='agency_administrator_update'
-            ),
-            path(
                 'employee/<int:pk>',
                 AgencyEmployeeUpdate.as_view(),
                 name='agency_employee_update'
-            ),
-            path(
-                'manager/<int:pk>',
-                AgencyManagerUpdate.as_view(),
-                name='agency_manager_update'
             ),
             path(
                 'branch/<int:pk>',
