@@ -277,52 +277,12 @@ class AgencyPlan(models.Model):
     )
 
 # Agency Employee Models
-class AgencyAdministrator(models.Model):
-    user = models.OneToOneField(
-        get_user_model(),
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        max_length=50,
-        blank=False
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
-        max_length=50,
-        blank=False
-    )
-
-    contact_number = models.CharField(
-        verbose_name=_('Contact Number'),
-        max_length=50,
-        blank=False,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
-    )
-
-    ea_personnel_number = models.CharField(
-        verbose_name=_('EA personnel number'),
-        max_length=50,
-        blank=False
-    )
-
-    agency = models.ForeignKey(
-        Agency,
-        on_delete=models.CASCADE,
-        related_name='administrators'
-    )
-
 class AgencyEmployee(models.Model):
+    class AgencyEmployeeRoleChoices(models.TextChoices):
+        ADMINISTRATOR = 'AA', _('Administrator')
+        MANAGER = 'AM', _('Manager')
+        SALES_STAFF = 'AS', _('Sales Staff')
+
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,
@@ -373,55 +333,17 @@ class AgencyEmployee(models.Model):
         related_name='employees'
     )
 
-class AgencyManager(models.Model):
-    user = models.OneToOneField(
-        get_user_model(),
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        max_length=50,
-        blank=False
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
-        max_length=50,
-        blank=False
-    )
-
-    contact_number = models.CharField(
-        verbose_name=_('Contact Number'),
-        max_length=50,
+    role = models.CharField(
+        verbose_name=_('Employee Role'),
+        max_length=2,
         blank=False,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
+        choices=AgencyEmployeeRoleChoices.choices,
+        default=AgencyEmployeeRoleChoices.SALES_STAFF
     )
 
-    ea_personnel_number = models.CharField(
-        verbose_name=_('EA personnel number'),
-        max_length=50,
-        blank=False
-    )
-
-    agency = models.ForeignKey(
-        Agency,
-        on_delete=models.CASCADE,
-        related_name='managers'
-    )
-
-    branch = models.ForeignKey(
-        AgencyBranch,
-        on_delete=models.CASCADE,
-        related_name='managers'
+    deleted = models.BooleanField(
+        editable=False,
+        default=False
     )
 
 # Django Signals
