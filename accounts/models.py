@@ -17,10 +17,10 @@ from .managers import CustomUserManager
 class User(AbstractUser):
     class RoleChoices(models.TextChoices):
         EMPLOYER = 'E', _('Employer')
-        AGENCYOWNER = 'AO', _('Agency Owner')
-        AGENCYADMINISTRATOR = 'AA', _('Agency Administrator')
-        AGENCYMANAGER = 'AM', _('Agency Manager')
-        AGENCYEMPLOYEE = 'AE', _('Agency Employee')
+        AGENCY_OWNER = 'AO', _('Agency Owner')
+        AGENCY_ADMINISTRATOR = 'AA', _('Agency Administrator')
+        AGENCY_MANAGER = 'AM', _('Agency Manager')
+        AGENCY_SALESSTAFF = 'AE', _('Agency Sales Staff')
 
     username = None
     first_name = None
