@@ -2,7 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -291,21 +291,32 @@ class AgencyDelete(LoginRequiredMixin, DeleteView):
 
 class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency_employee'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = AgencyEmployee
-    template_name = 'agency-employee-delete.html'
-    success_url = reverse_lazy('')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        
+        # Executes the soft delete of the agency employee object so that the 
+        # transaction history of the particular agency employee does not 
+        # get deleted.
+        self.object.deleted = True
+        self.object.save()
+
+        return HttpResponseRedirect(success_url)
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the user is the agency owner of the employee's agency
         # As only the owner should be able to delete employee accounts
         if AgencyEmployee.objects.get(
             pk = self.pk_url_kwarg
-        ).agency != Agency.objects.get(
+        ).agency != AgencyOwner.objects.get(
             pk = self.request.user.pk
-        ):
-            return self.handle_no_permission(request)
-        return super().dispatch(request, *args, **kwargs)
+        ).agency:
+            raise PermissionDenied()
+        else:
+            return super().dispatch(request, *args, **kwargs)
 
 class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
