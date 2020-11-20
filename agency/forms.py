@@ -12,7 +12,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 # Imports from local apps
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
-    AgencyAdministrator, AgencyManager, AgencyOwner
+    AgencyOwner
 )
 
 # Start of Forms
@@ -232,11 +232,15 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'ea_personnel_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-4'
                 ),
                 Column(
                     'branch',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'role',
+                    css_class='form-group col-md-4'
                 ),
                 css_class='form-row'
             ),
@@ -281,17 +285,23 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         # There is a cleaner way to write this save method
         cleaned_data = self.cleaned_data
+        role = cleaned_data.get('role')
+        role_name_dict = {
+            'AA': 'Agency Administrators',
+            'AM': 'Agency Managers',
+            'AS': 'Agency Sales Staff'
+        }
         try:
             new_user = get_user_model().objects.create_user(
                 email=cleaned_data.get('email'),
                 password=cleaned_data.get('password'),
-                role='AE'
+                role=role
             )
         except Exception as e:
             pass
         else:
             agency_employee_group = Group.objects.get(
-                name='Agency Employees'
+                name=role_name_dict[role]
             ) 
             agency_employee_group.user_set.add(
                 new_user
@@ -310,271 +320,6 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
 
             return super().save(*args, **kwargs)
 
-class AgencyManagerCreationForm(forms.ModelForm):
-    email = forms.EmailField(
-        label=_('Email Address'),
-        required=True
-    )
-
-    password = forms.CharField(
-        label=_('Password'),
-        required=True,
-        max_length=255,
-        widget=forms.PasswordInput()
-    )
-
-    class Meta:
-        model = AgencyManager
-        exclude = ['agency','user']
-
-    def __init__(self, *args, **kwargs):
-        # Limit the choices of the foreign key branch to just the branches
-        # under the current agency
-        agency_id = kwargs.pop('agency_id')
-        super().__init__(*args, **kwargs)
-        self.fields['branch'].queryset = AgencyBranch.objects.filter(
-            agency = Agency.objects.get(
-                pk = agency_id
-            )
-        )
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'email',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'password',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'first_name',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'last_name',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'contact_number',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'ea_personnel_number',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'branch',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        password = cleaned_data.get("password")
-        UserModel = get_user_model()
-
-        try:
-            user = UserModel.objects.get(
-                email=email
-            )
-        except UserModel.DoesNotExist:
-            pass
-        else:
-            if hasattr(user, 'agency'):
-                msg = _('This user is already part of an agency')
-            else:
-                msg = _('This email is taken by an employer')
-            self.add_error('email', msg)
-
-        if validate_password(password):
-            msg = _('This password does not meet our requirements')
-            self.add_error('password', msg)
-            
-        return cleaned_data
-
-    def save(self, *args, **kwargs):
-        # There is a cleaner way to write this save method
-        cleaned_data = self.cleaned_data
-        try:
-            new_user = get_user_model().objects.create_user(
-                email=cleaned_data.get('email'),
-                password=cleaned_data.get('password'),
-                role='AM'
-            )
-        except Exception as e:
-            pass
-        else:
-            agency_employee_group = Group.objects.get(
-                name='Agency Managers'
-            ) 
-            agency_employee_group.user_set.add(
-                new_user
-            )
-
-            self.instance.user = new_user
-            self.instance.first_name = cleaned_data.get('first_name')
-            self.instance.last_name = cleaned_data.get('last_name')
-            self.instance.contact_number = cleaned_data.get(
-                'contact_number'
-            )
-            self.instance.ea_personnel_number = cleaned_data.get(
-                'ea_personnel_number'
-            )
-            self.instance.branch = cleaned_data.get('branch')
-
-            return super().save(*args, **kwargs)
-
-class AgencyAdministratorCreationForm(forms.ModelForm):
-    email = forms.EmailField(
-        label=_('Email Address'),
-        required=True
-    )
-
-    password = forms.CharField(
-        label=_('Password'),
-        required=True,
-        max_length=255,
-        widget=forms.PasswordInput()
-    )
-
-    class Meta:
-        model = AgencyAdministrator
-        exclude = ['agency','user']
-
-    def __init__(self, *args, **kwargs):
-        employee_authority = kwargs.pop('employee_authority')
-        super().__init__(*args, **kwargs)
-        # if employee_authority == 'administrator':
-        #     self.fields['email'].disabled = True
-        #     self.fields['first_name'].disabled = True
-        #     self.fields['last_name'].disabled = True
-        #     self.fields['ea_personnel_number'].disabled = True
-            
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'email',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'password',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'first_name',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'last_name',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'contact_number',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'ea_personnel_number',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        password = cleaned_data.get("password")
-        UserModel = get_user_model()
-
-        try:
-            user = UserModel.objects.get(
-                email=email
-            )
-        except UserModel.DoesNotExist:
-            pass
-        else:
-            if hasattr(user, 'agency'):
-                msg = _('This user is already part of an agency')
-            else:
-                msg = _('This email is taken by an employer')
-            self.add_error('email', msg)
-
-        if validate_password(password):
-            msg = _('This password does not meet our requirements')
-            self.add_error('password', msg)
-            
-        return cleaned_data
-
-    def save(self, *args, **kwargs):
-        # There is a cleaner way to write this save method
-        cleaned_data = self.cleaned_data
-        try:
-            new_user = get_user_model().objects.create_user(
-                email=cleaned_data.get('email'),
-                password=cleaned_data.get('password'),
-                role='AA'
-            )
-        except Exception as e:
-            pass
-        else:
-            agency_employee_group = Group.objects.get(
-                name='Agency Administrators'
-            ) 
-            agency_employee_group.user_set.add(
-                new_user
-            )
-
-            self.instance.user = new_user
-            self.instance.first_name = cleaned_data.get('first_name')
-            self.instance.last_name = cleaned_data.get('last_name')
-            self.instance.contact_number = cleaned_data.get(
-                'contact_number'
-            )
-            self.instance.ea_personnel_number = cleaned_data.get(
-                'ea_personnel_number'
-            )
-
-            return super().save(*args, **kwargs)
 
 class AgencyBranchForm(forms.ModelForm):
     class Meta:
