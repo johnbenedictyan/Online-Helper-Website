@@ -1,16 +1,16 @@
 # Imports from python
 
 # Imports from django
+from django.core.exceptions import ImproperlyConfigured
+from django.urls import reverse_lazy
+
+# Imports from other apps
 from onlinemaid.mixins import (
     AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
 
-from django.urls import reverse_lazy
-
-# Imports from other apps
-
 # Imports from within the app
-from .models import Agency
+from .models import Agency, AgencyEmployee, AgencyBranch
 
 # Utiliy Classes and Functions
 
@@ -64,3 +64,49 @@ class AgencySalesTeamRequiredMixin(GroupRequiredMixin):
     permission_denied_message = '''You are required to login using either
                                 an Agency administrator, manager or sales staff
                                 account to perform this action'''
+
+class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
+    check_type = None
+    permission_denied_message = '''You are required to login using this
+                                employee or branch's Agency owner account to
+                                perform this action'''
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+
+        res = super(SpecificAgencyOwnerRequiredMixin, self).dispatch(
+            request, *args, **kwargs)
+
+        if self.check_type is None:
+            raise ImproperlyConfigured(
+                '{0} requires the "check_type" attribute to be '
+                'set.'.format(self.__class__.__name__)
+            )
+
+        if self.check_type == 'Employee':
+            try:
+                AgencyEmployee.objects.get(
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    ),
+                    agency = self.request.user.agency
+                )
+            except AgencyEmployee.DoesNotExist:
+                return self.handle_no_permission(request)
+
+        elif self.check_type == 'Branch':
+            try:
+                AgencyBranch.objects.get(
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    ),
+                    agency = self.request.user.agency
+                )
+            except AgencyBranch.DoesNotExist:
+                return self.handle_no_permission(request)
+
+        else:
+            raise ImproperlyConfigured(
+                '{0} requires the "check_type" attribute to either '
+                'branch or employee.'.format(self.__class__.__name__)
+            )
