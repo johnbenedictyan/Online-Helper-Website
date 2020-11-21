@@ -241,18 +241,6 @@ class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
 
         return HttpResponseRedirect(success_url)
 
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the user is the agency owner of the employee's agency
-        # As only the owner should be able to delete employee accounts
-        if AgencyEmployee.objects.get(
-            pk = self.pk_url_kwarg
-        ).agency != AgencyOwner.objects.get(
-            pk = self.request.user.pk
-        ).agency:
-            raise PermissionDenied()
-        else:
-            return super().dispatch(request, *args, **kwargs)
-
 class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
