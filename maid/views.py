@@ -321,9 +321,8 @@ class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateVi
 # Delete Views
 class MaidDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = Maid
-    template_name = 'maid-delete.html'
     success_url = reverse_lazy('')
     check_type = 'maid'
 
@@ -338,26 +337,23 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
 class MaidFoodHandlingPreferenceDelete(
     SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid_food_handling_preference'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = MaidFoodHandlingPreference
-    template_name = 'maid-food-handling-preference-delete.html'
     success_url = reverse_lazy('')
     check_type = 'maid'
 
 class MaidDietaryRestrictionDelete(
     SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid_dietary_restriction'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = MaidDietaryRestriction
-    template_name = 'maid-dietary-restriction-delete.html'
     success_url = reverse_lazy('')
     check_type = 'maid'
 
 class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid_employment_history'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = MaidEmploymentHistory
-    template_name = 'maid-employment-history-delete.html'
     success_url = reverse_lazy('')
     check_type = 'maid'
 
