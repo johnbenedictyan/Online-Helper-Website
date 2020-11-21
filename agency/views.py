@@ -14,7 +14,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from local app
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
-    AgencyOperatingHoursForm, AgencyPlanForm, AgencyOwnerCreationForm
+    AgencyOperatingHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
+    AgencyEmployeeUpdateForm
 )
 
 from .models import (
@@ -26,7 +27,8 @@ from .mixins import (
     OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin, 
     AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
     AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
-    AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
+    AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
+    SpecificAgencyLoginRequiredMixin
 )
 
 # Start of Views
@@ -84,13 +86,13 @@ class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.request.user.agency.pk
+            'agency_id': self.request.user.agency_owner.agency.pk
         })
         return kwargs
 
     def form_valid(self, form):
         form.instance.agency = Agency.objects.get(
-            pk = self.request.user.agency.pk
+            pk = self.request.user.agency_owner.agency.pk
         )
         return super().form_valid(form)
 
@@ -159,85 +161,46 @@ class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
+class AgencyEmployeeUpdate(SpecificAgencyLoginRequiredMixin, UpdateView):
     context_object_name = 'agency_employee'
-    form_class = AgencyEmployeeCreationForm
+    form_class = AgencyEmployeeUpdateForm
     http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'update/agency-employee-update.html'
-    success_url = reverse_lazy('')
-    check_type = 'employee'
+    success_url = reverse_lazy('dashboard_account_list')
 
-    def authority_checker(self):
-        authority = None
-        try:
-            employee = AgencyEmployee.objects.get(
-                pk = self.pk_url_kwarg
-            )
-        except AgencyEmployee.DoesNotExist:
-            pass
+    def get_agency_id(self):
+        if self.request.user.groups.filter(name='Agency Owners').exists():
+            return self.request.user.agency_owner.agency.pk
         else:
-            # Checks if user is the owner
-            if employee.agency.pk == self.request.user.pk:
-                authority = 'owner'
+            return self.request.user.agency_employee.agency.pk
 
-            # Checks if user is the agency's administrator
-            if AgencyAdministrator.objects.get(
-                pk = self.request.user.pk,
-                agency = employee.agency
-            ):
-                authority = 'administrator'
+    def get_initial(self):
+        initial = super().get_initial()
+        employee = AgencyEmployee.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        initial['email'] = employee.user.email
 
-            # Checks if the employee being updated is a manager
-            if employee.role == 'M':
-                
-                #Checks if the manager is trying to update their own details
-                if employee.user == self.request.user:
-                    authority = 'manager'
+        return initial
 
-            # Else means that both managers from the same branch can 
-            # edit sales staff's details
-            else:
-                # Checks if user is the employee's branch manager
-                if AgencyEmployee.objects.get(
-                    pk = self.request.user.pk,
-                    branch = employee.branch
-                ).role == 'M':
-                    authority = 'manager'
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if not self.request.user.groups.filter(name='Agency Owners').exists():
+            authority = 'employee'
+        else:
+            authority = 'owner'
 
-                # Checks if user is the employee themselves
-                if employee.user == self.request.user:
-                    authority = 'employee'
-
-            if authority:
-                valid = True
-            else:
-                valid = False
-
-            authority_dict = {
-                'valid': valid,
-                'authority': authority
-            }
-
-            return authority_dict
-
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the agency id is the same as the request user id
-        # As only the owner/administrator and employee should be able to update
-        # the employees details
-        if self.authority_checker().valid == False:
-            raise PermissionDenied()
-
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'employee_authority': self.authority_checker().authority
+        kwargs.update({
+            'agency_id': self.get_agency_id(),
+            'pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            'authority':authority
         })
-        return context
+        return kwargs
 
 class AgencyPlanUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
