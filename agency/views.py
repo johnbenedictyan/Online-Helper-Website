@@ -81,28 +81,16 @@ class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
     template_name = 'create/agency-employee-create.html'
     success_url = reverse_lazy('dashboard_account_list')
 
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the agency id is the same as the request user id
-        # As only the owner should be able to create employee accounts
-        try:
-            Agency.objects.get(
-                pk = self.request.user.pk
-            )
-        except Agency.DoesNotExist:
-            raise PermissionDenied()
-
-        return super().dispatch(request, *args, **kwargs)
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.request.user.pk
+            'agency_id': self.request.user.agency.pk
         })
         return kwargs
 
     def form_valid(self, form):
         form.instance.agency = Agency.objects.get(
-            pk = self.request.user.pk
+            pk = self.request.user.agency.pk
         )
         return super().form_valid(form)
 
