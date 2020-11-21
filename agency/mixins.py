@@ -103,7 +103,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
 
-class SpecificAgencyLoginRequiredMixin(LoginRequiredMixin):
+class SpecificAgencyEmployeeLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You are required to login using this
                                 employee's or Agency owner account to
@@ -112,7 +112,7 @@ class SpecificAgencyLoginRequiredMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         self.request = request
 
-        res = super(SpecificAgencyLoginRequiredMixin, self).dispatch(
+        res = super(SpecificAgencyEmployeeLoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
         if not (
