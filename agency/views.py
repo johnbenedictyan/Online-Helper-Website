@@ -28,7 +28,7 @@ from .mixins import (
     AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
     AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
     AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
-    SpecificAgencyLoginRequiredMixin
+    SpecificAgencyEmployeeLoginRequiredMixin
 )
 
 # Start of Views
@@ -161,7 +161,7 @@ class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeUpdate(SpecificAgencyLoginRequiredMixin, UpdateView):
+class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin, UpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeUpdateForm
     http_method_names = ['get','post']
