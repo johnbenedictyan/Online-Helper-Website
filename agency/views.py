@@ -132,16 +132,9 @@ class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
     template_name = 'update/agency-update.html'
     success_url = reverse_lazy('')
 
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the agency id is the same as the request user id
-        # As only the owner should be able to update agency details
-        if self.pk_url_kwarg == self.request.user.pk:
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
-
     def get_object(self, queryset=None):
         return Agency.objects.get(
-            pk = self.request.user.pk
+            pk = self.request.user.agency.pk
     )
 
 class AgencyBranchUpdate(AgencyOwnerRequiredMixin, UpdateView):
