@@ -36,13 +36,16 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 # Template Views
 
 # Redirect Views
-class MaidTogglePublished(LoginRequiredMixin, RedirectView):
+class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
     pattern_name = ''
+    pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
         try:
             maid = Maid.objects.get(
-                pk = kwargs.get('pk')
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         except Maid.DoesNotExist:
             messages.error(
@@ -50,20 +53,9 @@ class MaidTogglePublished(LoginRequiredMixin, RedirectView):
                 'This maid does not exist'
             )
         else:
-            if maid.agency != Agency.objects.get(
-                pk = self.request.user.pk
-            ):
-                messages.error(
-                    self.request,
-                    '''
-                        You do not have the permission to modify the status 
-                        of this maid
-                    '''
-                )
-
             maid.published = not maid.published
             maid.save()
-            kwargs.pop('pk')
+            kwargs.pop(self.pk_url_kwarg)
         return super().get_redirect_url(*args, **kwargs)
         
 # List Views
