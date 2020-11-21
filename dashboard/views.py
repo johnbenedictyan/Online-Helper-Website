@@ -14,7 +14,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from foreign installed apps
 from accounts.models import Employer
 from agency.models import Agency, AgencyEmployee, AgencyPlan
-from agency.mixins import AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin
+from agency.mixins import (
+    AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
+)
 from maid.models import Maid
 
 # Imports from local app
@@ -28,31 +30,12 @@ class DashboardHomePage(AgencyLoginRequiredMixin, TemplateView):
 # Redirect Views
 
 # List Views
-class DashboardMaidList(AgencyLoginRequiredMixin, ListView):
+class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     template_name = 'list/dashboard-maid-list.html'
-    authority = None
-
-    def get_authority(self):
-        if self.request.user.groups.filter(name='Agency Owners').exists():
-            authority = 'owner'
-
-        if self.request.user.groups.filter(name='Agency Administrators').exists():
-            authority = 'administrator'
-
-        if self.request.user.groups.filter(name='Agency Managers').exists():
-            authority = 'manager'
-
-        if self.request.user.groups.filter(name='Agency Sales Staff').exists():
-            authority = 'sales_staff'
-
-        self.authority = authority
-
-    def get(self, request, *args, **kwargs):
-        self.get_authority()
-        return super().get(request, *args, **kwargs)
+    authority = ''
 
     def get_context_data(self, **kwargs):
         # Passes the authority to the template so that certain fields can be 
@@ -73,31 +56,12 @@ class DashboardMaidList(AgencyLoginRequiredMixin, ListView):
             agency = agency
         )
 
-class DashboardAccountList(AgencyLoginRequiredMixin, ListView):
+class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
     template_name = 'list/dashboard-account-list.html'
-    authority = None
-
-    def get_authority(self):
-        if self.request.user.groups.filter(name='Agency Owners').exists():
-            authority = 'owner'
-
-        if self.request.user.groups.filter(name='Agency Administrators').exists():
-            authority = 'administrator'
-
-        if self.request.user.groups.filter(name='Agency Managers').exists():
-            authority = 'manager'
-
-        if self.request.user.groups.filter(name='Agency Sales Staff').exists():
-            authority = 'sales_staff'
-
-        self.authority = authority
-
-    def get(self, request, *args, **kwargs):
-        self.get_authority()
-        return super().get(request, *args, **kwargs)
+    authority = ''
 
     def get_context_data(self, **kwargs):
         # Passes the authority to the template so that certain fields can be 
