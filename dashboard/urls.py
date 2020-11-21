@@ -8,7 +8,9 @@ from django.urls import include, path
 ## Redirect Views
 
 ## List Views
-from .views import DashboardMaidList, DashboardAccountList
+from .views import (
+    DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList
+)
 
 ## Detail Views
 from .views import DashboardAgencyDetail
@@ -42,6 +44,11 @@ urlpatterns = [
                 'agency-details',
                 DashboardAgencyDetail.as_view(),
                 name='dashboard_agency_detail'
+            ),
+            path(
+                'agency-plans',
+                DashboardAgencyPlanList.as_view(),
+                name='dashboard_agency_plan_list'
             )
         ])
     ),
