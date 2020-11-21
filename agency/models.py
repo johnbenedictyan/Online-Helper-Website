@@ -157,7 +157,8 @@ class AgencyOwner(models.Model):
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,
-        primary_key=True
+        primary_key=True,
+        related_name='agency_owner'
     )
 
     agency = models.ForeignKey(
@@ -286,7 +287,8 @@ class AgencyEmployee(models.Model):
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,
-        primary_key=True
+        primary_key=True,
+        related_name='agency_employee'
     )
 
     first_name = models.CharField(
