@@ -14,6 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Imports from foreign installed apps
 from accounts.models import Employer
 from agency.models import Agency, AgencyEmployee, AgencyPlan
+from agency.mixins import AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin
 from maid.models import Maid
 
 # Imports from local app
@@ -21,10 +22,10 @@ from maid.models import Maid
 # Start of Views
 
 # Template Views
-class DashboardHomePage(LoginRequiredMixin, TemplateView):
+class DashboardHomePage(AgencyLoginRequiredMixin, TemplateView):
     template_name = 'base/dashboard-home-page.html'
 
-class DashboardAccountList(LoginRequiredMixin, TemplateView):
+class DashboardAccountList(AgencyLoginRequiredMixin, TemplateView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     template_name = 'list/dashboard-account-list.html'
@@ -92,7 +93,7 @@ class DashboardAccountList(LoginRequiredMixin, TemplateView):
 # Redirect Views
 
 # List Views
-class DashboardMaidList(LoginRequiredMixin, ListView):
+class DashboardMaidList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
@@ -180,14 +181,14 @@ class DashboardMaidList(LoginRequiredMixin, ListView):
         })
         return context
 
-class DashboardAgencyPlanList(ListView):
+class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     context_object_name = 'plans'
     http_method_names = ['get']
     model = AgencyPlan
     template_name = 'list/dashboard-agency-plan-list.html'
 
 # Detail Views
-class DashboardAgencyDetail(LoginRequiredMixin, DetailView):
+class DashboardAgencyDetail(AgencyLoginRequiredMixin, DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
