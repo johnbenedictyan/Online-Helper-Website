@@ -243,20 +243,7 @@ class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
 
 class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = AgencyPlan
-    template_name = 'agency-plan-delete.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_agency_plan_list')
     check_type = 'plan'
-
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the user is the agency owner 
-        # As only the owner should be able to delete agency plans (biodata
-        # subscriptions)
-        if AgencyPlan.objects.get(
-            pk = self.pk_url_kwarg
-        ).agency != Agency.objects.get(
-            pk = self.request.user.pk
-        ):
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
