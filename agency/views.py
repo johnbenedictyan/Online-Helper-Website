@@ -102,13 +102,6 @@ class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
     template_name = 'create/agency-plan-create.html'
     success_url = reverse_lazy('')
 
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the agency id is the same as the request user id
-        # Only the owner should be able to create agency plan(Buy biodata space)
-        if self.pk_url_kwarg == self.request.user.pk:
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests: instantiate a form instance with the passed
@@ -123,6 +116,12 @@ class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
             # Return some valid payment page
         else:
             return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.agency = Agency.objects.get(
+            pk = self.request.user.agency.pk
+        )
+        return super().form_valid(form)
 
 # Update Views
 class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
