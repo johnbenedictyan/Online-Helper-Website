@@ -12,12 +12,13 @@ from onlinemaid.mixins import ListFilteredMixin
 
 # Imports from foreign installed apps
 from agency.models import Agency
-from agency.mixins import (
-    AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
-)
+from agency.mixins import AgencyLoginRequiredMixin
 
 # Imports from local app
 from .filters import MaidFilter
+from .mixins import (
+    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
+)
 
 from .forms import (
     MaidCreationForm, MaidBiodataForm, MaidFamilyDetailsForm, 
@@ -148,7 +149,9 @@ class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.maid = Maid.objects.get(
-            pk = self.kwargs.pk_url_kwarg
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
         )
         return super().form_valid(form)
 
@@ -162,7 +165,9 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.maid = Maid.objects.get(
-            pk = self.kwargs.pk_url_kwarg
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
         )
         return super().form_valid(form)
 
@@ -176,7 +181,9 @@ class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.maid = Maid.objects.get(
-            pk = self.kwargs.pk_url_kwarg
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
         )
         return super().form_valid(form)
 
@@ -190,11 +197,16 @@ class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
+        if self.request.user.groups.filter(name='Agency Owners').exists():
+            agency = self.request.user.agency_owner.agency
+        else:
+            agency = self.request.user.agency_employee.agency
+
         return Maid.objects.get(
-            pk = self.kwargs.pk_url_kwarg,
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            agency = agency
         )
 
 class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
@@ -208,7 +220,9 @@ class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return MaidBiodata.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -223,7 +237,9 @@ class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return MaidFamilyDetails.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -238,7 +254,9 @@ class MaidInfantChildCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView
     def get_object(self, queryset=None):
         return MaidInfantChildCare.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -253,7 +271,9 @@ class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return MaidElderlyCare.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -268,7 +288,9 @@ class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return MaidDisabledCare.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -283,7 +305,9 @@ class MaidGeneralHouseworkUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateVie
     def get_object(self, queryset=None):
         return MaidGeneralHousework.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -298,7 +322,9 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return MaidCooking.objects.get(
             maid = Maid.objects.get(
-                pk = self.pk_url_kwarg
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
         )
 
@@ -312,10 +338,10 @@ class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateVi
 
     def get_object(self, queryset=None):
         return MaidEmploymentHistory.objects.get(
-            pk = self.pk_url_kwarg,
-            maid__agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            maid__agency = self.request.user.agency_owner.agency
         )
 
 # Delete Views
@@ -328,10 +354,10 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         return Maid.objects.get(
-            pk = self.kwargs.pk_url_kwarg,
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            agency = self.request.user.agency_owner.agency
         )
 
 class MaidFoodHandlingPreferenceDelete(
@@ -359,8 +385,8 @@ class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         return MaidEmploymentHistory.objects.get(
-            pk = self.pk_url_kwarg,
-            maid__agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            maid__agency = self.request.user.agency_owner.agency
         )
