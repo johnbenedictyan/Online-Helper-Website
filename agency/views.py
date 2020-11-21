@@ -214,10 +214,9 @@ class AgencyPlanUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
 # Delete Views
 class AgencyDelete(AgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency'
-    http_method_names = ['get','post']
+    http_method_names = ['post']
     model = Agency
-    template_name = 'agency-delete.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
         return Agency.objects.get(
