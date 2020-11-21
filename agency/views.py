@@ -22,7 +22,12 @@ from .models import (
     AgencyOwner
 )
 
-from .mixins import SuperUserRequiredMixin
+from .mixins import (
+    OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin, 
+    AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
+    AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
+    AgencyLoginRequiredMixin
+)
 
 # Start of Views
 
@@ -52,7 +57,7 @@ class AgencyDetail(DetailView):
         return obj
     
 # Create Views
-class AgencyCreate(CreateView):
+class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
@@ -60,7 +65,7 @@ class AgencyCreate(CreateView):
     template_name = 'create/agency-create.html'
     success_url = reverse_lazy('home')
 
-class AgencyOwnerCreate(SuperUserRequiredMixin, CreateView):
+class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
     context_object_name = 'agency_owner'
     form_class = AgencyOwnerCreationForm
     http_method_names = ['get','post']
@@ -68,7 +73,7 @@ class AgencyOwnerCreate(SuperUserRequiredMixin, CreateView):
     template_name = 'create/agency-owner-create.html'
     success_url = reverse_lazy('home')
 
-class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
+class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
@@ -101,7 +106,7 @@ class AgencyEmployeeCreate(LoginRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class AgencyPlanCreate(LoginRequiredMixin, CreateView):
+class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
     context_object_name = 'agency_plan'
     form_class = AgencyPlanForm
     http_method_names = ['get','post']
@@ -132,7 +137,7 @@ class AgencyPlanCreate(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
 # Update Views
-class AgencyUpdate(LoginRequiredMixin, UpdateView):
+class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
@@ -152,7 +157,7 @@ class AgencyUpdate(LoginRequiredMixin, UpdateView):
             pk = self.request.user.pk
     )
 
-class AgencyBranchUpdate(LoginRequiredMixin, UpdateView):
+class AgencyBranchUpdate(AgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
@@ -168,7 +173,7 @@ class AgencyBranchUpdate(LoginRequiredMixin, UpdateView):
             raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
-class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
+class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
     form_class = AgencyOperatingHoursForm
     http_method_names = ['get','post']
@@ -189,7 +194,7 @@ class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
+class AgencyEmployeeUpdate(AgencyLoginRequiredMixin, UpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
@@ -268,7 +273,7 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
         })
         return context
 
-class AgencyPlanUpdate(LoginRequiredMixin, UpdateView):
+class AgencyPlanUpdate(AgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
@@ -277,7 +282,7 @@ class AgencyPlanUpdate(LoginRequiredMixin, UpdateView):
     # Do we want to allow users to 'upgrade' their plans
 
 # Delete Views
-class AgencyDelete(LoginRequiredMixin, DeleteView):
+class AgencyDelete(AgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency'
     http_method_names = ['get','post']
     model = Agency
@@ -289,7 +294,7 @@ class AgencyDelete(LoginRequiredMixin, DeleteView):
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
+class AgencyEmployeeDelete(AgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_employee'
     http_method_names = ['post']
     model = AgencyEmployee
@@ -318,7 +323,7 @@ class AgencyEmployeeDelete(LoginRequiredMixin, DeleteView):
         else:
             return super().dispatch(request, *args, **kwargs)
 
-class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
+class AgencyPlanDelete(AgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
