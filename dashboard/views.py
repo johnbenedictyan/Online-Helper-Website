@@ -33,88 +33,45 @@ class DashboardMaidList(AgencyLoginRequiredMixin, ListView):
     http_method_names = ['get']
     model = Maid
     template_name = 'list/dashboard-maid-list.html'
-    authority_dict = {}
+    authority = None
 
-    def authority_checker(self):
-        try:
-            employer = Employer.objects.get(
-                pk = self.request.user.pk
-            )
-        except Employer.DoesNotExist:
-            # Checks if user is the owner
-            try:
-                Agency.objects.get(
-                    pk = self.request.user.pk
-                )
-            except Agency.DoesNotExist:
-                pass
-            else:
-                authority = 'owner'
+    def get_authority(self):
+        if self.request.user.groups.filter(name='Agency Owners').exists():
+            authority = 'owner'
 
-            # Checks if user is the agency's administrator
-            try:
-                AgencyAdministrator.objects.get(
-                    pk = self.request.user.pk
-                )
-            except AgencyAdministrator.DoesNotExist:
-                pass
-            else:
-                authority = 'administrator'
+        if self.request.user.groups.filter(name='Agency Administrators').exists():
+            authority = 'administrator'
 
-            # Checks if the user is an Agency employee
-            try:
-                employee = AgencyEmployee.objects.get(
-                    pk = self.request.user.pk
-                )
-            except AgencyEmployee.DoesNotExist:
-                pass
-            else:
-                # Checks if user is the employee's branch manager
-                if employee.role == 'M':
-                    authority = 'manager'
-                else:
-                    authority = 'employee'
+        if self.request.user.groups.filter(name='Agency Managers').exists():
+            authority = 'manager'
 
-        finally:
-            if authority:
-                valid = True
-            else:
-                valid = False
+        if self.request.user.groups.filter(name='Agency Sales Staff').exists():
+            authority = 'sales_staff'
 
-            authority_dict = {
-                'valid': valid,
-                'authority': authority
-            }
-            return authority_dict
+        self.authority = authority
 
-    def dispatch(self, request, *args, **kwargs):
-        self.authority_dict = self.authority_checker()
-        
-        if self.authority_dict['valid'] == False:
-            raise PermissionDenied()
-
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        if self.authority_dict['authority'] == 'owner':
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
-        else:
-            agency = self.request.user.agency
-            
-        return Maid.objects.filter(
-            agency = agency
-        )
+    def get(self, request, *args, **kwargs):
+        self.get_authority()
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         # Passes the authority to the template so that certain fields can be 
         # restricted based on who is editing the agency employee object.
         context = super().get_context_data(**kwargs)
         context.update({
-            'employee_authority': self.authority_dict['authority']
+            'authority': self.authority
         })
         return context
+
+    def get_queryset(self):
+        if self.authority == 'owner':
+            agency = self.request.user.agency_owner.agency
+        else:
+            agency = self.request.user.agency_employee.agency
+            
+        return Maid.objects.filter(
+            agency = agency
+        )
 
 class DashboardAccountList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'accounts'
