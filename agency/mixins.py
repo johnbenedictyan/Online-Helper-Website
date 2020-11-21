@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from onlinemaid.mixins import (
     AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
+from maid.models import Maid
 
 # Imports from within the app
 from .models import Agency, AgencyEmployee, AgencyBranch, AgencyPlan
@@ -69,7 +70,8 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
     check_model_dict = {
         'employee': AgencyEmployee,
         'branch': AgencyBranch,
-        'plan': AgencyPlan
+        'plan': AgencyPlan,
+        'maid': Maid
     }
     permission_denied_message = '''You are required to login using the specific
                                 Agency owner account to perform this action'''
