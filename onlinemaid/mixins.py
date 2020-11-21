@@ -419,7 +419,7 @@ class UserPassesTestMixin(AccessMixin):
             request, *args, **kwargs)
 
 
-class SuperuserRequiredMixin(AccessMixin):
+class SuperUserRequiredMixin(AccessMixin):
     """
     Mixin allows you to require a user with `is_superuser` set to True.
     """
@@ -427,7 +427,7 @@ class SuperuserRequiredMixin(AccessMixin):
         if not request.user.is_superuser:
             return self.handle_no_permission(request)
 
-        return super(SuperuserRequiredMixin, self).dispatch(
+        return super(SuperUserRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
 
