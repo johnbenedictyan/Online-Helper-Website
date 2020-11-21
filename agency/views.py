@@ -144,15 +144,7 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     model = AgencyBranch
     template_name = 'update/agency-branch-update.html'
     success_url = reverse_lazy('')
-    pk_url_kwarg = 'agency_id'
     check_type = 'branch'
-
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the agency id is the same as the request user id
-        # As only the owner should be able to update agency details
-        if self.pk_url_kwarg == self.request.user.pk:
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
 
 class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
