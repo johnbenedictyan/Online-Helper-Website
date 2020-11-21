@@ -153,14 +153,6 @@ class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
     model = AgencyOperatingHours
     template_name = 'update/agency-operating-hours-update.html'
     success_url = reverse_lazy('')
-    pk_url_kwarg = 'agency_id'
-
-    def dispatch(self, request, *args, **kwargs):
-        # Checks if the agency id is the same as the request user id
-        # As only the owner should be able to update agency details
-        if self.pk_url_kwarg == self.request.user.pk:
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         return AgencyOperatingHours.objects.get(
