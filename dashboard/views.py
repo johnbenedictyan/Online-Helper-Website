@@ -13,7 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
 from accounts.models import Employer
-from agency.models import Agency, AgencyEmployee
+from agency.models import Agency, AgencyEmployee, AgencyPlan
 from maid.models import Maid
 
 # Imports from local app
@@ -179,6 +179,12 @@ class DashboardMaidList(LoginRequiredMixin, ListView):
             'employee_authority': self.authority_dict['authority']
         })
         return context
+
+class DashboardAgencyPlanList(ListView):
+    context_object_name = 'plans'
+    http_method_names = ['get']
+    model = AgencyPlan
+    template_name = 'list/dashboard-agency-plan-list.html'
 
 # Detail Views
 class DashboardAgencyDetail(LoginRequiredMixin, DetailView):
