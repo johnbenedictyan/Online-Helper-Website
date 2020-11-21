@@ -26,7 +26,7 @@ from .mixins import (
     OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin, 
     AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
     AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
-    AgencyLoginRequiredMixin
+    AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
 )
 
 # Start of Views
@@ -137,7 +137,7 @@ class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
             pk = self.request.user.agency.pk
     )
 
-class AgencyBranchUpdate(AgencyOwnerRequiredMixin, UpdateView):
+class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
@@ -174,7 +174,7 @@ class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeUpdate(AgencyLoginRequiredMixin, UpdateView):
+class AgencyEmployeeUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
@@ -253,7 +253,7 @@ class AgencyEmployeeUpdate(AgencyLoginRequiredMixin, UpdateView):
         })
         return context
 
-class AgencyPlanUpdate(AgencyOwnerRequiredMixin, UpdateView):
+class AgencyPlanUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
@@ -274,7 +274,7 @@ class AgencyDelete(AgencyOwnerRequiredMixin, DeleteView):
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeDelete(AgencyOwnerRequiredMixin, DeleteView):
+class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_employee'
     http_method_names = ['post']
     model = AgencyEmployee
@@ -303,7 +303,7 @@ class AgencyEmployeeDelete(AgencyOwnerRequiredMixin, DeleteView):
         else:
             return super().dispatch(request, *args, **kwargs)
 
-class AgencyPlanDelete(AgencyOwnerRequiredMixin, DeleteView):
+class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_plan'
     http_method_names = ['get','post']
     model = AgencyPlan
