@@ -8,9 +8,13 @@ from django.urls import reverse_lazy
 from onlinemaid.mixins import (
     AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
+from agency.mixins import AgencyOwnerRequiredMixin
 
 # Imports from within the app
-from .models import Maid
+from .models import (
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
+    MaidEmploymentHistory
+)
 
 # Utiliy Classes and Functions
 
@@ -44,3 +48,51 @@ class SpecificAgencyMaidLoginRequiredMixin(LoginRequiredMixin):
                 return self.handle_no_permission(request)
         
         return res
+
+class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
+    check_type = None
+    check_model_dict = {
+        'maid': Maid,
+        'food_handling_preference': MaidFoodHandlingPreference,
+        'dietary_restriction': MaidDietaryRestriction,
+        'employment_history': MaidEmploymentHistory
+    }
+    permission_denied_message = '''You are required to login using the specific
+                                Agency owner account to perform this action'''
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+
+        res = super(SpecificAgencyOwnerRequiredMixin, self).dispatch(
+            request, *args, **kwargs)
+
+        if self.check_type is None:
+            error_msg = 'set'
+        if self.check_type not in self.check_model_dict:
+            error_msg = 'a key in the check_model_dict'
+
+        if error_msg:
+            raise ImproperlyConfigured(
+                '{0} requires the "check_type" attribute to be '
+                '{1}.'.format(self.__class__.__name__, error_msg)
+            )
+
+        check_model = self.check_model_dict[self.check_type]
+
+        try:
+            if check_type == 'maid':
+                check_model.objects.get(
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    ),
+                    agency = self.request.user.agency_owner.agency
+                )
+            else:
+                check_model.objects.get(
+                    pk = self.kwargs.get(
+                        self.pk_url_kwarg
+                    ),
+                    maid__agency = self.request.user.agency_owner.agency
+                )
+        except check_model.DoesNotExist:
+            return self.handle_no_permission(request)
