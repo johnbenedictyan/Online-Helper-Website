@@ -29,6 +29,8 @@ from .models import (
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
 
+from .mixins import SpecificAgencyMaidLoginRequiredMixin
+
 # Start of Views
 
 # Template Views
@@ -184,7 +186,7 @@ class MaidEmploymentHistoryCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Update Views
-class MaidUpdate(LoginRequiredMixin, UpdateView):
+class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid'
     form_class = MaidCreationForm
     http_method_names = ['get','post']
@@ -200,7 +202,7 @@ class MaidUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidBiodataUpdate(LoginRequiredMixin, UpdateView):
+class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_biodata'
     form_class = MaidBiodataForm
     http_method_names = ['get','post']
@@ -215,7 +217,7 @@ class MaidBiodataUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidFamilyDetailsUpdate(LoginRequiredMixin, UpdateView):
+class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_family_details'
     form_class = MaidFamilyDetailsForm
     http_method_names = ['get','post']
@@ -230,7 +232,7 @@ class MaidFamilyDetailsUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidInfantChildCareUpdate(LoginRequiredMixin, UpdateView):
+class MaidInfantChildCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_infant_child_care'
     form_class = MaidInfantChildCareForm
     http_method_names = ['get','post']
@@ -245,7 +247,7 @@ class MaidInfantChildCareUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidElderlyCareUpdate(LoginRequiredMixin, UpdateView):
+class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_elderly_care'
     form_class = MaidElderlyCareForm
     http_method_names = ['get','post']
@@ -260,7 +262,7 @@ class MaidElderlyCareUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidDisabledCareUpdate(LoginRequiredMixin, UpdateView):
+class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_disabled_care'
     form_class = MaidDisabledCareForm
     http_method_names = ['get','post']
@@ -275,7 +277,7 @@ class MaidDisabledCareUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidGeneralHouseworkUpdate(LoginRequiredMixin, UpdateView):
+class MaidGeneralHouseworkUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_general_housework'
     form_class = MaidGeneralHouseworkForm
     http_method_names = ['get','post']
@@ -290,7 +292,7 @@ class MaidGeneralHouseworkUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidCookingUpdate(LoginRequiredMixin, UpdateView):
+class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_cooking'
     form_class = MaidCookingForm
     http_method_names = ['get','post']
@@ -305,7 +307,7 @@ class MaidCookingUpdate(LoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidEmploymentHistoryUpdate(LoginRequiredMixin, UpdateView):
+class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
