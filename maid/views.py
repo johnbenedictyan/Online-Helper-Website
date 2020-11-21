@@ -12,6 +12,7 @@ from onlinemaid.mixins import ListFilteredMixin
 
 # Imports from foreign installed apps
 from agency.models import Agency
+from agency.mixins import AgencyLoginRequiredMixin
 
 # Imports from local app
 from .filters import MaidFilter
@@ -89,7 +90,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     template_name = 'detail/maid-detail.html'
 
 # Create Views
-class MaidCreate(LoginRequiredMixin, CreateView):
+class MaidCreate(AgencyLoginRequiredMixin, CreateView):
     context_object_name = 'maid'
     form_class = MaidCreationForm
     http_method_names = ['get','post']
@@ -135,7 +136,7 @@ class MaidCreate(LoginRequiredMixin, CreateView):
         })
         return kwargs
 
-class MaidFoodHandlingPreferenceCreate(LoginRequiredMixin, CreateView):
+class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, CreateView):
     context_object_name = 'maid_food_handling_preference'
     form_class = MaidFoodHandlingPreferenceForm
     http_method_names = ['get','post']
@@ -149,7 +150,7 @@ class MaidFoodHandlingPreferenceCreate(LoginRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class MaidDietaryRestrictionCreate(LoginRequiredMixin, CreateView):
+class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin, CreateView):
     context_object_name = 'maid_dietary_restriction'
     form_class = MaidDietaryRestrictionForm
     http_method_names = ['get','post']
@@ -163,7 +164,7 @@ class MaidDietaryRestrictionCreate(LoginRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(LoginRequiredMixin, CreateView):
+class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, CreateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
