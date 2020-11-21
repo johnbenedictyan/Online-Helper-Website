@@ -12,7 +12,9 @@ from onlinemaid.mixins import ListFilteredMixin
 
 # Imports from foreign installed apps
 from agency.models import Agency
-from agency.mixins import AgencyLoginRequiredMixin
+from agency.mixins import (
+    AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
+)
 
 # Imports from local app
 from .filters import MaidFilter
@@ -317,12 +319,13 @@ class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateVi
         )
 
 # Delete Views
-class MaidDelete(LoginRequiredMixin, DeleteView):
+class MaidDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid'
     http_method_names = ['get','post']
     model = Maid
     template_name = 'maid-delete.html'
     success_url = reverse_lazy('')
+    check_type = 'maid'
 
     def get_object(self, queryset=None):
         return Maid.objects.get(
@@ -332,26 +335,31 @@ class MaidDelete(LoginRequiredMixin, DeleteView):
             )
         )
 
-class MaidFoodHandlingPreferenceDelete(LoginRequiredMixin, DeleteView):
+class MaidFoodHandlingPreferenceDelete(
+    SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid_food_handling_preference'
     http_method_names = ['get','post']
     model = MaidFoodHandlingPreference
     template_name = 'maid-food-handling-preference-delete.html'
     success_url = reverse_lazy('')
+    check_type = 'maid'
 
-class MaidDietaryRestrictionDelete(LoginRequiredMixin, DeleteView):
+class MaidDietaryRestrictionDelete(
+    SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid_dietary_restriction'
     http_method_names = ['get','post']
     model = MaidDietaryRestriction
     template_name = 'maid-dietary-restriction-delete.html'
     success_url = reverse_lazy('')
+    check_type = 'maid'
 
-class MaidEmploymentHistoryDelete(LoginRequiredMixin, DeleteView):
+class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'maid_employment_history'
     http_method_names = ['get','post']
     model = MaidEmploymentHistory
     template_name = 'maid-employment-history-delete.html'
     success_url = reverse_lazy('')
+    check_type = 'maid'
 
     def get_object(self, queryset=None):
         return MaidEmploymentHistory.objects.get(
