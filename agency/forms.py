@@ -320,7 +320,6 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
 
             return super().save(*args, **kwargs)
 
-
 class AgencyBranchForm(forms.ModelForm):
     class Meta:
         model = AgencyBranch
