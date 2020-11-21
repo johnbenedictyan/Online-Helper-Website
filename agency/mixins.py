@@ -33,7 +33,6 @@ class AgencyOwnerRequiredMixin(GroupRequiredMixin):
     permission_denied_message = '''You are required to login using an Agency
                                 owners account to perform this action'''
                                 
-
 class AgencyAdministratorRequiredMixin(GroupRequiredMixin):
     group_required = u"Agency Administrators"
     login_url = reverse_lazy('agency_sign_in')
@@ -125,3 +124,28 @@ class SpecificAgencyLoginRequiredMixin(LoginRequiredMixin):
             return self.handle_no_permission(request)
         
         return res
+
+class GetAuthorityMixin:
+    def get_authority(self):
+        if self.request.user.groups.filter(name='Agency Owners').exists():
+            authority = 'owner'
+
+        if self.request.user.groups.filter(name='Agency Administrators').exists():
+            authority = 'administrator'
+
+        if self.request.user.groups.filter(name='Agency Managers').exists():
+            authority = 'manager'
+
+        if self.request.user.groups.filter(name='Agency Sales Staff').exists():
+            authority = 'sales_staff'
+
+        self.authority = authority
+
+    def get(self, request, *args, **kwargs):
+        if not self.authority and self.authority != '':
+            raise ImproperlyConfigured(
+                '{0} is missing the authority attribute'
+                .format(self.__class__.__name__)
+            )
+        self.get_authority()
+        return super().get(request, *args, **kwargs)
