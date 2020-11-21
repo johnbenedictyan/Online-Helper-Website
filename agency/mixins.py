@@ -70,8 +70,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
     check_model_dict = {
         'employee': AgencyEmployee,
         'branch': AgencyBranch,
-        'plan': AgencyPlan,
-        'maid': Maid
+        'plan': AgencyPlan
     }
     permission_denied_message = '''You are required to login using the specific
                                 Agency owner account to perform this action'''
@@ -100,7 +99,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
                 pk = self.kwargs.get(
                     self.pk_url_kwarg
                 ),
-                agency = self.request.user.agency
+                agency = self.request.user.agency_owner.agency
             )
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
