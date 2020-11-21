@@ -113,7 +113,7 @@ class AgencyPlanCreate(LoginRequiredMixin, CreateView):
         # Checks if the agency id is the same as the request user id
         # Only the owner should be able to create agency plan(Buy biodata space)
         if self.pk_url_kwarg == self.request.user.pk:
-            return self.handle_no_permission(request)
+            raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -144,7 +144,7 @@ class AgencyUpdate(LoginRequiredMixin, UpdateView):
         # Checks if the agency id is the same as the request user id
         # As only the owner should be able to update agency details
         if self.pk_url_kwarg == self.request.user.pk:
-            return self.handle_no_permission(request)
+            raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
@@ -165,7 +165,7 @@ class AgencyBranchUpdate(LoginRequiredMixin, UpdateView):
         # Checks if the agency id is the same as the request user id
         # As only the owner should be able to update agency details
         if self.pk_url_kwarg == self.request.user.pk:
-            return self.handle_no_permission(request)
+            raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
 class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
@@ -181,7 +181,7 @@ class AgencyOperatingHoursUpdate(LoginRequiredMixin, UpdateView):
         # Checks if the agency id is the same as the request user id
         # As only the owner should be able to update agency details
         if self.pk_url_kwarg == self.request.user.pk:
-            return self.handle_no_permission(request)
+            raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
@@ -255,7 +255,7 @@ class AgencyEmployeeUpdate(LoginRequiredMixin, UpdateView):
         # As only the owner/administrator and employee should be able to update
         # the employees details
         if self.authority_checker().valid == False:
-            return self.handle_no_permission(request)
+            raise PermissionDenied()
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -334,5 +334,5 @@ class AgencyPlanDelete(LoginRequiredMixin, DeleteView):
         ).agency != Agency.objects.get(
             pk = self.request.user.pk
         ):
-            return self.handle_no_permission(request)
+            raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
