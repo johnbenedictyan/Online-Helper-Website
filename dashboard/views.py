@@ -25,71 +25,6 @@ from maid.models import Maid
 class DashboardHomePage(AgencyLoginRequiredMixin, TemplateView):
     template_name = 'base/dashboard-home-page.html'
 
-class DashboardAccountList(AgencyLoginRequiredMixin, TemplateView):
-    context_object_name = 'accounts'
-    http_method_names = ['get']
-    template_name = 'list/dashboard-account-list.html'
-    authority_dict = {}
-
-    def authority_checker(self):
-        try:
-            employer = Employer.objects.get(
-                pk = self.request.user.pk
-            )
-        except Employer.DoesNotExist:
-            # Checks if user is the owner
-            try:
-                Agency.objects.get(
-                    pk = self.request.user.pk
-                )
-            except Agency.DoesNotExist:
-                pass
-            else:
-                authority = 'owner'
-
-        finally:
-            if authority:
-                valid = True
-            else:
-                valid = False
-
-            authority_dict = {
-                'valid': valid,
-                'authority': authority
-            }
-            return authority_dict
-
-    def dispatch(self, request, *args, **kwargs):
-        self.authority_dict = self.authority_checker()
-        
-        if self.authority_dict['valid'] == False:
-            raise PermissionDenied()
-
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-
-        if self.authority_dict['authority'] == 'owner':
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
-        else:
-            agency = self.request.user.agency
-
-        context.update({
-            'employee_authority': self.authority_dict['authority'],
-            'administrators': AgencyAdministrator.objects.filter(
-                agency = agency
-            ),
-            'employees': AgencyEmployee.objects.filter(
-                agency = agency
-            )
-        })
-        return context
-
 # Redirect Views
 
 # List Views
@@ -180,6 +115,51 @@ class DashboardMaidList(AgencyLoginRequiredMixin, ListView):
             'employee_authority': self.authority_dict['authority']
         })
         return context
+
+class DashboardAccountList(AgencyLoginRequiredMixin, ListView):
+    context_object_name = 'accounts'
+    http_method_names = ['get']
+    model = AgencyEmployee
+    template_name = 'list/dashboard-account-list.html'
+    authority = None
+
+    def get_authority(self):
+        if self.request.user.groups.filter(name='Agency Owners').exists():
+            authority = 'owner'
+
+        if self.request.user.groups.filter(name='Agency Administrators').exists():
+            authority = 'administrator'
+
+        if self.request.user.groups.filter(name='Agency Managers').exists():
+            authority = 'manager'
+
+        if self.request.user.groups.filter(name='Agency Sales Staff').exists():
+            authority = 'sales_staff'
+
+        self.authority = authority
+
+    def get(self, request, *args, **kwargs):
+        self.get_authority()
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'authority': self.authority
+        })
+        return context
+
+    def get_queryset(self):
+        if self.authority == 'owner':
+            agency = self.request.user.agency_owner.agency
+        else:
+            agency = self.request.user.agency_employee.agency
+            
+        return AgencyEmployee.objects.filter(
+            agency = agency
+        )
 
 class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     context_object_name = 'plans'
