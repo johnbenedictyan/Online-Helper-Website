@@ -145,6 +145,7 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     template_name = 'update/agency-branch-update.html'
     success_url = reverse_lazy('')
     pk_url_kwarg = 'agency_id'
+    check_type = 'branch'
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the agency id is the same as the request user id
@@ -181,6 +182,7 @@ class AgencyEmployeeUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     model = AgencyEmployee
     template_name = 'update/agency-employee-update.html'
     success_url = reverse_lazy('')
+    check_type = 'employee'
 
     def authority_checker(self):
         authority = None
@@ -259,6 +261,7 @@ class AgencyPlanUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     model = AgencyPlan
     template_name = 'update/agency-plan-update.html'
     success_url = reverse_lazy('')
+    check_type = 'plan'
     # Do we want to allow users to 'upgrade' their plans
 
 # Delete Views
@@ -278,6 +281,7 @@ class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     context_object_name = 'agency_employee'
     http_method_names = ['post']
     model = AgencyEmployee
+    check_type = 'employee'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -309,6 +313,7 @@ class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     model = AgencyPlan
     template_name = 'agency-plan-delete.html'
     success_url = reverse_lazy('')
+    check_type = 'plan'
 
     def dispatch(self, request, *args, **kwargs):
         # Checks if the user is the agency owner 
