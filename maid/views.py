@@ -99,13 +99,13 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
     http_method_names = ['get','post']
     model = Maid
     template_name = 'create/maid-create.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_maid_list')
     authority = ''
     agency = None
 
     def form_valid(self, form):
         form.instance.agency = self.agency
-        
+
         response = super().form_valid(form)
         MaidBiodata.objects.create(
             maid=self.object
