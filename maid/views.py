@@ -12,7 +12,7 @@ from onlinemaid.mixins import ListFilteredMixin
 
 # Imports from foreign installed apps
 from agency.models import Agency
-from agency.mixins import AgencyLoginRequiredMixin
+from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
 
 # Imports from local app
 from .filters import MaidFilter
@@ -93,20 +93,19 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     template_name = 'detail/maid-detail.html'
 
 # Create Views
-class MaidCreate(AgencyLoginRequiredMixin, CreateView):
+class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
     context_object_name = 'maid'
     form_class = MaidCreationForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'create/maid-create.html'
     success_url = reverse_lazy('')
+    authority = ''
+    agency = None
 
     def form_valid(self, form):
-        form.instance.agency = Agency.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
+        form.instance.agency = self.agency
+        
         response = super().form_valid(form)
         MaidBiodata.objects.create(
             maid=self.object
@@ -131,11 +130,16 @@ class MaidCreate(AgencyLoginRequiredMixin, CreateView):
         )
 
     def get_form_kwargs(self):
+        if self.authority == 'owner':
+            agency = self.request.user.agency_owner.agency
+        else:
+            agency = self.request.user.agency_employee.agency
+
+        self.agency = agency
+
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.kwargs.get(
-                self.pk_url_kwarg
-            )
+            'agency_id': agency.pk
         })
         return kwargs
 
