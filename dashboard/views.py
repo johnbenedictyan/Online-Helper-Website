@@ -5,6 +5,7 @@ from itertools import chain
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.base import RedirectView, TemplateView
@@ -89,22 +90,32 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     template_name = 'list/dashboard-agency-plan-list.html'
 
 # Detail Views
-class DashboardAgencyDetail(AgencyLoginRequiredMixin, DetailView):
+class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
     template_name = 'detail/dashboard-agency-detail.html'
+    authority = ''
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'authority': self.authority
+        })
+        return context
 
     def get_object(self):
-        agency = super().get_object()
-
-        # Checks if the user who is trying to access this view the owner or 
-        # the agency's employees.
-        if self.request.user == agency or self.request.user.agency == agency:
-            return agency
+        if self.authority == 'owner':
+            agency = self.request.user.agency_owner.agency
         else:
-            raise PermissionDenied()
+            agency = self.request.user.agency_employee.agency
 
+        agency = get_object_or_404(Agency, pk=agency.pk)
+
+        return agency
+        
 # Create Views
 
 # Update Views
