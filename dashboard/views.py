@@ -57,7 +57,8 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
             agency = agency
         )
 
-class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardAccountList(
+    AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
@@ -90,7 +91,8 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     template_name = 'list/dashboard-agency-plan-list.html'
 
 # Detail Views
-class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
+class DashboardAgencyDetail(
+    AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
@@ -115,7 +117,37 @@ class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin, DetailV
         agency = get_object_or_404(Agency, pk=agency.pk)
 
         return agency
-        
+
+class DashboardMaidDetail(
+    AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
+    context_object_name = 'maid'
+    http_method_names = ['get']
+    model = Maid
+    template_name = 'detail/dashboard-maid-detail.html'
+    authority = ''
+
+    def get_context_data(self, **kwargs):
+        # Passes the authority to the template so that certain fields can be 
+        # restricted based on who is editing the agency employee object.
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'authority': self.authority
+        })
+        return context
+
+    def get_object(self):
+        if self.authority == 'owner':
+            maid = self.request.user.agency_owner.agency
+        else:
+            agency = self.request.user.agency_employee.agency
+
+        return Maid.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            agency = agency
+        )
+
 # Create Views
 
 # Update Views
