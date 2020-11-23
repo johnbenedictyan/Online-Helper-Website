@@ -243,7 +243,8 @@ class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidInfantChildCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidInfantChildCareUpdate(
+    SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_infant_child_care'
     form_class = MaidInfantChildCareForm
     http_method_names = ['get','post']
@@ -294,7 +295,8 @@ class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidGeneralHouseworkUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidGeneralHouseworkUpdate(
+    SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_general_housework'
     form_class = MaidGeneralHouseworkForm
     http_method_names = ['get','post']
@@ -328,7 +330,8 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             )
         )
 
-class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidEmploymentHistoryUpdate(
+    SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
