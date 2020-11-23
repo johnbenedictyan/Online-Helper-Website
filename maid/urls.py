@@ -35,7 +35,7 @@ from .views import (
 
 urlpatterns = [
     path(
-        'create/<int:pk>',
+        'create/',
         include([
             path(
                 '',
