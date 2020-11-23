@@ -1,7 +1,96 @@
 {% extends 'base.html' %}
 {% block main_content %}
 <section>
-    {% block dashboard_section %}
-    {% endblock dashboard_section %}
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-2">
+                <nav class="row">
+                    <div class="col d-flex flex-column justify-content-around">
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="{% url 'dashboard_home' %}" class="" style='background-color: grey;'>
+                                <p class="m-1">Dashboard</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="{% url 'dashboard_account_list' %}" class="">
+                                <p class="m-1">Account Management</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="{% url 'dashboard_agency_detail' %}" class="">
+                                <p class="m-1">Agency Management</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="{% url 'dashboard_agency_plan_list' %}" class="">
+                                <p class="m-1">Subscriptions</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="#" class="">
+                                <p class="m-1">Billing History</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="{% url 'dashboard_maid_list' %}" class="">
+                                <p class="m-1">FDW Biodata</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="#" class="">
+                                <p class="m-1">Employer Summary</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="#" class="">
+                                <p class="m-1">Sales Summary</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="#" class="">
+                                <p class="m-1">Status Summary</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="#" class="">
+                                <p class="m-1">Shortlisted Enquiries</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col px-0">
+                                <a class="nav-link text-reset" href="#" class="">
+                                <p class="m-1">General Enquires</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-10">
+                {% block dashboard_section %}
+                {% endblock dashboard_section %}
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock main_content %}
