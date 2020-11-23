@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'shortlist',
     'website',
     'crispy_forms',
-    'django_filters'
+    'django_filters',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
