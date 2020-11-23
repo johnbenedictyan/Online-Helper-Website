@@ -71,7 +71,7 @@ class MaidList(ListFilteredMixin, ListView):
     template_name = 'list/maid-list.html'
     filter_set = MaidFilter
 
-class MaidEmploymentHistoryList(LoginRequiredMixin, ListView):
+class MaidEmploymentHistoryList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'maid_employment_history_list'
     http_method_names = ['get']
     model = MaidEmploymentHistory
