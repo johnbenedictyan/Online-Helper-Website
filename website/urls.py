@@ -8,7 +8,7 @@ from django.urls import include, path
 ## Redirect Views
 
 ## Template Views 
-from .views import HomeView, AboutUsView, ContactUsView, TermsOfSerivceView
+from .views import HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt
 
 ## List Views
 
@@ -42,5 +42,10 @@ urlpatterns = [
             'terms-of-service/',
             TermsOfSerivceView.as_view(),
             name='terms_of_service'
+        ),
+        path(
+            'robots.txt',
+            RobotsTxt.as_view(),
+            name="robots_txt"
         )
 ]
