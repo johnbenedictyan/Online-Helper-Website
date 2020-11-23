@@ -13,7 +13,7 @@ from .views import (
 )
 
 ## Detail Views
-from .views import DashboardAgencyDetail
+from .views import DashboardAgencyDetail, DashboardMaidDetail
 
 ## Create Views
 
@@ -31,9 +31,19 @@ urlpatterns = [
         'view/',
         include([
             path(
-                'maids',
-                DashboardMaidList.as_view(),
-                name='dashboard_maid_list'
+                'maids/',
+                include([
+                    path(
+                        '',
+                        DashboardMaidList.as_view(),
+                        name='dashboard_maid_list'
+                    ),
+                    path(
+                        '<int:pk>/',
+                        DashboardMaidDetail.as_view(),
+                        name='dashboard_maid_detail'
+                    )
+                ])
             ),
             path(
                 'accounts',
