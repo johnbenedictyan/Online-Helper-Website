@@ -25,7 +25,8 @@ class MaidCreationForm(forms.ModelForm):
         exclude = ['agency', 'created_on', 'updated_on']
 
     def __init__(self, *args, **kwargs):
-        self.agency_id = kwargs.pop('agency_id')
+        if kwargs.get('agency_id'):
+            self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
