@@ -2,203 +2,226 @@
 {% block dashboard_section %}
 <div class="limiter">
     <div class="container-table100">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col">
+                    <h1>FDW Biodata</h1>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-8">
+                    <form action="#" method="get">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" name="search-terms" id="" class="form-control">
+                            </div>
+                            <div class="col">
+                                <select name="" id="" class="form-control"></select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <a href="{% url 'maid_create' %}" class="btn btn-success">Add Biodata</a>
+                </div>
+            </div>
+        </div>
         <div class="wrap-table100">
-                <div class="table">
-
-                    <div class="table-row fdw-table-row header">
-                        <div class="cell">
-                            S/N
-                        </div>
-                        <div class="cell">
-                            Name
-                        </div>
-                        <div class="cell">
-                            Nationality
-                        </div>
-                        <div class="cell">
-                            Type
-                        </div>
-                        <div class="cell">
-                            Age
-                        </div>
-                        <div class="cell">
-                            Job Preference
-                        </div>
-                        <div class="cell">
-                            Published
-                        </div>
-                        <div class="cell">
-                            Featured
-                        </div>
-                        <div class="cell">
-                            Date Created
-                        </div>
-                        <div class="cell">
-                            Actions
-                        </div>
+            <div class="table">
+                <div class="table-row fdw-table-row header">
+                    <div class="cell">
+                        S/N
                     </div>
-
-                    <div class="table-row fdw-table-row">
-                        <div class="cell" data-title="S/N">
-                            123
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Mary
-                        </div>
-                        <div class="cell" data-title="Nationality">
-                            Indonesian
-                        </div>
-                        <div class="cell" data-title="Type">
-                            No Experience
-                        </div>
-                        <div class="cell" data-title="Age">
-                            24
-                        </div>
-                        <div class="cell" data-title="Job Preference">
-                            None
-                        </div>
-                        <div class="cell" data-title="Published">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Featured">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Date Created">
-                            29/04/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
+                    <div class="cell">
+                        Name
                     </div>
-                    <div class="table-row fdw-table-row">
-                        <div class="cell" data-title="S/N">
-                            124
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Mary
-                        </div>
-                        <div class="cell" data-title="Nationality">
-                            Indonesian
-                        </div>
-                        <div class="cell" data-title="Type">
-                            No Experience
-                        </div>
-                        <div class="cell" data-title="Age">
-                            24
-                        </div>
-                        <div class="cell" data-title="Job Preference">
-                            None
-                        </div>
-                        <div class="cell" data-title="Published">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Featured">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Date Created">
-                            29/04/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
+                    <div class="cell">
+                        Nationality
                     </div>
-                    <div class="table-row fdw-table-row">
-                        <div class="cell" data-title="S/N">
-                            125
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Mary
-                        </div>
-                        <div class="cell" data-title="Nationality">
-                            Indonesian
-                        </div>
-                        <div class="cell" data-title="Type">
-                            No Experience
-                        </div>
-                        <div class="cell" data-title="Age">
-                            24
-                        </div>
-                        <div class="cell" data-title="Job Preference">
-                            None
-                        </div>
-                        <div class="cell" data-title="Published">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Featured">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Date Created">
-                            29/04/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
+                    <div class="cell">
+                        Type
                     </div>
-                    <div class="table-row fdw-table-row">
-                        <div class="cell" data-title="S/N">
-                            126
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Mary
-                        </div>
-                        <div class="cell" data-title="Nationality">
-                            Indonesian
-                        </div>
-                        <div class="cell" data-title="Type">
-                            No Experience
-                        </div>
-                        <div class="cell" data-title="Age">
-                            24
-                        </div>
-                        <div class="cell" data-title="Job Preference">
-                            None
-                        </div>
-                        <div class="cell" data-title="Published">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Featured">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Date Created">
-                            29/04/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
+                    <div class="cell">
+                        Age
                     </div>
-                    <div class="table-row fdw-table-row">
-                        <div class="cell" data-title="S/N">
-                            127
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Mary
-                        </div>
-                        <div class="cell" data-title="Nationality">
-                            Indonesian
-                        </div>
-                        <div class="cell" data-title="Type">
-                            No Experience
-                        </div>
-                        <div class="cell" data-title="Age">
-                            24
-                        </div>
-                        <div class="cell" data-title="Job Preference">
-                            None
-                        </div>
-                        <div class="cell" data-title="Published">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Featured">
-                            <i class="far fa-check-circle text-success"></i>
-                        </div>
-                        <div class="cell" data-title="Date Created">
-                            29/04/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
+                    <div class="cell">
+                        Job Preference
+                    </div>
+                    <div class="cell">
+                        Published
+                    </div>
+                    <div class="cell">
+                        Featured
+                    </div>
+                    <div class="cell">
+                        Date Created
+                    </div>
+                    <div class="cell">
+                        Actions
                     </div>
                 </div>
+
+                <div class="table-row fdw-table-row">
+                    <div class="cell" data-title="S/N">
+                        123
+                    </div>
+                    <div class="cell" data-title="Name">
+                        Mary
+                    </div>
+                    <div class="cell" data-title="Nationality">
+                        Indonesian
+                    </div>
+                    <div class="cell" data-title="Type">
+                        No Experience
+                    </div>
+                    <div class="cell" data-title="Age">
+                        24
+                    </div>
+                    <div class="cell" data-title="Job Preference">
+                        None
+                    </div>
+                    <div class="cell" data-title="Published">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Featured">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Date Created">
+                        29/04/2020
+                    </div>
+                    <div class="cell" data-title="Actions">
+                        <a href="#" class="btn btn-primary">Modify</a>
+                    </div>
+                </div>
+                <div class="table-row fdw-table-row">
+                    <div class="cell" data-title="S/N">
+                        124
+                    </div>
+                    <div class="cell" data-title="Name">
+                        Mary
+                    </div>
+                    <div class="cell" data-title="Nationality">
+                        Indonesian
+                    </div>
+                    <div class="cell" data-title="Type">
+                        No Experience
+                    </div>
+                    <div class="cell" data-title="Age">
+                        24
+                    </div>
+                    <div class="cell" data-title="Job Preference">
+                        None
+                    </div>
+                    <div class="cell" data-title="Published">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Featured">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Date Created">
+                        29/04/2020
+                    </div>
+                    <div class="cell" data-title="Actions">
+                        <a href="#" class="btn btn-primary">Modify</a>
+                    </div>
+                </div>
+                <div class="table-row fdw-table-row">
+                    <div class="cell" data-title="S/N">
+                        125
+                    </div>
+                    <div class="cell" data-title="Name">
+                        Mary
+                    </div>
+                    <div class="cell" data-title="Nationality">
+                        Indonesian
+                    </div>
+                    <div class="cell" data-title="Type">
+                        No Experience
+                    </div>
+                    <div class="cell" data-title="Age">
+                        24
+                    </div>
+                    <div class="cell" data-title="Job Preference">
+                        None
+                    </div>
+                    <div class="cell" data-title="Published">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Featured">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Date Created">
+                        29/04/2020
+                    </div>
+                    <div class="cell" data-title="Actions">
+                        <a href="#" class="btn btn-primary">Modify</a>
+                    </div>
+                </div>
+                <div class="table-row fdw-table-row">
+                    <div class="cell" data-title="S/N">
+                        126
+                    </div>
+                    <div class="cell" data-title="Name">
+                        Mary
+                    </div>
+                    <div class="cell" data-title="Nationality">
+                        Indonesian
+                    </div>
+                    <div class="cell" data-title="Type">
+                        No Experience
+                    </div>
+                    <div class="cell" data-title="Age">
+                        24
+                    </div>
+                    <div class="cell" data-title="Job Preference">
+                        None
+                    </div>
+                    <div class="cell" data-title="Published">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Featured">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Date Created">
+                        29/04/2020
+                    </div>
+                    <div class="cell" data-title="Actions">
+                        <a href="#" class="btn btn-primary">Modify</a>
+                    </div>
+                </div>
+                <div class="table-row fdw-table-row">
+                    <div class="cell" data-title="S/N">
+                        127
+                    </div>
+                    <div class="cell" data-title="Name">
+                        Mary
+                    </div>
+                    <div class="cell" data-title="Nationality">
+                        Indonesian
+                    </div>
+                    <div class="cell" data-title="Type">
+                        No Experience
+                    </div>
+                    <div class="cell" data-title="Age">
+                        24
+                    </div>
+                    <div class="cell" data-title="Job Preference">
+                        None
+                    </div>
+                    <div class="cell" data-title="Published">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Featured">
+                        <i class="far fa-check-circle text-success"></i>
+                    </div>
+                    <div class="cell" data-title="Date Created">
+                        29/04/2020
+                    </div>
+                    <div class="cell" data-title="Actions">
+                        <a href="#" class="btn btn-primary">Modify</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
