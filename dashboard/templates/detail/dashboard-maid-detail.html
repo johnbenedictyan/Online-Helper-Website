@@ -1,5 +1,762 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <div class="container">
+    <div class="row mb-3">
+        <div class="col-6">
+            <img src="" alt="" class="img-fluid">
+            <h3>{{maid.biodata.name}}</h3>
+            <h5 class="text-muted">Ref No: {{maid.reference_number}}</h5>
+            {% if maid.complete == True %}
+            <h5>Status: Complete</h5>
+            {% else %}
+            <h5>Status: Not Complete</h5>
+            {% endif %}
+            <h5 class="text-muted">Last Updated: {{maid.updated_on}}</h5>
+        </div>
+        <div class="col-3 offset-3">
+            <div class="row my-4">
+                <div class="col">
+                    <a href="#" class="btn btn-danger w-100">Delete FDW Biodata</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="#" class="btn btn-success w-100">Publish FDW Biodata</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Maid Information</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Reference Number</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.reference_number}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Maid Type</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.get_maid_type_display}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Salary</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.salary}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Loan Amount</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.loan_amount}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Days Off</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.days_off}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Passport Status</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.get_passport_status_display}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Repatraition Airport</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.repatraition_airport}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Remarks</h5>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">{{maid.remarks}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Maid Biodata</h4>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Name</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.name %}
+                            <p class="card-text">{{maid.biodata.name}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Age</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.age %}
+                            <p class="card-text">{{maid.biodata.age}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Country of Origin</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.country_of_origin %}
+                            <p class="card-text">{{maid.biodata.country_of_origin}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Height</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.height %}
+                            <p class="card-text">{{maid.biodata.height}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Weight</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.weight %}
+                            <p class="card-text">{{maid.biodata.weight}} kg</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Place of Birth</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.place_of_birth %}
+                            <p class="card-text">{{maid.biodata.place_of_birth}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Address</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.address_1 and maid.biodata.address_2 %}
+                            <p class="card-text">
+                                <address>
+                                    {{maid.biodata.address_1}}
+                                    {{maid.biodata.address_2}}
+                                </address>
+                            </p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Religion</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata.religion != 'NONE' %}
+                            <p class="card-text">{{maid.biodata.religion}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.biodata_complete is True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Maid Family Details</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Marital Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.family_details.marital_status %}
+                            <p class="card-text">{{maid.family_details.marital_status}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Number of Children</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.family_details.number_of_children %}
+                            <p class="card-text">{{maid.family_details.number_of_children}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Age of Children</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.family_details.number_of_children %}
+                            <p class="card-text">{{maid.family_details.number_of_children}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Number of Siblings</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.family_details.number_of_siblings %}
+                            <p class="card-text">{{maid.family_details.number_of_siblings}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.family_details_complete == True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Infant/Child Care</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Preference</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.infant_child_care.preference %}
+                            <p class="card-text">{{maid.infant_child_care.get_preference_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Willingness</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.infant_child_care.willingness %}
+                            <p class="card-text">{{maid.infant_child_care.get_willingness_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Experience</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.infant_child_care.experience %}
+                            <p class="card-text">{{maid.infant_child_care.get_experience_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.infant_child_care.remarks %}
+                            <p class="card-text">{{maid.infant_child_care.get_remarks_display}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Other remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.infant_child_care.other_remarks %}
+                            <p class="card-text">{{maid.infant_child_care.other_remarks}} kg</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.infant_child_care_complete is True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Elderly Care</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Preference</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.elderly_care.preference %}
+                            <p class="card-text">{{maid.elderly_care.get_preference_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Willingness</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.elderly_care.willingness %}
+                            <p class="card-text">{{maid.elderly_care.get_willingness_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Experience</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.elderly_care.experience %}
+                            <p class="card-text">{{maid.elderly_care.get_experience_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.elderly_care.remarks %}
+                            <p class="card-text">{{maid.elderly_care.get_remarks_display}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Other remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.elderly_care.other_remarks %}
+                            <p class="card-text">{{maid.elderly_care.other_remarks}} kg</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.elderly_care_complete is True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Disabled Care</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Preference</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.disabled_care.preference %}
+                            <p class="card-text">{{maid.disabled_care.get_preference_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Willingness</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.disabled_care.willingness %}
+                            <p class="card-text">{{maid.disabled_care.get_willingness_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Experience</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.disabled_care.experience %}
+                            <p class="card-text">{{maid.disabled_care.get_experience_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.disabled_care.remarks %}
+                            <p class="card-text">{{maid.disabled_care.get_remarks_display}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Other remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.disabled_care.other_remarks %}
+                            <p class="card-text">{{maid.disabled_care.other_remarks}} kg</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.disabled_care_complete is True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-4 offset-2">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">General Housework</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Preference</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.general_housework.preference %}
+                            <p class="card-text">{{maid.general_housework.get_preference_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Willingness</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.general_housework.willingness %}
+                            <p class="card-text">{{maid.general_housework.get_willingness_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Experience</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.general_housework.experience %}
+                            <p class="card-text">{{maid.general_housework.get_experience_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.general_housework.remarks %}
+                            <p class="card-text">{{maid.general_housework.get_remarks_display}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Other remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.general_housework.other_remarks %}
+                            <p class="card-text">{{maid.general_housework.other_remarks}} kg</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.general_housework_complete is True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header" style='background:grey'>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mb-0">Cooking</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Preference</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.cooking.preference %}
+                            <p class="card-text">{{maid.cooking.get_preference_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Willingness</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.cooking.willingness %}
+                            <p class="card-text">{{maid.cooking.get_willingness_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Experience</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.cooking.experience %}
+                            <p class="card-text">{{maid.cooking.get_experience_display}}</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.cooking.remarks %}
+                            <p class="card-text">{{maid.cooking.get_remarks_display}} cm</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Other remarks</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.cooking.other_remarks %}
+                            <p class="card-text">{{maid.cooking.other_remarks}} kg</p>
+                            {% else %}
+                            <p class="card-text">Incomplete</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Completion Status</h5>
+                        </div>
+                        <div class="col">
+                            {% if maid.eldery_care_complete is True %}
+                            <h1><span class="badge badge-success">Complete</span></h1>
+                            {% else %}
+                            <h1><span class="badge badge-danger">Incomplete</span></h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="" class="btn btn-primary w-50">Modify</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock dashboard_section %}
