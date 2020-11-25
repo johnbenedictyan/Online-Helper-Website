@@ -143,6 +143,14 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
         })
         return kwargs
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'maid_update',
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
+
 class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, CreateView):
     context_object_name = 'maid_food_handling_preference'
     form_class = MaidFoodHandlingPreferenceForm
@@ -198,7 +206,6 @@ class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     http_method_names = ['get','post']
     model = Maid
     template_name = 'update/maid-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         if self.request.user.groups.filter(name='Agency Owners').exists():
@@ -213,13 +220,22 @@ class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             agency = agency
         )
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
+
 class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_biodata'
     form_class = MaidBiodataForm
     http_method_names = ['get','post']
     model = MaidBiodata
     template_name = 'update/maid-biodata-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidBiodata.objects.get(
@@ -229,6 +245,16 @@ class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
                 )
             )
         )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
 
 class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_family_details'
@@ -236,7 +262,6 @@ class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     http_method_names = ['get','post']
     model = MaidFamilyDetails
     template_name = 'update/maid-family-details-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidFamilyDetails.objects.get(
@@ -247,6 +272,16 @@ class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             )
         )
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
+
 class MaidInfantChildCareUpdate(
     SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_infant_child_care'
@@ -254,7 +289,6 @@ class MaidInfantChildCareUpdate(
     http_method_names = ['get','post']
     model = MaidInfantChildCare
     template_name = 'update/maid-infant-child-care-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidInfantChildCare.objects.get(
@@ -264,6 +298,16 @@ class MaidInfantChildCareUpdate(
                 )
             )
         )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
 
 class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_elderly_care'
@@ -271,7 +315,6 @@ class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     http_method_names = ['get','post']
     model = MaidElderlyCare
     template_name = 'update/maid-elderly-care-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidElderlyCare.objects.get(
@@ -281,6 +324,16 @@ class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
                 )
             )
         )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
 
 class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_disabled_care'
@@ -288,7 +341,6 @@ class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     http_method_names = ['get','post']
     model = MaidDisabledCare
     template_name = 'update/maid-disabled-care-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidDisabledCare.objects.get(
@@ -298,6 +350,16 @@ class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
                 )
             )
         )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
 
 class MaidGeneralHouseworkUpdate(
     SpecificAgencyMaidLoginRequiredMixin, UpdateView):
@@ -306,7 +368,6 @@ class MaidGeneralHouseworkUpdate(
     http_method_names = ['get','post']
     model = MaidGeneralHousework
     template_name = 'update/maid-general-housework-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidGeneralHousework.objects.get(
@@ -316,6 +377,16 @@ class MaidGeneralHouseworkUpdate(
                 )
             )
         )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
+        )
 
 class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     context_object_name = 'maid_cooking'
@@ -323,7 +394,6 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
     http_method_names = ['get','post']
     model = MaidCooking
     template_name = 'update/maid-cooking-update.html'
-    success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return MaidCooking.objects.get(
@@ -332,6 +402,16 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
                     self.pk_url_kwarg
                 )
             )
+        )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            }
         )
 
 class MaidEmploymentHistoryUpdate(
