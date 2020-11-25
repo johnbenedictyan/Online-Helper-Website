@@ -24,6 +24,15 @@ class OnlineMaidStaffRequiredMixin(SuperUserRequiredMixin):
 class AgencyLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
 
+    def dispatch(self, request, *args, **kwargs):
+        ## Superuser should not have the permssion to access agency views.
+        ## It will also mess up the get authority mixin
+        if request.user.is_superuser:
+            return self.handle_no_permission(request)
+
+        return super(AgencyLoginRequiredMixin, self).dispatch(
+            request, *args, **kwargs)
+
     # This mixin is the base mixin if we want the user to login in using the 
     # agency sign in page rather than the sign in page for the potential 
     # employers.
