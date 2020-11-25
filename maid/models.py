@@ -519,7 +519,7 @@ class MaidElderlyCare(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
-        related_name='elderyly_care'
+        related_name='elderly_care'
     )
 
     preference = models.IntegerField(
