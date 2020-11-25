@@ -16,12 +16,12 @@
         <div class="col-3 offset-3">
             <div class="row my-4">
                 <div class="col">
-                    <a href="#" class="btn btn-danger w-100">Delete FDW Biodata</a>
+                    <a href="{% url 'maid_delete' pk=maid.pk %}" class="btn btn-danger w-100">Delete FDW Biodata</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="#" class="btn btn-success w-100">Publish FDW Biodata</a>
+                    <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success w-100">Publish FDW Biodata</a>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -233,7 +233,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_biodata_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -309,7 +309,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_family_details_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -399,7 +399,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_infant_child_care_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -487,7 +487,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_elderly_care_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -575,7 +575,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_disabled_care_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -665,7 +665,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_general_housework_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -753,7 +753,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_cooking_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
