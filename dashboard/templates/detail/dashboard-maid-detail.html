@@ -148,7 +148,7 @@
                         </div>
                         <div class="col">
                             {% if maid.biodata.country_of_origin %}
-                            <p class="card-text">{{maid.biodata.country_of_origin}}</p>
+                            <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -213,7 +213,7 @@
                         </div>
                         <div class="col">
                             {% if maid.biodata.religion != 'NONE' %}
-                            <p class="card-text">{{maid.biodata.religion}}</p>
+                            <p class="card-text">{{maid.biodata.get_religion_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
