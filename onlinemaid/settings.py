@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'advertisement',
     'agency',
     'dashboard',
+    'employer_documentation',
     'maid',
     'payment',
     'shortlist',
