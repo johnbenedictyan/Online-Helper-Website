@@ -701,56 +701,56 @@ class EmployerDocEmploymentContract(models.Model):
         ]
     )
 
-class EmployerDocSalaryPlacementRepayment(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocSalaryPlacementRepayment(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocRestDayAgreement(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocRestDayAgreement(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocHandoverChecklist(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocHandoverChecklist(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocTransferConsent(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocTransferConsent(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocWorkPassAuthorisation(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocWorkPassAuthorisation(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocSecurityBondForm(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocSecurityBondForm(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocWorkPermitApplicants(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocWorkPermitApplicants(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocIncomeTaxDeclaration(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocIncomeTaxDeclaration(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
 
-class EmployerDocSafetyAgreement(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
+# class EmployerDocSafetyAgreement(models.Model):
+#     employer_doc_base = models.OneToOneField(
+#         EmployerDocBase,
+#         on_delete=models.CASCADE
+#     )
