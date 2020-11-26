@@ -70,7 +70,7 @@
                             {{maid.biodata.name}}
                         </div>
                         <div class="cell" data-title="Nationality">
-                            {{maid.biodata.country_of_origin}}
+                            {{maid.biodata.get_country_of_origin_display}}
                         </div>
                         <div class="cell" data-title="Type">
                             {{maid.get_maid_type_display}}
@@ -82,13 +82,21 @@
                             None
                         </div>
                         <div class="cell" data-title="Published">
+                            {% if maid.published is True %}
                             <i class="far fa-check-circle text-success"></i>
+                            {% else %}
+                            <i class="far fa-times-circle text-danger"></i>
+                            {% endif %}
                         </div>
                         <div class="cell" data-title="Featured">
+                            {% if maid.featured is True %}
                             <i class="far fa-check-circle text-success"></i>
+                            {% else %}
+                            <i class="far fa-times-circle text-danger"></i>
+                            {% endif %}
                         </div>
                         <div class="cell" data-title="Date Created">
-                            29/04/2020
+                            {{maid.created_on}}
                         </div>
                         <div class="cell" data-title="Actions">
                             <a href="{% url 'dashboard_maid_detail' pk=maid.pk %}" class="btn btn-primary">Modify</a>
