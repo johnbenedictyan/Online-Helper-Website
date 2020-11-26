@@ -10,12 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+# Python libraries
 import os
-import dj_database_url
-import sys
 
-import env
+# Django modules
 from pathlib import Path
+
+# 3rd party libraries
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,23 +27,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'lno+!fq9i!pv#q1j60e41v0h631&ulu)!3n2yx@tv0#sr1822='
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DJANGO_DEBUG", "0"))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(',')
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 3rd party packages
+    'crispy_forms',
+    'django_filters',
+    'social_django',
+
+    # Our apps
     'accounts',
     'advertisement',
     'agency',
@@ -50,10 +60,9 @@ INSTALLED_APPS = [
     'payment',
     'shortlist',
     'website',
-    'crispy_forms',
-    'django_filters',
+
+    ######## DEBUG mode only packages, to be REMOVED before production ########
     'sslserver',
-    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -90,16 +99,18 @@ WSGI_APPLICATION = 'onlinemaid.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get("POSTGRESQL_URL")
-    )
-}
-
-if 'test' in sys.argv:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if int(os.environ.get("DATABASE_DEBUG", "1")):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            os.environ.get("POSTGRESQL_URL")
+        )
     }
 
 
