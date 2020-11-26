@@ -137,7 +137,7 @@ class DashboardMaidDetail(
 
     def get_object(self):
         if self.authority == 'owner':
-            maid = self.request.user.agency_owner.agency
+            agency = self.request.user.agency_owner.agency
         else:
             agency = self.request.user.agency_employee.agency
 
