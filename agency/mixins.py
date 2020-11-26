@@ -149,7 +149,7 @@ class GetAuthorityMixin:
         if self.request.user.groups.filter(name='Agency Sales Staff').exists():
             authority = 'sales_staff'
 
-        self.authority = authority
+        return authority
 
     def get(self, request, *args, **kwargs):
         if not self.authority and self.authority != '':
@@ -157,5 +157,14 @@ class GetAuthorityMixin:
                 '{0} is missing the authority attribute'
                 .format(self.__class__.__name__)
             )
-        self.get_authority()
+        self.authority = self.get_authority()
         return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not self.authority and self.authority != '':
+            raise ImproperlyConfigured(
+                '{0} is missing the authority attribute'
+                .format(self.__class__.__name__)
+            )
+        self.authority = self.get_authority()
+        return super().post(request, *args, **kwargs)
