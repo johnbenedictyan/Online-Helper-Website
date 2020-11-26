@@ -1,6 +1,7 @@
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.base import RedirectView
@@ -128,6 +129,8 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
         MaidCooking.objects.create(
             maid=self.object
         )
+
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_form_kwargs(self):
         if self.authority == 'owner':
