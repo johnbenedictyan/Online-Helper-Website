@@ -82,5 +82,6 @@ urlpatterns = [
         'sign-out/',
         SignOutView.as_view(),
         name='sign_out'
-    )
+    ),
+    path('oauth/',include('social_django.urls', namespace="social")),
 ]

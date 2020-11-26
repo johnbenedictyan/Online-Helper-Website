@@ -28,6 +28,11 @@ class TermsOfSerivceView(TemplateView):
     http_method_names = ['get']
     template_name = 'terms-of-service.html'
 
+class RobotsTxt(TemplateView):
+    http_method_names = ['get']
+    template_name = 'robots.txt'
+    content_type='text/plain'
+
 # Redirect Views
 
 # List Views

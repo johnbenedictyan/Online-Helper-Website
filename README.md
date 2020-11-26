@@ -5,5 +5,7 @@ A rewrite for OnlineMaid website which uses class-based views instead of functio
 # Quick Installation
 
 1. `pip3 install requirements.txt`
-2. `export POSTGRESQL_URL=your_postgresql_url_here`
-3. `python3 manage.py runserver`
+2. `cp sample-env.py env.py`
+3. `python3 manage.py migrate`
+4. Update the environmental variables within `env.py`
+5. `python3 manage.py runsslserver`
