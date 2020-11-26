@@ -42,7 +42,6 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 
 # Redirect Views
 class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
-    pattern_name = ''
     pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
@@ -61,11 +60,14 @@ class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
             maid.published = not maid.published
             maid.save()
             kwargs.pop(self.pk_url_kwarg)
-        return super().get_redirect_url(*args, **kwargs)
+        finally:
+            return reverse_lazy(
+                'dashboard_maid_list'
+            )
         
 # List Views
 class MaidList(ListFilteredMixin, ListView):
-    context_object_name = 'maid'
+    context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     queryset = Maid.objects.filter(published=True)
