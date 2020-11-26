@@ -66,7 +66,8 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         res = super(SpecificAgencyOwnerRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
-        if self.check_type is None:
+        error_msg = None
+        if not self.check_type:
             error_msg = 'set'
         if self.check_type not in self.check_model_dict:
             error_msg = 'a key in the check_model_dict'
@@ -80,7 +81,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         check_model = self.check_model_dict[self.check_type]
 
         try:
-            if check_type == 'maid':
+            if self.check_type == 'maid':
                 check_model.objects.get(
                     pk = self.kwargs.get(
                         self.pk_url_kwarg
