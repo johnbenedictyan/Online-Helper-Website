@@ -121,7 +121,7 @@ class Maid(models.Model):
         editable=False
     )
 
-    eldery_care_complete = models.BooleanField(
+    elderly_care_complete = models.BooleanField(
         default=False,
         blank=True,
         editable=False
@@ -140,12 +140,6 @@ class Maid(models.Model):
     )
 
     cooking_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    status_complete = models.BooleanField(
         default=False,
         blank=True,
         editable=False
@@ -778,7 +772,7 @@ def maid_completed(maid):
         maid.general_housework_complete == True and 
         maid.cooking_complete == True
     ):
-        maid.completed = True
+        maid.complete = True
         maid.save()
 
 @receiver(post_save, sender=MaidBiodata)
@@ -805,7 +799,10 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
         for k,v in instance.__dict__.items():
             if not v:
                 family_details_valid = False
-        
+                if k is 'number_of_children' or k is 'number_of_siblings':
+                    if v is 0:
+                        family_details_valid = True
+
         maid.family_details_complete = family_details_valid
         maid.save()
         if family_details_valid == True:
@@ -818,8 +815,9 @@ def maid_infant_child_care_completed(sender, instance, created, **kwargs):
         infant_child_care_valid = True
 
         for k,v in instance.__dict__.items():
-            if not v:
-                infant_child_care_valid = False
+            if k is not 'other_remarks':
+                if not v:
+                    infant_child_care_valid = False
         
         maid.infant_child_care_complete = infant_child_care_valid
         maid.save()
@@ -833,8 +831,9 @@ def maid_elderly_care_completed(sender, instance, created, **kwargs):
         elderly_care_valid = True
 
         for k,v in instance.__dict__.items():
-            if not v:
-                elderly_care_valid = False
+            if k is not 'other_remarks':
+                if not v:
+                    elderly_care_valid = False
         
         maid.elderly_care_complete = elderly_care_valid
         maid.save()
@@ -848,8 +847,9 @@ def maid_disabled_care_completed(sender, instance, created, **kwargs):
         disabled_care_valid = True
 
         for k,v in instance.__dict__.items():
-            if not v:
-                disabled_care_valid = False
+            if k is not 'other_remarks':
+                if not v:
+                    disabled_care_valid = False
     
         maid.disabled_care_complete = disabled_care_valid
         maid.save()
@@ -863,8 +863,9 @@ def maid_general_housework_completed(sender, instance, created, **kwargs):
         general_housework_valid = True
 
         for k,v in instance.__dict__.items():
-            if not v:
-                general_housework_valid = False
+            if k is not 'other_remarks':
+                if not v:
+                    general_housework_valid = False
         
         maid.general_housework_complete = general_housework_valid
         maid.save()
@@ -878,8 +879,9 @@ def maid_cooking_completed(sender, instance, created, **kwargs):
         cooking_valid = True
 
         for k,v in instance.__dict__.items():
-            if not v:
-                cooking_valid = False
+            if k is not 'other_remarks':
+                if not v:
+                    cooking_valid = False
         
         maid.cooking_complete = cooking_valid
         maid.save()
