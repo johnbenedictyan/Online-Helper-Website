@@ -289,7 +289,7 @@
                         </div>
                         <div class="col">
                             {% if maid.family_details.number_of_siblings %}
-                            <p class="card-text">{{maid.family_details.number_of_siblings}} cm</p>
+                            <p class="card-text">{{maid.family_details.number_of_siblings}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -367,7 +367,7 @@
                         </div>
                         <div class="col">
                             {% if maid.infant_child_care.remarks %}
-                            <p class="card-text">{{maid.infant_child_care.get_remarks_display}} cm</p>
+                            <p class="card-text">{{maid.infant_child_care.get_remarks_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -379,7 +379,7 @@
                         </div>
                         <div class="col">
                             {% if maid.infant_child_care.other_remarks %}
-                            <p class="card-text">{{maid.infant_child_care.other_remarks}} kg</p>
+                            <p class="card-text">{{maid.infant_child_care.other_remarks}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -455,7 +455,7 @@
                         </div>
                         <div class="col">
                             {% if maid.elderly_care.remarks %}
-                            <p class="card-text">{{maid.elderly_care.get_remarks_display}} cm</p>
+                            <p class="card-text">{{maid.elderly_care.get_remarks_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -467,7 +467,7 @@
                         </div>
                         <div class="col">
                             {% if maid.elderly_care.other_remarks %}
-                            <p class="card-text">{{maid.elderly_care.other_remarks}} kg</p>
+                            <p class="card-text">{{maid.elderly_care.other_remarks}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -543,7 +543,7 @@
                         </div>
                         <div class="col">
                             {% if maid.disabled_care.remarks %}
-                            <p class="card-text">{{maid.disabled_care.get_remarks_display}} cm</p>
+                            <p class="card-text">{{maid.disabled_care.get_remarks_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -555,7 +555,7 @@
                         </div>
                         <div class="col">
                             {% if maid.disabled_care.other_remarks %}
-                            <p class="card-text">{{maid.disabled_care.other_remarks}} kg</p>
+                            <p class="card-text">{{maid.disabled_care.other_remarks}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -633,7 +633,7 @@
                         </div>
                         <div class="col">
                             {% if maid.general_housework.remarks %}
-                            <p class="card-text">{{maid.general_housework.get_remarks_display}} cm</p>
+                            <p class="card-text">{{maid.general_housework.get_remarks_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -645,7 +645,7 @@
                         </div>
                         <div class="col">
                             {% if maid.general_housework.other_remarks %}
-                            <p class="card-text">{{maid.general_housework.other_remarks}} kg</p>
+                            <p class="card-text">{{maid.general_housework.other_remarks}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -721,7 +721,7 @@
                         </div>
                         <div class="col">
                             {% if maid.cooking.remarks %}
-                            <p class="card-text">{{maid.cooking.get_remarks_display}} cm</p>
+                            <p class="card-text">{{maid.cooking.get_remarks_display}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -733,7 +733,7 @@
                         </div>
                         <div class="col">
                             {% if maid.cooking.other_remarks %}
-                            <p class="card-text">{{maid.cooking.other_remarks}} kg</p>
+                            <p class="card-text">{{maid.cooking.other_remarks}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -744,7 +744,7 @@
                             <h5 class="card-title">Completion Status</h5>
                         </div>
                         <div class="col">
-                            {% if maid.eldery_care_complete is True %}
+                            {% if maid.cooking_complete is True %}
                             <h1><span class="badge badge-success">Complete</span></h1>
                             {% else %}
                             <h1><span class="badge badge-danger">Incomplete</span></h1>
