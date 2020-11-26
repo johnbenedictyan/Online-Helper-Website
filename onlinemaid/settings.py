@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 # Python libraries
 import os
-
-# Django modules
 from pathlib import Path
 
 # 3rd party libraries
