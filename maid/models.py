@@ -156,6 +156,11 @@ class Maid(models.Model):
         blank=False
     )
 
+    featured = models.BooleanField(
+        default=False,
+        blank=False
+    )
+
 class MaidWorkDuty(models.Model):
     class WorkDutyChoices(models.TextChoices):
         HOUSEWORK = 'H', _('Housework')
