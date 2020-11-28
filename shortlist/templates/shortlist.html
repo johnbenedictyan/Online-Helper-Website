@@ -1,0 +1,17 @@
+{% extends 'shortlist-base.html' %}
+{% block shortlist_section %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Shorlisted Maids</h1>
+        </div>
+    </div>
+    {% for maid in shortlist %}
+    <div class="row">
+        <div class="col">
+            {{maid}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock shortlist_section %}
