@@ -15,7 +15,7 @@ class AddTo(RedirectView):
     pattern_name = 'maid_list'
 
     def get_redirect_url(self, *args, **kwargs):
-        current_shortlist = self.request.session.get('shortlist',[])
+        current_shortlist = self.request.session.get('shortlist', [])
         try:
             selected_maid = Maid.objects.get(
                 pk = kwargs.get('pk')
@@ -28,13 +28,19 @@ class AddTo(RedirectView):
         else:
             if selected_maid.published == False:
                 messages.error(
-                self.request,
+                    self.request,
                     'This maid cannot be shortlisted at the moment'
                 )
+            elif selected_maid.pk in current_shortlist:
+                messages.error(
+                    self.request,
+                    'This maid is already in your shortlist'
+                )
             else:
-                self.request.session['shortlist'] = current_shortlist.push(
+                current_shortlist.append(
                     selected_maid.pk
                 )
+                self.request.session['shortlist'] = current_shortlist
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
@@ -42,7 +48,7 @@ class RemoveFrom(RedirectView):
     pattern_name = 'maid_list'
 
     def get_redirect_url(self, *args, **kwargs):
-        current_shortlist = self.request.session.get('shortlist',[])
+        current_shortlist = self.request.session.get('shortlist', [])
         try:
             selected_maid = Maid.objects.get(
                 pk = kwargs.get('pk')
@@ -59,9 +65,10 @@ class RemoveFrom(RedirectView):
                     'This maid is not in your shortlist'
                 )
             else:
-                self.request.session['shortlist'] = current_shortlist.remove(
+                current_shortlist.remove(
                     selected_maid.pk
                 )
+                self.request.session['shortlist'] = current_shortlist
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
@@ -71,5 +78,10 @@ class ViewShortlist(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['shortlist'] = self.request.session.get('shortlist', [])
+        current_shortlist = self.request.session.get('shortlist', [])
+        self.request.session['shortlist'] = current_shortlist
+
+        context['shortlist'] = Maid.objects.filter(
+            pk__in=current_shortlist
+        )
         return context
