@@ -14,6 +14,8 @@
         <h1>Sign In</h1>
         <form method="post" enctype="multipart/form-data">
             {% crispy form %}
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-google btn-block text-uppercase"><i class="fab fa-google mr-2"></i> Sign In with Google</a>
+            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-facebook btn-block text-uppercase"><i class="fab fa-facebook-f mr-2"></i> Sign In with Facebook</a>
         </form>
     </div>
 {% endblock accounts_section %}
