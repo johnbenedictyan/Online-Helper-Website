@@ -67,6 +67,17 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
     template_name = 'create/agency-create.html'
     success_url = reverse_lazy('home')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        AgencyBranch.objects.create(
+            agency=self.object
+        )
+        AgencyOperatingHours.objects.create(
+            agency=self.object
+        )
+
+        return HttpResponseRedirect(self.get_success_url())
+
 class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
     context_object_name = 'agency_owner'
     form_class = AgencyOwnerCreationForm
