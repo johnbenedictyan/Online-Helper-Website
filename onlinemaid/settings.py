@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     # Our apps
     'accounts',
     'advertisement',
-    'agency',
+    'agency.apps.AgencyConfig',
     'dashboard',
     'employer_documentation',
     'maid.apps.MaidConfig',
