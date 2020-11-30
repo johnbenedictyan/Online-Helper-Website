@@ -246,8 +246,7 @@ class EmployerCreationForm(forms.ModelForm):
         try:
             new_user = get_user_model().objects.create_user(
                 email=cleaned_data.get('email'),
-                password=cleaned_data.get('password'),
-                role='E'
+                password=cleaned_data.get('password')
             )
         except Exception as e:
             pass

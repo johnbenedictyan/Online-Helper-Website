@@ -29,12 +29,6 @@ class User(AbstractUser):
         _('Email Address'), 
         unique=True
     )
-    role = models.CharField(
-        verbose_name=_('Role'),
-        max_length=2,
-        choices=RoleChoices.choices,
-        default=RoleChoices.EMPLOYER
-    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

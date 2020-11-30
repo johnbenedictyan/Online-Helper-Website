@@ -157,8 +157,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
         try:
             new_user = get_user_model().objects.create_user(
                 email=cleaned_data.get('email'),
-                password=cleaned_data.get('password'),
-                role='AO'
+                password=cleaned_data.get('password')
             )
         except Exception as e:
             pass
@@ -294,8 +293,7 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
         try:
             new_user = get_user_model().objects.create_user(
                 email=cleaned_data.get('email'),
-                password=cleaned_data.get('password'),
-                role=role
+                password=cleaned_data.get('password')
             )
         except Exception as e:
             pass
