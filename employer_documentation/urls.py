@@ -15,7 +15,7 @@ from django.urls import include, path
 from .views import EmployerBaseCreate
 
 ## Update Views
-# from .views import 
+from .views import EmployerBaseUpdate
 
 ## Delete Views
 # from .views import 
@@ -27,7 +27,7 @@ urlpatterns = [
         'create/',
         include([
             path(
-                'employer',
+                'employer/',
                 EmployerBaseCreate.as_view(),
                 name='employer_base_create'
             )
@@ -43,16 +43,16 @@ urlpatterns = [
     #         )
     #     ])
     # ),
-    # path(
-    #     'update/',
-    #     include([
-    #         path(
-    #             'employer',
-    #             EmployerBaseUpdate.as_view(),
-    #             name='employer_base_update'
-    #         )
-    #     ])
-    # ),
+    path(
+        'update/',
+        include([
+            path(
+                'employer/<int:pk>/',
+                EmployerBaseUpdate.as_view(),
+                name='employer_base_update'
+            )
+        ])
+    ),
     # path(
     #     'view/',
     #     include([

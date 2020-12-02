@@ -1,6 +1,5 @@
 # Django
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -13,7 +12,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # From our apps
 from .forms import (
-    EmployerBaseCreateForm
+    EmployerBaseForm
 )
 
 from .models import (
@@ -44,9 +43,8 @@ from agency.mixins import AgencySalesTeamRequiredMixin
 # Detail Views
     
 # Create Views
-class EmployerBaseCreate(AgencySalesTeamRequiredMixin,CreateView):
-    context_object_name = 'employer_base'
-    form_class = EmployerBaseCreateForm
+class EmployerBaseCreate(AgencySalesTeamRequiredMixin, CreateView):
+    form_class = EmployerBaseForm
     http_method_names = ['get','post']
     model = EmployerBase
     template_name = 'create/employer-base-create.html'
@@ -59,5 +57,11 @@ class EmployerBaseCreate(AgencySalesTeamRequiredMixin,CreateView):
         return super().form_valid(form)
 
 # Update Views
+class EmployerBaseUpdate(AgencySalesTeamRequiredMixin, UpdateView):
+    model = EmployerBase
+    form_class = EmployerBaseForm
+    pk_url_kwarg = 'pk'
+    template_name = 'update/employer-base-update.html'
+    success_url = reverse_lazy('dashboard_home')
 
 # Delete Views
