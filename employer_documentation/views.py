@@ -29,7 +29,10 @@ from .models import (
 )
 
 from agency.models import AgencyEmployee
-from agency.mixins import AgencySalesTeamRequiredMixin
+from agency.mixins import (
+    AgencySalesTeamRequiredMixin,
+    AgencyOwnerRequiredMixin,
+)
 
 
 # Start of Views
@@ -65,3 +68,7 @@ class EmployerBaseUpdate(AgencySalesTeamRequiredMixin, UpdateView):
     success_url = reverse_lazy('dashboard_home')
 
 # Delete Views
+class EmployerBaseDelete(AgencyOwnerRequiredMixin, DeleteView):
+    model = EmployerBase
+    template_name = 'delete/employerbase_confirm_delete.html'
+    success_url = reverse_lazy('dashboard_home')

@@ -18,7 +18,7 @@ from .views import EmployerBaseCreate
 from .views import EmployerBaseUpdate
 
 ## Delete Views
-# from .views import 
+from .views import EmployerBaseDelete
 
 # Start of Urls
 
@@ -33,16 +33,6 @@ urlpatterns = [
             )
         ])
     ),
-    # path(
-    #     'delete/',
-    #     include([
-    #         path(
-    #             'employer',
-    #             EmployerBaseDelete.as_view(),
-    #             name='employer_base_delete'
-    #         )
-    #     ])
-    # ),
     path(
         'update/',
         include([
@@ -50,6 +40,16 @@ urlpatterns = [
                 'employer/<int:pk>/',
                 EmployerBaseUpdate.as_view(),
                 name='employer_base_update'
+            )
+        ])
+    ),
+    path(
+        'delete/',
+        include([
+            path(
+                'employer/<int:pk>/',
+                EmployerBaseDelete.as_view(),
+                name='employer_base_delete'
             )
         ])
     ),
