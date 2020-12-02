@@ -30,7 +30,7 @@ from .models import (
 # Forms that inherit from inbuilt Django forms
 
 # Model Forms (forms.ModelForm)
-class EmployerBaseCreateForm(forms.ModelForm):
+class EmployerBaseForm(forms.ModelForm):
     class Meta:
         model = EmployerBase
         exclude = ['agency_employee']
