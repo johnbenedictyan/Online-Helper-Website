@@ -25,6 +25,7 @@ from accounts.urls import urlpatterns as accounts_urls
 from advertisement.urls import urlpatterns as advertisement_urls
 from agency.urls import urlpatterns as agency_urls
 from dashboard.urls import urlpatterns as dashboard_urls
+from employer_documentation.urls import urlpatterns as employer_doc_urls
 from maid.urls import urlpatterns as maid_urls
 from payment.urls import urlpatterns as payment_urls
 from shortlist.urls import urlpatterns as shortlist_urls
@@ -38,6 +39,7 @@ urlpatterns = [
     path('advertisements/', include(advertisement_urls)),
     path('agencies/', include(agency_urls)),
     path('dashboard/', include(dashboard_urls)),
+    path('e-d/', include(employer_doc_urls)),
     path('maids/', include(maid_urls)),
     path('payment/', include(payment_urls)),
     path('shortlist/', include(shortlist_urls)),
