@@ -49,5 +49,6 @@ class EmployerBaseCreateForm(forms.ModelForm):
                 'employer_mobile_number',
             ),
             Submit('submit', 'Submit')
+        )
 
 # Generic Forms (forms.Form)
