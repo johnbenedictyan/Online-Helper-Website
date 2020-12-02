@@ -1,0 +1,17 @@
+{% extends 'e-d-base-template.html' %}
+{% load crispy_forms_tags %}
+{% block e_d_section %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        {% crispy form %}
+    </div>
+    {{ user.email }}
+{% endblock e_d_section %}
