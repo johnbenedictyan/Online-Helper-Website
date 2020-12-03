@@ -18,47 +18,52 @@ from .views import (
 )
 
 ## Update Views
-from .views import EmployerBaseUpdateView
+from .views import (
+    EmployerBaseUpdateView,
+    EmployerDocBaseUpdateView,
+)
 
 ## Delete Views
-from .views import EmployerBaseDeleteView
+from .views import (
+    EmployerBaseDeleteView,
+)
 
 # Start of Urls
 
 urlpatterns = [
     path(
-        'create/',
+        '',
         include([
             path(
-                'employer/',
+                'create/',
                 EmployerBaseCreateView.as_view(),
                 name='employer_base_create'
             ),
             path(
-                'employer-doc-base/<int:pk>/',
-                EmployerDocBaseCreateView.as_view(),
-                name='employer_doc_base_create'
+                '<int:employer_base_pk>/',
+                include([
+                    path(
+                        'update/',
+                        EmployerBaseUpdateView.as_view(),
+                        name='employer_base_update'
+                    ),
+                    path(
+                        'delete/',
+                        EmployerBaseDeleteView.as_view(),
+                        name='employer_base_delete'
+                    ),
+                    path(
+                        'doc-base/create/',
+                        EmployerDocBaseCreateView.as_view(),
+                        name='employer_doc_base_create'
+                    ),
+                    path(
+                        'doc-base/<int:employer_doc_base_pk>/update/',
+                        EmployerDocBaseUpdateView.as_view(),
+                        name='employer_doc_base_update'
+                    ),
+                ])
             ),
-        ])
-    ),
-    path(
-        'update/',
-        include([
-            path(
-                'employer/<int:pk>/',
-                EmployerBaseUpdateView.as_view(),
-                name='employer_base_update'
-            )
-        ])
-    ),
-    path(
-        'delete/',
-        include([
-            path(
-                'employer/<int:pk>/',
-                EmployerBaseDeleteView.as_view(),
-                name='employer_base_delete'
-            )
-        ])
+        ]),
     ),
 ]

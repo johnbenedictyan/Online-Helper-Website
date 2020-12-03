@@ -29,7 +29,12 @@ from .models import (
     EmployerExtraInfo,
 )
 
+from .mixins import (
+    CheckEmployerDocBelongsToEmployer,
+)
+
 from agency.models import AgencyEmployee
+
 from agency.mixins import (
     AgencySalesTeamRequiredMixin,
     AgencyOwnerRequiredMixin,
@@ -48,8 +53,8 @@ from agency.mixins import (
     
 # Create Views
 class EmployerBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
-    form_class = EmployerBaseForm
     model = EmployerBase
+    form_class = EmployerBaseForm
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('dashboard_home')
 
@@ -62,30 +67,45 @@ class EmployerBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
 
 class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
-    form_class = EmployerDocBaseForm
     model = EmployerDocBase
+    form_class = EmployerDocBaseForm
+    pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('dashboard_home')
 
     def form_valid(self, form):
-        ######## In form_valid() definition, need to add check that agency_employee has necessary permissions ########
         form.instance.employer = EmployerBase.objects.get(
-            pk = self.kwargs[self.pk_url_kwarg]
+            pk = self.kwargs['employer_base_pk']
         )
         return super().form_valid(form)
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 # Update Views
 class EmployerBaseUpdateView(AgencySalesTeamRequiredMixin, UpdateView):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerBase
     form_class = EmployerBaseForm
+    pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('dashboard_home')
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
-    ######## In form_valid() definition, need to add check that agency_employee has necessary permissions ########
+class EmployerDocBaseUpdateView(
+    AgencySalesTeamRequiredMixin,
+    CheckEmployerDocBelongsToEmployer,
+    UpdateView
+):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    model = EmployerDocBase
+    form_class = EmployerDocBaseForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('dashboard_home')
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 # Delete Views
 class EmployerBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
     model = EmployerBase
+    # pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
     success_url = reverse_lazy('dashboard_home')
