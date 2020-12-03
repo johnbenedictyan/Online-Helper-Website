@@ -1,4 +1,5 @@
 # Imports from python
+# import uuid
 
 # Imports from django
 from django.db import models
@@ -20,6 +21,12 @@ from maid.models import Maid
 EmployerBase model holds minimum data required to create an Employer db entry
 '''
 class EmployerBase(models.Model):
+    ######## To change to UUID for pk after initial testing ########
+    # id = models.UUIDField(
+    #     primary_key=True,
+    #     default=uuid.uuid4,
+    #     editable=False
+    # )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
         on_delete=models.RESTRICT
