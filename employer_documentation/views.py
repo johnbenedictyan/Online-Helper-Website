@@ -31,6 +31,7 @@ from .models import (
 )
 
 from .mixins import (
+    CheckEmployerExtraInfoBelongsToEmployer,
     CheckEmployerDocBelongsToEmployer,
 )
 
@@ -102,6 +103,19 @@ class EmployerBaseUpdateView(AgencySalesTeamRequiredMixin, UpdateView):
     model = EmployerBase
     form_class = EmployerBaseForm
     pk_url_kwarg = 'employer_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('dashboard_home')
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
+class EmployerExtraInfoUpdateView(
+    AgencySalesTeamRequiredMixin,
+    CheckEmployerExtraInfoBelongsToEmployer,
+    UpdateView
+):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    model = EmployerExtraInfo
+    form_class = EmployerExtraInfoForm
+    pk_url_kwarg = 'employer_extra_info_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('dashboard_home')
     ######## Need to add check that agency_employee has necessary permissions before saving ########

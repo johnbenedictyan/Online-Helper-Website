@@ -21,6 +21,7 @@ from .views import (
 ## Update Views
 from .views import (
     EmployerBaseUpdateView,
+    EmployerExtraInfoUpdateView,
     EmployerDocBaseUpdateView,
 )
 
@@ -57,6 +58,11 @@ urlpatterns = [
                         'extra-info/create/',
                         EmployerExtraInfoCreateView.as_view(),
                         name='employer_extra_info_create'
+                    ),
+                    path(
+                        'extra-info/<int:employer_extra_info_pk>/update/',
+                        EmployerExtraInfoUpdateView.as_view(),
+                        name='employer_extra_info_update'
                     ),
                     path(
                         'doc-base/create/',

@@ -2,6 +2,7 @@
 from .models import (
     EmployerBase,
     EmployerDocBase,
+    EmployerExtraInfo,
 )
 
 from agency.models import (
@@ -14,11 +15,23 @@ from onlinemaid.mixins import (
 
 
 # Consider inheriting from alternative more appropriate mixin
+class CheckEmployerExtraInfoBelongsToEmployer(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if (
+            EmployerExtraInfo.objects.get(pk=self.kwargs
+            .get(self.pk_url_kwarg)).employer_base.pk==
+            self.kwargs.get('employer_base_pk')
+        ):
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return self.handle_no_permission(request)
+
+# Consider inheriting from alternative more appropriate mixin
 class CheckEmployerDocBelongsToEmployer(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if (
-            EmployerDocBase.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).employer.pk==
-            self.kwargs.get('employer_base_pk')
+            EmployerDocBase.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
+            .employer.pk==self.kwargs.get('employer_base_pk')
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
