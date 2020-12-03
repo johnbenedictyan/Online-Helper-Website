@@ -14,6 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import (
     EmployerBaseForm,
     EmployerDocBaseForm,
+    EmployerExtraInfoForm,
 )
 
 from .models import (
@@ -65,6 +66,21 @@ class EmployerBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
+class EmployerExtraInfoCreateView(AgencySalesTeamRequiredMixin, CreateView):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    model = EmployerExtraInfo
+    form_class = EmployerExtraInfoForm
+    pk_url_kwarg = 'employer_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('dashboard_home')
+
+    def form_valid(self, form):
+        form.instance.employer_base = EmployerBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
 class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocBase
@@ -75,7 +91,7 @@ class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.employer = EmployerBase.objects.get(
-            pk = self.kwargs['employer_base_pk']
+            pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
     ######## Need to add check that agency_employee has necessary permissions before saving ########

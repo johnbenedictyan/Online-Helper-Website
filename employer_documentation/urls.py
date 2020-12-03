@@ -14,6 +14,7 @@ from django.urls import include, path
 ## Create Views
 from .views import (
     EmployerBaseCreateView,
+    EmployerExtraInfoCreateView,
     EmployerDocBaseCreateView,
 )
 
@@ -51,6 +52,11 @@ urlpatterns = [
                         'delete/',
                         EmployerBaseDeleteView.as_view(),
                         name='employer_base_delete'
+                    ),
+                    path(
+                        'extra-info/create/',
+                        EmployerExtraInfoCreateView.as_view(),
+                        name='employer_extra_info_create'
                     ),
                     path(
                         'doc-base/create/',

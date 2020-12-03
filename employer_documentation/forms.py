@@ -51,6 +51,28 @@ class EmployerBaseForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
+class EmployerExtraInfoForm(forms.ModelForm):
+    class Meta:
+        model = EmployerExtraInfo
+        exclude = ['employer_base','agency_employee']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-base-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer extra info:',
+                # Form fields
+                'employer_nric',
+                'employer_address_1',
+                'employer_address_2',
+                'employer_postal_code',
+            ),
+            Submit('submit', 'Submit')
+        )
+
 class EmployerDocBaseForm(forms.ModelForm):
     class Meta:
         model = EmployerDocBase
