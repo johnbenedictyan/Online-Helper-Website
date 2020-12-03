@@ -42,7 +42,7 @@ class EmployerBaseForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new employer:',
+                'Create new / update existing employer:',
                 # Form fields
                 'employer_name',
                 'employer_email',
@@ -63,7 +63,7 @@ class EmployerDocBaseForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new employer doc base:',
+                'Create new / update existing employer doc base:',
                 # Form fields
                 'case_ref_no',
                 'fdw',
