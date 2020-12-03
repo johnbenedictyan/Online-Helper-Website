@@ -38,7 +38,7 @@ class EmployerBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-base-form mt-5 pt-5'
+        self.helper.form_class = 'employer-base-form'
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
@@ -50,5 +50,29 @@ class EmployerBaseForm(forms.ModelForm):
             ),
             Submit('submit', 'Submit')
         )
+
+class EmployerDocBaseForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocBase
+        exclude = ['employer']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-base-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new employer doc base:',
+                # Form fields
+                'case_ref_no',
+                'fdw',
+                'spouse_required',
+                'sponsor_required',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+
 
 # Generic Forms (forms.Form)

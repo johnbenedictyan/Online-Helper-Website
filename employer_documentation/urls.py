@@ -12,13 +12,16 @@ from django.urls import include, path
 # from .views import 
 
 ## Create Views
-from .views import EmployerBaseCreate
+from .views import (
+    EmployerBaseCreateView,
+    EmployerDocBaseCreateView,
+)
 
 ## Update Views
-from .views import EmployerBaseUpdate
+from .views import EmployerBaseUpdateView
 
 ## Delete Views
-from .views import EmployerBaseDelete
+from .views import EmployerBaseDeleteView
 
 # Start of Urls
 
@@ -28,9 +31,14 @@ urlpatterns = [
         include([
             path(
                 'employer/',
-                EmployerBaseCreate.as_view(),
+                EmployerBaseCreateView.as_view(),
                 name='employer_base_create'
-            )
+            ),
+            path(
+                'employer-doc-base/<int:pk>/',
+                EmployerDocBaseCreateView.as_view(),
+                name='employer_doc_base_create'
+            ),
         ])
     ),
     path(
@@ -38,7 +46,7 @@ urlpatterns = [
         include([
             path(
                 'employer/<int:pk>/',
-                EmployerBaseUpdate.as_view(),
+                EmployerBaseUpdateView.as_view(),
                 name='employer_base_update'
             )
         ])
@@ -48,24 +56,9 @@ urlpatterns = [
         include([
             path(
                 'employer/<int:pk>/',
-                EmployerBaseDelete.as_view(),
+                EmployerBaseDeleteView.as_view(),
                 name='employer_base_delete'
             )
         ])
     ),
-    # path(
-    #     'view/',
-    #     include([
-    #         path(
-    #             'employer',
-    #             EmployerBaseList.as_view(),
-    #             name='employer_base_list'
-    #         ),
-    #         path(
-    #             'employer/<int:pk>/',
-    #             EmployerBaseDetail.as_view(),
-    #             name='employer_base_detail'
-    #         )
-    #     ])
-    # )
 ]
