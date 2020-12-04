@@ -30,6 +30,7 @@ from .views import (
     EmployerBaseUpdateView,
     EmployerExtraInfoUpdateView,
     EmployerDocBaseUpdateView,
+    EmployerDocJobOrderUpdateView,
 )
 
 ## Delete Views
@@ -108,6 +109,11 @@ urlpatterns = [
                                 'job-order/create/',
                                 EmployerDocJobOrderCreateView.as_view(),
                                 name='employer_doc_job_order_create'
+                            ),
+                            path(
+                                'job-order/<int:employer_doc_job_order_pk>/update/',
+                                EmployerDocJobOrderUpdateView.as_view(),
+                                name='employer_doc_job_order_update'
                             ),
                         ]),
                     ),

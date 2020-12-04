@@ -13,10 +13,6 @@ from agency.models import (
     AgencyEmployee,
 )
 
-# from onlinemaid.mixins import (
-#     LoginRequiredMixin,
-# )
-
 
 # Consider inheriting from alternative more appropriate mixin
 class CheckEmployerExtraInfoBelongsToEmployer(
@@ -29,15 +25,6 @@ class CheckEmployerExtraInfoBelongsToEmployer(
             return True
         else:
             return False
-    # def dispatch(self, request, *args, **kwargs):
-    #     if (
-    #         EmployerExtraInfo.objects.get(pk=self.kwargs
-    #         .get(self.pk_url_kwarg)).employer_base.pk==
-    #         self.kwargs.get('employer_base_pk')
-    #     ):
-    #         return super().dispatch(request, *args, **kwargs)
-    #     else:
-    #         return self.handle_no_permission(request)
 
 # Consider inheriting from alternative more appropriate mixin
 class CheckEmployerDocBelongsToEmployer(
@@ -45,12 +32,21 @@ class CheckEmployerDocBelongsToEmployer(
     SingleObjectMixin
 ):
     def test_func(self):
-        # current_obj = self.get_object()
-        # if (
-        #     EmployerDocBase.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
-        #     .employer.pk==self.kwargs.get('employer_base_pk')
-        # ):
         if self.get_object().employer.pk==self.kwargs.get('employer_base_pk'):
+            return True
+        else:
+            return False
+
+class CheckEmployerSubDocBelongsToEmployer(
+    UserPassesTestMixin,
+    SingleObjectMixin
+):
+    def test_func(self):
+        if (
+            self.get_object().employer_doc_base.employer.pk==self.kwargs.get('employer_base_pk')
+            and
+            self.get_object().employer_doc_base.pk==self.kwargs.get('employer_doc_base_pk')
+        ):
             return True
         else:
             return False
