@@ -54,7 +54,8 @@ class EmployerBase(models.Model):
 class EmployerExtraInfo(models.Model):
     employer_base = models.OneToOneField(
         EmployerBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='employerextrainfo'
     )
     employer_nric = models.CharField(max_length=20)
     employer_address_1 = models.CharField(
@@ -89,7 +90,8 @@ class EmployerDocBase(models.Model):
     )
     employer = models.ForeignKey(
         EmployerBase,
-        on_delete=models.RESTRICT
+        on_delete=models.RESTRICT,
+        related_name='employerdocbase'
     )
     fdw = models.ForeignKey(
         Maid,

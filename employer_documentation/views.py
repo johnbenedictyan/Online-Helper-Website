@@ -50,9 +50,29 @@ from agency.mixins import (
 # Redirect Views
 
 # List Views
+class EmployerBaseListView(ListView):
+    model = EmployerBase
+    ordering = ['employer_name']
+    # paginate_by = 10
+
+class EmployerDocBaseListView(ListView):
+    model = EmployerDocBase
+    pk_url_kwarg = 'employer_base_pk'
+    ordering = ['pk']
+
+    def get_queryset(self):
+        return super().get_queryset().filter(employer=self.kwargs.get(
+            self.pk_url_kwarg))
 
 # Detail Views
-    
+class EmployerBaseDetailView(DetailView):
+    model = EmployerBase
+    pk_url_kwarg = 'employer_base_pk'
+
+class EmployerDocBaseDetailView(DetailView):
+    model = EmployerDocBase
+    pk_url_kwarg = 'employer_doc_base_pk'
+
 # Create Views
 class EmployerBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
     model = EmployerBase

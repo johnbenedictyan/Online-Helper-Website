@@ -1,0 +1,19 @@
+{% extends 'employer_documentation/e-d-base-template.html' %}
+{% load crispy_forms_tags %}
+
+{% block e_d_section %}
+    <h1>Employer: {{ object.employer }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">pk</th>
+                <td>{{ object.pk }}</td>
+            </tr>
+            <tr>
+                <th scope="row">case_ref_no</th>
+                <td>{{ object.case_ref_no }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock e_d_section %}

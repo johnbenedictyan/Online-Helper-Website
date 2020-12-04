@@ -1,0 +1,47 @@
+{% extends 'employer_documentation/e-d-base-template.html' %}
+{% load crispy_forms_tags %}
+
+{% block e_d_section %}
+    <h1>Employer: {{ object.employer_name }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">pk</th>
+                <td>{{ object.pk }}</td>
+            </tr>
+            <tr>
+                <th scope="row">agency_employee</th>
+                <td>{{ object.agency_employee }}</td>
+            </tr>
+            <tr>
+                <th scope="row">employer_name</th>
+                <td><a href="{% url 'employer_base_update' employer_base_pk=object.pk %}">{{ object.employer_name }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">employer_email</th>
+                <td><a href="{% url 'employer_base_update' employer_base_pk=object.pk %}">{{ object.employer_email }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">employer_mobile_number</th>
+                <td><a href="{% url 'employer_base_update' employer_base_pk=object.pk %}">{{ object.employer_mobile_number }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">employer_nric</th>
+                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_nric }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">employer_address_1</th>
+                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_address_1 }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">employer_address_2</th>
+                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_address_2 }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">employer_postal_code</th>
+                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_postal_code }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock e_d_section %}
