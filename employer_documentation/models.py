@@ -327,7 +327,8 @@ class EmployerDocMaidStatus(models.Model):
 class EmployerDocServiceFeeBase(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocservicefeebase'
     )
     b1_service_fee = models.PositiveIntegerField() # cents
     b2a_work_permit_application_collection = models.PositiveIntegerField() # cents

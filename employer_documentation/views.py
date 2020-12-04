@@ -16,6 +16,7 @@ from .forms import (
     EmployerDocBaseForm,
     EmployerExtraInfoForm,
     EmployerDocJobOrderForm,
+    EmployerDocServiceFeeBaseForm,
 )
 
 from .models import (
@@ -117,10 +118,33 @@ class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
         return super().form_valid(form)
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
-class EmployerDocJobOrderCreateView(AgencySalesTeamRequiredMixin, CreateView):
+class EmployerDocJobOrderCreateView(
+    AgencySalesTeamRequiredMixin,
+    CreateView
+):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    ######## Need to check URL kwargs: employer_doc_base_pk belongs to employer_base_pk ########
     model = EmployerDocJobOrder
     form_class = EmployerDocJobOrderForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
+class EmployerDocServiceFeeBaseCreateView(
+    AgencySalesTeamRequiredMixin,
+    CreateView
+):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    ######## Need to check URL kwargs: employer_doc_base_pk belongs to employer_base_pk ########
+    model = EmployerDocServiceFeeBase
+    form_class = EmployerDocServiceFeeBaseForm
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
@@ -177,6 +201,19 @@ class EmployerDocJobOrderUpdateView(
     model = EmployerDocJobOrder
     form_class = EmployerDocJobOrderForm
     pk_url_kwarg = 'employer_doc_job_order_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('employer_base_list')
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
+class EmployerDocServiceFeeBaseUpdateView(
+    AgencySalesTeamRequiredMixin,
+    CheckEmployerSubDocBelongsToEmployer,
+    UpdateView
+):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    model = EmployerDocServiceFeeBase
+    form_class = EmployerDocServiceFeeBaseForm
+    pk_url_kwarg = 'employer_doc_service_fee_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
     ######## Need to add check that agency_employee has necessary permissions before saving ########

@@ -23,6 +23,7 @@ from .views import (
     EmployerExtraInfoCreateView,
     EmployerDocBaseCreateView,
     EmployerDocJobOrderCreateView,
+    EmployerDocServiceFeeBaseCreateView,
 )
 
 ## Update Views
@@ -31,6 +32,7 @@ from .views import (
     EmployerExtraInfoUpdateView,
     EmployerDocBaseUpdateView,
     EmployerDocJobOrderUpdateView,
+    EmployerDocServiceFeeBaseUpdateView,
 )
 
 ## Delete Views
@@ -114,6 +116,16 @@ urlpatterns = [
                                 'job-order/<int:employer_doc_job_order_pk>/update/',
                                 EmployerDocJobOrderUpdateView.as_view(),
                                 name='employer_doc_job_order_update'
+                            ),
+                            path(
+                                'service-fee/create/',
+                                EmployerDocServiceFeeBaseCreateView.as_view(),
+                                name='employer_doc_service_fee_base_create'
+                            ),
+                            path(
+                                'service-fee/<int:employer_doc_service_fee_base_pk>/update/',
+                                EmployerDocServiceFeeBaseUpdateView.as_view(),
+                                name='employer_doc_service_fee_base_update'
                             ),
                         ]),
                     ),

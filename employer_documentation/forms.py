@@ -107,7 +107,7 @@ class EmployerDocJobOrderForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new / update existing employer doc base job order:',
+                'Create new / update existing employer doc job order:',
                 # Form fields
                 'job_order_date',
                 'employer_race',
@@ -132,6 +132,40 @@ class EmployerDocJobOrderForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
-
+class EmployerDocServiceFeeBaseForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocServiceFeeBase
+        exclude = ['employer_doc_base']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-base-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer doc service fee base:',
+                # Form fields
+                'b1_service_fee',
+                'b2a_work_permit_application_collection',
+                'b2b_medical_examination_fee',
+                'b2c_security_bond_accident_insurance',
+                'b2d_indemnity_policy_reimbursement',
+                'b2e_home_service',
+                'b2f_counselling',
+                'b2g_sip',
+                'b2h_replacement_months',
+                'b2h_replacement_cost',
+                'b2i_work_permit_renewal',
+                'b2j1_other_services_description',
+                'b2j1_other_services_fee',
+                'b2j2_other_services_description',
+                'b2j2_other_services_fee',
+                'b2j3_other_services_description',
+                'b2j3_other_services_fee',
+                'ca_deposit',
+            ),
+            Submit('submit', 'Submit')
+        )
 
 # Generic Forms (forms.Form)

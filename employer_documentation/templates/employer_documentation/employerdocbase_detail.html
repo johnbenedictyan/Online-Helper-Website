@@ -30,6 +30,10 @@
                 <th scope="row">JobOrder</th>
                 <td>{% if object.rn_employerdocjoborder %}<a href="{% url 'employer_doc_job_order_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_job_order_pk=object.rn_employerdocjoborder.pk %}">{{ object.rn_employerdocjoborder }}</a>{% else %}<a href="{% url 'employer_doc_job_order_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create job order</a>{% endif %}</td>
             </tr>
+            <tr>
+                <th scope="row">EmployerDocServiceFeeBase</th>
+                <td>{% if object.rn_employerdocservicefeebase %}<a href="{% url 'employer_doc_service_fee_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_service_fee_base_pk=object.rn_employerdocservicefeebase.pk %}">{{ object.rn_employerdocservicefeebase }}</a>{% else %}<a href="{% url 'employer_doc_service_fee_base_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create service fee schedule</a>{% endif %}</td>
+            </tr>
         </tbody>
     </table>
 {% endblock e_d_section %}
