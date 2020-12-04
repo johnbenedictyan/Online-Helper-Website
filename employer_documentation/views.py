@@ -62,9 +62,7 @@ class EmployerBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
 
     def form_valid(self, form):
         ######## Need to add check that employer/agency combo is unique (try adding UniqueConstraint combo to model) ########
-        form.instance.agency_employee = AgencyEmployee.objects.get(
-            pk = self.request.user.pk
-        )
+        form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
 class EmployerExtraInfoCreateView(AgencySalesTeamRequiredMixin, CreateView):
