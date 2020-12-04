@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <th scope="row">JobOrder</th>
-                <td>{% if object.rn_employerdocjoborder %}{{ object.rn_employerdocjoborder }}{% else %}<a href="{% url 'employer_doc_job_order_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create job order</a>{% endif %}</td>
+                <td>{% if object.rn_employerdocjoborder %}<a href="{% url 'employer_doc_job_order_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_job_order_pk=object.rn_employerdocjoborder.pk %}">{{ object.rn_employerdocjoborder }}</a>{% else %}<a href="{% url 'employer_doc_job_order_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create job order</a>{% endif %}</td>
             </tr>
         </tbody>
     </table>

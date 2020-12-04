@@ -3,6 +3,7 @@
 
 {% block e_d_section %}
     <h1>Employer Docs</h1>
+    <a href="{% url 'employer_doc_base_create' employer_base_pk=view.kwargs.employer_base_pk %}">Create new doc base</a>
     <table class="table">
         <thead>
             <tr>
@@ -22,10 +23,10 @@
                 <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.fdw }}</a></td>
                 <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.spouse_required }}</a></td>
                 <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.sponsor_required }}</a></td>
-                <td><a href="{% url 'employer_doc_base_detail' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">documentation</a></td>
+                <td><a href="{% url 'employer_doc_base_detail' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">documentation summary</a></td>
             </tr>
         {% empty %}
-            <tr>No docs yet.</tr>
+            <p>No docs yet.</p>
         {% endfor %}
         </tbody>
     </table>
