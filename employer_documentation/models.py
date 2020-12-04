@@ -55,7 +55,7 @@ class EmployerExtraInfo(models.Model):
     employer_base = models.OneToOneField(
         EmployerBase,
         on_delete=models.CASCADE,
-        related_name='employerextrainfo'
+        related_name='rn_employerextrainfo'
     )
     employer_nric = models.CharField(max_length=20)
     employer_address_1 = models.CharField(
@@ -91,7 +91,7 @@ class EmployerDocBase(models.Model):
     employer = models.ForeignKey(
         EmployerBase,
         on_delete=models.RESTRICT,
-        related_name='employerdocbase'
+        related_name='rn_employerdocbase'
     )
     fdw = models.ForeignKey(
         Maid,
@@ -133,7 +133,8 @@ class EmployerDocSig(models.Model):
 class EmployerDocJobOrder(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocjoborder'
     )
     job_order_date = models.DateField()
     employer_race = models.CharField(

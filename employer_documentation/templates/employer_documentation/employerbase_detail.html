@@ -28,19 +28,19 @@
             </tr>
             <tr>
                 <th scope="row">employer_nric</th>
-                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_nric }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+                <td>{% if object.rn_employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.rn_employerextrainfo.pk %}">{{ object.rn_employerextrainfo.employer_nric }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
             </tr>
             <tr>
                 <th scope="row">employer_address_1</th>
-                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_address_1 }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+                <td>{% if object.rn_employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.rn_employerextrainfo.pk %}">{{ object.rn_employerextrainfo.employer_address_1 }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
             </tr>
             <tr>
                 <th scope="row">employer_address_2</th>
-                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_address_2 }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+                <td>{% if object.rn_employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.rn_employerextrainfo.pk %}">{{ object.rn_employerextrainfo.employer_address_2 }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
             </tr>
             <tr>
                 <th scope="row">employer_postal_code</th>
-                <td>{% if object.employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.employerextrainfo.pk %}">{{ object.employerextrainfo.employer_postal_code }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
+                <td>{% if object.rn_employerextrainfo %}<a href="{% url 'employer_extra_info_update' employer_base_pk=object.pk employer_extra_info_pk=object.rn_employerextrainfo.pk %}">{{ object.rn_employerextrainfo.employer_postal_code }}</a>{% else %}<a href="{% url 'employer_extra_info_create' employer_base_pk=object.pk %}">Add</a>{% endif %}</td>
             </tr>
         </tbody>
     </table>

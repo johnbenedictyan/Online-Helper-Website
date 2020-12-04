@@ -95,6 +95,43 @@ class EmployerDocBaseForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
+class EmployerDocJobOrderForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocJobOrder
+        exclude = ['employer_doc_base']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-base-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer doc base job order:',
+                # Form fields
+                'job_order_date',
+                'employer_race',
+                'type_of_property_choices',
+                'type_of_property',
+                'no_of_bedrooms',
+                'no_of_toilets',
+                'no_of_family_members',
+                'no_of_children_between_6_12',
+                'no_of_children_below_5',
+                'no_of_infants',
+                'fetch_children',
+                'look_after_elderly',
+                'look_after_bed_ridden_patient',
+                'cooking',
+                'clothes_washing',
+                'car_washing',
+                'take_care_of_pets',
+                'gardening',
+                'remarks',
+            ),
+            Submit('submit', 'Submit')
+        )
+
 
 
 # Generic Forms (forms.Form)

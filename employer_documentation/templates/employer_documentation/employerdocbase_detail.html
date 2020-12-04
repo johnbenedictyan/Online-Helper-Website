@@ -14,6 +14,22 @@
                 <th scope="row">case_ref_no</th>
                 <td>{{ object.case_ref_no }}</td>
             </tr>
+            <tr>
+                <th scope="row">fdw</th>
+                <td>{{ object.fdw }}</td>
+            </tr>
+            <tr>
+                <th scope="row">spouse_required</th>
+                <td>{{ object.spouse_required }}</td>
+            </tr>
+            <tr>
+                <th scope="row">sponsor_required</th>
+                <td>{{ object.sponsor_required }}</td>
+            </tr>
+            <tr>
+                <th scope="row">JobOrder</th>
+                <td>{% if object.rn_employerdocjoborder %}{{ object.rn_employerdocjoborder }}{% else %}<a href="{% url 'employer_doc_job_order_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create job order</a>{% endif %}</td>
+            </tr>
         </tbody>
     </table>
 {% endblock e_d_section %}

@@ -22,6 +22,7 @@ from .views import (
     EmployerBaseCreateView,
     EmployerExtraInfoCreateView,
     EmployerDocBaseCreateView,
+    EmployerDocJobOrderCreateView,
 )
 
 ## Update Views
@@ -91,16 +92,26 @@ urlpatterns = [
                         name='employer_doc_base_list'
                     ),
                     path(
-                        'doc-base/<int:employer_doc_base_pk>/detail/',
-                        EmployerDocBaseDetailView.as_view(),
-                        name='employer_doc_base_detail'
+                        'doc-base/<int:employer_doc_base_pk>/',
+                        include([
+                            path(
+                                'detail/',
+                                EmployerDocBaseDetailView.as_view(),
+                                name='employer_doc_base_detail'
+                            ),
+                            path(
+                                'update/',
+                                EmployerDocBaseUpdateView.as_view(),
+                                name='employer_doc_base_update'
+                            ),
+                            path(
+                                'job-order/create/',
+                                EmployerDocJobOrderCreateView.as_view(),
+                                name='employer_doc_job_order_create'
+                            ),
+                        ]),
                     ),
-                    path(
-                        'doc-base/<int:employer_doc_base_pk>/update/',
-                        EmployerDocBaseUpdateView.as_view(),
-                        name='employer_doc_base_update'
-                    ),
-                ])
+                ]),
             ),
         ]),
     ),
