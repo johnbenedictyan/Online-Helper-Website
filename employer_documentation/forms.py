@@ -205,4 +205,26 @@ class EmployerDocServiceAgreementForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
+class EmployerDocEmploymentContractForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocEmploymentContract
+        exclude = ['employer_doc_base']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer doc employment contract:',
+                # Form fields
+                'c3_2_salary_payment_date',
+                'c3_5_fdw_sleeping_arrangement',
+                'c4_1_termination_notice',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+
 # Generic Forms (forms.Form)

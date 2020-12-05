@@ -412,7 +412,8 @@ class EmployerDocServiceFeeReplacement(models.Model):
 class EmployerDocServiceAgreement(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocserviceagreement'
     )
     c1_3_handover_days = models.PositiveSmallIntegerField(
         choices=[
@@ -631,7 +632,8 @@ class EmployerDocServiceAgreement(models.Model):
 class EmployerDocEmploymentContract(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocemploymentcontract'
     )
     c3_2_salary_payment_date = models.PositiveSmallIntegerField(
         # day of month
