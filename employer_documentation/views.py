@@ -17,6 +17,7 @@ from .forms import (
     EmployerExtraInfoForm,
     EmployerDocJobOrderForm,
     EmployerDocServiceFeeBaseForm,
+    EmployerDocServiceAgreementForm,
 )
 
 from .models import (
@@ -159,6 +160,25 @@ class EmployerDocServiceFeeBaseCreateView(
         return super().form_valid(form)
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
+class EmployerDocServiceAgreementCreateView(
+    AgencySalesTeamRequiredMixin,
+    CheckEmployerDocBaseBelongsToEmployer,
+    CreateView
+):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    model = EmployerDocServiceAgreement
+    form_class = EmployerDocServiceAgreementForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
 # Update Views
 class EmployerBaseUpdateView(AgencySalesTeamRequiredMixin, UpdateView):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
@@ -217,6 +237,19 @@ class EmployerDocServiceFeeBaseUpdateView(
     model = EmployerDocServiceFeeBase
     form_class = EmployerDocServiceFeeBaseForm
     pk_url_kwarg = 'employer_doc_service_fee_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('employer_base_list')
+    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
+class EmployerDocServiceAgreementUpdateView(
+    AgencySalesTeamRequiredMixin,
+    CheckEmployerSubDocBelongsToEmployer,
+    UpdateView
+):
+    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+    model = EmployerDocServiceAgreement
+    form_class = EmployerDocServiceAgreementForm
+    pk_url_kwarg = 'employer_doc_service_agreement_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
     ######## Need to add check that agency_employee has necessary permissions before saving ########

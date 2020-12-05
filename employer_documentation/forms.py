@@ -81,7 +81,7 @@ class EmployerDocBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-base-form'
+        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
@@ -103,7 +103,7 @@ class EmployerDocJobOrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-base-form'
+        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
@@ -140,7 +140,7 @@ class EmployerDocServiceFeeBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-base-form'
+        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
@@ -164,6 +164,43 @@ class EmployerDocServiceFeeBaseForm(forms.ModelForm):
                 'b2j3_other_services_description',
                 'b2j3_other_services_fee',
                 'ca_deposit',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+class EmployerDocServiceAgreementForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocServiceAgreement
+        exclude = ['employer_doc_base']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer doc service agreement:',
+                # Form fields
+                'c1_3_handover_days',
+                'c3_2_no_replacement_criteria_1',
+                'c3_2_no_replacement_criteria_2',
+                'c3_2_no_replacement_criteria_3',
+                'c3_4_no_replacement_refund',
+                'c4_1_number_of_replacements',
+                'c4_1_replacement_period',
+                'c4_1_5_replacement_deadline',
+                'c5_1_1_deployment_deadline',
+                'c5_1_1_failed_deployment_refund',
+                'c5_1_2_before_fdw_arrives_charge',
+                'c5_1_2_after_fdw_arrives_charge',
+                'c5_2_2_can_transfer_refund_within',
+                'c5_3_2_cannot_transfer_refund_within',
+                'c6_4_per_day_food_accommodation_cost',
+                'c6_6_per_session_counselling_cost',
+                'c9_1_independent_mediator_1',
+                'c9_2_independent_mediator_2',
+                'c13_termination_notice',
             ),
             Submit('submit', 'Submit')
         )

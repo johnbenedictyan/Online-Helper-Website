@@ -24,6 +24,7 @@ from .views import (
     EmployerDocBaseCreateView,
     EmployerDocJobOrderCreateView,
     EmployerDocServiceFeeBaseCreateView,
+    EmployerDocServiceAgreementCreateView,
 )
 
 ## Update Views
@@ -33,6 +34,7 @@ from .views import (
     EmployerDocBaseUpdateView,
     EmployerDocJobOrderUpdateView,
     EmployerDocServiceFeeBaseUpdateView,
+    EmployerDocServiceAgreementUpdateView,
 )
 
 ## Delete Views
@@ -126,6 +128,16 @@ urlpatterns = [
                                 'service-fee/<int:employer_doc_service_fee_base_pk>/update/',
                                 EmployerDocServiceFeeBaseUpdateView.as_view(),
                                 name='employer_doc_service_fee_base_update'
+                            ),
+                            path(
+                                'service-agreement/create/',
+                                EmployerDocServiceAgreementCreateView.as_view(),
+                                name='employer_doc_service_agreement_create'
+                            ),
+                            path(
+                                'service-agreement/<int:employer_doc_service_agreement_pk>/update/',
+                                EmployerDocServiceAgreementUpdateView.as_view(),
+                                name='employer_doc_service_agreement_update'
                             ),
                         ]),
                     ),
