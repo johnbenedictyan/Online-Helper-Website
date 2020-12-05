@@ -8,8 +8,6 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# 3rd party packages
-
 # From our apps
 from .forms import (
     EmployerBaseForm,
@@ -20,7 +18,6 @@ from .forms import (
     EmployerDocServiceAgreementForm,
     EmployerDocEmploymentContractForm,
 )
-
 from .models import (
     EmployerBase,
     EmployerDocBase,
@@ -33,15 +30,11 @@ from .models import (
     EmployerDocSig,
     EmployerExtraInfo,
 )
-
 from .mixins import (
     CheckEmployerExtraInfoBelongsToEmployer,
     CheckEmployerDocBaseBelongsToEmployer,
     CheckEmployerSubDocBelongsToEmployer,
 )
-
-from agency.models import AgencyEmployee
-
 from agency.mixins import (
     AgencySalesTeamRequiredMixin,
     AgencyOwnerRequiredMixin,
@@ -290,6 +283,12 @@ class EmployerDocEmploymentContractUpdateView(
 # Delete Views
 class EmployerBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
     model = EmployerBase
-    # pk_url_kwarg = 'employer_base_pk'
+    pk_url_kwarg = 'employer_base_pk'
+    template_name = 'employer_documentation/employerbase_confirm_delete.html'
+    success_url = reverse_lazy('dashboard_home')
+
+class EmployerDocBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
+    model = EmployerDocBase
+    pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
     success_url = reverse_lazy('dashboard_home')

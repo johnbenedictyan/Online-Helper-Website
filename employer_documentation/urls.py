@@ -42,6 +42,7 @@ from .views import (
 ## Delete Views
 from .views import (
     EmployerBaseDeleteView,
+    EmployerDocBaseDeleteView,
 )
 
 # Start of Urls
@@ -110,6 +111,11 @@ urlpatterns = [
                                 'update/',
                                 EmployerDocBaseUpdateView.as_view(),
                                 name='employer_doc_base_update'
+                            ),
+                            path(
+                                'delete/',
+                                EmployerDocBaseDeleteView.as_view(),
+                                name='employer_doc_base_delete'
                             ),
                             path(
                                 'job-order/create/',
