@@ -34,7 +34,7 @@ from .models import (
 
 from .mixins import (
     CheckEmployerExtraInfoBelongsToEmployer,
-    CheckEmployerDocBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployer,
     CheckEmployerSubDocBelongsToEmployer,
 )
 
@@ -72,7 +72,10 @@ class EmployerBaseDetailView(DetailView):
     model = EmployerBase
     pk_url_kwarg = 'employer_base_pk'
 
-class EmployerDocBaseDetailView(DetailView):
+class EmployerDocBaseDetailView(
+    CheckEmployerDocBaseBelongsToEmployer,
+    DetailView
+):
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
 
@@ -120,10 +123,10 @@ class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
 
 class EmployerDocJobOrderCreateView(
     AgencySalesTeamRequiredMixin,
+    CheckEmployerDocBaseBelongsToEmployer,
     CreateView
 ):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
-    ######## Need to check URL kwargs: employer_doc_base_pk belongs to employer_base_pk ########
     model = EmployerDocJobOrder
     form_class = EmployerDocJobOrderForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -139,10 +142,10 @@ class EmployerDocJobOrderCreateView(
 
 class EmployerDocServiceFeeBaseCreateView(
     AgencySalesTeamRequiredMixin,
+    CheckEmployerDocBaseBelongsToEmployer,
     CreateView
 ):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
-    ######## Need to check URL kwargs: employer_doc_base_pk belongs to employer_base_pk ########
     model = EmployerDocServiceFeeBase
     form_class = EmployerDocServiceFeeBaseForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -181,7 +184,7 @@ class EmployerExtraInfoUpdateView(
 
 class EmployerDocBaseUpdateView(
     AgencySalesTeamRequiredMixin,
-    CheckEmployerDocBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployer,
     UpdateView
 ):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
