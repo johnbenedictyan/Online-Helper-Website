@@ -1,5 +1,4 @@
 {% extends 'employer_documentation/e-d-base-template.html' %}
-{% load crispy_forms_tags %}
 
 {% block e_d_section %}
     <h1>Employer: {{ object.employer }}</h1>
@@ -33,6 +32,14 @@
             <tr>
                 <th scope="row">EmployerDocServiceFeeBase</th>
                 <td>{% if object.rn_employerdocservicefeebase %}<a href="{% url 'employer_doc_service_fee_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_service_fee_base_pk=object.rn_employerdocservicefeebase.pk %}">{{ object.rn_employerdocservicefeebase }}</a>{% else %}<a href="{% url 'employer_doc_service_fee_base_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create service fee schedule</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">EmployerDocServiceAgreement</th>
+                <td>{% if object.rn_employerdocserviceagreement %}<a href="{% url 'employer_doc_service_agreement_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_service_agreement_pk=object.rn_employerdocserviceagreement.pk %}">{{ object.rn_employerdocserviceagreement }}</a>{% else %}<a href="{% url 'employer_doc_service_agreement_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create service agreement</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">EmployerDocEmploymentContract</th>
+                <td>{% if object.rn_employerdocemploymentcontract %}<a href="{% url 'employer_doc_employment_contract_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_employment_contract_pk=object.rn_employerdocemploymentcontract.pk %}">{{ object.rn_employerdocemploymentcontract }}</a>{% else %}<a href="{% url 'employer_doc_employment_contract_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create employment contract</a>{% endif %}</td>
             </tr>
         </tbody>
     </table>
