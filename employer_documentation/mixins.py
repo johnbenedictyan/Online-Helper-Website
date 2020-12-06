@@ -1,5 +1,6 @@
 # Django
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views.generic.detail import SingleObjectMixin
 
 # From our apps
@@ -50,3 +51,29 @@ class CheckEmployerSubDocBelongsToEmployer(
             return True
         else:
             return False
+
+class CheckAgencyEmployeePermissionsMixin(LoginRequiredMixin):
+    login_url = reverse_lazy('agency_sign_in')
+    permission_denied_message = '''You do not have the necessary access
+                                rights to perform this action'''
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        call_dispatch = super().dispatch(request, *args, **kwargs)
+
+        if (
+            user.groups.filter(name='Agency Owners').exists()
+            or
+            user.groups.filter(name='Agency Administrators').exists()
+            or (
+                user.groups.filter(name='Agency Managers').exists()
+                and
+                self.get_object().employer.agency_employee.branch
+                ==user.agency_employee.branch
+            )
+            or
+            self.get_object().employer.agency_employee==user
+        ):
+            return call_dispatch
+        else:
+            return self.handle_no_permission(request)

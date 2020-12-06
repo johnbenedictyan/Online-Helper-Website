@@ -34,6 +34,7 @@ from .mixins import (
     CheckEmployerExtraInfoBelongsToEmployer,
     CheckEmployerDocBaseBelongsToEmployer,
     CheckEmployerSubDocBelongsToEmployer,
+    CheckAgencyEmployeePermissionsMixin,
 )
 from agency.mixins import (
     AgencySalesTeamRequiredMixin,
@@ -69,6 +70,7 @@ class EmployerBaseDetailView(DetailView):
 
 class EmployerDocBaseDetailView(
     CheckEmployerDocBaseBelongsToEmployer,
+    CheckAgencyEmployeePermissionsMixin,
     DetailView
 ):
     model = EmployerDocBase
