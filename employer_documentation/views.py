@@ -31,10 +31,11 @@ from .models import (
     EmployerExtraInfo,
 )
 from .mixins import (
-    CheckEmployerExtraInfoBelongsToEmployer,
-    CheckEmployerDocBaseBelongsToEmployer,
-    CheckEmployerSubDocBelongsToEmployer,
-    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerExtraInfoBelongsToEmployerMixin,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
 )
 from agency.mixins import (
     AgencySalesTeamRequiredMixin,
@@ -69,8 +70,8 @@ class EmployerBaseDetailView(DetailView):
     pk_url_kwarg = 'employer_base_pk'
 
 class EmployerDocBaseDetailView(
-    CheckEmployerDocBaseBelongsToEmployer,
-    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
     DetailView
 ):
     model = EmployerDocBase
@@ -103,7 +104,10 @@ class EmployerExtraInfoCreateView(AgencySalesTeamRequiredMixin, CreateView):
         return super().form_valid(form)
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
-class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
+class EmployerDocBaseCreateView(
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CreateView
+):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocBase
     form_class = EmployerDocBaseForm
@@ -119,11 +123,10 @@ class EmployerDocBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocJobOrderCreateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerDocBaseBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocJobOrder
     form_class = EmployerDocJobOrderForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -138,11 +141,10 @@ class EmployerDocJobOrderCreateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceFeeBaseCreateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerDocBaseBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocServiceFeeBase
     form_class = EmployerDocServiceFeeBaseForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -157,11 +159,10 @@ class EmployerDocServiceFeeBaseCreateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceAgreementCreateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerDocBaseBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocServiceAgreement
     form_class = EmployerDocServiceAgreementForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -176,11 +177,10 @@ class EmployerDocServiceAgreementCreateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocEmploymentContractCreateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerDocBaseBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocEmploymentContract
     form_class = EmployerDocEmploymentContractForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -206,10 +206,9 @@ class EmployerBaseUpdateView(AgencySalesTeamRequiredMixin, UpdateView):
 
 class EmployerExtraInfoUpdateView(
     AgencySalesTeamRequiredMixin,
-    CheckEmployerExtraInfoBelongsToEmployer,
+    CheckEmployerExtraInfoBelongsToEmployerMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerExtraInfo
     form_class = EmployerExtraInfoForm
     pk_url_kwarg = 'employer_extra_info_pk'
@@ -218,11 +217,10 @@ class EmployerExtraInfoUpdateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocBaseUpdateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerDocBaseBelongsToEmployer,
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocBase
     form_class = EmployerDocBaseForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -231,11 +229,10 @@ class EmployerDocBaseUpdateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocJobOrderUpdateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerSubDocBelongsToEmployer,
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocJobOrder
     form_class = EmployerDocJobOrderForm
     pk_url_kwarg = 'employer_doc_job_order_pk'
@@ -244,11 +241,10 @@ class EmployerDocJobOrderUpdateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceFeeBaseUpdateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerSubDocBelongsToEmployer,
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocServiceFeeBase
     form_class = EmployerDocServiceFeeBaseForm
     pk_url_kwarg = 'employer_doc_service_fee_base_pk'
@@ -257,11 +253,10 @@ class EmployerDocServiceFeeBaseUpdateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceAgreementUpdateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerSubDocBelongsToEmployer,
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocServiceAgreement
     form_class = EmployerDocServiceAgreementForm
     pk_url_kwarg = 'employer_doc_service_agreement_pk'
@@ -270,11 +265,10 @@ class EmployerDocServiceAgreementUpdateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocEmploymentContractUpdateView(
-    AgencySalesTeamRequiredMixin,
-    CheckEmployerSubDocBelongsToEmployer,
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocEmploymentContract
     form_class = EmployerDocEmploymentContractForm
     pk_url_kwarg = 'employer_doc_employment_contract_pk'
@@ -289,7 +283,11 @@ class EmployerBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
     success_url = reverse_lazy('dashboard_home')
 
-class EmployerDocBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
+class EmployerDocBaseDeleteView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    AgencyOwnerRequiredMixin,
+    DeleteView
+):
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'

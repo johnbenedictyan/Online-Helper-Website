@@ -9,7 +9,7 @@ from .models import (
     EmployerExtraInfo,
 )
 
-class CheckEmployerExtraInfoBelongsToEmployer(
+class CheckEmployerExtraInfoBelongsToEmployerMixin(
     UserPassesTestMixin,
     SingleObjectMixin
 ):
@@ -23,7 +23,7 @@ class CheckEmployerExtraInfoBelongsToEmployer(
         else:
             return False
 
-class CheckEmployerDocBaseBelongsToEmployer(
+class CheckEmployerDocBaseBelongsToEmployerMixin(
     UserPassesTestMixin,
     SingleObjectMixin
 ):
@@ -36,7 +36,7 @@ class CheckEmployerDocBaseBelongsToEmployer(
         else:
             return False
 
-class CheckEmployerSubDocBelongsToEmployer(
+class CheckEmployerSubDocBelongsToEmployerMixin(
     UserPassesTestMixin,
     SingleObjectMixin
 ):
@@ -52,7 +52,7 @@ class CheckEmployerSubDocBelongsToEmployer(
         else:
             return False
 
-class CheckAgencyEmployeePermissionsMixin(LoginRequiredMixin):
+class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -76,4 +76,30 @@ class CheckAgencyEmployeePermissionsMixin(LoginRequiredMixin):
         ):
             return call_dispatch
         else:
-            return self.handle_no_permission(request)
+            return super().handle_no_permission()
+
+class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
+    login_url = reverse_lazy('agency_sign_in')
+    permission_denied_message = '''You do not have the necessary access
+                                rights to perform this action'''
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        call_dispatch = super().dispatch(request, *args, **kwargs)
+
+        if (
+            user.groups.filter(name='Agency Owners').exists()
+            or
+            user.groups.filter(name='Agency Administrators').exists()
+            or (
+                user.groups.filter(name='Agency Managers').exists()
+                and
+                self.get_object().employer_doc_base.employer.agency_employee
+                .branch==user.agency_employee.branch
+            )
+            or
+            self.get_object().employer_doc_base.employer.agency_employee==user
+        ):
+            return call_dispatch
+        else:
+            return super().handle_no_permission()
