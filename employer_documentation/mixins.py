@@ -66,6 +66,11 @@ class CheckAgencyEmployeePermissionsEmployerBaseMixin(LoginRequiredMixin):
             pk=self.kwargs.get('employer_base_pk')
         )
         
+        # Check test object's agency is same as current user's agency
+        if not test_obj.agency_employee.agency==user_obj.agency:
+            return self.handle_no_permission()
+
+        # Check user belongs to required group to access view
         if (
             request.user.groups.filter(name=agency_owners).exists()
             or
@@ -97,6 +102,11 @@ class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
             pk=self.kwargs.get('employer_extra_info_pk')
         )
 
+        # Check test object's agency is same as current user's agency
+        if not test_obj.employer_base.agency_employee.agency==user_obj.agency:
+            return self.handle_no_permission()
+
+        # Check user belongs to required group to access view
         if (
             request.user.groups.filter(name=agency_owners).exists()
             or
@@ -128,6 +138,11 @@ class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
             pk=self.kwargs.get('employer_doc_base_pk')
         )
 
+        # Check test object's agency is same as current user's agency
+        if not test_obj.employer.agency_employee.agency==user_obj.agency:
+            return self.handle_no_permission()
+
+        # Check user belongs to required group to access view
         if (
             request.user.groups.filter(name=agency_owners).exists()
             or
@@ -156,6 +171,14 @@ class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
         
         user_obj = AgencyEmployee.objects.get(pk=request.user.pk)
 
+        # Check test object's agency is same as current user's agency
+        if (
+            not self.get_object().employer_doc_base.employer.agency_employee
+            .agency==user_obj.agency
+        ):
+            return self.handle_no_permission()
+
+        # Check user belongs to required group to access view
         if (
             request.user.groups.filter(name=agency_owners).exists()
             or
