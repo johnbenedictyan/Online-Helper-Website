@@ -34,11 +34,14 @@ from .mixins import (
     CheckEmployerExtraInfoBelongsToEmployerMixin,
     CheckEmployerDocBaseBelongsToEmployerMixin,
     CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    CheckAgencyEmployeePermissionsEmployerExtraInfoMixin,
     CheckAgencyEmployeePermissionsDocBaseMixin,
     CheckAgencyEmployeePermissionsSubDocMixin,
+    CheckUserHasAgencyRoleMixin,
 )
 from agency.mixins import (
-    AgencySalesTeamRequiredMixin,
+    # AgencySalesTeamRequiredMixin,
     AgencyOwnerRequiredMixin,
 )
 
@@ -55,7 +58,10 @@ class EmployerBaseListView(ListView):
     ordering = ['employer_name']
     # paginate_by = 10
 
-class EmployerDocBaseListView(ListView):
+class EmployerDocBaseListView(
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    ListView
+):
     model = EmployerDocBase
     pk_url_kwarg = 'employer_base_pk'
     ordering = ['pk']
@@ -65,7 +71,10 @@ class EmployerDocBaseListView(ListView):
             self.pk_url_kwarg))
 
 # Detail Views
-class EmployerBaseDetailView(DetailView):
+class EmployerBaseDetailView(
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    DetailView,
+):
     model = EmployerBase
     pk_url_kwarg = 'employer_base_pk'
 
@@ -78,24 +87,29 @@ class EmployerDocBaseDetailView(
     pk_url_kwarg = 'employer_doc_base_pk'
 
 # Create Views
-class EmployerBaseCreateView(AgencySalesTeamRequiredMixin, CreateView):
+class EmployerBaseCreateView(
+    CheckUserHasAgencyRoleMixin,
+    CreateView
+):
     model = EmployerBase
     form_class = EmployerBaseForm
     template_name = 'employer_documentation/employer-form.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
 
     def form_valid(self, form):
         ######## Need to add check that employer/agency combo is unique (try adding UniqueConstraint combo to model) ########
         form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
-class EmployerExtraInfoCreateView(AgencySalesTeamRequiredMixin, CreateView):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
+class EmployerExtraInfoCreateView(
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    CreateView
+):
     model = EmployerExtraInfo
     form_class = EmployerExtraInfoForm
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
 
     def form_valid(self, form):
         form.instance.employer_base = EmployerBase.objects.get(
@@ -105,15 +119,14 @@ class EmployerExtraInfoCreateView(AgencySalesTeamRequiredMixin, CreateView):
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocBaseCreateView(
-    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
     CreateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerDocBase
     form_class = EmployerDocBaseForm
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
 
     def form_valid(self, form):
         form.instance.employer = EmployerBase.objects.get(
@@ -195,17 +208,20 @@ class EmployerDocEmploymentContractCreateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 # Update Views
-class EmployerBaseUpdateView(AgencySalesTeamRequiredMixin, UpdateView):
+class EmployerBaseUpdateView(
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    UpdateView
+):
     ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerBase
     form_class = EmployerBaseForm
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerExtraInfoUpdateView(
-    AgencySalesTeamRequiredMixin,
+    CheckAgencyEmployeePermissionsEmployerExtraInfoMixin,
     CheckEmployerExtraInfoBelongsToEmployerMixin,
     UpdateView
 ):
@@ -213,7 +229,7 @@ class EmployerExtraInfoUpdateView(
     form_class = EmployerExtraInfoForm
     pk_url_kwarg = 'employer_extra_info_pk'
     template_name = 'employer_documentation/employer-form.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocBaseUpdateView(
@@ -225,7 +241,7 @@ class EmployerDocBaseUpdateView(
     form_class = EmployerDocBaseForm
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employer-form.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocJobOrderUpdateView(
@@ -281,7 +297,7 @@ class EmployerBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
     model = EmployerBase
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
 
 class EmployerDocBaseDeleteView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -291,4 +307,4 @@ class EmployerDocBaseDeleteView(
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
-    success_url = reverse_lazy('dashboard_home')
+    success_url = reverse_lazy('employer_base_list')
