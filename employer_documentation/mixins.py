@@ -8,7 +8,11 @@ from .models import (
     EmployerDocBase,
     EmployerExtraInfo,
 )
-from agency.models import AgencyEmployee
+from accounts.models import User
+from agency.models import (
+    AgencyEmployee,
+    AgencyOwner,
+)
 
 # Constants
 agency_owners = 'Agency Owners'
@@ -51,7 +55,54 @@ class CheckEmployerSubDocBelongsToEmployerMixin(UserPassesTestMixin):
         else:
             return False
 
-class CheckAgencyEmployeePermissionsEmployerBaseMixin(LoginRequiredMixin):
+class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
+    agency_user_group = None
+    user_obj = None
+
+    def get_agency_user_group(self):
+        if (
+            hasattr(
+                User.objects.get(pk=self.request.user.pk), 'agency_employee'
+            )
+            or
+            hasattr(
+                User.objects.get(pk=self.request.user.pk), 'agency_owner'
+            )
+        ):
+            if self.request.user.groups.filter(name=agency_owners).exists():
+                self.agency_user_group = agency_owners
+            elif (
+                self.request.user.groups.filter(name=agency_administrators)
+                .exists()
+            ):
+                self.agency_user_group = agency_administrators
+            elif (
+                self.request.user.groups.filter(name=agency_managers).exists()
+            ):
+                self.agency_user_group = agency_managers
+            elif (
+                self.request.user.groups.filter(name=agency_sales_team)
+                .exists()
+            ):
+                self.agency_user_group = agency_sales_team
+            else:
+                return self.handle_no_permission()
+            return True
+            
+        else:
+            return self.handle_no_permission()
+
+    def get_agency_user_object(self):
+        if self.agency_user_group==agency_owners:
+            self.user_obj = AgencyOwner.objects.get(pk=self.request.user.pk)
+        else:
+            self.user_obj = AgencyEmployee.objects.get(
+                pk=self.request.user.pk
+            )
+
+class CheckAgencyEmployeePermissionsEmployerBaseMixin(
+    LoginByAgencyUserGroupRequiredMixin
+):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -61,13 +112,16 @@ class CheckAgencyEmployeePermissionsEmployerBaseMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         
-        user_obj = AgencyEmployee.objects.get(pk=request.user.pk)
+        # Get current user's group and user object
+        self.get_agency_user_group()
+        self.get_agency_user_object()
+        
         test_obj = EmployerBase.objects.get(
             pk=self.kwargs.get('employer_base_pk')
         )
         
         # Check test object's agency is same as current user's agency
-        if not test_obj.agency_employee.agency==user_obj.agency:
+        if not test_obj.agency_employee.agency==self.user_obj.agency:
             return self.handle_no_permission()
 
         # Check user belongs to required group to access view
@@ -78,16 +132,18 @@ class CheckAgencyEmployeePermissionsEmployerBaseMixin(LoginRequiredMixin):
             or (
                 request.user.groups.filter(name=agency_managers).exists()
                 and
-                test_obj.agency_employee.branch==user_obj.branch
+                test_obj.agency_employee.branch==self.user_obj.branch
             )
             or
-            test_obj.agency_employee==user_obj
+            test_obj.agency_employee==self.user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
 
-class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
+class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(
+    LoginByAgencyUserGroupRequiredMixin
+):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -97,13 +153,19 @@ class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         
-        user_obj = AgencyEmployee.objects.get(pk=request.user.pk)
+        # Get current user's group and user object
+        self.get_agency_user_group()
+        self.get_agency_user_object()
+        
         test_obj = EmployerExtraInfo.objects.get(
             pk=self.kwargs.get('employer_extra_info_pk')
         )
 
         # Check test object's agency is same as current user's agency
-        if not test_obj.employer_base.agency_employee.agency==user_obj.agency:
+        if (
+            not test_obj.employer_base.agency_employee.agency
+            ==self.user_obj.agency
+        ):
             return self.handle_no_permission()
 
         # Check user belongs to required group to access view
@@ -114,16 +176,19 @@ class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
             or (
                 request.user.groups.filter(name=agency_managers).exists()
                 and
-                test_obj.employer_base.agency_employee.branch==user_obj.branch
+                test_obj.employer_base.agency_employee.branch
+                ==self.user_obj.branch
             )
             or
-            test_obj.employer_base.agency_employee==user_obj
+            test_obj.employer_base.agency_employee==self.user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
 
-class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
+class CheckAgencyEmployeePermissionsDocBaseMixin(
+    LoginByAgencyUserGroupRequiredMixin
+):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -133,13 +198,16 @@ class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         
-        user_obj = AgencyEmployee.objects.get(pk=request.user.pk)
+        # Get current user's group and user object
+        self.get_agency_user_group()
+        self.get_agency_user_object()
+        
         test_obj = EmployerDocBase.objects.get(
             pk=self.kwargs.get('employer_doc_base_pk')
         )
 
         # Check test object's agency is same as current user's agency
-        if not test_obj.employer.agency_employee.agency==user_obj.agency:
+        if not test_obj.employer.agency_employee.agency==self.user_obj.agency:
             return self.handle_no_permission()
 
         # Check user belongs to required group to access view
@@ -150,16 +218,18 @@ class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
             or (
                 request.user.groups.filter(name=agency_managers).exists()
                 and
-                test_obj.employer.agency_employee.branch==user_obj.branch
+                test_obj.employer.agency_employee.branch==self.user_obj.branch
             )
             or
-            test_obj.employer.agency_employee==user_obj
+            test_obj.employer.agency_employee==self.user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
 
-class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
+class CheckAgencyEmployeePermissionsSubDocMixin(
+    LoginByAgencyUserGroupRequiredMixin
+):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -169,12 +239,14 @@ class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         
-        user_obj = AgencyEmployee.objects.get(pk=request.user.pk)
-
+        # Get current user's group and user object
+        self.get_agency_user_group()
+        self.get_agency_user_object()
+        
         # Check test object's agency is same as current user's agency
         if (
             not self.get_object().employer_doc_base.employer.agency_employee
-            .agency==user_obj.agency
+            .agency==self.user_obj.agency
         ):
             return self.handle_no_permission()
 
@@ -187,17 +259,17 @@ class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
                 request.user.groups.filter(name=agency_managers).exists()
                 and
                 self.get_object().employer_doc_base.employer.agency_employee
-                .branch==user_obj.branch
+                .branch==self.user_obj.branch
             )
             or
             self.get_object().employer_doc_base.employer.agency_employee
-            ==user_obj
+            ==self.user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
 
-class CheckUserHasAgencyRoleMixin(LoginRequiredMixin):
+class CheckUserHasAgencyRoleMixin(LoginByAgencyUserGroupRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -207,20 +279,13 @@ class CheckUserHasAgencyRoleMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
 
-        if (
-            request.user.groups.filter(name=agency_owners).exists()
-            or
-            request.user.groups.filter(name=agency_administrators).exists()
-            or
-            request.user.groups.filter(name=agency_managers).exists()
-            or
-            request.user.groups.filter(name=agency_sales_team).exists()
-        ):
+        # Check user has agency group assigned
+        if self.get_agency_user_group():
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
 
-class CheckUserIsAgencyOwnerMixin(LoginRequiredMixin):
+class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You do not have the necessary access
                                 rights to perform this action'''
@@ -230,7 +295,11 @@ class CheckUserIsAgencyOwnerMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
 
-        if request.user.groups.filter(name=agency_owners).exists():
+        # Get current user's group
+        self.get_agency_user_group()
+        
+        # Check if current user is agency owner
+        if self.agency_user_group==agency_owners:
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()

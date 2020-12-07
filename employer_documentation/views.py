@@ -39,11 +39,14 @@ from .mixins import (
     CheckAgencyEmployeePermissionsDocBaseMixin,
     CheckAgencyEmployeePermissionsSubDocMixin,
     CheckUserHasAgencyRoleMixin,
+    CheckUserIsAgencyOwnerMixin,
+    LoginByAgencyUserGroupRequiredMixin,
 )
-from agency.mixins import (
-    # AgencySalesTeamRequiredMixin,
-    AgencyOwnerRequiredMixin,
+from agency.models import (
+    AgencyEmployee,
+    AgencyOwner
 )
+from . import mixins as e_d_mixins
 
 
 # Start of Views
@@ -53,12 +56,45 @@ from agency.mixins import (
 # Redirect Views
 
 # List Views
-class EmployerBaseListView(ListView):
+class EmployerBaseListView(
+    LoginByAgencyUserGroupRequiredMixin,
+    ListView
+):
     model = EmployerBase
     ordering = ['employer_name']
     # paginate_by = 10
 
     # Filter queryset to only show the employers that current user has necessary permission to access
+    def get_queryset(self):
+        # Get current user's group using LoginByAgencyUserGroupRequiredMixin's get_agency_user_group() method
+        self.get_agency_user_group()
+
+        if self.agency_user_group==e_d_mixins.agency_owners:
+            # If agency owner, return all employers belonging to agency
+            return super().get_queryset().filter(
+                agency_employee__agency=AgencyOwner.objects.get(
+                    pk=self.request.user.pk).agency
+            )
+        elif self.agency_user_group==e_d_mixins.agency_administrators:
+            # If agency administrator, return all employers belonging to agency
+            return super().get_queryset().filter(
+                agency_employee__agency=AgencyEmployee.objects.get(
+                    pk=self.request.user.pk).agency
+            )
+        elif self.agency_user_group==e_d_mixins.agency_managers:
+            # If agency manager, return all employers belonging to branch
+            return super().get_queryset().filter(
+                agency_employee__branch=AgencyEmployee.objects.get(
+                    pk=self.request.user.pk).branch
+            )
+        elif self.agency_user_group==e_d_mixins.agency_sales_team:
+            # If agency owner, return all employers belonging to self
+            return super().get_queryset().filter(
+                agency_employee=AgencyEmployee.objects.get(
+                    pk=self.request.user.pk)
+            )
+        else:
+            return self.handle_no_permission()
 
 class EmployerDocBaseListView(
     CheckAgencyEmployeePermissionsEmployerBaseMixin,
@@ -294,7 +330,7 @@ class EmployerDocEmploymentContractUpdateView(
     ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 # Delete Views
-class EmployerBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
+class EmployerBaseDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
     model = EmployerBase
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
@@ -302,7 +338,7 @@ class EmployerBaseDeleteView(AgencyOwnerRequiredMixin, DeleteView):
 
 class EmployerDocBaseDeleteView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
-    AgencyOwnerRequiredMixin,
+    CheckUserIsAgencyOwnerMixin,
     DeleteView
 ):
     model = EmployerDocBase
