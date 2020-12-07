@@ -58,6 +58,8 @@ class EmployerBaseListView(ListView):
     ordering = ['employer_name']
     # paginate_by = 10
 
+    # Filter queryset to only show the employers that current user has necessary permission to access
+
 class EmployerDocBaseListView(
     CheckAgencyEmployeePermissionsEmployerBaseMixin,
     ListView
@@ -212,7 +214,6 @@ class EmployerBaseUpdateView(
     CheckAgencyEmployeePermissionsEmployerBaseMixin,
     UpdateView
 ):
-    ######## Need to change to another permissions mixin to check agency_employee is assigned to employer or has higher level access rights ########
     model = EmployerBase
     form_class = EmployerBaseForm
     pk_url_kwarg = 'employer_base_pk'
