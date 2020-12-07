@@ -11,6 +11,12 @@ from .models import (
 )
 from agency.models import AgencyEmployee
 
+# Constants
+agency_owners = 'Agency Owners'
+agency_administrators = 'Agency Administrators'
+agency_managers = 'Agency Managers'
+agency_sales_team = 'Agency Sales Team'
+
 # Start of mixins
 class CheckEmployerExtraInfoBelongsToEmployerMixin(
     UserPassesTestMixin,
@@ -71,14 +77,14 @@ class CheckAgencyEmployeePermissionsEmployerBaseMixin(LoginRequiredMixin):
         )
         
         if (
-            request.user.groups.filter(name='Agency Owners').exists()
+            request.user.groups.filter(name=agency_owners).exists()
             or
-            request.user.groups.filter(name='Agency Administrators').exists()
+            request.user.groups.filter(name=agency_administrators).exists()
             or (
-                request.user.groups.filter(name='Agency Managers').exists()
+                request.user.groups.filter(name=agency_managers).exists()
                 and
                 test_obj.agency_employee.branch
-                ==user_obj.agency_employee.branch
+                ==user_obj.branch
             )
             or
             test_obj.agency_employee==user_obj
@@ -103,14 +109,14 @@ class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
         )
 
         if (
-            request.user.groups.filter(name='Agency Owners').exists()
+            request.user.groups.filter(name=agency_owners).exists()
             or
-            request.user.groups.filter(name='Agency Administrators').exists()
+            request.user.groups.filter(name=agency_administrators).exists()
             or (
-                request.user.groups.filter(name='Agency Managers').exists()
+                request.user.groups.filter(name=agency_managers).exists()
                 and
                 test_obj.employer_base.agency_employee.branch
-                ==user_obj.agency_employee.branch
+                ==user_obj.branch
             )
             or
             test_obj.employer_base.agency_employee==user_obj
@@ -135,14 +141,14 @@ class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
         )
 
         if (
-            request.user.groups.filter(name='Agency Owners').exists()
+            request.user.groups.filter(name=agency_owners).exists()
             or
-            request.user.groups.filter(name='Agency Administrators').exists()
+            request.user.groups.filter(name=agency_administrators).exists()
             or (
-                request.user.groups.filter(name='Agency Managers').exists()
+                request.user.groups.filter(name=agency_managers).exists()
                 and
                 test_obj.employer.agency_employee.branch
-                ==user_obj.agency_employee.branch
+                ==user_obj.branch
             )
             or
             test_obj.employer.agency_employee==user_obj
@@ -164,14 +170,14 @@ class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
         user_obj = AgencyEmployee.objects.get(pk=request.user.pk)
 
         if (
-            request.user.groups.filter(name='Agency Owners').exists()
+            request.user.groups.filter(name=agency_owners).exists()
             or
-            request.user.groups.filter(name='Agency Administrators').exists()
+            request.user.groups.filter(name=agency_administrators).exists()
             or (
-                request.user.groups.filter(name='Agency Managers').exists()
+                request.user.groups.filter(name=agency_managers).exists()
                 and
                 self.get_object().employer_doc_base.employer.agency_employee
-                .branch==user_obj.agency_employee.branch
+                .branch==user_obj.branch
             )
             or
             self.get_object().employer_doc_base.employer.agency_employee
@@ -192,13 +198,13 @@ class CheckUserHasAgencyRoleMixin(LoginRequiredMixin):
             return self.handle_no_permission()
 
         if (
-            request.user.groups.filter(name='Agency Owners').exists()
+            request.user.groups.filter(name=agency_owners).exists()
             or
-            request.user.groups.filter(name='Agency Administrators').exists()
+            request.user.groups.filter(name=agency_administrators).exists()
             or
-            request.user.groups.filter(name='Agency Managers').exists()
+            request.user.groups.filter(name=agency_managers).exists()
             or
-            request.user.groups.filter(name='Agency Sales Team').exists()
+            request.user.groups.filter(name=agency_sales_team).exists()
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
@@ -214,7 +220,7 @@ class CheckUserIsAgencyOwnerMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
 
-        if request.user.groups.filter(name='Agency Owners').exists():
+        if request.user.groups.filter(name=agency_owners).exists():
             return super().dispatch(request, *args, **kwargs)
         else:
             return super().handle_no_permission()
