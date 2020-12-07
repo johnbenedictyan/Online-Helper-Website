@@ -1,7 +1,6 @@
 # Django
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.views.generic.detail import SingleObjectMixin
 
 # From our apps
 from .models import (
@@ -18,10 +17,7 @@ agency_managers = 'Agency Managers'
 agency_sales_team = 'Agency Sales Team'
 
 # Start of mixins
-class CheckEmployerExtraInfoBelongsToEmployerMixin(
-    UserPassesTestMixin,
-    SingleObjectMixin
-):
+class CheckEmployerExtraInfoBelongsToEmployerMixin(UserPassesTestMixin):
     def test_func(self):
         test_obj = EmployerExtraInfo.objects.get(
             pk=self.kwargs.get('employer_extra_info_pk')
@@ -32,10 +28,7 @@ class CheckEmployerExtraInfoBelongsToEmployerMixin(
         else:
             return False
 
-class CheckEmployerDocBaseBelongsToEmployerMixin(
-    UserPassesTestMixin,
-    SingleObjectMixin
-):
+class CheckEmployerDocBaseBelongsToEmployerMixin(UserPassesTestMixin):
     def test_func(self):
         test_obj = EmployerDocBase.objects.get(
             pk=self.kwargs.get('employer_doc_base_pk')
@@ -45,10 +38,7 @@ class CheckEmployerDocBaseBelongsToEmployerMixin(
         else:
             return False
 
-class CheckEmployerSubDocBelongsToEmployerMixin(
-    UserPassesTestMixin,
-    SingleObjectMixin
-):
+class CheckEmployerSubDocBelongsToEmployerMixin(UserPassesTestMixin):
     def test_func(self):
         # Access employer_doc_base object via current view's object
         test_obj = self.get_object().employer_doc_base
@@ -83,15 +73,14 @@ class CheckAgencyEmployeePermissionsEmployerBaseMixin(LoginRequiredMixin):
             or (
                 request.user.groups.filter(name=agency_managers).exists()
                 and
-                test_obj.agency_employee.branch
-                ==user_obj.branch
+                test_obj.agency_employee.branch==user_obj.branch
             )
             or
             test_obj.agency_employee==user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return super().handle_no_permission()
+            return self.handle_no_permission()
 
 class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
@@ -115,15 +104,14 @@ class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(LoginRequiredMixin):
             or (
                 request.user.groups.filter(name=agency_managers).exists()
                 and
-                test_obj.employer_base.agency_employee.branch
-                ==user_obj.branch
+                test_obj.employer_base.agency_employee.branch==user_obj.branch
             )
             or
             test_obj.employer_base.agency_employee==user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return super().handle_no_permission()
+            return self.handle_no_permission()
 
 class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
@@ -147,15 +135,14 @@ class CheckAgencyEmployeePermissionsDocBaseMixin(LoginRequiredMixin):
             or (
                 request.user.groups.filter(name=agency_managers).exists()
                 and
-                test_obj.employer.agency_employee.branch
-                ==user_obj.branch
+                test_obj.employer.agency_employee.branch==user_obj.branch
             )
             or
             test_obj.employer.agency_employee==user_obj
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return super().handle_no_permission()
+            return self.handle_no_permission()
 
 class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
@@ -185,7 +172,7 @@ class CheckAgencyEmployeePermissionsSubDocMixin(LoginRequiredMixin):
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return super().handle_no_permission()
+            return self.handle_no_permission()
 
 class CheckUserHasAgencyRoleMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
@@ -208,7 +195,7 @@ class CheckUserHasAgencyRoleMixin(LoginRequiredMixin):
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return super().handle_no_permission()
+            return self.handle_no_permission()
 
 class CheckUserIsAgencyOwnerMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
@@ -223,4 +210,4 @@ class CheckUserIsAgencyOwnerMixin(LoginRequiredMixin):
         if request.user.groups.filter(name=agency_owners).exists():
             return super().dispatch(request, *args, **kwargs)
         else:
-            return super().handle_no_permission()
+            return self.handle_no_permission()
