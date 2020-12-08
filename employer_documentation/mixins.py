@@ -18,7 +18,7 @@ from agency.models import (
 agency_owners = 'Agency Owners'
 agency_administrators = 'Agency Administrators'
 agency_managers = 'Agency Managers'
-agency_sales_team = 'Agency Sales Team'
+agency_sales_team = 'Agency Sales Staff'
 
 # Start of mixins
 class CheckEmployerExtraInfoBelongsToEmployerMixin(UserPassesTestMixin):
