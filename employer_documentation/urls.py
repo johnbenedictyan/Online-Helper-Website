@@ -62,7 +62,7 @@ urlpatterns = [
                 name='employer_base_list'
             ),
             path(
-                '<int:employer_base_pk>/',
+                '<uuid:employer_base_pk>/',
                 include([
                     path(
                         'detail/',
