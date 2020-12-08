@@ -26,8 +26,7 @@ class CheckEmployerExtraInfoBelongsToEmployerMixin(UserPassesTestMixin):
         test_obj = EmployerExtraInfo.objects.get(
             pk=self.kwargs.get('employer_extra_info_pk')
         )
-        if self.get_object().employer_base.pk==self.kwargs.get(
-            'employer_base_pk'):
+        if test_obj.employer_base.pk==self.kwargs.get('employer_base_pk'):
             return True
         else:
             return False
