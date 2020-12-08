@@ -31,6 +31,7 @@ from .views import (
 ## Update Views
 from .views import (
     EmployerBaseUpdateView,
+    EmployerBaseUpdateAgentView,
     EmployerExtraInfoUpdateView,
     EmployerDocBaseUpdateView,
     EmployerDocJobOrderUpdateView,
@@ -73,6 +74,11 @@ urlpatterns = [
                         'update/',
                         EmployerBaseUpdateView.as_view(),
                         name='employer_base_update'
+                    ),
+                    path(
+                        'update-agent/',
+                        EmployerBaseUpdateAgentView.as_view(),
+                        name='employer_base_agent_update'
                     ),
                     path(
                         'delete/',

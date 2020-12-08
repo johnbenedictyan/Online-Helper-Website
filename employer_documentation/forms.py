@@ -24,6 +24,7 @@ from .models import (
     EmployerExtraInfo,
 )
 from agency.models import AgencyEmployee
+from . import mixins as e_d_mixins
 
 
 # Start of Forms
@@ -77,6 +78,55 @@ class EmployerBaseForm(forms.ModelForm):
 
         return cleaned_data
 
+class EmployerBaseAgentForm(forms.ModelForm):
+    class Meta:
+        model = EmployerBase
+        fields = ['agency_employee']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        super().__init__(*args, **kwargs)
+        user_obj = AgencyEmployee.objects.get(pk=self.user_pk)
+
+        if (
+            # If current user is part of owner or administrator group,
+            # display all agency's employees
+            user_obj.user.groups.filter(name=e_d_mixins.agency_owners)
+            .exists()
+            or
+            user_obj.user.groups.filter(name=e_d_mixins.agency_administrators)
+            .exists()
+        ):
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(agency=user_obj.agency)
+            )
+        elif (
+            # If current user is part of manager group, display all agency
+            # branches employees
+            user_obj.user.groups.filter(name=e_d_mixins.agency_managers)
+            .exists()
+        ):
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(branch=user_obj.branch)
+            )
+        else:
+            # If current user is not part of owner, administrator or manager
+            # group, only provide unusable choice that will fail validation.
+            # View should also perform user permissions check.
+            self.fields['agency_employee'].choices = [('-','-')]
+        
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-base-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                "Update employer's assigned agency employee:",
+                # Form fields
+                'agency_employee',
+            ),
+            Submit('submit', 'Submit')
+        )
+    
 class EmployerExtraInfoForm(forms.ModelForm):
     class Meta:
         model = EmployerExtraInfo
