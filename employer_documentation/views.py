@@ -134,8 +134,12 @@ class EmployerBaseCreateView(
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        return kwargs
+
     def form_valid(self, form):
-        ######## Need to add check that employer/agency combo is unique (try adding UniqueConstraint combo to model) ########
         form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
@@ -154,7 +158,6 @@ class EmployerExtraInfoCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocBaseCreateView(
     CheckAgencyEmployeePermissionsEmployerBaseMixin,
@@ -171,7 +174,6 @@ class EmployerDocBaseCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocJobOrderCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -189,7 +191,6 @@ class EmployerDocJobOrderCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceFeeBaseCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -207,7 +208,6 @@ class EmployerDocServiceFeeBaseCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceAgreementCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -225,7 +225,6 @@ class EmployerDocServiceAgreementCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocEmploymentContractCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -243,7 +242,6 @@ class EmployerDocEmploymentContractCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 # Update Views
 class EmployerBaseUpdateView(
@@ -255,7 +253,11 @@ class EmployerBaseUpdateView(
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        return kwargs
 
 class EmployerExtraInfoUpdateView(
     CheckAgencyEmployeePermissionsEmployerExtraInfoMixin,
@@ -267,7 +269,6 @@ class EmployerExtraInfoUpdateView(
     pk_url_kwarg = 'employer_extra_info_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocBaseUpdateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -279,7 +280,6 @@ class EmployerDocBaseUpdateView(
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocJobOrderUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
@@ -291,7 +291,6 @@ class EmployerDocJobOrderUpdateView(
     pk_url_kwarg = 'employer_doc_job_order_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceFeeBaseUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
@@ -303,7 +302,6 @@ class EmployerDocServiceFeeBaseUpdateView(
     pk_url_kwarg = 'employer_doc_service_fee_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocServiceAgreementUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
@@ -315,7 +313,6 @@ class EmployerDocServiceAgreementUpdateView(
     pk_url_kwarg = 'employer_doc_service_agreement_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 class EmployerDocEmploymentContractUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
@@ -327,7 +324,6 @@ class EmployerDocEmploymentContractUpdateView(
     pk_url_kwarg = 'employer_doc_employment_contract_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
-    ######## Need to add check that agency_employee has necessary permissions before saving ########
 
 # Delete Views
 class EmployerBaseDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):

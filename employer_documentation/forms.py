@@ -23,6 +23,7 @@ from .models import (
     EmployerDocSig,
     EmployerExtraInfo,
 )
+from agency.models import AgencyEmployee
 
 
 # Start of Forms
@@ -36,6 +37,7 @@ class EmployerBaseForm(forms.ModelForm):
         exclude = ['agency_employee']
 
     def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'employer-base-form'
@@ -50,6 +52,30 @@ class EmployerBaseForm(forms.ModelForm):
             ),
             Submit('submit', 'Submit')
         )
+    
+    def clean(self):
+        cleaned_data = super().clean()
+
+        try:
+            # Check if employer_email exists in database
+            employer_obj = EmployerBase.objects.get(
+                employer_email=cleaned_data.get('employer_email')
+            )
+        except EmployerBase.DoesNotExist:
+            # If no entries for employer_email, then no further checks
+            return cleaned_data
+        else:
+            # If employer_email exists, then need to check if it belongs to
+            # current user's agency
+            if (
+                employer_obj.agency_employee.agency==
+                AgencyEmployee.objects.get(pk=self.user_pk).agency
+            ):
+                error_msg = _('An employer with this email address already \
+                    exists in your agency')
+                self.add_error('employer_email', error_msg)
+
+        return cleaned_data
 
 class EmployerExtraInfoForm(forms.ModelForm):
     class Meta:
