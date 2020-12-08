@@ -170,6 +170,11 @@ class EmployerDocBaseCreateView(
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        return kwargs
+
     def form_valid(self, form):
         form.instance.employer = EmployerBase.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
@@ -307,6 +312,11 @@ class EmployerDocBaseUpdateView(
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        return kwargs
 
 class EmployerDocJobOrderUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,

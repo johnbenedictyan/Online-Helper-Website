@@ -24,6 +24,7 @@ from .models import (
     EmployerExtraInfo,
 )
 from agency.models import AgencyEmployee
+from maid.models import Maid
 from . import mixins as e_d_mixins
 
 
@@ -155,7 +156,12 @@ class EmployerDocBaseForm(forms.ModelForm):
         exclude = ['employer']
 
     def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
         super().__init__(*args, **kwargs)
+        self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects
+                .get(pk=self.user_pk).agency_employee.agency)
+            )
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
