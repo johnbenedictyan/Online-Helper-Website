@@ -2,6 +2,7 @@
 
 {% block e_d_section %}
     <h1>Employers</h1>
+    <a href="{% url 'employer_base_create' %}">Create new employer</a>
     <table class="table">
         <thead>
             <tr>
@@ -22,7 +23,7 @@
                 <td>{{ object.agency_employee }}</td>
             </tr>
         {% empty %}
-            <tr>No employers yet.</tr>
+            <p><tr>No employers yet.</tr></p>
         {% endfor %}
         </tbody>
     </table>
