@@ -56,10 +56,17 @@ class CheckEmployerSubDocBelongsToEmployerMixin(UserPassesTestMixin):
             return False
 
 class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
+    '''
+    This is a helper mixin that does not override any inherited methods or
+    attributes. Use to add additional functionality to LoginRequiredMixin.
+    '''
     agency_user_group = None
     user_obj = None
 
+    # Gets current user's assigned agency group. Needs to be called manually.
     def get_agency_user_group(self):
+        # First check if current user is agency_employee or agency_owner.
+        # If neither, then permission check failed, no further checks needed.
         if (
             hasattr(
                 User.objects.get(pk=self.request.user.pk), 'agency_employee'
@@ -69,6 +76,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 User.objects.get(pk=self.request.user.pk), 'agency_owner'
             )
         ):
+            # Assign current user's agency group to agency_user_group atribute
             if self.request.user.groups.filter(name=agency_owners).exists():
                 self.agency_user_group = agency_owners
             elif (
@@ -87,11 +95,16 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 self.agency_user_group = agency_sales_team
             else:
                 return self.handle_no_permission()
+            # If successfully assigned current user's agency group to
+            # agency_user_group atribute, return True so this method can also
+            # serve as a validation that current user has agency role.
             return True
             
         else:
             return self.handle_no_permission()
 
+    # Gets current user's object. Call get_agency_user_group() first to set
+    # agency_user_group attribute
     def get_agency_user_object(self):
         if self.agency_user_group==agency_owners:
             self.user_obj = AgencyOwner.objects.get(pk=self.request.user.pk)
