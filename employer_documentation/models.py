@@ -1,4 +1,5 @@
 # Imports from python
+import uuid
 
 # Imports from django
 from django.db import models
@@ -20,6 +21,12 @@ from maid.models import Maid
 EmployerBase model holds minimum data required to create an Employer db entry
 '''
 class EmployerBase(models.Model):
+    uuid = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
         on_delete=models.RESTRICT
@@ -47,7 +54,8 @@ class EmployerBase(models.Model):
 class EmployerExtraInfo(models.Model):
     employer_base = models.OneToOneField(
         EmployerBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerextrainfo'
     )
     employer_nric = models.CharField(max_length=20)
     employer_address_1 = models.CharField(
@@ -82,7 +90,8 @@ class EmployerDocBase(models.Model):
     )
     employer = models.ForeignKey(
         EmployerBase,
-        on_delete=models.RESTRICT
+        on_delete=models.RESTRICT,
+        related_name='rn_employerdocbase'
     )
     fdw = models.ForeignKey(
         Maid,
@@ -124,7 +133,8 @@ class EmployerDocSig(models.Model):
 class EmployerDocJobOrder(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocjoborder'
     )
     job_order_date = models.DateField()
     employer_race = models.CharField(
@@ -317,7 +327,8 @@ class EmployerDocMaidStatus(models.Model):
 class EmployerDocServiceFeeBase(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocservicefeebase'
     )
     b1_service_fee = models.PositiveIntegerField() # cents
     b2a_work_permit_application_collection = models.PositiveIntegerField() # cents
@@ -401,7 +412,8 @@ class EmployerDocServiceFeeReplacement(models.Model):
 class EmployerDocServiceAgreement(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocserviceagreement'
     )
     c1_3_handover_days = models.PositiveSmallIntegerField(
         choices=[
@@ -620,7 +632,8 @@ class EmployerDocServiceAgreement(models.Model):
 class EmployerDocEmploymentContract(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocemploymentcontract'
     )
     c3_2_salary_payment_date = models.PositiveSmallIntegerField(
         # day of month

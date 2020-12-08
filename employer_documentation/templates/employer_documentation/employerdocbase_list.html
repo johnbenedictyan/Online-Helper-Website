@@ -1,0 +1,32 @@
+{% extends 'employer_documentation/e-d-base-template.html' %}
+
+{% block e_d_section %}
+    <h1>Employer Docs</h1>
+    <a href="{% url 'employer_doc_base_create' employer_base_pk=view.kwargs.employer_base_pk %}">Create new doc base</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">pk</th>
+                <th scope="col">case_ref_no</th>
+                <th scope="col">fdw</th>
+                <th scope="col">spouse_required</th>
+                <th scope="col">sponsor_required</th>
+                <th scope="col">documentation</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+            <tr>
+                <th scope="row">{{ object.pk }}</th>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.fdw }}</a></td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.spouse_required }}</a></td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.sponsor_required }}</a></td>
+                <td><a href="{% url 'employer_doc_base_detail' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">documentation summary</a></td>
+            </tr>
+        {% empty %}
+            <p>No docs yet.</p>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock e_d_section %}
