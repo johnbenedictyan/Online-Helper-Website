@@ -14,7 +14,7 @@ from agency.models import (
     AgencyOwner,
 )
 
-# Constants
+# Constants: agency user groups
 agency_owners = 'Agency Owners'
 agency_administrators = 'Agency Administrators'
 agency_managers = 'Agency Managers'
