@@ -157,11 +157,20 @@ class EmployerDocBaseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-        self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects
-                .get(pk=self.user_pk).agency_employee.agency)
+
+        if self.agency_user_group==e_d_mixins.agency_owners:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
             )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+        
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(

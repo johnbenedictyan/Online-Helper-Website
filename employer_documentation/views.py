@@ -173,6 +173,7 @@ class EmployerDocBaseCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
     def form_valid(self, form):
@@ -316,6 +317,7 @@ class EmployerDocBaseUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
 class EmployerDocJobOrderUpdateView(
