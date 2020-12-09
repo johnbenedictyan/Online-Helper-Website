@@ -36,24 +36,80 @@ from . import mixins as e_d_mixins
 class EmployerBaseForm(forms.ModelForm):
     class Meta:
         model = EmployerBase
-        exclude = ['agency_employee']
+        # exclude = ['agency_employee']
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
+
         self.helper = FormHelper()
         self.helper.form_class = 'employer-base-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Create new / update existing employer:',
-                # Form fields
-                'employer_name',
-                'employer_email',
-                'employer_mobile_number',
-            ),
-            Submit('submit', 'Submit')
-        )
+        if self.agency_user_group==e_d_mixins.agency_owners:
+            self.helper.layout = Layout(
+                Fieldset(
+                    # Legend for form
+                    'Create new / update existing employer:',
+                    # Form fields
+                    'employer_name',
+                    'employer_email',
+                    'employer_mobile_number',
+                    'agency_employee',
+                ),
+                Submit('submit', 'Submit')
+            )
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(agency=get_user_model().objects
+                .get(pk=self.user_pk).agency_owner.agency)
+            )
+        elif self.agency_user_group==e_d_mixins.agency_administrators:
+            self.helper.layout = Layout(
+                Fieldset(
+                    # Legend for form
+                    'Create new / update existing employer:',
+                    # Form fields
+                    'employer_name',
+                    'employer_email',
+                    'employer_mobile_number',
+                    'agency_employee',
+                ),
+                Submit('submit', 'Submit')
+            )
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(agency=get_user_model().objects
+                .get(pk=self.user_pk).agency_employee.agency)
+            )
+        elif self.agency_user_group==e_d_mixins.agency_managers:
+            self.helper.layout = Layout(
+                Fieldset(
+                    # Legend for form
+                    'Create new / update existing employer:',
+                    # Form fields
+                    'employer_name',
+                    'employer_email',
+                    'employer_mobile_number',
+                    'agency_employee',
+                ),
+                Submit('submit', 'Submit')
+            )
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(branch=get_user_model().objects
+                .get(pk=self.user_pk).agency_employee.branch)
+            )
+        else:
+            del self.fields['agency_employee']
+            self.helper.layout = Layout(
+                Fieldset(
+                    # Legend for form
+                    'Create new / update existing employer:',
+                    # Form fields
+                    'employer_name',
+                    'employer_email',
+                    'employer_mobile_number',
+                ),
+                Submit('submit', 'Submit')
+            )
     
     def clean(self):
         cleaned_data = super().clean()
@@ -67,15 +123,24 @@ class EmployerBaseForm(forms.ModelForm):
             # If no entries for employer_email, then no further checks
             return cleaned_data
         else:
-            # If employer_email exists, then need to check if it belongs to
-            # current user's agency
-            if (
-                employer_obj.agency_employee.agency==
-                AgencyEmployee.objects.get(pk=self.user_pk).agency
-            ):
+            if employer_obj==self.instance:
+                pass
+            else:
+                # If employer_email exists, then check if it belongs to
+                # current user's agency
                 error_msg = _('An employer with this email address already \
                     exists in your agency')
-                self.add_error('employer_email', error_msg)
+                if self.agency_user_group==e_d_mixins.agency_owners:
+                    if (
+                        employer_obj.agency_employee.agency==get_user_model()
+                        .objects.get(pk=self.user_pk).agency_owner.agency
+                    ):
+                        self.add_error('employer_email', error_msg)
+                elif (
+                    employer_obj.agency_employee.agency==get_user_model()
+                    .objects.get(pk=self.user_pk).agency_employee.agency
+                ):
+                    self.add_error('employer_email', error_msg)
 
         return cleaned_data
 

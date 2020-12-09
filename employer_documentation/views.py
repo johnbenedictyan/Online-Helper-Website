@@ -138,10 +138,12 @@ class EmployerBaseCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
     def form_valid(self, form):
-        form.instance.agency_employee = self.request.user.agency_employee
+        if self.agency_user_group==e_d_mixins.agency_sales_team:
+            form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
 class EmployerExtraInfoCreateView(
@@ -264,6 +266,7 @@ class EmployerBaseUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
 class EmployerBaseUpdateAgentView(
