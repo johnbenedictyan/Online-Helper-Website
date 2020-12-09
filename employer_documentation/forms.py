@@ -113,7 +113,7 @@ class EmployerBaseAgentForm(forms.ModelForm):
         else:
             # If current user is not part of owner, administrator or manager
             # group, only provide unusable choice that will fail validation.
-            # View should also perform user permissions check.
+            # View should also perform separate user permissions check.
             self.fields['agency_employee'].choices = [('-','-')]
         
         self.helper = FormHelper()
