@@ -109,6 +109,7 @@ media/
 *.pid
 
 env.py
+.scss
 
 # Ignore Django Migrations in Development if you are working on team
 
