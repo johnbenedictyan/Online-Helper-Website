@@ -110,7 +110,7 @@ media/
 
 env.py
 *.scss
-/scss
+scss/
 
 # Ignore Django Migrations in Development if you are working on team
 
