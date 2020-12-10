@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # From our apps
 from .forms import (
     EmployerBaseForm,
+    EmployerBaseAgentForm,
     EmployerDocBaseForm,
     EmployerExtraInfoForm,
     EmployerDocJobOrderForm,
@@ -137,10 +138,12 @@ class EmployerBaseCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
     def form_valid(self, form):
-        form.instance.agency_employee = self.request.user.agency_employee
+        if self.agency_user_group==e_d_mixins.agency_sales_team:
+            form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
 class EmployerExtraInfoCreateView(
@@ -168,6 +171,12 @@ class EmployerDocBaseCreateView(
     pk_url_kwarg = 'employer_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
     def form_valid(self, form):
         form.instance.employer = EmployerBase.objects.get(
@@ -257,6 +266,33 @@ class EmployerBaseUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+class EmployerBaseUpdateAgentView(
+    CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    UpdateView
+):
+    model = EmployerBase
+    form_class = EmployerBaseAgentForm
+    pk_url_kwarg = 'employer_base_pk'
+    template_name = 'employer_documentation/employer-form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Call inherited dispatch() method first to perform initial
+        # permissions checks and set agency_user_group attribute.
+        super().dispatch(request, *args, **kwargs)
+
+        # If current user is part of sales staff group, deny access
+        if self.agency_user_group==e_d_mixins.agency_sales_team:
+            self.handle_no_permission()
+        else:
+            return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
         return kwargs
 
 class EmployerExtraInfoUpdateView(
@@ -280,6 +316,12 @@ class EmployerDocBaseUpdateView(
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employer-form.html'
     success_url = reverse_lazy('employer_base_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
 class EmployerDocJobOrderUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
