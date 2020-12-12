@@ -1,3 +1,19 @@
+.bg-primary1 {
+  background-color: #3066be;
+}
+
+.bg-dark1 {
+  background-color: #08090a;
+}
+
+.bg-secondary1 {
+  background-color: #C20114;
+}
+
+.bg-third1 {
+  background-color: #23CE6B;
+}
+
 .bg-hero {
   background-image: url("/static/images/home-page-bg.jpg");
   background-size: cover;
@@ -21,6 +37,12 @@
   background-position: center;
 }
 
+.bg-enquiry-banner {
+  background-image: url("/static/images/home-page-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
 .faq-item.active {
   color: #007bff;
   background-color: #fff;
@@ -38,5 +60,40 @@
 
 ol.breadcrumb {
   background: none;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Rubik', sans-serif;
+}
+
+button.mini-faq-button:focus {
+  text-decoration: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+button.mini-faq-button:hover {
+  text-decoration: none;
+}
+
+button.mini-faq-button.collapsed i {
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+  -webkit-transition: transform 0.25s ease;
+  -webkit-transition: -webkit-transform 0.25s ease;
+  transition: -webkit-transform 0.25s ease;
+  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, -webkit-transform 0.25s ease;
+}
+
+button.mini-faq-button i {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+  -webkit-transition: transform 0.25s ease;
+  -webkit-transition: -webkit-transform 0.25s ease;
+  transition: -webkit-transform 0.25s ease;
+  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, -webkit-transform 0.25s ease;
 }
 /*# sourceMappingURL=style.css.map */
