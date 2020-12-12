@@ -28,6 +28,10 @@ class TermsOfSerivceView(TemplateView):
     http_method_names = ['get']
     template_name = 'terms-of-service.html'
 
+class HowItWorksView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'how-it-works.html'
+
 class RobotsTxt(TemplateView):
     http_method_names = ['get']
     template_name = 'robots.txt'
