@@ -32,6 +32,10 @@ class HowItWorksView(TemplateView):
     http_method_names = ['get']
     template_name = 'how-it-works.html'
 
+class FAQView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'faq.html'
+
 class RobotsTxt(TemplateView):
     http_method_names = ['get']
     template_name = 'robots.txt'
