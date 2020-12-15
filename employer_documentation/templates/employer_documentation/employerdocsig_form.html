@@ -25,9 +25,10 @@
                 <div class="modal-footer">
                     <form method="POST">
                         {% csrf_token %}
+                        {{ form.non_field_errors }}
                         {% for field in form %}
+                            {{ field }}
                             {{ field.errors }}
-                            {{ field.as_hidden }}
                         {% endfor %}
                         <input type="submit" id="submit-btn" class="btn btn-success" value="Submit">
                     </form>
@@ -43,7 +44,7 @@
     <script>
         var signaturePad = new SignaturePad(document.getElementById("signature-pad"));
         function appendImageToForm() {
-            document.getElementById("id_employer_signature").value = signaturePad.toDataURL();
+            document.getElementById("id_signature").value = signaturePad.toDataURL();
             return true;
         }
         function checkSignatureNotBlank(callbackFunction) {
