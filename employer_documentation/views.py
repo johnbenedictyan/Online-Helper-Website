@@ -394,7 +394,7 @@ class EmployerDocBaseDeleteView(
 # Signature Views
 class SignatureEmployerCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsDocBaseMixin,
+    # CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
     model = EmployerDocSig
@@ -411,7 +411,7 @@ class SignatureEmployerCreateView(
 
 class SignatureEmployerUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsSubDocMixin,
+    # CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
     model = EmployerDocSig
@@ -422,7 +422,7 @@ class SignatureEmployerUpdateView(
 
 class SignatureSpouseCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsDocBaseMixin,
+    # CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
     model = EmployerDocSig
@@ -439,7 +439,7 @@ class SignatureSpouseCreateView(
 
 class SignatureSpouseUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsSubDocMixin,
+    # CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
     model = EmployerDocSig
@@ -450,7 +450,7 @@ class SignatureSpouseUpdateView(
 
 class SignatureSponsorCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsDocBaseMixin,
+    # CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
     model = EmployerDocSig
@@ -467,7 +467,7 @@ class SignatureSponsorCreateView(
 
 class SignatureSponsorUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsSubDocMixin,
+    # CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
     model = EmployerDocSig
@@ -478,7 +478,7 @@ class SignatureSponsorUpdateView(
 
 class SignatureFdwCreateView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsDocBaseMixin,
+    # CheckAgencyEmployeePermissionsDocBaseMixin,
     CreateView
 ):
     model = EmployerDocSig
@@ -495,7 +495,7 @@ class SignatureFdwCreateView(
 
 class SignatureFdwUpdateView(
     CheckEmployerSubDocBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsSubDocMixin,
+    # CheckAgencyEmployeePermissionsSubDocMixin,
     UpdateView
 ):
     model = EmployerDocSig

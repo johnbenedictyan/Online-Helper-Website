@@ -30,10 +30,6 @@ from . import mixins as e_d_mixins
 
 
 # Start of Forms
-
-# Forms that inherit from inbuilt Django forms
-
-# Model Forms (forms.ModelForm)
 class EmployerBaseForm(forms.ModelForm):
     class Meta:
         model = EmployerBase
