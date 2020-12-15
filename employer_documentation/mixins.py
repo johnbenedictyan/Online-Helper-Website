@@ -315,3 +315,29 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
+
+# PDF Mixin
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+class PdfMixin:
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        DEFAULT_FILENAME = "document.pdf"
+
+        # Render PDF
+        html_template = render_to_string(self.template_name, context)
+        pdf_file = HTML(string=html_template).write_pdf(
+            # Load separate CSS stylesheet from static folder
+            stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
+        )
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        if hasattr(self, 'content_disposition'):
+            response['Content-Disposition'] = self.content_disposition
+        else:
+            response['Content-Disposition'] = (
+                'inline; filename=' + DEFAULT_FILENAME
+            )
+        return response

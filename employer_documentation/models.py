@@ -116,17 +116,11 @@ class EmployerDocSig(models.Model):
         on_delete=models.CASCADE
     )
     agreement_date = models.DateField(blank=True, null=True)
-    # employer_signature = ImageField(blank=True, null=True)
-    # spouse_signature = ImageField(blank=True,null=True)
-    # sponsor_signature = ImageField(blank=True, null=True)
-    # fdw_signature = ImageField(blank=True, null=True)
-    # sales_staff_signature = ImageField(blank=True, null=True)
-
-    # employer_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # spouse_signature_native = models.ImageField(blank=True,null=True, upload_to=get_file_path)
-    # sponsor_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # fdw_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # sales_staff_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
+    employer_signature = models.TextField(blank=True, null=True)
+    spouse_signature = models.TextField(blank=True,null=True)
+    sponsor_signature = models.TextField(blank=True, null=True)
+    fdw_signature = models.TextField(blank=True, null=True)
+    agency_staff_signature = models.TextField(blank=True, null=True)
     # One-time token sent to employer for them to get their signature
     # employer_signature_token = models.CharField(max_length=32, blank=True, null=True)
 

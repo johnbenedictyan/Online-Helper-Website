@@ -18,6 +18,7 @@ from .forms import (
     EmployerDocServiceFeeBaseForm,
     EmployerDocServiceAgreementForm,
     EmployerDocEmploymentContractForm,
+    SignatureEmployerForm,
 )
 from .models import (
     EmployerBase,
@@ -42,6 +43,7 @@ from .mixins import (
     CheckUserHasAgencyRoleMixin,
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
+    PdfMixin,
 )
 from agency.models import (
     AgencyEmployee,
@@ -383,3 +385,17 @@ class EmployerDocBaseDeleteView(
     pk_url_kwarg = 'employer_doc_base_pk'
     template_name = 'employer_documentation/employerbase_confirm_delete.html'
     success_url = reverse_lazy('employer_base_list')
+
+
+# PDF Views
+class SignatureEmployerCreateView(CreateView):
+    model = EmployerDocSig
+    form_class = SignatureEmployerForm
+    # template_name = ''
+    success_url = reverse_lazy('employer_base_list')
+
+class PdfDetailView(PdfMixin, DetailView):
+    model = EmployerDocSig
+    pk_url_kwarg = 'docsig_pk'
+    # template_name = ''
+    # content_disposition = 'inline; filename="custom-filename.pdf"'

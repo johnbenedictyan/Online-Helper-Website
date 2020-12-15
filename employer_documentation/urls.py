@@ -46,8 +46,13 @@ from .views import (
     EmployerDocBaseDeleteView,
 )
 
-# Start of Urls
+## PDF Views
+from .views import (
+    SignatureEmployerCreateView,
+    PdfDetailView,
+)
 
+# Start of Urls
 urlpatterns = [
     path(
         '',
@@ -162,6 +167,16 @@ urlpatterns = [
                                 'employment-contract/<int:employer_doc_employment_contract_pk>/update/',
                                 EmployerDocEmploymentContractUpdateView.as_view(),
                                 name='employer_doc_employment_contract_update'
+                            ),
+                            path(
+                                'signature/employer/create/',
+                                SignatureEmployerCreateView.as_view(),
+                                name='signature_employer_create'
+                            ),
+                            path(
+                                'signature/<int:docsig_pk>/pdf/',
+                                PdfDetailView.as_view(),
+                                name='pdf_detail'
                             ),
                         ]),
                     ),
