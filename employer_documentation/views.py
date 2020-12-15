@@ -391,11 +391,18 @@ class EmployerDocBaseDeleteView(
 class SignatureEmployerCreateView(CreateView):
     model = EmployerDocSig
     form_class = SignatureEmployerForm
+    pk_url_kwarg = 'employer_doc_base_pk'
     # template_name = ''
     success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
 class PdfDetailView(PdfMixin, DetailView):
     model = EmployerDocSig
     pk_url_kwarg = 'docsig_pk'
-    # template_name = ''
+    template_name = 'employer_documentation/pdf.html'
     # content_disposition = 'inline; filename="custom-filename.pdf"'
