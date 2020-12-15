@@ -382,7 +382,7 @@ class EmployerDocEmploymentContractForm(forms.ModelForm):
         )
 
 
-# PDF Forms
+# Signature Forms
 import base64
 class SignatureFormMixin:
     model_field_name = 'signature'
@@ -418,6 +418,66 @@ class SignatureEmployerForm(SignatureFormMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model_field_name = 'employer_signature'
+        self.fields[self.model_field_name].widget.attrs.update(
+            {
+                'id': 'id_signature',
+                'hidden': 'true',
+            }
+        )
+
+class SignatureSpouseForm(SignatureFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['spouse_signature']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.model_field_name = 'spouse_signature'
+        self.fields[self.model_field_name].widget.attrs.update(
+            {
+                'id': 'id_signature',
+                'hidden': 'true',
+            }
+        )
+
+class SignatureSponsorForm(SignatureFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['sponsor_signature']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.model_field_name = 'sponsor_signature'
+        self.fields[self.model_field_name].widget.attrs.update(
+            {
+                'id': 'id_signature',
+                'hidden': 'true',
+            }
+        )
+
+class SignatureFdwForm(SignatureFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['fdw_signature']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.model_field_name = 'fdw_signature'
+        self.fields[self.model_field_name].widget.attrs.update(
+            {
+                'id': 'id_signature',
+                'hidden': 'true',
+            }
+        )
+
+class SignatureAgencyStaffForm(SignatureFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['agency_staff_signature']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.model_field_name = 'agency_staff_signature'
         self.fields[self.model_field_name].widget.attrs.update(
             {
                 'id': 'id_signature',

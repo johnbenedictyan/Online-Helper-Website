@@ -19,6 +19,10 @@ from .forms import (
     EmployerDocServiceAgreementForm,
     EmployerDocEmploymentContractForm,
     SignatureEmployerForm,
+    SignatureSpouseForm,
+    SignatureSponsorForm,
+    SignatureFdwForm,
+    SignatureAgencyStaffForm,
 )
 from .models import (
     EmployerBase,
@@ -387,12 +391,12 @@ class EmployerDocBaseDeleteView(
     success_url = reverse_lazy('employer_base_list')
 
 
-# PDF Views
+# Signature Views
 class SignatureEmployerCreateView(CreateView):
     model = EmployerDocSig
     form_class = SignatureEmployerForm
     pk_url_kwarg = 'employer_doc_base_pk'
-    # template_name = ''
+    template_name = 'employer_documentation/signature_form.html'
     success_url = reverse_lazy('employer_base_list')
 
     def form_valid(self, form):
@@ -401,6 +405,95 @@ class SignatureEmployerCreateView(CreateView):
         )
         return super().form_valid(form)
 
+class SignatureEmployerUpdateView(UpdateView):
+    model = EmployerDocSig
+    form_class = SignatureEmployerForm
+    pk_url_kwarg = 'docsig_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+class SignatureSpouseCreateView(CreateView):
+    model = EmployerDocSig
+    form_class = SignatureSpouseForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+class SignatureSpouseUpdateView(UpdateView):
+    model = EmployerDocSig
+    form_class = SignatureSpouseForm
+    pk_url_kwarg = 'docsig_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+class SignatureSponsorCreateView(CreateView):
+    model = EmployerDocSig
+    form_class = SignatureSponsorForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+class SignatureSponsorUpdateView(UpdateView):
+    model = EmployerDocSig
+    form_class = SignatureSponsorForm
+    pk_url_kwarg = 'docsig_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+class SignatureFdwCreateView(CreateView):
+    model = EmployerDocSig
+    form_class = SignatureFdwForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+class SignatureFdwUpdateView(UpdateView):
+    model = EmployerDocSig
+    form_class = SignatureFdwForm
+    pk_url_kwarg = 'docsig_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+class SignatureAgencyStaffCreateView(CreateView):
+    model = EmployerDocSig
+    form_class = SignatureAgencyStaffForm
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+    def form_valid(self, form):
+        form.instance.employer_doc_base = EmployerDocBase.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+class SignatureAgencyStaffUpdateView(UpdateView):
+    model = EmployerDocSig
+    form_class = SignatureAgencyStaffForm
+    pk_url_kwarg = 'docsig_pk'
+    template_name = 'employer_documentation/signature_form.html'
+    success_url = reverse_lazy('employer_base_list')
+
+
+# PDF Views
 class PdfDetailView(PdfMixin, DetailView):
     model = EmployerDocSig
     pk_url_kwarg = 'docsig_pk'

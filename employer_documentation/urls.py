@@ -46,9 +46,22 @@ from .views import (
     EmployerDocBaseDeleteView,
 )
 
-## PDF Views
+## Signature Views
 from .views import (
     SignatureEmployerCreateView,
+    SignatureEmployerUpdateView,
+    SignatureSpouseCreateView,
+    SignatureSpouseUpdateView,
+    SignatureSponsorCreateView,
+    SignatureSponsorUpdateView,
+    SignatureFdwCreateView,
+    SignatureFdwUpdateView,
+    SignatureAgencyStaffCreateView,
+    SignatureAgencyStaffUpdateView,
+)
+
+## PDF Views
+from .views import (
     PdfDetailView,
 )
 
@@ -172,6 +185,51 @@ urlpatterns = [
                                 'signature/employer/create/',
                                 SignatureEmployerCreateView.as_view(),
                                 name='signature_employer_create'
+                            ),
+                            path(
+                                'signature/<int:docsig_pk>/employer/update/',
+                                SignatureEmployerUpdateView.as_view(),
+                                name='signature_employer_update'
+                            ),
+                            path(
+                                'signature/spouse/create/',
+                                SignatureSpouseCreateView.as_view(),
+                                name='signature_spouse_create'
+                            ),
+                            path(
+                                'signature/<int:docsig_pk>/spouse/update/',
+                                SignatureSpouseUpdateView.as_view(),
+                                name='signature_spouse_update'
+                            ),
+                            path(
+                                'signature/sponsor/create/',
+                                SignatureSponsorCreateView.as_view(),
+                                name='signature_sponsor_create'
+                            ),
+                            path(
+                                'signature/<int:docsig_pk>/sponsor/update/',
+                                SignatureSponsorUpdateView.as_view(),
+                                name='signature_sponsor_update'
+                            ),
+                            path(
+                                'signature/fdw/create/',
+                                SignatureFdwCreateView.as_view(),
+                                name='signature_fdw_create'
+                            ),
+                            path(
+                                'signature/<int:docsig_pk>/fdw/update/',
+                                SignatureFdwUpdateView.as_view(),
+                                name='signature_fdw_update'
+                            ),
+                            path(
+                                'signature/agency/create/',
+                                SignatureAgencyStaffCreateView.as_view(),
+                                name='signature_agency_create'
+                            ),
+                            path(
+                                'signature/<int:docsig_pk>/agency/update/',
+                                SignatureAgencyStaffUpdateView.as_view(),
+                                name='signature_agency_update'
                             ),
                             path(
                                 'signature/<int:docsig_pk>/pdf/',
