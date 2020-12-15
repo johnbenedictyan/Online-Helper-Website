@@ -392,7 +392,11 @@ class EmployerDocBaseDeleteView(
 
 
 # Signature Views
-class SignatureEmployerCreateView(CreateView):
+class SignatureEmployerCreateView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CreateView
+):
     model = EmployerDocSig
     form_class = SignatureEmployerForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -405,14 +409,22 @@ class SignatureEmployerCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class SignatureEmployerUpdateView(UpdateView):
+class SignatureEmployerUpdateView(
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
+    UpdateView
+):
     model = EmployerDocSig
     form_class = SignatureEmployerForm
     pk_url_kwarg = 'docsig_pk'
     template_name = 'employer_documentation/signature_form.html'
     success_url = reverse_lazy('employer_base_list')
 
-class SignatureSpouseCreateView(CreateView):
+class SignatureSpouseCreateView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CreateView
+):
     model = EmployerDocSig
     form_class = SignatureSpouseForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -425,14 +437,22 @@ class SignatureSpouseCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class SignatureSpouseUpdateView(UpdateView):
+class SignatureSpouseUpdateView(
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
+    UpdateView
+):
     model = EmployerDocSig
     form_class = SignatureSpouseForm
     pk_url_kwarg = 'docsig_pk'
     template_name = 'employer_documentation/signature_form.html'
     success_url = reverse_lazy('employer_base_list')
 
-class SignatureSponsorCreateView(CreateView):
+class SignatureSponsorCreateView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CreateView
+):
     model = EmployerDocSig
     form_class = SignatureSponsorForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -445,14 +465,22 @@ class SignatureSponsorCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class SignatureSponsorUpdateView(UpdateView):
+class SignatureSponsorUpdateView(
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
+    UpdateView
+):
     model = EmployerDocSig
     form_class = SignatureSponsorForm
     pk_url_kwarg = 'docsig_pk'
     template_name = 'employer_documentation/signature_form.html'
     success_url = reverse_lazy('employer_base_list')
 
-class SignatureFdwCreateView(CreateView):
+class SignatureFdwCreateView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CreateView
+):
     model = EmployerDocSig
     form_class = SignatureFdwForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -465,14 +493,22 @@ class SignatureFdwCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class SignatureFdwUpdateView(UpdateView):
+class SignatureFdwUpdateView(
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
+    UpdateView
+):
     model = EmployerDocSig
     form_class = SignatureFdwForm
     pk_url_kwarg = 'docsig_pk'
     template_name = 'employer_documentation/signature_form.html'
     success_url = reverse_lazy('employer_base_list')
 
-class SignatureAgencyStaffCreateView(CreateView):
+class SignatureAgencyStaffCreateView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsDocBaseMixin,
+    CreateView
+):
     model = EmployerDocSig
     form_class = SignatureAgencyStaffForm
     pk_url_kwarg = 'employer_doc_base_pk'
@@ -485,7 +521,11 @@ class SignatureAgencyStaffCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class SignatureAgencyStaffUpdateView(UpdateView):
+class SignatureAgencyStaffUpdateView(
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
+    UpdateView
+):
     model = EmployerDocSig
     form_class = SignatureAgencyStaffForm
     pk_url_kwarg = 'docsig_pk'
@@ -494,7 +534,12 @@ class SignatureAgencyStaffUpdateView(UpdateView):
 
 
 # PDF Views
-class PdfDetailView(PdfMixin, DetailView):
+class PdfDetailView(
+    CheckEmployerSubDocBelongsToEmployerMixin,
+    CheckAgencyEmployeePermissionsSubDocMixin,
+    PdfMixin,
+    DetailView
+):
     model = EmployerDocSig
     pk_url_kwarg = 'docsig_pk'
     template_name = 'employer_documentation/pdf.html'
