@@ -3,6 +3,8 @@
 {% block title %}Form A: Service and Fees Schedule{% endblock %}
 
 {% block content %}
+
+{% with object.rn_employerdocservicefeebase as sf %}
 <p class="text-align-center">{{ object.employer.agency_employee.agency }}</p>
 <p class="text-align-center">Licence No: {{ object.employer.agency_employee.agency.license_number }}</p>
 <br>
@@ -57,7 +59,7 @@
             <td>1.</td>
             <td colspan="3">Service Fee</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b1_service_fee }}</td>
+            <td class="text-align-right">{{ sf.b1_service_fee }}</td>
         </tr>
         <tr>
             <td colspan="5"></td>
@@ -71,63 +73,63 @@
             <td width="2%">a.</td>
             <td colspan="2">Application / Collection of Work Permit</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2a_work_permit_application_collection }}</td>
+            <td class="text-align-right">{{ sf.b2a_work_permit_application_collection }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td colspan="2">Medical Examination Fee</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2b_medical_examination_fee }}</td>
+            <td class="text-align-right">{{ sf.b2b_medical_examination_fee }}</td>
         </tr>
         <tr>
             <td></td>
             <td>c.</td>
             <td colspan="2">Security Bond and the Personal Accident Insurance</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2c_security_bond_accident_insurance }}</td>
+            <td class="text-align-right">{{ sf.b2c_security_bond_accident_insurance }}</td>
         </tr>
         <tr>
             <td></td>
             <td>d.</td>
             <td colspan="2">Reimbursement of Indemnity Policy</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2d_indemnity_policy_reimbursement }}</td>
+            <td class="text-align-right">{{ sf.b2d_indemnity_policy_reimbursement }}</td>
         </tr>
         <tr>
             <td></td>
             <td>e.</td>
             <td colspan="2">Home Service</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2e_home_service }}</td>
+            <td class="text-align-right">{{ sf.b2e_home_service }}</td>
         </tr>
         <tr>
             <td></td>
             <td>f.</td>
             <td colspan="2">Counselling Services at Agency’s premise / Employer’s residence</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2f_counselling }}</td>
+            <td class="text-align-right">{{ sf.b2f_counselling }}</td>
         </tr>
         <tr>
             <td></td>
             <td>g.</td>
             <td colspan="2">Settling-In-Programme (SIP)</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2g_sip }}</td>
+            <td class="text-align-right">{{ sf.b2g_sip }}</td>
         </tr>
         <tr>
             <td></td>
             <td>h.</td>
-            <td colspan="2">Cost for replacement within {{ object.rn_employerdocservicefeebase.b2h_replacement_months }} months</td>
+            <td colspan="2">Cost for replacement within {{ sf.b2h_replacement_months }} months</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2h_replacement_cost }}</td>
+            <td class="text-align-right">{{ sf.b2h_replacement_cost }}</td>
         </tr>
         <tr>
             <td></td>
             <td>i.</td>
             <td colspan="2">Renewal of Work Permit</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2i_work_permit_renewal }}</td>
+            <td class="text-align-right">{{ sf.b2i_work_permit_renewal }}</td>
         </tr>
         <tr>
             <td></td>
@@ -139,28 +141,29 @@
         <tr>
             <td colspan="2"></td>
             <td width="2%">i.</td>
-            <td class="border--bottom" width="70%">{{ object.rn_employerdocservicefeebase.b2j1_other_services_description }}</td>
+            <td class="border--bottom" width="70%">{{ sf.b2j1_other_services_description }}</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2j1_other_services_fee }}</td>
+            <td class="text-align-right">{{ sf.b2j1_other_services_fee }}</td>
         </tr>
         <tr>
             <td colspan="2"></td>
             <td>ii.</td>
-            <td class="border--bottom">{{ object.rn_employerdocservicefeebase.b2j2_other_services_description }}</td>
+            <td class="border--bottom">{{ sf.b2j2_other_services_description }}</td>
             <td></td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.b2j2_other_services_fee }}</td>
+            <td class="text-align-right">{{ sf.b2j2_other_services_fee }}</td>
         </tr>
         <tr>
             <td colspan="2"></td>
             <td>iii.</td>
-            <td class="border--bottom">{{ object.rn_employerdocservicefeebase.b2j3_other_services_description }}</td>
+            <td class="border--bottom">{{ sf.b2j3_other_services_description }}</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.rn_employerdocservicefeebase.b2j3_other_services_fee }}</td>
+            <td class="text-align-right border--bottom">{{ sf.b2j3_other_services_fee }}</td>
         </tr>
+        {% with total_administrative_cost=sf.b1_service_fee|add:sf.b2a_work_permit_application_collection|add:sf.b2b_medical_examination_fee|add:sf.b2c_security_bond_accident_insurance|add:sf.b2d_indemnity_policy_reimbursement|add:sf.b2e_home_service|add:sf.b2f_counselling|add:sf.b2g_sip|add:sf.b2h_replacement_cost|add:sf.b2i_work_permit_renewal|add:sf.b2j1_other_services_fee|add:sf.b2j2_other_services_fee|add:sf.b2j3_other_services_fee|add:sf.ca_deposit %}
         <tr>
             <td colspan="4">Total Administrative Cost</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.fdw }}</td>
+            <td class="text-align-right border--bottom">{{ total_administrative_cost }}</td>
         </tr>
         <tr>
             <td></td>
@@ -208,7 +211,7 @@
             <td></td>
             <td width="2%">a.</td>
             <td>Deposit – upon confirmation of FDW</td>
-            <td class="text-align-right">{{ object.rn_employerdocservicefeebase.ca_deposit }}</td>
+            <td class="text-align-right">{{ sf.ca_deposit }}</td>
         </tr>
         <tr>
             <td></td>
@@ -216,6 +219,7 @@
             <td>Balance payment</td>
             <td class="text-align-right">{{ object.fdw }}</td>
         </tr>
+        {% endwith %} {% comment %}<!-- total_administrative_cost endwith -->{% endcomment %}
     </table>
     <br>
     <table>
@@ -241,4 +245,6 @@
         </tr>
     </table>
 </div>
+{% endwith %}
+
 {% endblock %}
