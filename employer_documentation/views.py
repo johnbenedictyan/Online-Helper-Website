@@ -534,13 +534,13 @@ class SignatureAgencyStaffUpdateView(
 
 
 # PDF Views
-class PdfDetailView(
-    CheckEmployerSubDocBelongsToEmployerMixin,
-    CheckAgencyEmployeePermissionsSubDocMixin,
+class PdfServiceFeeBaseView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    # CheckAgencyEmployeePermissionsSubDocMixin,
     PdfMixin,
     DetailView
 ):
-    model = EmployerDocSig
-    pk_url_kwarg = 'docsig_pk'
-    template_name = 'employer_documentation/pdf.html'
+    model = EmployerDocBase
+    pk_url_kwarg = 'employer_doc_base_pk'
+    template_name = 'employer_documentation/pdf-01-service-fee-base.html'
     # content_disposition = 'inline; filename="custom-filename.pdf"'

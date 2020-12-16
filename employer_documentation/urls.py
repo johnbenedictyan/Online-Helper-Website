@@ -62,7 +62,7 @@ from .views import (
 
 ## PDF Views
 from .views import (
-    PdfDetailView,
+    PdfServiceFeeBaseView,
 )
 
 # Start of Urls
@@ -232,9 +232,9 @@ urlpatterns = [
                                 name='signature_agency_update'
                             ),
                             path(
-                                'signature/<int:docsig_pk>/pdf/',
-                                PdfDetailView.as_view(),
-                                name='pdf_detail'
+                                'pdf/service-fees/',
+                                PdfServiceFeeBaseView.as_view(),
+                                name='pdf_service_fee_base'
                             ),
                         ]),
                     ),
