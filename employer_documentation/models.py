@@ -113,7 +113,8 @@ class EmployerDocBase(models.Model):
 class EmployerDocSig(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_docsignatures'
     )
     agreement_date = models.DateField(blank=True, null=True)
     employer_signature = models.TextField(blank=True, null=True)

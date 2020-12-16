@@ -11,19 +11,19 @@
             </tr>
             <tr>
                 <th scope="row">case_ref_no</th>
-                <td>{{ object.case_ref_no }}</td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
             </tr>
             <tr>
                 <th scope="row">fdw</th>
-                <td>{{ object.fdw }}</td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.fdw }}</a></td>
             </tr>
             <tr>
                 <th scope="row">spouse_required</th>
-                <td>{{ object.spouse_required }}</td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.spouse_required }}</a></td>
             </tr>
             <tr>
                 <th scope="row">sponsor_required</th>
-                <td>{{ object.sponsor_required }}</td>
+                <td><a href="{% url 'employer_doc_base_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">{{ object.sponsor_required }}</a></td>
             </tr>
             <tr>
                 <th scope="row">JobOrder</th>
@@ -40,6 +40,26 @@
             <tr>
                 <th scope="row">EmployerDocEmploymentContract</th>
                 <td>{% if object.rn_employerdocemploymentcontract %}<a href="{% url 'employer_doc_employment_contract_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk employer_doc_employment_contract_pk=object.rn_employerdocemploymentcontract.pk %}">{{ object.rn_employerdocemploymentcontract }}</a>{% else %}<a href="{% url 'employer_doc_employment_contract_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">create employment contract</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">Signature - Employer</th>
+                <td>{% if object.rn_docsignatures %}<a href="{% url 'signature_employer_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk docsig_pk=object.rn_docsignatures.pk %}">{% if object.rn_docsignatures.employer_signature %}Signed - Update Employer Signature{% else %}Employer Sign{% endif %}</a>{% else %}<a href="{% url 'signature_employer_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">Employer Sign</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">Signature - Spouse</th>
+                <td>{% if object.rn_docsignatures %}<a href="{% url 'signature_spouse_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk docsig_pk=object.rn_docsignatures.pk %}">{% if object.rn_docsignatures.spouse_signature %}Signed - Update Spouse Signature{% else %}Spouse Sign{% endif %}</a>{% else %}<a href="{% url 'signature_spouse_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">Spouse Sign</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">Signature - Sponsor</th>
+                <td>{% if object.rn_docsignatures %}<a href="{% url 'signature_sponsor_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk docsig_pk=object.rn_docsignatures.pk %}">{% if object.rn_docsignatures.sponsor_signature %}Signed - Update Sponsor Signature{% else %}Sponsor Sign{% endif %}</a>{% else %}<a href="{% url 'signature_sponsor_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">Sponsor Sign</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">Signature - FDW</th>
+                <td>{% if object.rn_docsignatures %}<a href="{% url 'signature_fdw_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk docsig_pk=object.rn_docsignatures.pk %}">{% if object.rn_docsignatures.fdw_signature %}Signed - Update FDW Signature{% else %}FDW Sign{% endif %}</a>{% else %}<a href="{% url 'signature_fdw_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">FDW Sign</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="row">Signature - Agency Staff</th>
+                <td>{% if object.rn_docsignatures %}<a href="{% url 'signature_agency_update' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk docsig_pk=object.rn_docsignatures.pk %}">{% if object.rn_docsignatures.agency_staff_signature %}Signed - Update Agency Staff Signature{% else %}Agency Sign{% endif %}</a>{% else %}<a href="{% url 'signature_agency_create' employer_base_pk=object.employer.pk employer_doc_base_pk=object.pk %}">Agency Staff Sign</a>{% endif %}</td>
             </tr>
         </tbody>
     </table>
