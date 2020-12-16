@@ -1,4 +1,5 @@
 {% extends 'employer_documentation/pdf-00-base.html' %}
+{% load mathfilters %}
 
 {% block title %}Form A: Service and Fees Schedule{% endblock %}
 
@@ -41,7 +42,7 @@
         </tr>
         <tr>
             <td>Basic Salary</td>
-            <td>: S${{ object.fdw }}</td>
+            <td>: S$ {{ object.fdw.salary }}</td>
         </tr>
         <tr>
             <td></td>
@@ -177,19 +178,20 @@
             <td>a.</td>
             <td colspan="2">Agency fee charged on the FDW by the Agency</td>
             <td></td>
-            <td class="text-align-right">{{ object.fdw }}</td>
+            <td class="text-align-right">99999 - to be updated</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td colspan="2">Personal loan incurred by FDW in overseas</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.fdw }}</td>
+            <td class="text-align-right border--bottom">{{ object.fdw.loan_amount }}</td>
         </tr>
+        {% with total_placement_fee=99999|add:object.fdw.loan_amount %}
         <tr>
             <td colspan="4">Total Placement Fee</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.fdw }}</td>
+            <td class="text-align-right border--bottom">{{ total_placement_fee }}</td>
         </tr>
     </table>
 </div>
@@ -205,7 +207,7 @@
         </tr>
         <tr>
             <td colspan="3" width="85%">Total Amount</td>
-            <td class="text-align-right">{{ object.fdw }}</td>
+            <td class="text-align-right">{{ total_placement_fee|add:total_administrative_cost }}</td>
         </tr>
         <tr>
             <td></td>
@@ -217,9 +219,10 @@
             <td></td>
             <td>b.</td>
             <td>Balance payment</td>
-            <td class="text-align-right">{{ object.fdw }}</td>
+            <td class="text-align-right">{{ total_placement_fee|add:total_administrative_cost|sub:sf.ca_deposit }}</td>
         </tr>
-        {% endwith %} {% comment %}<!-- total_administrative_cost endwith -->{% endcomment %}
+        {% endwith %} {% comment %}<!-- endwith: total_placement_fee -->{% endcomment %}
+        {% endwith %} {% comment %}<!-- endwith: total_administrative_cost -->{% endcomment %}
     </table>
     <br>
     <table>
@@ -245,6 +248,6 @@
         </tr>
     </table>
 </div>
-{% endwith %}
+{% endwith %} {% comment %}<!-- endwith: object.rn_employerdocservicefeebase as sf -->{% endcomment %}
 
 {% endblock %}
