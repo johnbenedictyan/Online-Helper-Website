@@ -350,10 +350,12 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 class PdfViewMixin:
+    DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
+    content_disposition = None
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
-        DEFAULT_FILENAME = "document.pdf"
 
         # Render PDF
         html_template = render_to_string(self.template_name, context)
@@ -362,10 +364,10 @@ class PdfViewMixin:
             # stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
         )
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        if hasattr(self, 'content_disposition'):
+        if self.content_disposition:
             response['Content-Disposition'] = self.content_disposition
         else:
             response['Content-Disposition'] = (
-                'inline; filename=' + DEFAULT_FILENAME
+                'inline; filename=' + self.DEFAULT_DOWNLOAD_FILENAME
             )
         return response

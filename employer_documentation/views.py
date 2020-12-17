@@ -542,4 +542,3 @@ class PdfEmployerAgreementView(
 ):
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
-    # content_disposition = 'inline; filename="custom-filename.pdf"'

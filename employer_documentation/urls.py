@@ -233,12 +233,18 @@ urlpatterns = [
                             ),
                             path(
                                 'pdf/service-fees/',
-                                PdfEmployerAgreementView.as_view(template_name='employer_documentation/pdf-01-service-fee-base.html'),
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-01-service-fee-base.html',
+                                    content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                ),
                                 name='pdf_service_fee_base'
                             ),
                             path(
                                 'pdf/service-agreement/',
-                                PdfEmployerAgreementView.as_view(template_name='employer_documentation/pdf-03-service-agreement.html'),
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-03-service-agreement.html',
+                                    content_disposition = 'inline; filename="service_agreement.pdf"',
+                                ),
                                 name='pdf_service_agreement'
                             ),
                         ]),
