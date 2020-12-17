@@ -1,0 +1,795 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+{% load mathfilters %}
+
+{% block title %}Service Agreement{% endblock %}
+
+{% block content %}
+
+{% with object.rn_employerdocserviceagreement as agmt_obj %}
+{% with object.rn_employerdocservicefeebase as edsfs %}
+{% with total_administrative_cost=edsfs.b1_service_fee|add:edsfs.b2a_work_permit_application_collection|add:edsfs.b2b_medical_examination_fee|add:edsfs.b2c_security_bond_accident_insurance|add:edsfs.b2d_indemnity_policy_reimbursement|add:edsfs.b2e_home_service|add:edsfs.b2f_counselling|add:edsfs.b2g_sip|add:edsfs.b2h_replacement_cost|add:edsfs.b2i_work_permit_renewal|add:edsfs.b2j1_other_services_fee|add:edsfs.b2j2_other_services_fee|add:edsfs.b2j3_other_services_fee|add:edsfs.ca_deposit %}
+{% with total_placement_fee=99999|add:object.fdw.loan_amount %}
+<div class="text-align-center">
+    <p>{{ object.employer.agency_employee.agency.name }}</p>
+    <p>Licence No.: {{ object.employer.agency_employee.agency.license_number }}</p>
+</div>
+<br>
+<div class="text-align-center">
+    <h2>SERVICE AGREEMENT</h2>
+    <h2>BETWEEN FOREIGN DOMESTIC WORKER EMPLOYER AND EMPLOYMENT AGENCY</h2>
+</div>
+<br>
+<div class="border--bottom">
+</div>
+<br>
+
+<table>
+    <tr>
+        <th colspan="2" class="text-bold--600">Employment Agency Ref No</th>
+        <th class="text-bold--600">: {{ object.case_ref_no }} </th>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td colspan="3">This Service Agreement is dated {{ object.rn_docsignatures.agreement_date }} and made between:</td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td style="width:2%">(A)</td>
+        <td style="width:45%">Full Name of Employment Agency (“Agency”)</td>
+        <td>: {{ object.employer.agency_employee.agency.name }} </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Employment Agency Licence Number</td>
+        <td>: {{ object.employer.agency_employee.agency.license_number }} </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Registered Business Address</td>
+        <td>: {{ object.employer.agency_employee.agency }}
+        <br> &nbsp; {{ object.employer.agency_employee.agency }}
+        <br> &nbsp; Singapore {{ object.employer.agency_employee.agency }}</td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>(B)</td>
+        <td>Full Name of Employer (“Employer”)</td>
+        <td>: {{ object.employer.employer_name }} </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>NRIC/Passport Number</td>
+        <td>: {{ object.employer.rn_employerextrainfo.employer_nric }} </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Address</td>
+        <td>: {{ object.employer.rn_employerextrainfo.employer_address_1 }} 
+        <br> &nbsp; {{ object.employer.rn_employerextrainfo.employer_address_2 }}
+        <br> &nbsp; Singapore {{ object.employer.rn_employerextrainfo.employer_postal_code }}</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <td colspan="3" class="text--xsmall"><i>*Delete where appropriate in the contract.</i></td>
+    </tr>
+    <tr>
+        <td colspan="3">It is hereby agreed between the parties that:</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <th class="text-bold--600" width="2%">1.</th>
+        <th class="text-bold--600" colspan="2">Appointment of Services</th>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>1.1</td>
+        <td colspan="2">The Employer hereby appoints the Agency to secure the services of a Foreign Domestic Worker (FDW) (set out in the <i>Services & Fees Schedule</i>) for a contract of service on the terms and conditions that appear below.</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>1.2</td>
+        <td colspan="2">The period of this Service Agreement shall be from the date of signing this Service Agreement for a period of 24 months or the validity of the work permit, whichever is shorter, and subject to the clauses 3-5 on Replacement and Refund.</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>1.3</td>
+        <td colspan="2">The Agency shall handover the FDW to the Employer within {{ agmt_obj.c1_3_handover_days }} day(s) after obtaining the In Principle Approval to bring FDW into Singapore by the Ministry of Manpower, subject to the conditions under Clause 3.1, Table 1. The Agency and Employer shall check against the “Handing and Taking-Over Form” during the handing/taking-over process.</td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <th class="text-bold--600">2.</th>
+        <th class="text-bold--600" colspan="2">Fee Payment</th>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>2.1</td>
+        <td colspan="2">In consideration of the services to be provided by the agency, the Employer shall pay the following fees as set out in the Services & Fees Schedule (Form A):</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td width="2%">i.</td>
+        <td>Service Fee & Administrative Costs Charged on Employer</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+        <td>Total service fee and administrative costs of <u>&nbsp;S${{ total_placement_fee|add:total_administrative_cost }}&nbsp;</u> shall be paid to the Agency for the services rendered in the following manner.</td>
+    </tr>
+</table>
+
+<div class="page-break">
+    <table>
+        <tr>
+            <td></td>
+            <td width="2%">ii.</td>
+            <td colspan="2">Placement Fee</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">The placement Fee of <u>&nbsp;S${{ total_placement_fee }}&nbsp;</u> comprises of (a) agency fee charged on the FDW by the Agency and (b) personal loan incurred by FDW overseas.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td width="2%">a.</td>
+            <td>Agency fee charged on the FDW by the Agency amounting to S${{ total_administrative_cost }}.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>b.</td>
+            <td>Personal loan incurred by FDW overseas amounting to S${{ object.fdw.loan_amount }}.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">The Employer agrees to pay the placement fee of S${{ total_placement_fee }} on behalf of the FDW which the Employer may recover from the FDW as determined in the employment contract.</td>
+        </tr>
+        <tr>
+            <td colspan="4"><br></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="2%">iii.</td>
+            <td colspan="2">Payment Breakdown</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>a.</td>
+            <td>A deposit of S${{ edsfs.ca_deposit }} (if any), shall be paid in full before the Agency submits the Employer’s application to the Ministry of Manpower (MOM).</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>b.</td>
+            <td>The balance of S${{ total_placement_fee|add:total_administrative_cost|sub:edsfs.ca_deposit }} when the FDW reports for work/ duty.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2.2</td>
+            <td colspan="3">Apart from the Service Fee, the Agency confirms that there are no hidden or other costs or expenses that the Employer shall be liable for, except those, if any, under this Agreement.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2.3</td>
+            <td colspan="3">All payments shall *include / exclude the prevailing Goods and Services Tax (GST). [*To delete accordingly]</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">3.</td>
+            <td colspan="3" class="text-bold--600">Replacement Policy Before FDW Deployment</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3.1</td>
+            <td colspan="3">If the FDW is unable to be placed to the Employer, the Agency shall provide the Employer with a replacement FDW at no additional cost and which shall not count towards the Employer’s entitlement in clause 4.1.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3.2</td>
+            <td colspan="3">The Agency may not provide the Employer with a replacement FDW at no additional cost under the following circumstances [*Agency to list circumstances]:</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td colspan="3" class="border--bottom">{{ agmt_obj.c3_2_no_replacement_criteria_1 }}</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td colspan="3" class="border--bottom">{{ agmt_obj.c3_2_no_replacement_criteria_2 }}</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td colspan="3" class="border--bottom">{{ agmt_obj.c3_2_no_replacement_criteria_3 }}</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td>3.3</td>
+            <td colspan="3">In the event that the FDW needs to be repatriated before she is placed to the Employer, the Agency shall be responsible for and bear the cost of repatriation of the FDW to the international port of entry that affords her reasonable access
+                to her hometown within her home country.<sup>1</sup></td>
+        </tr>
+    </table>
+</div>
+
+<div class="page-break">
+    <table>
+        <tr>
+            <td width="2%">3.4</td>
+            <td colspan="2">In the event that the Employer opts not to have a replacement FDW in the circumstances stated in clause 3.1 when the FDW(s) who matches the Employer’s selection criteria is available, the Employer shall be entitled to a refund of S${{ agmt_obj.c3_4_no_replacement_refund }}.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3.5</td>
+            <td colspan="2">After a replacement has been accepted by the Employer, the Employer shall not be entitled to any refund of the service fee.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">4.</td>
+            <td colspan="2" class="text-bold--600">Replacement Policy After FDW Deployment</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4.1</td>
+            <td colspan="2">According to the Services & Fees Schedule, the Employer is entitled to <u>&nbsp;{{ agmt_obj.c4_1_number_of_replacements }}&nbsp;</u> (e.g. one) FDW replacement(s) from the Agency within a period of <u>&nbsp;{{ agmt_obj.c4_1_replacement_period }}&nbsp;</u> month(s) (‘replacement period’) over and above the Employer’s
+                entitlement as stated in clause 3.1. A new fees schedule for replacement (Form B) contained within this Agreement shall be signed. However, the Employer may request for a replacement only after the FDW has worked for the Employer for
+                a minimum of <u>&nbsp;{{ agmt_obj.c4_1_replacement_after_min_working_days }}&nbsp;</u> days (which should be before the expiry of the replacement period). This replacement period shall be applicable to all subsequent replacements, if the Employer is entitled to more than 1 replacement.
+                The grant of replacement is subject to the following:</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="2%">4.1.1</td>
+            <td>The Employer must sign the Consent to Transfer Form from the Work Pass Division, Ministry of Manpower (‘MOM’) to allow the FDW to seek employment with a new Employer.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>4.1.2</td>
+            <td>The Employer shall agree to transfer the FDW to a new employer specified by the Agency and will not in any way prevent or jeopardize the FDW’s transfer or opportunity to seek re-employment with the new employer, unless the FDW is medically
+                unfit to work as a domestic worker or has committed a criminal offence in Singapore. The Employer must make the FDW available to the Agency for 21 days for her to be interviewed and successfully transferred. If the Agency is unable
+                to transfer the FDW within 21 days, the Agency shall update the Employer on the FDW’s transfer status. Beyond this period, the Employer may repatriate the FDW and cancel her Work Permit.
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>4.1.3</td>
+            <td>If the Employer decides to terminate the services of the FDW, the Employer shall inform the Agency for settlement of any outstanding issues between the FDW and Agency.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>4.1.4</td>
+            <td>The replacement FDW shall be of the same selection criteria as the previous FDW unless both parties explicitly agree to the contrary. In the event that an Employer selects a replacement FDW of a different selection criterion, the Employer
+                shall have to pay the difference in the prescribed package and replacement fee, if applicable.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>4.1.5</td>
+            <td>The replacement shall take effect within {{ agmt_obj.c4_1_5_replacement_deadline }} month(s) from the date the Employer returns the FDW back to the Agency. After which time, if the Agency fails to provide a replacement, the Employer may choose to terminate this Agreement, subject to the clauses under Section 5 on Refund Policy.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td><br><br><br><br><br></td>
+        </tr>
+        <tr>
+            <td colspan="3">__________________________________________</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" class="text--xsmall"><sup>1</sup>Under the EA licence conditions, the licensee is required to bear the cost of repatriation of any non-citizen brought into Singapore by the licensee if the Work Permit is not issued, or if the non-citizen is not placed on employment,
+                or if the Work Permit is revoked in situations explained under clause 3.2</td>
+        </tr>
+    </table>
+</div>
+
+<div class="page-break">
+    <table>
+        <tr>
+            <td></td>
+            <td>4.2</td>
+            <td colspan="2">The Employer reserves the right to reject the intended replacement and terminate this Agreement if the replacement does not fulfil Employer’s selection criteria (based on the original selection criteria). In such case, the Employer shall
+                be entitled to a refund of the Service Fee charged as stipulated in Clause 2.1(i) and all of placement fee paid to the Agency.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" width="2%">5.</td>
+            <td colspan="3" class="text-bold--600">Refund Policy for Service Fee and Placement Fee</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>5.1</td>
+            <td colspan="3">If FDW <span class="text-bold--600">has not been deployed</span> to employer</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="2%">5.1.1</td>
+            <td colspan="2">The Agency agrees to deploy the FDW to the Employer within {{ agmt_obj.c5_1_1_deployment_deadline }} days of the date of this contract, failing which the Employer is entitled to a S${{ agmt_obj.c5_1_1_failed_deployment_refund }} refund of the service fee and all of placement fee paid to the Agency.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>5.1.2</td>
+            <td colspan="2">If the Employer terminates the agreement in writing with the Agency, the Employer shall be entitled to a refund of the service fee (if any) less the administrative charge (as stipulated in table below) from the Agency within {{ agmt_obj.c5_1_2_refund_within_days }} days.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="3">
+                <table class="border--all">
+                    <tr>
+                        <td width="5%"></td>
+                        <td class="text-bold--600" width="65%">Event</td>
+                        <td class="text-bold--600">Administrative Charge</td>
+                    </tr>
+                    <tr>
+                        <td>i</td>
+                        <td><b><i>Before</i></b> FDW arrives in Singapore</td>
+                        <td><b>S${{ agmt_obj.c5_1_2_before_fdw_arrives_charge }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>ii</td>
+                        <td><b><i>After</i></b> FDW arrives in Singapore</td>
+                        <td><b>S${{ agmt_obj.c5_1_2_after_fdw_arrives_charge }}</b></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>5.2</td>
+            <td colspan="3">If FDW has been deployed to employer and <span class="text-bold--600">can be transferred</span> to new employer</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>5.2.1</td>
+            <td colspan="2">The Agency shall refund the balance placement fee should the Employer decides to terminate the FDW prematurely and the FDW is successfully transferred to another employer. This is subject to the Employer returning the FDW to the Agency and agreeing to the FDW’s transfer to a new employer specified by the Agency without in any way preventing or jeopardizing the FDW’s transfer or opportunity to seek re-employment with a new employer.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>5.2.2</td>
+            <td colspan="2">The refund shall be within {{ agmt_obj.c5_2_2_can_transfer_refund_within }} week(s) (not exceeding 4 weeks) from the date of termination of the FDW or the date the FDW was transferred, whichever is later.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>5.3</td>
+            <td colspan="3">If FDW has been deployed to employer and <span class="text-bold--600">cannot be transferred</span></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>5.3.1</td>
+            <td colspan="2">The Agency shall refund the outstanding placement fee to Employer</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td width="2%">a)</td>
+            <td>should the FDW is unwilling and /or unable to continue employment in Singapore.</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td width="2%">b)</td>
+            <td>FDW has been assigned to another Agency by MOM.</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>c)</td>
+            <td>FDW goes to another agency (not assigned by MOM).</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>5.3.2</td>
+            <td colspan="2">The refund shall be within {{ agmt_obj.c5_3_2_cannot_transfer_refund_within }} week(s) (not exceeding 4 weeks) from</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>a)</td>
+            <td>the end of the waiting period stipulated in clause 4.1.2.</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>b)</td>
+            <td>the date the FDW is assigned to another agency by MOM.</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>c)</td>
+            <td>the date the Agency is informed that the FDW selects another agency, whichever is applicable.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+<div class="page-break">
+    <table>
+        <tr>
+            <td></td>
+            <td width="2%">5.3.3</td>
+            <td>If the FDW has been assigned to another Agency by MOM or other relevant authorities, the Employer shall bear all the costs incurred, including medical expenses, food and accommodation costs for the duration of the relevant authorities’ investigation in any event and regardless of the outcome.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" width="2%">6.</td>
+            <td class="text-bold--600" colspan="2">Special Provisions</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.1</td>
+            <td colspan="2">The Agency should exercise due diligence in ensuring the accuracy of all personal information given in the bio-data of the FDW, within the agency’s reasonable control to check and verify.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.2</td>
+            <td colspan="2">The Agency shall ensure that the FDW arrives on time as scheduled, but should there be any delay not caused by the Agency, the Agency will not be liable for any claims made by the Employer for consequential loss or delay.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.3</td>
+            <td colspan="2">The Employer shall permit the Agency or such authorised persons as the Agency may appoint to visit the work location to determine the welfare of the FDW and to observe and adjudge the performance of her obligations to the Employer or Agency.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.4</td>
+            <td colspan="2">If the Employer requests for the Agency to provide food and accommodation, and should the Agency agree to do so, the Employer shall pay S${{ agmt_obj.c6_4_per_day_food_accommodation_cost }} per day to the Agency for provision of this service. These costs cannot be recovered from the FDW.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.5</td>
+            <td colspan="2">Should the Agency agree to provide food and accommodation for the FDW as stated in clause 6.4, the Employer shall remain legally responsible for the FDW. This includes but is not limited to bearing the costs of the FDW’s medical expenses. Prior to providing food and accommodation for the FDW, the Agency shall inform the Employer that the Employer is legally responsible for the FDW.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.6</td>
+            <td colspan="2">If the Agency provides counselling services, the Employer shall be liable to pay the Agency a sum of S${{ agmt_obj.c6_6_per_session_counselling_cost }} for each counselling session at the Agency’s premises and/or Employer’s residence. However, this sum is not payable if the Employer was already charged for counselling services under the service fee as set out in the Services & Fees Schedule.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.7</td>
+            <td colspan="2">The Employer shall inform the Agency of the termination of the FDW’s employment with the same period of notice given to the FDW for termination of employment.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.8</td>
+            <td colspan="2">The Agency shall furnish the Employer with the employment history of the FDW. The Agency shall obtain such information from the Ministry of Manpower and ensure that the most updated information is made available to the Employer during the selection process.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6.9</td>
+            <td colspan="2">In the event that the FDW absconds, the Agency shall assist to contact the NGOs and the Embassy of her home country to locate her.</td>
+        </tr>
+        <tr>
+            <td colspan="3"><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" width="2%">7.</td>
+            <td class="text-bold--600" colspan="2">Force Majeure</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2">In the event that any party shall be rendered unable to carry out the whole or any part of its obligations under this Agreement for any reason beyond the control of that party, including but not limited to acts of God, force majeure, strikes, war, riot and any other causes of such nature, the performance of the obligations hereunder of that party or all the parties as the case may be and as they are affected by such cause shall be excused during the continuance of any inability so caused, but such inability shall as far aspossible be remedied with all reasonable dispatch.</td>
+        </tr>
+    </table>
+</div>
+
+<div class="page-break">
+    <table>
+        <tr>
+            <td class="text-bold--600" width="2%">8.</td>
+            <td class="text-bold--600">Confidentiality</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>The Agency shall not, unless with the Employer’s written consent, directly or indirectly give, divulge or reveal to any persons any information whatsoever regarding the Employer, which information the Agency acquired or requested the Employer to provide pursuant to this Agreement. This condition shall not apply in the case where the information is required for the purpose of any investigations under any law, by the police, the Controller of Work Passes, the Commissioner for Employment Agencies, Commissioner for Labour, Immigration officers or any other public officer.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">9.</td>
+            <td class="text-bold--600">Dispute Resolution</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>9.1</td>
+            <td>If the Agency is unable to resolve any grievance(s) of the Employer or if the parties are unable to resolve any dispute between them with respect to this Agreement, the parties shall refer the grievance(s) or dispute to {{ agmt_obj.c9_1_independent_mediator_1 }}<sup>2</sup>.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>9.2</td>
+            <td>If the dispute arising from this Agreement cannot be settled by the above mediation stated in clause 9.1, the parties shall refer the grievance(s) or dispute to {{ agmt_obj.c9_2_independent_mediator_2 }}.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">10.</td>
+            <td class="text-bold--600">Precedence to Other Agreements</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>In the event of there being any inconsistency between the terms of this Agreement and the terms of any other agreement (oral or written) entered into between the Agency and the Employer, the terms of this Agreement shall prevail and the
+                terms of such other agreement shall be deemed to be amended to the extent necessary for it to be read as being consistent with this Agreement.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">11.</td>
+            <td class="text-bold--600">Severability of Provisions</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>If any provision of this Agreement or part thereof is rendered void, illegal or unenforceable by any legislation to which it is subject, it shall be rendered void, illegal or unenforceable to that extent and it shall in no way affect or
+                prejudice the enforceability of the remainder of such provision or the other provisions of this Agreement.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">12.</td>
+            <td class="text-bold--600">Third Party Rights</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>A person who is not a party to this Agreement has no right under the Contracts (Rights of Third Parties) Act, Chapter 53B of Singapore or any other laws in any jurisdiction to enforce any term of this Agreement.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">13.</td>
+            <td class="text-bold--600">Termination of Agreement</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Any party intending to terminate this agreement shall provide at least {{ agmt_obj.c13_termination_notice }} day(s) prior notice to the other party.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">__________________________________________</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="text--xsmall"><sup>2</sup> The third-party mediator can be a provider of mediation services. Otherwise, the third-party mediator must be aware and agreeable to the arrangement.</td>
+        </tr>
+    </table>
+</div>
+
+<div class="page-break">
+    <table>
+        <tr>
+            <td class="text-bold--600">14.</td>
+            <td colspan="2" class="text-bold--600">Miscellaneous</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>14.1</td>
+            <td>The Employer shall observe and comply with all laws in force in Singapore affecting this Agreement, including but not limited to the Employment of Foreign Manpower Act, the Employment of Foreign Manpower (Work Passes) Regulations 2007,
+                the Immigration Act, and the Immigration Regulations. The Employer shall give all notices and pay all fees required to be given or paid under any law in force in Singapore.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>14.2</td>
+            <td>It is the *Employer’s/Agency’s responsibility to receive or send the FDW from/to the premises of the Agency for reasons pertaining to deployment, re-deployment (FDW seeking new employer) or counselling [*To delete accordingly].</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table class="main-serv-ag--bd-red">
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><u>IMPORTANT NOTES:</u></td>
+                    </tr>
+                    <tr>
+                        <td>i)</td>
+                        <td>The FDW is deemed to be the responsibility of the employer at all times from the date of handing over from the agent until such time as the work permit is cancelled and the FDW is repatriated, or until a transfer is approved
+                            by the Ministry of Manpower and the FDW is handed over to the new employer.</td>
+                    </tr>
+                    <tr>
+                        <td>ii)</td>
+                        <td>The Employer must continue to pay all levies imposed by the relevant authorities until a transfer is approved or the work permit is cancelled.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <table>
+        <tr>
+            <td colspan="3">
+                IN WITNESS whereof this Agreement has been entered into the day and year first above written, the contracting parties having read and understood the terms and conditions of this contract hereunto set their signatures below.
+            </td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}"></td>
+            <td></td>
+            <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">Employer’s Signature</td>
+            <td></td>
+            <td class="text-bold--600">Signed for and on behalf of Agency</td>
+        </tr>
+        <tr>
+            <td>{{ object.employer.employer_name }}</td>
+            <td></td>
+            <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
+        </tr>
+        <tr>
+            <td>{{ object.employer.rn_employerextrainfo.employer_nric }}</td>
+            <td></td>
+            <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
+        </tr>
+    </table>
+</div>
+{% endwith %} {% comment %}<!-- endwith: total_placement_fee -->{% endcomment %}
+{% endwith %} {% comment %}<!-- endwith: total_administrative_cost -->{% endcomment %}
+{% endwith %} {% comment %}<!-- endwith: edsfs -->{% endcomment %}
+{% endwith %} {% comment %}<!-- endwith: agreement object -->{% endcomment %}
+
+{% endblock %}
