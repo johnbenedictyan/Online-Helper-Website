@@ -47,7 +47,7 @@ from .mixins import (
     CheckUserHasAgencyRoleMixin,
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
-    PdfMixin,
+    PdfViewMixin,
 )
 from agency.models import (
     AgencyEmployee,
@@ -534,13 +534,12 @@ class SignatureAgencyStaffUpdateView(
 
 
 # PDF Views
-class PdfServiceFeeBaseView(
+class PdfEmployerAgreementView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
     # CheckAgencyEmployeePermissionsSubDocMixin,
-    PdfMixin,
+    PdfViewMixin,
     DetailView
 ):
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
-    template_name = 'employer_documentation/pdf-01-service-fee-base.html'
     # content_disposition = 'inline; filename="custom-filename.pdf"'

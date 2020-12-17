@@ -62,7 +62,7 @@ from .views import (
 
 ## PDF Views
 from .views import (
-    PdfServiceFeeBaseView,
+    PdfEmployerAgreementView,
 )
 
 # Start of Urls
@@ -233,8 +233,13 @@ urlpatterns = [
                             ),
                             path(
                                 'pdf/service-fees/',
-                                PdfServiceFeeBaseView.as_view(),
+                                PdfEmployerAgreementView.as_view(template_name='employer_documentation/pdf-01-service-fee-base.html'),
                                 name='pdf_service_fee_base'
+                            ),
+                            path(
+                                'pdf/service-agreement/',
+                                PdfEmployerAgreementView.as_view(template_name='employer_documentation/pdf-03-service-agreement.html'),
+                                name='pdf_service_agreement'
                             ),
                         ]),
                     ),
