@@ -362,6 +362,7 @@ class PdfViewMixin:
         pdf_file = HTML(string=html_template).write_pdf(
             # Load separate CSS stylesheet from static folder
             # stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
+            stylesheets=[CSS('static/css/pdf.css')]
         )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:
