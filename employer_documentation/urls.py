@@ -253,7 +253,15 @@ urlpatterns = [
                                     template_name='employer_documentation/pdf-04-employment-contract.html',
                                     content_disposition = 'inline; filename="employment-contract.pdf"',
                                 ),
-                                name='employment_contract'
+                                name='pdf_employment_contract'
+                            ),
+                            path(
+                                'pdf/repayment-schedule/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                    content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                ),
+                                name='pdf_repayment_schedule'
                             ),
                         ]),
                     ),
