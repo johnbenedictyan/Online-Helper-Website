@@ -63,6 +63,7 @@ from .views import (
 ## PDF Views
 from .views import (
     PdfEmployerAgreementView,
+    PdfRepaymentScheduleView,
 )
 
 # Start of Urls
@@ -257,7 +258,7 @@ urlpatterns = [
                             ),
                             path(
                                 'pdf/repayment-schedule/',
-                                PdfEmployerAgreementView.as_view(
+                                PdfRepaymentScheduleView.as_view(
                                     template_name='employer_documentation/pdf-05-repayment-schedule.html',
                                     content_disposition = 'inline; filename="repayment-schedule.pdf"',
                                 ),

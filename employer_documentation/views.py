@@ -542,3 +542,34 @@ class PdfEmployerAgreementView(
 ):
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
+
+from django.utils import timezone
+class PdfRepaymentScheduleView(
+    CheckEmployerDocBaseBelongsToEmployerMixin,
+    # CheckAgencyEmployeePermissionsSubDocMixin,
+    PdfViewMixin,
+    DetailView
+):
+    model = EmployerDocBase
+    pk_url_kwarg = 'employer_doc_base_pk'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        if self.object:
+            context['object'] = self.object
+            context_object_name = self.get_context_object_name(self.object)
+            if context_object_name:
+                context[context_object_name] = self.object
+        context.update(kwargs)
+        # context['repayment_table'] = {}
+        # placement_fee = 2400
+        # payment_start_date = timezone.now()
+        # print(self.object.rn_employerdocemploymentcontract.c3_2_salary_payment_date)
+        # print(timezone.localdate().day)
+        # for i in range(1,25):
+        #     context['repayment_table'][i] = {
+        #         'salary_date': 6,
+        #         'basic_salary': self.object.fdw.salary
+        #     }
+        return super().get_context_data(**context)
+
