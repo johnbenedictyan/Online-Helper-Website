@@ -297,9 +297,6 @@ class EmployerDocJobOrder(models.Model):
     )
     remarks = models.TextField(max_length=300, blank=True, null=True)
 
-    def job_order_date(self):
-        return self.job_order_date.strftime('%d/%m/%Y')
-
 class EmployerDocMaidStatus(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
