@@ -1,8 +1,59 @@
 {% extends 'maid-base.html' %}
+{% load crispy_forms_tags %}
 {% block maid_section %}
-    <div class="container">
-        {% for maid in maids %}
-            {{maid}}
-        {% endfor %}
+<section>
+    <div class="jumbotron jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
+                    <h1 class="display-4 pl-3 pl-md-2">Maids</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Maids</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col">
+                            {{filter.form|crispy}}
+                        </div>
+                        <div class="col">
+
+                        </div>
+                    </div>
+                    {{ filter.form|crispy }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
+            {% for maid in maids %}
+                <div class="col mb-4">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{maid.biodata.name}}</h5>
+                            <p class="card-text">{{maid.biodata.country_of_origin}}</p>
+                            <p class="card-text">{{maaid.biodata.age}} | {{maid.family_details.marital_status}}</p>
+                            <p class="card-text">{{maid.maid_type}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary w-100">Add to Shortlist</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock maid_section %}
