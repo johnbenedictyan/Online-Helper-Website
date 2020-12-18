@@ -1,12 +1,263 @@
 {% extends 'agency-base.html' %}
 {% block agency_section %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            {{agency}}
-            {{agency.operating_hours}}
-            {{agency.branches.all}}
+<section>
+    <div class="jumbotron jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
+                    <h1 class="display-4 pl-3 pl-md-2">Agency Details</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Agency Details</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <img src="..." alt="" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-7 mb-3">
+                <h2>{{agency.name}}</h2>
+                <p>{{agency.license_number}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-xl-7">
+                <div class="row">
+                    <div class="col mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <h3>Offices</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% for branch in agency.branches.all %}
+                                <div class="col-md-4 col-lg-6 mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="mb-0">{{branch.name}}</h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="mb-1">Address</p>
+                                            <p class="font-weight-bold mb-0">{{branch.address_1}}</p>
+                                            <p class="font-weight-bold mb-0">{{branch.address_2}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="mb-1">Postal Code</p>
+                                            <p class="font-weight-bold mb-0">{{branch.postal_code}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="mb-1">Area</p>
+                                            <p class="font-weight-bold mb-0">{{branch.get_area_display}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="mb-1">Telephone Number</p>
+                                            <a href="tel:+{{branch.office_number}}" class="mb-0">{{branch.office_number}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="mb-1">Mobile Number</p>
+                                            <a href="tel:+{{branch.mobile_number}}" class="mb-0">{{branch.mobile_number}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="mb-1">Point of contact</p>
+                                            <p class="font-weight-bold mb-0">Jane Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-4">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <h3>Opening Hours</h3>
+                            </div>
+                        </div>
+                        {% if agency.operating_type == 'AO' %}
+                        <div class="row">
+                            <div class="col">
+                                <h5>Appointment Only</h5>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Monday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.monday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Tuesday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.tuesday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Wednesday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.wednesday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Thursday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.thursday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Friday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.friday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Saturday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.saturday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Sunday</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.sunday}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <p>Public Holidays</p>
+                            </div>  
+                            <div class="col col-md-4">
+                                <p>{{agency.operating_hours.public_holiday}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-10 col-lg-6 col-xl-5 offset-md-1 offset-lg-0 mb-4">
+                <div class="card mt-lg-4 p-2 p-md-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col text-center mb-3">
+                                <h5 class="card-title">Send this agency an Enquiry</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-10 col-lg offset-md-1 offset-lg-0">
+                                <form action="post">
+                                    <div class="form-row">
+                                        <div class="col mb-3">
+                                            <label for="maidNationalityPreference">Nationality</label>
+                                            <select class="form-control" id="maidNationalityPreference">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col mb-3">
+                                            <label for="maidResponsibilityPreference">Main Responsibility</label>
+                                            <select class="form-control" id="maidResponsibilityPreference">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col mb-3">
+                                            <label for="maidTypePreference">Type of Maid</label>
+                                            <select class="form-control" id="maidTypePreference">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col mb-3">
+                                            <label for="maidAgePreference">Age</label>
+                                            <select class="form-control" id="maidAgePreference">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col mb-3">
+                                            <label for="messageTextarea">Message</label>
+                                            <textarea class="form-control" id="messageTextarea" rows="5" placeholder="Message"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col mb-3">
+                                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-4">
+                <h4>Avaliable Maids</h4>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
+            {% for maid in agency.maid.all %}
+                <div class="col mb-4">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{maid.biodata.name}}</h5>
+                            <p class="card-text">{{maid.biodata.country_of_origin}}</p>
+                            <p class="card-text">{{maid.biodata.age}} | {{maid.family_details.marital_status}}</p>
+                            <p class="card-text">{{maid.maid_type}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary w-100">Add to Shortlist</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock agency_section %}
