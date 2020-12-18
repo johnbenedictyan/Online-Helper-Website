@@ -131,7 +131,7 @@ class EmployerDocJobOrder(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_employerdocjoborder'
     )
-    job_order_date = models.DateField()
+    job_order_date_1 = models.DateField()
     employer_race = models.CharField(
         max_length=16,
         choices = [
@@ -303,7 +303,8 @@ class EmployerDocJobOrder(models.Model):
 class EmployerDocMaidStatus(models.Model):
     employer_doc_base = models.OneToOneField(
         EmployerDocBase,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='rn_employerdocmaidstatus'
     )
     ipa_approval_date = models.DateField(blank=True, null=True)
     security_bond_approval_date = models.DateField(blank=True, null=True)
@@ -312,12 +313,6 @@ class EmployerDocMaidStatus(models.Model):
     sip_date = models.DateField(blank=True, null=True)
     fdw_work_commencement_date = models.DateField(blank=True, null=True)
     date_of_application_for_transfer = models.DateField(blank=True, null=True)
-
-    def date_of_application_for_transfer(self):
-        return self.date_of_application_for_transfer.strftime('%d/%m/%Y')
-    
-    def fdw_work_commencement_date(self):
-        return self.fdw_work_commencement_date.strftime('%d/%m/%Y')
 
 class EmployerDocServiceFeeBase(models.Model):
     employer_doc_base = models.OneToOneField(
