@@ -1,4 +1,5 @@
 {% extends 'employer_documentation/pdf-00-base.html' %}
+{% load mathfilters %}
 
 {% block title %}Repayment Schedule{% endblock %}
 
@@ -57,7 +58,7 @@
         <td width="5%"></td>
         <td width="10%">Salary Date</td>
         <td width="12%">Basic Salary</td>
-        <td width="10%">Total Off Day Compensation</td>
+        <td width="10%">Off Day Compensation</td>
         <td width="12%">Total Salary</td>
         <td></td>
         <td width="10%">Loan Repayment</td>
@@ -65,18 +66,18 @@
         <td width="12%">Employer's Signature</td>
         <td width="12%">FDW's Signature</td>
     </tr>
-    {% for i in '                        ' %}
+    {% for k,v in repayment_table.items %}
     <tr>
-        <td>{{ forloop.counter }}</td>
+        <td>{{ k }}</td>
+        <td>{{ v.salary_date }}</td>
+        <td>{{ object.fdw.salary }}</td>
+        <td>{{ v.day_off_compensation }}</td>
+        <td>{{ object.fdw.salary|add:v.day_off_compensation }}</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{ v.placement_fee|div:-24 }}</td>
+        <td>{{ v.placement_fee|div:-24|add:object.fdw.salary|add:v.day_off_compensation }}</td>
+        <td>{% comment %}Employer's Signature{% endcomment %}</td>
+        <td>{% comment %}FDW's Signature{% endcomment %}</td>
     </tr>
     {% endfor %}
 </table>
