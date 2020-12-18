@@ -1,0 +1,117 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+
+{% block title %}PDF{% endblock %}
+
+{% block content %}
+
+<div class="text-align-center">
+    <p>{{ object.employer.agency_employee.agency.name }}</p>
+    <p>Licence No.: {{ object.employer.agency_employee.agency.license_number }}</p>
+</div>
+<br>
+<h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
+<br>
+<div class="border--bottom"></div>
+<br>
+
+<table>
+    <tr>
+        <th class="text-bold--600" style="width:35%">Employment Agency Ref No</th>
+        <th class="text-bold--600">: {{ object.case_ref_no }}</th>
+    </tr>
+    <tr>
+        <td>Date</td>
+        <td>: {{ object.rn_docsignatures.agreement_date|date:"d M Y" }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>Name of Employer</td>
+        <td>: {{ object.employer.employer_name }} </td>
+    </tr>
+    <tr>
+        <td>Name of FDW</td>
+        <td>: {{ object.fdw }}</td>
+    </tr>
+    <tr>
+        <td>Placement Fee</td>
+        <td>: {{ object.fdw }} </td>
+    </tr>
+    <tr>
+        <td>Work Commencement Date</td>
+        <td>: {{ object.rn_employerdocmaidstatus.fdw_work_commencement_date|date:"d M Y" }}</td>
+    </tr>
+    <tr>
+        <td>Monthly Basic Salary</td>
+        <td>: {{ object.fdw.salary }}</td>
+    </tr>
+    <tr>
+        <td>Balance Off Day Compensation</td>
+        <td>: {{ object.fdw }}</td>
+    </tr>
+</table>
+<br><br>
+<table class="border--all">
+    <tr class="text-align-center">
+        <td width="5%"></td>
+        <td width="10%">Salary Date</td>
+        <td width="12%">Basic Salary</td>
+        <td width="10%">Total Off Day Compensation</td>
+        <td width="12%">Total Salary</td>
+        <td></td>
+        <td width="10%">Loan Repayment</td>
+        <td width="12%">Salary Received</td>
+        <td width="12%">Employer's Signature</td>
+        <td width="12%">FDW's Signature</td>
+    </tr>
+    {% for i in '                        ' %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>I hereby acknowledge that I understand and agree to the above schedule.</p>
+<table>
+    <tr>
+        <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}"></td>
+        <td></td>
+        <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.fdw_signature }}"></td>
+    </tr>
+    <tr>
+        <td class="text-bold--600">Employer’s Signature</td>
+        <td></td>
+        <td class="text-bold--600">FDW's Signature</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td class="text-bold--600">Signed for and on behalf of Agency</td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
+        <td colspan="2"></td>
+    </tr>
+</table>
+
+{% endblock %}
