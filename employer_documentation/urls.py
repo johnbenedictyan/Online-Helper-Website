@@ -296,6 +296,46 @@ urlpatterns = [
                                 ),
                                 name='pdf_transfer_consent'
                             ),
+                            path(
+                                'pdf/work-pass-authorisation/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
+                                    content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                ),
+                                name='pdf_work_pass_authorisation'
+                            ),
+                            path(
+                                'pdf/security-bond/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-11-security-bond.html',
+                                    content_disposition = 'inline; filename="security-bond.pdf"',
+                                ),
+                                name='pdf_security_bond'
+                            ),
+                            path(
+                                'pdf/fdw-work-permit-12b/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                    content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                                ),
+                                name='pdf_fdw_work_permit_12b'
+                            ),
+                            path(
+                                'pdf/income-tax-declaration/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-13-income-tax-declaration.html',
+                                    content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                ),
+                                name='pdf_income_tax_declaration'
+                            ),
+                            path(
+                                'pdf/safety-agreement/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                    content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                ),
+                                name='pdf_safety_agreement'
+                            ),
                         ]),
                     ),
                 ]),

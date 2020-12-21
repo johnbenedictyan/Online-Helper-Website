@@ -1,0 +1,127 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+
+{% block title %}Form 12B For Work Permit Applicants/Holders Only{% endblock %}
+
+{% block content %}
+<div class="text-align-center">
+    <h2>Form 12B For Work Permit Applicants/Holders Only</h2>
+    <p>Immigration Act (Chapter 133)</p>
+    <p>Immigration Regulations [Regulations 12(2) and 12(5)]</p>
+</div>
+<br>
+<table>
+    <tr>
+        <td class="text-bold--600" width="16%">Application For A</td>
+        <td class="text-bold--600"><input type="checkbox" class="checkbox" />Visit Pass [Regulations 12(2) and 12(5)]</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td class="text-bold--600">
+            <input type="checkbox" class="checkbox" />Visa
+        </td>
+    </tr>
+</table>
+<br>
+
+<table class="border--all">
+    <tr>
+        <td colspan="3" class="text-bold--600">Part A: Particulars of Applicant</td>
+    </tr>
+    <tr>
+        <td width="50%">Full Name in BLOCK LETTERS (Underline Surname)
+            <br>{{ employer.fdw_name|upper }}</td>
+        <td colspan="2">Name in Chinese Character, if applicable</td>
+    </tr>
+    <tr>
+        <td colspan="3">Alias, if any: </td>
+    </tr>
+    <tr>
+        <td colspan="3">Work Permit Number: {{ employer.fdw_work_permit_no }}</td>
+    </tr>
+    <tr>
+        <td colspan="2">Have you ever been refused entry into or deported from any country?</td>
+        <td width="35%">*&nbsp;<s> Yes </s>&nbsp;/ No</td>
+    </tr>
+    <tr>
+        <td colspan="2">Have you ever been convicted in court of law in any country?</td>
+        <td>*&nbsp;<s> Yes </s>&nbsp;/ No</td>
+    </tr>
+    <tr>
+        <td colspan="2">Have you ever been prohibited from entering Singapore?</td>
+        <td>*&nbsp;<s> Yes </s>&nbsp;/ No</td>
+    </tr>
+    <tr>
+        <td colspan="2">Have you ever entered Singapore using a different Passport and Name?</td>
+        <td>*&nbsp;<s> Yes </s>&nbsp;/ No</td>
+    </tr>
+    <tr>
+        <td colspan="3">If ‘Yes’ for any or all of the above, give details on a separate sheet of paper.</td>
+    </tr>
+</table>
+<br>
+<table class="border--all text-align-center">
+    <tr>
+        <td colspan="3" class="text-bold--600">Part B: Particulars of Local Sponsor</td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            Please note that the local sponsor is responsible for the stay, maintenance and repatriation of the applicant.
+        </td>
+    </tr>
+    <tr>
+        <td width="40%">Identity Card Number (applicable to Employer of Foreign Domestic Worker)</td>
+        <td width="40%">Name and Address of Sponsor <br> (Company’s Stamp – if applicable)</td>
+        <td width="20%">Relationship to Applicant</td>
+    </tr>
+    <tr>
+        <td>{{ employer.employer_nric }}</td>
+        <td>{{ employer.employer_name }}</td>
+        <td>Employer</td>
+    </tr>
+</table>
+<br>
+
+<table class="border--all">
+    <tr>
+        <td class="text-bold--600">Part C: Declaration By Applicant</td>
+    </tr>
+    <tr>
+        <td>
+            I hereby declare that all the particulars furnished by me in this application are true.
+            <br>
+            <br>I undertake not to misuse controlled drugs or to take part in any political or other activities during my stay in Singapore which would make me an undesirable or prohibited immigrant under the Immigration Act.
+            <br>
+            <br>I understand that if the Controller of Immigration is satisfied that I or any of my family member breaches this undertaking or becomes an undesirable or prohibited immigrant, he will cancel my Immigration Pass and the Passes of my family
+            members, and we may be required to leave Singapore within 24 hours of such cancellation.
+            <br>
+            <table style="border:none;">
+                <tr>
+                    <td width="40%"style="border:none;">
+                        <img class="signature__img" src="{{ employer.fdw_signature }}">
+                        <br>____________________________________
+                        <br>Signature of Applicant
+                    </td>
+                    <td style="border:none;"></td>
+                    <td width="40%"style="border:none;">
+                        <br>____________________________________
+                        <br>Date
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<p class="text--xsmall"><i>*Delete where inapplicable</i></p>
+<br>
+<br>
+<br>
+<div style="display:flex;">
+        <table class="border--all" width="10%">
+            <tr>
+                <td class="main-safety-ag--bg-black main-safety-ag--text-white text--xsmall"><b>&nbsp;WPCM</b></td>
+                <td class="text--xsmall"><b>&nbsp;017</b></td>
+            </tr>
+        </table>
+    <div style="margin:10px 0 0 200px;" class="text--xsmall">The information is updated on 15 April 2004</div>
+</div>
+{% endblock %}
