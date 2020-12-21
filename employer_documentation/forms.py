@@ -262,7 +262,7 @@ class EmployerDocJobOrderForm(forms.ModelForm):
                 # Legend for form
                 'Create new / update existing employer doc job order:',
                 # Form fields
-                'job_order_date', ################################################# bug - does not show in form
+                'job_order_date_1',
                 'employer_race',
                 'type_of_property',
                 'no_of_bedrooms',
