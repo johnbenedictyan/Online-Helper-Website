@@ -276,9 +276,17 @@ urlpatterns = [
                                 'pdf/job-order/',
                                 PdfEmployerAgreementView.as_view(
                                     template_name='employer_documentation/pdf-07-job-order.html',
-                                    content_disposition = 'inline; filename="job-rder.pdf"',
+                                    content_disposition = 'inline; filename="job-order.pdf"',
                                 ),
                                 name='pdf_job_order'
+                            ),
+                            path(
+                                'pdf/handover-checklist/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                    content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                ),
+                                name='pdf_handover-checklist'
                             ),
                         ]),
                     ),
