@@ -29,14 +29,14 @@
     </tr>
     <tr>
         <td width="50%">Full Name in BLOCK LETTERS (Underline Surname)
-            <br>{{ employer.fdw_name|upper }}</td>
+            <br>{{ object.fdw|upper }}</td>
         <td colspan="2">Name in Chinese Character, if applicable</td>
     </tr>
     <tr>
         <td colspan="3">Alias, if any: </td>
     </tr>
     <tr>
-        <td colspan="3">Work Permit Number: {{ employer.fdw_work_permit_no }}</td>
+        <td colspan="3">Work Permit Number: {{ object.rn_employerdocmaidstatus.work_permit_no }}</td>
     </tr>
     <tr>
         <td colspan="2">Have you ever been refused entry into or deported from any country?</td>
@@ -74,8 +74,8 @@
         <td width="20%">Relationship to Applicant</td>
     </tr>
     <tr>
-        <td>{{ employer.employer_nric }}</td>
-        <td>{{ employer.employer_name }}</td>
+        <td>{{ object.employer.rn_employerextrainfo.employer_nric }}</td>
+        <td>{{ object.employer.employer_name }}</td>
         <td>Employer</td>
     </tr>
 </table>
@@ -97,12 +97,13 @@
             <table style="border:none;">
                 <tr>
                     <td width="40%"style="border:none;">
-                        <img class="signature__img" src="{{ employer.fdw_signature }}">
+                        <img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}">
                         <br>____________________________________
                         <br>Signature of Applicant
                     </td>
                     <td style="border:none;"></td>
                     <td width="40%"style="border:none;">
+                        {{ object.rn_docsignatures.agreement_date|date:"d M Y" }}
                         <br>____________________________________
                         <br>Date
                     </td>

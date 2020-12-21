@@ -29,19 +29,19 @@
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Employer Name</td>
-            <td colspan="3">{{ employer.employer_name }}</td>
+            <td colspan="3">{{ object.employer.employer_name }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">NRIC No./ FIN</td>
-            <td colspan="3">{{ employer.employer_nric }}</td>
+            <td colspan="3">{{ object.employer.rn_employerextrainfo.employer_nric }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Contact No.</td>
-            <td colspan="3">{{ employer.employer_mobile_no }}</td>
+            <td colspan="3">{{ object.employer.employer_mobile_number }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Signature and Date</td>
-            <td colspan="3"><img class="signature__img" src="{{ employer.employer_signature }}"></td>
+            <td colspan="3">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}"></td>
         </tr>
         <tr>
             <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600">S/N</td>
@@ -51,8 +51,8 @@
         </tr>
         <tr>
             <td class="text-align-center">1</td>
-            <td colspan="2">{{ employer.fdw_name }}</td>
-            <td>{{ employer.fdw_passport_no }}</td>
+            <td colspan="2">{{ object.fdw }}</td>
+            <td>{{ object.fdw }}</td>
             <td></td>
         </tr>
         <tr>
@@ -62,7 +62,7 @@
             <td></td>
         </tr>
         <tr>
-            <td colspan="5"><img src="{% static 'images/pdf/checkbox.png' %}" width="12">I hereby declare that I am authorising {{ agency.agency_name }}, licence no {{ agency.agency_license }} to perform the above work pass transaction(s) on my behalf.</td>
+            <td colspan="5">&#x2611; I hereby declare that I am authorising {{ object.employer.agency_employee.agency }}, licence no {{ object.employer.agency_employee.agency.license_number }} to perform the above work pass transaction(s) on my behalf.</td>
         </tr>
         <tr>
             <td colspan="5">
@@ -79,32 +79,32 @@
             <td class="main-work-pass--bg-bluegrey text-bold--600" colspan="3">Declaration by EA</td>
         </tr>
         <tr>
-            <td><img src="{% static 'images/pdf/checkbox.png' %}" width="12"></td>
+            <td>&#x2611;</td>
             <td colspan="2">I have spoken to and verified with employer to confirm his / her authorisation.</td>
         </tr>
         <tr>
-            <td><img src="{% static 'images/pdf/checkbox.png' %}" width="12"></td>
+            <td>&#x2611;</td>
             <td colspan="2">I have spoken to and verified with employer that the person submitting this form to the EA is authorised to do so on behalf of the employer.</td>
         </tr>
         <tr>
-            <td><img src="{% static 'images/pdf/checkbox.png' %}" width="12"></td>
+            <td>&#x2611;</td>
             <td colspan="2">I declare that I have ensured all necessary fields are filled in prior to making the above mentioned work pass transactions.</td>
         </tr>
         <tr>
-            <td><img src="{% static 'images/pdf/checkbox.png' %}" width="12"></td>
+            <td>&#x2611;</td>
             <td colspan="2">I declare that the information provided on this form is true and correct.</td>
         </tr>
         <tr>
             <td class="text-bold-600" colspan="2">Name of EA personnel</td>
-            <td>{{ employer.ea_personnel_name }}</td>
+            <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
         </tr>
         <tr>
             <td class="text-bold-600" colspan="2">Registration No.</td>
-            <td>{{ employer.ea_personnel_no }}</td>
+            <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
         </tr>
         <tr>
             <td class="text-bold-600" colspan="2">Signature and Date.</td>
-            <td><img class="signature__img" src="{{ employer.sales_staff_signature }}"></td>
+            <td><img class="signature__img" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>
