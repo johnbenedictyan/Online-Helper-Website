@@ -20,39 +20,41 @@
 </section>
 <section>
     <div class="container">
-        <div class="row mb-3">
-            <div class="col">
+        <div class="row">
+            <div class="col-lg-10 col-xl-3 mb-3 offset-lg-1 offset-xl-0">
                 <form action="" method="get">
                     <div class="row">
                         <div class="col">
                             {{filter.form|crispy}}
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col">
-
+                            <button type="submit" class="btn btn-primary w-100">Submit</button>
                         </div>
                     </div>
-                    {{ filter.form|crispy }}
-                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-        </div>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
-            {% for maid in maids %}
-                <div class="col mb-4">
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{maid.biodata.name}}</h5>
-                            <p class="card-text">{{maid.biodata.country_of_origin}}</p>
-                            <p class="card-text">{{maaid.biodata.age}} | {{maid.family_details.marital_status}}</p>
-                            <p class="card-text">{{maid.maid_type}}</p>
+            <div class="col-xl-9">
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
+                    {% for maid in maids %}
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{maid.biodata.name}}</h5>
+                                    <p class="card-text">{{maid.biodata.country_of_origin}}</p>
+                                    <p class="card-text">{{maaid.biodata.age}} | {{maid.family_details.marital_status}}</p>
+                                    <p class="card-text">{{maid.maid_type}}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#" class="btn btn-primary w-100">Add to Shortlist</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <a href="#" class="btn btn-primary w-100">Add to Shortlist</a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 </section>
