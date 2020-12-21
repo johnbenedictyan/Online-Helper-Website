@@ -309,7 +309,7 @@ class EmployerDocMaidStatus(models.Model):
     thumb_print_date = models.DateField(blank=True, null=True)
     sip_date = models.DateField(blank=True, null=True)
     fdw_work_commencement_date = models.DateField(blank=True, null=True)
-    date_of_application_for_transfer = models.DateField(blank=True, null=True)
+    work_permit_no = models.CharField(max_length=20, blank=True, null=True)
 
 class EmployerDocServiceFeeBase(models.Model):
     employer_doc_base = models.OneToOneField(

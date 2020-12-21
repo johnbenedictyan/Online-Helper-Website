@@ -288,6 +288,14 @@ urlpatterns = [
                                 ),
                                 name='pdf_handover-checklist'
                             ),
+                            path(
+                                'pdf/transfer-consent/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-09-transfer-consent.html',
+                                    content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                ),
+                                name='pdf_transfer_consent'
+                            ),
                         ]),
                     ),
                 ]),
