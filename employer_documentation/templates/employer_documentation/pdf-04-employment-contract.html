@@ -5,10 +5,7 @@
 {% block content %}
 
 {% with object.rn_employerdocemploymentcontract as agmt_obj %}
-<div class="text-align-center">
-    <p>{{ object.employer.agency_employee.agency.name }}</p>
-    <p>Licence No.: {{ object.employer.agency_employee.agency.license_number }}</p>
-</div>
+{% include 'employer_documentation/pdf-00-header.html' %}
 <br>
 <div class="text-align-center">
     <h2>STANDARD EMPLOYMENT CONTRACT</h2>

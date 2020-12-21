@@ -8,8 +8,7 @@
 {% with object.rn_employerdocservicefeebase as agmt_obj %}
 {% with total_administrative_cost=agmt_obj.b1_service_fee|add:agmt_obj.b2a_work_permit_application_collection|add:agmt_obj.b2b_medical_examination_fee|add:agmt_obj.b2c_security_bond_accident_insurance|add:agmt_obj.b2d_indemnity_policy_reimbursement|add:agmt_obj.b2e_home_service|add:agmt_obj.b2f_counselling|add:agmt_obj.b2g_sip|add:agmt_obj.b2h_replacement_cost|add:agmt_obj.b2i_work_permit_renewal|add:agmt_obj.b2j1_other_services_fee|add:agmt_obj.b2j2_other_services_fee|add:agmt_obj.b2j3_other_services_fee|add:agmt_obj.ca_deposit %}
 {% with total_placement_fee=99999|add:object.fdw.loan_amount %}
-<p class="text-align-center">{{ object.employer.agency_employee.agency }}</p>
-<p class="text-align-center">Licence No: {{ object.employer.agency_employee.agency.license_number }}</p>
+{% include 'employer_documentation/pdf-00-header.html' %}
 <br>
 <h2 class="text-align-center">FORM A – SERVICE AND FEES SCHEDULE</h2>
 <br>

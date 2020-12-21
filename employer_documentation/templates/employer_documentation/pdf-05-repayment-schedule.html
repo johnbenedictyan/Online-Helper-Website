@@ -5,10 +5,7 @@
 
 {% block content %}
 
-<div class="text-align-center">
-    <p>{{ object.employer.agency_employee.agency.name }}</p>
-    <p>Licence No.: {{ object.employer.agency_employee.agency.license_number }}</p>
-</div>
+{% include 'employer_documentation/pdf-00-header.html' %}
 <br>
 <h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
 <br>
@@ -93,25 +90,6 @@
         <td class="text-bold--600">Employer’s Signature</td>
         <td></td>
         <td class="text-bold--600">FDW's Signature</td>
-    </tr>
-    <tr>
-        <td></td>
-    </tr>
-    <tr>
-        <td class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td class="text-bold--600">Signed for and on behalf of Agency</td>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
-        <td colspan="2"></td>
     </tr>
 </table>
 

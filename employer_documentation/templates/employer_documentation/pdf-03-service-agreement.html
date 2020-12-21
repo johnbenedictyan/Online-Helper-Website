@@ -9,10 +9,7 @@
 {% with object.rn_employerdocservicefeebase as edsfs %}
 {% with total_administrative_cost=edsfs.b1_service_fee|add:edsfs.b2a_work_permit_application_collection|add:edsfs.b2b_medical_examination_fee|add:edsfs.b2c_security_bond_accident_insurance|add:edsfs.b2d_indemnity_policy_reimbursement|add:edsfs.b2e_home_service|add:edsfs.b2f_counselling|add:edsfs.b2g_sip|add:edsfs.b2h_replacement_cost|add:edsfs.b2i_work_permit_renewal|add:edsfs.b2j1_other_services_fee|add:edsfs.b2j2_other_services_fee|add:edsfs.b2j3_other_services_fee|add:edsfs.ca_deposit %}
 {% with total_placement_fee=99999|add:object.fdw.loan_amount %}
-<div class="text-align-center">
-    <p>{{ object.employer.agency_employee.agency.name }}</p>
-    <p>Licence No.: {{ object.employer.agency_employee.agency.license_number }}</p>
-</div>
+{% include 'employer_documentation/pdf-00-header.html' %}
 <br>
 <div class="text-align-center">
     <h2>SERVICE AGREEMENT</h2>
