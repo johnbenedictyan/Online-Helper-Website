@@ -1,10 +1,11 @@
 {% extends 'employer_documentation/pdf-00-base.html' %}
+{% load static %}
 
 {% block title %}Employer and Spouse Income Tax Declaration{% endblock %}
 
 {% block content %}
 <div>
-    <span><img class="header__mom-logo2" src="https://project-static.sgp1.digitaloceanspaces.com/project-static/static/images/pdf/logo2.png"></span>
+    <span><img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"></span>
     <h3 style="margin: 0;">Work Pass Division</h3>
     <p>18 Havelock Road</p>
     <p>Singapore 059764</p>

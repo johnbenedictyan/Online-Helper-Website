@@ -1,4 +1,5 @@
 {% extends 'employer_documentation/pdf-00-base.html' %}
+{% load static %}
 
 {% block title %}Safety Agreement{% endblock %}
 
@@ -6,8 +7,8 @@
 <div class="header-workpass--bd-bluegrey">
 </div>
 <div>
-    <img height="60px;" src="https://project-static.sgp1.digitaloceanspaces.com/project-static/static/images/pdf/logo1.png" />
-    <img class="header__mom-logo2" src="https://project-static.sgp1.digitaloceanspaces.com/project-static/static/images/pdf/logo2.png" />
+    <img class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}" />
+    <img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}" />
 </div>
 <div class="header-workpass--bd-bluegrey">
 </div>
@@ -42,7 +43,7 @@
                 <td class="text-bold--600">Instructions:</td>
             </tr>
             <tr>
-                <td><img width="300px;" src="https://project-static.sgp1.digitaloceanspaces.com/project-static/static/images/pdf/instructions.png"></td>
+                <td><img width="300px;" src="{% static 'images/pdf/instructions.png' %}"></td>
             </tr>
         </table>
     </div>

@@ -359,11 +359,15 @@ class PdfViewMixin:
 
         # Render PDF
         html_template = render_to_string(self.template_name, context)
-        pdf_file = HTML(string=html_template).write_pdf(
-            # Load separate CSS stylesheet from static folder
-            # stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
-            stylesheets=[CSS('static/css/pdf.css')]
-        )
+        pdf_file = HTML(
+            string=html_template,
+            base_url=request.build_absolute_uri()
+            ).write_pdf(
+                # Load separate CSS stylesheet from static folder
+                # stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
+                stylesheets=[CSS('static/css/pdf.css'
+                )]
+            )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:
             response['Content-Disposition'] = self.content_disposition
