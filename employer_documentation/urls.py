@@ -264,6 +264,14 @@ urlpatterns = [
                                 ),
                                 name='pdf_repayment_schedule'
                             ),
+                            path(
+                                'pdf/rest-day-agreement/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                    content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                ),
+                                name='pdf_rest_day_agreement'
+                            ),
                         ]),
                     ),
                 ]),
