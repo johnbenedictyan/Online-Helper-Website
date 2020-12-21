@@ -85,7 +85,7 @@
                                 {% if authority == 'Potential Employer' %}
                                 <a class="dropdown-item" href="#">Dashboard</a>
                                 {% else %}
-                                <a class="dropdown-item" href="#">Shortlist</a>
+                                <a class="dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
                                 {% endif %}
                             </div>
                         </li>
@@ -121,7 +121,7 @@
                         <a href="{% url 'maid_list' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Maids</p></a>
                         <a href="{% url 'agency_list' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Agencies</p></a>
                         <a href="{% url 'faq' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">FAQ</p></a>
-                        <a href="" class="text-reset"><p class="lead mb-1 mb-xl-2">Shortlist</p></a>
+                        <a href="{% url 'view_shortlist' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Shortlist</p></a>
                         <a href="" class="text-reset"><p class="lead mb-1 mb-xl-2">Enquire</p></a>
                     </div>
                     <div class="col-7 col-md-4 col-lg-3 py-1 mb-4 mb-md-0">
