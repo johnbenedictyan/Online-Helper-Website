@@ -28,11 +28,11 @@
             </tr>
             <tr>
                 <td>
-                    {{ agency.agency_name }}
-                    <br>{{ agency.agency_license }}
-                    <br>{{ agency.office_address_line_1 }}
-                    <br>{{ agency.office_address_line_2 }}
-                    <br>Singapore {{ agency.postal_code }}
+                    {{ object.employer.agency_employee.agency.name }}
+                    <br>{{ object.employer.agency_employee.agency.license_number }}
+                    <br>{{ object.employer.agency_employee.agency }}
+                    <br>{{ object.employer.agency_employee.agency }}
+                    <br>Singapore {{ object.employer.agency_employee.agency }}
                 </td>
             </tr>
         </table>
@@ -77,19 +77,19 @@
     </tr>
     <tr>
         <td>Employer Name</td>
-        <td colspan="2">{{ employer.employer_name }}</td>
+        <td colspan="2">{{ object.employer.employer_name }}</td>
     </tr>
     <tr>
         <td>NRIC No. / FIN</td>
-        <td colspan="2">{{ employer.employer_nric }}</td>
+        <td colspan="2">{{ object.employer.rn_employerextrainfo.employer_nric }}</td>
     </tr>
     <tr>
         <td>Contact No.</td>
-        <td colspan="2">{{ employer.employer_mobile_no }} / {{ employer.employer_home_no }}</td>
+        <td colspan="2">{{ object.employer.employer_mobile_number }}</td>
     </tr>
     <tr>
         <td>Residential Address</td>
-        <td colspan="2">{{ employer.employer_address }}</td>
+        <td colspan="2">{{ object.employer.rn_employerextrainfo.employer_address_1 }}, {{ object.employer.rn_employerextrainfo.employer_address_2 }}, {{ object.employer.rn_employerextrainfo.employer_postal_code }}</td>
     </tr>
     <tr>
         <td>Residential Dwelling Type</td>
@@ -131,7 +131,7 @@
         <td>
             <input type="checkbox" class="checkbox" />Yes
             <input type="checkbox" class="checkbox" style="margin-left:30px;" />No
-            <br> If "Yes" is selected, proceed to (ii)
+            <br> If "Yes" is selected, proceed to (iii)
         </td>
     </tr>
     <tr>
@@ -175,7 +175,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2"><img height="40px" src="{{ employer.employer_signature }}"></td>
+            <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.employer_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -190,11 +190,11 @@
         </tr>
         <tr>
             <td>Name</td>
-            <td colspan="2">{{ employer.ea_personnel_name }}</td>
+            <td colspan="2">{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
         </tr>
         <tr>
             <td>Registration No.</td>
-            <td colspan="2">{{ employer.ea_personnel_no }}</td>
+            <td colspan="2">{{ object.employer.agency_employee.ea_personnel_number }}</td>
         </tr>
         <tr>
             <td colspan="3">
@@ -203,7 +203,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2"><img height="40px" src="{{ employer.sales_staff_signature }}"></td>
+            <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
         </tr>
     </table>
 
@@ -217,11 +217,11 @@
         </tr>
         <tr>
             <td width="24%">Name</td>
-            <td colspan="2">{{ employer.fdw_name }}</td>
+            <td colspan="2">{{ object.fdw }}</td>
         </tr>
         <tr>
             <td>WP No.</td>
-            <td colspan="2">{{ employer.fdw_work_permit_no }}</td>
+            <td colspan="2">{{ object.rn_employerdocmaidstatus.work_permit_no }}</td>
         </tr>
         <tr>
             <td colspan="3">
@@ -276,7 +276,7 @@
             <p class="text-align-center">Signature / Date
             <br>Tanda Tangan / Tanggal</p>
         </td>
-        <td colspan="2"><img height="40px" src="{{ employer.fdw_signature }}"></td>
+        <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.fdw_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -296,7 +296,7 @@
             <td width="24%">
                 <p class="text-align-center">Signature / Date</p>
             </td>
-            <td colspan="2"><img height="40px" src="{{ employer.sales_staff_signature }}"></td>
+            <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>
