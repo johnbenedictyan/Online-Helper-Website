@@ -272,6 +272,14 @@ urlpatterns = [
                                 ),
                                 name='pdf_rest_day_agreement'
                             ),
+                            path(
+                                'pdf/job-order/',
+                                PdfEmployerAgreementView.as_view(
+                                    template_name='employer_documentation/pdf-07-job-order.html',
+                                    content_disposition = 'inline; filename="job-rder.pdf"',
+                                ),
+                                name='pdf_job_order'
+                            ),
                         ]),
                     ),
                 ]),
