@@ -80,17 +80,9 @@
 </table>
 
 <p>I hereby acknowledge that I understand and agree to the above schedule.</p>
+
 <table>
-    <tr>
-        <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}"></td>
-        <td></td>
-        <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.fdw_signature }}"></td>
-    </tr>
-    <tr>
-        <td class="text-bold--600">Employer’s Signature</td>
-        <td></td>
-        <td class="text-bold--600">FDW's Signature</td>
-    </tr>
+    {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
 </table>
 
 {% endblock %}
