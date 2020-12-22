@@ -16,10 +16,31 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 # Generic Forms (forms.Form)
 class GeneralEnquiryForm(forms.Form):
-    # FIELDS TO ADD:
+    # FIELDS TO ADD for detailed:
     # Change main responsibility to responsibilites with a multi checkbox
     # Add care for pet and gardening in responsibilites
     
+    # Change enquiry form to one form, all fields compulsory
+    
+    # Add property field
+    # HDB: 2,3,4,5 executive/massionnette
+    # condo: condo, penthouse
+    # landed: terrace, semi-d, bungalow, others
+
+    # Age group field
+    # 23-29, 30-39, 40-49, above 50
+
+    # number of rest day per month
+    # 0 rest day per month
+    # 1 rest day per month
+    # 2 rest day per month
+    # 3 rest day per month
+    # 4 rest day per month
+
+    # Number of family members in total residing
+    # No of below 12 residing
+    # No of baby residing
+
     MAID_NATIONALITY_CHOICES = (
         ('ALL', _('No preference')),
         ('KHM', _('Cambodian')),
