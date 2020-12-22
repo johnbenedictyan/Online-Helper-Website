@@ -16,6 +16,10 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 # Generic Forms (forms.Form)
 class GeneralEnquiryForm(forms.Form):
+    # FIELDS TO ADD:
+    # Change main responsibility to responsibilites with a multi checkbox
+    # Add care for pet and gardening in responsibilites
+    
     MAID_NATIONALITY_CHOICES = (
         ('ALL', _('No preference')),
         ('KHM', _('Cambodian')),
