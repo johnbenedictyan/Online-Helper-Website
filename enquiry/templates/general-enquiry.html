@@ -1,3 +1,27 @@
 {% extends 'enquiry-base.html' %}
+{% load crispy_forms_tags %}
 {% block enquiry_section %}
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form method="post" enctype="multipart/form-data">
+                {% crispy form %}
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock enquiry_section %}
