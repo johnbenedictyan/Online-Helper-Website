@@ -286,7 +286,7 @@ urlpatterns = [
                                     template_name='employer_documentation/pdf-08-handover-checklist.html',
                                     content_disposition = 'inline; filename="handover-checklist.pdf"',
                                 ),
-                                name='pdf_handover-checklist'
+                                name='pdf_handover_checklist'
                             ),
                             path(
                                 'pdf/transfer-consent/',
