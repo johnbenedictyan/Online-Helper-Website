@@ -25,13 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DJANGO_DEBUG", "0"))
+DEBUG = int(os.environ.get('DJANGO_DEBUG', '0'))
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(',')
-ADMIN_IP_WHITELIST = os.environ.get("ADMIN_IP_WHITELIST", "127.0.0.1").split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+ADMIN_IP_WHITELIST = os.environ.get('ADMIN_IP_WHITELIST', '127.0.0.1').split(',')
 
 
 # Application definition
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_filters',
     'social_django',
+    'storages',
 
     # Our apps
     'accounts',
@@ -101,7 +102,7 @@ WSGI_APPLICATION = 'onlinemaid.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if int(os.environ.get("DATABASE_DEBUG", "1")):
+if int(os.environ.get('DATABASE_DEBUG', '1')):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -111,7 +112,7 @@ if int(os.environ.get("DATABASE_DEBUG", "1")):
 else:
     DATABASES = {
         'default': dj_database_url.parse(
-            os.environ.get("POSTGRESQL_URL")
+            os.environ.get('POSTGRESQL_URL')
         )
     }
 
@@ -152,10 +153,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR, "static")
-]
+USE_S3 = os.environ.get('USE_S3') == 'TRUE'
+
+if USE_S3:
+    # AWS Settings
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATICFILES_STORAGE = 'onlinemaid.storage_backends.StaticStorage'
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'onlinemaid.storage_backends.PublicMediaStorage'
+    # s3 private media settings
+    PRIVATE_MEDIA_LOCATION = 'private'
+    PRIVATE_FILE_STORAGE = 'onlinemaid.storage_backends.PrivateMediaStorage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/mediafiles/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Authentication settings
 
@@ -169,14 +194,14 @@ AUTHENTICATION_BACKENDS = [
     # Default Django Accounts Auth
     'django.contrib.auth.backends.ModelBackend',
 ]
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("SOCIAL_AUTH_FACEBOOK_KEY")
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("SOCIAL_AUTH_FACEBOOK_SECRET")
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,first_name,middle_name,last_name,email', 
 }
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 # python-social-auth pipeline override
 # https://python-social-auth.readthedocs.io/en/latest/pipeline.html
