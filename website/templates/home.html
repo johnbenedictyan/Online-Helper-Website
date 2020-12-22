@@ -1,499 +1,281 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block main_content %}
-<section>
-    <div class="container">
-        <div class="row hero-image">
-            <div class="col-sm-12 my-auto text-center">
-                <h1 class="pb-3 text-white" style="font-size:3rem !important;">
-                    The Leading Maid Platform in Singapore
-                </h1>
-                <h2 class="text-white" style="font-size:1.5rem !important;">
-                    More than 8000 maids for you to choose from
-                </h2>
-                <h2 class="pb-3 text-white" style="font-size:1.5rem !important;">
-                    Start your search now!
-                </h2>
-                <form method='GET' action="{% url 'searchmaid' %}">
-                    <div class="row justify-content-center m-4">
-                    <div class="nationality col-sm-2 px-0 rounded">
-                        <select class="inputState" name="nationality" class="form-control">
-                        <option selected value="none">Nationality</option>
-                        <option>Bangladeshi</option>
-                        <option>Cambodian</option>
-                        <option>Filipino</option>
-                        <option>Indian</option>
-                        <option>Indonesian</option>
-                        <option>Myanmarese</option>
-                        <option>Sri Lankan</option>
-                        <option>Others</option>
-                        <option value="none">No Preference</option>
-                        </select>
-                    </div>
-                    <div class="type-of-maid col-sm-2 px-0 rounded">
-                        <select class="inputState" name="type_of_maid" class="form-control">
-                        <option selected value="none">Type of Maid</option>
-                        <option>New</option>
-                        <option>Transfer</option>
-                        <option>Singapore Experience</option>
-                        <option>Overseas Experience</option>
-                        <option value="none">No Preference</option>
-                        </select>
-                    </div>
-                    <div class="main-responsibility col-sm-2 px-0 rounded">
-                        <select class="inputState" name="main_responsibility" class="form-control">
-                        <option selected value="none">Main Responsibility</option>
-                        <option>General Housework</option>
-                        <option>Cooking</option>
-                        <option>Care for Infants/Children</option>
-                        <option>Care for Elderly</option>
-                        <option>Care for Disabled</option>
-                        <option>Care for Pets</option>
-                        <option value="none">No Preference</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn blue-btn shadow">Search</button>
-                </form>
+<section id="main-banner-section">
+    <div class="jumbotron jumbotron-fluid bg-primary1">
+        <div class="container">
+            <div class="row">
+                <div class="col col-lg-6 offset-lg-3 text-center py-2 py-md-3 text-light">
+                    <h1 class="display-5 mb-3">The Leading Maid Platform in Singapore</h1>
+                    <p class="lead mb-0">More than 8000 maids for you to choose from</p>
+                    <p class="lead">Start your search now!</p>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="container">
-        <h2 class="section-header pt-5 pb-4">HOW IT WORKS</h2>
-        <div class="row text-white pb-4">
-            <div class="col-12 card-deck m-auto">
-                <div class="card steps-box">
-                    <div class="card-body rounded shadow">
-                        <h5 class="card-title text-white">STEP 1</h5>
-                        <p class="card-text mb-3 text-center text-white">
-                            Sign up to view maids' biodata (as per MOM's requirement)
-                        </p>
-                        <i class="fa fa-user-plus fa-5x icons"></i>
-                    </div>
+            <div class="row d-none d-md-flex">
+                <div class="col col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
+                    <form action="" method="get">
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="type-of-maid" class="text-light">
+                                    <h5 class="mb-0">Type of Maid</h5>
+                                </label>
+                                <select class="form-control" id="type-of-maid">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    </select>
+                            </div>
+                            <div class="col">
+                                <label for="type-of-maid" class="text-light">
+                                    <h5 class="mb-0">Nationality</h5>
+                                </label>
+                                <select class="form-control" id="type-of-maid">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    </select>
+                            </div>
+                            <div class="col">
+                                <label for="type-of-maid" class="text-light">
+                                    <h5 class="mb-0">Responsibility</h5>
+                                </label>
+                                <select class="form-control" id="type-of-maid">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    </select>
+                            </div>
+                            <div class="col mt-auto">
+                                <button type="submit" class="btn bg-dark1 text-light w-100">
+                                    <h5 class="mb-0">Search</h5>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="card steps-box text-center">
-                    <div class="card-body rounded shadow text-center">
-                        <h5 class="card-title text-white">STEP 2</h5>
-                        <p class="card-text mb-3 text-center text-white">
-                            Browse maids based on your chosen criteria
-                        </p>
-                        <i class="fa fa-search fa-5x icons"></i>
-                    </div>
-                </div>
-                <div class="card steps-box">
-                    <div class="card-body rounded shadow">
-                        <h5 class="card-title text-white">STEP 3</h5>
-                        <p class="card-text mb-3 text-center text-white">
-                            Add them to shortlist and send enquiry to respective agencies
-                        </p>
-                        <i class="fa fa-envelope fa-5x icons"></i>
-                    </div>
-                </div>
-                <div class="card steps-box">
-                    <div class="card-body rounded shadow">
-                        <h5 class="card-title text-white">STEP 4</h5>
-                        <p class="card-text mb-3 text-center text-white">
-                            Respective agencies will contact you
-                        </p>
-                        <i class="fa fa-phone-square fa-5x icons"></i>
-                    </div>
+            </div>
+            <div class="row d-md-none">
+                <div class="col text-center">
+                    <a href="" class="btn btn-lg bg-dark1 text-light w-50">
+                        <h5 class="mb-0">Search</h5>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<section>
+{% include 'sections/how-it-works.html' %}
+<section class="py-3 py-md-4" id="preferences-section">
     <div class="container">
-        <h2 class="section-header pb-3 mt-5">PREFERENCES</h2>
         <div class="row">
-            <div class="col">
+            <div class="col text-center">
+                <h1 class="mb-4">Preferences</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-md-5">
                 <div class="card-deck">
-                    <div class="card maid-experience mt-2 ml-4 mr-1 shadow-dark">
-                        <a href="{% url 'searchmaid' %}?main_responsibility=General%20Housework">
-                            <img class="card-img-top" src="{% static 'images/homepage_preference/partTime1.jpg' %}" alt="Card image cap">
-                            <div class="card-body maid-experience">
-                                <h4 class="card-title" style="color:#0571bb"><b>General Housework</b></h4>
-                                <p class="find-out-more">Find out more ➔</p>
-                            </div>
-                        </a>
+                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
+                        <img src="static/images/homepage_preference/partTime1.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">General Housework</h5>
+                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
+                            <a href="">
+                                <h6 class="card-subtitle">Learn More</h6>
+                            </a>
+                        </div>
                     </div>
-                    <div class="card maid-experience mt-2 ml-4 mr-1 shadow-dark">
-                        <a href="{% url 'searchmaid' %}?main_responsibility=Cooking">
-                            <img class="card-img-top" src="{% static 'images/homepage_preference/cooking1.jpg' %}" alt="Card image cap">
-                            <div class="card-body maid-experience">
-                                <h4 class="card-title" style="color:#0571bb"><b>Cooking</b></h4>
-                                <p class="find-out-more">Find out more ➔</p>
-                            </div>
-                        </a>
+                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
+                        <img src="static/images/homepage_preference/cooking1.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Cooking</h5>
+                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
+                            <a href="">
+                                <h6 class="card-subtitle">Learn More</h6>
+                            </a>
+                        </div>
                     </div>
-                    <div class="card maid-experience mt-2 ml-4 shadow-dark">
-                        <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Infants%2FChildren">
-                            <img class="card-img-top" src="{% static 'images/homepage_preference/confinement.jpg' %}" alt="Card image cap">
-                            <div class="card-body maid-experience">
-                                <h4 class="card-title" style="color:#0571bb"><b>Care for Infants/Children</b></h4>
-                                <p class="find-out-more">Find out more ➔</p>
-                            </div>
-                        </a>
+                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
+                        <img src="static/images/homepage_preference/childrenCare1.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Care for Children</h5>
+                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
+                            <a href="">
+                                <h6 class="card-subtitle">Learn More</h6>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <div class="card-deck mt-3">
-                    <div class="card maid-experience mt-2 ml-4 mr-1 shadow-dark">
-                        <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Elderly">
-                            <img class="card-img-top" src="{% static 'images/homepage_preference/elderly.jpg' %}" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title" style="color:#0571bb"><b>Care for Elderly</b></h4>
-                                <p class="find-out-more">Find out more ➔</p>
-                            </div>
-                        </a>
+            <div class="col-md-8 offset-md-2 mb-md-5">
+                <div class="card-deck">
+                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
+                        <img src="static/images/homepage_preference/elderly.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Care for Elderly</h5>
+                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
+                            <a href="">
+                                <h6 class="card-subtitle">Learn More</h6>
+                            </a>
+                        </div>
                     </div>
-                    <div class="card maid-experience mt-2 ml-4 mr-1 shadow-dark">
-                        <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Disabled">
-                            <img class="card-img-top" src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" alt="Card image cap">
-                            <div class="card-body maid-experience">
-                                <h4 class="card-title" style="color:#0571bb"><b>Care for Disabled</b></h4>
-                                <p class="find-out-more">Find out more ➔</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="card maid-experience mt-2 ml-4 shadow-dark">
-                        <a href="{% url 'searchmaid' %}?main_responsibility=Care%20for%20Pets">
-                            <img class="card-img-top" src="{% static 'images/homepage_preference/pets.jpg' %}" alt="Card image cap">
-                            <div class="card-body maid-experience">
-                                <h4 class="card-title" style="color:#0571bb"><b>Care for Pets</b></h4>
-                                <p class="find-out-more">Find out more ➔</p>
-                            </div>
-                        </a>
+                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
+                        <img src="static/images/homepage_preference/elderlyCare1.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Care for Disabled</h5>
+                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
+                            <a href="">
+                                <h6 class="card-subtitle">Learn More</h6>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<section>
+<section class="py-3 py-md-4" id="featured-maids-section">
     <div class="container">
-        <h2 class="section-header">FEATURED MAIDS</h2>
-        <div class="pt-4 row">
-            <div class="col-lg-12 m-auto">
-                <div class="featured-mbanner mb-5" style="background-image: url('{% static 'images/featured-banner.png' %}');">
-                    <div class="row pt-5">
-                        <div class="col-6 offset-6 featured-nationality">
-                            <p class="mb-2">Choose Nationality</p>
-                            <div class="nationality col-sm-4 px-0 rounded mb-5">
-                                <select class="inputState" name="nationality" class="form-control">
-                                    <option selected value="none">Nationality</option>
-                                    <option>Bangladeshi</option>
-                                    <option>Cambodian</option>
-                                    <option>Filipino</option>
-                                    <option>Indian</option>
-                                    <option>Indonesian</option>
-                                    <option>Myanmarese</option>
-                                    <option>Sri Lankan</option>
-                                    <option>Others</option>
-                                    <option value="none">No Preference</option>
+        <div class="row mb-4">
+            <div class="col text-center">
+                <h1>Featured Maids</h1>
+            </div>
+        </div>
+        <div class="row bg-featured-maids mb-3 mb-md-4">
+            <div class="col-md-6 offset-md-6 py-5">
+                <div class="row mb-3">
+                    <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
+                        <label for="nationalitySelect">Nationality</label>
+                        <select class="form-control" id="nationalitySelect">
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col offset-1 offset-md-0 ">
+                        <h4>Browse our featured maids</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Maid Name</h5>
+                        <p class="card-text">Nationality</p>
+                        <p class="card-text">Age / Marital Status</p>
+                        <p class="card-text">Type</p>
+                        <p class="card-text">Main Responsibility</p>
+                    </div>
+                    <a href="" class="text-decoration-none">
+                        <div class="card-footer bg-primary text-light">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h6 class="mb-0">Add to Shortlist</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'sections/cta-banner.html' %}
+<section id="enquiry-form-section" class="d-none">
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col text-center">
+                    <h2>Enquiry Form</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2">
+                    <form action="">
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nameInput">Name</label>
+                                <input type="text" class="form-control" id="nameInput" placeholder="Name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phoneNumberInput">Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumberInput" placeholder="Phone Number">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col mb-3">
+                                <label for="emailInput">Email Address</label>
+                                <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="maidNationalitySelect">Maid Nationality</label>
+                                <select class="form-control" id="maidNationalitySelect">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
                                 </select>
                             </div>
-                            <h2 class="mb-5">Browse our featured maids here</h2>
+                            <div class="col-md-6 mb-3">
+                                <label for="maidResponsibilitySelect">Maid Responsibility</label>
+                                <select class="form-control" id="maidResponsibilitySelect">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row row-cols-2 row-cols-lg-5 row-cols-md-4 featured-maids">
-                    <!--Insert featured maids here-->
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="maidTypeSelect">Type of Maid</label>
+                                <select class="form-control" id="maidTypeSelect">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="maidAgeSelect">Age</label>
+                                <select class="form-control" id="maidAgeSelect">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
+                        <div class="form-row">
+                            <div class="col mb-4">
+                                <label for="messageTextarea">Message</label>
+                                <textarea class="form-control" id="messageTextarea" rows="5"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
+                        <div class="form-row">
+                            <div class="col mt-1 text-center">
+                                <button type="submit" class="btn btn-primary w-50">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
-                        </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
-                        </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
-                        </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
-                        </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-
-                    <div class="col mb-4 profiles-card display">
-                        <div class="card h-100">
-                        <a class="text-decoration-none" href="">
-                                            <img src="{% static 'images/b10.jpg' %}" class="card-img-top">
-                                                <ul class="list-group list-group-flush card-deck-margin" style="font-weight:500;">
-                                                    <li class="list-group-item sm-padding">
-                                                        <h4 class="card-title maid-name text-left" style="color:#234c7a">Maid Name</h4>
-                                                        <p class="card-text">Maid Nationality</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left"> Yrs Old / Marital Status</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text">Type of Maid</p>
-                                                    </li>
-                                                    <li class="list-group-item sm-padding">
-                                                        <p class="card-text text-left">Main Responsibility</p>
-                                                    </li>
-                                                </ul>
-                                        </a>
-                        <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/">Add to Shortlist</a>
-                        </div>
-                    </div>
-                    <div class="popup shadow-dark">
-                        <h3 class="popup-agency-name">Agency Name</h3>
-                        <h6 class="popup-employment">Employment History</h6>
-
-                        <p>01/01/2018 to 01/01/2019</p>
-                        <p>Country: Singapore | Employer: Chinese</p>
-                        <p class="text-left">Work duties here</p>
-                        <p class="text-left">Remarks here</p>
-                        <hr>
-
-                        <p><small>Updated on</small></p>
-                    </div>
-                    <!--End of featured maids-->
+                    </form>
                 </div>
             </div>
         </div>
