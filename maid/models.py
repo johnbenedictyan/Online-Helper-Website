@@ -73,8 +73,8 @@ class Maid(models.Model):
         default=PassportStatusChoices.NOT_READY
     )
 
-    repatraition_airport = models.CharField(
-        verbose_name=_('Repatraition airport'),
+    repatriation_airport = models.CharField(
+        verbose_name=_('Repatriation airport'),
         max_length=100,
         blank=False
     )
@@ -356,7 +356,7 @@ class MaidStatus(models.Model):
         related_name='status'
     )
 
-    ipa_arroved = models.BooleanField(
+    ipa_approved = models.BooleanField(
         verbose_name=_('IPA approved'),
         blank=False,
         default=False
