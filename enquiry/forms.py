@@ -43,9 +43,36 @@ class GeneralEnquiryFrom(forms.Form):
         ('SGE', _('Singapore Experience')),
         ('OVE', _('Overseas Experience'))
     )
-
+    
     MAID_AGE_CHOICES = (
-        (i, _(f'{i}')) for i in range(23,51) 
+        (23, _('23')),
+        (24, _('24')),
+        (25, _('25')),
+        (26, _('26')),
+        (27, _('27')),
+        (28, _('28')),
+        (29, _('29')),
+        (30, _('30')),
+        (31, _('31')),
+        (32, _('32')),
+        (33, _('33')),
+        (34, _('34')),
+        (35, _('35')),
+        (36, _('36')),
+        (37, _('37')),
+        (38, _('38')),
+        (39, _('39')),
+        (40, _('40')),
+        (41, _('41')),
+        (42, _('42')),
+        (43, _('43')),
+        (44, _('44')),
+        (45, _('45')),
+        (46, _('46')),
+        (47, _('47')),
+        (48, _('48')),
+        (49, _('49')),
+        (50, _('50'))
     )
 
     first_name = forms.CharField(
@@ -72,39 +99,34 @@ class GeneralEnquiryFrom(forms.Form):
         max_length=255
     )
 
-    maid_nationality = forms.CharField(
+    maid_nationality = forms.ChoiceField(
         label=_('Maid\'s Nationality'),
         required=True,
-        choices=MAID_NATIONALITY_CHOICES,
-        max_length=3
+        choices=MAID_NATIONALITY_CHOICES
     )
 
-    maid_main_responsibility = forms.CharField(
+    maid_main_responsibility = forms.ChoiceField(
         label=_('Maid\'s main responsibility'),
         required=True,
-        choices=MAID_MAIN_RESPONSIBILITY_CHOICES,
-        max_length=3
+        choices=MAID_MAIN_RESPONSIBILITY_CHOICES
     )
 
-    maid_type = forms.CharField(
+    maid_type = forms.ChoiceField(
         label=_('Type of maid'),
         required=True,
-        choices=MAID_TYPE_CHOICES,
-        max_length=3
+        choices=MAID_TYPE_CHOICES
     )
 
     maid_min_age = forms.ChoiceField(
         label=_('Minimum age of Maid'),
         required=True,
-        choices=MAID_AGE_CHOICES,
-        max_length=2
+        choices=MAID_AGE_CHOICES
     )
 
-    maid_max_age = forms.IntegerField(
+    maid_max_age = forms.ChoiceField(
         label=_('Maximum age of Maid'),
         required=True,
-        choices=MAID_AGE_CHOICES,
-        max_length=2
+        choices=MAID_AGE_CHOICES
     )
 
     remarks = forms.CharField(
@@ -112,14 +134,13 @@ class GeneralEnquiryFrom(forms.Form):
         required=True,
         widget=forms.Textarea(
             attrs={
-                'rows': 80,
-                'cols': 20
+                'rows': 20,
+                'cols': 15
             }
         )
     )
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
