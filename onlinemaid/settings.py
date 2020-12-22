@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'payment',
     'shortlist',
     'website',
+    'enquiry',
 
     ######## DEBUG mode only packages, to be REMOVED before production ########
     'sslserver',

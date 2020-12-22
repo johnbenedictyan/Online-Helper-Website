@@ -30,6 +30,7 @@ from maid.urls import urlpatterns as maid_urls
 from payment.urls import urlpatterns as payment_urls
 from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
+from enquiry.urls import urlpatterns as enquiry_urls
 
 # Start of Urls
 
@@ -43,5 +44,6 @@ urlpatterns = [
     path('maids/', include(maid_urls)),
     path('payment/', include(payment_urls)),
     path('shortlist/', include(shortlist_urls)),
+    path('enquiry/', include(enquiry_urls)),
     path('', include(website_urls))
 ]
