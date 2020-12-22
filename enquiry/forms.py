@@ -15,7 +15,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 # Model Forms
 
 # Generic Forms (forms.Form)
-class GeneralEnquiryFrom(forms.Form):
+class GeneralEnquiryForm(forms.Form):
     MAID_NATIONALITY_CHOICES = (
         ('ALL', _('No preference')),
         ('KHM', _('Cambodian')),
@@ -43,7 +43,7 @@ class GeneralEnquiryFrom(forms.Form):
         ('SGE', _('Singapore Experience')),
         ('OVE', _('Overseas Experience'))
     )
-    
+
     MAID_AGE_CHOICES = (
         (23, _('23')),
         (24, _('24')),
