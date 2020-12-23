@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
 from agency.models import Agency
@@ -43,6 +44,13 @@ class Maid(models.Model):
         verbose_name=_('Reference Number'),
         max_length=255,
         blank=False
+    )
+
+    photo = models.FileField(
+        verbose_name=_('Maid Photo'),
+        blank=False,
+        null=True,
+        storage=PublicMediaStorage()
     )
 
     maid_type = models.CharField(
