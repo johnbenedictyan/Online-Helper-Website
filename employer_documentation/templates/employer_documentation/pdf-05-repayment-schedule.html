@@ -67,12 +67,12 @@
     <tr>
         <td>{{ k }}</td>
         <td>{{ v.salary_date }}</td>
-        <td>{{ object.fdw.salary }}</td>
-        <td>{{ v.day_off_compensation }}</td>
-        <td>{{ object.fdw.salary|add:v.day_off_compensation }}</td>
+        <td>{{ v.basic_salary }}</td>
+        <td>{{ v.off_day_compensation }}</td>
+        <td>{{ v.salary_per_month }}</td>
         <td></td>
-        <td>{{ v.placement_fee|div:-24 }}</td>
-        <td>{{ v.placement_fee|div:-24|add:object.fdw.salary|add:v.day_off_compensation }}</td>
+        <td>{% if v.loan_repaid %}({{ v.loan_repaid }}){% else %}{{ v.loan_repaid }}{% endif %}</td>
+        <td>{{ v.salary_received }}</td>
         <td>{% comment %}Employer's Signature{% endcomment %}</td>
         <td>{% comment %}FDW's Signature{% endcomment %}</td>
     </tr>

@@ -543,6 +543,7 @@ class PdfEmployerAgreementView(
     model = EmployerDocBase
     pk_url_kwarg = 'employer_doc_base_pk'
 
+import calendar
 from django.utils import timezone
 class PdfRepaymentScheduleView(
     CheckEmployerDocBaseBelongsToEmployerMixin,
@@ -558,35 +559,84 @@ class PdfRepaymentScheduleView(
         context['repayment_table'] = {}
         today = timezone.now()
 
-        if (
-            self.object.rn_employerdocemploymentcontract
-            .c3_2_salary_payment_date
-            >
-            today.day
-        ):
-            payment_month = today.month
-            payment_year = today.year
-            # print("Pay in current month", str(self.object.rn_employerdocemploymentcontract.c3_2_salary_payment_date), str(payment_month), str(payment_year))
+        payment_month = today.month
+        payment_year = today.year
+        placement_fee = 3000
+        placement_fee_per_month = round(placement_fee/6, 0)
+        work_days_in_month = 26
+        off_day_compensation = round(
+            self.object.fdw.salary/work_days_in_month, 0
+        )
+        salary_per_month = self.object.fdw.salary + off_day_compensation
+        
+        if today.day==1:
+            for i in range(1,25):
+                loan_repaid = min(
+                    placement_fee,
+                    placement_fee_per_month,
+                    salary_per_month
+                )
+                month_current = (
+                    12 if payment_month%12==0 else payment_month%12
+                )
+
+                context['repayment_table'][i] = {
+                    'salary_date': '{day}/{month}/{year}'.format(
+                        day = calendar.monthrange(
+                            payment_year, month_current)[1],
+                        month = month_current,
+                        year = payment_year,
+                    ),
+                    'basic_salary': self.object.fdw.salary,
+                    'salary_per_month': salary_per_month,
+                    'salary_received': salary_per_month-loan_repaid,
+
+                    'off_day_compensation': off_day_compensation,
+                    'loan_repaid': loan_repaid
+                }
+                placement_fee = (
+                    placement_fee-loan_repaid
+                    if placement_fee-loan_repaid>=0
+                    else 0
+                )
+                payment_month += 1
+                if payment_month%12==1:
+                    payment_year += 1
+
         else:
-            next_month_obj = (today+timezone.timedelta(days=28))
-            payment_month = next_month_obj.month
-            payment_year = next_month_obj.year
-            # print("Pay next month", str(self.object.rn_employerdocemploymentcontract.c3_2_salary_payment_date), str(payment_month), str(payment_year))
-        
-        for i in range(1,25):
-            context['repayment_table'][i] = {
-                'salary_date': '{day}/{month}/{year}'.format(
-                    day = self.object.rn_employerdocemploymentcontract.c3_2_salary_payment_date,
-                    month = 12 if payment_month%12==0 else payment_month%12,
-                    year = payment_year,
-                ),
+            ####################################################################### TO BE PRO-RATED
+            for i in range(1,25):
+                loan_repaid = min(
+                    placement_fee,
+                    placement_fee_per_month,
+                    salary_per_month
+                )
+                month_current = (
+                    12 if payment_month%12==0 else payment_month%12
+                )
 
-                'day_off_compensation': 20, ######################################################################################## To be replaced with db call
-                'placement_fee': 2400,      ######################################################################################## To be replaced with db call
-            }
-            payment_month += 1
-            if payment_month%12==1:
-                payment_year += 1
-        
+                context['repayment_table'][i] = {
+                    'salary_date': '{day}/{month}/{year}'.format(
+                        day = calendar.monthrange(
+                            payment_year, month_current)[1],
+                        month = month_current,
+                        year = payment_year,
+                    ),
+                    'basic_salary': self.object.fdw.salary,
+                    'salary_per_month': salary_per_month,
+                    'salary_received': salary_per_month-loan_repaid,
+
+                    'off_day_compensation': off_day_compensation,
+                    'loan_repaid': loan_repaid
+                }
+                placement_fee = (
+                    placement_fee-loan_repaid
+                    if placement_fee-loan_repaid>=0
+                    else 0
+                )
+                payment_month += 1
+                if payment_month%12==1:
+                    payment_year += 1
+
+
         return context
-
