@@ -8,7 +8,7 @@ from django.urls import include, path
 ## Redirect Views
 
 ## Template Views 
-from .views import GeneralEnquiryView, SpecificEnquiryView
+from .views import EnquiryView
 
 ## List Views
 
@@ -25,12 +25,7 @@ from .views import GeneralEnquiryView, SpecificEnquiryView
 urlpatterns = [
         path(
             '',
-            GeneralEnquiryView.as_view(),
-            name='general_enquiry'
-        ),
-        path(
-            'specific/',
-            SpecificEnquiryView.as_view(),
-            name='specific_enquiry'
+            EnquiryView.as_view(),
+            name='enquiry'
         )
 ]

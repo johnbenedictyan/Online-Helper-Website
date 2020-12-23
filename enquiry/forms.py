@@ -16,7 +16,7 @@ from crispy_forms.bootstrap import InlineCheckboxes
 # Model Forms
 
 # Generic Forms (forms.Form)
-class GeneralEnquiryForm(forms.Form):
+class EnquiryForm(forms.Form):
     # Settings
 
     ## General
