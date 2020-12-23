@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
 from agency.models import Agency
@@ -45,6 +46,13 @@ class Maid(models.Model):
         blank=False
     )
 
+    photo = models.FileField(
+        verbose_name=_('Maid Photo'),
+        blank=False,
+        null=True,
+        storage=PublicMediaStorage()
+    )
+
     maid_type = models.CharField(
         verbose_name=_('Maid Type'),
         max_length=3,
@@ -73,8 +81,8 @@ class Maid(models.Model):
         default=PassportStatusChoices.NOT_READY
     )
 
-    repatraition_airport = models.CharField(
-        verbose_name=_('Repatraition airport'),
+    repatriation_airport = models.CharField(
+        verbose_name=_('Repatriation airport'),
         max_length=100,
         blank=False
     )
@@ -356,7 +364,7 @@ class MaidStatus(models.Model):
         related_name='status'
     )
 
-    ipa_arroved = models.BooleanField(
+    ipa_approved = models.BooleanField(
         verbose_name=_('IPA approved'),
         blank=False,
         default=False
