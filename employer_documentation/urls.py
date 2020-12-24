@@ -12,10 +12,10 @@ from .views import (
 )
 
 # ## Detail Views
-# from .views import (
-#     EmployerBaseDetailView,
-#     EmployerDocBaseDetailView,
-# )
+from .views import (
+    EmployerDetailView,
+    # EmployerDocDetailView,
+)
 
 ## Create Views
 from .views import (
@@ -75,6 +75,16 @@ urlpatterns = [
                 EmployerListView.as_view(),
                 name='employer_list_route'
             ),
+            path(
+                '<uuid:employer_pk>/',
+                include([
+                    path(
+                        'detail/',
+                        EmployerDetailView.as_view(),
+                        name='employer_detail'
+                    ),
+                ]),
+            ),
         ]),
     ),
 ]
@@ -83,16 +93,6 @@ urlpatterns = [
 #     path(
 #         '',
 #         include([
-#             path(
-#                 'create/',
-#                 EmployerBaseCreateView.as_view(),
-#                 name='employer_base_create'
-#             ),
-#             path(
-#                 'employers-list/',
-#                 EmployerBaseListView.as_view(),
-#                 name='employer_base_list'
-#             ),
 #             path(
 #                 '<uuid:employer_base_pk>/',
 #                 include([

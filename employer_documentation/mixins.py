@@ -109,91 +109,52 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
         else:
             self.agency_user_obj = self.request.user.agency_employee
 
-# class CheckAgencyEmployeePermissionsEmployerBaseMixin(
-#     LoginByAgencyUserGroupRequiredMixin
-# ):
-#     login_url = reverse_lazy('agency_sign_in')
-#     permission_denied_message = '''You do not have the necessary access
-#                                 rights to perform this action'''
+class CheckAgencyEmployeePermissionsMixin(
+    LoginByAgencyUserGroupRequiredMixin
+):
+    employer_obj = None
+    login_url = reverse_lazy('agency_sign_in')
+    permission_denied_message = '''You do not have the necessary access
+                                rights to perform this action'''
 
-#     def dispatch(self, request, *args, **kwargs):
-#         # First check if current user is logged in, if not immediately return
-#         if not request.user.is_authenticated:
-#             return self.handle_no_permission()
+    def dispatch(self, request, *args, **kwargs):
+        # First check if current user is logged in, if not immediately return
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
         
-#         # Get current user's group and user object
-#         self.get_agency_user_group()
-#         self.get_agency_user_object()
+        # Get current user's group and user object
+        self.get_agency_user_group()
+        self.get_agency_user_object()
         
-#         test_obj = EmployerBase.objects.get(
-#             pk=self.kwargs.get('employer_base_pk')
-#         )
+        self.employer_obj = Employer.objects.get(
+            pk=self.kwargs.get('employer_pk')
+        )
         
-#         # Check test object's agency is same as current user's agency
-#         if not test_obj.agency_employee.agency==self.agency_user_obj.agency:
-#             return self.handle_no_permission()
+        # Check test object's agency is same as current user's agency
+        if (
+            not self.employer_obj.agency_employee.agency
+            ==self.agency_user_obj.agency
+        ):
+            return self.handle_no_permission()
 
-#         # Check user belongs to required group to access view
-#         if (
-#             request.user.groups.filter(name=AG_OWNERS).exists()
-#             or
-#             request.user.groups.filter(name=AG_ADMINS).exists()
-#             or (
-#                 request.user.groups.filter(name=AG_MANAGERS).exists()
-#                 and
-#                 test_obj.agency_employee.branch==self.agency_user_obj.branch
-#             )
-#             or
-#             test_obj.agency_employee==self.agency_user_obj
-#         ):
-#             return super().dispatch(request, *args, **kwargs)
-#         else:
-#             return self.handle_no_permission()
-
-# class CheckAgencyEmployeePermissionsEmployerExtraInfoMixin(
-#     LoginByAgencyUserGroupRequiredMixin
-# ):
-#     login_url = reverse_lazy('agency_sign_in')
-#     permission_denied_message = '''You do not have the necessary access
-#                                 rights to perform this action'''
-
-#     def dispatch(self, request, *args, **kwargs):
-#         # First check if current user is logged in, if not immediately return
-#         if not request.user.is_authenticated:
-#             return self.handle_no_permission()
-        
-#         # Get current user's group and user object
-#         self.get_agency_user_group()
-#         self.get_agency_user_object()
-        
-#         test_obj = EmployerExtraInfo.objects.get(
-#             pk=self.kwargs.get('employer_extra_info_pk')
-#         )
-
-#         # Check test object's agency is same as current user's agency
-#         if (
-#             not test_obj.employer_base.agency_employee.agency
-#             ==self.agency_user_obj.agency
-#         ):
-#             return self.handle_no_permission()
-
-#         # Check user belongs to required group to access view
-#         if (
-#             request.user.groups.filter(name=AG_OWNERS).exists()
-#             or
-#             request.user.groups.filter(name=AG_ADMINS).exists()
-#             or (
-#                 request.user.groups.filter(name=AG_MANAGERS).exists()
-#                 and
-#                 test_obj.employer_base.agency_employee.branch
-#                 ==self.agency_user_obj.branch
-#             )
-#             or
-#             test_obj.employer_base.agency_employee==self.agency_user_obj
-#         ):
-#             return super().dispatch(request, *args, **kwargs)
-#         else:
-#             return self.handle_no_permission()
+        # Check user belongs to required group to access view
+        if (
+            request.user.groups.filter(name=AG_OWNERS).exists()
+            or
+            request.user.groups.filter(name=AG_ADMINS).exists()
+            or (
+                request.user.groups.filter(name=AG_MANAGERS).exists()
+                and
+                self.employer_obj.agency_employee.branch
+                ==self.agency_user_obj.branch
+            )
+            or
+            self.employer_obj.agency_employee==self.agency_user_obj
+        ):
+            print(request.user.groups)
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return self.handle_no_permission()
 
 # class CheckAgencyEmployeePermissionsDocBaseMixin(
 #     LoginByAgencyUserGroupRequiredMixin

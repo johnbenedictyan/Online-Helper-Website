@@ -31,10 +31,9 @@ from .models import (
     EmployerDocSig,
 )
 from .mixins import (
-#     CheckEmployerExtraInfoBelongsToEmployerMixin,
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
 #     CheckEmployerSubDocBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
+    CheckAgencyEmployeePermissionsMixin,
 #     CheckAgencyEmployeePermissionsEmployerExtraInfoMixin,
 #     CheckAgencyEmployeePermissionsDocBaseMixin,
 #     CheckAgencyEmployeePermissionsSubDocMixin,
@@ -110,12 +109,12 @@ class EmployerListView(
 #             self.pk_url_kwarg))
 
 # Detail Views
-# class EmployerBaseDetailView(
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
-#     DetailView,
-# ):
-#     model = EmployerBase
-#     pk_url_kwarg = 'employer_base_pk'
+class EmployerDetailView(
+    CheckAgencyEmployeePermissionsMixin,
+    DetailView,
+):
+    model = Employer
+    pk_url_kwarg = 'employer_pk'
 
 # class EmployerDocBaseDetailView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
