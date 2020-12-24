@@ -569,7 +569,12 @@ class PdfRepaymentScheduleView(
         )
         salary_per_month = self.object.fdw.salary + off_day_compensation
         
-        if self.object.rn_employerdocmaidstatus.fdw_work_commencement_date.day==1:
+        if (
+            self.object.rn_employerdocmaidstatus.fdw_work_commencement_date
+            .day==1
+        ):
+            # If work start date is 1st of month, then payment does not need
+            # to be pro-rated.
             for i in range(1,25):
                 month_current = (
                     12 if payment_month%12==0 else payment_month%12
@@ -599,18 +604,19 @@ class PdfRepaymentScheduleView(
                     else 0
                 )
                 payment_month += 1
-                if payment_month%12==1:
+                if payment_month%12 == 1:
                     payment_year += 1
 
         else:
+            # Pro-rated payments
             month_current = (
                 12 if payment_month%12==0 else payment_month%12
             )
             first_month_days = (
                 calendar.monthrange(
-                    payment_year, month_current)[1] - 
-                self.object.rn_employerdocmaidstatus.fdw_work_commencement_date.day
-                +1
+                    payment_year, month_current)[1]
+                - self.object.rn_employerdocmaidstatus
+                .fdw_work_commencement_date.day + 1
             )
             first_month_salary = round(salary_per_month*first_month_days/
                 calendar.monthrange(payment_year, month_current)[1], 0)
@@ -621,6 +627,7 @@ class PdfRepaymentScheduleView(
                     payment_year, month_current)[1], 0)
             )
 
+            # 1st month pro-rated
             context['repayment_table'][1] = {
                 'salary_date': '{day}/{month}/{year}'.format(
                     day = calendar.monthrange(
@@ -632,12 +639,12 @@ class PdfRepaymentScheduleView(
                     self.object.fdw.salary*first_month_days/
                     calendar.monthrange(
                         payment_year, month_current)[1], 0
-                    ),
+                ),
                 'off_day_compensation': round(
                     off_day_compensation*first_month_days/
                     calendar.monthrange(
-                        payment_year, month_current)[1], 0)
-                    ,
+                        payment_year, month_current)[1], 0
+                ),
                 'salary_per_month': first_month_salary,
                 'salary_received': first_month_salary - loan_repaid,
                 'loan_repaid': loan_repaid
@@ -648,9 +655,10 @@ class PdfRepaymentScheduleView(
                 else 0
             )
             payment_month += 1
-            if payment_month%12==1:
+            if payment_month%12 == 1:
                 payment_year += 1
 
+            # 2nd-23rd months of full month payments
             for i in range(2,25):
                 month_current = (
                     12 if payment_month%12==0 else payment_month%12
@@ -680,31 +688,34 @@ class PdfRepaymentScheduleView(
                     else 0
                 )
                 payment_month += 1
-                if payment_month%12==1:
+                if payment_month%12 == 1:
                     payment_year += 1
 
+            # 25th month pro-rated
             final_payment_day = (
                 self.object.rn_employerdocmaidstatus
-                .fdw_work_commencement_date.day-1
+                .fdw_work_commencement_date.day - 1
             )
             basic_salary = round(
                 self.object.fdw.salary*final_payment_day/calendar.monthrange(
                     payment_year, month_current)[1]
-                )
+            )
             off_day_compensation = round(
                 off_day_compensation*final_payment_day/calendar.monthrange(
                     payment_year, month_current)[1]
-                )
+            )
             context['repayment_table'][25] = {
                 'salary_date': '{day}/{month}/{year}'.format(
                     day = final_payment_day,
                     month = month_current,
                     year = payment_year,
-                    ),
+                ),
                 'basic_salary': basic_salary,
                 'off_day_compensation': off_day_compensation,
                 'salary_per_month': basic_salary + off_day_compensation,
-                'salary_received': basic_salary + off_day_compensation - loan_repaid,
+                'salary_received': (
+                    basic_salary + off_day_compensation - loan_repaid
+                ),
                 'loan_repaid': loan_repaid
             }
         
