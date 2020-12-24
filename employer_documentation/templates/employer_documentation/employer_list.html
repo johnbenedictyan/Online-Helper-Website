@@ -2,7 +2,7 @@
 
 {% block e_d_section %}
     <h1>Employers</h1>
-    <a href="{% url 'employer_base_create' %}">Create new employer</a>
+    <a href="{% url 'employer_create_route' %}">Create new employer</a>
     <table class="table">
         <thead>
             <tr>
@@ -17,9 +17,9 @@
         {% for object in object_list %}
             <tr>
                 <th scope="row">{{ object.pk }}</th>
-                <td><a href="{% url 'employer_base_detail' employer_base_pk=object.pk %}">{{ object.employer_name }}</a></td>
+                <td>{% comment %}<a href="{% url 'employer_detail' employer_pk=object.pk %}">{{ object.employer_name }}</a>{% endcomment %}</td>
                 <td>{{ object.employer_email }}</td>
-                <td>{% if object.rn_employerdocbase.all %}<a href="{% url 'employer_doc_base_list' employer_base_pk=object.pk %}">View employer's docs</a>{% else %}<a href="{% url 'employer_doc_base_create' employer_base_pk=object.pk %}">Create new doc base</a>{% endif %}</td>
+                <td>{% comment %}{% if object.rn_employerdocbase.all %}<a href="{% url 'employer_doc_list' employer_pk=object.pk %}">View employer's docs</a>{% else %}<a href="{% url 'employer_doc_create' employer_pk=object.pk %}">Create new doc</a>{% endif %}{% endcomment %}</td>
                 <td>{{ object.agency_employee }}</td>
             </tr>
         {% empty %}
