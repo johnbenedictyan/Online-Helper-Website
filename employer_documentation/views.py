@@ -38,7 +38,7 @@ from .mixins import (
 #     CheckAgencyEmployeePermissionsDocBaseMixin,
 #     CheckAgencyEmployeePermissionsSubDocMixin,
 #     CheckUserHasAgencyRoleMixin,
-#     CheckUserIsAgencyOwnerMixin,
+    CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
 #     PdfViewMixin,
 )
@@ -145,22 +145,6 @@ class EmployerCreateView(
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
-# class EmployerExtraInfoCreateView(
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
-#     CreateView
-# ):
-#     model = EmployerExtraInfo
-#     form_class = EmployerExtraInfoForm
-#     pk_url_kwarg = 'employer_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
-#     def form_valid(self, form):
-#         form.instance.employer_base = EmployerBase.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
-
 # class EmployerDocBaseCreateView(
 #     CheckAgencyEmployeePermissionsEmployerBaseMixin,
 #     CreateView
@@ -183,40 +167,6 @@ class EmployerCreateView(
 #         )
 #         return super().form_valid(form)
 
-# class EmployerDocJobOrderCreateView(
-#     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
-#     CreateView
-# ):
-#     model = EmployerDocJobOrder
-#     form_class = EmployerDocJobOrderForm
-#     pk_url_kwarg = 'employer_doc_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
-#     def form_valid(self, form):
-#         form.instance.employer_doc_base = EmployerDocBase.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
-
-# class EmployerDocServiceFeeBaseCreateView(
-#     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
-#     CreateView
-# ):
-#     model = EmployerDocServiceFeeBase
-#     form_class = EmployerDocServiceFeeBaseForm
-#     pk_url_kwarg = 'employer_doc_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
-#     def form_valid(self, form):
-#         form.instance.employer_doc_base = EmployerDocBase.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
-
 # class EmployerDocServiceAgreementCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
 #     CheckAgencyEmployeePermissionsDocBaseMixin,
@@ -234,39 +184,21 @@ class EmployerCreateView(
 #         )
 #         return super().form_valid(form)
 
-# class EmployerDocEmploymentContractCreateView(
-#     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
-#     CreateView
-# ):
-#     model = EmployerDocEmploymentContract
-#     form_class = EmployerDocEmploymentContractForm
-#     pk_url_kwarg = 'employer_doc_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
-#     def form_valid(self, form):
-#         form.instance.employer_doc_base = EmployerDocBase.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
-
 # # Update Views
-# class EmployerBaseUpdateView(
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
-#     UpdateView
-# ):
-#     model = EmployerBase
-#     form_class = EmployerBaseForm
-#     pk_url_kwarg = 'employer_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
+class EmployerUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    UpdateView
+):
+    model = Employer
+    form_class = EmployerForm
+    pk_url_kwarg = 'employer_pk'
+    success_url = reverse_lazy('employer_list_route')
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
 # class EmployerBaseUpdateAgentView(
 #     CheckAgencyEmployeePermissionsEmployerBaseMixin,
@@ -294,17 +226,6 @@ class EmployerCreateView(
 #         kwargs['user_pk'] = self.request.user.pk
 #         return kwargs
 
-# class EmployerExtraInfoUpdateView(
-#     CheckAgencyEmployeePermissionsEmployerExtraInfoMixin,
-#     CheckEmployerExtraInfoBelongsToEmployerMixin,
-#     UpdateView
-# ):
-#     model = EmployerExtraInfo
-#     form_class = EmployerExtraInfoForm
-#     pk_url_kwarg = 'employer_extra_info_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
 # class EmployerDocBaseUpdateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
 #     CheckAgencyEmployeePermissionsDocBaseMixin,
@@ -322,28 +243,6 @@ class EmployerCreateView(
 #         kwargs['agency_user_group'] = self.agency_user_group
 #         return kwargs
 
-# class EmployerDocJobOrderUpdateView(
-#     CheckEmployerSubDocBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsSubDocMixin,
-#     UpdateView
-# ):
-#     model = EmployerDocJobOrder
-#     form_class = EmployerDocJobOrderForm
-#     pk_url_kwarg = 'employer_doc_job_order_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
-# class EmployerDocServiceFeeBaseUpdateView(
-#     CheckEmployerSubDocBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsSubDocMixin,
-#     UpdateView
-# ):
-#     model = EmployerDocServiceFeeBase
-#     form_class = EmployerDocServiceFeeBaseForm
-#     pk_url_kwarg = 'employer_doc_service_fee_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
 # class EmployerDocServiceAgreementUpdateView(
 #     CheckEmployerSubDocBelongsToEmployerMixin,
 #     CheckAgencyEmployeePermissionsSubDocMixin,
@@ -355,23 +254,11 @@ class EmployerCreateView(
 #     template_name = 'employer_documentation/employer-form.html'
 #     success_url = reverse_lazy('employer_base_list')
 
-# class EmployerDocEmploymentContractUpdateView(
-#     CheckEmployerSubDocBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsSubDocMixin,
-#     UpdateView
-# ):
-#     model = EmployerDocEmploymentContract
-#     form_class = EmployerDocEmploymentContractForm
-#     pk_url_kwarg = 'employer_doc_employment_contract_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
-
 # # Delete Views
-# class EmployerBaseDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
-#     model = EmployerBase
-#     pk_url_kwarg = 'employer_base_pk'
-#     template_name = 'employer_documentation/employerbase_confirm_delete.html'
-#     success_url = reverse_lazy('employer_base_list')
+class EmployerDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
+    model = Employer
+    pk_url_kwarg = 'employer_pk'
+    success_url = reverse_lazy('employer_list_route')
 
 # class EmployerDocBaseDeleteView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,

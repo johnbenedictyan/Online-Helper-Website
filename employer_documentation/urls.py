@@ -23,8 +23,8 @@ from .views import (
 )
 
 ## Update Views
-# from .views import (
-#     EmployerBaseUpdateView,
+from .views import (
+    EmployerUpdateView,
 #     EmployerBaseUpdateAgentView,
 #     EmployerExtraInfoUpdateView,
 #     EmployerDocBaseUpdateView,
@@ -32,13 +32,13 @@ from .views import (
 #     EmployerDocServiceFeeBaseUpdateView,
 #     EmployerDocServiceAgreementUpdateView,
 #     EmployerDocEmploymentContractUpdateView,
-# )
+)
 
 # ## Delete Views
-# from .views import (
-#     EmployerBaseDeleteView,
-#     EmployerDocBaseDeleteView,
-# )
+from .views import (
+    EmployerDeleteView,
+    # EmployerDocDeleteView,
+)
 
 # ## Signature Views
 # from .views import (
@@ -81,7 +81,17 @@ urlpatterns = [
                     path(
                         'detail/',
                         EmployerDetailView.as_view(),
-                        name='employer_detail'
+                        name='employer_detail_route'
+                    ),
+                    path(
+                        'update/',
+                        EmployerUpdateView.as_view(),
+                        name='employer_update_route'
+                    ),
+                    path(
+                        'delete/',
+                        EmployerDeleteView.as_view(),
+                        name='employer_delete_route'
                     ),
                 ]),
             ),
@@ -97,24 +107,9 @@ urlpatterns = [
 #                 '<uuid:employer_base_pk>/',
 #                 include([
 #                     path(
-#                         'detail/',
-#                         EmployerBaseDetailView.as_view(),
-#                         name='employer_base_detail'
-#                     ),
-#                     path(
-#                         'update/',
-#                         EmployerBaseUpdateView.as_view(),
-#                         name='employer_base_update'
-#                     ),
-#                     path(
 #                         'update-agent/',
 #                         EmployerBaseUpdateAgentView.as_view(),
 #                         name='employer_base_agent_update'
-#                     ),
-#                     path(
-#                         'delete/',
-#                         EmployerBaseDeleteView.as_view(),
-#                         name='employer_base_delete'
 #                     ),
 #                     path(
 #                         'extra-info/create/',

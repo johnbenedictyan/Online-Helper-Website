@@ -113,9 +113,7 @@ class CheckAgencyEmployeePermissionsMixin(
     LoginByAgencyUserGroupRequiredMixin
 ):
     employer_obj = None
-    login_url = reverse_lazy('agency_sign_in')
-    permission_denied_message = '''You do not have the necessary access
-                                rights to perform this action'''
+    employer_doc_obj = None
 
     def dispatch(self, request, *args, **kwargs):
         # First check if current user is logged in, if not immediately return
@@ -126,32 +124,91 @@ class CheckAgencyEmployeePermissionsMixin(
         self.get_agency_user_group()
         self.get_agency_user_object()
         
-        self.employer_obj = Employer.objects.get(
-            pk=self.kwargs.get('employer_pk')
-        )
+        # Try to get object from database
+        try:
+            self.object = self.get_object()
+        except:
+            pass
+        else:
+            # Assign to respective attribute
+            if isinstance(self.object, Employer):
+                self.employer_obj = self.object
+            elif isinstance(self.object, EmployerDoc):
+                self.employer_doc_obj = self.object
         
         # Check test object's agency is same as current user's agency
         if (
+            self.employer_obj and
             not self.employer_obj.agency_employee.agency
+            ==self.agency_user_obj.agency
+        ):
+            return self.handle_no_permission()
+        elif (
+            self.employer_doc_obj and
+            not self.employer_doc_obj.rn_ed_employer.agency_employee.agency
             ==self.agency_user_obj.agency
         ):
             return self.handle_no_permission()
 
         # Check user belongs to required group to access view
         if (
-            request.user.groups.filter(name=AG_OWNERS).exists()
+            self.agency_user_group==AG_OWNERS
             or
-            request.user.groups.filter(name=AG_ADMINS).exists()
+            self.agency_user_group==AG_ADMINS
             or (
-                request.user.groups.filter(name=AG_MANAGERS).exists()
+                self.agency_user_group==AG_MANAGERS
                 and
-                self.employer_obj.agency_employee.branch
-                ==self.agency_user_obj.branch
+                self.agency_user_obj.branch
+                == self.employer_obj.agency_employee.branch
             )
             or
             self.employer_obj.agency_employee==self.agency_user_obj
         ):
-            print(request.user.groups)
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return self.handle_no_permission()
+
+class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
+    employer_obj = None
+    employer_doc_obj = None
+
+    def dispatch(self, request, *args, **kwargs):
+        # First check if current user is logged in, if not immediately return
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
+        # Get current user's group
+        self.get_agency_user_group()
+        self.get_agency_user_object()
+        
+        # Try to get object from database
+        try:
+            self.object = self.get_object()
+        except:
+            pass
+        else:
+            # Assign to respective attribute
+            if isinstance(self.object, Employer):
+                self.employer_obj = self.object
+            elif isinstance(self.object, EmployerDoc):
+                self.employer_doc_obj = self.object
+        
+        # Check test object's agency is same as current user's agency
+        if (
+            self.employer_obj and
+            not self.employer_obj.agency_employee.agency
+            ==self.agency_user_obj.agency
+        ):
+            return self.handle_no_permission()
+        elif (
+            self.employer_doc_obj and
+            not self.employer_doc_obj.rn_ed_employer.agency_employee.agency
+            ==self.agency_user_obj.agency
+        ):
+            return self.handle_no_permission()
+
+        # Check if current user is agency owner
+        if self.agency_user_group==AG_OWNERS:
             return super().dispatch(request, *args, **kwargs)
         else:
             return self.handle_no_permission()
@@ -235,41 +292,6 @@ class CheckAgencyEmployeePermissionsMixin(
 #             self.get_object().employer_doc_base.employer.agency_employee
 #             ==self.agency_user_obj
 #         ):
-#             return super().dispatch(request, *args, **kwargs)
-#         else:
-#             return self.handle_no_permission()
-
-# class CheckUserHasAgencyRoleMixin(LoginByAgencyUserGroupRequiredMixin):
-#     login_url = reverse_lazy('agency_sign_in')
-#     permission_denied_message = '''You do not have the necessary access
-#                                 rights to perform this action'''
-
-#     def dispatch(self, request, *args, **kwargs):
-#         # First check if current user is logged in, if not immediately return
-#         if not request.user.is_authenticated:
-#             return self.handle_no_permission()
-
-#         # Check user has agency group assigned
-#         if self.get_agency_user_group():
-#             return super().dispatch(request, *args, **kwargs)
-#         else:
-#             return self.handle_no_permission()
-
-# class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
-#     login_url = reverse_lazy('agency_sign_in')
-#     permission_denied_message = '''You do not have the necessary access
-#                                 rights to perform this action'''
-
-#     def dispatch(self, request, *args, **kwargs):
-#         # First check if current user is logged in, if not immediately return
-#         if not request.user.is_authenticated:
-#             return self.handle_no_permission()
-
-#         # Get current user's group
-#         self.get_agency_user_group()
-        
-#         # Check if current user is agency owner
-#         if self.agency_user_group==AG_OWNERS:
 #             return super().dispatch(request, *args, **kwargs)
 #         else:
 #             return self.handle_no_permission()
