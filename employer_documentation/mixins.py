@@ -6,6 +6,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .models import (
     Employer,
     EmployerDoc,
+    EmployerDocMaidStatus,
+    EmployerDocSig,
 )
 from accounts.models import User
 # from agency.models import (
@@ -60,6 +62,9 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
     '''
     agency_user_group = None
     agency_user_obj = None
+    employer_obj = None
+    employer_doc_obj = None
+    employer_subdoc_obj = None
 
     # Gets current user's assigned agency group. Needs to be called manually.
     def get_agency_user_group(self):
@@ -109,21 +114,9 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
         else:
             self.agency_user_obj = self.request.user.agency_employee
 
-class CheckAgencyEmployeePermissionsMixin(
-    LoginByAgencyUserGroupRequiredMixin
-):
-    employer_obj = None
-    employer_doc_obj = None
-
-    def dispatch(self, request, *args, **kwargs):
-        # First check if current user is logged in, if not immediately return
-        if not request.user.is_authenticated:
-            return self.handle_no_permission()
-        
-        # Get current user's group and user object
-        self.get_agency_user_group()
-        self.get_agency_user_object()
-        
+    # Method to get object Employer, EmployerDoc, EmployerDocMaidStatus,
+    # EmployerDocSig from database and assign to attribute of View object.
+    def assign_object(self):
         # Try to get object from database
         try:
             self.object = self.get_object()
@@ -135,7 +128,28 @@ class CheckAgencyEmployeePermissionsMixin(
                 self.employer_obj = self.object
             elif isinstance(self.object, EmployerDoc):
                 self.employer_doc_obj = self.object
+            elif (
+                isinstance(self.object, EmployerDocMaidStatus)
+                or isinstance(self.object, EmployerDocSig)
+            ):
+                self.employer_subdoc_obj = self.object
+
+class CheckAgencyEmployeePermissionsMixin(
+    LoginByAgencyUserGroupRequiredMixin
+):
+    def dispatch(self, request, *args, **kwargs):
+        # First check if current user is logged in, if not immediately return
+        if not self.request.user.is_authenticated:
+            return self.handle_no_permission()
         
+        # Get current user's group and user object
+        self.get_agency_user_group()
+        self.get_agency_user_object()
+
+        # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
+        # object, if it exists, to attribute of View object.
+        self.assign_object()
+
         # Check test object's agency is same as current user's agency
         if (
             self.employer_obj and
@@ -181,17 +195,9 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
         self.get_agency_user_group()
         self.get_agency_user_object()
         
-        # Try to get object from database
-        try:
-            self.object = self.get_object()
-        except:
-            pass
-        else:
-            # Assign to respective attribute
-            if isinstance(self.object, Employer):
-                self.employer_obj = self.object
-            elif isinstance(self.object, EmployerDoc):
-                self.employer_doc_obj = self.object
+        # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
+        # object, if it exists, to attribute of View object.
+        self.assign_object()
         
         # Check test object's agency is same as current user's agency
         if (
