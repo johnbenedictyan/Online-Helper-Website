@@ -63,9 +63,6 @@ class EmployerListView(
 
     # Filter queryset to only show the employers that current user has necessary permission to access
     def get_queryset(self):
-        # Get current user's group using LoginByAgencyUserGroupRequiredMixin's get_agency_user_group() method
-        self.get_agency_user_group()
-
         if self.agency_user_group==ed_mixins.AG_OWNERS:
             # If agency owner, return all employers belonging to agency
             return super().get_queryset().filter(
