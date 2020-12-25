@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import (
     EmployerForm,
 #     EmployerBaseAgentForm,
-#     EmployerDocBaseForm,
+    EmployerDocForm,
 #     EmployerExtraInfoForm,
 #     EmployerDocJobOrderForm,
 #     EmployerDocServiceFeeBaseForm,
@@ -31,26 +31,22 @@ from .mixins import (
 #     CheckEmployerSubDocBelongsToEmployerMixin,
     CheckAgencyEmployeePermissionsMixin,
 #     CheckAgencyEmployeePermissionsEmployerExtraInfoMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     CheckAgencyEmployeePermissionsSubDocMixin,
 #     CheckUserHasAgencyRoleMixin,
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
 #     PdfViewMixin,
 )
-from agency.models import (
-    AgencyEmployee,
-    AgencyOwner
-)
+# from agency.models import (
+#     AgencyEmployee,
+#     AgencyOwner
+# )
 from accounts.models import User
 from . import mixins as ed_mixins
 
 
 # Start of Views
-
-# Template Views
-
-# Redirect Views
 
 # List Views
 class EmployerListView(
@@ -61,7 +57,8 @@ class EmployerListView(
     ordering = ['employer_name']
     # paginate_by = 10
 
-    # Filter queryset to only show the employers that current user has necessary permission to access
+    # Filter queryset to only show the employers that current user has
+    # necessary permission to access
     def get_queryset(self):
         if self.agency_user_group==ed_mixins.AG_OWNERS:
             # If agency owner, return all employers belonging to agency
@@ -90,7 +87,7 @@ class EmployerListView(
             return self.handle_no_permission()
 
 # class EmployerDocBaseListView(
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     ListView
 # ):
 #     model = EmployerDocBase
@@ -111,7 +108,7 @@ class EmployerDetailView(
 
 # class EmployerDocBaseDetailView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     DetailView
 # ):
 #     model = EmployerDocBase
@@ -129,7 +126,6 @@ class EmployerCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        self.get_agency_user_group()
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
@@ -138,31 +134,34 @@ class EmployerCreateView(
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
-# class EmployerDocBaseCreateView(
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
-#     CreateView
-# ):
-#     model = EmployerDocBase
-#     form_class = EmployerDocBaseForm
-#     pk_url_kwarg = 'employer_base_pk'
-#     template_name = 'employer_documentation/employer-form.html'
-#     success_url = reverse_lazy('employer_base_list')
+class EmployerDocCreateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CreateView
+):
+    model = EmployerDoc
+    form_class = EmployerDocForm
+    pk_url_kwarg = 'employer_pk'
+    template_name = 'employer_documentation/employer_form.html'
+    success_url = reverse_lazy('employer_list_route')
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
+    def get_object(self, *args, **kwargs):
+        return Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
-#     def form_valid(self, form):
-#         form.instance.employer = EmployerBase.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer = Employer.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
 # class EmployerDocServiceAgreementCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     CreateView
 # ):
 #     model = EmployerDocServiceAgreement
@@ -194,7 +193,7 @@ class EmployerUpdateView(
         return kwargs
 
 # class EmployerBaseUpdateAgentView(
-#     CheckAgencyEmployeePermissionsEmployerBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     UpdateView
 # ):
 #     model = EmployerBase
@@ -221,7 +220,7 @@ class EmployerUpdateView(
 
 # class EmployerDocBaseUpdateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     UpdateView
 # ):
 #     model = EmployerDocBase
@@ -267,7 +266,7 @@ class EmployerDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
 # # Signature Views
 # class SignatureEmployerCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     # CheckAgencyEmployeePermissionsDocBaseMixin,
+#     # CheckAgencyEmployeePermissionsMixin,
 #     CreateView
 # ):
 #     model = EmployerDocSig
@@ -295,7 +294,7 @@ class EmployerDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
 
 # class SignatureSpouseCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     # CheckAgencyEmployeePermissionsDocBaseMixin,
+#     # CheckAgencyEmployeePermissionsMixin,
 #     CreateView
 # ):
 #     model = EmployerDocSig
@@ -323,7 +322,7 @@ class EmployerDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
 
 # class SignatureSponsorCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     # CheckAgencyEmployeePermissionsDocBaseMixin,
+#     # CheckAgencyEmployeePermissionsMixin,
 #     CreateView
 # ):
 #     model = EmployerDocSig
@@ -351,7 +350,7 @@ class EmployerDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
 
 # class SignatureFdwCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     # CheckAgencyEmployeePermissionsDocBaseMixin,
+#     # CheckAgencyEmployeePermissionsMixin,
 #     CreateView
 # ):
 #     model = EmployerDocSig
@@ -379,7 +378,7 @@ class EmployerDeleteView(CheckUserIsAgencyOwnerMixin, DeleteView):
 
 # class SignatureAgencyStaffCreateView(
 #     CheckEmployerDocBaseBelongsToEmployerMixin,
-#     CheckAgencyEmployeePermissionsDocBaseMixin,
+#     CheckAgencyEmployeePermissionsMixin,
 #     CreateView
 # ):
 #     model = EmployerDocSig

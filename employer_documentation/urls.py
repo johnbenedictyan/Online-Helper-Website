@@ -20,6 +20,7 @@ from .views import (
 ## Create Views
 from .views import (
     EmployerCreateView,
+    EmployerDocCreateView,
 )
 
 ## Update Views
@@ -92,6 +93,16 @@ urlpatterns = [
                         'delete/',
                         EmployerDeleteView.as_view(),
                         name='employer_delete_route'
+                    ),
+                    path(
+                        'documentation/',
+                        include([
+                            path(
+                                'create/',
+                                EmployerDocCreateView.as_view(),
+                                name='employerdoc_create_route'
+                            ),
+                        ]),
                     ),
                 ]),
             ),

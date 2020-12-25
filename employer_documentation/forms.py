@@ -20,7 +20,7 @@ from .models import (
 )
 # from .mixins import SignatureFormMixin
 from agency.models import AgencyEmployee
-# from maid.models import Maid
+from maid.models import Maid
 from . import mixins as ed_mixins
 
 
@@ -36,7 +36,7 @@ class EmployerForm(forms.ModelForm):
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-base-form'
+        self.helper.form_class = 'employer-form'
 
         ef_fieldset_all = Fieldset(
             # Legend for form
@@ -224,137 +224,95 @@ class EmployerForm(forms.ModelForm):
 #             Submit('submit', 'Submit')
 #         )
 
-# class EmployerDocBaseForm(forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocBase
-#         exclude = ['employer']
+class EmployerDocForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDoc
+        exclude = ['employer']
 
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
-#         super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
 
-#         if self.agency_user_group==ed_mixins.AG_OWNERSs:
-#             self.fields['fdw'].queryset = (
-#                 Maid.objects.filter(agency=get_user_model().objects.get(
-#                     pk=self.user_pk).agency_owner.agency)
-#             )
-#         else:
-#             self.fields['fdw'].queryset = (
-#                 Maid.objects.filter(agency=get_user_model().objects.get(
-#                     pk=self.user_pk).agency_employee.agency)
-#             )
+        if self.agency_user_group==ed_mixins.AG_OWNERS:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
         
-#         self.helper = FormHelper()
-#         self.helper.form_class = 'employer-doc-form'
-#         self.helper.layout = Layout(
-#             Fieldset(
-#                 # Legend for form
-#                 'Create new / update existing employer doc base:',
-#                 # Form fields
-#                 'case_ref_no',
-#                 'fdw',
-#                 'spouse_required',
-#                 'sponsor_required',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
+                'case_ref_no',
+                'fdw',
+                'spouse_required',
+                'sponsor_required',
 
-# class EmployerDocServiceFeeBaseForm(forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocServiceFeeBase
-#         exclude = ['employer_doc_base']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.helper = FormHelper()
-#         self.helper.form_class = 'employer-doc-form'
-#         self.helper.layout = Layout(
-#             Fieldset(
-#                 # Legend for form
-#                 'Create new / update existing employer doc service fee base:',
-#                 # Form fields
-#                 'b1_service_fee',
-#                 'b2a_work_permit_application_collection',
-#                 'b2b_medical_examination_fee',
-#                 'b2c_security_bond_accident_insurance',
-#                 'b2d_indemnity_policy_reimbursement',
-#                 'b2e_home_service',
-#                 'b2f_counselling',
-#                 'b2g_sip',
-#                 'b2h_replacement_months',
-#                 'b2h_replacement_cost',
-#                 'b2i_work_permit_renewal',
-#                 'b2j1_other_services_description',
-#                 'b2j1_other_services_fee',
-#                 'b2j2_other_services_description',
-#                 'b2j2_other_services_fee',
-#                 'b2j3_other_services_description',
-#                 'b2j3_other_services_fee',
-#                 'ca_deposit',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
+                # Service Fee Schedule - Form A
+                'b1_service_fee',
+                'b2a_work_permit_application_collection',
+                'b2b_medical_examination_fee',
+                'b2c_security_bond_accident_insurance',
+                'b2d_indemnity_policy_reimbursement',
+                'b2e_home_service',
+                'b2f_counselling',
+                'b2g_sip',
+                'b2h_replacement_months',
+                'b2h_replacement_cost',
+                'b2i_work_permit_renewal',
+                'b2j1_other_services_description',
+                'b2j1_other_services_fee',
+                'b2j2_other_services_description',
+                'b2j2_other_services_fee',
+                'b2j3_other_services_description',
+                'b2j3_other_services_fee',
+                'ca_deposit',
+                'fdw_is_replacement',
 
-# class EmployerDocServiceAgreementForm(forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocServiceAgreement
-#         exclude = ['employer_doc_base']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.helper = FormHelper()
-#         self.helper.form_class = 'employer-doc-form'
-#         self.helper.layout = Layout(
-#             Fieldset(
-#                 # Legend for form
-#                 'Create new / update existing employer doc service agreement:',
-#                 # Form fields
-#                 'c1_3_handover_days',
-#                 'c3_2_no_replacement_criteria_1',
-#                 'c3_2_no_replacement_criteria_2',
-#                 'c3_2_no_replacement_criteria_3',
-#                 'c3_4_no_replacement_refund',
-#                 'c4_1_number_of_replacements',
-#                 'c4_1_replacement_period',
-#                 'c4_1_replacement_after_min_working_days',
-#                 'c4_1_5_replacement_deadline',
-#                 'c5_1_1_deployment_deadline',
-#                 'c5_1_1_failed_deployment_refund',
-#                 'c5_1_2_refund_within_days',
-#                 'c5_1_2_before_fdw_arrives_charge',
-#                 'c5_1_2_after_fdw_arrives_charge',
-#                 'c5_2_2_can_transfer_refund_within',
-#                 'c5_3_2_cannot_transfer_refund_within',
-#                 'c6_4_per_day_food_accommodation_cost',
-#                 'c6_6_per_session_counselling_cost',
-#                 'c9_1_independent_mediator_1',
-#                 'c9_2_independent_mediator_2',
-#                 'c13_termination_notice',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
+                # Replacement - Service Fee Schedule - Form B
+                'fdw_replaced',
+                'b4_loan_transferred',
 
-# class EmployerDocEmploymentContractForm(forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocEmploymentContract
-#         exclude = ['employer_doc_base']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.helper = FormHelper()
-#         self.helper.form_class = 'employer-doc-form'
-#         self.helper.layout = Layout(
-#             Fieldset(
-#                 # Legend for form
-#                 'Create new / update existing employer doc employment contract:',
-#                 # Form fields
-#                 'c3_2_salary_payment_date',
-#                 'c3_5_fdw_sleeping_arrangement',
-#                 'c4_1_termination_notice',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
+                # Service Agreement
+                'c1_3_handover_days',
+                'c3_2_no_replacement_criteria_1',
+                'c3_2_no_replacement_criteria_2',
+                'c3_2_no_replacement_criteria_3',
+                'c3_4_no_replacement_refund',
+                'c4_1_number_of_replacements',
+                'c4_1_replacement_period',
+                'c4_1_replacement_after_min_working_days',
+                'c4_1_5_replacement_deadline',
+                'c5_1_1_deployment_deadline',
+                'c5_1_1_failed_deployment_refund',
+                'c5_1_2_refund_within_days',
+                'c5_1_2_before_fdw_arrives_charge',
+                'c5_1_2_after_fdw_arrives_charge',
+                'c5_2_2_can_transfer_refund_within',
+                'c5_3_2_cannot_transfer_refund_within',
+                'c6_4_per_day_food_accommodation_cost',
+                'c6_6_per_session_counselling_cost',
+                'c9_1_independent_mediator_1',
+                'c9_2_independent_mediator_2',
+                'c13_termination_notice',
+
+                # Employment Contract
+                'c3_2_salary_payment_date',
+                'c3_5_fdw_sleeping_arrangement',
+                'c4_1_termination_notice',
+            ),
+            Submit('submit', 'Submit')
+        )
 
 
 # # Signature Forms
