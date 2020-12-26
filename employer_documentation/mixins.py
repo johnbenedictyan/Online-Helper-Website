@@ -144,8 +144,8 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         # Get current user's agency_user_group and agency_user_obj
-        self.get_agency_user_group() if not self.agency_user_group else True
-        self.get_agency_user_object() if not self.agency_user_obj else True
+        if not self.agency_user_group:  self.get_agency_user_group()
+        if not self.agency_user_obj:    self.get_agency_user_object()
         return super().dispatch(request, *args, **kwargs)
 
 class CheckAgencyEmployeePermissionsMixin(
@@ -157,8 +157,8 @@ class CheckAgencyEmployeePermissionsMixin(
             return self.handle_no_permission()
         
         # Get current user's agency_user_group and agency_user_obj
-        self.get_agency_user_group() if not self.agency_user_group else True
-        self.get_agency_user_object() if not self.agency_user_obj else True
+        if not self.agency_user_group:  self.get_agency_user_group()
+        if not self.agency_user_obj:    self.get_agency_user_object()
 
         # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
         # object, if it exists, to attribute of View object.
@@ -192,8 +192,8 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
             return self.handle_no_permission()
 
         # Get current user's agency_user_group and agency_user_obj
-        self.get_agency_user_group() if not self.agency_user_group else True
-        self.get_agency_user_object() if not self.agency_user_obj else True
+        if not self.agency_user_group:  self.get_agency_user_group()
+        if not self.agency_user_obj:    self.get_agency_user_object()
         
         # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
         # object, if it exists, to attribute of View object.
