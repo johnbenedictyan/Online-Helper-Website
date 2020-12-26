@@ -493,7 +493,18 @@ class AgencyBranchForm(forms.ModelForm):
     class Meta:
         model = AgencyBranch
         exclude = ['agency']
+        widgets = {
+            'main_branch': forms.RadioSelect()
+        }
     
+    def clean(self):
+        cleaned_data = super().clean()
+        main_branch = cleaned_data.get("main_branch")
+
+        # How to check that there is at least one main branch or that the 
+        # current branch is set to be a main branch? 
+        return cleaned_data
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
