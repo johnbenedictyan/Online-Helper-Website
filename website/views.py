@@ -36,6 +36,10 @@ class FAQView(TemplateView):
     http_method_names = ['get']
     template_name = 'faq.html'
 
+class AdminPanelView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'admin-panel.html'
+
 class RobotsTxt(TemplateView):
     http_method_names = ['get']
     template_name = 'robots.txt'
