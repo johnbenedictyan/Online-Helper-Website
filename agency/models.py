@@ -186,6 +186,11 @@ class AgencyBranch(models.Model):
         EAST = 'E', _('East')
         WEST = 'W', _('West')
 
+    MAIN_BRANCH_CHOICES = (
+        (True, _('Yes')),
+        (False, _('No'))
+    )
+
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
@@ -256,6 +261,12 @@ class AgencyBranch(models.Model):
         ]
         # This regex validator checks if the contact number provided is all 
         # numbers.
+    )
+
+    main_branch = models.BooleanField(
+        verbose_name=_('Main Branch'),
+        choices=MAIN_BRANCH_CHOICES,
+        default=True
     )
 
 class AgencyPlan(models.Model):
