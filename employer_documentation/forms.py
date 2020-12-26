@@ -65,7 +65,6 @@ class EmployerForm(forms.ModelForm):
         )
 
         if self.agency_user_group==ed_mixins.AG_OWNERS:
-            print(self.agency_user_group)
             self.helper.layout = Layout(
                 ef_fieldset_all,
                 Submit('submit', 'Submit')

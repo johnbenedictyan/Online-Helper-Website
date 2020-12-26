@@ -1,0 +1,84 @@
+{% extends 'employer_documentation/e-d-base-template.html' %}
+
+{% block e_d_section %}
+    <h1>Employer: {{ object.employer }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">pk</th>
+                <td>{{ object.pk }}</td>
+            </tr>
+            <tr>
+                <th scope="row">case_ref_no</th>
+                <td><a href="">{{ object.case_ref_no }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">fdw</th>
+                <td><a href="">{{ object.fdw }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">spouse_required</th>
+                <td><a href="">{{ object.spouse_required }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">sponsor_required</th>
+                <td><a href="">{{ object.sponsor_required }}</a></td>
+            </tr>
+            {% comment %}
+            <tr>
+                <th scope="row">Service Fee Schedule - Base</th>
+                <td><a href="{% url 'pdf_service_fee_base' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Service Agreement</th>
+                <td><a href="{% url 'pdf_service_agreement' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Employment Contract</th>
+                <td><a href="{% url 'pdf_employment_contract' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Repayment Schedule</th>
+                <td><a href="{% url 'pdf_repayment_schedule' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Rest Day Agreement</th>
+                <td><a href="{% url 'pdf_rest_day_agreement' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Job Order</th>
+                <td><a href="{% url 'pdf_job_order' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Handover Checklist</th>
+                <td><a href="{% url 'pdf_handover_checklist' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Transfer Consent</th>
+                <td><a href="{% url 'pdf_transfer_consent' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Work Pass Authorisation</th>
+                <td><a href="{% url 'pdf_work_pass_authorisation' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Security Bond</th>
+                <td><a href="{% url 'pdf_security_bond' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Work Permit Application - Form 12B</th>
+                <td><a href="{% url 'pdf_fdw_work_permit_12b' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Income Tax Declaration</th>
+                <td><a href="{% url 'pdf_income_tax_declaration' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Safety Agreement</th>
+                <td><a href="{% url 'pdf_safety_agreement' employer_doc_base_pk=object.pk %}">PDF</a></td>
+            </tr>
+            {% endcomment %}
+        </tbody>
+    </table>
+{% endblock e_d_section %}
