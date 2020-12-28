@@ -1,7 +1,6 @@
 # Imports from the system
 import random
 import string
-import os
 
 # Imports from django
 from django.contrib import auth
@@ -9,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
+from django.utils.crypto import get_random_string
 
 # Imports from foreign installed apps
 
@@ -34,16 +34,17 @@ def random_with_N_digits(n):
     return random.randint(range_start, range_end)
 
 def r_contact_number():
-    return random.randint(80000000, 9999999)
+    return random.randint(80000000, 99999999)
 
 def create_test_user():
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
     return get_user_model().objects.create_user(
         email=f'{r_string(4)}@{r_string(4)}.com',
-        password=f'{os.random(10)}'
+        password=f'{get_random_string(10, chars)}'
     )
 
 def create_potential_employer_group():
-    potential_employers_group = Group.objects.get_or_create(
+    potential_employers_group, created = Group.objects.get_or_create(
         name='Potential Employers'
     )
 
@@ -82,7 +83,7 @@ def create_potential_employer_group():
     for perm in pe_permission_list:
         potential_employers_group.permissions.add(
             Permission.objects.get(
-                code_name=perm
+                codename=perm
             )
         )
 
@@ -102,4 +103,54 @@ def create_test_potential_employer():
     )
 
     return new_pe
-    
+
+class PotentialEmployersTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_potential_employer_group()
+        cls.pe = create_test_potential_employer()
+        
+    def testCanCreate(self):
+        new_user = create_test_user()
+        new_pe = Employer.objects.create(
+            user=new_user,
+            first_name=r_string(5),
+            last_name=r_string(5),
+            contact_number=r_contact_number()
+        )
+
+        pe_from_db=Employer.objects.get(
+            user=new_user
+        )
+        self.assertEquals(new_pe.first_name,pe_from_db.first_name)
+        self.assertEquals(new_pe.last_name,pe_from_db.last_name)
+        self.assertEquals(str(new_pe.contact_number),pe_from_db.contact_number)
+
+
+    def testCanUpdate(self):
+        new_first_name = r_string(6)
+        new_last_name = r_string(6)
+        new_contact_number = r_contact_number()
+
+        Employer.objects.filter(
+            pk=self.pe.pk
+        ).update(
+            first_name=new_first_name,
+            last_name=new_last_name,
+            contact_number=new_contact_number
+        )
+
+        self.pe.refresh_from_db()
+        self.assertEquals(self.pe.first_name, new_first_name)
+        self.assertEquals(self.pe.last_name, new_last_name)
+        self.assertEquals(self.pe.contact_number, str(new_contact_number))
+
+    def testCanDelete(self):
+        test_pk = self.pe.pk
+        Employer.objects.filter(
+            pk=test_pk
+        ).delete()
+        with self.assertRaises(Employer.DoesNotExist):
+            Employer.objects.get(
+                pk=test_pk
+            )
