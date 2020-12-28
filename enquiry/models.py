@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from project
 
 # Imports from other apps
+from accounts.models import Employer
 from maid.models import MaidResponsibility
 
 # Imports from within the app
@@ -112,6 +113,12 @@ class Enquiry(models.Model):
         (MAID_REST_DAY_4, _('4 Rest Days Per Month'))
     )
 
+    employer = models.ForeignKey(
+        Employer,
+        on_delete=models.CASCADE,
+        related_name='employer'
+    )
+    
     first_name = models.CharField(
         verbose_name=_('First Name'),
         blank=False,
@@ -194,4 +201,9 @@ class Enquiry(models.Model):
     remarks = models.TextField(
         verbose_name=_('Remarks'),
         blank=False
+    )
+
+    active = models.BooleanField(
+        editable=False,
+        default=True
     )
