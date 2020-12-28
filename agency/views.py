@@ -70,13 +70,30 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         AgencyBranch.objects.create(
-            agency=self.object
+            agency=self.object,
+            main_branch=True
         )
         AgencyOperatingHours.objects.create(
             agency=self.object
         )
 
         return HttpResponseRedirect(self.get_success_url())
+
+class AgencyBranchCreate(AgencyOwnerRequiredMixin, CreateView):
+    context_object_name = 'agency_branch'
+    form_class = AgencyBranchForm
+    http_method_names = ['get','post']
+    model = AgencyBranch
+    template_name = 'create/agency-branch-create.html'
+    success_url = reverse_lazy('')
+    check_type = 'branch'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.request.user.agency_owner.agency.pk
+        })
+        return kwargs
 
 class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
     context_object_name = 'agency_owner'

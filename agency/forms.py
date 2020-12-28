@@ -64,6 +64,17 @@ class AgencyCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    'logo',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'qr_code',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
                         'Create',
@@ -492,9 +503,80 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
 class AgencyBranchForm(forms.ModelForm):
     class Meta:
         model = AgencyBranch
-        exclude = ['agency']
+        exclude = ['agency', 'area']
+        widgets = {
+            'main_branch': forms.RadioSelect()
+        }
     
+    def clean(self):
+        cleaned_data = super().clean()
+        main_branch = cleaned_data.get("main_branch")
+        self.agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        branches = AgencyBranch.objects.filter(
+            agency=self.agency
+        )
+        main_branch_counter = 0
+        current_main_branch = None
+        for branch in branches:
+            if branch.main_branch == True:
+                current_main_branch = branch.name
+                main_branch_counter += 1
+
+        if main_branch_counter > 0 and main_branch == True:
+            if current_main_branch:
+                msg = _(f"""
+                    {current_main_branch} is already set as the main branch
+                """)
+            else:
+                msg = _('There can only be one main branch')
+            self.add_error('main_branch', msg)
+
+        elif main_branch_counter == 0 and main_branch == False:
+            msg = _('You must have at least one main branch')
+            self.add_error('main_branch', msg)
+
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        CENTRAL = 'C'
+        NORTH = 'N'
+        NORTH_EAST = 'NE'
+        EAST = 'E'
+        WEST = 'W'
+
+        postal_code_area_dict = {
+            CENTRAL : [
+                '01','02','03','04','05','06','07','08','09','10','14','15',
+                '16','17','18','19','20','21','22','23','24','25','26','27',
+                '28','29','30','31','32','33','34','35','36','37','38','39',
+                '40','41','58','59','77','78'
+            ],
+            NORTH : [
+                '69','70','71','72','73','75','76'
+            ],
+            NORTH_EAST : [
+                '53','54','55','56','57','79','80','82'
+            ],
+            EAST : [
+                '42','43','44','45','46','47','48','49','50','51','52','81'
+            ],
+            WEST : [
+                '11','12','13','60','61','62','63','64','65','66','67','68'
+            ]
+        }
+        cleaned_data = self.cleaned_data
+        postal_code = cleaned_data.get('postal_code')
+        for k,v in postal_code_area_dict.items():
+            if str(postal_code[:2]) in v:
+                self.instance.area = k
+
+        self.instance.agency = self.agency
+        return super().save(*args, **kwargs)
+
     def __init__(self, *args, **kwargs):
+        self.agency_id = kwargs.pop('agency_id', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -522,7 +604,7 @@ class AgencyBranchForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'area',
+                    'main_branch',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
