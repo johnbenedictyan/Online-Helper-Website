@@ -31,6 +31,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = int(os.environ.get("DJANGO_DEBUG", "0"))
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(',')
+ADMIN_IP_WHITELIST = os.environ.get("ADMIN_IP_WHITELIST", "127.0.0.1").split(',')
 
 
 # Application definition
@@ -73,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'onlinemaid.middleware.AdminAccessIPWhiteListMiddleware'
 ]
 
 ROOT_URLCONF = 'onlinemaid.urls'
