@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 # Python libraries
 import os
+import sys
 from pathlib import Path
 
 # 3rd party libraries
@@ -103,6 +104,13 @@ WSGI_APPLICATION = 'onlinemaid.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 if int(os.environ.get('DATABASE_DEBUG', '1')):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+elif 'test' in sys.argv:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
