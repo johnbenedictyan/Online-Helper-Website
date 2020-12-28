@@ -36,7 +36,7 @@ urlpatterns = [
             name='enquiry'
         ),
         path(
-            'deactive/',
+            'deactive/<int:pk>/',
             DeactivateEnquiryView.as_view(),
             name='enquiry'
         )
