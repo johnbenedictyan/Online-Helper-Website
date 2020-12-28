@@ -64,6 +64,17 @@ class AgencyCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    'logo',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'qr_code',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
                         'Create',
@@ -500,19 +511,51 @@ class AgencyBranchForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         main_branch = cleaned_data.get("main_branch")
+        self.agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        branches = AgencyBranch.objects.filter(
+            agency=self.agency
+        )
+        main_branch_counter = 0
+        current_main_branch = None
+        for branch in branches:
+            if branch.main_branch == True:
+                current_main_branch = branch.name
+                main_branch_counter += 1
 
-        # How to check that there is at least one main branch or that the 
-        # current branch is set to be a main branch? 
+        if main_branch_counter > 0 and main_branch == True:
+            if current_main_branch:
+                msg = _(f"""
+                    {current_main_branch} is already set as the main branch
+                """)
+            else:
+                msg = _('There can only be one main branch')
+            self.add_error('main_branch', msg)
+
+        elif main_branch_counter == 0 and main_branch == False:
+            msg = _('You must have at least one main branch')
+            self.add_error('main_branch', msg)
+
         return cleaned_data
 
+    def save(self, *args, **kwargs):
+        self.instance.agency = self.agency
+        return super().save(*args, **kwargs)
+
     def __init__(self, *args, **kwargs):
+        self.agency_id = kwargs.pop('agency_id', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
                     'name',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'main_branch',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
