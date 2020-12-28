@@ -197,3 +197,38 @@ class PotentialEmployersWithSignInUrlTest(TestCase):
             target_status_code=200
         )
     
+class PotentialEmployersSignInFormTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_potential_employer_group()
+        cls.pe = create_test_potential_employer()
+        
+    def testValidLogin(self):
+        test_form_data = {
+            'username': self.pe['email'],
+            'password': self.pe['password']
+        }
+        response = self.client.post(
+            reverse_lazy('sign_in'),
+            test_form_data
+        )
+        self.assertRedirects(
+            response,
+            reverse_lazy('home'),
+            status_code=302,
+            target_status_code=200
+        )
+        self.assertIn('_auth_user_id', self.client.session)
+
+    def testInvalidLogin(self):
+        test_form_data = {
+            'username': 'fake@fake.com',
+            'password': 'fakepassword'
+        }
+        response = self.client.post(
+            reverse_lazy('sign_in'),
+            test_form_data
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'base/sign-in.html')
+        self.assertNotIn('_auth_user_id', self.client.session)
