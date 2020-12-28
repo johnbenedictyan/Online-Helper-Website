@@ -139,7 +139,7 @@ class PotentialEmployersTest(TestCase):
                 pk=test_pk
             )
 
-class PotentialEmployersWithoutLoginUrlTest(TestCase):
+class PotentialEmployersWithoutSignInUrlTest(TestCase):
     def testCanLoadSignInPage(self):
         response = self.client.get(
             reverse_lazy('sign_in')
@@ -153,8 +153,19 @@ class PotentialEmployersWithoutLoginUrlTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'create/employer-create.html')
-        
-class PotentialEmployersWithLoginUrlTest(TestCase):
+    
+    def testWillRedirectToSignInPage(self):
+        response = self.client.get(
+            reverse_lazy('employer_detail')
+        ) 
+        self.assertRedirects(
+            response,
+            '/accounts/sign-in/employers?next=/accounts/profile/',
+            status_code=302,
+            target_status_code=200
+        )
+
+class PotentialEmployersWithSignInUrlTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_potential_employer_group()
