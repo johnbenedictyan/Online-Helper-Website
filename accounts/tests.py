@@ -21,12 +21,24 @@ from .mixins import VerifiedEmployerMixin
 
 ## Helper Functions
 UserModel = get_user_model()
-def create_test_user():
+
+def r_string(length):
     r_str = ''.join(
-        random.choice(string.ascii_lowercase) for i in range(4)
+        random.choice(string.ascii_lowercase) for i in range(length)
     )
+    return r_str
+
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return random.randint(range_start, range_end)
+
+def r_contact_number():
+    return random.randint(80000000, 9999999)
+
+def create_test_user():
     return get_user_model().objects.create_user(
-        email=f'{r_str}@{r_str}.com',
+        email=f'{r_string(4)}@{r_string(4)}.com',
         password=f'{os.random(10)}'
     )
 
@@ -76,6 +88,12 @@ def create_potential_employer_group():
 
 def create_test_potential_employer():
     new_user = create_test_user()
+    new_pe = Employer.objects.create(
+        user=new_user,
+        first_name=r_string(5),
+        last_name=r_string(5),
+        contact_number=r_contact_number()
+    )
     pe_group = Group.objects.get(
         name='Potential Employers'
     ) 
@@ -83,4 +101,5 @@ def create_test_potential_employer():
         new_user
     )
 
+    return new_pe
     
