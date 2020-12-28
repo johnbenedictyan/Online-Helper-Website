@@ -228,3 +228,5 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_URL = 'sign_in'
