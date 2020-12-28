@@ -26,7 +26,13 @@ def r_contact_number():
 
 def create_test_user():
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-    return get_user_model().objects.create_user(
-        email=f'{r_string(4)}@{r_string(4)}.com',
-        password=f'{get_random_string(10, chars)}'
-    )
+    email = f'{r_string(4)}@{r_string(4)}.com'
+    password = f'{get_random_string(10, chars)}'
+    return {
+        'email': email,
+        'password': password,
+        'obj': get_user_model().objects.create_user(
+            email=email,
+            password=password
+        )
+    }
