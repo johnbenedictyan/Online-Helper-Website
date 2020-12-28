@@ -175,13 +175,38 @@ class CheckAgencyEmployeePermissionsMixin(
             or
             self.agency_user_group==AG_ADMINS
             or (
-                self.agency_user_group==AG_MANAGERS
-                and
-                self.agency_user_obj.branch
-                == self.employer_obj.agency_employee.branch
+                self.agency_user_group==AG_MANAGERS and
+                self.employer_obj and
+                self.agency_user_obj.branch==
+                self.employer_obj.agency_employee.branch
             )
-            or
-            self.employer_obj.agency_employee==self.agency_user_obj
+            or (
+                self.agency_user_group==AG_MANAGERS and
+                self.employer_doc_obj and
+                self.agency_user_obj.branch==
+                self.employer_doc_obj.employer.agency_employee.branch
+            )
+            or (
+                self.agency_user_group==AG_MANAGERS and
+                self.employer_subdoc_obj and
+                self.agency_user_obj.branch==
+                self.employer_subdoc_obj.employer_doc.employer.agency_employee
+                .branch
+            )
+            or (
+                self.employer_obj and
+                self.employer_obj.agency_employee==self.agency_user_obj
+            )
+            or (
+                self.employer_doc_obj and
+                self.employer_doc_obj.employer.agency_employee
+                ==self.agency_user_obj
+            )
+            or (
+                self.employer_subdoc_obj and
+                self.employer_subdoc_obj.employer_doc.employer.agency_employee
+                ==self.agency_user_obj
+            )
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
@@ -213,8 +238,6 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
 # Signature Mixin
 import base64
 class SignatureFormMixin:
-    model_field_name = 'signature'
-
     def clean(self):
         cleaned_data = super().clean()
         base64_sig = cleaned_data.get(self.model_field_name)
@@ -236,6 +259,7 @@ class SignatureFormMixin:
             error_msg = "Signature cannot be blank."
             self.add_error(self.model_field_name, error_msg)
         else:
+            print(cleaned_data)
             return cleaned_data
 
 # PDF Mixin

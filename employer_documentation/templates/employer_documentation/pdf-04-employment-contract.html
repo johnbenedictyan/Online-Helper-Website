@@ -4,7 +4,6 @@
 
 {% block content %}
 
-{% with object.rn_employerdocemploymentcontract as agmt_obj %}
 {% include 'employer_documentation/pdf-00-header.html' %}
 <br>
 <div class="text-align-center">
@@ -26,7 +25,7 @@
             <td colspan="3"></td>
         </tr>
         <tr>
-            <td colspan="3">This Service Agreement is dated {{ object.rn_docsignatures.agreement_date|date:"d M Y" }} and made between:</td>
+            <td colspan="3">This Service Agreement is dated {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} and made between:</td>
         </tr>
         <tr>
             <td></td>
@@ -51,14 +50,14 @@
         <tr>
             <td></td>
             <td>NRIC/ Passport</td>
-            <td>: {{ object.employer.rn_employerextrainfo.employer_nric }} </td>
+            <td>: {{ object.employer.employer_nric }} </td>
         </tr>
         <tr>
             <td></td>
             <td>Address</td>
-            <td>: {{ object.employer.rn_employerextrainfo.employer_address_1 }}
-                <br> &nbsp; {{ object.employer.rn_employerextrainfo.employer_address_2 }}
-                <br> &nbsp; Singapore {{ object.employer.rn_employerextrainfo.employer_postal_code }}
+            <td>: {{ object.employer.employer_address_1 }}
+                <br> &nbsp; {{ object.employer.employer_address_2 }}
+                <br> &nbsp; Singapore {{ object.employer.employer_post_code }}
             </td>
         </tr>
         <tr>
@@ -146,7 +145,7 @@
     </tr>
     <tr>
         <td>3.2</td>
-        <td>The salary shall be paid on the day {{ agmt_obj.c3_2_salary_payment_date }} of every month.</td>
+        <td>The salary shall be paid on the day {{ object.c3_2_salary_payment_date }} of every month.</td>
     </tr>
 </table>
 
@@ -168,7 +167,7 @@
         </tr>
         <tr>
             <td>3.5</td>
-            <td>The Employer shall provide the FDW with suitable accommodation <u>in accordance with MOM's guidelines</u>, with a reasonable amount of privacy. The helper will be {{ agmt_obj.c3_5_fdw_sleeping_arrangement }}.
+            <td>The Employer shall provide the FDW with suitable accommodation <u>in accordance with MOM's guidelines</u>, with a reasonable amount of privacy. The helper will be {{ object.c3_5_fdw_sleeping_arrangement }}.
             </td>
         </tr>
         <tr>
@@ -236,7 +235,7 @@
         </tr>
         <tr>
             <td>4.1</td>
-            <td>Either party may terminate this Contract by giving {{ agmt_obj.c4_1_termination_notice }} days’ [recommended at least one week] notice.</td>
+            <td>Either party may terminate this Contract by giving {{ object.c4_1_termination_notice }} days’ [recommended at least one week] notice.</td>
         </tr>
         <tr>
             <td></td>
@@ -329,7 +328,7 @@
             <td></td>
         </tr>
         <tr>
-            <td class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
+            <td class="border--bottom"><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
@@ -346,6 +345,5 @@
         </tr>
     </table>
 </div>
-{% endwith %} {% comment %}<!-- endwith: agreement object -->{% endcomment %}
 
 {% endblock %}

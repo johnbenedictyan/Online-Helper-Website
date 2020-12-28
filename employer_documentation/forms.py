@@ -18,10 +18,15 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
 )
-# from .mixins import SignatureFormMixin
+from .mixins import (
+    AG_OWNERS,
+    AG_ADMINS,
+    AG_MANAGERS,
+    AG_SALES,
+    SignatureFormMixin,
+)
 from agency.models import AgencyEmployee
 from maid.models import Maid
-from . import mixins as ed_mixins
 
 
 # Start of Forms
@@ -64,7 +69,7 @@ class EmployerForm(forms.ModelForm):
             'employer_post_code',
         )
 
-        if self.agency_user_group==ed_mixins.AG_OWNERS:
+        if self.agency_user_group==AG_OWNERS:
             self.helper.layout = Layout(
                 ef_fieldset_all,
                 Submit('submit', 'Submit')
@@ -74,7 +79,7 @@ class EmployerForm(forms.ModelForm):
                     agency=self.user_obj.agency_owner.agency
                 )
             )
-        elif self.agency_user_group==ed_mixins.AG_ADMINS:
+        elif self.agency_user_group==AG_ADMINS:
             self.helper.layout = Layout(
                 ef_fieldset_all,
                 Submit('submit', 'Submit')
@@ -84,7 +89,7 @@ class EmployerForm(forms.ModelForm):
                     agency=self.user_obj.agency_employee.agency
                 )
             )
-        elif self.agency_user_group==ed_mixins.AG_MANAGERS:
+        elif self.agency_user_group==AG_MANAGERS:
             self.helper.layout = Layout(
                 ef_fieldset_all,
                 Submit('submit', 'Submit')
@@ -105,7 +110,7 @@ class EmployerForm(forms.ModelForm):
         for employer_obj in queryset:
             if not employer_obj==self.instance:
                 # Check if it belongs to current user's agency
-                if self.agency_user_group==ed_mixins.AG_OWNERS:
+                if self.agency_user_group==AG_OWNERS:
                     if (
                         employer_obj.agency_employee.agency
                         == self.user_obj.agency_owner.agency
@@ -174,55 +179,6 @@ class EmployerForm(forms.ModelForm):
             )
         return cleaned_field
 
-# class EmployerAgentForm(forms.ModelForm):
-#     class Meta:
-#         model = Employer
-#         fields = ['agency_employee']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         super().__init__(*args, **kwargs)
-#         user_obj = AgencyEmployee.objects.get(pk=self.user_pk)
-
-#         if (
-#             # If current user is part of owner or administrator group,
-#             # display all agency's employees
-#             user_obj.user.groups.filter(name=ed_mixins.AG_OWNERS)
-#             .exists()
-#             or
-#             user_obj.user.groups.filter(name=ed_mixins.AG_ADMINS)
-#             .exists()
-#         ):
-#             self.fields['agency_employee'].queryset = (
-#                 AgencyEmployee.objects.filter(agency=user_obj.agency)
-#             )
-#         elif (
-#             # If current user is part of manager group, display all agency
-#             # branches employees
-#             user_obj.user.groups.filter(name=ed_mixins.AG_MANAGERS)
-#             .exists()
-#         ):
-#             self.fields['agency_employee'].queryset = (
-#                 AgencyEmployee.objects.filter(branch=user_obj.branch)
-#             )
-#         else:
-#             # If current user is not part of owner, administrator or manager
-#             # group, only provide unusable choice that will fail validation.
-#             # View should also perform separate user permissions check.
-#             self.fields['agency_employee'].choices = [('-','-')]
-        
-#         self.helper = FormHelper()
-#         self.helper.form_class = 'employer-base-form'
-#         self.helper.layout = Layout(
-#             Fieldset(
-#                 # Legend for form
-#                 "Update employer's assigned agency employee:",
-#                 # Form fields
-#                 'agency_employee',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
-
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
@@ -233,7 +189,7 @@ class EmployerDocForm(forms.ModelForm):
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
 
-        if self.agency_user_group==ed_mixins.AG_OWNERS:
+        if self.agency_user_group==AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -314,78 +270,27 @@ class EmployerDocForm(forms.ModelForm):
         )
 
 
-# # Signature Forms
-# class SignatureEmployerForm(SignatureFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocSig
-#         fields = ['employer_signature']
+# Signature Forms
+class SignatureForm(SignatureFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = '__all__'
     
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.model_field_name = 'employer_signature'
-#         self.fields[self.model_field_name].widget.attrs.update(
-#             {
-#                 'id': 'id_signature',
-#                 'hidden': 'true',
-#             }
-#         )
+    def __init__(self, *args, **kwargs):
+        # Assign model_field_name in urls.py or views.py
+        self.model_field_name = kwargs.pop('model_field_name')
+        super().__init__(*args, **kwargs)
+        self.fields[self.model_field_name] = forms.CharField()
+        self.fields[self.model_field_name].widget.attrs.update(
+            {
+                'id': 'id_signature',
+                'hidden': 'true',
+            }
+        )
 
-# class SignatureSpouseForm(SignatureFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocSig
-#         fields = ['spouse_signature']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.model_field_name = 'spouse_signature'
-#         self.fields[self.model_field_name].widget.attrs.update(
-#             {
-#                 'id': 'id_signature',
-#                 'hidden': 'true',
-#             }
-#         )
-
-# class SignatureSponsorForm(SignatureFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocSig
-#         fields = ['sponsor_signature']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.model_field_name = 'sponsor_signature'
-#         self.fields[self.model_field_name].widget.attrs.update(
-#             {
-#                 'id': 'id_signature',
-#                 'hidden': 'true',
-#             }
-#         )
-
-# class SignatureFdwForm(SignatureFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocSig
-#         fields = ['fdw_signature']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.model_field_name = 'fdw_signature'
-#         self.fields[self.model_field_name].widget.attrs.update(
-#             {
-#                 'id': 'id_signature',
-#                 'hidden': 'true',
-#             }
-#         )
-
-# class SignatureAgencyStaffForm(SignatureFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = EmployerDocSig
-#         fields = ['agency_staff_signature']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.model_field_name = 'agency_staff_signature'
-#         self.fields[self.model_field_name].widget.attrs.update(
-#             {
-#                 'id': 'id_signature',
-#                 'hidden': 'true',
-#             }
-#         )
+        # Make new list of all field names, then remove fields that are not
+        # model_field_name.
+        fields_copy = list(self.fields)
+        for field in fields_copy:
+            if field!=self.model_field_name:
+                del self.fields[field]

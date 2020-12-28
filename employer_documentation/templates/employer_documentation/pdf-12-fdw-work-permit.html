@@ -36,7 +36,7 @@
         <td colspan="3">Alias, if any: </td>
     </tr>
     <tr>
-        <td colspan="3">Work Permit Number: {{ object.rn_employerdocmaidstatus.work_permit_no }}</td>
+        <td colspan="3">Work Permit Number: {{ object.rn_maidstatus_ed.work_permit_no }}</td>
     </tr>
     <tr>
         <td colspan="2">Have you ever been refused entry into or deported from any country?</td>
@@ -74,7 +74,7 @@
         <td width="20%">Relationship to Applicant</td>
     </tr>
     <tr>
-        <td>{{ object.employer.rn_employerextrainfo.employer_nric }}</td>
+        <td>{{ object.employer.employer_nric }}</td>
         <td>{{ object.employer.employer_name }}</td>
         <td>Employer</td>
     </tr>
@@ -97,13 +97,13 @@
             <table style="border:none;">
                 <tr>
                     <td width="40%"style="border:none;">
-                        <img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}">
+                        <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
                         <br>____________________________________
                         <br>Signature of Applicant
                     </td>
                     <td style="border:none;"></td>
                     <td width="40%"style="border:none;">
-                        {{ object.rn_docsignatures.agreement_date|date:"d M Y" }}
+                        {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
                         <br>____________________________________
                         <br>Date
                     </td>

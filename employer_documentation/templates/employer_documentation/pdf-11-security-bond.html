@@ -18,12 +18,12 @@
 
 <table>
     <tr>
-        <td colspan="2">BY THIS BOND received on {{ object.rn_docsignatures.agreement_date|date:"d M Y" }}
+        <td colspan="2">BY THIS BOND received on {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
             <br><i>(Date indicated must be on/ before the Banker’s or Insurance Guarantee start date.)</i>
         </td>
     </tr>
     <tr>
-        <td colspan="2">I/We {{ object.employer.employer_name }} of (or having our registered office at) {{ object.employer.rn_employerextrainfo.employer_address_1 }}, {{ object.employer.rn_employerextrainfo.employer_address_2 }}, {{ object.employer.rn_employerextrainfo.employer_postal_code }}, acknowledge myself/ourselves bound to pay the Government of the Republic of Singapore the sum of SGD$5,000.00 (“the Obligation”).</td>
+        <td colspan="2">I/We {{ object.employer.employer_name }} of (or having our registered office at) {{ object.employer.employer_address_1 }}, {{ object.employer.employer_address_2 }}, {{ object.employer.employer_post_code }}, acknowledge myself/ourselves bound to pay the Government of the Republic of Singapore the sum of SGD$5,000.00 (“the Obligation”).</td>
     </tr>
     <tr>
         <td colspan="2" class="text-bold--600"><br>PURPOSE</td>
@@ -112,9 +112,9 @@
     </tr>
     <tr>
         <td class="border--bottom border--right">NRIC/ Passport No, Name, Designation & Signature
-            <img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}">
+            <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
             <br>{{ object.employer.employer_name }}
-            <br>{{ object.employer.rn_employerextrainfo.employer_nric }}
+            <br>{{ object.employer.employer_nric }}
             <br>
             <br>for and on behalf of ___________________________________________
             <p style="margin-left:160px;">Name of Company</p>

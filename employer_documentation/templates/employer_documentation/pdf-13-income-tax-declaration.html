@@ -94,7 +94,7 @@
     the verification to the Controller of Work Passes.
 </p>
 <br>
-<p>I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: <u>&nbsp;{{ object.employer.rn_employerextrainfo.employer_nric }}&nbsp;</u> and/ or I, <u>&nbsp;{ SPOUSE NAME }&nbsp;</u>, NRIC/ WP No/FIN: <u>&nbsp;{ SPOUSE NRIC }&nbsp;</u></p>
+<p>I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: <u>&nbsp;{{ object.employer.employer_nric }}&nbsp;</u> and/ or I, <u>&nbsp;{ SPOUSE NAME }&nbsp;</u>, NRIC/ WP No/FIN: <u>&nbsp;{ SPOUSE NRIC }&nbsp;</u></p>
 <br>
 <p>authorise the Controller of Income Tax to verify *my/our income tax range stated in Part I above, based on *my/our assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. *I/We
     also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
@@ -113,7 +113,7 @@
     <tr>
         <td class="border--bottom border--right">
             Income Tax Notice of Assessment No:
-            <br>{{ object.employer.rn_employerextrainfo.employer_nric }}
+            <br>{{ object.employer.employer_nric }}
         </td>
         <td class="border--bottom">
             Income Tax Notice of Assessment No:
@@ -122,18 +122,18 @@
     </tr>
     <tr>
         <td class="border--bottom border--right">
-            Signature: <img class="signature__img" src="{{ object.rn_docsignatures.employer_signature }}">
+            Signature: <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
         </td>
         <td class="border--bottom">
-            Signature: <img class="signature__img" src="{{ object.rn_docsignatures.spouse_signature }}">
+            Signature: <img class="signature__img" src="{{ object.rn_signatures_ed.spouse_signature }}">
         </td>
     </tr>
     <tr>
         <td class="border--bottom border--right">
-            Date: {{ object.rn_docsignatures.agreement_date|date:"d M Y" }}
+            Date: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
         </td>
         <td class="border--bottom">
-            Date: {{ object.rn_docsignatures.agreement_date|date:"d M Y" }}
+            Date: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
         </td>
     </tr>
 </table>

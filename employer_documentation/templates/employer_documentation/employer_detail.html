@@ -11,35 +11,35 @@
             </tr>
             <tr>
                 <th scope="row">agency_employee</th>
-                <td>{{ object.agency_employee }}</td>
+                <td>{{ object.agency_employee }} {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
             </tr>
             <tr>
                 <th scope="row">employer_name</th>
-                <td><a href="">{{ object.employer_name }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_name }}</a></td>
             </tr>
             <tr>
                 <th scope="row">employer_email</th>
-                <td><a href="">{{ object.employer_email }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_email }}</a></td>
             </tr>
             <tr>
                 <th scope="row">employer_mobile_number</th>
-                <td><a href="">{{ object.employer_mobile_number }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_mobile_number }}</a></td>
             </tr>
             <tr>
                 <th scope="row">employer_nric</th>
-                <td><a href="">{{ object.employer_nric }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_nric }}</a></td>
             </tr>
             <tr>
                 <th scope="row">employer_address_1</th>
-                <td><a href="">{{ object.employer_address_1 }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_address_1 }}</a></td>
             </tr>
             <tr>
                 <th scope="row">employer_address_2</th>
-                <td><a href="">{{ object.employer_address_2 }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_address_2 }}</a></td>
             </tr>
             <tr>
                 <th scope="row">employer_post_code</th>
-                <td><a href="">{{ object.employer_post_code }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_post_code }}</a></td>
             </tr>
         </tbody>
     </table>

@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <td colspan="2">Hand Over Date</td>
-            <td>: {{ object.rn_employerdocmaidstatus.fdw_work_commencement_date|date:"d M Y" }}</td>
+            <td>: {{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
         </tr>
         <tr>
             <td></td>
@@ -31,7 +31,7 @@
         <tr>
             <td></td>
             <td>NRIC/ Passport</td>
-            <td>: {{ object.employer.rn_employerextrainfo.employer_nric }}</td>
+            <td>: {{ object.employer.employer_nric }}</td>
         </tr>
         <tr>
             <td></td>
@@ -133,7 +133,7 @@
         {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
 
         <tr>
-            <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
+            <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
             <td colspan="2"></td>
         </tr>
         <tr>

@@ -81,7 +81,7 @@
     </tr>
     <tr>
         <td>NRIC No. / FIN</td>
-        <td colspan="2">{{ object.employer.rn_employerextrainfo.employer_nric }}</td>
+        <td colspan="2">{{ object.employer.employer_nric }}</td>
     </tr>
     <tr>
         <td>Contact No.</td>
@@ -89,7 +89,7 @@
     </tr>
     <tr>
         <td>Residential Address</td>
-        <td colspan="2">{{ object.employer.rn_employerextrainfo.employer_address_1 }}, {{ object.employer.rn_employerextrainfo.employer_address_2 }}, {{ object.employer.rn_employerextrainfo.employer_postal_code }}</td>
+        <td colspan="2">{{ object.employer.employer_address_1 }}, {{ object.employer.employer_address_2 }}, Singapore {{ object.employer.employer_post_code }}</td>
     </tr>
     <tr>
         <td>Residential Dwelling Type</td>
@@ -175,7 +175,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.employer_signature }}"></td>
+            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -203,7 +203,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
 
@@ -221,7 +221,7 @@
         </tr>
         <tr>
             <td>WP No.</td>
-            <td colspan="2">{{ object.rn_employerdocmaidstatus.work_permit_no }}</td>
+            <td colspan="2">{{ object.rn_maidstatus_ed.work_permit_no }}</td>
         </tr>
         <tr>
             <td colspan="3">
@@ -276,7 +276,7 @@
             <p class="text-align-center">Signature / Date
             <br>Tanda Tangan / Tanggal</p>
         </td>
-        <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.fdw_signature }}"></td>
+        <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -296,7 +296,7 @@
             <td width="24%">
                 <p class="text-align-center">Signature / Date</p>
             </td>
-            <td colspan="2">{{ object.rn_docsignatures.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_docsignatures.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>
