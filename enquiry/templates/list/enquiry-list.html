@@ -19,6 +19,14 @@
     </div>
 </section>
 <section>
-    
+    <div class="container">
+        {% for enquiry in enquiries %}
+        <div class="row">
+            <div class="col">
+                {{ enquiry }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </section>
 {% endblock enquiry_section %}
