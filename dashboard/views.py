@@ -39,15 +39,6 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     template_name = 'list/dashboard-maid-list.html'
     authority = ''
 
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'authority': self.authority
-        })
-        return context
-
     def get_queryset(self):
         if self.authority == 'owner':
             agency = self.request.user.agency_owner.agency
@@ -65,15 +56,6 @@ class DashboardAccountList(
     model = AgencyEmployee
     template_name = 'list/dashboard-account-list.html'
     authority = ''
-
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'authority': self.authority
-        })
-        return context
 
     def get_queryset(self):
         if self.authority == 'owner':
@@ -106,15 +88,6 @@ class DashboardAgencyDetail(
     template_name = 'detail/dashboard-agency-detail.html'
     authority = ''
 
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'authority': self.authority
-        })
-        return context
-
     def get_object(self):
         if self.authority == 'owner':
             agency = self.request.user.agency_owner.agency
@@ -132,15 +105,6 @@ class DashboardMaidDetail(
     model = Maid
     template_name = 'detail/dashboard-maid-detail.html'
     authority = ''
-
-    def get_context_data(self, **kwargs):
-        # Passes the authority to the template so that certain fields can be 
-        # restricted based on who is editing the agency employee object.
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'authority': self.authority
-        })
-        return context
 
     def get_object(self):
         if self.authority == 'owner':
