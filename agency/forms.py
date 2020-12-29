@@ -90,11 +90,9 @@ class AgencyOwnerCreationForm(forms.ModelForm):
 
     class Meta:
         model = AgencyOwner
-        exclude = ['user']
+        exclude = ['user', 'agency']
 
     def __init__(self, *args, **kwargs):
-        # Limit the choices of the foreign key branch to just the branches
-        # under the current agency
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -105,13 +103,6 @@ class AgencyOwnerCreationForm(forms.ModelForm):
                 ),
                 Column(
                     'password',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'agency',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
