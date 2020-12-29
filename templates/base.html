@@ -81,6 +81,7 @@
                                 {% if authority == 'Potential Employer' %}
                                 <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
+                                <a class="dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
                                 {% elif request.user.is_superuser %}
                                 <a class="dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
                                 {% else %}
