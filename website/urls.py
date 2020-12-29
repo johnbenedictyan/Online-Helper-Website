@@ -10,7 +10,7 @@ from django.urls import include, path
 ## Template Views 
 from .views import (
     HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
-    HowItWorksView, FAQView
+    HowItWorksView, FAQView, AdminPanelView
 )
 
 ## List Views
@@ -55,6 +55,11 @@ urlpatterns = [
         'faq/',
         FAQView.as_view(),
         name='faq'
+    ),
+    path(
+        'admin-panel/',
+        AdminPanelView.as_view(),
+        name='admin_panel'
     ),
     path(
         'robots.txt',

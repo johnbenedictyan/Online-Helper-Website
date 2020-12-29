@@ -18,6 +18,7 @@ from .models import Agency, AgencyEmployee, AgencyBranch, AgencyPlan
 # Start of Mixins
 
 class OnlineMaidStaffRequiredMixin(SuperUserRequiredMixin):
+    login_url = reverse_lazy('sign_in')
     permission_denied_message = '''You are required to login as a member of 
                                 Online Maid Pte Ltd to perform this action'''
 

@@ -6,6 +6,8 @@ from django.views.generic.base import TemplateView
 # Imports from project-wide files
 
 # Imports from foreign installed apps
+from agency.mixins import OnlineMaidStaffRequiredMixin
+from agency.models import Agency
 
 # Imports from local app
 
@@ -35,6 +37,17 @@ class HowItWorksView(TemplateView):
 class FAQView(TemplateView):
     http_method_names = ['get']
     template_name = 'faq.html'
+
+class AdminPanelView(OnlineMaidStaffRequiredMixin, TemplateView):
+    http_method_names = ['get']
+    template_name = 'admin-panel.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        kwargs.update({
+            'agencies': Agency.objects.all()
+        })
+        return kwargs
 
 class RobotsTxt(TemplateView):
     http_method_names = ['get']

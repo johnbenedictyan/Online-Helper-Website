@@ -81,11 +81,14 @@
                                 {{user.email}}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="userActionDropdown">
-                                <a class="dropdown-item" href="#">Profile</a>
                                 {% if authority == 'Potential Employer' %}
-                                <a class="dropdown-item" href="#">Dashboard</a>
-                                {% else %}
+                                <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
+                                {% elif request.user.is_superuser %}
+                                <a class="dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
+                                {% else %}
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="#">Dashboard</a>
                                 {% endif %}
                             </div>
                         </li>
