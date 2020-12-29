@@ -11,6 +11,7 @@
                 <th scope="col">employer_email</th>
                 <th scope="col">documentation</th>
                 <th scope="col">agency_employee</th>
+                <th scope="col">update</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,7 @@
                 <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email }}</a></td>
                 <td>{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View employer's docs</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create new doc</a>{% endif %}</td>
                 <td>{{ object.agency_employee }} {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">update</a></td>
             </tr>
         {% empty %}
             <p><tr>No employers yet.</tr></p>
