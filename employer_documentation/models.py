@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
+from onlinemaid.constants import TrueFalseChoices
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -77,17 +78,14 @@ class EmployerDoc(models.Model):
         Maid,
         on_delete=models.RESTRICT
     )
-    spouse_required = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
+    spouse_required = models.BooleanField(
+        verbose_name=_("Is spouse requried? A spouse required if Employer's \
+            monthly income < S$3,000 per month."),
+        choices=TrueFalseChoices('Yes, required', 'No, not required'),
     )
-    sponsor_required = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
+    sponsor_required = models.BooleanField(
+        verbose_name=_("Is sponsor requried?"),
+        choices=TrueFalseChoices('Yes, required', 'No, not required'),
     )
 
     # Service Fee Schedule
@@ -548,10 +546,49 @@ class EmployerDocSig(models.Model):
     )
     agreement_date = models.DateField(blank=True, null=True)
     employer_signature = models.TextField(blank=True, null=True)
-    spouse_signature = models.TextField(blank=True,null=True)
-    sponsor_signature = models.TextField(blank=True, null=True)
     fdw_signature = models.TextField(blank=True, null=True)
     agency_staff_signature = models.TextField(blank=True, null=True)
+    spouse_signature = models.TextField(blank=True,null=True)
+    sponsor_signature = models.TextField(blank=True, null=True)
+
+    # Witnesses
+    employer_witness_signature = models.TextField(blank=True, null=True)
+    employer_witness_name = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    employer_witness_nric = models.CharField(
+        verbose_name='Last 4 characters of NRIC/FIN',
+        max_length=4,
+        blank=True,
+        null=True
+    )
+    fdw_witness_signature = models.TextField(blank=True, null=True)
+    fdw_witness_name = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    fdw_witness_nric = models.CharField(
+        verbose_name='Last 4 characters of NRIC/FIN',
+        max_length=4,
+        blank=True,
+        null=True
+    )
+    agency_staff_witness_signature = models.TextField(blank=True, null=True)
+    agency_staff_witness_name = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    agency_staff_witness_nric = models.CharField(
+        verbose_name='Last 4 characters of NRIC/FIN',
+        max_length=4,
+        blank=True,
+        null=True
+    )
+
     # One-time token sent to employer for them to get their signature
     # employer_signature_token = models.CharField(max_length=32, blank=True, null=True)
 
@@ -568,3 +605,11 @@ class EmployerDocMaidStatus(models.Model):
     sip_date = models.DateField(blank=True, null=True)
     fdw_work_commencement_date = models.DateField(blank=True, null=True)
     work_permit_no = models.CharField(max_length=20, blank=True, null=True)
+
+class JobOrder(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_joborder_ed'
+    )
+    job_order_pdf = models.FileField()
