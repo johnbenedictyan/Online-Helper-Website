@@ -1,181 +1,65 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
-<div class="container">
-    <div class="limiter">
-		<div class="container-table100">
-			<div class="wrap-table100">
-                <div class="table">
-
-                    <div class="table-row account-table-row header">
-                        <div class="cell">
-                            S/N
-                        </div>
-                        <div class="cell">
-                            Name
-                        </div>
-                        <div class="cell">
-                            Email
-                        </div>
-                        <div class="cell">
-                            EA Personnel No
-                        </div>
-                        <div class="cell">
-                            Type
-                        </div>
-                        <div class="cell">
-                            Last Login
-                        </div>
-                        <div class="cell">
-                            Actions
+<div class="table-responsive">
+    <table class="table align-items-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" class="sort" data-sort="name">Project</th>
+                <th scope="col" class="sort" data-sort="budget">Budget</th>
+                <th scope="col" class="sort" data-sort="status">Status</th>
+                <th scope="col" class="sort" data-sort="completion">Completion</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody class="list">
+            <tr>
+                <th scope="row">
+                    <div class="media align-items-center">
+                        <a href="#" class="avatar rounded-circle mr-3">
+                            
+                            
+                                <img alt="Image placeholder" src="../../assets/img/theme/bootstrap.jpg">
+                            
+                            
+                        </a>
+                        <div class="media-body">
+                            <span class="name mb-0 text-sm">Argon Design System</span>
                         </div>
                     </div>
-
-                    <div class="table-row account-table-row">
-                        <div class="cell" data-title="S/N">
-                            1
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Alvin
-                        </div>
-                        <div class="cell" data-title="Email">
-                            alvin@agency.com
-                        </div>
-                        <div class="cell" data-title="EA Personnel No">
-                            123
-                        </div>
-                        <div class="cell" data-title="Type">
-                            Sales Staff
-                        </div>
-                        <div class="cell" data-title="Last Login">
-                            21/11/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
+                </th>
+                <td class="budget">
+                    $2500 USD
+                </td>
+                <td>
+                    <span class="badge badge-dot mr-4">
+                        <i class="bg-warning"></i>
+                        <span class="status">pending</span>
+                    </span>
+                </td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <span class="completion mr-2">60%</span>
+                        <div>
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="table-row account-table-row">
-                        <div class="cell" data-title="S/N">
-                            2
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Alvin
-                        </div>
-                        <div class="cell" data-title="Email">
-                            alvin@agency.com
-                        </div>
-                        <div class="cell" data-title="EA Personnel No">
-                            123
-                        </div>
-                        <div class="cell" data-title="Type">
-                            Sales Staff
-                        </div>
-                        <div class="cell" data-title="Last Login">
-                            21/11/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
+                </td>
+                <td class="text-right">
+                    <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </div>
-
-                    <div class="table-row account-table-row">
-                        <div class="cell" data-title="S/N">
-                            3
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Alvin
-                        </div>
-                        <div class="cell" data-title="Email">
-                            alvin@agency.com
-                        </div>
-                        <div class="cell" data-title="EA Personnel No">
-                            123
-                        </div>
-                        <div class="cell" data-title="Type">
-                            Sales Staff
-                        </div>
-                        <div class="cell" data-title="Last Login">
-                            21/11/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
-                    </div>
-
-                    <div class="table-row account-table-row">
-                        <div class="cell" data-title="S/N">
-                            4
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Alvin
-                        </div>
-                        <div class="cell" data-title="Email">
-                            alvin@agency.com
-                        </div>
-                        <div class="cell" data-title="EA Personnel No">
-                            123
-                        </div>
-                        <div class="cell" data-title="Type">
-                            Sales Staff
-                        </div>
-                        <div class="cell" data-title="Last Login">
-                            21/11/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
-                    </div>
-
-                    <div class="table-row account-table-row">
-                        <div class="cell" data-title="S/N">
-                            5
-                        </div>
-                        <div class="cell" data-title="Name">
-                            Alvin
-                        </div>
-                        <div class="cell" data-title="Email">
-                            alvin@agency.com
-                        </div>
-                        <div class="cell" data-title="EA Personnel No">
-                            123
-                        </div>
-                        <div class="cell" data-title="Type">
-                            Sales Staff
-                        </div>
-                        <div class="cell" data-title="Last Login">
-                            21/11/2020
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="#" class="btn btn-primary">Modify</a>
-                        </div>
-                    </div>
-
-                </div>
-			</div>
-		</div>
-	</div>
-    <p>{{ authority }}</p>
-    <div class="row">
-        <div class="col">
-            <h1>administrators</h1>
-            {% for administrator in administrators %}
-                <div>
-                    {{administrator.first_name}} {{administrator.last_name}}
-                    <a href="{% url 'agency_administrator_update' pk=administrator.pk %}">Update</a>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h1>employees</h1>
-            {% for employee in employees %}
-                <div>
-                    {{employee.first_name}} {{employee.last_name}}
-                    <a href="{% url 'agency_employee_update' pk=employee.pk %}">Update</a>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 {% endblock dashboard_section %}
