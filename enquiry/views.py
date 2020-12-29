@@ -65,7 +65,7 @@ class DeactivateEnquiryView(PotentialEmployerRequiredMixin, RedirectView):
 
 # List Views
 class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
-    context_object_name = 'enquries'
+    context_object_name = 'enquiries'
     http_method_names = ['get']
     model = Enquiry
     template_name = 'list/enquiry-list.html'
