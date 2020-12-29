@@ -47,6 +47,7 @@ from .forms import (
 ## PDF Views
 from .views import (
     PdfEmployerDocumentView,
+    PdfServiceAgreementView,
     PdfRepaymentScheduleView,
 )
 
@@ -209,7 +210,7 @@ urlpatterns = [
                                 ),
                                 path(
                                     'pdf/service-agreement/',
-                                    PdfEmployerDocumentView.as_view(
+                                    PdfServiceAgreementView.as_view(
                                         template_name='employer_documentation/pdf-03-service-agreement.html',
                                         content_disposition = 'inline; filename="service_agreement.pdf"',
                                     ),

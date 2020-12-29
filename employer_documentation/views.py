@@ -1,5 +1,9 @@
+# Python
+import calendar
+
 # Django
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -292,8 +296,24 @@ class PdfEmployerDocumentView(
     model = EmployerDoc
     pk_url_kwarg = 'employerdoc_pk'
 
-import calendar
-from django.utils import timezone
+class PdfServiceAgreementView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    PdfViewMixin,
+    DetailView
+):
+    model = EmployerDoc
+    pk_url_kwarg = 'employerdoc_pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['agency_main_branch'] = (
+            self.object.employer.agency_employee.agency.branches.filter(
+                main_branch=True
+            ).all()[0]
+        )
+        return context
+
 class PdfRepaymentScheduleView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
