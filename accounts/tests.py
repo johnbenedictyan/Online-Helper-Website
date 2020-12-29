@@ -232,3 +232,144 @@ class PotentialEmployersSignInFormTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/sign-in.html')
         self.assertNotIn('_auth_user_id', self.client.session)
+
+class UserAccountEmployerCreationFormTest(TestCase):
+    def ValidEmployerCreationFormSubmission(self):
+        test_form_data = {
+            'email':'asd@asd.com',
+            'password':'Password123!',
+            'first_name':'john',
+            'last_name':'doe',
+            'contact_number':'81234567'
+        }
+        
+        test_form = EmployerCreationForm(
+            data=test_form_data
+        )
+        
+        self.assertTrue(test_form.is_valid())
+        
+    def testMissingEmailErrorMessage(self):
+        test_form_data = {
+            'password':'Password123!',
+            'first_name':'john',
+            'last_name':'doe',
+            'contact_number':'81234567'
+        }
+            
+        test_form = EmployerCreationForm(
+            data=test_form_data
+        )
+        self.assertFalse(
+            test_form.is_valid()
+        )
+        response = self.client.post(
+            reverse_lazy('employer_create'), 
+            test_form_data
+        )
+        self.assertFormError(
+            response,
+            'form',
+            'email',
+            'This field is required.'
+        )
+    
+    def testMissingFirstNameErrorMessage(self):
+        test_form_data = {
+            'email':'asd@asd.com',
+            'password':'Password123!',
+            'last_name':'doe',
+            'contact_number':'81234567'
+            }
+            
+        test_form = EmployerCreationForm(
+            data=test_form_data
+            )
+        self.assertFalse(
+            test_form.is_valid()
+        )
+        response = self.client.post(
+            reverse_lazy('employer_create'),
+            test_form_data
+        )
+        self.assertFormError(
+            response,
+            'form',
+            'first_name',
+            'This field is required.'
+            )
+            
+    def testMissingLastNameErrorMessage(self):
+        test_form_data = {
+            'email':'asd@asd.com',
+            'password':'Password123!',
+            'first_name':'john',
+            'contact_number':'81234567'
+        }
+            
+        test_form = EmployerCreationForm(
+            data=test_form_data
+        )
+        self.assertFalse(
+            test_form.is_valid()
+        )
+        response = self.client.post(
+            reverse_lazy('employer_create'),
+            test_form_data
+        )
+        self.assertFormError(
+            response,
+            'form',
+            'last_name',
+            'This field is required.'
+        )
+            
+    def testMissingPasswordErrorMessage(self):
+        test_form_data = {
+            'email':'asd@asd.com',
+            'first_name':'john',
+            'last_name':'doe',
+            'contact_number':'81234567'
+        }
+            
+        test_form = EmployerCreationForm(
+            data=test_form_data
+        )
+        self.assertFalse(
+            test_form.is_valid()
+        )
+        response = self.client.post(
+            reverse_lazy('employer_create'), 
+            test_form_data
+        )
+        self.assertFormError(
+            response,
+            'form',
+            'password',
+            'This field is required.'
+        )
+            
+    def testMissingContactNumberErrorMessage(self):
+        test_form_data = {
+            'email':'asd@asd.com',
+            'password':'Password123!',
+            'first_name':'john',
+            'last_name':'doe',
+        }
+            
+        test_form = EmployerCreationForm(
+            data=test_form_data
+        )
+        self.assertFalse(
+            test_form.is_valid()
+        )
+        response = self.client.post(
+            reverse_lazy('employer_create'), 
+            test_form_data
+        )
+        self.assertFormError(
+            response,
+            'form',
+            'contact_number',
+            'This field is required.'
+        )
