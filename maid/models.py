@@ -786,7 +786,6 @@ class MaidResponsibility(models.Model):
     MAID_RESP_GARDENING                 = 'GAR'
 
     MAID_RESP_CHOICES = (
-        (NO_PREFERENCE, _('No preference')),
         (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
         (MAID_RESP_COOKING, _('Cooking')),
         (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
