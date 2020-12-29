@@ -259,7 +259,6 @@ class SignatureFormMixin:
             error_msg = "Signature cannot be blank."
             self.add_error(self.model_field_name, error_msg)
         else:
-            print(cleaned_data)
             return cleaned_data
 
 # PDF Mixin
