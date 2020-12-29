@@ -33,11 +33,11 @@ urlpatterns = [
         path(
             'all/',
             EnquiryListView.as_view(),
-            name='enquiry'
+            name='enquiry_list'
         ),
         path(
             'deactive/<int:pk>/',
             DeactivateEnquiryView.as_view(),
-            name='enquiry'
+            name='deactivate_enquiry'
         )
 ]
