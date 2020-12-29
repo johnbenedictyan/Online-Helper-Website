@@ -233,7 +233,7 @@ class PotentialEmployersSignInFormTest(TestCase):
         self.assertTemplateUsed(response, 'base/sign-in.html')
         self.assertNotIn('_auth_user_id', self.client.session)
 
-class UserAccountEmployerCreationFormTest(TestCase):
+class PotentialEmployerCreationFormTest(TestCase):
     def ValidEmployerCreationFormSubmission(self):
         test_form_data = {
             'email':'asd@asd.com',
