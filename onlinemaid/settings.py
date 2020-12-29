@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'advertisement',
     'agency.apps.AgencyConfig',
     'dashboard',
-    'employer_documentation',
+    'employer_documentation.apps.EmployerDocumentationConfig',
     'maid.apps.MaidConfig',
     'payment',
     'shortlist',
