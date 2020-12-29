@@ -68,13 +68,10 @@
                             <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Enquire</a>
+                            <a class="nav-link" href="{% url 'enquiry' %}">Enquire</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'employer_create' %}">Sign Up</a>
-                        </li>
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userActionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -90,6 +87,9 @@
                             </div>
                         </li>
                         {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'employer_create' %}">Sign Up</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'sign_in' %}">Sign In</a>
                         </li>
