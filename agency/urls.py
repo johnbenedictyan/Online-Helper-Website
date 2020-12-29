@@ -13,7 +13,8 @@ from .views import AgencyDetail
 
 ## Create Views
 from .views import (
-    AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate, AgencyOwnerCreate
+    AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate, AgencyOwnerCreate,
+    AgencyBranchCreate
 )
 
 ## Update Views
@@ -44,12 +45,17 @@ urlpatterns = [
                 name='agency_plan_create'
             ),
             path(
+                'branch/',
+                AgencyBranchCreate.as_view(),
+                name='agency_branch_create'
+            ),
+            path(
                 'employee/',
                 AgencyEmployeeCreate.as_view(),
                 name='agency_employee_create'
             ),
             path(
-                'owner/',
+                '<int:pk>/owner/',
                 AgencyOwnerCreate.as_view(),
                 name='agency_owner_create'
             )
@@ -59,17 +65,17 @@ urlpatterns = [
         'delete/',
         include([
             path(
-                '',
+                '<int:pk>/',
                 AgencyDelete.as_view(),
                 name='agency_delete'
             ),
             path(
-                'employee/<int:pk>/',
+                '<int:pk>/employee/',
                 AgencyEmployeeDelete.as_view(),
                 name='agency_employee_delete'
             ),
             path(
-                'plan/<int:pk>/',
+                '<int:pk>/plan/',
                 AgencyPlanDelete.as_view(),
                 name='agency_plan_delete'
             )

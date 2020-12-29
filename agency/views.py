@@ -65,12 +65,13 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = Agency
     template_name = 'create/agency-create.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('admin_panel')
 
     def form_valid(self, form):
         response = super().form_valid(form)
         AgencyBranch.objects.create(
-            agency=self.object
+            agency=self.object,
+            main_branch=True
         )
         AgencyOperatingHours.objects.create(
             agency=self.object
@@ -78,13 +79,37 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
+class AgencyBranchCreate(AgencyOwnerRequiredMixin, CreateView):
+    context_object_name = 'agency_branch'
+    form_class = AgencyBranchForm
+    http_method_names = ['get','post']
+    model = AgencyBranch
+    template_name = 'create/agency-branch-create.html'
+    success_url = reverse_lazy('')
+    check_type = 'branch'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.request.user.agency_owner.agency.pk
+        })
+        return kwargs
+
 class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
     context_object_name = 'agency_owner'
     form_class = AgencyOwnerCreationForm
     http_method_names = ['get','post']
     model = AgencyOwner
     template_name = 'create/agency-owner-create.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('admin_panel')
+
+    def form_valid(self, form):
+        form.instance.agency = Agency.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        return super().form_valid(form)
 
 class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
     context_object_name = 'agency_employee'

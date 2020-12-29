@@ -1,12 +1,80 @@
 {% extends 'agency-base.html' %}
 {% block agency_section %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            {% for agency in agencies %}
-                {{agency}}
-            {% endfor %}
+<section>
+    <div class="jumbotron jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
+                    <h1 class="display-4 pl-3 pl-md-2">Agencies</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Agencies</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-xl-3 mb-3 offset-lg-1 offset-xl-0">
+                <form action="" method="get">
+                    <div class="form-row">
+                        <div class="col-md col-xl-12">
+                            <div class="form-group">
+                                <label for="agencySearchInput">Search</label>
+                                <input type="email" class="form-control" id="agencySearchInput" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="col-md col-xl-12">
+                            <div class="form-group">
+                                <label for="sortBySelect">Sort By</label>
+                                <select class="form-control" id="sortBySelect">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md col-xl-12 my-md-auto">
+                            <div class="row mt-md-3 mt-xl-0">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xl-9">
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
+                    {% for agency in agencies %}
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{agency.name}}</h5>
+                                    <p class="card-text text-muted">{{agency.license_number}}</p>
+                                    <hr>
+                                    <address>
+                                        123 Fake Street
+                                    </address>
+                                    <p class="card-text">Tel: </p>
+                                    <p class="card-text">Email: </p>
+                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'sections/cta-banner.html' %}
 {% endblock agency_section %}

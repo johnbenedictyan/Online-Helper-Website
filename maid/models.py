@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
 from agency.models import Agency
@@ -45,6 +46,13 @@ class Maid(models.Model):
         blank=False
     )
 
+    photo = models.FileField(
+        verbose_name=_('Maid Photo'),
+        blank=False,
+        null=True,
+        storage=PublicMediaStorage()
+    )
+
     maid_type = models.CharField(
         verbose_name=_('Maid Type'),
         max_length=3,
@@ -73,8 +81,8 @@ class Maid(models.Model):
         default=PassportStatusChoices.NOT_READY
     )
 
-    repatraition_airport = models.CharField(
-        verbose_name=_('Repatraition airport'),
+    repatriation_airport = models.CharField(
+        verbose_name=_('Repatriation airport'),
         max_length=100,
         blank=False
     )
@@ -356,7 +364,7 @@ class MaidStatus(models.Model):
         related_name='status'
     )
 
-    ipa_arroved = models.BooleanField(
+    ipa_approved = models.BooleanField(
         verbose_name=_('IPA approved'),
         blank=False,
         default=False
@@ -759,4 +767,37 @@ class MaidCooking(models.Model):
     other_remarks = models.TextField(
         verbose_name=_('Other remarks for cooking'),
         blank=True
+    )
+
+class MaidResponsibility(models.Model):
+    # Settings
+
+    ## General
+    NO_PREFERENCE = 'ALL'
+    OTHERS        = 'OTH'
+
+    ## Maid Responsibilites
+    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
+    MAID_RESP_COOKING                   = 'COK'
+    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
+    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
+    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
+    MAID_RESP_CARE_FOR_PETS             = 'CFP'
+    MAID_RESP_GARDENING                 = 'GAR'
+
+    MAID_RESP_CHOICES = (
+        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
+        (MAID_RESP_COOKING, _('Cooking')),
+        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
+        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
+        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
+        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
+        (MAID_RESP_GARDENING, _('Gardening'))
+    )
+
+    name = models.CharField(
+        verbose_name=_('Name of maid\'s responsibility'),
+        max_length=255,
+        blank=False,
+        choices=MAID_RESP_CHOICES,
     )

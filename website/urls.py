@@ -8,7 +8,10 @@ from django.urls import include, path
 ## Redirect Views
 
 ## Template Views 
-from .views import HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt
+from .views import (
+    HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
+    HowItWorksView, FAQView, AdminPanelView
+)
 
 ## List Views
 
@@ -23,29 +26,44 @@ from .views import HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, Rob
 # Start of Urls
 
 urlpatterns = [
-        path(
-            '',
-            HomeView.as_view(),
-            name='home'
-        ),
-        path(
-            'about-us/',
-            AboutUsView.as_view(),
-            name='about_us'
-        ),
-        path(
-            'contact-us/',
-            ContactUsView.as_view(),
-            name='contact_us'
-        ),
-        path(
-            'terms-of-service/',
-            TermsOfSerivceView.as_view(),
-            name='terms_of_service'
-        ),
-        path(
-            'robots.txt',
-            RobotsTxt.as_view(),
-            name="robots_txt"
-        )
+    path(
+        '',
+        HomeView.as_view(),
+        name='home'
+    ),
+    path(
+        'about-us/',
+        AboutUsView.as_view(),
+        name='about_us'
+    ),
+    path(
+        'contact-us/',
+        ContactUsView.as_view(),
+        name='contact_us'
+    ),
+    path(
+        'terms-of-service/',
+        TermsOfSerivceView.as_view(),
+        name='terms_of_service'
+    ),
+    path(
+        'how-it-works/',
+        HowItWorksView.as_view(),
+        name='how_it_works'
+    ),
+    path(
+        'faq/',
+        FAQView.as_view(),
+        name='faq'
+    ),
+    path(
+        'admin-panel/',
+        AdminPanelView.as_view(),
+        name='admin_panel'
+    ),
+    path(
+        'robots.txt',
+        RobotsTxt.as_view(),
+        name="robots_txt"
+    )
 ]

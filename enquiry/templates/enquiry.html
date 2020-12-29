@@ -1,0 +1,45 @@
+{% extends 'enquiry-base.html' %}
+{% load crispy_forms_tags %}
+{% block enquiry_section %}
+<section>
+    <div class="jumbotron jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
+                    <h1 class="display-4 pl-3 pl-md-2">General Enquiry</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">General Enquiry</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <h1>Let us help you find the most suitable maid</h1>
+            <p class="text-muted small">By submitting a general enquiry, you are consenting to as many agencies contacting you via email and your mobile number.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form method="post" enctype="multipart/form-data">
+                {% crispy form %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock enquiry_section %}

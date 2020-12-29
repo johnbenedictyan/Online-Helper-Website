@@ -9,6 +9,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
+from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from within the app
 
@@ -50,7 +51,12 @@ class Agency(models.Model):
         ]   
     )
 
-    logo_uri = None
+    logo = models.FileField(
+        verbose_name=_('Website Logo'),
+        blank=False,
+        null=True,
+        storage=PublicMediaStorage()
+    )
 
     uen = models.CharField(
         verbose_name=_('Company\'s UEN code'),
@@ -58,7 +64,12 @@ class Agency(models.Model):
         blank=False
     )
 
-    qr_code = None
+    qr_code = models.FileField(
+        verbose_name=_('Website QR Code'),
+        blank=False,
+        null=True,
+        storage=PublicMediaStorage()
+    )
 
     active = models.BooleanField(
         default=True,
@@ -175,6 +186,11 @@ class AgencyBranch(models.Model):
         EAST = 'E', _('East')
         WEST = 'W', _('West')
 
+    MAIN_BRANCH_CHOICES = (
+        (True, _('Yes')),
+        (False, _('No'))
+    )
+
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
@@ -245,6 +261,12 @@ class AgencyBranch(models.Model):
         ]
         # This regex validator checks if the contact number provided is all 
         # numbers.
+    )
+
+    main_branch = models.BooleanField(
+        verbose_name=_('Main Branch'),
+        choices=MAIN_BRANCH_CHOICES,
+        default=True
     )
 
 class AgencyPlan(models.Model):
