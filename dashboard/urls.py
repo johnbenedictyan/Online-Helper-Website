@@ -9,7 +9,8 @@ from django.urls import include, path
 
 ## List Views
 from .views import (
-    DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList
+    DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
+    DashboardEnquiriesList
 )
 
 ## Detail Views
@@ -59,6 +60,11 @@ urlpatterns = [
                 'agency-plans',
                 DashboardAgencyPlanList.as_view(),
                 name='dashboard_agency_plan_list'
+            ),
+            path(
+                'enquiries',
+                DashboardEnquiriesList.as_view(),
+                name='dashboard_enquiries_list'
             )
         ])
     ),
