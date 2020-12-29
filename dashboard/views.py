@@ -18,6 +18,7 @@ from agency.models import Agency, AgencyEmployee, AgencyPlan
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
+from enquiry.models import Enquiry
 from maid.models import Maid
 
 # Imports from local app
@@ -89,6 +90,12 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     http_method_names = ['get']
     model = AgencyPlan
     template_name = 'list/dashboard-agency-plan-list.html'
+
+class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
+    context_object_name = 'enquiries'
+    http_method_names = ['get']
+    model = Enquiry
+    template_name = 'list/dashboard-enquiry-list.html'
 
 # Detail Views
 class DashboardAgencyDetail(
