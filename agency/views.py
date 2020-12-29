@@ -65,7 +65,7 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = Agency
     template_name = 'create/agency-create.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('admin_panel')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -84,7 +84,15 @@ class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
     http_method_names = ['get','post']
     model = AgencyOwner
     template_name = 'create/agency-owner-create.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('admin_panel')
+
+    def form_valid(self, form):
+        form.instance.agency = Agency.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        return super().form_valid(form)
 
 class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
     context_object_name = 'agency_employee'
