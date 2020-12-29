@@ -606,10 +606,14 @@ class EmployerDocMaidStatus(models.Model):
     fdw_work_commencement_date = models.DateField(blank=True, null=True)
     work_permit_no = models.CharField(max_length=20, blank=True, null=True)
 
+# from onlinemaid.storage_backends import PrivateMediaStorage
 class JobOrder(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_joborder_ed'
     )
-    job_order_pdf = models.FileField()
+    job_order_pdf = models.FileField(
+        upload_to='employer-documentation/job-orders/',
+        # storage=PrivateMediaStorage()
+    )

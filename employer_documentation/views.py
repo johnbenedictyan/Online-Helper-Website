@@ -15,6 +15,8 @@ from .models import (
 from .forms import (
     EmployerForm,
     EmployerDocForm,
+    EmployerDocAgreementDateForm,
+    EmployerDocMaidStatusForm,
     SignatureForm,
 )
 from .mixins import (
@@ -170,6 +172,40 @@ class EmployerDocUpdateView(
     model = EmployerDoc
     form_class = EmployerDocForm
     pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/employer_form.html'
+    success_url = reverse_lazy('employer_list_route')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+class EmployerDocAgreementDateUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDocSig
+    form_class = EmployerDocAgreementDateForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/employer_form.html'
+    success_url = reverse_lazy('employer_list_route')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+class EmployerDocMaidStatusUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDocMaidStatus
+    form_class = EmployerDocMaidStatusForm
+    pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/employer_form.html'
     success_url = reverse_lazy('employer_list_route')
 

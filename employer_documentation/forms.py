@@ -269,6 +269,58 @@ class EmployerDocForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
+class EmployerDocAgreementDateForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['agreement_date']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
+                'agreement_date',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+class EmployerDocMaidStatusForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocMaidStatus
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
+                'ipa_approval_date',
+                'security_bond_approval_date',
+                'arrival_date',
+                'thumb_print_date',
+                'sip_date',
+                'fdw_work_commencement_date',
+                'work_permit_no',
+            ),
+            Submit('submit', 'Submit')
+        )
+
 
 # Signature Forms
 class SignatureForm(SignatureFormMixin, forms.ModelForm):

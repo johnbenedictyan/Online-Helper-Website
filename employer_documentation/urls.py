@@ -23,6 +23,8 @@ from .views import (
 from .views import (
     EmployerUpdateView,
     EmployerDocUpdateView,
+    EmployerDocAgreementDateUpdateView,
+    EmployerDocMaidStatusUpdateView,
 )
 
 ## Delete Views
@@ -111,6 +113,16 @@ urlpatterns = [
                                     'delete/',
                                     EmployerDocDeleteView.as_view(),
                                     name='employerdoc_delete_route'
+                                ),
+                                path(
+                                    'agreement-date/<int:employersubdoc_pk>/update/',
+                                    EmployerDocAgreementDateUpdateView.as_view(),
+                                    name='employerdoc_agreement_date_update_route'
+                                ),
+                                path(
+                                    'status/<int:employersubdoc_pk>/update/',
+                                    EmployerDocMaidStatusUpdateView.as_view(),
+                                    name='employerdoc_status_update_route'
                                 ),
                                 path(
                                     'signature/agent-access/',
