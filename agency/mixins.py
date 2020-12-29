@@ -139,16 +139,16 @@ class SpecificAgencyEmployeeLoginRequiredMixin(LoginRequiredMixin):
 class GetAuthorityMixin:
     def get_authority(self):
         if self.request.user.groups.filter(name='Agency Owners').exists():
-            authority = 'owner'
+            authority = 'Agency Owners'
 
         if self.request.user.groups.filter(name='Agency Administrators').exists():
-            authority = 'administrator'
+            authority = 'Agency Administrators'
 
         if self.request.user.groups.filter(name='Agency Managers').exists():
-            authority = 'manager'
+            authority = 'Agency Managers'
 
         if self.request.user.groups.filter(name='Agency Sales Staff').exists():
-            authority = 'sales_staff'
+            authority = 'Agency Sales Staff'
 
         return authority
 
