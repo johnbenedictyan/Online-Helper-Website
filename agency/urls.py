@@ -59,17 +59,17 @@ urlpatterns = [
         'delete/',
         include([
             path(
-                '',
+                '<int:pk>/',
                 AgencyDelete.as_view(),
                 name='agency_delete'
             ),
             path(
-                'employee/<int:pk>/',
+                '<int:pk>/employee/',
                 AgencyEmployeeDelete.as_view(),
                 name='agency_employee_delete'
             ),
             path(
-                'plan/<int:pk>/',
+                '<int:pk>/plan/',
                 AgencyPlanDelete.as_view(),
                 name='agency_plan_delete'
             )
