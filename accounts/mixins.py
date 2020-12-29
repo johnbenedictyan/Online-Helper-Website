@@ -1,8 +1,10 @@
 # Imports from python
 
 # Imports from django
+from django.urls import reverse_lazy
 
 # Imports from other apps
+from onlinemaid.mixins import GroupRequiredMixin
 
 # Imports from within the app
 from .models import Employer
@@ -25,3 +27,9 @@ class VerifiedEmployerMixin:
 
     def get_object(self, queryset=None):
         return self.check_employer()
+
+class PotentialEmployerRequiredMixin(GroupRequiredMixin):
+    group_required = u"Potential Employers"
+    login_url = reverse_lazy('sign_in')
+    permission_denied_message = '''You are required to login using a
+                                employer's account to perform this action'''
