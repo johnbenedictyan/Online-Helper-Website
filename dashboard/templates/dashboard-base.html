@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block main_content %}
-<section>
+<section class="mb-5">
     <div class="container-fluid px-0">
         <div class="row">
-            <div class="col-2">
+            <div class="col-md-2">
                 <nav class="row">
                     <div class="col d-flex flex-column justify-content-around">
                         {% with request.resolver_match.url_name as url_name %}
@@ -81,7 +81,7 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-10">
+            <div class="col-md-10">
                 {% block dashboard_section %}
                 {% endblock dashboard_section %}
             </div>
