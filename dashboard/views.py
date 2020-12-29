@@ -40,7 +40,7 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     authority = ''
 
     def get_queryset(self):
-        if self.authority == 'owner':
+        if self.authority == 'Agency Owners':
             agency = self.request.user.agency_owner.agency
         else:
             agency = self.request.user.agency_employee.agency
@@ -58,14 +58,24 @@ class DashboardAccountList(
     authority = ''
 
     def get_queryset(self):
-        if self.authority == 'owner':
+        if self.authority == 'Agency Owners':
             agency = self.request.user.agency_owner.agency
         else:
             agency = self.request.user.agency_employee.agency
             
-        return AgencyEmployee.objects.filter(
-            agency = agency
-        )
+        if (
+            self.authority == 'Agency Owners' or
+            self.authority == 'Agency Administrators'
+        ):
+            return AgencyEmployee.objects.filter(
+                agency = agency
+            )
+        else:
+            return AgencyEmployee.objects.filter(
+                agency = agency,
+                branch = self.request.user.agency_employee.branch
+            )
+
 
 class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     context_object_name = 'plans'
@@ -89,7 +99,7 @@ class DashboardAgencyDetail(
     authority = ''
 
     def get_object(self):
-        if self.authority == 'owner':
+        if self.authority == 'Agency Owners':
             agency = self.request.user.agency_owner.agency
         else:
             agency = self.request.user.agency_employee.agency
@@ -107,7 +117,7 @@ class DashboardMaidDetail(
     authority = ''
 
     def get_object(self):
-        if self.authority == 'owner':
+        if self.authority == 'Agency Owners':
             agency = self.request.user.agency_owner.agency
         else:
             agency = self.request.user.agency_employee.agency
