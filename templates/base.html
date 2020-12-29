@@ -95,18 +95,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'employer_create' %}">Sign Up</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'sign_in' %}">Sign In</a>
-                        </li>
-                        <!-- <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="signInDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Sign In
+                                Sign In
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="signInDropdown">
-                                <a class="dropdown-item" href="#">Agency</a>
-                                <a class="dropdown-item" href="#">Potential Employer</a>
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signInDropdown">
+                                <a class="dropdown-item" href="{% url 'sign_in' %}">Potential Employers</a>
+                                <a class="dropdown-item" href="{% url 'agency_sign_in' %}">Agencies</a>
                             </div>
-                        </li> -->
+                        </li>
                         {% endif %}
                     </ul>
                 </div>
