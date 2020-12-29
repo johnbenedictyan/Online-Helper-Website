@@ -147,6 +147,7 @@ class Enquiry(models.Model):
         verbose_name=_('Type of Property'),
         blank=False,
         choices=PROPERTY_CHOICES,
+        default=PROPERTY_2_ROOM_HDB,
         max_length=7
     )
 
@@ -154,6 +155,7 @@ class Enquiry(models.Model):
         verbose_name=_('Maid\'s Nationality'),
         blank=False,
         choices=MAID_NATIONALITY_CHOICES,
+        default=NO_PREFERENCE,
         max_length=3
     )
 
@@ -166,6 +168,7 @@ class Enquiry(models.Model):
         verbose_name=_('Type of maid'),
         blank=False,
         choices=MAID_TYPE_CHOICES,
+        default=NO_PREFERENCE,
         max_length=3
     )
 
@@ -173,6 +176,7 @@ class Enquiry(models.Model):
         verbose_name=_('Maid Age Group'),
         blank=False,
         choices=MAID_AGE_CHOICES,
+        default=MAID_AGE_23_TO_29,
         max_length=8
     )
 
@@ -180,6 +184,7 @@ class Enquiry(models.Model):
         verbose_name=_('Number of Rest Days'),
         blank=False,
         choices=MAID_REST_DAY_CHOICES,
+        default=MAID_REST_DAY_0,
         max_length=3
     )
     

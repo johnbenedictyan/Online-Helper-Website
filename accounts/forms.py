@@ -251,10 +251,10 @@ class EmployerCreationForm(forms.ModelForm):
         except Exception as e:
             pass
         else:
-            employer_group = Group.objects.get(
-                name='Employers'
+            potential_employer_group = Group.objects.get(
+                name='Potential Employers'
             ) 
-            employer_group.user_set.add(
+            potential_employer_group.user_set.add(
                 new_user
             )
             self.instance.user = new_user

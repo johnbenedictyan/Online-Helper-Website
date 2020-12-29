@@ -164,10 +164,10 @@ class AgencyOwnerCreationForm(forms.ModelForm):
         except Exception as e:
             pass
         else:
-            agency_employee_group = Group.objects.get(
+            agency_owner_group = Group.objects.get(
                 name='Agency Owners'
             ) 
-            agency_employee_group.user_set.add(
+            agency_owner_group.user_set.add(
                 new_user
             )
 

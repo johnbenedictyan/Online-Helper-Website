@@ -7,9 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from crispy_forms.bootstrap import InlineCheckboxes
+from maid.models import MaidResponsibility
 
 # Imports from local apps
-from .models import Enquiry
+from .fields import MaidResponsibilityChoiceField
+from .models import Enquiry 
 
 # Start of Forms
 
@@ -19,9 +21,14 @@ from .models import Enquiry
 
 # Generic Forms (forms.Form)
 class EnquiryForm(forms.ModelForm):
+    maid_responsibility = MaidResponsibilityChoiceField(
+        queryset=MaidResponsibility.objects.all(),
+        widget=forms.CheckboxSelectMultiple()
+    )
+
     class Meta:
         model = Enquiry
-        fields = '__all__'
+        exclude = ['employer']
         widgets = {
             'first_name': forms.TextInput(
                 attrs={
@@ -43,7 +50,6 @@ class EnquiryForm(forms.ModelForm):
                     'placeholder': 'Email Address'
                 }
             ),
-            'maid_responsibility': forms.CheckboxSelectMultiple(),
             'no_of_family_members': forms.NumberInput(
                 attrs={
                     'placeholder': 'Number of Family Members'
