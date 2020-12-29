@@ -1,7 +1,66 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block main_content %}
-<section>
-    
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-agency-tab" data-toggle="pill" href="#v-pills-agency" role="tab" aria-controls="v-pills-agency" aria-selected="true">Agencies</a>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-agency" role="tabpanel" aria-labelledby="v-pills-agency-tab">
+                    <div class="row">
+                        <div class="col">
+                            <h1>Agency List</h1>
+                            <a href="{% url 'agency_create' %}" class="btn btn-primary">Add Agency</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col my-2">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col">#</th>
+                                        <th class="text-center" scope="col">Agency Name</th>
+                                        <th class="text-center" scope="col">License Number</th>
+                                        <th class="text-center" scope="col">Company Email</th>
+                                        <th class="text-center" scope="col">Owner</th>
+                                        <th class="text-center" scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for agency in agencies %}
+                                    <tr>
+                                        <th class="align-middle text-center" scope="row">{{agency.pk}}</th>
+                                        <td class="align-middle text-center">{{agency.name}}</td>
+                                        <td class="align-middle text-center">{{agency.license_number}}</td>
+                                        <td class="align-middle text-center">{{agency.company_email}}</td>
+                                        <td class="align-middle text-center">
+                                            {% if agency.owners.count == 1 %}
+                                                <i class="far fa-check-circle"></i>
+                                            {% else %}
+                                                <i class="far fa-times-circle"></i>
+                                            {% endif %}
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            {% if agency.owners.count != 1%}
+                                                <a href="{% url 'agency_owner_create' agency.pk %}" class="btn btn-light"><i class="fas fa-user-plus"></i></a>
+                                            {% endif %}
+                                            <a href="" class="btn btn-light"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock main_content %}
