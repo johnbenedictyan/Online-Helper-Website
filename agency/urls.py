@@ -49,7 +49,7 @@ urlpatterns = [
                 name='agency_employee_create'
             ),
             path(
-                'owner/',
+                '<int:pk>/owner/',
                 AgencyOwnerCreate.as_view(),
                 name='agency_owner_create'
             )
