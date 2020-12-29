@@ -6,11 +6,13 @@ from django.urls import include, path
 # Imports from local app
 
 ## Redirect Views
+from .views import DeactivateEnquiryView
 
 ## Template Views 
-from .views import GeneralEnquiryView, SpecificEnquiryView
+from .views import EnquiryView
 
 ## List Views
+from .views import EnquiryListView
 
 ## Detail Views
 
@@ -25,12 +27,17 @@ from .views import GeneralEnquiryView, SpecificEnquiryView
 urlpatterns = [
         path(
             '',
-            GeneralEnquiryView.as_view(),
-            name='general_enquiry'
+            EnquiryView.as_view(),
+            name='enquiry'
         ),
         path(
-            'specific/',
-            SpecificEnquiryView.as_view(),
-            name='specific_enquiry'
+            'all/',
+            EnquiryListView.as_view(),
+            name='enquiry_list'
+        ),
+        path(
+            'deactive/<int:pk>/',
+            DeactivateEnquiryView.as_view(),
+            name='deactivate_enquiry'
         )
 ]

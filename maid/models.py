@@ -768,3 +768,37 @@ class MaidCooking(models.Model):
         verbose_name=_('Other remarks for cooking'),
         blank=True
     )
+
+class MaidResponsibility(models.Model):
+    # Settings
+
+    ## General
+    NO_PREFERENCE = 'ALL'
+    OTHERS        = 'OTH'
+
+    ## Maid Responsibilites
+    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
+    MAID_RESP_COOKING                   = 'COK'
+    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
+    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
+    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
+    MAID_RESP_CARE_FOR_PETS             = 'CFP'
+    MAID_RESP_GARDENING                 = 'GAR'
+
+    MAID_RESP_CHOICES = (
+        (NO_PREFERENCE, _('No preference')),
+        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
+        (MAID_RESP_COOKING, _('Cooking')),
+        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
+        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
+        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
+        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
+        (MAID_RESP_GARDENING, _('Gardening'))
+    )
+
+    name = models.CharField(
+        verbose_name=_('Name of maid\'s responsibility'),
+        max_length=255,
+        blank=False,
+        choices=MAID_RESP_CHOICES,
+    )
