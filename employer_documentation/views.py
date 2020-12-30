@@ -24,15 +24,17 @@ from .forms import (
     SignatureForm,
 )
 from .mixins import (
-    AG_OWNERS,
-    AG_MANAGERS,
-    AG_ADMINS,
-    AG_SALES,
     CheckEmployerDocRelationshipsMixin,
     CheckAgencyEmployeePermissionsMixin,
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
     PdfViewMixin,
+)
+from onlinemaid.constants import (
+    AG_OWNERS,
+    AG_ADMINS,
+    AG_MANAGERS,
+    AG_SALES,
 )
 
 
