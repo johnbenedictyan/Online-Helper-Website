@@ -9,13 +9,14 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
 )
+from onlinemaid.constants import (
+    AG_OWNERS,
+    AG_ADMINS,
+    AG_MANAGERS,
+    AG_SALES,
+)
 from accounts.models import User
 
-# Constants: agency user groups
-AG_OWNERS = 'Agency Owners'
-AG_ADMINS = 'Agency Administrators'
-AG_MANAGERS = 'Agency Managers'
-AG_SALES = 'Agency Sales Staff'
 
 # Start of mixins
 class CheckEmployerDocRelationshipsMixin(UserPassesTestMixin):

@@ -19,11 +19,13 @@ from .models import (
     EmployerDocSig,
 )
 from .mixins import (
+    SignatureFormMixin,
+)
+from onlinemaid.constants import (
     AG_OWNERS,
     AG_ADMINS,
     AG_MANAGERS,
     AG_SALES,
-    SignatureFormMixin,
 )
 from agency.models import AgencyEmployee
 from maid.models import Maid
