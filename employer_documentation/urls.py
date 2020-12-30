@@ -39,11 +39,6 @@ from .views import (
     SignatureUpdateByAgentView,
 )
 
-## Signature Form
-from .forms import (
-    SignatureForm,
-)
-
 ## PDF Views
 from .views import (
     PdfEmployerDocumentView,
