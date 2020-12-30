@@ -333,7 +333,7 @@ class PdfRepaymentScheduleView(
         payment_year = today.year
         placement_fee = 3000
         placement_fee_per_month = round(placement_fee/6, 0)
-        work_days_in_month = 26
+        work_days_in_month = 30 - self.object.fdw.days_off
         off_day_compensation = round(
             self.object.fdw.salary/work_days_in_month, 0
         )
