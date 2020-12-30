@@ -1,0 +1,88 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+{% load mathfilters %}
+
+{% block title %}Repayment Schedule{% endblock %}
+
+{% block content %}
+
+{% include 'employer_documentation/pdf-00-header.html' %}
+<br>
+<h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
+<br>
+<div class="border--bottom"></div>
+<br>
+
+<table>
+    <tr>
+        <th class="text-bold--600" style="width:35%">Employment Agency Ref No</th>
+        <th class="text-bold--600">: {{ object.case_ref_no }}</th>
+    </tr>
+    <tr>
+        <td>Date</td>
+        <td>: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>Name of Employer</td>
+        <td>: {{ object.employer.employer_name }} </td>
+    </tr>
+    <tr>
+        <td>Name of FDW</td>
+        <td>: {{ object.fdw }}</td>
+    </tr>
+    <tr>
+        <td>Placement Fee</td>
+        <td>: {{ object.fdw }} </td>
+    </tr>
+    <tr>
+        <td>Work Commencement Date</td>
+        <td>: {{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
+    </tr>
+    <tr>
+        <td>Monthly Basic Salary</td>
+        <td>: {{ object.fdw.salary }}</td>
+    </tr>
+    <tr>
+        <td>Balance Off Day Compensation</td>
+        <td>: {{ object.fdw }}</td>
+    </tr>
+</table>
+<br><br>
+<table class="border--all">
+    <tr class="text-align-center">
+        <td width="5%"></td>
+        <td width="10%">Salary Date</td>
+        <td width="12%">Basic Salary</td>
+        <td width="10%">Off Day Compensation</td>
+        <td width="12%">Total Salary</td>
+        <td></td>
+        <td width="10%">Loan Repayment</td>
+        <td width="12%">Salary Received</td>
+        <td width="12%">Employer's Signature</td>
+        <td width="12%">FDW's Signature</td>
+    </tr>
+    {% for k,v in repayment_table.items %}
+    <tr>
+        <td>{{ k }}</td>
+        <td>{{ v.salary_date }}</td>
+        <td>{{ v.basic_salary }}</td>
+        <td>{{ v.off_day_compensation }}</td>
+        <td>{{ v.salary_per_month }}</td>
+        <td></td>
+        <td>{% if v.loan_repaid %}({{ v.loan_repaid }}){% else %}{{ v.loan_repaid }}{% endif %}</td>
+        <td>{{ v.salary_received }}</td>
+        <td>{% comment %}Employer's Signature{% endcomment %}</td>
+        <td>{% comment %}FDW's Signature{% endcomment %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>I hereby acknowledge that I understand and agree to the above schedule.</p>
+
+<table>
+    {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+</table>
+
+{% endblock %}

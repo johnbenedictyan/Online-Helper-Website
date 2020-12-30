@@ -1,0 +1,81 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+
+{% block title %}Transfer Consent Form{% endblock %}
+
+{% block content %}
+<div class="text-align-center">
+    <h2>WORK PERMIT DEPARTMENT</h2>
+    <h2>APPLICATION FOR A WORK PERMIT FOR A DOMESTIC WORKER</h2>
+</div>
+<br>
+<table class="border--all text-align-center">
+    <tr>
+        <td>TO BE COMPLETED BY CURRENT EMPLOYER WHOSE
+            <br>DOMESTIC WORKER IS APPLYING FOR A CHANGE OF EMPLOYER
+        </td>
+    </tr>
+</table>
+<br>
+<br>
+<div>
+    <table>
+        <tr>
+            <td colspan="2">Work Permit Department
+                <br>Ministry of Manpower
+                <br>18 Havelock Road
+                <br>Singapore 059764
+            </td>
+        </tr>
+        <tr>
+            <td><br><br></td>
+        </tr>
+        <tr>
+            <td colspan="2">Dear Sir/Madam</td>
+        </tr>
+        <tr>
+            <td><br><br></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-bold--600">CONSENT TO TRANSFER DOMESTIC WORKER</td>
+        </tr>
+        <tr>
+            <td><br><br></td>
+        </tr>
+        <tr>
+            <td width="27%">Foreign Domestic Worker</td>
+            <td>: {{ object.fdw }}</td>
+        </tr>
+        <tr>
+            <td>Work Permit</td>
+            <td>: {{ object.rn_maidstatus_ed.work_permit_no }}</td>
+        </tr>
+        <tr>
+            <td>Date of Application</td>
+            <td>: ________________________________________________</td>
+        </tr>
+        <tr>
+            <td><br><br></td>
+        </tr>
+        <tr>
+            <td colspan="2">I, {{ employer.employer_name }} of NRIC / Passport No. {{ employer.employer_nric }} agree to release my domestic worker named above to the prospective employer _____________________________________________________.</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td colspan="2">Pending the outcome of the application, I understand all responsibilities for the employment of the said domestic worker and will extend her work permit (if necessary). If the application is not approved, I will repatriate this worker.</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="border--bottom"><img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Signature of Current Employer</td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

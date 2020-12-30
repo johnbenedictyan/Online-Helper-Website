@@ -1,43 +1,15 @@
 from django.contrib import admin
 from .models import (
-    EmployerBase,
-    EmployerExtraInfo,
-    EmployerDocBase,
+    Employer,
+    EmployerDoc,
     EmployerDocSig,
-    EmployerDocJobOrder,
     EmployerDocMaidStatus,
-    EmployerDocServiceFeeBase,
-    EmployerDocServiceFeeReplacement,
-    EmployerDocServiceAgreement,
-    EmployerDocEmploymentContract,
-    # EmployerDocSalaryPlacementRepayment,
-    # EmployerDocRestDayAgreement,
-    # EmployerDocHandoverChecklist,
-    # EmployerDocTransferConsent,
-    # EmployerDocWorkPassAuthorisation,
-    # EmployerDocSecurityBondForm,
-    # EmployerDocWorkPermitApplicants,
-    # EmployerDocIncomeTaxDeclaration,
-    # EmployerDocSafetyAgreement,
+    JobOrder,
 )
 
 # Register your models here.
-admin.site.register(EmployerBase)
-admin.site.register(EmployerExtraInfo)
-admin.site.register(EmployerDocBase)
+admin.site.register(Employer)
+admin.site.register(EmployerDoc)
 admin.site.register(EmployerDocSig)
-admin.site.register(EmployerDocJobOrder)
 admin.site.register(EmployerDocMaidStatus)
-admin.site.register(EmployerDocServiceFeeBase)
-admin.site.register(EmployerDocServiceFeeReplacement)
-admin.site.register(EmployerDocServiceAgreement)
-admin.site.register(EmployerDocEmploymentContract)
-# admin.site.register(EmployerDocSalaryPlacementRepayment)
-# admin.site.register(EmployerDocRestDayAgreement)
-# admin.site.register(EmployerDocHandoverChecklist)
-# admin.site.register(EmployerDocTransferConsent)
-# admin.site.register(EmployerDocWorkPassAuthorisation)
-# admin.site.register(EmployerDocSecurityBondForm)
-# admin.site.register(EmployerDocWorkPermitApplicants)
-# admin.site.register(EmployerDocIncomeTaxDeclaration)
-# admin.site.register(EmployerDocSafetyAgreement)
+admin.site.register(JobOrder)

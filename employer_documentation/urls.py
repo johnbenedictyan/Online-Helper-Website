@@ -1,168 +1,311 @@
 # Imports from django
 from django.urls import include, path
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
 ## List Views
 from .views import (
-    EmployerBaseListView,
-    EmployerDocBaseListView,
+    EmployerListView,
+    EmployerDocListView,
 )
 
 ## Detail Views
 from .views import (
-    EmployerBaseDetailView,
-    EmployerDocBaseDetailView,
+    EmployerDetailView,
+    EmployerDocDetailView,
 )
 
 ## Create Views
 from .views import (
-    EmployerBaseCreateView,
-    EmployerExtraInfoCreateView,
-    EmployerDocBaseCreateView,
-    EmployerDocJobOrderCreateView,
-    EmployerDocServiceFeeBaseCreateView,
-    EmployerDocServiceAgreementCreateView,
-    EmployerDocEmploymentContractCreateView,
+    EmployerCreateView,
+    EmployerDocCreateView,
 )
 
 ## Update Views
 from .views import (
-    EmployerBaseUpdateView,
-    EmployerBaseUpdateAgentView,
-    EmployerExtraInfoUpdateView,
-    EmployerDocBaseUpdateView,
-    EmployerDocJobOrderUpdateView,
-    EmployerDocServiceFeeBaseUpdateView,
-    EmployerDocServiceAgreementUpdateView,
-    EmployerDocEmploymentContractUpdateView,
+    EmployerUpdateView,
+    EmployerDocUpdateView,
+    EmployerDocAgreementDateUpdateView,
+    EmployerDocMaidStatusUpdateView,
 )
 
 ## Delete Views
 from .views import (
-    EmployerBaseDeleteView,
-    EmployerDocBaseDeleteView,
+    EmployerDeleteView,
+    EmployerDocDeleteView,
+)
+
+## Signature Views
+from .views import (
+    SignatureCreateByAgentView,
+    SignatureUpdateByAgentView,
+)
+
+## Signature Form
+from .forms import (
+    SignatureForm,
+)
+
+## PDF Views
+from .views import (
+    PdfEmployerDocumentView,
+    PdfServiceAgreementView,
+    PdfRepaymentScheduleView,
 )
 
 # Start of Urls
-
 urlpatterns = [
     path(
         '',
         include([
             path(
                 'create/',
-                EmployerBaseCreateView.as_view(),
-                name='employer_base_create'
+                EmployerCreateView.as_view(),
+                name='employer_create_route'
             ),
             path(
-                'employers-list/',
-                EmployerBaseListView.as_view(),
-                name='employer_base_list'
+                'employer-list/',
+                EmployerListView.as_view(),
+                name='employer_list_route'
             ),
             path(
-                '<uuid:employer_base_pk>/',
+                '<uuid:employer_pk>/',
                 include([
                     path(
                         'detail/',
-                        EmployerBaseDetailView.as_view(),
-                        name='employer_base_detail'
+                        EmployerDetailView.as_view(),
+                        name='employer_detail_route'
                     ),
                     path(
                         'update/',
-                        EmployerBaseUpdateView.as_view(),
-                        name='employer_base_update'
-                    ),
-                    path(
-                        'update-agent/',
-                        EmployerBaseUpdateAgentView.as_view(),
-                        name='employer_base_agent_update'
+                        EmployerUpdateView.as_view(),
+                        name='employer_update_route'
                     ),
                     path(
                         'delete/',
-                        EmployerBaseDeleteView.as_view(),
-                        name='employer_base_delete'
+                        EmployerDeleteView.as_view(),
+                        name='employer_delete_route'
                     ),
                     path(
-                        'extra-info/create/',
-                        EmployerExtraInfoCreateView.as_view(),
-                        name='employer_extra_info_create'
-                    ),
-                    path(
-                        'extra-info/<int:employer_extra_info_pk>/update/',
-                        EmployerExtraInfoUpdateView.as_view(),
-                        name='employer_extra_info_update'
-                    ),
-                    path(
-                        'doc-base/create/',
-                        EmployerDocBaseCreateView.as_view(),
-                        name='employer_doc_base_create'
-                    ),
-                    path(
-                        'doc-base/list/',
-                        EmployerDocBaseListView.as_view(),
-                        name='employer_doc_base_list'
-                    ),
-                    path(
-                        'doc-base/<int:employer_doc_base_pk>/',
+                        'documentation/',
                         include([
                             path(
-                                'detail/',
-                                EmployerDocBaseDetailView.as_view(),
-                                name='employer_doc_base_detail'
+                                'create/',
+                                EmployerDocCreateView.as_view(),
+                                name='employerdoc_create_route'
                             ),
                             path(
-                                'update/',
-                                EmployerDocBaseUpdateView.as_view(),
-                                name='employer_doc_base_update'
+                                'list/',
+                                EmployerDocListView.as_view(),
+                                name='employerdoc_list_route'
                             ),
-                            path(
-                                'delete/',
-                                EmployerDocBaseDeleteView.as_view(),
-                                name='employer_doc_base_delete'
-                            ),
-                            path(
-                                'job-order/create/',
-                                EmployerDocJobOrderCreateView.as_view(),
-                                name='employer_doc_job_order_create'
-                            ),
-                            path(
-                                'job-order/<int:employer_doc_job_order_pk>/update/',
-                                EmployerDocJobOrderUpdateView.as_view(),
-                                name='employer_doc_job_order_update'
-                            ),
-                            path(
-                                'service-fee/create/',
-                                EmployerDocServiceFeeBaseCreateView.as_view(),
-                                name='employer_doc_service_fee_base_create'
-                            ),
-                            path(
-                                'service-fee/<int:employer_doc_service_fee_base_pk>/update/',
-                                EmployerDocServiceFeeBaseUpdateView.as_view(),
-                                name='employer_doc_service_fee_base_update'
-                            ),
-                            path(
-                                'service-agreement/create/',
-                                EmployerDocServiceAgreementCreateView.as_view(),
-                                name='employer_doc_service_agreement_create'
-                            ),
-                            path(
-                                'service-agreement/<int:employer_doc_service_agreement_pk>/update/',
-                                EmployerDocServiceAgreementUpdateView.as_view(),
-                                name='employer_doc_service_agreement_update'
-                            ),
-                            path(
-                                'employment-contract/create/',
-                                EmployerDocEmploymentContractCreateView.as_view(),
-                                name='employer_doc_employment_contract_create'
-                            ),
-                            path(
-                                'employment-contract/<int:employer_doc_employment_contract_pk>/update/',
-                                EmployerDocEmploymentContractUpdateView.as_view(),
-                                name='employer_doc_employment_contract_update'
-                            ),
+                        path(
+                            '<uuid:employerdoc_pk>/',
+                            include([
+                                path(
+                                    'detail/',
+                                    EmployerDocDetailView.as_view(),
+                                    name='employerdoc_detail_route'
+                                ),
+                                path(
+                                    'update/',
+                                    EmployerDocUpdateView.as_view(),
+                                    name='employerdoc_update_route'
+                                ),
+                                path(
+                                    'delete/',
+                                    EmployerDocDeleteView.as_view(),
+                                    name='employerdoc_delete_route'
+                                ),
+                                path(
+                                    'agreement-date/<int:employersubdoc_pk>/update/',
+                                    EmployerDocAgreementDateUpdateView.as_view(),
+                                    name='employerdoc_agreement_date_update_route'
+                                ),
+                                path(
+                                    'status/<int:employersubdoc_pk>/update/',
+                                    EmployerDocMaidStatusUpdateView.as_view(),
+                                    name='employerdoc_status_update_route'
+                                ),
+                                path(
+                                    'signature/agent-access/',
+                                    include([
+                                        path(
+                                            'employer/create/',
+                                            SignatureCreateByAgentView.as_view(
+                                                model_field_name='employer_signature'
+                                            ),
+                                            name='signature_employer_create_route'
+                                        ),
+                                        path(
+                                            '<int:docsig_pk>/employer/update/',
+                                            SignatureUpdateByAgentView.as_view(
+                                                model_field_name='employer_signature'
+                                            ),
+                                            name='signature_employer_update_route'
+                                        ),
+                                        path(
+                                            'spouse/create/',
+                                            SignatureCreateByAgentView.as_view(
+                                                model_field_name='spouse_signature'
+                                            ),
+                                            name='signature_spouse_create_route'
+                                        ),
+                                        path(
+                                            '<int:docsig_pk>/spouse/update/',
+                                            SignatureUpdateByAgentView.as_view(
+                                                model_field_name='spouse_signature'
+                                            ),
+                                            name='signature_spouse_update_route'
+                                        ),
+                                        path(
+                                            'sponsor/create/',
+                                            SignatureCreateByAgentView.as_view(
+                                                model_field_name='sponsor_signature'
+                                            ),
+                                            name='signature_sponsor_create_route'
+                                        ),
+                                        path(
+                                            '<int:docsig_pk>/sponsor/update/',
+                                            SignatureUpdateByAgentView.as_view(
+                                                model_field_name='sponsor_signature'
+                                            ),
+                                            name='signature_sponsor_update_route'
+                                        ),
+                                        path(
+                                            'fdw/create/',
+                                            SignatureCreateByAgentView.as_view(
+                                                model_field_name='fdw_signature'
+                                            ),
+                                            name='signature_fdw_create_route'
+                                        ),
+                                        path(
+                                            '<int:docsig_pk>/fdw/update/',
+                                            SignatureUpdateByAgentView.as_view(
+                                                model_field_name='fdw_signature'
+                                            ),
+                                            name='signature_fdw_update_route'
+                                        ),
+                                        path(
+                                            'agency-staff/create/',
+                                            SignatureCreateByAgentView.as_view(
+                                                model_field_name='agency_staff_signature'
+                                            ),
+                                            name='signature_agency_staff_create_route'
+                                        ),
+                                        path(
+                                            '<int:docsig_pk>/agency-staff/update/',
+                                            SignatureUpdateByAgentView.as_view(
+                                                model_field_name='agency_staff_signature'
+                                            ),
+                                            name='signature_agency_staff_update_route'
+                                        ),
+                                    ]),
+                                ),
+                                path(
+                                    'pdf/service-fees/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-01-service-fee-schedule.html',
+                                        content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                    ),
+                                    name='pdf_service_fee_schedule'
+                                ),
+                                path(
+                                    'pdf/service-agreement/',
+                                    PdfServiceAgreementView.as_view(
+                                        template_name='employer_documentation/pdf-03-service-agreement.html',
+                                        content_disposition = 'inline; filename="service_agreement.pdf"',
+                                    ),
+                                    name='pdf_service_agreement'
+                                ),
+                                path(
+                                    'pdf/employment-contract/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-04-employment-contract.html',
+                                        content_disposition = 'inline; filename="employment-contract.pdf"',
+                                    ),
+                                    name='pdf_employment_contract'
+                                ),
+                                path(
+                                    'pdf/repayment-schedule/',
+                                    PdfRepaymentScheduleView.as_view(
+                                        template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                        content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                    ),
+                                    name='pdf_repayment_schedule'
+                                ),
+                                path(
+                                    'pdf/rest-day-agreement/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                        content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                    ),
+                                    name='pdf_rest_day_agreement'
+                                ),
+                                # path(
+                                #     'pdf/job-order/',
+                                #     PdfEmployerDocumentView.as_view(
+                                #         template_name='',
+                                #         content_disposition = '',
+                                #     ),
+                                #     name='pdf_job_order'
+                                # ),
+                                path(
+                                    'pdf/handover-checklist/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                        content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                    ),
+                                    name='pdf_handover_checklist'
+                                ),
+                                path(
+                                    'pdf/transfer-consent/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-09-transfer-consent.html',
+                                        content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                    ),
+                                    name='pdf_transfer_consent'
+                                ),
+                                path(
+                                    'pdf/work-pass-authorisation/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
+                                        content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                    ),
+                                    name='pdf_work_pass_authorisation'
+                                ),
+                                path(
+                                    'pdf/security-bond/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-11-security-bond.html',
+                                        content_disposition = 'inline; filename="security-bond.pdf"',
+                                    ),
+                                    name='pdf_security_bond'
+                                ),
+                                path(
+                                    'pdf/fdw-work-permit-12b/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                        content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                                    ),
+                                    name='pdf_fdw_work_permit_12b'
+                                ),
+                                path(
+                                    'pdf/income-tax-declaration/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-13-income-tax-declaration.html',
+                                        content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                    ),
+                                    name='pdf_income_tax_declaration'
+                                ),
+                                path(
+                                    'pdf/safety-agreement/',
+                                    PdfEmployerDocumentView.as_view(
+                                        template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                        content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                    ),
+                                    name='pdf_safety_agreement'
+                                ),
+                            ]),
+                        ),
                         ]),
                     ),
                 ]),

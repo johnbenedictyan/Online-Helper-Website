@@ -1,0 +1,116 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+{% load static %}
+
+{% block title %}Authorisation Form for Foreign Domestic Worker Work Pass Transactions{% endblock %}
+
+{% block content %}
+<div class="header-workpass--bd-bluegrey"></div>
+    <div>
+        <span class="header__mom-logo1"><img src="{% static 'images/pdf/logo1.png' %}"></span>
+        <span class="header__mom-logo2"><img src="{% static 'images/pdf/logo2.png' %}"></span>
+    </div>
+    <div class="header-workpass--bd-bluegrey"></div>
+    <br>
+    <div class="header-work-pass--bd-orange">
+        <h1>
+            Authorisation Form for Foreign Domestic Worker Work Pass Transactions
+        </h1>
+        <p>
+            This authorisation letter shall only be valid for 14 days from the date of employer’s authorisation, and only applies to the application / renewal / transfer / cancellation of the foreign domestic worker(s) listed below. To ensure proper authorisation,
+            employers are to indicate <i><b>NA</b></i> for rows that are not filled.
+        </p>
+        <p>
+            *The softcopy of this form contains macros and can only be used with MS Word 2007 version or later. Please print out the PDF version and fill it in hardcopy if you do not have the required software.
+        </p>
+    </div>
+    <table class="border--all">
+        <tr>
+            <td class="main-work-pass--bg-bluegrey text-bold--600" colspan="5">Declaration by Employer</td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" colspan="2">Employer Name</td>
+            <td colspan="3">{{ object.employer.employer_name }}</td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" colspan="2">NRIC No./ FIN</td>
+            <td colspan="3">{{ object.employer.employer_nric }}</td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" colspan="2">Contact No.</td>
+            <td colspan="3">{{ object.employer.employer_mobile_number }}</td>
+        </tr>
+        <tr>
+            <td class="text-bold--600" colspan="2">Signature and Date</td>
+            <td colspan="3">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+        </tr>
+        <tr>
+            <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600">S/N</td>
+            <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600" colspan="2">Name of Foreign Domestic Worker(s)</td>
+            <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600">Passport / FIN / WP No.</td>
+            <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600">Authorised Transaction</td>
+        </tr>
+        <tr>
+            <td class="text-align-center">1</td>
+            <td colspan="2">{{ object.fdw }}</td>
+            <td>{{ object.fdw }}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="text-align-center">2</td>
+            <td colspan="2"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="5">&#x2611; I hereby declare that I am authorising {{ object.employer.agency_employee.agency }}, licence no {{ object.employer.agency_employee.agency.license_number }} to perform the above work pass transaction(s) on my behalf.</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <p class="text-bold--600"><u>Fill in only if applicable.</u></p>
+                <p>I hereby authorise _____________________________________, NRIC/Passport No _____________________________________, to submit this authorisation form on my behalf. A copy of the representative’s NRIC/Passport is enclosed with this authorisation
+                    form.
+                </p>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="border--all">
+        <tr>
+            <td class="main-work-pass--bg-bluegrey text-bold--600" colspan="3">Declaration by EA</td>
+        </tr>
+        <tr>
+            <td>&#x2611;</td>
+            <td colspan="2">I have spoken to and verified with employer to confirm his / her authorisation.</td>
+        </tr>
+        <tr>
+            <td>&#x2611;</td>
+            <td colspan="2">I have spoken to and verified with employer that the person submitting this form to the EA is authorised to do so on behalf of the employer.</td>
+        </tr>
+        <tr>
+            <td>&#x2611;</td>
+            <td colspan="2">I declare that I have ensured all necessary fields are filled in prior to making the above mentioned work pass transactions.</td>
+        </tr>
+        <tr>
+            <td>&#x2611;</td>
+            <td colspan="2">I declare that the information provided on this form is true and correct.</td>
+        </tr>
+        <tr>
+            <td class="text-bold-600" colspan="2">Name of EA personnel</td>
+            <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
+        </tr>
+        <tr>
+            <td class="text-bold-600" colspan="2">Registration No.</td>
+            <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
+        </tr>
+        <tr>
+            <td class="text-bold-600" colspan="2">Signature and Date.</td>
+            <td><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <div class="header-safety-ag--bg-bluegrey">
+        <p class="text--xsmall text-bold--600">Ministry of Manpower Foreign Manpower Management Division</p>
+        <p class="text--xsmall">1500 Bendemeer Road Singapore 339946 &nbsp; &nbsp; &nbsp; Tel : +65 6438 5122 &nbsp; &nbsp; &nbsp; Web : http://www.mom.gov.sg &nbsp; &nbsp; &nbsp; Email : mom_fmmd@mom.gov.sg</p>
+    </div>
+{% endblock %}
