@@ -65,7 +65,11 @@ class Maid(models.Model):
         blank=False
     )
 
-    loan_amount = models.PositiveIntegerField(
+    agency_fees = models.PositiveIntegerField(
+        editable=False
+    )
+
+    personal_loan_amount = models.PositiveIntegerField(
         blank=False
     )
 
@@ -266,6 +270,35 @@ class MaidEmploymentHistory(models.Model):
     def save(self, *args, **kwargs):
         self.work_duration = self.end_date - self.start_date
         super().save(self, *args, **kwargs)
+
+class MaidAgencyFeeTransaction(models.Model):
+    TRANSCATION_CHOICES = (
+        ('ADD', _('Loan Increase')),
+        ('SUB', _('Loan Repayment'))
+    )
+
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.SET_NULL,
+        related_name='agency_fee_transactions'
+    )
+
+    amount = models.PositiveIntegerField(
+        verbose_name=_('Amount'),
+        blank=False
+    )
+
+    transaction_type = models.CharField(
+        verbose_name=_("Type of transaction"),
+        max_length=3,
+        blank=False,
+        choices=TRANSCATION_CHOICES
+    )
+
+    description = models.TextField(
+        verbose_name=_('Description of transaction'),
+        blank=False
+    )
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
