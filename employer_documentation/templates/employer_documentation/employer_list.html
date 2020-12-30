@@ -1,6 +1,6 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
-{% block e_d_section %}
+{% block ed_section %}
     <h1>Employers</h1>
     <a href="{% url 'employer_create_route' %}">Create new employer</a>
     <table class="table">
@@ -29,4 +29,4 @@
         {% endfor %}
         </tbody>
     </table>
-{% endblock e_d_section %}
+{% endblock ed_section %}

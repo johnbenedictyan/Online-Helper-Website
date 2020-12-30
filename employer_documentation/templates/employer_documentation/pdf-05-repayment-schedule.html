@@ -3,7 +3,7 @@
 
 {% block title %}Repayment Schedule{% endblock %}
 
-{% block content %}
+{% block pdf_content %}
 
 {% include 'employer_documentation/pdf-00-header.html' %}
 <br>
@@ -85,4 +85,4 @@
     {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
 </table>
 
-{% endblock %}
+{% endblock pdf_content %}

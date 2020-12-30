@@ -1,7 +1,7 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 {% load crispy_forms_tags %}
 
-{% block e_d_section %}
+{% block ed_section %}
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -15,4 +15,4 @@
         {{ object.employer }}
         {% crispy form %}
     </div>
-{% endblock e_d_section %}
+{% endblock ed_section %}
