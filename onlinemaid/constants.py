@@ -5,6 +5,7 @@ AG_OWNERS = 'Agency Owners'
 AG_ADMINS = 'Agency Administrators'
 AG_MANAGERS = 'Agency Managers'
 AG_SALES = 'Agency Sales Staff'
+P_EMPLOYERS = 'Potential Employers'
 
 def TrueFalseChoices(TrueMessage, FalseMessage):
     return (
