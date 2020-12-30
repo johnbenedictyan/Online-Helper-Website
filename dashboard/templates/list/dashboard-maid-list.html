@@ -2,31 +2,15 @@
 {% block dashboard_section %}
 <div class="limiter">
     <div class="container-table100">
-        <div class="container">
-            <div class="row mb-2">
-                <div class="col">
-                    <h1>FDW Biodata</h1>
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-8">
-                    <form action="#" method="get">
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" name="search-terms" id="" class="form-control">
-                            </div>
-                            <div class="col">
-                                <select name="" id="" class="form-control"></select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-4">
-                    <a href="{% url 'maid_create'   %}" class="btn btn-success">Add Biodata</a>
-                </div>
-            </div>
-        </div>
         <div class="wrap-table100">
+            <div class="row table-header">
+                <div class="col">
+                    <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">FDW Biodata</h5>
+                    {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
+                    <a href="{% url 'maid_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Biodata</a>
+                    {% endif %}
+                </div>
+            </div>
             <div class="table">
                 <div class="table-row fdw-table-row header">
                     <div class="cell">
@@ -104,6 +88,13 @@
                     </div>
                 {% endfor %}
             </div>
+            {% if not maids %}
+                <div class="row table-empty-footer">
+                    <div class="col text-center">
+                        <p class="mt-3">No biodata found!</p>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
