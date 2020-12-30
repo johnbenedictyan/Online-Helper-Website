@@ -65,7 +65,7 @@ class Maid(models.Model):
         blank=False
     )
 
-    agency_fees = models.PositiveIntegerField(
+    agency_fee_amount = models.PositiveIntegerField(
         editable=False
     )
 

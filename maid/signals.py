@@ -171,5 +171,5 @@ def update_agency_fee(sender, instance, **kwargs):
         elif transaction.transaction_type == 'SUB':
             amount -= transaction.amount
         
-    maid.agency_fees = amount
+    maid.agency_fee_amount = amount
     maid.save()
