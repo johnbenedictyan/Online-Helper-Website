@@ -179,6 +179,10 @@ th, td {
     float: right;
 }
 
+#safety-instructions-img {
+    width: 300px;
+}
+
 /*------------------------------------*\
 #SIGNATURE
 \*------------------------------------*/
