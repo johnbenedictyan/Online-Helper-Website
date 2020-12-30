@@ -62,15 +62,26 @@ class Maid(models.Model):
     )
 
     salary = models.PositiveIntegerField(
-        blank=False
+        verbose_name=_('Salary'),
+        blank=False,
+        default=0
     )
 
-    loan_amount = models.PositiveIntegerField(
-        blank=False
+    agency_fee_amount = models.PositiveIntegerField(
+        editable=False,
+        default=0
+    )
+
+    personal_loan_amount = models.PositiveIntegerField(
+        verbose_name=_('Personal loan amount'),
+        blank=False,
+        default=0
     )
 
     days_off = models.PositiveIntegerField(
-        blank=False
+        verbose_name=_('Days off'),
+        blank=False,
+        default=0
     )
 
     passport_status = models.BooleanField(
@@ -266,6 +277,35 @@ class MaidEmploymentHistory(models.Model):
     def save(self, *args, **kwargs):
         self.work_duration = self.end_date - self.start_date
         super().save(self, *args, **kwargs)
+
+class MaidAgencyFeeTransaction(models.Model):
+    TRANSCATION_CHOICES = (
+        ('ADD', _('Loan Increase')),
+        ('SUB', _('Loan Repayment'))
+    )
+
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='agency_fee_transactions'
+    )
+
+    amount = models.PositiveIntegerField(
+        verbose_name=_('Amount'),
+        blank=False
+    )
+
+    transaction_type = models.CharField(
+        verbose_name=_("Type of transaction"),
+        max_length=3,
+        blank=False,
+        choices=TRANSCATION_CHOICES
+    )
+
+    description = models.TextField(
+        verbose_name=_('Description of transaction'),
+        blank=False
+    )
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
