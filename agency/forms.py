@@ -468,7 +468,8 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
         
         if cleaned_data.get('password'):
             employee.user.set_password(cleaned_data.get('password'))
-        
+            employee.user.save()
+
         if old_agency_employee_group != new_agency_employee_group:
             old_agency_employee_group.user_set.remove(employee.user)
             new_agency_employee_group.user_set.add(employee.user)
