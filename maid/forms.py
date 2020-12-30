@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.bootstrap import PrependedAppendedText
 from agency.models import Agency
 
 # Imports from local apps
@@ -20,9 +21,19 @@ from .models import (
 
 # Model Forms
 class MaidCreationForm(forms.ModelForm):
+    initial_agency_fee_amount = forms.IntegerField(
+        required=True,
+        initial=0
+    )
+
+    initial_agency_fee_description = forms.CharField(
+        required=True,
+        widget=forms.Textarea()
+    )
+
     class Meta:
         model = Maid
-        exclude = ['agency', 'created_on', 'updated_on']
+        exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('agency_id'):
@@ -40,30 +51,51 @@ class MaidCreationForm(forms.ModelForm):
                     css_class='form-group col-md-4'
                 ),
                 Column(
-                    'days_off',
+                    'photo',
                     css_class='form-group col-md-4'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'salary',
-                    css_class='form-group col-md-6'
+                    PrependedAppendedText(
+                        'salary', '$', '.00'
+                    ),
+                    css_class='form-group col-md-4'
                 ),
                 Column(
-                    'loan_amount',
-                    css_class='form-group col-md-6'
+                    PrependedAppendedText(
+                        'personal_loan_amount', '$', '.00'
+                    ),
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'initial_agency_fee_amount', '$', '.00'
+                    ),
+                    css_class='form-group col-md-4'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'passport_status',
-                    css_class='form-group col-md-6'
+                    'days_off',
+                    css_class='form-group col-md-4'
                 ),
                 Column(
-                    'repatraition_airport',
-                    css_class='form-group col-md-6'
+                    'passport_status',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'repatriation_airport',
+                    css_class='form-group col-md-4'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'initial_agency_fee_description',
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
