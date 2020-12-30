@@ -8,7 +8,9 @@
                     <div class="row table-header">
                         <div class="col">
                             <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">Agency Employee Accounts</h5>
+                            {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
                             <a href="{% url 'agency_employee_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Account</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="table">
