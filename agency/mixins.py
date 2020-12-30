@@ -114,8 +114,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
 
-class SpecificAgencyEmployeeLoginRequiredMixin(LoginRequiredMixin):
-    login_url = reverse_lazy('agency_sign_in')
+class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''You are required to login using this
                                 employee's or Agency owner account to
                                 perform this action'''
@@ -126,14 +125,26 @@ class SpecificAgencyEmployeeLoginRequiredMixin(LoginRequiredMixin):
         res = super(SpecificAgencyEmployeeLoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
-        if not (
-            self.request.user.groups.filter(name='Agency Owners').exists()
-            or self.request.user.pk == self.kwargs.get(
-                self.pk_url_kwarg
+            
+        if self.request.user.pk != self.kwargs.get(self.pk_url_kwarg):
+            ae = AgencyEmployee.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
-        ):
-            return self.handle_no_permission(request)
-        
+            if self.request.user.groups.filter(name='Agency Owners').exists():
+                if ae.agency != self.request.user.agency_owner.agency:
+                    return self.handle_no_permission(request)
+
+            elif self.request.user.groups.filter(
+                name='Agency Administrators'
+            ).exists():
+                if ae.agency != self.request.user.agency_employee.agency:
+                    return self.handle_no_permission(request)
+
+            else:
+                return self.handle_no_permission(request)
+
         return res
 
 class GetAuthorityMixin:
