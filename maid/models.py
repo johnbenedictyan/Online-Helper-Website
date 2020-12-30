@@ -63,21 +63,25 @@ class Maid(models.Model):
 
     salary = models.PositiveIntegerField(
         verbose_name=_('Salary'),
-        blank=False
+        blank=False,
+        default=0
     )
 
     agency_fee_amount = models.PositiveIntegerField(
-        editable=False
+        editable=False,
+        default=0
     )
 
     personal_loan_amount = models.PositiveIntegerField(
         verbose_name=_('Personal loan amount'),
-        blank=False
+        blank=False,
+        default=0
     )
 
     days_off = models.PositiveIntegerField(
         verbose_name=_('Days off'),
-        blank=False
+        blank=False,
+        default=0
     )
 
     passport_status = models.BooleanField(
