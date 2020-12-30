@@ -62,6 +62,7 @@ class Maid(models.Model):
     )
 
     salary = models.PositiveIntegerField(
+        verbose_name=_('Salary'),
         blank=False
     )
 
@@ -70,10 +71,12 @@ class Maid(models.Model):
     )
 
     personal_loan_amount = models.PositiveIntegerField(
+        verbose_name=_('Personal loan amount'),
         blank=False
     )
 
     days_off = models.PositiveIntegerField(
+        verbose_name=_('Days off'),
         blank=False
     )
 
