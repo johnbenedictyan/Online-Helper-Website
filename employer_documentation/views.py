@@ -331,7 +331,10 @@ class PdfRepaymentScheduleView(
 
         payment_month = today.month
         payment_year = today.year
-        placement_fee = 3000
+        placement_fee = (
+            self.object.fdw.agency_fee_amount +
+            self.object.fdw.personal_loan_amount
+        )
         placement_fee_per_month = round(placement_fee/6, 0)
         work_days_in_month = 30 - self.object.fdw.days_off
         off_day_compensation = round(
@@ -462,9 +465,10 @@ class PdfRepaymentScheduleView(
                     payment_year += 1
 
             # 25th month pro-rated
-            final_payment_day = (
+            final_payment_day = min(
                 self.object.rn_maidstatus_ed
-                .fdw_work_commencement_date.day - 1
+                .fdw_work_commencement_date.day-1 ,
+                calendar.monthrange(payment_year, month_current)[1]
             )
             basic_salary = round(
                 self.object.fdw.salary*final_payment_day/calendar.monthrange(
@@ -473,6 +477,12 @@ class PdfRepaymentScheduleView(
             off_day_compensation = round(
                 off_day_compensation*final_payment_day/calendar.monthrange(
                     payment_year, month_current)[1]
+            )
+            month_current = 12 if payment_month%12==0 else payment_month%12
+            loan_repaid = min(
+                placement_fee,
+                placement_fee_per_month,
+                salary_per_month
             )
             context['repayment_table'][25] = {
                 'salary_date': '{day}/{month}/{year}'.format(
