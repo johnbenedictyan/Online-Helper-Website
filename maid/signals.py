@@ -9,7 +9,8 @@ from django.dispatch import receiver
 # Imports from within the app
 from .models import (
     Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
-    MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidStatus
+    MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidStatus, 
+    MaidAgencyFeeTransaction
 )
 
 # Utiliy Classes and Functions
@@ -154,3 +155,21 @@ def maid_status_completed(sender, instance, created, **kwargs):
         maid.save()
         if status_valid == True:
             maid_completed(maid)
+
+@receiver(post_save, sender=MaidAgencyFeeTransaction)
+def update_agency_fee(sender, instance, **kwargs):
+    maid = instance.maid
+    
+    transactions = MaidAgencyFeeTransaction.objects.filter(
+        maid=maid
+    )
+
+    amount = 0
+    for transaction in transactions:
+        if transaction.transaction_type == 'ADD':
+            amount += transaction.amount
+        elif transaction.transaction_type == 'SUB':
+            amount -= transaction.amount
+        
+    maid.agency_fee_amount = amount
+    maid.save()

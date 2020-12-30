@@ -1,0 +1,356 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+{% load static %}
+
+{% block title %}Safety Agreement{% endblock %}
+
+{% block content %}
+<div class="header-workpass--bd-bluegrey">
+</div>
+<div>
+    <img class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}" />
+    <img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}" />
+</div>
+<div class="header-workpass--bd-bluegrey">
+</div>
+<br>
+<div class="header-safety-ag--bg-bluegrey">
+    <br>
+    <h1> &nbsp; Safety Agreement Between Foreign Domestic</h1>
+    <h1> &nbsp; Worker And Employer</h1>
+    <br>
+</div>
+<br>
+<div style="display:flex;">
+    <div style="margin-right:15px;">
+        <table class="border--all" width="350px">
+            <tr>
+                <td class="text-bold--600">EA Name</td>
+            </tr>
+            <tr>
+                <td>
+                    {{ object.employer.agency_employee.agency.name }}
+                    <br>{{ object.employer.agency_employee.agency.license_number }}
+                    <br>{{ object.employer.agency_employee.agency }}
+                    <br>{{ object.employer.agency_employee.agency }}
+                    <br>Singapore {{ object.employer.agency_employee.agency }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td class="text-bold--600">Instructions:</td>
+            </tr>
+            <tr>
+                <td><img width="300px;" src="{% static 'images/pdf/instructions.png' %}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br>
+
+<table class="border--all">
+    <tr>
+        <td>
+            <p>This agreement is made between
+                <u>(a) The Employer</u> and
+                <u>(b) The Foreign Domestic Worker (FDW)</u> and facilitated by
+                <u>(c) The Employment Agency (EA)</u> to accord with the Ministry of Manpower's regulations on conditions for window cleaning.</p>
+            <br>
+            <p>[Refer to Annex A on excerpt from the Employment of Foreign Manpower (Work Passes) Regulations ("the Condition")]</p>
+            <br>
+            <p>Employers of FDWs shall not permit their FDWs to clean the window exterior except where two conditions are met: </p>
+            <p>a. <b><i>Window grilles have been installed and are locked at all times during the cleaning process; and </i></b></p>
+            <p>b. <b><i>The employer or an adult representative of the employer is physically present to supervise the FDW.</i></b></p>
+            <br>
+            <p>The rules will apply to all homes, except for windows that are at the ground level or along common corridors.</p>
+        </td>
+    </tr>
+</table>
+<br>
+<table class="border--all">
+    <tr>
+        <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
+            <b>Part A - Employer</b>
+        </td>
+    </tr>
+    <tr>
+        <td>Employer Name</td>
+        <td colspan="2">{{ object.employer.employer_name }}</td>
+    </tr>
+    <tr>
+        <td>NRIC No. / FIN</td>
+        <td colspan="2">{{ object.employer.employer_nric }}</td>
+    </tr>
+    <tr>
+        <td>Contact No.</td>
+        <td colspan="2">{{ object.employer.employer_mobile_number }}</td>
+    </tr>
+    <tr>
+        <td>Residential Address</td>
+        <td colspan="2">{{ object.employer.employer_address_1 }}, {{ object.employer.employer_address_2 }}, Singapore {{ object.employer.employer_post_code }}</td>
+    </tr>
+    <tr>
+        <td>Residential Dwelling Type</td>
+        <td colspan="2">
+            <input type="checkbox" class="checkbox" />HDB Apartment
+            <br>
+            <input type="checkbox" class="checkbox" />Private Apartment/Condominium
+            <br>
+            <input type="checkbox" class="checkbox" />Landed Property
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" class="main-safety-ag--bg-black main-safety-ag--text-white text-align-center">
+            Do I require my FDW to clean window exterior?
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="text-align-center">
+            <input type="checkbox" class="checkbox" />Yes
+        </td>
+        <td align="center"><input type="checkbox" class="checkbox" />No</td>
+    </tr>
+    <tr>
+        <td width="24%">(i) Location of window exterior</td>
+        <td>
+            <input type="checkbox" class="checkbox" />On the ground
+            <br>
+            <input type="checkbox" class="checkbox" />Facing common corridor
+            <br>
+            <input type="checkbox" class="checkbox" />Others
+            <br> If "Others" is selected, proceed to (ii)
+        </td>
+        <td rowspan="3" class="main-safety-ag--bg-black"></td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+            (ii) Grilles installed on windows required to be cleaned by FDW
+        </td>
+        <td>
+            <input type="checkbox" class="checkbox" />Yes
+            <input type="checkbox" class="checkbox" style="margin-left:30px;" />No
+            <br> If "Yes" is selected, proceed to (iii)
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+            (iii) Adult supervision when cleaning window exterior
+        </td>
+        <td>
+            <br>
+            <input type="checkbox" class="checkbox" />Yes
+            <input type="checkbox" class="checkbox" style="margin-left:30px;" />No
+        </td>
+    </tr>
+</table>
+
+
+<div style="page-break-before: always;">
+    <table class="border--all">
+        <tr>
+            <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
+                Continuation of Part A – Employer
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="checkbox" class="checkbox" />I have received the advisory letter and trainer’s assessment checklist from the Settling-In-Programme (for employers of first-time FDWs)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <p>[The Employer is required to choose only <b><u>one</u></b> of the following options]</p>
+                <br>
+                <input type="checkbox" class="checkbox" />I understand the Conditions and I will not require my FDW to clean the window exterior of my home.
+                <br><br>
+                <input type="checkbox" class="checkbox" />I understand the Conditions and I require my FDW to clean only the window exterior on the ground floor of my home.
+                <br><br>
+                <input type="checkbox" class="checkbox" />I understand the Conditions and I require my FDW to clean only the window exterior along the common corridor of my home.
+                <br><br>
+                <input type="checkbox" class="checkbox" />I require my FDW to clean the window exterior of my home, and I shall ensure that the grilles are locked when cleaning the window exterior and cleaned only when supervised by myself or my adult
+                representative.
+            </td>
+        </tr>
+        <tr>
+            <td class="text-align-center" width="24%">Signature / Date</td>
+            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+        </tr>
+    </table>
+    <br>
+    <p><i>Employer is to ensure that Part A is duly completed before the agreement is signed and dated. Do not pre-sign the agreement or sign on incomplete form.</i></p>
+    <br>
+
+    <table class="border--all">
+        <tr>
+            <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
+                Part B – Employment Agency
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td colspan="2">{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
+        </tr>
+        <tr>
+            <td>Registration No.</td>
+            <td colspan="2">{{ object.employer.agency_employee.ea_personnel_number }}</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                I have explained the Conditions to the Employer and advised the Employer that he <b>* can / cannot</b> require the FDW to clean the window exterior of his home based on the information presented in Part A [* to delete accordingly]
+            </td>
+        </tr>
+        <tr>
+            <td class="text-align-center" width="24%">Signature / Date</td>
+            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table class="border--all">
+        <tr>
+            <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
+                Part C – Foreign Domestic Worker
+            </td>
+        </tr>
+        <tr>
+            <td width="24%">Name</td>
+            <td colspan="2">{{ object.fdw }}</td>
+        </tr>
+        <tr>
+            <td>WP No.</td>
+            <td colspan="2">{{ object.rn_maidstatus_ed.work_permit_no }}</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="checkbox" class="checkbox" />I shall abide by my Employer’s instructions to clean the window exterior safely in compliance with the Condition
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                [The FDW is required to choose only <b><u>one</u></b> of the following options.]
+                <br>[PLRT Asing diharuskan memilih <b><u>satu</u></b> saja dari pilihan-pilihan berikut.]
+                <br><br> As indicated by the Employer above: -
+                <br>Sebagaimana yang diusulkan oleh majikan yang tertera di atas: -
+                <br><br>
+                <input type="checkbox" class="checkbox" />I understand that I am not required to clean the window exterior of my employer’s home.
+                <br>Saya mengerti bahwa saya tidak dikehendaki untuk membersihkan jendela bagian luar di rumah majikan saya.
+                <br><br>
+                <input type="checkbox" class="checkbox" /> I understand that I am required to clean only the window exterior on the ground floor of my employer’s home.
+                <br>Saya mengerti bahwa saya dikehendaki untuk membersihkan jendela bagian luar dilantai dasar saja di rumah majikan saya.
+                <br><br>
+                <input type="checkbox" class="checkbox" /> I understand that I am required to clean only the window exterior along the common corridor of my employer’s home.
+                <br>Saya mengerti bahwa saya dikehendaki untuk membersihkan jendela bagian luar disepanjang gang umum saja di rumah majikan saya.
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div style="page-break-before: always;">
+    <table class="border--all">
+        <tr>
+            <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
+                Continuation of Part C – Foreign Domestic Worker
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table border="0">
+                    <tr>
+                        <td style="border:none;"><input type="checkbox" class="checkbox" /></td>
+                        <td style="border:none;">I understand that I am required to clean the window exterior of my employer’s home, and I shall ensure that I clean the window exterior only when the grilles are locked and only when supervised by my employer or his adult representative.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:none;"></td>
+                        <td style="border:none;">Saya mengerti bahwa saya dikehendaki untuk membersihkan jendela bagian luar di rumah majikan saya, dan saya akan memastikan bahwa saya membersihkan jendela bagian luar hanya jika teralis-teralis dikunci dan hanya jika diawasi
+                            oleh majikan saya atau orang dewasa yang mewakilinya.</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <td width="24%">
+            <p class="text-align-center">Signature / Date
+            <br>Tanda Tangan / Tanggal</p>
+        </td>
+        <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
+        </tr>
+    </table>
+    <br>
+
+    <table class="border--all">
+        <tr>
+            <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
+                Part D – Employment Agency
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                I have explained the Conditions to the FDW and advised the FDW that she <b>* can / cannot</b> clean the window exterior of the residential address based on the employer’s declaration in Part A [* to delete accordingly]
+            </td>
+        </tr>
+        <tr>
+            <td width="24%">
+                <p class="text-align-center">Signature / Date</p>
+            </td>
+            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td colspan="3" class="text-bold--600"><u>Annex A</u></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-bold--600">Condition 2, Part I of the Fourth Schedule of the Employment of Foreign Manpower (Work Passes) Regulations</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                The employer shall provide safe working conditions and take such measures as are necessary to ensure the safety and health of the foreign employee at work. This includes: -
+            </td>
+        </tr>
+        <tr>
+            <td width="5%" class="text-align-right">a) </td>
+            <td colspan="2">not permitting the foreign employee to clean the outward facing side of any window not located on the ground level or not facing a common corridor if the window is not fitted with a grille securing against any adult extending any part
+                of the foreign employee’s body beyond the window ledge except the arms; and</td>
+        </tr>
+        <tr>
+            <td class="text-align-right">b) </td>
+            <td colspan="2">in the case of a window referred to in sub-paragraph (a) fitted with a grille of the description specified in that sub- paragraph, not permitting the foreign employee to clean the outward facing side of the window unless at all times during
+                the cleaning process –</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="2%">i.</td>
+            <td>the grille is locked or secured in a manner that prevents the grille from being opened;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>ii.</td>
+            <td>the foreign employee remains inside the room;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>iii.</td>
+            <td>no part of the foreign employee’s body extends beyond the window ledge except the arms; and</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>iv.</td>
+            <td>the foreign employee is supervised by the employer, or an adult representative of the employer, who is reasonably capable of conducting such supervision and is aware of the requirements in sub-paragraphs (i), (ii) and (iii).</td>
+        </tr>
+    </table>
+    <br><br><br><br>
+    <table class="header-safety-ag--bg-bluegrey" style="position: fixed;left: 0;bottom: 0;">
+        <tr>
+            <td>
+                <p class="text--xsmall text-bold--600">Ministry of Manpower Foreign Manpower Management Division</p>
+                <p class="text--xsmall">Web:http://www.mom.gov.sg &nbsp; Contact us:http://www.mom.gov.sg/contact</p>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

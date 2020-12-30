@@ -1,0 +1,152 @@
+{% extends 'employer_documentation/pdf-00-base.html' %}
+
+{% block title %}Handover Checklist{% endblock %}
+
+{% block content %}
+{% include 'employer_documentation/pdf-00-header.html' %}
+<br>
+    <h2 class="text-align-center">HANDLING AND TAKE OVER FORM</h2>
+    <br>
+    <div class="border--bottom">
+    </div>
+    <br>
+
+    <table>
+        <tr>
+            <td class="text-bold--600" colspan="2">Employment Agency Ref No</td>
+            <td>: {{ object.case_ref_no }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Hand Over Date</td>
+            <td>: {{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="2%">(A)</td>
+            <td width="48%">Full Name of Employer</td>
+            <td>: {{ object.employer.employer_name }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>NRIC/ Passport</td>
+            <td>: {{ object.employer.employer_nric }}</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>(B)</td>
+            <td>Full Name of Foreign Domestic Worker</td>
+            <td>: {{ object.fdw }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Passport No.</td>
+            <td>: {{ object.fdw }}</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td colspan="2" class="text-bold--600">Documents to be handed to FDW personally</td>
+            <td colspan="2" class="text-bold--600">Documents to be handed to Employer</td>
+        </tr>
+        <tr>
+            <td width="2%">a)</td>
+            <td width="44%">Employment Contract</td>
+            <td width="2%">a)</td>
+            <td>Form A/ B</td>
+        </tr>
+        <tr>
+            <td>b)</td>
+            <td>Salary Schedule</td>
+            <td>b)</td>
+            <td>Service Agreement</td>
+        </tr>
+        <tr>
+            <td>c)</td>
+            <td>Rest Day Agreement</td>
+            <td>c)</td>
+            <td>Employment Contract</td>
+        </tr>
+        <tr>
+            <td>d)</td>
+            <td>Work Scope</td>
+            <td>d)</td>
+            <td>Salary Schedule</td>
+        </tr>
+        <tr>
+            <td>e)</td>
+            <td>Handover Checklist</td>
+            <td>e)</td>
+            <td>Rest Day Agreement</td>
+        </tr>
+        <tr>
+            <td>f)</td>
+            <td>Safety Agreement</td>
+            <td>f)</td>
+            <td>Work Scope</td>
+        </tr>
+        <tr>
+            <td>g)</td>
+            <td>FDW Biodata</td>
+            <td>g)</td>
+            <td>Handover Checklist</td>
+        </tr>
+        <tr>
+            <td>h)</td>
+            <td>Insurance</td>
+            <td>h)</td>
+            <td>Safety Agreement</td>
+        </tr>
+        <tr>
+            <td>i)</td>
+            <td>Medical Report</td>
+            <td>i)</td>
+            <td>FDW Biodata</td>
+        </tr>
+        <tr>
+            <td>j)</td>
+            <td>FDW’s Passport</td>
+            <td>j)</td>
+            <td>Banker Guarantee</td>
+        </tr>
+        <tr>
+            <td>k)</td>
+            <td>FDW’s Work Permit</td>
+            <td>k)</td>
+            <td>Insurance</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>l)</td>
+            <td>Medical Report</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw }} is the FDW selected by me and I take custody and responsibility of the FDW from the this date.</td>
+        </tr>
+        
+        {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+
+        <tr>
+            <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">Signed for and on behalf of Agency</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+{% endblock %}

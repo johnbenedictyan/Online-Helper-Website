@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
+from onlinemaid.constants import TrueFalseChoices
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -17,11 +18,8 @@ from maid.models import Maid
 # Start of Models
 
 # Employer e-Documentation Models
-'''
-EmployerBase model holds minimum data required to create an Employer db entry
-'''
-class EmployerBase(models.Model):
-    uuid = models.UUIDField(
+class Employer(models.Model):
+    id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
@@ -32,304 +30,65 @@ class EmployerBase(models.Model):
         on_delete=models.RESTRICT
     )
     employer_name = models.CharField(max_length=40)
-    employer_email = models.EmailField(
-        verbose_name=_('Email Address'),
-        blank=False
-    )
+    employer_email = models.EmailField(verbose_name=_('Email Address'))
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
-        blank=False,
-        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
                 message=_('Please enter a valid contact number')
             )
         ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
-    )
-
-class EmployerExtraInfo(models.Model):
-    employer_base = models.OneToOneField(
-        EmployerBase,
-        on_delete=models.CASCADE,
-        related_name='rn_employerextrainfo'
     )
     employer_nric = models.CharField(max_length=20)
     employer_address_1 = models.CharField(
         verbose_name=_('Street Address'),
         max_length=100,
-        blank=False,
-        null=True
     )
 
     employer_address_2 = models.CharField(
         verbose_name=_('Unit Number'),
         max_length=50,
-        blank=False,
-        null=True
     )
 
-    employer_postal_code = models.CharField(
-        verbose_name=_('Postal Code'),
+    employer_post_code = models.CharField(
+        verbose_name=_('Post Code'),
         max_length=25,
-        blank=False,
-        null=True
     )
 
-'''
-One to Many relationship with EmployerBase model so that agency is able to
-sign subsequent agreements with same employer
-'''
-class EmployerDocBase(models.Model):
+
+class EmployerDoc(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
     case_ref_no = models.CharField(
         max_length=20,
         unique=True
     )
     employer = models.ForeignKey(
-        EmployerBase,
+        Employer,
         on_delete=models.RESTRICT,
-        related_name='rn_employerdocbase'
+        related_name='rn_ed_employer'
     )
     fdw = models.ForeignKey(
         Maid,
         on_delete=models.RESTRICT
     )
-    spouse_required = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
+    spouse_required = models.BooleanField(
+        verbose_name=_("Is spouse requried? A spouse required if Employer's \
+            monthly income < S$3,000 per month."),
+        choices=TrueFalseChoices('Yes, required', 'No, not required'),
     )
-    sponsor_required = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
+    sponsor_required = models.BooleanField(
+        verbose_name=_("Is sponsor requried?"),
+        choices=TrueFalseChoices('Yes, required', 'No, not required'),
     )
 
-class EmployerDocSig(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
-    agreement_date = models.DateField(blank=True, null=True)
-    # employer_signature = ImageField(blank=True, null=True)
-    # spouse_signature = ImageField(blank=True,null=True)
-    # sponsor_signature = ImageField(blank=True, null=True)
-    # fdw_signature = ImageField(blank=True, null=True)
-    # sales_staff_signature = ImageField(blank=True, null=True)
-
-    # employer_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # spouse_signature_native = models.ImageField(blank=True,null=True, upload_to=get_file_path)
-    # sponsor_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # fdw_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # sales_staff_signature_native = models.ImageField(blank=True, null=True, upload_to=get_file_path)
-    # One-time token sent to employer for them to get their signature
-    # employer_signature_token = models.CharField(max_length=32, blank=True, null=True)
-
-class EmployerDocJobOrder(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE,
-        related_name='rn_employerdocjoborder'
-    )
-    job_order_date = models.DateField()
-    employer_race = models.CharField(
-        max_length=16,
-        choices = [
-            ("Chinese", "Chinese"),
-            ("Malay", "Malay"),
-            ("Indian", "Indian"),
-            ("Others", "Others")
-        ]
-    )
-    type_of_property_choices = [
-        ("HDB 2 Room flat", "HDB 2 Room flat"),
-        ("HDB 3 Room flat", "HDB 3 Room flat"),
-        ("HDB 4 Room flat", "HDB 4 Room flat"),
-        ("HDB 5 Room flat", "HDB 5 Room flat"),
-        ("HDB Executive flat","HDB Executive flat"),
-        ("HDB Maisonette flat","HDB Maisonette flat"),
-        ("Condominium","Condominium"),
-        ("Penthouse","Penthouse"),
-        ("Terrace","Terrace"),
-        ("Semi-Detached","Semi-Detached"),
-        ("Bungalow","Bungalow"),
-        ("Shophouse","Shophouse"),
-    ]
-    type_of_property = models.CharField(
-        max_length=40,
-        choices = type_of_property_choices
-    )
-    no_of_bedrooms = models.PositiveSmallIntegerField(
-        choices=[
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10")
-        ]
-    )
-    no_of_toilets = models.PositiveSmallIntegerField(
-        choices=[
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-        ]
-    )
-    no_of_family_members = models.PositiveSmallIntegerField(
-        choices=[
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-        ]
-    )
-    no_of_children_between_6_12 = models.PositiveSmallIntegerField(
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-        ]
-    )
-    no_of_children_below_5 = models.PositiveSmallIntegerField(
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-        ]
-    )
-    no_of_infants = models.PositiveSmallIntegerField(
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-        ]
-    )
-    fetch_children = models.TextField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    look_after_elderly = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    look_after_bed_ridden_patient = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    cooking = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    clothes_washing = models.CharField(max_length=10,
-        choices = [
-            ("Hand","Hand"),
-            ("Machine","Machine"),
-            ("Both","Both")
-        ]
-    )
-    car_washing = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    take_care_of_pets = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    gardening = models.CharField(max_length=3,
-        choices = [
-            ("Yes","Yes"),
-            ("No","No")
-        ]
-    )
-    remarks = models.TextField(max_length=300, blank=True, null=True)
-
-    def job_order_date(self):
-        return self.job_order_date.strftime('%d/%m/%Y')
-
-class EmployerDocMaidStatus(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE
-    )
-    ipa_approval_date = models.DateField(blank=True, null=True)
-    security_bond_approval_date = models.DateField(blank=True, null=True)
-    arrival_date = models.DateField(blank=True, null=True)
-    thumb_print_date = models.DateField(blank=True, null=True)
-    sip_date = models.DateField(blank=True, null=True)
-    fdw_work_commencement_date = models.DateField(blank=True, null=True)
-    date_of_application_for_transfer = models.DateField(blank=True, null=True)
-
-    def date_of_application_for_transfer(self):
-        return self.date_of_application_for_transfer.strftime('%d/%m/%Y')
-    
-    def fdw_work_commencement_date(self):
-        return self.fdw_work_commencement_date.strftime('%d/%m/%Y')
-
-class EmployerDocServiceFeeBase(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE,
-        related_name='rn_employerdocservicefeebase'
-    )
+    # Service Fee Schedule
     b1_service_fee = models.PositiveIntegerField() # cents
     b2a_work_permit_application_collection = models.PositiveIntegerField() # cents
     b2b_medical_examination_fee = models.PositiveIntegerField() # cents
@@ -398,23 +157,21 @@ class EmployerDocServiceFeeBase(models.Model):
     ) # cents
     ca_deposit = models.PositiveIntegerField() # cents
 
-class EmployerDocServiceFeeReplacement(models.Model):
-    service_fee_schedule = models.OneToOneField(
-        EmployerDocServiceFeeBase,
-        on_delete=models.CASCADE
-    )
+    # If FDW is replacement, then additional fields
+    fdw_is_replacement = models.BooleanField()
     fdw_replaced = models.ForeignKey(
         Maid,
-        on_delete=models.RESTRICT
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        related_name='rn_ed_fdwreplaced'
     )
-    b4_loan_transferred = models.PositiveIntegerField()
+    b4_loan_transferred = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
 
-class EmployerDocServiceAgreement(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE,
-        related_name='rn_employerdocserviceagreement'
-    )
+    # Service Agreement
     c1_3_handover_days = models.PositiveSmallIntegerField(
         choices=[
             (0, "0"),
@@ -499,6 +256,42 @@ class EmployerDocServiceAgreement(models.Model):
             (24, "24"),
         ]
     )
+    c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
+        # days
+        choices=[
+            (0, "0"),
+            (1, "1"),
+            (2, "2"),
+            (3, "3"),
+            (4, "4"),
+            (5, "5"),
+            (6, "6"),
+            (7, "7"),
+            (8, "8"),
+            (9, "9"),
+            (10, "10"),
+            (11, "11"),
+            (12, "12"),
+            (13, "13"),
+            (14, "14"),
+            (15, "15"),
+            (16, "16"),
+            (17, "17"),
+            (18, "18"),
+            (19, "19"),
+            (20, "20"),
+            (21, "21"),
+            (22, "22"),
+            (23, "23"),
+            (24, "24"),
+            (25, "25"),
+            (26, "26"),
+            (27, "27"),
+            (28, "28"),
+            (29, "29"),
+            (30, "30"),
+        ]
+    )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
         choices=[
@@ -566,6 +359,42 @@ class EmployerDocServiceAgreement(models.Model):
         ]
     )
     c5_1_1_failed_deployment_refund = models.PositiveIntegerField()
+    c5_1_2_refund_within_days = models.PositiveIntegerField(
+        # days
+        choices=[
+            (0, "0"),
+            (1, "1"),
+            (2, "2"),
+            (3, "3"),
+            (4, "4"),
+            (5, "5"),
+            (6, "6"),
+            (7, "7"),
+            (8, "8"),
+            (9, "9"),
+            (10, "10"),
+            (11, "11"),
+            (12, "12"),
+            (13, "13"),
+            (14, "14"),
+            (15, "15"),
+            (16, "16"),
+            (17, "17"),
+            (18, "18"),
+            (19, "19"),
+            (20, "20"),
+            (21, "21"),
+            (22, "22"),
+            (23, "23"),
+            (24, "24"),
+            (25, "25"),
+            (26, "26"),
+            (27, "27"),
+            (28, "28"),
+            (29, "29"),
+            (30, "30"),
+        ]
+    )
     c5_1_2_before_fdw_arrives_charge = models.PositiveIntegerField()
     c5_1_2_after_fdw_arrives_charge = models.PositiveIntegerField()
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
@@ -629,12 +458,7 @@ class EmployerDocServiceAgreement(models.Model):
         ]
     )
 
-class EmployerDocEmploymentContract(models.Model):
-    employer_doc_base = models.OneToOneField(
-        EmployerDocBase,
-        on_delete=models.CASCADE,
-        related_name='rn_employerdocemploymentcontract'
-    )
+    # Employment Contract
     c3_2_salary_payment_date = models.PositiveSmallIntegerField(
         # day of month
         choices=[
@@ -714,56 +538,82 @@ class EmployerDocEmploymentContract(models.Model):
         ]
     )
 
-# class EmployerDocSalaryPlacementRepayment(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
+class EmployerDocSig(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_signatures_ed'
+    )
+    agreement_date = models.DateField(blank=True, null=True)
+    employer_signature = models.TextField(blank=True, null=True)
+    fdw_signature = models.TextField(blank=True, null=True)
+    agency_staff_signature = models.TextField(blank=True, null=True)
+    spouse_signature = models.TextField(blank=True,null=True)
+    sponsor_signature = models.TextField(blank=True, null=True)
 
-# class EmployerDocRestDayAgreement(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
+    # Witnesses
+    employer_witness_signature = models.TextField(blank=True, null=True)
+    employer_witness_name = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    employer_witness_nric = models.CharField(
+        verbose_name='Last 4 characters of NRIC/FIN',
+        max_length=4,
+        blank=True,
+        null=True
+    )
+    fdw_witness_signature = models.TextField(blank=True, null=True)
+    fdw_witness_name = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    fdw_witness_nric = models.CharField(
+        verbose_name='Last 4 characters of NRIC/FIN',
+        max_length=4,
+        blank=True,
+        null=True
+    )
+    agency_staff_witness_signature = models.TextField(blank=True, null=True)
+    agency_staff_witness_name = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    agency_staff_witness_nric = models.CharField(
+        verbose_name='Last 4 characters of NRIC/FIN',
+        max_length=4,
+        blank=True,
+        null=True
+    )
 
-# class EmployerDocHandoverChecklist(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
+    # One-time token sent to employer for them to get their signature
+    # employer_signature_token = models.CharField(max_length=32, blank=True, null=True)
 
-# class EmployerDocTransferConsent(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
+class EmployerDocMaidStatus(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_maidstatus_ed'
+    )
+    ipa_approval_date = models.DateField(blank=True, null=True)
+    security_bond_approval_date = models.DateField(blank=True, null=True)
+    arrival_date = models.DateField(blank=True, null=True)
+    thumb_print_date = models.DateField(blank=True, null=True)
+    sip_date = models.DateField(blank=True, null=True)
+    fdw_work_commencement_date = models.DateField(blank=True, null=True)
+    work_permit_no = models.CharField(max_length=20, blank=True, null=True)
 
-# class EmployerDocWorkPassAuthorisation(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
-
-# class EmployerDocSecurityBondForm(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
-
-# class EmployerDocWorkPermitApplicants(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
-
-# class EmployerDocIncomeTaxDeclaration(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
-
-# class EmployerDocSafetyAgreement(models.Model):
-#     employer_doc_base = models.OneToOneField(
-#         EmployerDocBase,
-#         on_delete=models.CASCADE
-#     )
+# from onlinemaid.storage_backends import PrivateMediaStorage
+class JobOrder(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_joborder_ed'
+    )
+    job_order_pdf = models.FileField(
+        upload_to='employer-documentation/job-orders/',
+        # storage=PrivateMediaStorage()
+    )

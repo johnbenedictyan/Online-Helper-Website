@@ -31,7 +31,8 @@ from .forms import (
 from .models import (
     Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
+    MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory,
+    MaidAgencyFeeTransaction
 )
 
 from .mixins import SpecificAgencyMaidLoginRequiredMixin
@@ -108,7 +109,12 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.agency = self.agency
-
+        initial_agency_fee_amount = form.cleaned_data.get(
+            'initial_agency_fee_amount'
+        )
+        initial_agency_fee_description = form.cleaned_data.get(
+            'initial_agency_fee_description'
+        )
         response = super().form_valid(form)
         MaidBiodata.objects.create(
             maid=self.object
@@ -130,6 +136,12 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
         )
         MaidCooking.objects.create(
             maid=self.object
+        )
+        MaidAgencyFeeTransaction.objects.create(
+            maid=self.object,
+            amount=initial_agency_fee_amount,
+            transaction_type='ADD',
+            description=initial_agency_fee_description
         )
 
         return HttpResponseRedirect(self.get_success_url())

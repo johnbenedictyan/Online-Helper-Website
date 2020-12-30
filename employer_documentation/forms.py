@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -12,212 +13,177 @@ from crispy_forms.bootstrap import FormActions
 
 # Imports from local apps
 from .models import (
-    EmployerBase,
-    EmployerDocBase,
-    EmployerDocEmploymentContract,
-    EmployerDocJobOrder,
+    Employer,
+    EmployerDoc,
     EmployerDocMaidStatus,
-    EmployerDocServiceAgreement,
-    EmployerDocServiceFeeBase,
-    EmployerDocServiceFeeReplacement,
     EmployerDocSig,
-    EmployerExtraInfo,
+)
+from .mixins import (
+    SignatureFormMixin,
+)
+from onlinemaid.constants import (
+    AG_OWNERS,
+    AG_ADMINS,
+    AG_MANAGERS,
+    AG_SALES,
 )
 from agency.models import AgencyEmployee
 from maid.models import Maid
-from . import mixins as e_d_mixins
 
 
 # Start of Forms
-
-# Forms that inherit from inbuilt Django forms
-
-# Model Forms (forms.ModelForm)
-class EmployerBaseForm(forms.ModelForm):
+class EmployerForm(forms.ModelForm):
     class Meta:
-        model = EmployerBase
-        # exclude = ['agency_employee']
+        model = Employer
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
+        self.user_obj = get_user_model().objects.get(pk=self.user_pk)
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-base-form'
-        if self.agency_user_group==e_d_mixins.agency_owners:
+        self.helper.form_class = 'employer-form'
+
+        ef_fieldset_all = Fieldset(
+            # Legend for form
+            'Create new / update existing employer:',
+            # Form fields
+            'agency_employee',
+            'employer_name',
+            'employer_email',
+            'employer_mobile_number',
+            'employer_nric',
+            'employer_address_1',
+            'employer_address_2',
+            'employer_post_code',
+        )
+        ef_fieldset_exclude_agencyemployee = Fieldset(
+            # Legend for form
+            'Create new / update existing employer:',
+            # Form fields
+            'employer_name',
+            'employer_email',
+            'employer_mobile_number',
+            'employer_nric',
+            'employer_address_1',
+            'employer_address_2',
+            'employer_post_code',
+        )
+
+        if self.agency_user_group==AG_OWNERS:
             self.helper.layout = Layout(
-                Fieldset(
-                    # Legend for form
-                    'Create new / update existing employer:',
-                    # Form fields
-                    'employer_name',
-                    'employer_email',
-                    'employer_mobile_number',
-                    'agency_employee',
-                ),
+                ef_fieldset_all,
                 Submit('submit', 'Submit')
             )
             self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(agency=get_user_model().objects
-                .get(pk=self.user_pk).agency_owner.agency)
+                AgencyEmployee.objects.filter(
+                    agency=self.user_obj.agency_owner.agency
+                )
             )
-        elif self.agency_user_group==e_d_mixins.agency_administrators:
+        elif self.agency_user_group==AG_ADMINS:
             self.helper.layout = Layout(
-                Fieldset(
-                    # Legend for form
-                    'Create new / update existing employer:',
-                    # Form fields
-                    'employer_name',
-                    'employer_email',
-                    'employer_mobile_number',
-                    'agency_employee',
-                ),
+                ef_fieldset_all,
                 Submit('submit', 'Submit')
             )
             self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(agency=get_user_model().objects
-                .get(pk=self.user_pk).agency_employee.agency)
+                AgencyEmployee.objects.filter(
+                    agency=self.user_obj.agency_employee.agency
+                )
             )
-        elif self.agency_user_group==e_d_mixins.agency_managers:
+        elif self.agency_user_group==AG_MANAGERS:
             self.helper.layout = Layout(
-                Fieldset(
-                    # Legend for form
-                    'Create new / update existing employer:',
-                    # Form fields
-                    'employer_name',
-                    'employer_email',
-                    'employer_mobile_number',
-                    'agency_employee',
-                ),
+                ef_fieldset_all,
                 Submit('submit', 'Submit')
             )
             self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(branch=get_user_model().objects
-                .get(pk=self.user_pk).agency_employee.branch)
+                AgencyEmployee.objects.filter(
+                    branch=self.user_obj.agency_employee.branch
+                )
             )
         else:
             del self.fields['agency_employee']
             self.helper.layout = Layout(
-                Fieldset(
-                    # Legend for form
-                    'Create new / update existing employer:',
-                    # Form fields
-                    'employer_name',
-                    'employer_email',
-                    'employer_mobile_number',
-                ),
+                ef_fieldset_exclude_agencyemployee,
                 Submit('submit', 'Submit')
             )
     
-    def clean(self):
-        cleaned_data = super().clean()
+    def check_queryset(self, queryset, error_msg):
+        for employer_obj in queryset:
+            if not employer_obj==self.instance:
+                # Check if it belongs to current user's agency
+                if self.agency_user_group==AG_OWNERS:
+                    if (
+                        employer_obj.agency_employee.agency
+                        == self.user_obj.agency_owner.agency
+                    ):
+                        raise ValidationError(error_msg)
+                elif (
+                    employer_obj.agency_employee.agency
+                    == self.user_obj.agency_employee.agency
+                ):
+                    raise ValidationError(error_msg)
+    
+    def clean_employer_email(self):
+        cleaned_field = self.cleaned_data['employer_email']
 
         try:
             # Check if employer_email exists in database
-            employer_obj = EmployerBase.objects.get(
-                employer_email=cleaned_data.get('employer_email')
+            employer_queryset = Employer.objects.filter(
+                employer_email=cleaned_field
             )
-        except EmployerBase.DoesNotExist:
+        except Employer.DoesNotExist:
             # If no entries for employer_email, then no further checks
-            return cleaned_data
+            return cleaned_field
         else:
-            if employer_obj==self.instance:
-                pass
-            else:
-                # If employer_email exists, then check if it belongs to
-                # current user's agency
-                error_msg = _('An employer with this email address already \
-                    exists in your agency')
-                if self.agency_user_group==e_d_mixins.agency_owners:
-                    if (
-                        employer_obj.agency_employee.agency==get_user_model()
-                        .objects.get(pk=self.user_pk).agency_owner.agency
-                    ):
-                        self.add_error('employer_email', error_msg)
-                elif (
-                    employer_obj.agency_employee.agency==get_user_model()
-                    .objects.get(pk=self.user_pk).agency_employee.agency
-                ):
-                    self.add_error('employer_email', error_msg)
-
-        return cleaned_data
-
-class EmployerBaseAgentForm(forms.ModelForm):
-    class Meta:
-        model = EmployerBase
-        fields = ['agency_employee']
-
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        super().__init__(*args, **kwargs)
-        user_obj = AgencyEmployee.objects.get(pk=self.user_pk)
-
-        if (
-            # If current user is part of owner or administrator group,
-            # display all agency's employees
-            user_obj.user.groups.filter(name=e_d_mixins.agency_owners)
-            .exists()
-            or
-            user_obj.user.groups.filter(name=e_d_mixins.agency_administrators)
-            .exists()
-        ):
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(agency=user_obj.agency)
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this email address already exists in your \
+                    agency'
             )
-        elif (
-            # If current user is part of manager group, display all agency
-            # branches employees
-            user_obj.user.groups.filter(name=e_d_mixins.agency_managers)
-            .exists()
-        ):
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(branch=user_obj.branch)
+        return cleaned_field
+
+    def clean_employer_mobile_number(self):
+        cleaned_field = self.cleaned_data['employer_mobile_number']
+
+        try:
+            # Check if employer_mobile_number exists in database
+            employer_queryset = Employer.objects.filter(
+                employer_mobile_number=cleaned_field
             )
+        except Employer.DoesNotExist:
+            # If no entries for employer_mobile_number, then no further checks
+            return cleaned_field
         else:
-            # If current user is not part of owner, administrator or manager
-            # group, only provide unusable choice that will fail validation.
-            # View should also perform separate user permissions check.
-            self.fields['agency_employee'].choices = [('-','-')]
-        
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-base-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                "Update employer's assigned agency employee:",
-                # Form fields
-                'agency_employee',
-            ),
-            Submit('submit', 'Submit')
-        )
-    
-class EmployerExtraInfoForm(forms.ModelForm):
-    class Meta:
-        model = EmployerExtraInfo
-        exclude = ['employer_base','agency_employee']
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this mobile number already exists in your \
+                    agency'
+            )
+        return cleaned_field
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-base-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Create new / update existing employer extra info:',
-                # Form fields
-                'employer_nric',
-                'employer_address_1',
-                'employer_address_2',
-                'employer_postal_code',
-            ),
-            Submit('submit', 'Submit')
-        )
+    def clean_employer_nric(self):
+        cleaned_field = self.cleaned_data['employer_nric']
 
-class EmployerDocBaseForm(forms.ModelForm):
+        try:
+            # Check if employer_nric exists in database
+            employer_queryset = Employer.objects.filter(
+                employer_nric=cleaned_field
+            )
+        except Employer.DoesNotExist:
+            # If no entries for employer_nric, then no further checks
+            return cleaned_field
+        else:
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this NRIC/FIN already exists in your \
+                    agency'
+            )
+        return cleaned_field
+
+class EmployerDocForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocBase
+        model = EmployerDoc
         exclude = ['employer']
 
     def __init__(self, *args, **kwargs):
@@ -225,7 +191,7 @@ class EmployerDocBaseForm(forms.ModelForm):
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
 
-        if self.agency_user_group==e_d_mixins.agency_owners:
+        if self.agency_user_group==AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -241,66 +207,15 @@ class EmployerDocBaseForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new / update existing employer doc base:',
-                # Form fields
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
                 'case_ref_no',
                 'fdw',
                 'spouse_required',
                 'sponsor_required',
-            ),
-            Submit('submit', 'Submit')
-        )
 
-class EmployerDocJobOrderForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDocJobOrder
-        exclude = ['employer_doc_base']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Create new / update existing employer doc job order:',
-                # Form fields
-                'job_order_date', ################################################# bug - does not show in form
-                'employer_race',
-                'type_of_property',
-                'no_of_bedrooms',
-                'no_of_toilets',
-                'no_of_family_members',
-                'no_of_children_between_6_12',
-                'no_of_children_below_5',
-                'no_of_infants',
-                'fetch_children',
-                'look_after_elderly',
-                'look_after_bed_ridden_patient',
-                'cooking',
-                'clothes_washing',
-                'car_washing',
-                'take_care_of_pets',
-                'gardening',
-                'remarks',
-            ),
-            Submit('submit', 'Submit')
-        )
-
-class EmployerDocServiceFeeBaseForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDocServiceFeeBase
-        exclude = ['employer_doc_base']
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Create new / update existing employer doc service fee base:',
-                # Form fields
+                # Service Fee Schedule - Form A
                 'b1_service_fee',
                 'b2a_work_permit_application_collection',
                 'b2b_medical_examination_fee',
@@ -319,24 +234,13 @@ class EmployerDocServiceFeeBaseForm(forms.ModelForm):
                 'b2j3_other_services_description',
                 'b2j3_other_services_fee',
                 'ca_deposit',
-            ),
-            Submit('submit', 'Submit')
-        )
+                'fdw_is_replacement',
 
-class EmployerDocServiceAgreementForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDocServiceAgreement
-        exclude = ['employer_doc_base']
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Create new / update existing employer doc service agreement:',
-                # Form fields
+                # Replacement - Service Fee Schedule - Form B
+                'fdw_replaced',
+                'b4_loan_transferred',
+
+                # Service Agreement
                 'c1_3_handover_days',
                 'c3_2_no_replacement_criteria_1',
                 'c3_2_no_replacement_criteria_2',
@@ -344,9 +248,11 @@ class EmployerDocServiceAgreementForm(forms.ModelForm):
                 'c3_4_no_replacement_refund',
                 'c4_1_number_of_replacements',
                 'c4_1_replacement_period',
+                'c4_1_replacement_after_min_working_days',
                 'c4_1_5_replacement_deadline',
                 'c5_1_1_deployment_deadline',
                 'c5_1_1_failed_deployment_refund',
+                'c5_1_2_refund_within_days',
                 'c5_1_2_before_fdw_arrives_charge',
                 'c5_1_2_after_fdw_arrives_charge',
                 'c5_2_2_can_transfer_refund_within',
@@ -356,24 +262,8 @@ class EmployerDocServiceAgreementForm(forms.ModelForm):
                 'c9_1_independent_mediator_1',
                 'c9_2_independent_mediator_2',
                 'c13_termination_notice',
-            ),
-            Submit('submit', 'Submit')
-        )
 
-class EmployerDocEmploymentContractForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDocEmploymentContract
-        exclude = ['employer_doc_base']
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Create new / update existing employer doc employment contract:',
-                # Form fields
+                # Employment Contract
                 'c3_2_salary_payment_date',
                 'c3_5_fdw_sleeping_arrangement',
                 'c4_1_termination_notice',
@@ -381,5 +271,80 @@ class EmployerDocEmploymentContractForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
+class EmployerDocAgreementDateForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['agreement_date']
 
-# Generic Forms (forms.Form)
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
+                'agreement_date',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+class EmployerDocMaidStatusForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocMaidStatus
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
+                'ipa_approval_date',
+                'security_bond_approval_date',
+                'arrival_date',
+                'thumb_print_date',
+                'sip_date',
+                'fdw_work_commencement_date',
+                'work_permit_no',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+
+# Signature Forms
+class SignatureForm(SignatureFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = '__all__'
+    
+    def __init__(self, *args, **kwargs):
+        # Assign model_field_name in urls.py or views.py
+        self.model_field_name = kwargs.pop('model_field_name')
+        super().__init__(*args, **kwargs)
+        self.fields[self.model_field_name] = forms.CharField()
+        self.fields[self.model_field_name].widget.attrs.update(
+            {
+                'id': 'id_signature',
+                'hidden': 'true',
+            }
+        )
+
+        # Make new list of all field names, then remove fields that are not
+        # model_field_name.
+        fields_copy = list(self.fields)
+        for field in fields_copy:
+            if field!=self.model_field_name:
+                del self.fields[field]

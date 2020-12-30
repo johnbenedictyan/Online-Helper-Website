@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # 3rd party packages
     'crispy_forms',
     'django_filters',
+    'mathfilters',
     'social_django',
     'storages',
 
@@ -57,7 +58,7 @@ INSTALLED_APPS = [
     'advertisement',
     'agency.apps.AgencyConfig',
     'dashboard',
-    'employer_documentation',
+    'employer_documentation.apps.EmployerDocumentationConfig',
     'maid.apps.MaidConfig',
     'payment',
     'shortlist',
