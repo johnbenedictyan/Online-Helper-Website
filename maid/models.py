@@ -282,7 +282,7 @@ class MaidAgencyFeeTransaction(models.Model):
 
     maid = models.ForeignKey(
         Maid,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name='agency_fee_transactions'
     )
 
