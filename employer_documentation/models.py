@@ -598,13 +598,42 @@ class EmployerDocMaidStatus(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_maidstatus_ed'
     )
-    ipa_approval_date = models.DateField(blank=True, null=True)
-    security_bond_approval_date = models.DateField(blank=True, null=True)
-    arrival_date = models.DateField(blank=True, null=True)
-    thumb_print_date = models.DateField(blank=True, null=True)
-    sip_date = models.DateField(blank=True, null=True)
-    fdw_work_commencement_date = models.DateField(blank=True, null=True)
-    work_permit_no = models.CharField(max_length=20, blank=True, null=True)
+    ipa_approval_date = models.DateField(
+        verbose_name='In Principle Approval (IPA) Date',
+        blank=True,
+        null=True
+    )
+    security_bond_approval_date = models.DateField(
+        verbose_name='Security Bond Approval Date',
+        blank=True,
+        null=True
+    )
+    arrival_date = models.DateField(
+        verbose_name='FDW Arrival Date',
+        blank=True,
+        null=True
+    )
+    thumb_print_date = models.DateField(
+        verbose_name='FDW Thumb Print Date',
+        blank=True,
+        null=True
+    )
+    sip_date = models.DateField(
+        verbose_name='Settling-In Programme (SIP) Date',
+        blank=True,
+        null=True
+    )
+    fdw_work_commencement_date = models.DateField(
+        verbose_name='FDW Work Commencement Date',
+        blank=True,
+        null=True
+    )
+    work_permit_no = models.CharField(
+        verbose_name='Work Permit Number',
+        max_length=20,
+        blank=True,
+        null=True
+    )
 
 # from onlinemaid.storage_backends import PrivateMediaStorage
 class JobOrder(models.Model):
