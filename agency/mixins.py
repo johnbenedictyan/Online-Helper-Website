@@ -154,13 +154,13 @@ class GetAuthorityMixin:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
                 if authority == AG_OWNERS:
-                    agency = self.request.user.agency_owner.agency
+                    agency_id = self.request.user.agency_owner.agency.pk
                 else:
-                    agency = self.request.user.agency_employee.agency
+                    agency_id = self.request.user.agency_employee.agency.pk
 
         return {
             'authority': authority,
-            'agency': agency
+            'agency_id': agency_id
         }
 
     def get(self, request, *args, **kwargs):
@@ -169,13 +169,13 @@ class GetAuthorityMixin:
                 '{0} is missing the authority attribute'
                 .format(self.__class__.__name__)
             )
-        if not self.agency and self.agency != '':
+        if not self.agency_id and self.agency_id != '':
             raise ImproperlyConfigured(
                 '{0} is missing the agency_id attribute'
                 .format(self.__class__.__name__)
             )
         self.authority = self.get_authority()['authority']
-        self.agency = self.get_authority()['agency']
+        self.agency_id = self.get_authority()['agency_id']
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -184,11 +184,11 @@ class GetAuthorityMixin:
                 '{0} is missing the authority attribute'
                 .format(self.__class__.__name__)
             )
-        if not self.agency and self.agency != '':
+        if not self.agency_id and self.agency_id != '':
             raise ImproperlyConfigured(
                 '{0} is missing the agency_id attribute'
                 .format(self.__class__.__name__)
             )
         self.authority = self.get_authority()['authority']
-        self.agency = self.get_authority()['agency']
+        self.agency_id = self.get_authority()['agency_id']
         return super().post(request, *args, **kwargs)
