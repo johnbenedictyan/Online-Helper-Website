@@ -14,7 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
 from accounts.models import Employer
-from agency.models import Agency, AgencyEmployee, AgencyPlan
+from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
@@ -26,8 +26,47 @@ from maid.models import Maid
 # Start of Views
 
 # Template Views
-class DashboardHomePage(AgencyLoginRequiredMixin, TemplateView):
+class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
     template_name = 'base/dashboard-home-page.html'
+    authority = ''
+    agency = ''
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        dashboard_home_page_kwargs = {
+            'accounts': {
+                'current': AgencyEmployee.objects.filter(
+                    agency=self.agency
+                ).count(),
+                'max': 123
+            },
+            'biodata': {
+                'current': Maid.objects.filter(
+                    agency=self.agency
+                ).count(),
+                'max': 123
+            },
+            'branches': {
+                'current': AgencyBranch.objects.filter(
+                    agency=self.agency
+                ).count(),
+                'max': None
+            },
+            'subscriptions': {
+                'current': 123,
+                'max': None
+            },
+            'employers': {
+                'current': 123,
+                'max': None
+            },
+            'sales': {
+                'current': 123,
+                'max': None
+            }
+        }
+        kwargs.update(dashboard_home_page_kwargs)
+        return kwargs
 
 # Redirect Views
 
