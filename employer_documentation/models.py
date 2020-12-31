@@ -27,21 +27,29 @@ class Employer(models.Model):
     )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
+        verbose_name=_('Assigned Agent / Salesperson'),
         on_delete=models.RESTRICT
     )
-    employer_name = models.CharField(max_length=40)
+    employer_name = models.CharField(
+        verbose_name=_('Employer Name'),
+        max_length=40
+    )
     employer_email = models.EmailField(verbose_name=_('Email Address'))
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[0-9]*$',
+                regex='^[8-9][0-9]{7}$',
+                # regex='^[8-9][0-9]{7}[0-9]*$',
                 message=_('Please enter a valid contact number')
             )
         ]
     )
-    employer_nric = models.CharField(max_length=20)
+    employer_nric = models.CharField(
+        verbose_name=_('NRIC / FIN'),
+        max_length=20
+    )
     employer_address_1 = models.CharField(
         verbose_name=_('Street Address'),
         max_length=100,
@@ -81,11 +89,17 @@ class EmployerDoc(models.Model):
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried? A spouse required if Employer's \
             monthly income < S$3,000 per month."),
-        choices=TrueFalseChoices('Yes, required', 'No, not required'),
+        choices=TrueFalseChoices(
+            'Yes, spouse required',
+            'No, spouse not required'
+        ),
     )
     sponsor_required = models.BooleanField(
         verbose_name=_("Is sponsor requried?"),
-        choices=TrueFalseChoices('Yes, required', 'No, not required'),
+        choices=TrueFalseChoices(
+            'Yes, sponsor required',
+            'No, sponsor not required'
+        ),
     )
 
     # Service Fee Schedule
@@ -599,37 +613,37 @@ class EmployerDocMaidStatus(models.Model):
         related_name='rn_maidstatus_ed'
     )
     ipa_approval_date = models.DateField(
-        verbose_name='In Principle Approval (IPA) Date',
+        verbose_name=_('In Principle Approval (IPA) Date'),
         blank=True,
         null=True
     )
     security_bond_approval_date = models.DateField(
-        verbose_name='Security Bond Approval Date',
+        verbose_name=_('Security Bond Approval Date'),
         blank=True,
         null=True
     )
     arrival_date = models.DateField(
-        verbose_name='FDW Arrival Date',
+        verbose_name=_('FDW Arrival Date'),
         blank=True,
         null=True
     )
     thumb_print_date = models.DateField(
-        verbose_name='FDW Thumb Print Date',
+        verbose_name=_('FDW Thumb Print Date'),
         blank=True,
         null=True
     )
     sip_date = models.DateField(
-        verbose_name='Settling-In Programme (SIP) Date',
+        verbose_name=_('Settling-In Programme (SIP) Date'),
         blank=True,
         null=True
     )
     fdw_work_commencement_date = models.DateField(
-        verbose_name='FDW Work Commencement Date',
+        verbose_name=_('FDW Work Commencement Date'),
         blank=True,
         null=True
     )
     work_permit_no = models.CharField(
-        verbose_name='Work Permit Number',
+        verbose_name=_('Work Permit Number'),
         max_length=20,
         blank=True,
         null=True
