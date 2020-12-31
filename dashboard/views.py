@@ -20,6 +20,7 @@ from agency.mixins import (
 )
 from enquiry.models import Enquiry
 from maid.models import Maid
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 
 # Imports from local app
 
@@ -29,26 +30,26 @@ from maid.models import Maid
 class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
     template_name = 'base/dashboard-home-page.html'
     authority = ''
-    agency = ''
+    agency_id = ''
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
         dashboard_home_page_kwargs = {
             'accounts': {
                 'current': AgencyEmployee.objects.filter(
-                    agency=self.agency
+                    agency__pk = agency_id
                 ).count(),
                 'max': 123
             },
             'biodata': {
                 'current': Maid.objects.filter(
-                    agency=self.agency
+                    agency__pk = agency_id
                 ).count(),
                 'max': 123
             },
             'branches': {
                 'current': AgencyBranch.objects.filter(
-                    agency=self.agency
+                    agency__pk = agency_id
                 ).count(),
                 'max': None
             },
@@ -77,15 +78,11 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     model = Maid
     template_name = 'list/dashboard-maid-list.html'
     authority = ''
+    agency_id = ''
 
     def get_queryset(self):
-        if self.authority == 'Agency Owners':
-            agency = self.request.user.agency_owner.agency
-        else:
-            agency = self.request.user.agency_employee.agency
-            
         return Maid.objects.filter(
-            agency = agency
+            agency__pk = agency_id
         )
 
 class DashboardAccountList(
@@ -95,23 +92,16 @@ class DashboardAccountList(
     model = AgencyEmployee
     template_name = 'list/dashboard-account-list.html'
     authority = ''
+    agency_id = ''
 
     def get_queryset(self):
-        if self.authority == 'Agency Owners':
-            agency = self.request.user.agency_owner.agency
-        else:
-            agency = self.request.user.agency_employee.agency
-            
-        if (
-            self.authority == 'Agency Owners' or
-            self.authority == 'Agency Administrators'
-        ):
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             return AgencyEmployee.objects.filter(
-                agency = agency
+                agency__pk = agency_id
             )
         else:
             return AgencyEmployee.objects.filter(
-                agency = agency,
+                agency__pk = agency_id,
                 branch = self.request.user.agency_employee.branch
             )
 
@@ -136,15 +126,10 @@ class DashboardAgencyDetail(
     model = Agency
     template_name = 'detail/dashboard-agency-detail.html'
     authority = ''
+    agency_id = ''
 
     def get_object(self):
-        if self.authority == 'Agency Owners':
-            agency = self.request.user.agency_owner.agency
-        else:
-            agency = self.request.user.agency_employee.agency
-
-        agency = get_object_or_404(Agency, pk=agency.pk)
-
+        agency = get_object_or_404(Agency, pk=agency_id)
         return agency
 
 class DashboardMaidDetail(
@@ -154,18 +139,14 @@ class DashboardMaidDetail(
     model = Maid
     template_name = 'detail/dashboard-maid-detail.html'
     authority = ''
+    agency_id = ''
 
     def get_object(self):
-        if self.authority == 'Agency Owners':
-            agency = self.request.user.agency_owner.agency
-        else:
-            agency = self.request.user.agency_employee.agency
-
         return Maid.objects.get(
             pk = self.kwargs.get(
                 self.pk_url_kwarg
             ),
-            agency = agency
+            agency__pk = self.agency_id
         )
 
 # Create Views
