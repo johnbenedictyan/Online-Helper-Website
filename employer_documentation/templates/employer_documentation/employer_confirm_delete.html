@@ -1,6 +1,11 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 {% load crispy_forms_tags %}
 
+{% block sidenav_extra %}
+    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+{% endblock sidenav_extra %}
+
 {% block ed_section %}
     <form method="post" class="">
         {% csrf_token %}

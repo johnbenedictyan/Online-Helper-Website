@@ -1,5 +1,15 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
+{% block sidenav_extra %}
+    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Update Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">Employer Documents List</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Update Documentation</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer.pk %}">Create Documentation</a></li>
+{% endblock sidenav_extra %}
+
 {% block ed_section %}
     <h1>Employer: {{ object.employer }}</h1>
 

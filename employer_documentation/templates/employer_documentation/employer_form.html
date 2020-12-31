@@ -1,6 +1,52 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 {% load crispy_forms_tags %}
 
+{% block sidenav_extra %}
+    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
+    {% if object.employer_doc %}
+        <!-- {% comment %}Sub Documents{% endcomment %} -->
+        <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer_doc.employer.pk %}">Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer_doc.employer.pk %}">Update Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer_doc.employer.pk %}">Employer Documents List</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Documentation Detail</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Update Documentation</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer_doc.employer.pk %}">Create Documentation</a></li>
+    {% elif object.employer %}
+        <!-- {% comment %}Documents{% endcomment %} -->
+        <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Update Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">Employer Documents List</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Documentation Detail</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer.pk %}">Create Documentation</a></li>
+
+        <li class="sidenav__list-item">
+            <a data-toggle="collapse" href="#forms" role="button" aria-expanded="false" aria-controls="forms">Navigate Form Sections<i class="fa fa-caret-down float-right align-middle pt-1"></i></a>
+        </li>
+        <ul class="collapse sidenav__list pl-3" id="forms">
+            <li class="sidenav__list-item">
+                <a href="#fee-schedule">Service & Fees Schedule</a>
+            </li>
+            <li class="sidenav__list-item">
+                <a href="#service-agreement">Service Agreement</a>
+            </li>
+            <li class="sidenav__list-item">
+                <a href="#employment-contract">Employment Contract</a>
+            </li>
+            <li class="sidenav__list-item">
+                <a href="#invoice-official-receipt">Official Receipts</a>
+            </li>
+            <li class="sidenav__list-item">
+                <a href="#signature">Signatures</a>
+            </li>
+        </ul>
+    {% else %}
+        <!-- {% comment %}Employers{% endcomment %} -->
+        <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">Employer Profile</a></li>
+    {% endif %}
+{% endblock sidenav_extra %}
+
 {% block ed_section %}
     {% if form.errors %}
         {% for field in form %}

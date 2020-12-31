@@ -1,7 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/employer-documentation.css' %}">
+{% endblock css %}
+
 {% block main_content %}
-<section class="">
-    {% block ed_section %}
-    {% endblock ed_section %}
-</section>
+<div class="row">
+    <!-- Side Nav -->
+    <aside class="sidenav col-2 pt-3">
+        <ul class="sidenav__list">
+            <li class="sidenav__list-item"><a href="{% url 'dashboard_home' %}">Back to Dashboard</a></li>
+            {% if request.user.agency_employee %}
+                <li class="sidenav__list-item"><a href="{% url 'agency_detail' pk=request.user.agency_employee.agency.pk %}">Agency Profile</a></li>
+            {% elif request.user.agency_owner %}
+                <li class="sidenav__list-item"><a href="{% url 'agency_detail' pk=request.user.agency_owner.agency.pk %}">Agency Profile</a></li>
+            {% endif %}
+            {% block sidenav_extra %}{% endblock sidenav_extra %}
+        </ul>
+    </aside>
+
+    <!-- Employer Documentation Main Section -->
+    <section class="col-10 p-lg-3">
+        {% block ed_section %}{% endblock ed_section %}
+    </section>
+</div>
 {% endblock main_content %}
