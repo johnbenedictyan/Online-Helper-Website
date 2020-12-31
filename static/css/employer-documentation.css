@@ -1,0 +1,11 @@
+.sidenav {
+    background-color: rgb(52, 80, 109);
+}
+
+.sidenav__list-item {
+    list-style: none;
+}
+
+.sidenav__list-item > a {
+    color: white;
+}
