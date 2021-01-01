@@ -590,7 +590,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     spouse_nric = models.CharField(
-        verbose_name='Spouse NRIC/FIN',
+        verbose_name=_('Spouse NRIC/FIN'),
         max_length=20,
         blank=True,
         null=True
@@ -614,7 +614,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     employer_witness_nric = models.CharField(
-        verbose_name='Last 4 characters of NRIC/FIN',
+        verbose_name=_('Last 4 characters of NRIC/FIN'),
         max_length=4,
         blank=True,
         null=True
@@ -631,7 +631,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     fdw_witness_nric = models.CharField(
-        verbose_name='Last 4 characters of NRIC/FIN',
+        verbose_name=_('Last 4 characters of NRIC/FIN'),
         max_length=4,
         blank=True,
         null=True
@@ -648,7 +648,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     agency_staff_witness_nric = models.CharField(
-        verbose_name='Last 4 characters of NRIC/FIN',
+        verbose_name=_('Last 4 characters of NRIC/FIN'),
         max_length=4,
         blank=True,
         null=True
