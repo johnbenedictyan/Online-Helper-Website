@@ -558,16 +558,57 @@ class EmployerDocSig(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_signatures_ed'
     )
-    agreement_date = models.DateField(blank=True, null=True)
-    employer_signature = models.TextField(blank=True, null=True)
-    fdw_signature = models.TextField(blank=True, null=True)
-    agency_staff_signature = models.TextField(blank=True, null=True)
-    spouse_signature = models.TextField(blank=True,null=True)
-    sponsor_signature = models.TextField(blank=True, null=True)
+    agreement_date = models.DateField(
+        verbose_name=_('Agreement Date for Signed Documents'),
+        blank=True,
+        null=True
+    )
+    employer_signature = models.TextField(
+        verbose_name=_('Employer Signature'),
+        blank=True,
+        null=True
+    )
+    fdw_signature = models.TextField(
+        verbose_name=_('FDW Signature'),
+        blank=True,
+        null=True
+    )
+    agency_staff_signature = models.TextField(
+        verbose_name=_('Agency Staff Member Signature'),
+        blank=True,
+        null=True
+    )
+    spouse_signature = models.TextField(
+        verbose_name=_('Spouse Signature'),
+        blank=True,
+        null=True
+    )
+    spouse_name = models.CharField(
+        verbose_name=_('Spouse Name'),
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    spouse_nric = models.CharField(
+        verbose_name='Spouse NRIC/FIN',
+        max_length=20,
+        blank=True,
+        null=True
+    )
+    sponsor_signature = models.TextField(
+        verbose_name=_('Employer Sponsor Signature'),
+        blank=True,
+        null=True
+    )
 
     # Witnesses
-    employer_witness_signature = models.TextField(blank=True, null=True)
+    employer_witness_signature = models.TextField(
+        verbose_name=_('Signature of Witness for Employer'),
+        blank=True,
+        null=True
+    )
     employer_witness_name = models.CharField(
+        verbose_name=_('Employer Witness Name'),
         max_length=40,
         blank=True,
         null=True
@@ -578,8 +619,13 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-    fdw_witness_signature = models.TextField(blank=True, null=True)
+    fdw_witness_signature = models.TextField(
+        verbose_name=_('Signature of Witness for FDW'),
+        blank=True,
+        null=True
+    )
     fdw_witness_name = models.CharField(
+        verbose_name=_('FDW Witness Name'),
         max_length=40,
         blank=True,
         null=True
@@ -590,8 +636,13 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-    agency_staff_witness_signature = models.TextField(blank=True, null=True)
+    agency_staff_witness_signature = models.TextField(
+        verbose_name=_('Signature of Witness for Agency Staff Memeber'),
+        blank=True,
+        null=True
+    )
     agency_staff_witness_name = models.CharField(
+        verbose_name=_('Agency Staff Memeber Witness Name'),
         max_length=40,
         blank=True,
         null=True
