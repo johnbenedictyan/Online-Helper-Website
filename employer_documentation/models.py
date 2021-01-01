@@ -715,5 +715,7 @@ class JobOrder(models.Model):
     )
     job_order_pdf = models.FileField(
         upload_to='employer-documentation/job-orders/',
+        blank=True,
+        null=True
         # storage=PrivateMediaStorage()
     )

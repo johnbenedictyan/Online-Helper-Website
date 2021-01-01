@@ -8,6 +8,7 @@ from .models import (
     EmployerDoc,
     EmployerDocMaidStatus,
     EmployerDocSig,
+    JobOrder,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -116,6 +117,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             elif (
                 isinstance(self.object, EmployerDocMaidStatus)
                 or isinstance(self.object, EmployerDocSig)
+                or isinstance(self.object, JobOrder)
             ):
                 self.employer_subdoc_obj = self.object
 

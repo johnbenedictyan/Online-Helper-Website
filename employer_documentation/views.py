@@ -14,12 +14,14 @@ from .models import (
     EmployerDoc,
     EmployerDocMaidStatus,
     EmployerDocSig,
+    JobOrder,
 )
 from .forms import (
     EmployerForm,
     EmployerDocForm,
     EmployerDocAgreementDateForm,
     EmployerDocMaidStatusForm,
+    JobOrderForm,
     SignatureForm,
 )
 from .mixins import (
@@ -220,6 +222,23 @@ class EmployerDocMaidStatusUpdateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
+class JobOrderUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = JobOrder
+    form_class = JobOrderForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/employer_form.html'
+    success_url = reverse_lazy('employer_list_route')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
 # Delete Views
 class EmployerDeleteView(
     CheckUserIsAgencyOwnerMixin,
@@ -264,6 +283,7 @@ class EmployerDocDeleteView(
 #         )
 #         return super().form_valid(form)
 
+# Signature Views
 class SignatureUpdateByAgentView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,

@@ -17,6 +17,7 @@ from .models import (
     EmployerDoc,
     EmployerDocMaidStatus,
     EmployerDocSig,
+    JobOrder,
 )
 from .mixins import (
     SignatureFormMixin,
@@ -319,6 +320,29 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                 'sip_date',
                 'fdw_work_commencement_date',
                 'work_permit_no',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+class JobOrderForm(forms.ModelForm):
+    class Meta:
+        model = JobOrder
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'Create new / update existing employer documents:',
+                
+                # Form fields - main
+                'job_order_pdf',
             ),
             Submit('submit', 'Submit')
         )

@@ -25,6 +25,7 @@ from .views import (
     EmployerDocUpdateView,
     EmployerDocAgreementDateUpdateView,
     EmployerDocMaidStatusUpdateView,
+    JobOrderUpdateView,
 )
 
 ## Delete Views
@@ -119,6 +120,11 @@ urlpatterns = [
                                         'status/<int:employersubdoc_pk>/update/',
                                         EmployerDocMaidStatusUpdateView.as_view(),
                                         name='employerdoc_status_update_route'
+                                    ),
+                                    path(
+                                        'job-order/<int:employersubdoc_pk>/update/',
+                                        JobOrderUpdateView.as_view(),
+                                        name='joborder_update_route'
                                     ),
                                     path(
                                         'signature/agent-access/',
