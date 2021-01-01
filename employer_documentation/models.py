@@ -87,8 +87,8 @@ class EmployerDoc(models.Model):
         on_delete=models.RESTRICT
     )
     spouse_required = models.BooleanField(
-        verbose_name=_("Is spouse requried? A spouse required if Employer's \
-            monthly income < S$3,000 per month."),
+        verbose_name=_("Is spouse requried? Required if Employer's monthly \
+            income < S$3,000 per month."),
         choices=TrueFalseChoices(
             'Yes, spouse required',
             'No, spouse not required'
@@ -172,7 +172,13 @@ class EmployerDoc(models.Model):
     ca_deposit = models.PositiveIntegerField() # cents
 
     # If FDW is replacement, then additional fields
-    fdw_is_replacement = models.BooleanField()
+    fdw_is_replacement = models.BooleanField(
+        verbose_name=_("Is this FDW a replacement?"),
+        choices=TrueFalseChoices(
+            'Yes, replacement',
+            'No, not replacement'
+        ),
+    )
     fdw_replaced = models.ForeignKey(
         Maid,
         on_delete=models.RESTRICT,
