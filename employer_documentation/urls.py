@@ -35,7 +35,7 @@ from .views import (
 
 ## Signature Views
 from .views import (
-    SignatureCreateByAgentView,
+    # SignatureCreateByAgentView,
     SignatureUpdateByAgentView,
 )
 
@@ -123,13 +123,13 @@ urlpatterns = [
                                     path(
                                         'signature/agent-access/',
                                         include([
-                                            path(
-                                                'employer/create/',
-                                                SignatureCreateByAgentView.as_view(
-                                                    model_field_name='employer_signature'
-                                                ),
-                                                name='signature_employer_create_route'
-                                            ),
+                                            # path(
+                                            #     'employer/create/',
+                                            #     SignatureCreateByAgentView.as_view(
+                                            #         model_field_name='employer_signature'
+                                            #     ),
+                                            #     name='signature_employer_create_route'
+                                            # ),
                                             path(
                                                 '<int:docsig_pk>/employer/update/',
                                                 SignatureUpdateByAgentView.as_view(
@@ -137,13 +137,13 @@ urlpatterns = [
                                                 ),
                                                 name='signature_employer_update_route'
                                             ),
-                                            path(
-                                                'spouse/create/',
-                                                SignatureCreateByAgentView.as_view(
-                                                    model_field_name='spouse_signature'
-                                                ),
-                                                name='signature_spouse_create_route'
-                                            ),
+                                            # path(
+                                            #     'spouse/create/',
+                                            #     SignatureCreateByAgentView.as_view(
+                                            #         model_field_name='spouse_signature'
+                                            #     ),
+                                            #     name='signature_spouse_create_route'
+                                            # ),
                                             path(
                                                 '<int:docsig_pk>/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
@@ -151,13 +151,13 @@ urlpatterns = [
                                                 ),
                                                 name='signature_spouse_update_route'
                                             ),
-                                            path(
-                                                'sponsor/create/',
-                                                SignatureCreateByAgentView.as_view(
-                                                    model_field_name='sponsor_signature'
-                                                ),
-                                                name='signature_sponsor_create_route'
-                                            ),
+                                            # path(
+                                            #     'sponsor/create/',
+                                            #     SignatureCreateByAgentView.as_view(
+                                            #         model_field_name='sponsor_signature'
+                                            #     ),
+                                            #     name='signature_sponsor_create_route'
+                                            # ),
                                             path(
                                                 '<int:docsig_pk>/sponsor/update/',
                                                 SignatureUpdateByAgentView.as_view(
@@ -165,13 +165,13 @@ urlpatterns = [
                                                 ),
                                                 name='signature_sponsor_update_route'
                                             ),
-                                            path(
-                                                'fdw/create/',
-                                                SignatureCreateByAgentView.as_view(
-                                                    model_field_name='fdw_signature'
-                                                ),
-                                                name='signature_fdw_create_route'
-                                            ),
+                                            # path(
+                                            #     'fdw/create/',
+                                            #     SignatureCreateByAgentView.as_view(
+                                            #         model_field_name='fdw_signature'
+                                            #     ),
+                                            #     name='signature_fdw_create_route'
+                                            # ),
                                             path(
                                                 '<int:docsig_pk>/fdw/update/',
                                                 SignatureUpdateByAgentView.as_view(
@@ -179,13 +179,13 @@ urlpatterns = [
                                                 ),
                                                 name='signature_fdw_update_route'
                                             ),
-                                            path(
-                                                'agency-staff/create/',
-                                                SignatureCreateByAgentView.as_view(
-                                                    model_field_name='agency_staff_signature'
-                                                ),
-                                                name='signature_agency_staff_create_route'
-                                            ),
+                                            # path(
+                                            #     'agency-staff/create/',
+                                            #     SignatureCreateByAgentView.as_view(
+                                            #         model_field_name='agency_staff_signature'
+                                            #     ),
+                                            #     name='signature_agency_staff_create_route'
+                                            # ),
                                             path(
                                                 '<int:docsig_pk>/agency-staff/update/',
                                                 SignatureUpdateByAgentView.as_view(

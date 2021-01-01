@@ -241,28 +241,28 @@ class EmployerDocDeleteView(
 
 
 # Signature Views
-class SignatureCreateByAgentView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    CreateView
-):
-    model = EmployerDocSig
-    form_class = SignatureForm
-    pk_url_kwarg = 'employerdoc_pk'
-    template_name = 'employer_documentation/signature_form.html'
-    success_url = reverse_lazy('employer_list_route')
-    model_field_name = None
+# class SignatureCreateByAgentView(
+#     CheckAgencyEmployeePermissionsMixin,
+#     CheckEmployerDocRelationshipsMixin,
+#     CreateView
+# ):
+#     model = EmployerDocSig
+#     form_class = SignatureForm
+#     pk_url_kwarg = 'employerdoc_pk'
+#     template_name = 'employer_documentation/signature_form.html'
+#     success_url = reverse_lazy('employer_list_route')
+#     model_field_name = None
 
-    def get_object(self, *args, **kwargs):
-        return EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
+#     def get_object(self, *args, **kwargs):
+#         return EmployerDoc.objects.get(
+#             pk = self.kwargs.get(self.pk_url_kwarg)
+#         )
 
-    def form_valid(self, form):
-        form.instance.employer_doc = EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
-        return super().form_valid(form)
+#     def form_valid(self, form):
+#         form.instance.employer_doc = EmployerDoc.objects.get(
+#             pk = self.kwargs.get(self.pk_url_kwarg)
+#         )
+#         return super().form_valid(form)
 
 class SignatureUpdateByAgentView(
     CheckAgencyEmployeePermissionsMixin,
@@ -285,6 +285,11 @@ class SignatureUpdateByAgentView(
         kwargs = super().get_form_kwargs()
         kwargs['model_field_name'] = self.model_field_name
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(self.model_field_name).verbose_name
+        return context
 
 
 # PDF Views
