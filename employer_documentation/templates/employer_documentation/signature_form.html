@@ -1,10 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'employer_documentation/base-ed-template.html' %}
 
-{% block main_content %}
-    <div class="container" style="margin-top:6em">
+{% block sidenav_extra %}
+    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer_doc.employer.pk %}">Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer_doc.employer.pk %}">Update Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer_doc.employer.pk %}">Employer Documents List</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Documentation Detail</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Update Documentation</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer_doc.employer.pk %}">Create Documentation</a></li>
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+    <div class="container">
         <div class="row">
             <div class="col">
-                <a class="btn btn-success" id="modal-trigger-btn" href="#signature-pad-modal" data-toggle="modal">Sign Forms</a>
+                <h3>{{ model_field_verbose_name }}</h3>
+                <a class="btn btn-success" id="modal-trigger-btn" href="#signature-pad-modal" data-toggle="modal">Open Signature Pad</a>
             </div>
         </div>
     </div>
@@ -18,7 +30,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-center align-items-center flex-column">
-                        <canvas style="border: 1px solid #d2d2d2" id="signature-pad"></canvas>
+                        <canvas class="my-3" style="border: 1px solid #d2d2d2" id="signature-pad"></canvas>
+                        <h6>{{ model_field_verbose_name }}</h6>
                         <button onclick="signaturePad.clear()" class="btn btn-secondary mt-3">Clear</button>
                     </div>
                 </div>
@@ -36,7 +49,7 @@
             </div>
         </div>
     </div>
-{% endblock main_content %}
+{% endblock ed_section %}
 
 {% block js %}
     <!-- Signature Pad -->
