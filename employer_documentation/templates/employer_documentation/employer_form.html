@@ -1,5 +1,4 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
-{% load crispy_forms_tags %}
 
 {% block sidenav_extra %}
     <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
@@ -43,7 +42,7 @@
         </ul>
     {% else %}
         <!-- {% comment %}Employers{% endcomment %} -->
-        <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">Employer Profile</a></li>
+        {% if object.employer_name %}<li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">Employer Profile</a></li>{% endif %}
     {% endif %}
 {% endblock sidenav_extra %}
 
@@ -57,8 +56,8 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
+    
     <div class="container">
-        {{ object.employer }}
-        {% crispy form %}
+        {% block form %}{% endblock form %}
     </div>
 {% endblock ed_section %}
