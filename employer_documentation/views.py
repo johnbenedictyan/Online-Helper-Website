@@ -117,6 +117,7 @@ class EmployerCreateView(
 ):
     model = Employer
     form_class = EmployerForm
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -137,7 +138,7 @@ class EmployerDocCreateView(
     model = EmployerDoc
     form_class = EmployerDocForm
     pk_url_kwarg = 'employer_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_object(self, *args, **kwargs):
@@ -162,6 +163,7 @@ class EmployerUpdateView(
 ):
     model = Employer
     form_class = EmployerForm
+    template_name = 'employer_documentation/crispy_form.html'
     pk_url_kwarg = 'employer_pk'
     success_url = reverse_lazy('employer_list_route')
 
@@ -179,7 +181,7 @@ class EmployerDocUpdateView(
     model = EmployerDoc
     form_class = EmployerDocForm
     pk_url_kwarg = 'employerdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -196,7 +198,7 @@ class EmployerDocAgreementDateUpdateView(
     model = EmployerDocSig
     form_class = EmployerDocAgreementDateForm
     pk_url_kwarg = 'employersubdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -213,7 +215,7 @@ class EmployerDocMaidStatusUpdateView(
     model = EmployerDocMaidStatus
     form_class = EmployerDocMaidStatusForm
     pk_url_kwarg = 'employersubdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -230,7 +232,7 @@ class JobOrderUpdateView(
     model = JobOrder
     form_class = JobOrderForm
     pk_url_kwarg = 'employersubdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/joborder_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -525,3 +527,24 @@ class PdfRepaymentScheduleView(
             }
         
         return context
+
+from django.http import FileResponse, Http404
+class PdfFileView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    DetailView
+):
+    model = JobOrder
+    slug_url_kwarg = 'slug'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            return FileResponse(
+                open(self.object.job_order_pdf.path, 'rb'),
+                # as_attachment=True,
+                filename='job-order.pdf',
+                content_type='application/pdf'
+            )
+        except FileNotFoundError:
+            raise Http404('File not found')

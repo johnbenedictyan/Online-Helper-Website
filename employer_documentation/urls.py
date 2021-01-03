@@ -45,6 +45,7 @@ from .views import (
     PdfEmployerDocumentView,
     PdfServiceAgreementView,
     PdfRepaymentScheduleView,
+    PdfFileView,
 )
 
 # Start of Urls
@@ -241,14 +242,11 @@ urlpatterns = [
                                         ),
                                         name='pdf_rest_day_agreement'
                                     ),
-                                    # path(
-                                    #     'pdf/job-order/',
-                                    #     PdfEmployerDocumentView.as_view(
-                                    #         template_name='',
-                                    #         content_disposition = '',
-                                    #     ),
-                                    #     name='pdf_job_order'
-                                    # ),
+                                    path(
+                                        'pdf/job-order/<slug:slug>/',
+                                        PdfFileView.as_view(),
+                                        name='job_order_pdf_route'
+                                    ),
                                     path(
                                         'pdf/handover-checklist/',
                                         PdfEmployerDocumentView.as_view(

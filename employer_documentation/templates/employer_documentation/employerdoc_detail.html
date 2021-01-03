@@ -102,7 +102,7 @@
             </tr>
             <tr>
                 <th scope="row">Agreement: Job Order</th>
-                <td><a href="#">PDF</a></td>
+                <td><a href="{% url 'job_order_pdf_route' employer_pk=object.employer.pk employerdoc_pk=object.pk slug=object.rn_joborder_ed.slug %}">PDF</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Handover Checklist</th>

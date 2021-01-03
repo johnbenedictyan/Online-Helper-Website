@@ -327,6 +327,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 class JobOrderForm(forms.ModelForm):
     class Meta:
         model = JobOrder
+        widgets = {'job_order_pdf': forms.FileInput(attrs={'accept': 'application/pdf'})}
         exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
@@ -339,13 +340,14 @@ class JobOrderForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new / update existing employer documents:',
+                '',
                 
                 # Form fields - main
                 'job_order_pdf',
             ),
             Submit('submit', 'Submit')
         )
+
 
 
 # Signature Forms

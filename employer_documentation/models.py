@@ -706,6 +706,31 @@ class EmployerDocMaidStatus(models.Model):
         null=True
     )
 
+
+import os
+from django.core.files.storage import FileSystemStorage
+from django.core.validators import FileExtensionValidator
+class OverwriteStorage(FileSystemStorage):
+    def get_available_name(self, filename, max_length=100):
+        if self.exists(filename):
+            os.remove(os.path.join(self.location, filename))
+        return filename
+
+def generate_joborder_path(instance, filename):
+    ext = 'pdf'
+    
+    # Generate custom filename
+    if instance.slug:
+        filename = '{}.{}'.format(instance.slug, ext)
+    else:
+        # set filename as random string
+        filename = '{}.{}'.format(uuid4().hex, ext)
+    # return the whole path to the file
+    return os.path.join(
+        'employer-documentation/job-orders/',
+        filename
+    )
+
 # from onlinemaid.storage_backends import PrivateMediaStorage
 class JobOrder(models.Model):
     employer_doc = models.OneToOneField(
@@ -713,9 +738,18 @@ class JobOrder(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_joborder_ed'
     )
+    slug = models.SlugField(
+        max_length=100,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
     job_order_pdf = models.FileField(
-        upload_to='employer-documentation/job-orders/',
+        verbose_name=_('Upload Job Order (PDF)'),
+        upload_to=generate_joborder_path,
         blank=True,
-        null=True
-        # storage=PrivateMediaStorage()
+        null=True,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
