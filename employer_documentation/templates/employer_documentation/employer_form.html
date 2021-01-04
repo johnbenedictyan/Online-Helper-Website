@@ -63,3 +63,29 @@
         {% block form %}{% endblock form %}
     </div>
 {% endblock ed_section %}
+
+{% block js %}
+    {% if object.employer %}
+    <script>
+        let replacementFdwSelector = document.querySelector('#id_fdw_is_replacement');
+        if (replacementFdwSelector) {
+            let fdwReplacedField = document.querySelector('#div_id_fdw_replaced');
+            let loanTransferredField = document.querySelector('#div_id_b4_loan_transferred');
+            if (replacementFdwSelector.value!=='True') {
+                fdwReplacedField.hidden = true;
+                loanTransferredField.hidden = true;
+            }
+            replacementFdwSelector.addEventListener('change', () => {
+                if (replacementFdwSelector.value!=='True') {
+                fdwReplacedField.hidden = true;
+                loanTransferredField.hidden = true;
+                }
+                else {
+                fdwReplacedField.hidden = false;
+                loanTransferredField.hidden = false;
+                }
+            })
+        }
+    </script>
+    {% endif %}
+{% endblock js %}
