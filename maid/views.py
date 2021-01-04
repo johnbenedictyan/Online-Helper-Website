@@ -105,10 +105,12 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
     template_name = 'create/maid-create.html'
     success_url = reverse_lazy('dashboard_maid_list')
     authority = ''
-    agency = None
+    agency_id = ''
 
     def form_valid(self, form):
-        form.instance.agency = self.agency
+        form.instance.agency = Agency.objects.get(
+            pk=self.agency_id
+        )
         initial_agency_fee_amount = form.cleaned_data.get(
             'initial_agency_fee_amount'
         )
@@ -147,16 +149,9 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form_kwargs(self):
-        if self.authority == 'owner':
-            agency = self.request.user.agency_owner.agency
-        else:
-            agency = self.request.user.agency_employee.agency
-
-        self.agency = agency
-
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': agency.pk
+            'agency_id': self.agency_id
         })
         return kwargs
 

@@ -1,4 +1,4 @@
-.limiter {
+    .limiter {
     width: 100%;
     margin: 0 auto;
 }
@@ -225,4 +225,14 @@
     .cell {
         width: 100% !important;
     }
+}
+
+div.row.table-header{
+    color: #ffffff;
+    background: #6c7ae0;
+}
+
+div.row.table-empty-footer{
+    color: #ffffff;
+    background: #6c7ae0;
 }

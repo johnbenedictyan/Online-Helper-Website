@@ -1,92 +1,87 @@
 {% extends 'base.html' %}
 {% block main_content %}
-<section>
+<section class="mb-5">
     <div class="container-fluid px-0">
         <div class="row">
-            <div class="col-2">
+            <div class="col-md-2">
                 <nav class="row">
                     <div class="col d-flex flex-column justify-content-around">
+                        {% with request.resolver_match.url_name as url_name %}
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="{% url 'dashboard_home' %}" class="" style='background-color: grey;'>
-                                <p class="m-1">Dashboard</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
+                                <p class="m-1 pl-2">Dashboard</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="{% url 'dashboard_account_list' %}" class="">
-                                <p class="m-1">Account Management</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}" class="">
+                                <p class="m-1 pl-2">Account Management</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="{% url 'dashboard_agency_detail' %}" class="">
-                                <p class="m-1">Agency Management</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}" href="{% url 'dashboard_agency_detail' %}" class="">
+                                <p class="m-1 pl-2">Agency Management</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="{% url 'dashboard_agency_plan_list' %}" class="">
-                                <p class="m-1">Subscriptions</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}" href="{% url 'dashboard_agency_plan_list' %}" class="">
+                                <p class="m-1 pl-2">Subscriptions</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="#" class="">
-                                <p class="m-1">Billing History</p>
+                                <a class="nav-link side-nav-link" href="#" class="">
+                                <p class="m-1 pl-2">Billing History</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="{% url 'dashboard_maid_list' %}" class="">
-                                <p class="m-1">FDW Biodata</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}" class="">
+                                <p class="m-1 pl-2">FDW Biodata</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="{% url 'employer_list_route' %}" class="">
-                                <p class="m-1">Employer Summary</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}" class="">
+                                <p class="m-1 pl-2">Employer Summary</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="#" class="">
-                                <p class="m-1">Sales Summary</p>
+                                <a class="nav-link side-nav-link" href="#" class="">
+                                <p class="m-1 pl-2">Sales Summary</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="#" class="">
-                                <p class="m-1">Status Summary</p>
+                                <a class="nav-link side-nav-link" href="#" class="">
+                                <p class="m-1 pl-2">Status Summary</p>
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0">
-                                <a class="nav-link text-reset" href="#" class="">
-                                <p class="m-1">Shortlisted Enquiries</p>
+                                <a class="nav-link side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}" href="{% url 'dashboard_enquiries_list' %}" class="">
+                                <p class="m-1 pl-2">Enquiries</p>
                                 </a>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col px-0">
-                                <a class="nav-link text-reset" href="#" class="">
-                                <p class="m-1">General Enquires</p>
-                                </a>
-                            </div>
-                        </div>
+                        {% endwith %}
                     </div>
                 </nav>
             </div>
-            <div class="col-10">
+            <div class="col-md-10">
                 {% block dashboard_section %}
                 {% endblock dashboard_section %}
             </div>

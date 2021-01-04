@@ -96,4 +96,23 @@ button.mini-faq-button i {
   transition: transform 0.25s ease;
   transition: transform 0.25s ease, -webkit-transform 0.25s ease;
 }
+
+.side-nav-link {
+  color: inherit !important;
+  border-radius: .5rem;
+}
+
+.side-nav-link.active {
+  background-color: #3066be;
+}
+
+.side-nav-link.active p {
+  color: #fff;
+}
+
+.side-nav-link:hover:not(.active) {
+  background-color: #85c7f2;
+  -webkit-transition: background-color .5s ease-in-out;
+  transition: background-color .5s ease-in-out;
+}
 /*# sourceMappingURL=style.css.map */
