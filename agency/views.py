@@ -298,3 +298,12 @@ class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     model = AgencyPlan
     success_url = reverse_lazy('dashboard_agency_plan_list')
     check_type = 'plan'
+
+class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, DeleteView):
+    context_object_name = 'agency_branch'
+    http_method_names = ['post']
+    model = AgencyBranch
+    success_url = reverse_lazy('dashboard_branches_list')
+    check_type = 'branch'
+    authority = ''
+    agency_id = ''
