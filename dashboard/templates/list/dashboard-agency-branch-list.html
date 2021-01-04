@@ -9,7 +9,7 @@
                         <div class="col">
                             <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">Agency Branches</h5>
                             {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
-                            <a href="{% url 'agency_employee_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Branch</a>
+                            <a href="{% url 'agency_branch_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Branch</a>
                             {% endif %}
                         </div>
                     </div>
@@ -48,37 +48,41 @@
                                 <div class="cell" data-title="S/N">
                                     {{branch.pk}}
                                 </div>
-                                <div class="cell" data-title="Name">
-                                    {{branch.first_name}} {{branch.last_name}}
+                                <div class="cell">
+                                    {{branch.name}}
                                 </div>
                                 <div class="cell" data-title="Address">
-                                    {{branch.user.email}}
+                                    {{branch.address_1}} {{branch.address_2}}
                                 </div>
                                 <div class="cell" data-title="Postal Code">
-                                    {{branch.ea_personnel_number}}
+                                    {{branch.postal_code}}
                                 </div>
                                 <div class="cell" data-title="Area">
-                                    {{branch.get_role_display}}
+                                    {{branch.get_area_display}}
                                 </div>
                                 <div class="cell" data-title="Office Number">
-                                    {{branch.branch.name}}
+                                    {{branch.office_number}}
                                 </div>
                                 <div class="cell" data-title="Mobile Number">
-                                    {{branch.branch.name}}
+                                    {{branch.mobile_number}}
                                 </div>
                                 <div class="cell" data-title="Branch Type">
-                                    {{branch.branch.name}}
+                                    {% if branch.main_branch == True %}
+                                    Main Branch
+                                    {% else %}
+                                    Side Branch
+                                    {% endif %}
                                 </div>
                                 <div class="cell" data-title="Actions">
-                                    <a href="{% url 'agency_employee_update' branch.pk %}" class="btn btn-primary">Modify</a>
+                                    <a href="{% url 'agency_branch_update' branch.pk %}" class="btn btn-primary">Modify</a>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
                     <div class="row table-empty-footer">
                         <div class="col text-center">
-                            {% if not branchs %}
-                            <p class="mt-3">No employee branchs found!</p>
+                            {% if not branches %}
+                            <p class="mt-3">No Agency Branches found!</p>
                             {% endif %}
                         </div>
                     </div>
