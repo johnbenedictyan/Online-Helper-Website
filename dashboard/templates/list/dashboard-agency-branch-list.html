@@ -74,7 +74,8 @@
                                     {% endif %}
                                 </div>
                                 <div class="cell" data-title="Actions">
-                                    <a href="{% url 'agency_branch_update' branch.pk %}" class="btn btn-primary">Modify</a>
+                                    <a href="{% url 'agency_branch_update' branch.pk %}" class="btn btn-primary">Edit</a>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#branch_{{branch.pk}}_Modal">Delete</button>
                                 </div>
                             </div>
                         {% endfor %}
@@ -89,6 +90,33 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
+        {% for branch in branches %}
+        <div class="modal fade" id="branch_{{branch.pk}}_Modal" tabindex="-1" aria-labelledby="branch_{{branch.pk}}_ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="branch_{{branch.pk}}_ModalLabel">Warning</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>{{branch.name}}</strong> branch</p>
+                    <p>This action is cannot be undone</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <form action="{% url 'agency_branch_delete' branch.pk %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-primary">Confirm</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock dashboard_section %}
