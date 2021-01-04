@@ -127,38 +127,38 @@ urlpatterns = [
                                         name='joborder_update_route'
                                     ),
                                     path(
-                                        'signature/agent-access/',
+                                        'signature/<int:docsig_pk>/',
                                         include([
                                             path(
-                                                '<int:docsig_pk>/employer/update/',
+                                                'agent-access/employer/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='employer_signature'
                                                 ),
                                                 name='signature_employer_update_route'
                                             ),
                                             path(
-                                                '<int:docsig_pk>/spouse/update/',
+                                                'agent-access/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='spouse_signature'
                                                 ),
                                                 name='signature_spouse_update_route'
                                             ),
                                             path(
-                                                '<int:docsig_pk>/sponsor/update/',
+                                                'agent-access/sponsor/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='sponsor_signature'
                                                 ),
                                                 name='signature_sponsor_update_route'
                                             ),
                                             path(
-                                                '<int:docsig_pk>/fdw/update/',
+                                                'agent-access/fdw/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='fdw_signature'
                                                 ),
                                                 name='signature_fdw_update_route'
                                             ),
                                             path(
-                                                '<int:docsig_pk>/agency-staff/update/',
+                                                'agent-access/agency-staff/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='agency_staff_signature'
                                                 ),
