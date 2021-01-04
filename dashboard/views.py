@@ -37,19 +37,19 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateVie
         dashboard_home_page_kwargs = {
             'accounts': {
                 'current': AgencyEmployee.objects.filter(
-                    agency__pk = agency_id
+                    agency__pk = self.agency_id
                 ).count(),
                 'max': 123
             },
             'biodata': {
                 'current': Maid.objects.filter(
-                    agency__pk = agency_id
+                    agency__pk = self.agency_id
                 ).count(),
                 'max': 123
             },
             'branches': {
                 'current': AgencyBranch.objects.filter(
-                    agency__pk = agency_id
+                    agency__pk = self.agency_id
                 ).count(),
                 'max': None
             },
@@ -82,7 +82,7 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
 
     def get_queryset(self):
         return Maid.objects.filter(
-            agency__pk = agency_id
+            agency__pk = self.agency_id
         )
 
 class DashboardAccountList(
@@ -97,11 +97,11 @@ class DashboardAccountList(
     def get_queryset(self):
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             return AgencyEmployee.objects.filter(
-                agency__pk = agency_id
+                agency__pk = self.agency_id
             )
         else:
             return AgencyEmployee.objects.filter(
-                agency__pk = agency_id,
+                agency__pk = self.agency_id,
                 branch = self.request.user.agency_employee.branch
             )
 
@@ -118,6 +118,19 @@ class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     model = Enquiry
     template_name = 'list/dashboard-enquiry-list.html'
 
+class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+    context_object_name = 'branches'
+    http_method_names = ['get']
+    model = AgencyBranch
+    template_name = 'list/dashboard-agency-branch-list.html'
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        return AgencyBranch.objects.filter(
+            agency__pk = self.agency_id
+        )
+
 # Detail Views
 class DashboardAgencyDetail(
     AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
@@ -129,7 +142,7 @@ class DashboardAgencyDetail(
     agency_id = ''
 
     def get_object(self):
-        agency = get_object_or_404(Agency, pk=agency_id)
+        agency = get_object_or_404(Agency, pk=self.agency_id)
         return agency
 
 class DashboardMaidDetail(
