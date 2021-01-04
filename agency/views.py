@@ -28,7 +28,7 @@ from .mixins import (
     AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
     AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
     AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
-    SpecificAgencyEmployeeLoginRequiredMixin
+    SpecificAgencyEmployeeLoginRequiredMixin, GetAuthorityMixin
 )
 
 # Start of Views
@@ -79,19 +79,23 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
-class AgencyBranchCreate(AgencyOwnerRequiredMixin, CreateView):
+class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin, CreateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
     model = AgencyBranch
     template_name = 'create/agency-branch-create.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_branches_list')
     check_type = 'branch'
+    authority = ''
+    agency_id = ''
+    form_type = 'CREATE'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.request.user.agency_owner.agency.pk
+            'agency_id': self.agency_id,
+            'form_type': self.form_type
         })
         return kwargs
 
@@ -175,14 +179,25 @@ class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
             pk = self.request.user.agency.pk
     )
 
-class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
+class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
     model = AgencyBranch
     template_name = 'update/agency-branch-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_branches_list')
     check_type = 'branch'
+    authority = ''
+    agency_id = ''
+    form_type = 'UPDATE'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'form_type': self.form_type
+        })
+        return kwargs
 
 class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
