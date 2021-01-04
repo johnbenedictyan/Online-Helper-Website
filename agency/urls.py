@@ -25,7 +25,7 @@ from .views import (
 
 ## Delete Views
 from .views import (
-    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
+    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete, AgencyBranchDelete
 )
 
 # Start of Urls
@@ -70,14 +70,19 @@ urlpatterns = [
                 name='agency_delete'
             ),
             path(
-                '<int:pk>/employee/',
+                'employee/<int:pk>/',
                 AgencyEmployeeDelete.as_view(),
                 name='agency_employee_delete'
             ),
             path(
-                '<int:pk>/plan/',
+                'plan/<int:pk>/',
                 AgencyPlanDelete.as_view(),
                 name='agency_plan_delete'
+            ),
+            path(
+                'branch/<int:pk>/',
+                AgencyBranchDelete.as_view(),
+                name='agency_branch_delete'
             )
         ])
     ),
