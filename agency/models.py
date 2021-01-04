@@ -71,6 +71,11 @@ class Agency(models.Model):
         storage=PublicMediaStorage()
     )
 
+    mission = models.TextField(
+        verbose_name=_('Mission Statement'),
+        blank=False
+    )
+
     active = models.BooleanField(
         default=True,
         editable=False
