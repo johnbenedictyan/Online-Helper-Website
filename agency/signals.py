@@ -33,17 +33,22 @@ def agency_completed(agency):
 def agency_location_completed(sender, instance, created, **kwargs):
     if created == False:
         agency = instance.agency
-        branch_valid = True
-
-        while branch_valid == True:
-            for k,v in instance.__dict__.items():
-                if not v:
-                    branch_valid = False
+        branch_values = list(instance.__dict__.values())
+        if '' in branch_values:
+            branch_valid = False
+        else:
+            branch_valid = True
         
         if branch_valid == True:
             agency.branch_complete = branch_valid
             agency.save()
-            agency_completed(agency)
+        
+            if(
+                agency.branch_complete == True and 
+                agency.operating_hours_complete == True
+            ):
+                agency.completed = True
+                agency.save()
 
 @receiver(post_save, sender=AgencyOperatingHours)
 def agency_operating_hours_completed(sender, instance, created, **kwargs):
