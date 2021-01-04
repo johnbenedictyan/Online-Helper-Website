@@ -75,6 +75,13 @@ class AgencyCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    'mission',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
                         'Create',
