@@ -2,7 +2,7 @@
 
 {% block sidenav_extra %}
     <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Update Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Edit Employer Profile</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">Employer Documents List</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a></li>

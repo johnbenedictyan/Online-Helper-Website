@@ -3,8 +3,10 @@
 {% block sidenav_extra %}
     <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}">Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}">Edit Employer Profile</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">Create Documentation</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'joborder_update_route' employer_pk=object_list.0.employer.pk employerdoc_pk=object_list.0.pk employersubdoc_pk=object_list.0.rn_joborder_ed.pk %}">Job Order</a></li>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
@@ -30,7 +32,7 @@
         {% for object in object_list %}
             <tr>
                 <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
-                <td><a href="#">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
+                <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
                 <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agreement_date|date:"d/m/y" %}{{ object.rn_signatures_ed.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
                 <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
                 <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>

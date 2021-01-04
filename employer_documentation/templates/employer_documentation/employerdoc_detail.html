@@ -3,42 +3,54 @@
 {% block sidenav_extra %}
     <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">Employer Profile</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Update Employer Profile</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Edit Employer Profile</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">Employer Documents List</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Update Documentation</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit Documentation</a></li>
     <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer.pk %}">Create Documentation</a></li>
+    <li class="sidenav__list-item"><a href="{% url 'joborder_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_joborder_ed.pk %}">Job Order</a></li>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
-    <h3>Employer: {{ object.employer.employer_name }}</h3>
+    <h3>Employer</h3>
     <table class="table" width="100%">
         <col style="width:50%">
-        <col style="width:50%">
+        <col style="width:25%">
+        <col style="width:25%">
         <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_name }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Edit</a></td>
+            </tr>
             <tr>
                 <th scope="row">Email</th>
                 <td><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_email }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Mobile</th>
                 <td><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_mobile_number }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Case Reference Number</th>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
+                <td colspan="2"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
             </tr>
             <tr>
                 <th scope="row">FDW</th>
-                <td><a href="#">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
+                <td colspan="2"><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
             </tr>
             <tr>
                 <th scope="row">Is spouse required?</th>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_spouse_required_display }}</a></td>
+                <td colspan="2"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_spouse_required_display }}</a></td>
             </tr>
             <tr>
                 <th scope="row">Is sponsor required?</th>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_sponsor_required_display }}</a></td>
+                <td colspan="2"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_sponsor_required_display }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="3"></th>
             </tr>
         </tbody>
     </table>
@@ -50,27 +62,30 @@
         <tbody>
             <tr>
                 <th scope="row">Signature: Employer</th>
-                <td><a href="{% url 'signature_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.employer_signature %}Update{% else %}Sign{% endif %}</a></td>
+                <td><a href="{% url 'signature_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.employer_signature %}Edit{% else %}Sign{% endif %}</a></td>
             </tr>
             {% if object.spouse_required %}
                 <tr>
                     <th scope="row">Signature: Spouse</th>
-                    <td><a href="{% url 'signature_spouse_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.spouse_signature %}Update{% else %}Sign{% endif %}</a></td>
+                    <td><a href="{% url 'signature_spouse_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.spouse_signature %}Edit{% else %}Sign{% endif %}</a></td>
                 </tr>
             {% endif %}
             {% if object.sponsor_required %}
             <tr>
                 <th scope="row">Signature: Sponsor</th>
-                <td><a href="{% url 'signature_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_signature %}Update{% else %}Sign{% endif %}</a></td>
+                <td><a href="{% url 'signature_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_signature %}Edit{% else %}Sign{% endif %}</a></td>
             </tr>
             {% endif %}
             <tr>
                 <th scope="row">Signature: FDW</th>
-                <td><a href="{% url 'signature_fdw_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.fdw_signature %}Update{% else %}Sign{% endif %}</a></td>
+                <td><a href="{% url 'signature_fdw_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.fdw_signature %}Edit{% else %}Sign{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Signature: Agency Staff</th>
-                <td><a href="{% url 'signature_agency_staff_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agency_staff_signature %}Update{% else %}Sign{% endif %}</a></td>
+                <td><a href="{% url 'signature_agency_staff_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agency_staff_signature %}Edit{% else %}Sign{% endif %}</a></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="3"></th>
             </tr>
         </tbody>
     </table>
@@ -78,59 +93,76 @@
     <h3>Review Agreements</h3>
     <table class="table" width="100%">
         <col style="width:50%">
-        <col style="width:50%">
+        <col style="width:25%">
+        <col style="width:25%">
         <tbody>
             <tr>
                 <th scope="row">Agreement: Service Fee Schedule</th>
                 <td><a href="{% url 'pdf_service_fee_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Service Agreement</th>
                 <td><a href="{% url 'pdf_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Employment Contract</th>
                 <td><a href="{% url 'pdf_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Repayment Schedule</th>
                 <td><a href="{% url 'pdf_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Rest Day Agreement</th>
                 <td><a href="{% url 'pdf_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Job Order</th>
                 <td><a href="{% url 'job_order_pdf_route' employer_pk=object.employer.pk employerdoc_pk=object.pk slug=object.rn_joborder_ed.slug %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'joborder_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_joborder_ed.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Handover Checklist</th>
                 <td><a href="{% url 'pdf_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Transfer Consent</th>
                 <td><a href="{% url 'pdf_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Work Pass Authorisation</th>
                 <td><a href="{% url 'pdf_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Security Bond</th>
                 <td><a href="{% url 'pdf_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Work Permit Application - Form 12B</th>
                 <td><a href="{% url 'pdf_fdw_work_permit_12b' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Income Tax Declaration</th>
                 <td><a href="{% url 'pdf_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Safety Agreement</th>
                 <td><a href="{% url 'pdf_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="3"></th>
             </tr>
         </tbody>
     </table>

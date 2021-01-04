@@ -8,8 +8,8 @@
 {% block main_content %}
 <div class="row">
     <!-- Side Nav -->
-    <aside class="sidenav col-2 pt-3">
-        <ul class="sidenav__list">
+    <aside class="sidenav col-2 p-3">
+        <ul class="sidenav__list pl-3">
             <li class="sidenav__list-item"><a href="{% url 'dashboard_home' %}">Back to Dashboard</a></li>
             {% if request.user.agency_employee %}
                 <li class="sidenav__list-item"><a href="{% url 'agency_detail' pk=request.user.agency_employee.agency.pk %}">Agency Profile</a></li>

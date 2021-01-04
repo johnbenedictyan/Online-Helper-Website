@@ -5,20 +5,22 @@
     {% if object.employer_doc %}
         <!-- {% comment %}Sub Documents{% endcomment %} -->
         <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer_doc.employer.pk %}">Employer Profile</a></li>
-        <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer_doc.employer.pk %}">Update Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer_doc.employer.pk %}">Edit Employer Profile</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer_doc.employer.pk %}">Employer Documents List</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Documentation Detail</a></li>
-        <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Update Documentation</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employerdoc_update_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk %}">Edit Documentation</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer_doc.employer.pk %}">Create Documentation</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'joborder_update_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk employersubdoc_pk=object.employer_doc.rn_joborder_ed.pk %}">Job Order</a></li>
     {% elif object.employer %}
         <!-- {% comment %}Documents{% endcomment %} -->
         <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">Employer Profile</a></li>
-        <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Update Employer Profile</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">Edit Employer Profile</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">Employer Documents List</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Documentation Detail</a></li>
         <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.employer.pk %}">Create Documentation</a></li>
+        <li class="sidenav__list-item"><a href="{% url 'joborder_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_joborder_ed.pk %}">Job Order</a></li>
 
         <li class="sidenav__list-item">
             <a data-toggle="collapse" href="#forms" role="button" aria-expanded="false" aria-controls="forms">Navigate Form Sections<i class="fa fa-caret-down float-right align-middle pt-1"></i></a>
