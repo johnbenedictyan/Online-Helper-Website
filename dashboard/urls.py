@@ -10,7 +10,7 @@ from django.urls import include, path
 ## List Views
 from .views import (
     DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
-    DashboardEnquiriesList
+    DashboardEnquiriesList, DashboardAgencyBranchList
 )
 
 ## Detail Views
@@ -65,6 +65,11 @@ urlpatterns = [
                 'enquiries',
                 DashboardEnquiriesList.as_view(),
                 name='dashboard_enquiries_list'
+            ),
+            path(
+                'branches',
+                DashboardAgencyBranchList.as_view(),
+                name='dashboard_branches_list'
             )
         ])
     ),
