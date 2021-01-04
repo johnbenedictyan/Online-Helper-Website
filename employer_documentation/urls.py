@@ -209,7 +209,9 @@ urlpatterns = [
                                     ),
                                     path(
                                         'pdf/job-order/<slug:slug>/',
-                                        PdfFileView.as_view(),
+                                        PdfFileView.as_view(
+                                            filename='job-order.pdf',
+                                        ),
                                         name='job_order_pdf_route'
                                     ),
                                     path(

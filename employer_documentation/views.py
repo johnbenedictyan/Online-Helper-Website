@@ -513,14 +513,16 @@ class PdfFileView(
 ):
     model = JobOrder
     slug_url_kwarg = 'slug'
+    as_attachment=False
+    filename='document.pdf'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         try:
             return FileResponse(
                 open(self.object.job_order_pdf.path, 'rb'),
-                # as_attachment=True,
-                filename='job-order.pdf',
+                as_attachment=self.as_attachment,
+                filename=self.filename,
                 content_type='application/pdf'
             )
         except FileNotFoundError:
