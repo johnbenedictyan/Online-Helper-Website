@@ -197,8 +197,16 @@ class EmployerDocForm(forms.ModelForm):
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
             )
+            self.fields['fdw_replaced'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
         else:
             self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+            self.fields['fdw_replaced'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_employee.agency)
             )
