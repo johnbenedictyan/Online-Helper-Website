@@ -118,6 +118,19 @@ class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     model = Enquiry
     template_name = 'list/dashboard-enquiry-list.html'
 
+class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+    context_object_name = 'branches'
+    http_method_names = ['get']
+    model = AgencyBranch
+    template_name = 'list/dashboard-agency-branch-list.html'
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        return AgencyBranch.objects.filter(
+            agency__pk = self.agency_id
+        )
+
 # Detail Views
 class DashboardAgencyDetail(
     AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
