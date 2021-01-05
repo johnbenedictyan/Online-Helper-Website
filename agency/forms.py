@@ -75,9 +75,16 @@ class AgencyCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    'mission',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
-                        'Create',
+                        'Submit',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -517,18 +524,18 @@ class AgencyBranchForm(forms.ModelForm):
                 main_branch_counter += 1
 
         if main_branch_counter > 0 and main_branch == True:
-            if current_main_branch:
-                msg = _(f"""
-                    {current_main_branch} is already set as the main branch
-                """)
-            else:
-                msg = _('There can only be one main branch')
-            self.add_error('main_branch', msg)
+            if self.form_type == 'CREATE':
+                if current_main_branch:
+                    msg = _(f"""
+                        {current_main_branch} is already set as the main branch
+                    """)
+                else:
+                    msg = _('There can only be one main branch')
+                self.add_error('main_branch', msg)
 
         elif main_branch_counter == 0 and main_branch == False:
             msg = _('You must have at least one main branch')
             self.add_error('main_branch', msg)
-
         return cleaned_data
 
     def save(self, *args, **kwargs):
@@ -569,6 +576,7 @@ class AgencyBranchForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id', None)
+        self.form_type = kwargs.pop('form_type', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(

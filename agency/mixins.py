@@ -92,6 +92,8 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         res = super(SpecificAgencyOwnerRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
+        error_msg = None
+
         if self.check_type is None:
             error_msg = 'set'
         if self.check_type not in self.check_model_dict:
@@ -114,6 +116,8 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
             )
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
+
+        return res
 
 class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''You are required to login using this

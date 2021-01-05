@@ -1,89 +1,104 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <div class="container">
-    <div class="row">
-        <div class="col-6">
-            <img src="" alt="" class="img-fluid">
-            <h3>Times Recruitment Pte Ltd</h3>
-            <h5 class="text-muted">16C7960</h5>
-        </div>
-        <div class="col-6">
-            <a href="#" class="btn btn-primary">Modify Agency Details</a>
-        </div>
-    </div>
     <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col">
             <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <h4 class="mb-0">Licensee Information</h4>
+                <div class="card-header bg-primary1 text-light">
+                    <h4 class="my-1 d-inline-block">Agency Details</h4>
+                    <a href="{% url 'agency_update' %}" class="btn btn-secondary float-right">Modify Agency Details</a>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4">
-                            <h5 class="card-title">Name</h5>
+                            <img src="{{agency.logo.url}}" alt="" class="img-fluid">
                         </div>
                         <div class="col-8">
-                            <p class="card-text">Eileen</p>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">Name</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.name}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">License Number</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.license_number}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">Company Email</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.company_email}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">Sales Email</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.sales_email}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">Website</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.website_uri}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">Mission</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.mission}}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Mobile Number</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">+65 8123 4567</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Email</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">eileen@fake-email.com</p>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h4>Bank Account Details</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">UEN</h5>
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text">{{agency.uen}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">QR Code</h5>
+                                </div>
+                                <div class="col-8">
+                                    <img src="{{agency.qr_code.url}}" alt="" class="img-fluid">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <h4 class="mb-0">Bank Details</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">UEN Number</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">0987654321ABC</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Account Number</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">Do we want to store this?</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Account Type</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">Do we want to store this?</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <h4 class="mb-0">Main Office</h4>
+                <div class="card-header bg-primary1 text-light">
+                    <h4 class="my-1 d-inline-block">Main Office</h4>
+                    <a href="{% url 'dashboard_branches_list' %}" class="btn btn-secondary float-right">View all branches</a>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -91,8 +106,8 @@
                             <h5 class="card-title">Address</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">123 Fake Street #01-01</p>
-                            <p class="card-text">Nice Center</p>
+                            <p class="card-text mb-0">{{agency.get_main_office.address_1}}</p>
+                            <p class="card-text">{{agency.get_main_office.address_2}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -100,7 +115,7 @@
                             <h5 class="card-title">Website</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">www.fakeagency.com</p>
+                            <p class="card-text">{{agency.website_uri}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -108,7 +123,7 @@
                             <h5 class="card-title">Sales Email</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">sales@fake-agency.com</p>
+                            <p class="card-text">{{agency.sales_email}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -116,7 +131,7 @@
                             <h5 class="card-title">Office Number</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">+65 61234567</p>
+                            <p class="card-text">+65 {{agency.get_main_office.office_number}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -124,15 +139,7 @@
                             <h5 class="card-title">Mobile Number</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">+65 81234567</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Contact Person</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">Jon Doe</p>
+                            <p class="card-text">+65 {{agency.get_main_office.mobile_number}}</p>
                         </div>
                     </div>
                 </div>
@@ -140,8 +147,9 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <h4 class="mb-0">Operating Hours</h4>
+                <div class="card-header bg-primary1 text-light">
+                    <h4 class="my-1 d-inline-block">Operating Hours</h4>
+                    <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-secondary float-right">Modify Operating Hours</a>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -149,7 +157,9 @@
                             <h5 class="card-title">Monday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.monday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -157,7 +167,9 @@
                             <h5 class="card-title">Tuesday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.tuesday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -165,7 +177,9 @@
                             <h5 class="card-title">Wednesday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.wednesday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -173,7 +187,9 @@
                             <h5 class="card-title">Thursday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.thursday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -181,7 +197,9 @@
                             <h5 class="card-title">Friday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.friday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -189,7 +207,9 @@
                             <h5 class="card-title">Saturday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.saturday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -197,7 +217,9 @@
                             <h5 class="card-title">Sunday</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.sunday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -205,22 +227,11 @@
                             <h5 class="card-title">Public Holidays</h5>
                         </div>
                         <div class="col-8">
-                            <p class="card-text">8am - 5pm</p>
+                            <p class="card-text">
+                                {% firstof agency.operating_hours.public_holiday "Not Completed" %}
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <h4 class="mb-0">Agency Profile</h4>
-                </div>
-                <div class="card-body">
-                    <h5 class="cart-title">Mission</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi tempore aliquam possimus. Soluta, tempore.</p>
                 </div>
             </div>
         </div>
