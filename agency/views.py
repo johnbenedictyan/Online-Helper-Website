@@ -166,17 +166,19 @@ class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Update Views
-class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
+class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
     model = Agency
     template_name = 'update/agency-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
 
     def get_object(self, queryset=None):
         return Agency.objects.get(
-            pk = self.request.user.agency.pk
+            pk = self.agency_id
     )
 
 class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
@@ -199,17 +201,19 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, Up
         })
         return kwargs
 
-class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
+class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
     form_class = AgencyOperatingHoursForm
     http_method_names = ['get','post']
     model = AgencyOperatingHours
     template_name = 'update/agency-operating-hours-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
 
     def get_object(self, queryset=None):
         return AgencyOperatingHours.objects.get(
-            pk = self.request.user.pk
+            agency__pk = self.agency_id
         )
 
 class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin, UpdateView):
