@@ -1,5 +1,6 @@
 # Imports from django
 from django import forms
+from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
@@ -9,6 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Hidden
+from onlinemaid.constants import (
+    AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
+)
 
 # Imports from local apps
 from .managers import CustomUserManager
@@ -134,25 +138,35 @@ class AgencySignInForm(AuthenticationForm):
             ),
         )
 
-        def clean(self):
-            cleaned_data = super().clean()
-            agency = get_user_model().objects.get(
-                email = cleaned_data.get('email')
-            )
-            
-            if agency.license_number != cleaned_data.get(
-                'agency_license_number'
-            ):
-                raise forms.ValidationError(
-                    self.error_messages['invalid_login'],
-                    code='invalid_login',
-                    params={
-                        'agency_license_number': 
-                            self.agency_license_number_field.verbose_name
-                    },
+    def clean(self):
+        cleaned_data = super().clean()
+        user = get_user_model().objects.get(
+            email = cleaned_data.get('username')
+        )
+
+        if user.groups.filter(name=P_EMPLOYERS).exists():
+            self.add_error(
+                'username',
+                ValidationError(
+                    _('Invalid Agency Staff Email'),
+                    code='invalid-signin'
                 )
-            else:
-                return cleaned_data
+            )
+
+        if user.groups.filter(name=AG_OWNERS).exists():
+            agency = user.agency_owner.agency
+        else:
+            agency = user.agency_employee.agency
+
+        if agency.license_number != cleaned_data.get('agency_license_number'):
+            self.add_error(
+                'agency_license_number',
+                ValidationError(
+                    _('Invalid Agency License Number'),
+                    code='invalid-signin'
+                )
+            )
+        return cleaned_data
 
 # Model Forms
 class EmployerCreationForm(forms.ModelForm):

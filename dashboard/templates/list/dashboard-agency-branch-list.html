@@ -7,14 +7,14 @@
                 <div class="wrap-table100">
                     <div class="row table-header">
                         <div class="col">
-                            <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">Agency Employee Accounts</h5>
+                            <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">Agency Branches</h5>
                             {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
-                            <a href="{% url 'agency_employee_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Account</a>
+                            <a href="{% url 'agency_employee_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Branch</a>
                             {% endif %}
                         </div>
                     </div>
                     <div class="table">
-                        <div class="table-row account-table-row header">
+                        <div class="table-row agency-branch-table-row header">
                             <div class="cell">
                                 S/N
                             </div>
@@ -22,51 +22,63 @@
                                 Name
                             </div>
                             <div class="cell">
-                                Email
+                                Address
                             </div>
                             <div class="cell">
-                                EA Personnel No
+                                Postal Code
                             </div>
                             <div class="cell">
-                                Type
+                                Area
                             </div>
                             <div class="cell">
-                                Branch
+                                Office Number
+                            </div>
+                            <div class="cell">
+                                Mobile Number
+                            </div>
+                            <div class="cell">
+                                Branch Type
                             </div>
                             <div class="cell">
                                 Actions
                             </div>
                         </div>
-                        {% for account in accounts %}
-                            <div class="table-row account-table-row">
+                        {% for branch in branches %}
+                            <div class="table-row agency-branch-table-row">
                                 <div class="cell" data-title="S/N">
-                                    {{account.pk}}
+                                    {{branch.pk}}
                                 </div>
                                 <div class="cell" data-title="Name">
-                                    {{account.first_name}} {{account.last_name}}
+                                    {{branch.first_name}} {{branch.last_name}}
                                 </div>
-                                <div class="cell" data-title="Email">
-                                    {{account.user.email}}
+                                <div class="cell" data-title="Address">
+                                    {{branch.user.email}}
                                 </div>
-                                <div class="cell" data-title="EA Personnel No">
-                                    {{account.ea_personnel_number}}
+                                <div class="cell" data-title="Postal Code">
+                                    {{branch.ea_personnel_number}}
                                 </div>
-                                <div class="cell" data-title="Type">
-                                    {{account.get_role_display}}
+                                <div class="cell" data-title="Area">
+                                    {{branch.get_role_display}}
                                 </div>
-                                <div class="cell" data-title="Branch">
-                                    {{account.branch.name}}
+                                <div class="cell" data-title="Office Number">
+                                    {{branch.branch.name}}
+                                </div>
+                                <div class="cell" data-title="Mobile Number">
+                                    {{branch.branch.name}}
+                                </div>
+                                <div class="cell" data-title="Branch Type">
+                                    {{branch.branch.name}}
                                 </div>
                                 <div class="cell" data-title="Actions">
-                                    <a href="{% url 'agency_employee_update' account.pk %}" class="btn btn-primary">Modify</a>
+                                    <a href="{% url 'agency_employee_update' branch.pk %}" class="btn btn-primary">Modify</a>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
                     <div class="row table-empty-footer">
                         <div class="col text-center">
-                            {% if not accounts %}
-                            <p class="mt-3">No employee accounts found!</p>
+                            {% if not branchs %}
+                            <p class="mt-3">No employee branchs found!</p>
                             {% endif %}
                         </div>
                     </div>

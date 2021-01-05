@@ -34,8 +34,8 @@
 
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        {% block css %}
-        {% endblock css %}
+        <link rel="stylesheet" href="{% static 'css/table.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vendor/argon/argon_table.css' %}">
 
         <title>Online Maid</title>
     </head>
@@ -51,27 +51,64 @@
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                        {% with request.resolver_match.url_name as url_name %}
+                        <li class="nav-item {% if url_name == 'home' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'home' %}">
+                                Home
+                                {% if url_name == 'home' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'how_it_works' %}">How It Works</a>
+                        <li class="nav-item {% if url_name == 'how_it_works' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'how_it_works' %}">
+                                How It Works
+                                {% if url_name == 'how_it_works' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about_us' %}">About Us</a>
+                        <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'about_us' %}">
+                                About Us
+                                {% if url_name == 'about_us' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'maid_list' %}">Maids</a>
+                        <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'maid_list' %}">
+                                Maids
+                                {% if url_name == 'maid_list' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'agency_list' %}">Agencies</a>
+                        <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'agency_list' %}">
+                                Agencies
+                                {% if url_name == 'agency_list' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
+                        <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'faq' %}">
+                                FAQ
+                                {% if url_name == 'faq' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'enquiry' %}">Enquire</a>
+                        <li class="nav-item {% if url_name == 'enquiry' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'enquiry' %}">
+                                Enquire
+                                {% if url_name == 'enquiry' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
                         </li>
+                        {% endwith %}
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
@@ -79,7 +116,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userActionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{user.email}}
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="userActionDropdown">
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
                                 {% if authority == 'Potential Employers' %}
                                 <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
@@ -88,7 +125,7 @@
                                 <a class="dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
                                 {% else %}
                                 <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="#">Dashboard</a>
+                                <a class="dropdown-item" href="{% url 'dashboard_home' %}">Dashboard</a>
                                 {% endif %}
                                 <a class="dropdown-item" href="{% url 'sign_out' %}">Sign Out</a>
                             </div>

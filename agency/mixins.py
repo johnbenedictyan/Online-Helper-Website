@@ -5,6 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
 
 # Imports from other apps
+from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
 from onlinemaid.mixins import (
     AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
@@ -114,8 +115,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
 
-class SpecificAgencyEmployeeLoginRequiredMixin(LoginRequiredMixin):
-    login_url = reverse_lazy('agency_sign_in')
+class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''You are required to login using this
                                 employee's or Agency owner account to
                                 perform this action'''
@@ -126,31 +126,42 @@ class SpecificAgencyEmployeeLoginRequiredMixin(LoginRequiredMixin):
         res = super(SpecificAgencyEmployeeLoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
-        if not (
-            self.request.user.groups.filter(name='Agency Owners').exists()
-            or self.request.user.pk == self.kwargs.get(
-                self.pk_url_kwarg
+            
+        if self.request.user.pk != self.kwargs.get(self.pk_url_kwarg):
+            ae = AgencyEmployee.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
             )
-        ):
-            return self.handle_no_permission(request)
-        
+            if self.request.user.groups.filter(name='Agency Owners').exists():
+                if ae.agency != self.request.user.agency_owner.agency:
+                    return self.handle_no_permission(request)
+
+            elif self.request.user.groups.filter(
+                name='Agency Administrators'
+            ).exists():
+                if ae.agency != self.request.user.agency_employee.agency:
+                    return self.handle_no_permission(request)
+
+            else:
+                return self.handle_no_permission(request)
+
         return res
 
 class GetAuthorityMixin:
     def get_authority(self):
-        if self.request.user.groups.filter(name='Agency Owners').exists():
-            authority = 'owner'
+        for auth_name in AUTHORITY_GROUPS:
+            if self.request.user.groups.filter(name=auth_name).exists():
+                authority = auth_name
+                if authority == AG_OWNERS:
+                    agency_id = self.request.user.agency_owner.agency.pk
+                else:
+                    agency_id = self.request.user.agency_employee.agency.pk
 
-        if self.request.user.groups.filter(name='Agency Administrators').exists():
-            authority = 'administrator'
-
-        if self.request.user.groups.filter(name='Agency Managers').exists():
-            authority = 'manager'
-
-        if self.request.user.groups.filter(name='Agency Sales Staff').exists():
-            authority = 'sales_staff'
-
-        return authority
+        return {
+            'authority': authority,
+            'agency_id': agency_id
+        }
 
     def get(self, request, *args, **kwargs):
         if not self.authority and self.authority != '':
@@ -158,7 +169,13 @@ class GetAuthorityMixin:
                 '{0} is missing the authority attribute'
                 .format(self.__class__.__name__)
             )
-        self.authority = self.get_authority()
+        if not self.agency_id and self.agency_id != '':
+            raise ImproperlyConfigured(
+                '{0} is missing the agency_id attribute'
+                .format(self.__class__.__name__)
+            )
+        self.authority = self.get_authority()['authority']
+        self.agency_id = self.get_authority()['agency_id']
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -167,5 +184,11 @@ class GetAuthorityMixin:
                 '{0} is missing the authority attribute'
                 .format(self.__class__.__name__)
             )
-        self.authority = self.get_authority()
+        if not self.agency_id and self.agency_id != '':
+            raise ImproperlyConfigured(
+                '{0} is missing the agency_id attribute'
+                .format(self.__class__.__name__)
+            )
+        self.authority = self.get_authority()['authority']
+        self.agency_id = self.get_authority()['agency_id']
         return super().post(request, *args, **kwargs)
