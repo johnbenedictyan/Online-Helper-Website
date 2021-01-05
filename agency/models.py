@@ -102,6 +102,9 @@ class Agency(models.Model):
     def get_main_office_number(self):
         return self.branches.get(main_branch=True).office_number
 
+    def get_main_office(self):
+        return self.branches.get(main_branch=True)
+        
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
     class OperatingHoursChoices(models.TextChoices):
