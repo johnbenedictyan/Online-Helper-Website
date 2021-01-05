@@ -84,7 +84,7 @@ class AgencyCreationForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Create',
+                        'Submit',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
