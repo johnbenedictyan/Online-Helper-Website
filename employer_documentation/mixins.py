@@ -1,6 +1,15 @@
+# Python
+import base64
+
 # Django
+from django.conf import settings
+from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.template.loader import render_to_string
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+
+# 3rd party
+from weasyprint import HTML, CSS
 
 # From our apps
 from .models import (
@@ -239,7 +248,6 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
             return self.handle_no_permission()
 
 # Signature Mixin
-import base64
 class SignatureFormMixin:
     def clean(self):
         cleaned_data = super().clean()
@@ -265,10 +273,6 @@ class SignatureFormMixin:
             return cleaned_data
 
 # PDF Mixin
-from django.conf import settings
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from weasyprint import HTML, CSS
 class PdfViewMixin:
     DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
     content_disposition = None

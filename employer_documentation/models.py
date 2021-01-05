@@ -1,19 +1,41 @@
 # Imports from python
+import os
 import uuid
 
 # Imports from django
 from django.db import models
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
+from django.core.files.storage import FileSystemStorage
+from django.core.validators import FileExtensionValidator
 
 # Imports from other apps
 from onlinemaid.constants import TrueFalseChoices
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
-# Imports from within the app
-
 # Utiliy Classes and Functions
+class OverwriteStorage(FileSystemStorage):
+    def get_available_name(self, filename, max_length=100):
+        if self.exists(filename):
+            os.remove(os.path.join(self.location, filename))
+        return filename
+
+def generate_joborder_path(instance, filename):
+    ext = 'pdf'
+    
+    # Generate custom filename
+    if instance.slug:
+        filename = '{}.{}'.format(instance.slug, ext)
+    else:
+        # set filename as random string
+        filename = '{}.{}'.format(uuid4().hex, ext)
+    # return the whole path to the file
+    return os.path.join(
+        'employer-documentation/job-orders/',
+        filename
+    )
+
 
 # Start of Models
 
@@ -713,31 +735,6 @@ class EmployerDocMaidStatus(models.Model):
         max_length=20,
         blank=True,
         null=True
-    )
-
-
-import os
-from django.core.files.storage import FileSystemStorage
-from django.core.validators import FileExtensionValidator
-class OverwriteStorage(FileSystemStorage):
-    def get_available_name(self, filename, max_length=100):
-        if self.exists(filename):
-            os.remove(os.path.join(self.location, filename))
-        return filename
-
-def generate_joborder_path(instance, filename):
-    ext = 'pdf'
-    
-    # Generate custom filename
-    if instance.slug:
-        filename = '{}.{}'.format(instance.slug, ext)
-    else:
-        # set filename as random string
-        filename = '{}.{}'.format(uuid4().hex, ext)
-    # return the whole path to the file
-    return os.path.join(
-        'employer-documentation/job-orders/',
-        filename
     )
 
 # from onlinemaid.storage_backends import PrivateMediaStorage

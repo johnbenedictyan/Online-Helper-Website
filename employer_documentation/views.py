@@ -4,6 +4,7 @@ import calendar
 # Django
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.http import FileResponse, Http404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -23,6 +24,7 @@ from .forms import (
     EmployerDocMaidStatusForm,
     JobOrderForm,
     SignatureForm,
+    VerifyUserTokenForm,
 )
 from .mixins import (
     CheckEmployerDocRelationshipsMixin,
@@ -285,7 +287,6 @@ class SignatureUpdateByAgentView(
             self.model_field_name).verbose_name
         return context
 
-from .forms import VerifyUserTokenForm
 class VerifyUserTokenView(
     UpdateView
 ):
@@ -517,7 +518,6 @@ class PdfRepaymentScheduleView(
         
         return context
 
-from django.http import FileResponse, Http404
 class PdfFileView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
