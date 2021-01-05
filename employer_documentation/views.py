@@ -272,7 +272,7 @@ class SignatureUpdateByAgentView(
     model = EmployerDocSig
     form_class = SignatureForm
     pk_url_kwarg = 'docsig_pk'
-    template_name = 'employer_documentation/signature_form.html'
+    template_name = 'employer_documentation/signature_form_agency.html'
     success_url = reverse_lazy('employer_list_route')
     model_field_name = None
 

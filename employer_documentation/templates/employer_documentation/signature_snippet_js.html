@@ -1,0 +1,21 @@
+<!-- Signature Pad -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+<script>
+    var signaturePad = new SignaturePad(document.getElementById("signature-pad"));
+    function appendImageToForm() {
+        document.getElementById("id_signature").value = signaturePad.toDataURL();
+        return true;
+    }
+    function checkSignatureNotBlank(callbackFunction) {
+        if (signaturePad.toDataURL()==='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1v9QAATX68/0AAAAASUVORK5CYII=') {
+            event.preventDefault();
+            alert("Signature cannot be blank.");
+        }
+        else {
+            callbackFunction();
+        };
+    }
+    document.getElementById("submit-btn").addEventListener("click", function(event) {
+        checkSignatureNotBlank(appendImageToForm);
+    });
+</script>
