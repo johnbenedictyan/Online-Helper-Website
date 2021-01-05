@@ -182,6 +182,43 @@
     width: 140px;
 }
 
+.agency-branch-table-row .cell:nth-child(1) {
+    width: 100px;
+    padding-left: 30px;
+}
+
+.agency-branch-table-row .cell:nth-child(2) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(3) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(4) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(5) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(6) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(7) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(8) {
+    width: 110px;
+}
+
+.agency-branch-table-row .cell:nth-child(9) {
+    width: 110px;
+}
+
 .table,
 .table-row {
     width: 100% !important;
