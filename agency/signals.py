@@ -54,14 +54,20 @@ def agency_location_completed(sender, instance, created, **kwargs):
 def agency_operating_hours_completed(sender, instance, created, **kwargs):
     if created == False:
         agency = instance.agency
-        operating_hours_valid = True
+        operating_hours_values = list(instance.__dict__.values())
         
-        while operating_hours_valid == True:
-            for k,v in instance.__dict__.items():
-                if not v:
-                    operating_hours_valid = False
+        if '' in operating_hours_values:
+            operating_hours_valid = False
+        else:
+            operating_hours_valid = True
         
         if operating_hours_valid == True:
             agency.operating_hours_complete = operating_hours_valid
             agency.save()
-            agency_completed(agency)
+        
+            if(
+                agency.branch_complete == True and 
+                agency.operating_hours_complete == True
+            ):
+                agency.completed = True
+                agency.save()
