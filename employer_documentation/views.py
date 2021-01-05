@@ -274,11 +274,6 @@ class SignatureUpdateByAgentView(
     success_url = reverse_lazy('employer_list_route')
     model_field_name = None
 
-    def get_object(self, *args, **kwargs):
-        return EmployerDocSig.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['model_field_name'] = self.model_field_name
@@ -289,6 +284,23 @@ class SignatureUpdateByAgentView(
         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
             self.model_field_name).verbose_name
         return context
+
+from .forms import VerifyUserTokenForm
+class VerifyUserTokenView(
+    UpdateView
+):
+    model = EmployerDocSig
+    form_class = VerifyUserTokenForm
+    template_name = 'employer_documentation/token_form.html'
+    success_url = reverse_lazy('employer_list_route')
+    token_field_name = None
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['slug'] = self.kwargs.get(self.slug_url_kwarg)
+        kwargs['session'] = self.request.session
+        kwargs['token_field_name'] = self.token_field_name
+        return kwargs
 
 
 # PDF Views

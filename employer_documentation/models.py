@@ -607,6 +607,18 @@ class EmployerDocSig(models.Model):
         null=True
     )
 
+    # Verification Tokens
+    employer_slug = models.SlugField(
+        max_length=36,
+        default=uuid.uuid4,
+        unique=True
+    )
+    employer_token = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
     # Witnesses
     employer_witness_signature = models.TextField(
         verbose_name=_('Signature of Witness for Employer'),
@@ -659,9 +671,6 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-
-    # One-time token sent to employer for them to get their signature
-    # employer_signature_token = models.CharField(max_length=32, blank=True, null=True)
 
 class EmployerDocMaidStatus(models.Model):
     employer_doc = models.OneToOneField(

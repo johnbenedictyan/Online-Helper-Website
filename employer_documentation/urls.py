@@ -37,6 +37,7 @@ from .views import (
 ## Signature Views
 from .views import (
     SignatureUpdateByAgentView,
+    VerifyUserTokenView,
 )
 
 ## PDF Views
@@ -274,6 +275,14 @@ urlpatterns = [
                         ]),
                     ),
                 ]),
+            ),
+            path(
+                'sign/<slug:slug>/verify/',
+                VerifyUserTokenView.as_view(
+                    slug_field= 'employer_slug',
+                    token_field_name='employer_token'
+                ),
+                name='user_token_verification_route'
             ),
         ]),
     ),

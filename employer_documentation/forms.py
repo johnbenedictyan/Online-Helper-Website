@@ -1,3 +1,6 @@
+# Python
+import secrets
+
 # Imports from django
 from django import forms
 from django.contrib.auth import get_user_model
@@ -357,7 +360,6 @@ class JobOrderForm(forms.ModelForm):
         )
 
 
-
 # Signature Forms
 class SignatureForm(SignatureFormMixin, forms.ModelForm):
     class Meta:
@@ -382,3 +384,59 @@ class SignatureForm(SignatureFormMixin, forms.ModelForm):
         for field in fields_copy:
             if field!=self.model_field_name:
                 del self.fields[field]
+
+class VerifyUserTokenForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        exclude = '__all__'
+        fields = ['employer_token']
+    
+    nric = forms.CharField()
+    mobile = forms.IntegerField()
+    
+    def __init__(self, *args, **kwargs):
+        self.slug = kwargs.pop('slug')
+        self.object = EmployerDocSig.objects.get(employer_slug=self.slug)
+        self.session = kwargs.pop('session')
+        self.token_field_name = kwargs.pop('token_field_name')
+        super().__init__(*args, **kwargs)
+        self.fields['nric'].label = 'NRIC'
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Fieldset(
+                # Legend for form
+                'For security purposes, please enter the following details to verify your identify:',
+                
+                # Form fields - main
+                'nric',
+                'mobile',
+            ),
+            Submit('submit', 'Submit')
+        )
+
+        # Make new list of all field names, then remove fields that are not
+        # token_field_name.
+        fields_copy = list(self.fields)
+        for field in fields_copy:
+            if field=='nric' or field=='mobile':
+                continue
+            elif field!=self.token_field_name:
+                del self.fields[field]
+
+    def clean(self):
+        if (
+            not self.cleaned_data.get('nric')
+            ==self.object.employer_doc.employer.employer_nric
+            or
+            not int(self.cleaned_data.get('mobile'))
+            ==int(self.object.employer_doc.employer.employer_mobile_number)
+        ):
+            raise ValidationError(
+                'The details you entered did not match our records')
+        else:
+            verification_token = secrets.token_urlsafe(32)
+            self.cleaned_data[self.token_field_name] = verification_token
+            self.session['token'] = verification_token
+        return self.cleaned_data
