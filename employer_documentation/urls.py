@@ -277,12 +277,25 @@ urlpatterns = [
                 ]),
             ),
             path(
-                'sign/<slug:slug>/verify/',
-                VerifyUserTokenView.as_view(
-                    slug_field= 'employer_slug',
-                    token_field_name='employer_token'
-                ),
-                name='user_token_verification_route'
+                'sign/<slug:slug>/',
+                include([
+                    path(
+                        'verify/employer/',
+                        VerifyUserTokenView.as_view(
+                            slug_field= 'employer_slug',
+                            token_field_name='employer_token'
+                        ),
+                        name='token_verification_employer_route'
+                    ),
+                    path(
+                        'verify/fdw/',
+                        VerifyUserTokenView.as_view(
+                            slug_field= 'fdw_slug',
+                            token_field_name='fdw_token'
+                        ),
+                        name='token_verification_fdw_route'
+                    ),
+                ])
             ),
         ]),
     ),

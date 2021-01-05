@@ -640,6 +640,16 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
+    fdw_slug = models.SlugField(
+        max_length=36,
+        default=uuid.uuid4,
+        unique=True
+    )
+    fdw_token = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
 
     # Witnesses
     employer_witness_signature = models.TextField(

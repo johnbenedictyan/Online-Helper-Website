@@ -389,30 +389,56 @@ class VerifyUserTokenForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSig
         exclude = '__all__'
-        fields = ['employer_token']
+        fields = ['employer_token', 'fdw_token']
     
+    # Employer fields
     nric = forms.CharField()
     mobile = forms.IntegerField()
+
+    # FDW fields
+    validation_1 = forms.CharField() ############################################## TO BE UPDATED
+    validation_2 = forms.IntegerField() ############################################## TO BE UPDATED
+
     
     def __init__(self, *args, **kwargs):
+        self.is_employer = False
+        self.is_fdw = False
         self.slug = kwargs.pop('slug')
-        self.object = EmployerDocSig.objects.get(employer_slug=self.slug)
         self.session = kwargs.pop('session')
         self.token_field_name = kwargs.pop('token_field_name')
-        super().__init__(*args, **kwargs)
-        self.fields['nric'].label = 'NRIC'
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Fieldset(
+        
+        if self.token_field_name=='employer_token':
+            self.is_employer = True
+            self.object = EmployerDocSig.objects.get(employer_slug=self.slug)
+            fieldset = Fieldset(
                 # Legend for form
-                'For security purposes, please enter the following details to verify your identify:',
+                'For security purposes, please enter the following details \
+                    to verify your identify:',
                 
                 # Form fields - main
                 'nric',
                 'mobile',
-            ),
+            )
+        elif self.token_field_name=='fdw_token':
+            self.is_fdw = True
+            self.object = EmployerDocSig.objects.get(fdw_slug=self.slug)
+            fieldset = Fieldset(
+                # Legend for form
+                'For security purposes, please enter the following details \
+                    to verify your identify:',
+                
+                # Form fields - main
+                'validation_1', ############################################## TO BE UPDATED
+                'validation_2', ############################################## TO BE UPDATED
+            )
+        
+        super().__init__(*args, **kwargs)
+
+        self.fields['nric'].label = 'NRIC'
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            fieldset,
             Submit('submit', 'Submit')
         )
 
@@ -420,23 +446,46 @@ class VerifyUserTokenForm(forms.ModelForm):
         # token_field_name.
         fields_copy = list(self.fields)
         for field in fields_copy:
-            if field=='nric' or field=='mobile':
+            if (
+                self.is_employer
+                and (field=='nric' or field=='mobile')
+            ):
+                continue
+            elif (
+                self.is_fdw
+                and (field=='validation_1' or field=='validation_2') ############################################## TO BE UPDATED
+            ):
                 continue
             elif field!=self.token_field_name:
                 del self.fields[field]
 
     def clean(self):
         if (
-            not self.cleaned_data.get('nric')
-            ==self.object.employer_doc.employer.employer_nric
-            or
-            not int(self.cleaned_data.get('mobile'))
-            ==int(self.object.employer_doc.employer.employer_mobile_number)
+            self.is_employer
+            and (
+                not self.cleaned_data.get('nric') ==
+                self.object.employer_doc.employer.employer_nric
+                or
+                not int(self.cleaned_data.get('mobile')) ==
+                int(self.object.employer_doc.employer.employer_mobile_number)
+            )
+        ):
+            raise ValidationError(
+                'The details you entered did not match our records')
+        elif (
+            self.is_fdw
+            and ( ############################################## TO BE UPDATED
+                not self.cleaned_data.get('validation_1') ==
+                '1'
+                or
+                not int(self.cleaned_data.get('validation_2')) ==
+                int(1)
+            ) ############################################## TO BE UPDATED
         ):
             raise ValidationError(
                 'The details you entered did not match our records')
         else:
             verification_token = secrets.token_urlsafe(32)
             self.cleaned_data[self.token_field_name] = verification_token
-            self.session['token'] = verification_token
+            self.session['signature_token'] = verification_token
         return self.cleaned_data
