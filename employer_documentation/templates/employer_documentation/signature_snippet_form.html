@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col">
             <h3>{{ model_field_verbose_name }}</h3>
+            <p class="my-4">Please open the signature pad to sign.</p>
             <a class="btn btn-success" id="modal-trigger-btn" href="#signature-pad-modal" data-toggle="modal">Open Signature Pad</a>
         </div>
     </div>
@@ -18,7 +19,6 @@
                 <div class="d-flex justify-content-center align-items-center flex-column">
                     <canvas class="my-3" style="border: 1px solid #d2d2d2" id="signature-pad"></canvas>
                     <h6>{{ model_field_verbose_name }}</h6>
-                    <button onclick="signaturePad.clear()" class="btn btn-secondary mt-3">Clear</button>
                 </div>
             </div>
             <div class="modal-footer">
@@ -31,6 +31,7 @@
                     {% endfor %}
                     <input type="submit" id="submit-btn" class="btn btn-success" value="Submit">
                 </form>
+                <button onclick="signaturePad.clear()" class="btn btn-secondary">Clear</button>
             </div>
         </div>
     </div>
