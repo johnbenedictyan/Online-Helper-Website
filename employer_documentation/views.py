@@ -2,9 +2,9 @@
 import calendar
 
 # Django
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.http import FileResponse, Http404
+from django.http import FileResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -145,6 +145,12 @@ class EmployerDocCreateView(
 
     def get_object(self, *args, **kwargs):
         return Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = self.get_object()
+        context['object'] = self.object
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -537,5 +543,10 @@ class PdfFileView(
                 filename=self.filename,
                 content_type='application/pdf'
             )
-        except FileNotFoundError:
-            raise Http404('File not found')
+        except:
+            return HttpResponseRedirect(
+                reverse('joborder_update_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                    'employersubdoc_pk': self.object.pk,
+            }))

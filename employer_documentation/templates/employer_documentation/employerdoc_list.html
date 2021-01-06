@@ -1,12 +1,48 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
 {% block sidenav_extra %}
-    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}">Employer Profile</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}">Edit Employer Profile</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">Create Documentation</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'joborder_update_route' employer_pk=object_list.0.employer.pk employerdoc_pk=object_list.0.pk employersubdoc_pk=object_list.0.rn_joborder_ed.pk %}">Job Order</a></li>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}" class="">
+        <p class="m-1 pl-2">Employer List</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <p class="m-1 pl-2">Employer Profile</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <p class="m-1 pl-2">Edit Employer</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <p class="m-1 pl-2">Add Employer</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_list_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <p class="m-1 pl-2">Documents List</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <p class="m-1 pl-2">Add Document</p>
+        </a>
+    </div>
+</div>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}

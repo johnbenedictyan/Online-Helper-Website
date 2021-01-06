@@ -51,7 +51,7 @@ class EmployerForm(forms.ModelForm):
 
         ef_fieldset_all = Fieldset(
             # Legend for form
-            'Create new / update existing employer:',
+            'Employer Details',
             # Form fields
             'agency_employee',
             'employer_name',
@@ -64,7 +64,7 @@ class EmployerForm(forms.ModelForm):
         )
         ef_fieldset_exclude_agencyemployee = Fieldset(
             # Legend for form
-            'Create new / update existing employer:',
+            'Employer Details',
             # Form fields
             'employer_name',
             'employer_email',
@@ -219,7 +219,7 @@ class EmployerDocForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new / update existing employer documents:',
+                'Documentation Details',
                 
                 # Form fields - main
                 'case_ref_no',
@@ -298,7 +298,7 @@ class EmployerDocAgreementDateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new / update existing employer documents:',
+                'Signing Date of Agreement',
                 
                 # Form fields - main
                 'agreement_date',
@@ -321,7 +321,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 # Legend for form
-                'Create new / update existing employer documents:',
+                'Documentation Status Details',
                 
                 # Form fields - main
                 'ipa_approval_date',

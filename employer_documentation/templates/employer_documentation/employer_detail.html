@@ -1,11 +1,41 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
 {% block sidenav_extra %}
-    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Edit Employer Profile</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">Employer Documents List</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a></li>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}" class="">
+        <p class="m-1 pl-2">Employer List</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_update_route' employer_pk=object.pk %}" class="">
+        <p class="m-1 pl-2">Edit Employer</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <p class="m-1 pl-2">Add Employer</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_list_route' employer_pk=object.pk %}" class="">
+        <p class="m-1 pl-2">Documents List</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_create_route' employer_pk=object.pk %}" class="">
+        <p class="m-1 pl-2">Add Document</p>
+        </a>
+    </div>
+</div>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
@@ -14,40 +44,28 @@
     <table class="table">
         <tbody>
             <tr>
-                <th scope="row">pk</th>
-                <td>{{ object.pk }}</td>
+                <th scope="row">ID - Assigned Agent</th>
+                <td>{{ object.agency_employee.ea_personnel_number }} - {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
             </tr>
             <tr>
-                <th scope="row">agency_employee</th>
-                <td>{{ object.agency_employee }} {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
-            </tr>
-            <tr>
-                <th scope="row">employer_name</th>
+                <th scope="row">Employer Name</th>
                 <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_name }}</a></td>
             </tr>
             <tr>
-                <th scope="row">employer_email</th>
+                <th scope="row">Employer Email</th>
                 <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_email }}</a></td>
             </tr>
             <tr>
-                <th scope="row">employer_mobile_number</th>
+                <th scope="row">Employer Mobile</th>
                 <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_mobile_number }}</a></td>
             </tr>
             <tr>
-                <th scope="row">employer_nric</th>
+                <th scope="row">Employer NRIC</th>
                 <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_nric }}</a></td>
             </tr>
             <tr>
-                <th scope="row">employer_address_1</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_address_1 }}</a></td>
-            </tr>
-            <tr>
-                <th scope="row">employer_address_2</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_address_2 }}</a></td>
-            </tr>
-            <tr>
-                <th scope="row">employer_post_code</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_post_code }}</a></td>
+                <th scope="row">Employer Address</th>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_address_1 }}, {{ object.employer_address_2 }}, {{ object.employer_post_code }}</a></td>
             </tr>
         </tbody>
     </table>

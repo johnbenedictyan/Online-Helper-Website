@@ -2,8 +2,20 @@
 {% load crispy_forms_tags %}
 
 {% block sidenav_extra %}
-    <li class="sidenav__list-item"><a href="{% url 'employer_list_route' %}">Employer List</a></li>
-    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}" class="">
+        <p class="m-1 pl-2">Employer List</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <p class="m-1 pl-2">Add Employer</p>
+        </a>
+    </div>
+</div>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}

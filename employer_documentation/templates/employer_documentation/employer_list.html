@@ -1,7 +1,13 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
 {% block sidenav_extra %}
-    <li class="sidenav__list-item"><a href="{% url 'employer_create_route' %}">Create Employer Profile</a></li>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <p class="m-1 pl-2">Add Employer</p>
+        </a>
+    </div>
+</div>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
@@ -29,7 +35,7 @@
                 <td>{{ object.agency_employee.ea_personnel_number }} - {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
             </tr>
         {% empty %}
-            <p><tr><a href="{% url 'employer_create_route' %}">No employers yet. Create employer profile.</a></tr></p>
+            <p><tr><a href="{% url 'employer_create_route' %}">Click here to add new employer profile.</a></tr></p>
         {% endfor %}
         </tbody>
     </table>
