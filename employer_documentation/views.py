@@ -96,6 +96,12 @@ class EmployerDocListView(
         return super().get_queryset().filter(employer=self.kwargs.get(
             self.pk_url_kwarg))
 
+    def get(self, request, *args, **kwargs):
+        if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('employer_create_route'))
+
 # Detail Views
 class EmployerDetailView(
     CheckAgencyEmployeePermissionsMixin,
