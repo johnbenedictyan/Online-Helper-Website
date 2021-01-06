@@ -31,7 +31,7 @@ from .mixins import (
     CheckAgencyEmployeePermissionsMixin,
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -314,7 +314,7 @@ class VerifyUserTokenView(
 class PdfEmployerDocumentView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
     DetailView
 ):
     model = EmployerDoc
@@ -323,7 +323,7 @@ class PdfEmployerDocumentView(
 class PdfServiceAgreementView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
     DetailView
 ):
     model = EmployerDoc
@@ -341,7 +341,7 @@ class PdfServiceAgreementView(
 class PdfRepaymentScheduleView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
     DetailView
 ):
     model = EmployerDoc
@@ -371,7 +371,8 @@ class PdfRepaymentScheduleView(
         
         if (
             self.object.rn_maidstatus_ed.fdw_work_commencement_date
-            .day==1
+            and
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date.day==1
         ):
             # If work start date is 1st of month, then payment does not need
             # to be pro-rated.
@@ -407,7 +408,11 @@ class PdfRepaymentScheduleView(
                 if payment_month%12 == 1:
                     payment_year += 1
 
-        else:
+        if (
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date
+            and not
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date.day==1
+        ):
             # Pro-rated payments
             month_current = (
                 12 if payment_month%12==0 else payment_month%12

@@ -49,6 +49,13 @@
 </div>
 <div class="row">
     <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk employersubdoc_pk=object.employer_doc.rn_maidstatus_ed.pk %}" class="">
+        <p class="m-1 pl-2">Status</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
         <a class="nav-link side-nav-link " href="{% url 'joborder_update_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk employersubdoc_pk=object.employer_doc.rn_joborder_ed.pk %}" class="">
         <p class="m-1 pl-2">Job Order</p>
         </a>

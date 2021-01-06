@@ -3,8 +3,8 @@ import base64
 
 # Django
 from django.conf import settings
-from django.http import HttpResponse
-from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
 from django.template.loader import render_to_string
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
@@ -273,12 +273,20 @@ class SignatureFormMixin:
             return cleaned_data
 
 # PDF Mixin
-class PdfViewMixin:
+class PdfHtmlViewMixin:
     DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
     content_disposition = None
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if not self.object.rn_maidstatus_ed.fdw_work_commencement_date:
+            return HttpResponseRedirect(
+                reverse('employerdoc_status_update_route', kwargs={
+                    'employer_pk': self.object.employer.pk,
+                    'employerdoc_pk': self.object.pk,
+                    'employersubdoc_pk': self.object.rn_maidstatus_ed.pk,
+                }))
+
         context = self.get_context_data(object=self.object)
 
         # Render PDF
