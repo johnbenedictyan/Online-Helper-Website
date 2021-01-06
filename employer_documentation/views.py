@@ -359,9 +359,13 @@ class PdfRepaymentScheduleView(
             self.object.fdw.personal_loan_amount
         )
         placement_fee_per_month = round(placement_fee/6, 0)
-        work_days_in_month = 30 - self.object.fdw.days_off
+        # work_days_in_month = 30 - self.object.fdw.days_off
+        # off_day_compensation = round(
+        #     self.object.fdw.salary/work_days_in_month, 0
+        # )
+        work_days_in_month = 26
         off_day_compensation = round(
-            self.object.fdw.salary/work_days_in_month, 0
+            self.object.fdw.salary*self.object.fdw.days_off/work_days_in_month, 0
         )
         salary_per_month = self.object.fdw.salary + off_day_compensation
         
