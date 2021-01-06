@@ -282,9 +282,21 @@ class EmployerDoc(models.Model):
             (30, "30"),
         ]
     )
-    c3_2_no_replacement_criteria_1 = models.CharField(max_length=100)
-    c3_2_no_replacement_criteria_2 = models.CharField(max_length=100)
-    c3_2_no_replacement_criteria_3 = models.CharField(max_length=100)
+    c3_2_no_replacement_criteria_1 = models.CharField(
+        verbose_name=_("Not provide Employer with replacement FDW at no \
+            additional cost under the following circumstances (i)"),
+        max_length=100
+    )
+    c3_2_no_replacement_criteria_2 = models.CharField(
+        verbose_name=_("Not provide Employer with replacement FDW at no \
+            additional cost under the following circumstances (ii)"),
+        max_length=100
+    )
+    c3_2_no_replacement_criteria_3 = models.CharField(
+        verbose_name=_("Not provide Employer with replacement FDW at no \
+            additional cost under the following circumstances (iii)"),
+        max_length=100
+    )
     c3_4_no_replacement_refund = models.PositiveIntegerField()
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
         choices=[
