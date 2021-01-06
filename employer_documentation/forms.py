@@ -11,8 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML
+from crispy_forms.bootstrap import FormActions, PrependedAppendedText
 
 # Imports from local apps
 from .models import (
@@ -129,7 +129,7 @@ class EmployerForm(forms.ModelForm):
                     raise ValidationError(error_msg)
     
     def clean_employer_email(self):
-        cleaned_field = self.cleaned_data['employer_email']
+        cleaned_field = self.cleaned_data.get('employer_email')
 
         try:
             # Check if employer_email exists in database
@@ -148,7 +148,7 @@ class EmployerForm(forms.ModelForm):
         return cleaned_field
 
     def clean_employer_mobile_number(self):
-        cleaned_field = self.cleaned_data['employer_mobile_number']
+        cleaned_field = self.cleaned_data.get('employer_mobile_number')
 
         try:
             # Check if employer_mobile_number exists in database
@@ -167,7 +167,7 @@ class EmployerForm(forms.ModelForm):
         return cleaned_field
 
     def clean_employer_nric(self):
-        cleaned_field = self.cleaned_data['employer_nric']
+        cleaned_field = self.cleaned_data.get('employer_nric')
 
         try:
             # Check if employer_nric exists in database
@@ -217,71 +217,410 @@ class EmployerDocForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Documentation Details',
-                
-                # Form fields - main
-                'case_ref_no',
-                'fdw',
-                'spouse_required',
-                'sponsor_required',
-
-                # Service Fee Schedule - Form A
-                'b1_service_fee',
-                'b2a_work_permit_application_collection',
-                'b2b_medical_examination_fee',
-                'b2c_security_bond_accident_insurance',
-                'b2d_indemnity_policy_reimbursement',
-                'b2e_home_service',
-                'b2f_counselling',
-                'b2g_sip',
-                'b2h_replacement_months',
-                'b2h_replacement_cost',
-                'b2i_work_permit_renewal',
-                'b2j1_other_services_description',
-                'b2j1_other_services_fee',
-                'b2j2_other_services_description',
-                'b2j2_other_services_fee',
-                'b2j3_other_services_description',
-                'b2j3_other_services_fee',
-                'ca_deposit',
-                'fdw_is_replacement',
-
-                # Replacement - Service Fee Schedule - Form B
-                'fdw_replaced',
-                'b4_loan_transferred',
-
-                # Service Agreement
-                'c1_3_handover_days',
-                'c3_2_no_replacement_criteria_1',
-                'c3_2_no_replacement_criteria_2',
-                'c3_2_no_replacement_criteria_3',
-                'c3_4_no_replacement_refund',
-                'c4_1_number_of_replacements',
-                'c4_1_replacement_period',
-                'c4_1_replacement_after_min_working_days',
-                'c4_1_5_replacement_deadline',
-                'c5_1_1_deployment_deadline',
-                'c5_1_1_failed_deployment_refund',
-                'c5_1_2_refund_within_days',
-                'c5_1_2_before_fdw_arrives_charge',
-                'c5_1_2_after_fdw_arrives_charge',
-                'c5_2_2_can_transfer_refund_within',
-                'c5_3_2_cannot_transfer_refund_within',
-                'c6_4_per_day_food_accommodation_cost',
-                'c6_6_per_session_counselling_cost',
-                'c9_1_independent_mediator_1',
-                'c9_2_independent_mediator_2',
-                'c13_termination_notice',
-
-                # Employment Contract
-                'c3_2_salary_payment_date',
-                'c3_5_fdw_sleeping_arrangement',
-                'c4_1_termination_notice',
+            HTML(
+                """
+                <h3 class="mb-3">Documentation Details</h3>
+                <h5 class="doc-section-header" id="id-doc-general">General</h5>
+            """),
+            Row(
+                Column(
+                    'case_ref_no',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'fdw',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
             ),
-            Submit('submit', 'Submit')
+            Row(
+                Column(
+                    'spouse_required',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_required',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            # Service Fee Schedule - Form A
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule - Form A</h5>
+            """),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'b1_service_fee', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2a_work_permit_application_collection', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'b2b_medical_examination_fee', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2c_security_bond_accident_insurance', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'b2d_indemnity_policy_reimbursement', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2e_home_service', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'b2f_counselling', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2g_sip', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'b2h_replacement_months',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2h_replacement_cost', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'b2i_work_permit_renewal', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                # Column(
+                #     PrependedAppendedText(
+                #         '', '$', '.00'
+                #     ),
+                #     css_class='form-group col-md-6'
+                # ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'b2j1_other_services_description',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2j1_other_services_fee', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'b2j2_other_services_description',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2j2_other_services_fee', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'b2j3_other_services_description',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b2j3_other_services_fee', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'ca_deposit', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'fdw_is_replacement',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            # Replacement - Service Fee Schedule - Form B
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-service-fee-replacement-schedule">Replacement - Service Fee Schedule - Form B</h5>
+            """),
+            Row(
+                Column(
+                    'fdw_replaced',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'b4_loan_transferred', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            # Service Agreement
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-service-agreement">Service Agreement</h5>
+            """),
+            Row(
+                Column(
+                    'c1_3_handover_days',
+                    css_class='form-group col-md-6'
+                ),
+                # Column(
+                #     PrependedAppendedText(
+                #         '', '$', '.00'
+                #     ),
+                #     css_class='form-group col-md-6'
+                # ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c3_2_no_replacement_criteria_1',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c3_2_no_replacement_criteria_2',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c3_2_no_replacement_criteria_3',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c3_4_no_replacement_refund',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c4_1_number_of_replacements',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c4_1_replacement_period',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c4_1_replacement_after_min_working_days',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c4_1_5_replacement_deadline',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c5_1_1_deployment_deadline',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'c5_1_1_failed_deployment_refund', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c5_1_2_refund_within_days',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'c5_1_2_before_fdw_arrives_charge', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'c5_1_2_after_fdw_arrives_charge', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c5_2_2_can_transfer_refund_within',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c5_3_2_cannot_transfer_refund_within',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'c6_4_per_day_food_accommodation_cost', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'c6_6_per_session_counselling_cost', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c9_1_independent_mediator_1',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c9_2_independent_mediator_2',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c13_termination_notice',
+                    css_class='form-group col-md-6'
+                ),
+                # Column(
+                #     '',
+                #     css_class='form-group col-md-6'
+                # ),
+                css_class='form-row'
+            ),
+            # Employment Contract
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
+            """),
+            Row(
+                Column(
+                    'c3_2_salary_payment_date',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'c3_5_fdw_sleeping_arrangement',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'c4_1_termination_notice',
+                    css_class='form-group col-md-6'
+                ),
+                # Column(
+                #     '',
+                #     css_class='form-group col-md-6'
+                # ),
+                css_class='form-row'
+            ),
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
         )
+
+    def clean_fdw_replaced(self):
+        is_replacement = self.cleaned_data.get('fdw_is_replacement')
+        cleaned_field = self.cleaned_data.get('fdw_replaced')
+
+        if not is_replacement:
+            return cleaned_field
+        elif is_replacement and not cleaned_field:
+            raise ValidationError('FDW being replaced is a required field')
+        elif cleaned_field==self.cleaned_data.get('fdw'):
+            raise ValidationError('Replacement FDW cannot be the same as new \
+                FDW')
+        else:
+            return cleaned_field
+
+    def clean_b4_loan_transferred(self):
+        is_replacement = self.cleaned_data.get('fdw_is_replacement')
+        cleaned_field = self.cleaned_data.get('b4_loan_transferred')
+
+        if not is_replacement:
+            return cleaned_field
+        elif is_replacement and not cleaned_field:
+            raise ValidationError('Loan being transferred is a required \
+                field')
+        else:
+            return cleaned_field
 
 class EmployerDocAgreementDateForm(forms.ModelForm):
     class Meta:

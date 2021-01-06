@@ -1,11 +1,7 @@
-.sidenav {
-    background-color: rgb(46, 74, 104);
-}
-
-.sidenav__list-item {
-    list-style: none;
-}
-
-.sidenav__list-item > a {
+.doc-section-header {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5em;
+    background-color: rgb(41, 68, 117);
     color: white;
 }
