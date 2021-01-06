@@ -100,7 +100,12 @@ class EmployerDocListView(
         if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
             return super().get(request, *args, **kwargs)
         else:
-            return HttpResponseRedirect(reverse('employer_create_route'))
+            return HttpResponseRedirect(
+                reverse(
+                    'employerdoc_create_route',
+                    kwargs={'employer_pk': self.object.pk}
+                )
+            )
 
 # Detail Views
 class EmployerDetailView(
