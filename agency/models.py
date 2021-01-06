@@ -71,6 +71,11 @@ class Agency(models.Model):
         storage=PublicMediaStorage()
     )
 
+    mission = models.TextField(
+        verbose_name=_('Mission Statement'),
+        blank=False
+    )
+
     active = models.BooleanField(
         default=True,
         editable=False
@@ -94,6 +99,12 @@ class Agency(models.Model):
     def __str__(self):
         return self.name
 
+    def get_main_office_number(self):
+        return self.branches.get(main_branch=True).office_number
+
+    def get_main_office(self):
+        return self.branches.get(main_branch=True)
+        
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
     class OperatingHoursChoices(models.TextChoices):

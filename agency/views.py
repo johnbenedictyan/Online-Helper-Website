@@ -28,7 +28,7 @@ from .mixins import (
     AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
     AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
     AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
-    SpecificAgencyEmployeeLoginRequiredMixin
+    SpecificAgencyEmployeeLoginRequiredMixin, GetAuthorityMixin
 )
 
 # Start of Views
@@ -79,19 +79,23 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
-class AgencyBranchCreate(AgencyOwnerRequiredMixin, CreateView):
+class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin, CreateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
     model = AgencyBranch
     template_name = 'create/agency-branch-create.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_branches_list')
     check_type = 'branch'
+    authority = ''
+    agency_id = ''
+    form_type = 'CREATE'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.request.user.agency_owner.agency.pk
+            'agency_id': self.agency_id,
+            'form_type': self.form_type
         })
         return kwargs
 
@@ -162,39 +166,54 @@ class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Update Views
-class AgencyUpdate(AgencyOwnerRequiredMixin, UpdateView):
+class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
     model = Agency
     template_name = 'update/agency-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
 
     def get_object(self, queryset=None):
         return Agency.objects.get(
-            pk = self.request.user.agency.pk
+            pk = self.agency_id
     )
 
-class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
+class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
     model = AgencyBranch
     template_name = 'update/agency-branch-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_branches_list')
     check_type = 'branch'
+    authority = ''
+    agency_id = ''
+    form_type = 'UPDATE'
 
-class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, UpdateView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'form_type': self.form_type
+        })
+        return kwargs
+
+class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
     form_class = AgencyOperatingHoursForm
     http_method_names = ['get','post']
     model = AgencyOperatingHours
     template_name = 'update/agency-operating-hours-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
 
     def get_object(self, queryset=None):
         return AgencyOperatingHours.objects.get(
-            pk = self.request.user.pk
+            agency__pk = self.agency_id
         )
 
 class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin, UpdateView):
@@ -283,3 +302,12 @@ class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
     model = AgencyPlan
     success_url = reverse_lazy('dashboard_agency_plan_list')
     check_type = 'plan'
+
+class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, DeleteView):
+    context_object_name = 'agency_branch'
+    http_method_names = ['post']
+    model = AgencyBranch
+    success_url = reverse_lazy('dashboard_branches_list')
+    check_type = 'branch'
+    authority = ''
+    agency_id = ''
