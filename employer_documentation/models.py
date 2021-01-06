@@ -109,8 +109,7 @@ class EmployerDoc(models.Model):
         on_delete=models.RESTRICT
     )
     spouse_required = models.BooleanField(
-        verbose_name=_("Is spouse requried? Required if Employer's monthly \
-            income < S$3,000 per month."),
+        verbose_name=_("Is spouse requried?"),
         choices=TrueFalseChoices(
             'Yes, spouse required',
             'No, spouse not required'
