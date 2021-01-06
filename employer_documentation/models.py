@@ -96,6 +96,7 @@ class EmployerDoc(models.Model):
         unique=True
     )
     case_ref_no = models.CharField(
+        verbose_name=_("Case Reference Number"),
         max_length=20,
         unique=True
     )
@@ -106,6 +107,7 @@ class EmployerDoc(models.Model):
     )
     fdw = models.ForeignKey(
         Maid,
+        verbose_name=_("Foreign Domestic Worker (FDW)"),
         on_delete=models.RESTRICT
     )
     spouse_required = models.BooleanField(
@@ -124,15 +126,32 @@ class EmployerDoc(models.Model):
     )
 
     # Service Fee Schedule
-    b1_service_fee = models.PositiveIntegerField() # cents
-    b2a_work_permit_application_collection = models.PositiveIntegerField() # cents
-    b2b_medical_examination_fee = models.PositiveIntegerField() # cents
-    b2c_security_bond_accident_insurance = models.PositiveIntegerField() # cents
-    b2d_indemnity_policy_reimbursement = models.PositiveIntegerField() # cents
-    b2e_home_service = models.PositiveIntegerField() # cents
-    b2f_counselling = models.PositiveIntegerField() # cents
-    b2g_sip = models.PositiveIntegerField() # cents
-    b2h_replacement_months = models.PositiveSmallIntegerField(
+    b1_service_fee = models.PositiveIntegerField( # cents
+        verbose_name=_("Service Fee"),
+    )
+    b2a_work_permit_application_collection = models.PositiveIntegerField( # cents
+        verbose_name=_("Application / Collection of Work Permit"),
+    )
+    b2b_medical_examination_fee = models.PositiveIntegerField( # cents
+        verbose_name=_("Medical Examination Fee"),
+    )
+    b2c_security_bond_accident_insurance = models.PositiveIntegerField( # cents
+        verbose_name=_("Security Bond and Personal Accident Insurance"),
+    )
+    b2d_indemnity_policy_reimbursement = models.PositiveIntegerField( # cents
+        verbose_name=_("Reimbursement of Indemnity Policy"),
+    )
+    b2e_home_service = models.PositiveIntegerField( # cents
+        verbose_name=_("Home Service"),
+    )
+    b2f_counselling = models.PositiveIntegerField( # cents
+        verbose_name=_("Each Counselling Session"),
+    )
+    b2g_sip = models.PositiveIntegerField( # cents
+        verbose_name=_("Settling-In-Programme (SIP)"),
+    )
+    b2h_replacement_months = models.PositiveSmallIntegerField( # months
+        verbose_name=_("Cost for replacement within __ months"),
         choices=[
             (0, "0"),
             (1, "1"),
@@ -161,36 +180,48 @@ class EmployerDoc(models.Model):
             (24, "24"),
         ]
     )
-    b2h_replacement_cost = models.PositiveIntegerField() # cents
-    b2i_work_permit_renewal = models.PositiveIntegerField() # cents
+    b2h_replacement_cost = models.PositiveIntegerField( # cents
+        verbose_name=_("Cost for replacement"),
+    )
+    b2i_work_permit_renewal = models.PositiveIntegerField( # cents
+        verbose_name=_("Renewal of Work Permit"),
+    )
     b2j1_other_services_description = models.CharField(
+        verbose_name=_("Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2j1_other_services_fee = models.PositiveIntegerField(
+    b2j1_other_services_fee = models.PositiveIntegerField( # cents
+        verbose_name=_("Other services fee (i)"),
         blank=True,
         null=True
-    ) # cents
+    )
     b2j2_other_services_description = models.CharField(
+        verbose_name=_("Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2j2_other_services_fee = models.PositiveIntegerField(
+    b2j2_other_services_fee = models.PositiveIntegerField( # cents
+        verbose_name=_("Other services fee (ii)"),
         blank=True,
         null=True
-    ) # cents
+    )
     b2j3_other_services_description = models.CharField(
+        verbose_name=_("Other services provided (iii)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2j3_other_services_fee = models.PositiveIntegerField(
+    b2j3_other_services_fee = models.PositiveIntegerField( # cents
+        verbose_name=_("Other services fee (iii)"),
         blank=True,
         null=True
-    ) # cents
-    ca_deposit = models.PositiveIntegerField() # cents
+    )
+    ca_deposit = models.PositiveIntegerField( # cents
+        verbose_name=_("Deposit - upon confirmation of FDW")
+    )
 
     # If FDW is replacement, then additional fields
     fdw_is_replacement = models.BooleanField(
@@ -202,18 +233,21 @@ class EmployerDoc(models.Model):
     )
     fdw_replaced = models.ForeignKey(
         Maid,
+        verbose_name=_("FDW Replaced"),
         on_delete=models.RESTRICT,
         blank=True,
         null=True,
         related_name='rn_ed_fdwreplaced'
     )
-    b4_loan_transferred = models.PositiveIntegerField(
+    b4_loan_transferred = models.PositiveIntegerField( # cents
+        verbose_name=_("Loan Transferred"),
         blank=True,
         null=True,
     )
 
     # Service Agreement
     c1_3_handover_days = models.PositiveSmallIntegerField(
+        verbose_name=_("handover FDW to Employer within __ day(s)"),
         choices=[
             (0, "0"),
             (1, "1"),
