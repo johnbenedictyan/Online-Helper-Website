@@ -72,22 +72,18 @@
     <script>
         let replacementFdwSelector = document.querySelector('#id_fdw_is_replacement');
         if (replacementFdwSelector) {
-            let replacementHeader = document.querySelector('#id-doc-service-fee-replacement-schedule');
             let fdwReplacedField = document.querySelector('#div_id_fdw_replaced');
             let loanTransferredField = document.querySelector('#div_id_b4_loan_transferred');
             if (replacementFdwSelector.value!=='True') {
-                replacementHeader.hidden = true;
                 fdwReplacedField.hidden = true;
                 loanTransferredField.hidden = true;
             }
             replacementFdwSelector.addEventListener('change', () => {
                 if (replacementFdwSelector.value!=='True') {
-                replacementHeader.hidden = true;
                 fdwReplacedField.hidden = true;
                 loanTransferredField.hidden = true;
                 }
                 else {
-                replacementHeader.hidden = false;
                 fdwReplacedField.hidden = false;
                 loanTransferredField.hidden = false;
                 }

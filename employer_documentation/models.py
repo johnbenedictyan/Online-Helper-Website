@@ -62,7 +62,7 @@ class Employer(models.Model):
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$',
+                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
                 # regex='^[8-9][0-9]{7}[0-9]*$',
                 message=_('Please enter a valid contact number')
             )
@@ -89,6 +89,74 @@ class Employer(models.Model):
 
 
 class EmployerDoc(models.Model):
+    DAY_CHOICES = [
+        (0, "0 days"),
+        (1, "1 day"),
+        (2, "2 days"),
+        (3, "3 days"),
+        (4, "4 days"),
+        (5, "5 days"),
+        (6, "6 days"),
+        (7, "7 days"),
+        (8, "8 days"),
+        (9, "9 days"),
+        (10, "10 days"),
+        (11, "11 days"),
+        (12, "12 days"),
+        (13, "13 days"),
+        (14, "14 days"),
+        (15, "15 days"),
+        (16, "16 days"),
+        (17, "17 days"),
+        (18, "18 days"),
+        (19, "19 days"),
+        (20, "20 days"),
+        (21, "21 days"),
+        (22, "22 days"),
+        (23, "23 days"),
+        (24, "24 days"),
+        (25, "25 days"),
+        (26, "26 days"),
+        (27, "27 days"),
+        (28, "28 days"),
+    ]
+
+    WEEK_CHOICES = [
+        (0, "0 weeks"),
+        (1, "1 week"),
+        (2, "2 weeks"),
+        (3, "3 weeks"),
+        (4, "4 weeks"),
+    ]
+
+    MONTH_CHOICES = [
+        (0, "0 months"),
+        (1, "1 month"),
+        (2, "2 months"),
+        (3, "3 months"),
+        (4, "4 months"),
+        (5, "5 months"),
+        (6, "6 months"),
+        (7, "7 months"),
+        (8, "8 months"),
+        (9, "9 months"),
+        (10, "10 months"),
+        (11, "11 months"),
+        (12, "12 months"),
+        (13, "13 months"),
+        (14, "14 months"),
+        (15, "15 months"),
+        (16, "16 months"),
+        (17, "17 months"),
+        (18, "18 months"),
+        (19, "19 months"),
+        (20, "20 months"),
+        (21, "21 months"),
+        (22, "22 months"),
+        (23, "23 months"),
+        (24, "24 months"),
+    ]
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -126,64 +194,49 @@ class EmployerDoc(models.Model):
     )
 
     # Service Fee Schedule
-    b1_service_fee = models.PositiveIntegerField( # cents
+    b1_service_fee = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Service Fee"),
     )
-    b2a_work_permit_application_collection = models.PositiveIntegerField( # cents
+    b2a_work_permit_application_collection = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Application / Collection of Work Permit"),
     )
-    b2b_medical_examination_fee = models.PositiveIntegerField( # cents
+    b2b_medical_examination_fee = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Medical Examination Fee"),
     )
-    b2c_security_bond_accident_insurance = models.PositiveIntegerField( # cents
+    b2c_security_bond_accident_insurance = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Security Bond and Personal Accident Insurance"),
     )
-    b2d_indemnity_policy_reimbursement = models.PositiveIntegerField( # cents
+    b2d_indemnity_policy_reimbursement = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Reimbursement of Indemnity Policy"),
     )
-    b2e_home_service = models.PositiveIntegerField( # cents
+    b2e_home_service = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Home Service"),
     )
-    b2f_counselling = models.PositiveIntegerField( # cents
+    b2f_counselling = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Each Counselling Session"),
     )
-    b2g_sip = models.PositiveIntegerField( # cents
+    b2g_sip = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Settling-In-Programme (SIP)"),
     )
-    b2h_replacement_months = models.PositiveSmallIntegerField( # months
-        verbose_name=_("Cost for replacement within __ months"),
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-        ]
+    b2h_replacement_months = models.PositiveSmallIntegerField(
+        # months
+        verbose_name=_("Cost for replacement within __ month(s)"),
+        choices=MONTH_CHOICES
     )
-    b2h_replacement_cost = models.PositiveIntegerField( # cents
+    b2h_replacement_cost = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Cost for replacement"),
     )
-    b2i_work_permit_renewal = models.PositiveIntegerField( # cents
+    b2i_work_permit_renewal = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Renewal of Work Permit"),
     )
     b2j1_other_services_description = models.CharField(
@@ -192,7 +245,8 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True
     )
-    b2j1_other_services_fee = models.PositiveIntegerField( # cents
+    b2j1_other_services_fee = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Other services fee (i)"),
         blank=True,
         null=True
@@ -203,7 +257,8 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True
     )
-    b2j2_other_services_fee = models.PositiveIntegerField( # cents
+    b2j2_other_services_fee = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Other services fee (ii)"),
         blank=True,
         null=True
@@ -214,12 +269,14 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True
     )
-    b2j3_other_services_fee = models.PositiveIntegerField( # cents
+    b2j3_other_services_fee = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Other services fee (iii)"),
         blank=True,
         null=True
     )
-    ca_deposit = models.PositiveIntegerField( # cents
+    ca_deposit = models.PositiveIntegerField(
+        # cents
         verbose_name=_("Deposit - upon confirmation of FDW")
     )
 
@@ -233,354 +290,142 @@ class EmployerDoc(models.Model):
     )
     fdw_replaced = models.ForeignKey(
         Maid,
-        verbose_name=_("FDW Replaced"),
+        verbose_name=_("FDW Replaced* (required if FDW is replacement)"),
         on_delete=models.RESTRICT,
         blank=True,
         null=True,
         related_name='rn_ed_fdwreplaced'
     )
-    b4_loan_transferred = models.PositiveIntegerField( # cents
-        verbose_name=_("Loan Transferred"),
+    b4_loan_transferred = models.PositiveIntegerField(
+        # cents
+        verbose_name=_("Loan Transferred* (required if FDW is replacement)"),
         blank=True,
         null=True,
     )
 
     # Service Agreement
     c1_3_handover_days = models.PositiveSmallIntegerField(
+        # days
         verbose_name=_("handover FDW to Employer within __ day(s)"),
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-            (29, "29"),
-            (30, "30"),
-        ]
+        choices=DAY_CHOICES
     )
     c3_2_no_replacement_criteria_1 = models.CharField(
-        verbose_name=_("Not provide Employer with replacement FDW at no \
-            additional cost under the following circumstances (i)"),
+        verbose_name=_("No need to provide Employer with replacement FDW \
+            if any of following circumstances (i)"),
         max_length=100
     )
     c3_2_no_replacement_criteria_2 = models.CharField(
-        verbose_name=_("Not provide Employer with replacement FDW at no \
-            additional cost under the following circumstances (ii)"),
+        verbose_name=_("No need to provide Employer with replacement FDW \
+            if any of following circumstances (ii)"),
         max_length=100
     )
     c3_2_no_replacement_criteria_3 = models.CharField(
-        verbose_name=_("Not provide Employer with replacement FDW at no \
-            additional cost under the following circumstances (iii)"),
+        verbose_name=_("No need to provide Employer with replacement FDW \
+            if any of following circumstances (iii)"),
         max_length=100
     )
-    c3_4_no_replacement_refund = models.PositiveIntegerField()
+    c3_4_no_replacement_refund = models.PositiveIntegerField(
+        # cents
+        verbose_name=_("Refund amount if no replacement pursuant to Clause \
+            3.1"),
+    )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
+        verbose_name=_("Number of replacement FDWs that Employer is entitled \
+            to"),
         choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
+            (0, "0 replacements"),
+            (1, "1 replacement"),
+            (2, "2 replacements"),
+            (3, "3 replacements"),
+            (4, "4 replacements"),
+            (5, "5 replacements"),
+            (6, "6 replacements"),
+            (7, "7 replacements"),
+            (8, "8 replacements"),
+            (9, "9 replacements"),
+            (10, "10 replacements"),
         ]
     )
     c4_1_replacement_period = models.PositiveSmallIntegerField(
         # months
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-        ]
+        verbose_name=_("Replacement FDW period validity (months)"),
+        choices=MONTH_CHOICES
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-            (29, "29"),
-            (30, "30"),
-        ]
+        verbose_name=_("Replacement only after FDW has worked for minimum of \
+            __ day(s)"),
+        choices=DAY_CHOICES
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-        ]
+        verbose_name=_("Replacement FDW provided within __ month(s) from \
+            date FDW returned"),
+        choices=MONTH_CHOICES
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-            (29, "29"),
-            (30, "30"),
-        ]
+        verbose_name=_("Deploy FDW to Employer within __ day(s) of date of \
+            Service Agreement"),
+        choices=DAY_CHOICES
     )
-    c5_1_1_failed_deployment_refund = models.PositiveIntegerField()
+    c5_1_1_failed_deployment_refund = models.PositiveIntegerField(
+        # cents
+        verbose_name=_("Failed FDW deployment refund amount"),
+    )
     c5_1_2_refund_within_days = models.PositiveIntegerField(
         # days
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-            (29, "29"),
-            (30, "30"),
-        ]
+        verbose_name=_("If Employer terminates Agreement, Employer entitled \
+            to Service Fee refund within __ day(s)"),
+        choices=DAY_CHOICES
     )
-    c5_1_2_before_fdw_arrives_charge = models.PositiveIntegerField()
-    c5_1_2_after_fdw_arrives_charge = models.PositiveIntegerField()
+    c5_1_2_before_fdw_arrives_charge = models.PositiveIntegerField(
+        # cents
+        verbose_name=_("Charge if Employer terminates BEFORE FDW arrives in \
+            Singapore"),
+    )
+    c5_1_2_after_fdw_arrives_charge = models.PositiveIntegerField(
+        # cents
+        verbose_name=_("Charge if Employer terminates AFTER FDW arrives in \
+            Singapore"),
+    )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-        ]
+        verbose_name=_("If new FDW deployed to Employer and former FDW CAN \
+            be transferred to new employer, refund within __ week(s)"),
+        choices=WEEK_CHOICES
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-        ]
+        verbose_name=_("If new FDW deployed to Employer and former FDW CAN \
+            be transferred to new employer, refund within __ week(s)"),
+        choices=WEEK_CHOICES
     )
-    c6_4_per_day_food_accommodation_cost = models.PositiveSmallIntegerField()
-    c6_6_per_session_counselling_cost = models.PositiveIntegerField()
-    c9_1_independent_mediator_1 = models.CharField(max_length=40)
-    c9_2_independent_mediator_2 = models.CharField(max_length=40)
+    c6_4_per_day_food_accommodation_cost = models.PositiveSmallIntegerField(
+        # cents
+        verbose_name=_("Accommodation cost per day"),
+    )
+    c6_6_per_session_counselling_cost = models.PositiveIntegerField(
+        # cents
+        verbose_name=_("Counselling cost per day"),
+    )
+    c9_1_independent_mediator_1 = models.CharField(
+        verbose_name=_("Independent mediator #1"),
+        max_length=40
+    )
+    c9_2_independent_mediator_2 = models.CharField(
+        verbose_name=_("Independent mediator #2"),
+        max_length=40
+    )
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-            (29, "29"),
-            (30, "30"),
-        ]
+        verbose_name=_("Service Agreement termination notice (days)"),
+        choices=DAY_CHOICES
     )
 
     # Employment Contract
-    c3_2_salary_payment_date = models.PositiveSmallIntegerField(
-        # day of month
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-        ]
-    )
     c3_5_fdw_sleeping_arrangement = models.CharField(
+        verbose_name=_("FDW sleeping arrangement"),
         max_length=40,
         choices=[
             ("Have own room","Have own room"),
@@ -590,39 +435,8 @@ class EmployerDoc(models.Model):
     )
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
-        choices=[
-            (0, "0"),
-            (1, "1"),
-            (2, "2"),
-            (3, "3"),
-            (4, "4"),
-            (5, "5"),
-            (6, "6"),
-            (7, "7"),
-            (8, "8"),
-            (9, "9"),
-            (10, "10"),
-            (11, "11"),
-            (12, "12"),
-            (13, "13"),
-            (14, "14"),
-            (15, "15"),
-            (16, "16"),
-            (17, "17"),
-            (18, "18"),
-            (19, "19"),
-            (20, "20"),
-            (21, "21"),
-            (22, "22"),
-            (23, "23"),
-            (24, "24"),
-            (25, "25"),
-            (26, "26"),
-            (27, "27"),
-            (28, "28"),
-            (29, "29"),
-            (30, "30"),
-        ]
+        verbose_name=_("Employment Contract termination notice (days)"),
+        choices=DAY_CHOICES
     )
 
 class EmployerDocSig(models.Model):

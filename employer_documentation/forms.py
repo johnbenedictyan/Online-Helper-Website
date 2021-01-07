@@ -247,7 +247,7 @@ class EmployerDocForm(forms.ModelForm):
             # Service Fee Schedule - Form A
             HTML(
                 """
-                <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule - Form A</h5>
+                <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
             """),
             Row(
                 Column(
@@ -390,10 +390,6 @@ class EmployerDocForm(forms.ModelForm):
                 css_class='form-row'
             ),
             # Replacement - Service Fee Schedule - Form B
-            HTML(
-                """
-                <h5 class="doc-section-header" id="id-doc-service-fee-replacement-schedule">Replacement - Service Fee Schedule - Form B</h5>
-            """),
             Row(
                 Column(
                     'fdw_replaced',
@@ -448,7 +444,9 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'c3_4_no_replacement_refund',
+                    PrependedAppendedText(
+                        'c3_4_no_replacement_refund', '$', '.00'
+                    ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -562,24 +560,13 @@ class EmployerDocForm(forms.ModelForm):
             """),
             Row(
                 Column(
-                    'c3_2_salary_payment_date',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
                     'c3_5_fdw_sleeping_arrangement',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'c4_1_termination_notice',
                     css_class='form-group col-md-6'
                 ),
-                # Column(
-                #     '',
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             # Submit
