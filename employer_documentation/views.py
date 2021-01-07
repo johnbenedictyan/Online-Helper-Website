@@ -32,6 +32,7 @@ from .mixins import (
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
     PdfHtmlViewMixin,
+    CheckSignatureSessionTokenMixin,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -292,10 +293,12 @@ class SignatureUpdateByAgentView(
     template_name = 'employer_documentation/signature_form_agency.html'
     success_url = reverse_lazy('employer_list_route')
     model_field_name = None
+    form_fields = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -319,6 +322,30 @@ class VerifyUserTokenView(
         kwargs['session'] = self.request.session
         kwargs['token_field_name'] = self.token_field_name
         return kwargs
+
+class SignatureUpdateByTokenView(
+    CheckSignatureSessionTokenMixin,
+    UpdateView
+):
+    model = EmployerDocSig
+    form_class = SignatureForm
+    template_name = 'employer_documentation/signature_form_token.html'
+    success_url = reverse_lazy('employer_list_route')
+    model_field_name = None
+    token_field_name = None
+    form_fields = None
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
+            self.model_field_name).verbose_name
+        return context
 
 
 # PDF Views

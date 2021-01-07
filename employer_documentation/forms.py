@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML
+from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML, Hidden
 from crispy_forms.bootstrap import FormActions, PrependedAppendedText
 
 # Imports from local apps
@@ -21,9 +21,6 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
     JobOrder,
-)
-from .mixins import (
-    SignatureFormMixin,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -687,7 +684,7 @@ class JobOrderForm(forms.ModelForm):
 
 
 # Signature Forms
-class SignatureForm(SignatureFormMixin, forms.ModelForm):
+class SignatureForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSig
         fields = '__all__'
@@ -695,21 +692,97 @@ class SignatureForm(SignatureFormMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # Assign model_field_name in urls.py or views.py
         self.model_field_name = kwargs.pop('model_field_name')
+        self.form_fields = kwargs.pop('form_fields')
         super().__init__(*args, **kwargs)
-        self.fields[self.model_field_name] = forms.CharField()
-        self.fields[self.model_field_name].widget.attrs.update(
-            {
-                'id': 'id_signature',
-                'hidden': 'true',
-            }
-        )
 
-        # Make new list of all field names, then remove fields that are not
-        # model_field_name.
+        # Make copy of all field names, then remove fields that are not
+        # in self.form_fields.
         fields_copy = list(self.fields)
         for field in fields_copy:
-            if field!=self.model_field_name:
+            if field not in self.form_fields:
                 del self.fields[field]
+        
+        # Instantiate blank Layout instance
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-docsig-form'
+        self.helper.layout = Layout()
+
+        # Append form fields to Layout instance
+        for field in self.fields:
+            if field==self.model_field_name:
+                self.helper.layout.append(
+                    Hidden(self.model_field_name, self.model_field_name, id='id_signature'),
+                )
+            else:
+                self.helper.layout.append(
+                    Row(
+                        Column(field, css_class='form-group col'),
+                        css_class='form-row'
+                    ),
+                )
+
+        # Signature pad
+        self.helper.layout.append(
+            Row(
+                Column(
+                    HTML("""
+                        <canvas
+                            id="signature-pad"
+                            class=""
+                            style="border: 1px solid #d2d2d2"
+                        >
+                        </canvas>
+                    """)
+                ),
+                css_class='form-row'
+            )
+        )
+        # Label for signature pad
+        self.helper.layout.append(
+            Row(
+                Column(
+                    HTML("""
+                        <h6>{{ model_field_verbose_name }}</h6>
+                    """)
+                ),
+                css_class='form-row'
+            )
+        )
+        # Submit form and clear signature pad buttons
+        self.helper.layout.append(
+            Row(
+                Column(
+                    Submit("submit", "Submit"),
+                    HTML("""
+                        <a href="#" onclick="signaturePad.clear()" class="btn btn-secondary">Clear</a>
+                    """)
+                ),
+                css_class='form-row'
+            )
+        )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        base64_sig = cleaned_data.get(self.model_field_name)
+        if base64_sig==None:
+            error_msg = "There was an issue uploading your signature. \
+                Please try again."
+            self.add_error(self.model_field_name, error_msg)
+        elif not base64_sig.startswith("data:image/png;base64,"):
+            error_msg = "There was an issue uploading your signature. \
+                Please try again."
+            self.add_error(self.model_field_name, error_msg)
+        elif base64_sig == 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASw\
+            AAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1\
+                                v9QAATX68/0AAAAASUVORK5CYII=':
+            error_msg = "Signature cannot be blank."
+            self.add_error(self.model_field_name, error_msg)
+        else:
+            return cleaned_data
 
 class VerifyUserTokenForm(forms.ModelForm):
     class Meta:

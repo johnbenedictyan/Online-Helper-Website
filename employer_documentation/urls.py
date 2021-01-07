@@ -38,6 +38,7 @@ from .views import (
 from .views import (
     SignatureUpdateByAgentView,
     VerifyUserTokenView,
+    SignatureUpdateByTokenView,
 )
 
 ## PDF Views
@@ -133,35 +134,40 @@ urlpatterns = [
                                             path(
                                                 'agent-access/employer/update/',
                                                 SignatureUpdateByAgentView.as_view(
-                                                    model_field_name='employer_signature'
+                                                    model_field_name='employer_signature',
+                                                    form_fields=['employer_signature'],
                                                 ),
                                                 name='signature_employer_update_route'
                                             ),
                                             path(
                                                 'agent-access/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
-                                                    model_field_name='spouse_signature'
+                                                    model_field_name='spouse_signature',
+                                                    form_fields=['employer_signature'],
                                                 ),
                                                 name='signature_spouse_update_route'
                                             ),
                                             path(
                                                 'agent-access/sponsor/update/',
                                                 SignatureUpdateByAgentView.as_view(
-                                                    model_field_name='sponsor_signature'
+                                                    model_field_name='sponsor_signature',
+                                                    form_fields=['employer_signature'],
                                                 ),
                                                 name='signature_sponsor_update_route'
                                             ),
                                             path(
                                                 'agent-access/fdw/update/',
                                                 SignatureUpdateByAgentView.as_view(
-                                                    model_field_name='fdw_signature'
+                                                    model_field_name='fdw_signature',
+                                                    form_fields=['employer_signature'],
                                                 ),
                                                 name='signature_fdw_update_route'
                                             ),
                                             path(
                                                 'agent-access/agency-staff/update/',
                                                 SignatureUpdateByAgentView.as_view(
-                                                    model_field_name='agency_staff_signature'
+                                                    model_field_name='agency_staff_signature',
+                                                    form_fields=['employer_signature'],
                                                 ),
                                                 name='signature_agency_staff_update_route'
                                             ),
@@ -280,22 +286,56 @@ urlpatterns = [
                 'sign/<slug:slug>/',
                 include([
                     path(
-                        'verify/employer/',
-                        VerifyUserTokenView.as_view(
-                            slug_field= 'employer_slug',
-                            token_field_name='employer_token'
-                        ),
-                        name='token_verification_employer_route'
+                        'employer/',
+                        include([
+                            path(
+                                'verify/',
+                                VerifyUserTokenView.as_view(
+                                    slug_field= 'employer_slug',
+                                    token_field_name='employer_token',
+                                ),
+                                name='token_verification_employer_route'
+                            ),
+                            path(
+                                'signature/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field= 'employer_slug',
+                                    model_field_name='employer_signature',
+                                    token_field_name='employer_token',
+                                    form_fields=['employer_signature',],
+                                ),
+                                name='token_signature_employer_route'
+                            ),
+                            path(
+                                'witness/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field= 'employer_slug',
+                                    model_field_name='employer_witness_signature',
+                                    token_field_name='employer_token',
+                                    form_fields=[
+                                        'employer_witness_signature',
+                                        'employer_witness_name',
+                                        'employer_witness_nric',
+                                    ],
+                                ),
+                                name='token_signature_employer_route'
+                            ),
+                        ]),
                     ),
                     path(
-                        'verify/fdw/',
-                        VerifyUserTokenView.as_view(
-                            slug_field= 'fdw_slug',
-                            token_field_name='fdw_token'
-                        ),
-                        name='token_verification_fdw_route'
+                    'fdw/',
+                        include([
+                            path(
+                                'verify/',
+                                VerifyUserTokenView.as_view(
+                                    slug_field= 'fdw_slug',
+                                    token_field_name='fdw_token',
+                                ),
+                                name='token_verification_fdw_route'
+                            ),
+                        ]),
                     ),
-                ])
+                ]),
             ),
         ]),
     ),
