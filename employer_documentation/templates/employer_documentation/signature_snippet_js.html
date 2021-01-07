@@ -6,16 +6,7 @@
         document.getElementById("id_signature").value = signaturePad.toDataURL();
         return true;
     }
-    function checkSignatureNotBlank(callbackFunction) {
-        if (signaturePad.toDataURL()==='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1v9QAATX68/0AAAAASUVORK5CYII=') {
-            event.preventDefault();
-            alert("Signature cannot be blank.");
-        }
-        else {
-            callbackFunction();
-        };
-    }
     document.getElementById("submit-id-submit").addEventListener("click", function(event) {
-        checkSignatureNotBlank(appendImageToForm);
+        appendImageToForm();
     });
 </script>

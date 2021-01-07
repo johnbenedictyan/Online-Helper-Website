@@ -291,25 +291,27 @@ urlpatterns = [
                             path(
                                 'verify/',
                                 VerifyUserTokenView.as_view(
-                                    slug_field= 'employer_slug',
+                                    slug_field='employer_slug',
                                     token_field_name='employer_token',
+                                    success_url_route_name='token_signature_employer_route',
                                 ),
                                 name='token_verification_employer_route'
                             ),
                             path(
                                 'signature/',
                                 SignatureUpdateByTokenView.as_view(
-                                    slug_field= 'employer_slug',
+                                    slug_field='employer_slug',
                                     model_field_name='employer_signature',
                                     token_field_name='employer_token',
-                                    form_fields=['employer_signature',],
+                                    form_fields=['employer_signature'],
+                                    success_url_route_name='',
                                 ),
                                 name='token_signature_employer_route'
                             ),
                             path(
                                 'witness/',
                                 SignatureUpdateByTokenView.as_view(
-                                    slug_field= 'employer_slug',
+                                    slug_field='employer_slug',
                                     model_field_name='employer_witness_signature',
                                     token_field_name='employer_token',
                                     form_fields=[
@@ -317,8 +319,9 @@ urlpatterns = [
                                         'employer_witness_name',
                                         'employer_witness_nric',
                                     ],
+                                    success_url_route_name='',
                                 ),
-                                name='token_signature_employer_route'
+                                name='token_signature_employer_witness_route'
                             ),
                         ]),
                     ),
@@ -330,8 +333,35 @@ urlpatterns = [
                                 VerifyUserTokenView.as_view(
                                     slug_field= 'fdw_slug',
                                     token_field_name='fdw_token',
+                                    success_url_route_name='token_signature_fdw_route',
                                 ),
                                 name='token_verification_fdw_route'
+                            ),
+                            path(
+                                'signature/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field= 'fdw_slug',
+                                    model_field_name='fdw_signature',
+                                    token_field_name='fdw_token',
+                                    form_fields=['fdw_signature'],
+                                    success_url_route_name='',
+                                ),
+                                name='token_signature_fdw_route'
+                            ),
+                            path(
+                                'witness/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field= 'fdw_slug',
+                                    model_field_name='fdw_witness_signature',
+                                    token_field_name='fdw_token',
+                                    form_fields=[
+                                        'fdw_witness_signature',
+                                        'fdw_witness_name',
+                                        'fdw_witness_nric',
+                                    ],
+                                    success_url_route_name='',
+                                ),
+                                name='token_signature_fdw_witness_route'
                             ),
                         ]),
                     ),

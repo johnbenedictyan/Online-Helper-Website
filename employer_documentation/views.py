@@ -313,8 +313,8 @@ class VerifyUserTokenView(
     model = EmployerDocSig
     form_class = VerifyUserTokenForm
     template_name = 'employer_documentation/token_form.html'
-    success_url = reverse_lazy('employer_list_route')
     token_field_name = None
+    success_url_route_name = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -323,6 +323,18 @@ class VerifyUserTokenView(
         kwargs['token_field_name'] = self.token_field_name
         return kwargs
 
+    def get_success_url(self):
+        if self.token_field_name=='employer_token':
+            slug = self.object.employer_slug
+        elif self.token_field_name=='fdw_token':
+            slug = self.object.fdw_slug
+        else:
+            return reverse_lazy('home')
+        return reverse_lazy(
+                self.success_url_route_name,
+                kwargs={'slug': slug}
+        )
+
 class SignatureUpdateByTokenView(
     CheckSignatureSessionTokenMixin,
     UpdateView
@@ -330,10 +342,10 @@ class SignatureUpdateByTokenView(
     model = EmployerDocSig
     form_class = SignatureForm
     template_name = 'employer_documentation/signature_form_token.html'
-    success_url = reverse_lazy('employer_list_route')
     model_field_name = None
     token_field_name = None
     form_fields = None
+    success_url_route_name = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -346,6 +358,18 @@ class SignatureUpdateByTokenView(
         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
             self.model_field_name).verbose_name
         return context
+
+    def get_success_url(self):
+        if self.token_field_name=='employer_token':
+            slug = self.object.employer_slug
+        elif self.token_field_name=='fdw_token':
+            slug = self.object.fdw_slug
+        else:
+            return reverse_lazy('home')
+        return reverse_lazy(
+                self.success_url_route_name,
+                kwargs={'slug': slug}
+        )
 
 
 # PDF Views

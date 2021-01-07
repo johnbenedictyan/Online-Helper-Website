@@ -765,24 +765,46 @@ class SignatureForm(forms.ModelForm):
         cleaned_data = super().clean()
         base64_sig = cleaned_data.get(self.model_field_name)
         if base64_sig==None:
-            error_msg = "There was an issue uploading your signature. \
-                Please try again."
-            self.add_error(self.model_field_name, error_msg)
+            error_msg = "There was an issue uploading your signature, \
+                please try again."
+            raise ValidationError(error_msg)
         elif not base64_sig.startswith("data:image/png;base64,"):
-            error_msg = "There was an issue uploading your signature. \
-                Please try again."
-            self.add_error(self.model_field_name, error_msg)
-        elif base64_sig == 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASw\
-            AAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAA\
-                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
-                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
-                        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
-                            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1\
-                                v9QAATX68/0AAAAASUVORK5CYII=':
-            error_msg = "Signature cannot be blank."
-            self.add_error(self.model_field_name, error_msg)
+            error_msg = "There was an issue uploading your signature, \
+                please try again."
+            raise ValidationError(error_msg)
+        elif base64_sig == 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1v9QAATX68/0AAAAASUVORK5CYII=':
+            error_msg = "Signature cannot be blank"
+            raise ValidationError(error_msg)
         else:
             return cleaned_data
+
+    def clean_employer_witness_name(self):
+        cleaned_field = self.cleaned_data.get('employer_witness_name')
+        if cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError('Witness name cannot be empty')
+
+    def clean_employer_witness_nric(self):
+        cleaned_field = self.cleaned_data.get('employer_witness_nric')
+        if cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError('NRIC cannot be empty')
+
+    def clean_fdw_witness_name(self):
+        cleaned_field = self.cleaned_data.get('fdw_witness_name')
+        if cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError('Witness name cannot be empty')
+
+    def clean_fdw_witness_nric(self):
+        cleaned_field = self.cleaned_data.get('fdw_witness_nric')
+        if cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError('ID cannot be empty')
 
 class VerifyUserTokenForm(forms.ModelForm):
     class Meta:
