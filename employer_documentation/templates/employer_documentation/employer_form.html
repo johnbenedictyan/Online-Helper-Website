@@ -3,7 +3,7 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}">
         <p class="m-1 pl-2">Employer List</p>
         </a>
     </div>
@@ -25,16 +25,16 @@
     <div class="row">
         <div class="col px-0">
             <ul class="collapse" id="forms-nav">
-                <li class="">
+                <li>
                     <a href="#id-doc-general">Top</a>
                 </li>
-                <li class="">
+                <li>
                     <a href="#id-doc-service-fee-schedule">Service & Fees Schedule</a>
                 </li>
-                <li class="">
+                <li>
                     <a href="#id-doc-service-agreement">Service Agreement</a>
                 </li>
-                <li class="">
+                <li>
                     <a href="#id-doc-employment-contract">Employment Contract</a>
                 </li>
             </ul>
@@ -44,7 +44,7 @@
     <!-- {% comment %}Employers{% endcomment %} -->
     <div class="row">
         <div class="col px-0">
-            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object.pk %}" class="">
+            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object.pk %}">
             <p class="m-1 pl-2">Employer Profile</p>
             </a>
         </div>

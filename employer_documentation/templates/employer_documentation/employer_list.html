@@ -3,7 +3,7 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}">
         <p class="m-1 pl-2">Add Employer</p>
         </a>
     </div>
@@ -12,6 +12,13 @@
 
 {% block ed_section %}
     <h1>Employers</h1>
+
+    <form method="get" class="form-inline">
+        <div class="form-group mb-2">
+            <label for="search-box-employer" class="mr-2">Employer</label>
+            <input type="search" name="employer" id="search-box-employer" class="form-control" placeholder="Employer name">
+        </div>
+    </form>
     
     <table class="table">
         <thead>
@@ -39,4 +46,7 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <br>
+    {% include 'pagination.html' %}
 {% endblock ed_section %}

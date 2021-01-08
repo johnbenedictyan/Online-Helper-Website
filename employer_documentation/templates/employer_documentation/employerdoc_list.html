@@ -3,42 +3,42 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}">
         <p class="m-1 pl-2">Employer List</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}">
         <p class="m-1 pl-2">Employer Profile</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}">
         <p class="m-1 pl-2">Add Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employerdoc_list_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_list_route' employer_pk=object_list.0.employer.pk %}">
         <p class="m-1 pl-2">Documents List</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">
         <p class="m-1 pl-2">Add Document</p>
         </a>
     </div>

@@ -4,14 +4,14 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}">
         <p class="m-1 pl-2">Employer List</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}" class="">
+        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}">
         <p class="m-1 pl-2">Add Employer</p>
         </a>
     </div>
@@ -19,7 +19,7 @@
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
-    <form method="post" class="">
+    <form method="post">
         {% csrf_token %}
         <p>Confirm deletion of {{ object }}</p>
         <input type="submit" value="Delete">
