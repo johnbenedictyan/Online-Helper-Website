@@ -119,7 +119,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
                                 {% if authority == 'Potential Employers' %}
-                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="{% url 'employer_detail' %}">Profile</a>
                                 <a class="dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
                                 <a class="dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
                                 {% elif request.user.is_superuser %}
