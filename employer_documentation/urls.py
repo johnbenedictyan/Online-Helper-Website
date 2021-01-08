@@ -294,6 +294,7 @@ urlpatterns = [
                                     slug_field='employer_slug',
                                     token_field_name='employer_token',
                                     success_url_route_name='token_signature_employer_route',
+                                    success_message = 'Thank you for passing the verification. Please review the documents and sign below.',
                                 ),
                                 name='token_verification_employer_route'
                             ),
@@ -305,6 +306,7 @@ urlpatterns = [
                                     token_field_name='employer_token',
                                     form_fields=['employer_signature'],
                                     success_url_route_name='token_signature_employer_witness_route',
+                                    success_message = 'Thank you for signing. Please ask your witness to enter their details and sign below.',
                                 ),
                                 name='token_signature_employer_route'
                             ),
@@ -319,7 +321,7 @@ urlpatterns = [
                                         'employer_witness_name',
                                         'employer_witness_nric',
                                     ],
-                                    success_url_route_name=None, # Add thank you for signing message
+                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
                                 ),
                                 name='token_signature_employer_witness_route'
                             ),
@@ -334,6 +336,7 @@ urlpatterns = [
                                     slug_field= 'fdw_slug',
                                     token_field_name='fdw_token',
                                     success_url_route_name='token_signature_fdw_route',
+                                    success_message = 'Thank you for passing the verification. Please review the documents and sign below.',
                                 ),
                                 name='token_verification_fdw_route'
                             ),
@@ -345,6 +348,7 @@ urlpatterns = [
                                     token_field_name='fdw_token',
                                     form_fields=['fdw_signature'],
                                     success_url_route_name='token_signature_fdw_witness_route',
+                                    success_message = 'Thank you for signing. Please ask your witness to enter their details and sign below.',
                                 ),
                                 name='token_signature_fdw_route'
                             ),
@@ -359,7 +363,7 @@ urlpatterns = [
                                         'fdw_witness_name',
                                         'fdw_witness_nric',
                                     ],
-                                    success_url_route_name=None, # Add thank you for signing message
+                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
                                 ),
                                 name='token_signature_fdw_witness_route'
                             ),

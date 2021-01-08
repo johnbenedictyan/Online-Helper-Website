@@ -309,6 +309,7 @@ class SignatureUpdateByAgentView(
         return context
 
 class VerifyUserTokenView(
+    SuccessMessageMixin,
     UpdateView
 ):
     model = EmployerDocSig
@@ -316,6 +317,7 @@ class VerifyUserTokenView(
     template_name = 'employer_documentation/token_form.html'
     token_field_name = None
     success_url_route_name = None
+    success_message = None # Assign this value in urls.py
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -334,6 +336,9 @@ class VerifyUserTokenView(
             return reverse_lazy('home')
         return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
 
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(cleaned_data,)
+
 class SignatureUpdateByTokenView(
     SuccessMessageMixin,
     CheckSignatureSessionTokenMixin,
@@ -342,11 +347,11 @@ class SignatureUpdateByTokenView(
     model = EmployerDocSig
     form_class = SignatureForm
     template_name = 'employer_documentation/signature_form_token.html'
-    model_field_name = None
-    token_field_name = None
-    form_fields = None
-    success_url_route_name = None
-    success_message = 'Thank you, your information has been submitted'
+    model_field_name = None # Assign this value in urls.py
+    token_field_name = None # Assign this value in urls.py
+    form_fields = None # Assign this value in urls.py
+    success_url_route_name = None # Assign this value in urls.py
+    success_message = None # Assign this value in urls.py
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -371,9 +376,7 @@ class SignatureUpdateByTokenView(
         return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
 
     def get_success_message(self, cleaned_data):
-        return self.success_message % dict(
-            cleaned_data,
-        )
+        return self.success_message % dict(cleaned_data,)
 
 
 # PDF Views
