@@ -8,6 +8,7 @@ from django.http import FileResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.messages.views import SuccessMessageMixin
 
 # From our apps
 from .models import (
@@ -334,6 +335,7 @@ class VerifyUserTokenView(
         return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
 
 class SignatureUpdateByTokenView(
+    SuccessMessageMixin,
     CheckSignatureSessionTokenMixin,
     UpdateView
 ):
@@ -344,6 +346,7 @@ class SignatureUpdateByTokenView(
     token_field_name = None
     form_fields = None
     success_url_route_name = None
+    success_message = 'Thank you, your information has been submitted'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -366,6 +369,11 @@ class SignatureUpdateByTokenView(
         else:
             return reverse_lazy('home')
         return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+        )
 
 
 # PDF Views
