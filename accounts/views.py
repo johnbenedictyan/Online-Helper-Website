@@ -55,6 +55,14 @@ class EmployerCreate(CreateView):
     model = Employer
     template_name = 'create/employer-create.html'
     success_url = reverse_lazy('home')
+    form_type = 'CREATE'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'form_type': self.form_type
+        })
+        return kwargs
 
 ## Update Views
 class EmployerUpdate(LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
@@ -63,7 +71,16 @@ class EmployerUpdate(LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
     http_method_names = ['get','post']
     model = Employer
     template_name = 'update/employer-update.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('employer_detail')
+    form_type = 'UPDATE'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'form_type': self.form_type,
+            'email_address': self.object.user.email
+        })
+        return kwargs
 
 ## Delete Views
 class EmployerDelete(LoginRequiredMixin, VerifiedEmployerMixin, DeleteView):
