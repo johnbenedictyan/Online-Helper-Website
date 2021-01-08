@@ -5,6 +5,7 @@ import calendar
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.http import FileResponse, HttpResponseRedirect
+from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -52,32 +53,45 @@ class EmployerListView(
 ):
     model = Employer
     ordering = ['employer_name']
-    # paginate_by = 10
+    paginate_by = 20
 
-    # Filter queryset to only show the employers that current user has
-    # necessary permission to access
     def get_queryset(self):
+        search_terms = self.request.GET.get('search')
+
+        # Filter results by user's search terms
+        if search_terms:
+            queryset = super().get_queryset().filter(
+                Q(employer_name__icontains=search_terms) |
+                Q(employer_nric__icontains=search_terms) |
+                Q(employer_email__icontains=search_terms) |
+                Q(employer_mobile_number__icontains=search_terms)
+            )
+        else:
+            queryset = super().get_queryset()
+
+        # Further filter queryset to only show the employers that current user
+        # has necessary permission to access
         if self.agency_user_group==AG_OWNERS:
             # If agency owner, return all employers belonging to agency
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_owner.agency
             )
         elif self.agency_user_group==AG_ADMINS:
             # If agency administrator, return all employers belonging to agency
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_employee.agency
             )
         elif self.agency_user_group==AG_MANAGERS:
             # If agency manager, return all employers belonging to branch
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee__branch
                 = self.request.user.agency_employee.branch
             )
         elif self.agency_user_group==AG_SALES:
             # If agency owner, return all employers belonging to self
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee = self.request.user.agency_employee
             )
         else:
