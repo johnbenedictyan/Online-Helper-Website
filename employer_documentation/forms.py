@@ -716,7 +716,7 @@ class SignatureForm(forms.ModelForm):
             else:
                 self.helper.layout.append(
                     Row(
-                        Column(field, css_class='form-group col'),
+                        Column(field, css_class='form-group col-md-6'),
                         css_class='form-row'
                     ),
                 )
