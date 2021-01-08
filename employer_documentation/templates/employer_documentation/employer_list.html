@@ -1,25 +1,24 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
 {% block sidenav_extra %}
-<div class="row">
-    <div class="col px-0">
-        <a class="nav-link side-nav-link " href="{% url 'employer_create_route' %}">
-        <p class="m-1 pl-2">Add Employer</p>
-        </a>
-    </div>
-</div>
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
+<div class="mx-3 ml-md-0">
     <h1>Employers</h1>
 
-    <form method="get" class="form-inline">
-        <div class="form-group mb-2">
-            <label for="search-box-employer" class="mr-2">Employer</label>
-            <input type="search" name="employer" id="search-box-employer" class="form-control" placeholder="Employer name">
-        </div>
+    <form method="get">
+        <div class="form-row">
+            <div class="col-md-6 input-group mb-3">
+                <input type="search" name="search" class="form-control input-text" placeholder="Search employers....">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
     </form>
-    
+</div>
+
+<div>
     <table class="table">
         <thead>
             <tr>
@@ -46,7 +45,9 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
 
-    <br>
-    {% include 'pagination.html' %}
+<div class="mt-2 mb-4">
+{% include 'pagination.html' %}
+</div>
 {% endblock ed_section %}
