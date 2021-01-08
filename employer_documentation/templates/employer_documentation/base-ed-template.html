@@ -11,21 +11,37 @@
     <div class="col-md-2">
         <nav class="row">
             <div class="col d-flex flex-column justify-content-around">
+                {% with request.resolver_match.url_name as url_name %}
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link " href="{% url 'dashboard_home' %}">
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
                         <p class="m-1 pl-2">Dashboard</p>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link " href="{% url 'dashboard_account_list' %}">
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}">
                         <p class="m-1 pl-2">Account Management</p>
                         </a>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col px-0">
+                        <a class="nav-link side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}">
+                        <p class="m-1 pl-2">Employer List</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col px-0">
+                        <a class="nav-link side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}" href="{% url 'employer_create_route' %}">
+                        <p class="m-1 pl-2">Add Employer</p>
+                        </a>
+                    </div>
+                </div>
                 {% block sidenav_extra %}{% endblock sidenav_extra %}
+                {% endwith %}
             </div>
         </nav>
     </div>
