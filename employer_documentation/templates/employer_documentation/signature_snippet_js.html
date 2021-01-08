@@ -1,0 +1,12 @@
+<!-- Signature Pad -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+<script>
+    var signaturePad = new SignaturePad(document.getElementById("signature-pad"));
+    function appendImageToForm() {
+        document.getElementById("id_signature").value = signaturePad.toDataURL();
+        return true;
+    }
+    document.getElementById("submit-id-submit").addEventListener("click", function(event) {
+        appendImageToForm();
+    });
+</script>

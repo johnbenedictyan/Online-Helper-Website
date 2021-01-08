@@ -1,0 +1,12 @@
+th, td {
+    white-space: pre-wrap!important;
+    word-wrap: break-word!important;
+}
+
+.doc-section-header {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5em;
+    background-color: rgb(41, 68, 117);
+    color: white;
+}

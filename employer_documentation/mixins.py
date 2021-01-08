@@ -1,6 +1,15 @@
+# Python
+import base64
+
 # Django
-from django.urls import reverse_lazy
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.template.loader import render_to_string
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+
+# 3rd party
+from weasyprint import HTML, CSS
 
 # From our apps
 from .models import (
@@ -8,6 +17,7 @@ from .models import (
     EmployerDoc,
     EmployerDocMaidStatus,
     EmployerDocSig,
+    JobOrder,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -116,6 +126,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             elif (
                 isinstance(self.object, EmployerDocMaidStatus)
                 or isinstance(self.object, EmployerDocSig)
+                or isinstance(self.object, JobOrder)
             ):
                 self.employer_subdoc_obj = self.object
 
@@ -237,42 +248,31 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
             return self.handle_no_permission()
 
 # Signature Mixin
-import base64
-class SignatureFormMixin:
-    def clean(self):
-        cleaned_data = super().clean()
-        base64_sig = cleaned_data.get(self.model_field_name)
-        if base64_sig==None:
-            error_msg = "There was an issue uploading your signature. \
-                Please try again."
-            self.add_error(self.model_field_name, error_msg)
-        elif not base64_sig.startswith("data:image/png;base64,"):
-            error_msg = "There was an issue uploading your signature. \
-                Please try again."
-            self.add_error(self.model_field_name, error_msg)
-        elif base64_sig == 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASw\
-            AAACWCAYAAABkW7XSAAAAxUlEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAA\
-                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
-                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
-                        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
-                            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1\
-                                v9QAATX68/0AAAAASUVORK5CYII=':
-            error_msg = "Signature cannot be blank."
-            self.add_error(self.model_field_name, error_msg)
+class CheckSignatureSessionTokenMixin(UserPassesTestMixin):
+    def test_func(self):
+        if (
+            self.request.session.get('signature_token') ==
+            getattr(self.get_object(), self.token_field_name)
+        ):
+            return True
         else:
-            return cleaned_data
+            return False
 
 # PDF Mixin
-from django.conf import settings
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from weasyprint import HTML, CSS
-class PdfViewMixin:
+class PdfHtmlViewMixin:
     DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
     content_disposition = None
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if not self.object.rn_maidstatus_ed.fdw_work_commencement_date:
+            return HttpResponseRedirect(
+                reverse('employerdoc_status_update_route', kwargs={
+                    'employer_pk': self.object.employer.pk,
+                    'employerdoc_pk': self.object.pk,
+                    'employersubdoc_pk': self.object.rn_maidstatus_ed.pk,
+                }))
+
         context = self.get_context_data(object=self.object)
 
         # Render PDF
@@ -282,9 +282,8 @@ class PdfViewMixin:
             base_url=request.build_absolute_uri()
             ).write_pdf(
                 # Load separate CSS stylesheet from static folder
-                # stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
-                stylesheets=[CSS('static/css/pdf.css'
-                )]
+                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:

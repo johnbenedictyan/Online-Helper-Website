@@ -25,6 +25,7 @@ from .views import (
     EmployerDocUpdateView,
     EmployerDocAgreementDateUpdateView,
     EmployerDocMaidStatusUpdateView,
+    JobOrderUpdateView,
 )
 
 ## Delete Views
@@ -35,13 +36,9 @@ from .views import (
 
 ## Signature Views
 from .views import (
-    SignatureCreateByAgentView,
     SignatureUpdateByAgentView,
-)
-
-## Signature Form
-from .forms import (
-    SignatureForm,
+    VerifyUserTokenView,
+    SignatureUpdateByTokenView,
 )
 
 ## PDF Views
@@ -49,6 +46,7 @@ from .views import (
     PdfEmployerDocumentView,
     PdfServiceAgreementView,
     PdfRepaymentScheduleView,
+    PdfFileView,
 )
 
 # Start of Urls
@@ -97,215 +95,278 @@ urlpatterns = [
                                 EmployerDocListView.as_view(),
                                 name='employerdoc_list_route'
                             ),
-                        path(
-                            '<uuid:employerdoc_pk>/',
-                            include([
-                                path(
-                                    'detail/',
-                                    EmployerDocDetailView.as_view(),
-                                    name='employerdoc_detail_route'
-                                ),
-                                path(
-                                    'update/',
-                                    EmployerDocUpdateView.as_view(),
-                                    name='employerdoc_update_route'
-                                ),
-                                path(
-                                    'delete/',
-                                    EmployerDocDeleteView.as_view(),
-                                    name='employerdoc_delete_route'
-                                ),
-                                path(
-                                    'agreement-date/<int:employersubdoc_pk>/update/',
-                                    EmployerDocAgreementDateUpdateView.as_view(),
-                                    name='employerdoc_agreement_date_update_route'
-                                ),
-                                path(
-                                    'status/<int:employersubdoc_pk>/update/',
-                                    EmployerDocMaidStatusUpdateView.as_view(),
-                                    name='employerdoc_status_update_route'
-                                ),
-                                path(
-                                    'signature/agent-access/',
-                                    include([
-                                        path(
-                                            'employer/create/',
-                                            SignatureCreateByAgentView.as_view(
-                                                model_field_name='employer_signature'
+                            path(
+                                '<uuid:employerdoc_pk>/',
+                                include([
+                                    path(
+                                        'detail/',
+                                        EmployerDocDetailView.as_view(),
+                                        name='employerdoc_detail_route'
+                                    ),
+                                    path(
+                                        'update/',
+                                        EmployerDocUpdateView.as_view(),
+                                        name='employerdoc_update_route'
+                                    ),
+                                    path(
+                                        'delete/',
+                                        EmployerDocDeleteView.as_view(),
+                                        name='employerdoc_delete_route'
+                                    ),
+                                    path(
+                                        'agreement-date/<int:employersubdoc_pk>/update/',
+                                        EmployerDocAgreementDateUpdateView.as_view(),
+                                        name='employerdoc_agreement_date_update_route'
+                                    ),
+                                    path(
+                                        'status/<int:employersubdoc_pk>/update/',
+                                        EmployerDocMaidStatusUpdateView.as_view(),
+                                        name='employerdoc_status_update_route'
+                                    ),
+                                    path(
+                                        'job-order/<int:employersubdoc_pk>/update/',
+                                        JobOrderUpdateView.as_view(),
+                                        name='joborder_update_route'
+                                    ),
+                                    path(
+                                        'signature/<int:docsig_pk>/',
+                                        include([
+                                            path(
+                                                'agent-access/employer/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='employer_signature',
+                                                    form_fields=['employer_signature'],
+                                                ),
+                                                name='signature_employer_update_route'
                                             ),
-                                            name='signature_employer_create_route'
-                                        ),
-                                        path(
-                                            '<int:docsig_pk>/employer/update/',
-                                            SignatureUpdateByAgentView.as_view(
-                                                model_field_name='employer_signature'
+                                            path(
+                                                'agent-access/spouse/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='spouse_signature',
+                                                    form_fields=['employer_signature'],
+                                                ),
+                                                name='signature_spouse_update_route'
                                             ),
-                                            name='signature_employer_update_route'
-                                        ),
-                                        path(
-                                            'spouse/create/',
-                                            SignatureCreateByAgentView.as_view(
-                                                model_field_name='spouse_signature'
+                                            path(
+                                                'agent-access/sponsor/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='sponsor_signature',
+                                                    form_fields=['employer_signature'],
+                                                ),
+                                                name='signature_sponsor_update_route'
                                             ),
-                                            name='signature_spouse_create_route'
-                                        ),
-                                        path(
-                                            '<int:docsig_pk>/spouse/update/',
-                                            SignatureUpdateByAgentView.as_view(
-                                                model_field_name='spouse_signature'
+                                            path(
+                                                'agent-access/fdw/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='fdw_signature',
+                                                    form_fields=['employer_signature'],
+                                                ),
+                                                name='signature_fdw_update_route'
                                             ),
-                                            name='signature_spouse_update_route'
-                                        ),
-                                        path(
-                                            'sponsor/create/',
-                                            SignatureCreateByAgentView.as_view(
-                                                model_field_name='sponsor_signature'
+                                            path(
+                                                'agent-access/agency-staff/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='agency_staff_signature',
+                                                    form_fields=['employer_signature'],
+                                                ),
+                                                name='signature_agency_staff_update_route'
                                             ),
-                                            name='signature_sponsor_create_route'
+                                        ]),
+                                    ),
+                                    path(
+                                        'pdf/service-fees/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-01-service-fee-schedule.html',
+                                            content_disposition = 'inline; filename="service_fee_schedule.pdf"',
                                         ),
-                                        path(
-                                            '<int:docsig_pk>/sponsor/update/',
-                                            SignatureUpdateByAgentView.as_view(
-                                                model_field_name='sponsor_signature'
-                                            ),
-                                            name='signature_sponsor_update_route'
+                                        name='pdf_service_fee_schedule'
+                                    ),
+                                    path(
+                                        'pdf/service-agreement/',
+                                        PdfServiceAgreementView.as_view(
+                                            template_name='employer_documentation/pdf-03-service-agreement.html',
+                                            content_disposition = 'inline; filename="service_agreement.pdf"',
                                         ),
-                                        path(
-                                            'fdw/create/',
-                                            SignatureCreateByAgentView.as_view(
-                                                model_field_name='fdw_signature'
-                                            ),
-                                            name='signature_fdw_create_route'
+                                        name='pdf_service_agreement'
+                                    ),
+                                    path(
+                                        'pdf/employment-contract/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-04-employment-contract.html',
+                                            content_disposition = 'inline; filename="employment-contract.pdf"',
                                         ),
-                                        path(
-                                            '<int:docsig_pk>/fdw/update/',
-                                            SignatureUpdateByAgentView.as_view(
-                                                model_field_name='fdw_signature'
-                                            ),
-                                            name='signature_fdw_update_route'
+                                        name='pdf_employment_contract'
+                                    ),
+                                    path(
+                                        'pdf/repayment-schedule/',
+                                        PdfRepaymentScheduleView.as_view(
+                                            template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                            content_disposition = 'inline; filename="repayment-schedule.pdf"',
                                         ),
-                                        path(
-                                            'agency-staff/create/',
-                                            SignatureCreateByAgentView.as_view(
-                                                model_field_name='agency_staff_signature'
-                                            ),
-                                            name='signature_agency_staff_create_route'
+                                        name='pdf_repayment_schedule'
+                                    ),
+                                    path(
+                                        'pdf/rest-day-agreement/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                            content_disposition = 'inline; filename="rest-day-agreement.pdf"',
                                         ),
-                                        path(
-                                            '<int:docsig_pk>/agency-staff/update/',
-                                            SignatureUpdateByAgentView.as_view(
-                                                model_field_name='agency_staff_signature'
-                                            ),
-                                            name='signature_agency_staff_update_route'
+                                        name='pdf_rest_day_agreement'
+                                    ),
+                                    path(
+                                        'pdf/job-order/<slug:slug>/',
+                                        PdfFileView.as_view(
+                                            filename='job-order.pdf',
                                         ),
-                                    ]),
-                                ),
-                                path(
-                                    'pdf/service-fees/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-01-service-fee-schedule.html',
-                                        content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                        name='job_order_pdf_route'
                                     ),
-                                    name='pdf_service_fee_schedule'
-                                ),
-                                path(
-                                    'pdf/service-agreement/',
-                                    PdfServiceAgreementView.as_view(
-                                        template_name='employer_documentation/pdf-03-service-agreement.html',
-                                        content_disposition = 'inline; filename="service_agreement.pdf"',
+                                    path(
+                                        'pdf/handover-checklist/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                            content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                        ),
+                                        name='pdf_handover_checklist'
                                     ),
-                                    name='pdf_service_agreement'
-                                ),
-                                path(
-                                    'pdf/employment-contract/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-04-employment-contract.html',
-                                        content_disposition = 'inline; filename="employment-contract.pdf"',
+                                    path(
+                                        'pdf/transfer-consent/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-09-transfer-consent.html',
+                                            content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                        ),
+                                        name='pdf_transfer_consent'
                                     ),
-                                    name='pdf_employment_contract'
-                                ),
-                                path(
-                                    'pdf/repayment-schedule/',
-                                    PdfRepaymentScheduleView.as_view(
-                                        template_name='employer_documentation/pdf-05-repayment-schedule.html',
-                                        content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                    path(
+                                        'pdf/work-pass-authorisation/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
+                                            content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                        ),
+                                        name='pdf_work_pass_authorisation'
                                     ),
-                                    name='pdf_repayment_schedule'
-                                ),
-                                path(
-                                    'pdf/rest-day-agreement/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-06-rest-day-agreement.html',
-                                        content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                    path(
+                                        'pdf/security-bond/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-11-security-bond.html',
+                                            content_disposition = 'inline; filename="security-bond.pdf"',
+                                        ),
+                                        name='pdf_security_bond'
                                     ),
-                                    name='pdf_rest_day_agreement'
-                                ),
-                                # path(
-                                #     'pdf/job-order/',
-                                #     PdfEmployerDocumentView.as_view(
-                                #         template_name='',
-                                #         content_disposition = '',
-                                #     ),
-                                #     name='pdf_job_order'
-                                # ),
-                                path(
-                                    'pdf/handover-checklist/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-08-handover-checklist.html',
-                                        content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                    path(
+                                        'pdf/fdw-work-permit-12b/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                            content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                                        ),
+                                        name='pdf_fdw_work_permit_12b'
                                     ),
-                                    name='pdf_handover_checklist'
-                                ),
-                                path(
-                                    'pdf/transfer-consent/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-09-transfer-consent.html',
-                                        content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                    path(
+                                        'pdf/income-tax-declaration/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-13-income-tax-declaration.html',
+                                            content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                        ),
+                                        name='pdf_income_tax_declaration'
                                     ),
-                                    name='pdf_transfer_consent'
-                                ),
-                                path(
-                                    'pdf/work-pass-authorisation/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
-                                        content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                    path(
+                                        'pdf/safety-agreement/',
+                                        PdfEmployerDocumentView.as_view(
+                                            template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                            content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                        ),
+                                        name='pdf_safety_agreement'
                                     ),
-                                    name='pdf_work_pass_authorisation'
+                                ]),
+                            ),
+                        ]),
+                    ),
+                ]),
+            ),
+            path(
+                'sign/<slug:slug>/',
+                include([
+                    path(
+                        'employer/',
+                        include([
+                            path(
+                                'verify/',
+                                VerifyUserTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    success_url_route_name='token_signature_employer_route',
+                                    success_message = 'Thank you for passing the verification. Please review the documents and sign below.',
                                 ),
-                                path(
-                                    'pdf/security-bond/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-11-security-bond.html',
-                                        content_disposition = 'inline; filename="security-bond.pdf"',
-                                    ),
-                                    name='pdf_security_bond'
+                                name='token_verification_employer_route'
+                            ),
+                            path(
+                                'signature/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    model_field_name='employer_signature',
+                                    token_field_name='employer_token',
+                                    form_fields=['employer_signature'],
+                                    success_url_route_name='token_signature_employer_witness_route',
+                                    success_message = 'Thank you for signing. Please ask your witness to enter their details and sign below.',
                                 ),
-                                path(
-                                    'pdf/fdw-work-permit-12b/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-12-fdw-work-permit.html',
-                                        content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
-                                    ),
-                                    name='pdf_fdw_work_permit_12b'
+                                name='token_signature_employer_route'
+                            ),
+                            path(
+                                'witness/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    model_field_name='employer_witness_signature',
+                                    token_field_name='employer_token',
+                                    form_fields=[
+                                        'employer_witness_signature',
+                                        'employer_witness_name',
+                                        'employer_witness_nric',
+                                    ],
+                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
                                 ),
-                                path(
-                                    'pdf/income-tax-declaration/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-13-income-tax-declaration.html',
-                                        content_disposition = 'inline; filename="income-tax-declaration.pdf"',
-                                    ),
-                                    name='pdf_income_tax_declaration'
+                                name='token_signature_employer_witness_route'
+                            ),
+                        ]),
+                    ),
+                    path(
+                    'fdw/',
+                        include([
+                            path(
+                                'verify/',
+                                VerifyUserTokenView.as_view(
+                                    slug_field= 'fdw_slug',
+                                    token_field_name='fdw_token',
+                                    success_url_route_name='token_signature_fdw_route',
+                                    success_message = 'Thank you for passing the verification. Please review the documents and sign below.',
                                 ),
-                                path(
-                                    'pdf/safety-agreement/',
-                                    PdfEmployerDocumentView.as_view(
-                                        template_name='employer_documentation/pdf-14-safety-agreement.html',
-                                        content_disposition = 'inline; filename="safety-agreement.pdf"',
-                                    ),
-                                    name='pdf_safety_agreement'
+                                name='token_verification_fdw_route'
+                            ),
+                            path(
+                                'signature/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field= 'fdw_slug',
+                                    model_field_name='fdw_signature',
+                                    token_field_name='fdw_token',
+                                    form_fields=['fdw_signature'],
+                                    success_url_route_name='token_signature_fdw_witness_route',
+                                    success_message = 'Thank you for signing. Please ask your witness to enter their details and sign below.',
                                 ),
-                            ]),
-                        ),
+                                name='token_signature_fdw_route'
+                            ),
+                            path(
+                                'witness/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field= 'fdw_slug',
+                                    model_field_name='fdw_witness_signature',
+                                    token_field_name='fdw_token',
+                                    form_fields=[
+                                        'fdw_witness_signature',
+                                        'fdw_witness_name',
+                                        'fdw_witness_nric',
+                                    ],
+                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
+                                ),
+                                name='token_signature_fdw_witness_route'
+                            ),
                         ]),
                     ),
                 ]),

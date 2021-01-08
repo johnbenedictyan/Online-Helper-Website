@@ -2,7 +2,7 @@
 
 {% block title %}Employment Contract{% endblock %}
 
-{% block content %}
+{% block pdf_content %}
 
 {% include 'employer_documentation/pdf-00-header.html' %}
 <br>
@@ -145,7 +145,7 @@
     </tr>
     <tr>
         <td>3.2</td>
-        <td>The salary shall be paid on the day {{ object.c3_2_salary_payment_date }} of every month.</td>
+        <td>The salary shall be paid on the last day of each calendar month.</td>
     </tr>
 </table>
 
@@ -346,4 +346,4 @@
     </table>
 </div>
 
-{% endblock %}
+{% endblock pdf_content %}

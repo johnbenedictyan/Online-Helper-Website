@@ -2,33 +2,39 @@
 import calendar
 
 # Django
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.views.generic import ListView
+from django.http import FileResponse, HttpResponseRedirect
+from django.db.models import Q
+from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.messages.views import SuccessMessageMixin
 
 # From our apps
-from accounts.models import User
 from .models import (
     Employer,
     EmployerDoc,
     EmployerDocMaidStatus,
     EmployerDocSig,
+    JobOrder,
 )
 from .forms import (
     EmployerForm,
     EmployerDocForm,
     EmployerDocAgreementDateForm,
     EmployerDocMaidStatusForm,
+    JobOrderForm,
     SignatureForm,
+    VerifyUserTokenForm,
 )
 from .mixins import (
     CheckEmployerDocRelationshipsMixin,
     CheckAgencyEmployeePermissionsMixin,
     CheckUserIsAgencyOwnerMixin,
     LoginByAgencyUserGroupRequiredMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
+    CheckSignatureSessionTokenMixin,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -47,32 +53,45 @@ class EmployerListView(
 ):
     model = Employer
     ordering = ['employer_name']
-    # paginate_by = 10
+    paginate_by = 20
 
-    # Filter queryset to only show the employers that current user has
-    # necessary permission to access
     def get_queryset(self):
+        search_terms = self.request.GET.get('search')
+
+        # Filter results by user's search terms
+        if search_terms:
+            queryset = super().get_queryset().filter(
+                Q(employer_name__icontains=search_terms) |
+                Q(employer_nric__icontains=search_terms) |
+                Q(employer_email__icontains=search_terms) |
+                Q(employer_mobile_number__icontains=search_terms)
+            )
+        else:
+            queryset = super().get_queryset()
+
+        # Further filter queryset to only show the employers that current user
+        # has necessary permission to access
         if self.agency_user_group==AG_OWNERS:
             # If agency owner, return all employers belonging to agency
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_owner.agency
             )
         elif self.agency_user_group==AG_ADMINS:
             # If agency administrator, return all employers belonging to agency
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_employee.agency
             )
         elif self.agency_user_group==AG_MANAGERS:
             # If agency manager, return all employers belonging to branch
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee__branch
                 = self.request.user.agency_employee.branch
             )
         elif self.agency_user_group==AG_SALES:
             # If agency owner, return all employers belonging to self
-            return super().get_queryset().filter(
+            return queryset.filter(
                 agency_employee = self.request.user.agency_employee
             )
         else:
@@ -92,6 +111,17 @@ class EmployerDocListView(
     def get_queryset(self):
         return super().get_queryset().filter(employer=self.kwargs.get(
             self.pk_url_kwarg))
+
+    def get(self, request, *args, **kwargs):
+        if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(
+                reverse(
+                    'employerdoc_create_route',
+                    kwargs={'employer_pk': self.object.pk}
+                )
+            )
 
 # Detail Views
 class EmployerDetailView(
@@ -116,6 +146,7 @@ class EmployerCreateView(
 ):
     model = Employer
     form_class = EmployerForm
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -136,11 +167,17 @@ class EmployerDocCreateView(
     model = EmployerDoc
     form_class = EmployerDocForm
     pk_url_kwarg = 'employer_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_object(self, *args, **kwargs):
         return Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = self.get_object()
+        context['object'] = self.object
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -161,6 +198,7 @@ class EmployerUpdateView(
 ):
     model = Employer
     form_class = EmployerForm
+    template_name = 'employer_documentation/crispy_form.html'
     pk_url_kwarg = 'employer_pk'
     success_url = reverse_lazy('employer_list_route')
 
@@ -178,7 +216,7 @@ class EmployerDocUpdateView(
     model = EmployerDoc
     form_class = EmployerDocForm
     pk_url_kwarg = 'employerdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -195,7 +233,7 @@ class EmployerDocAgreementDateUpdateView(
     model = EmployerDocSig
     form_class = EmployerDocAgreementDateForm
     pk_url_kwarg = 'employersubdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -212,7 +250,24 @@ class EmployerDocMaidStatusUpdateView(
     model = EmployerDocMaidStatus
     form_class = EmployerDocMaidStatusForm
     pk_url_kwarg = 'employersubdoc_pk'
-    template_name = 'employer_documentation/employer_form.html'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('employer_list_route')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+class JobOrderUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = JobOrder
+    form_class = JobOrderForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/joborder_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -242,29 +297,6 @@ class EmployerDocDeleteView(
 
 
 # Signature Views
-class SignatureCreateByAgentView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    CreateView
-):
-    model = EmployerDocSig
-    form_class = SignatureForm
-    pk_url_kwarg = 'employerdoc_pk'
-    template_name = 'employer_documentation/signature_form.html'
-    success_url = reverse_lazy('employer_list_route')
-    model_field_name = None
-
-    def get_object(self, *args, **kwargs):
-        return EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
-
-    def form_valid(self, form):
-        form.instance.employer_doc = EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
-        return super().form_valid(form)
-
 class SignatureUpdateByAgentView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -273,26 +305,99 @@ class SignatureUpdateByAgentView(
     model = EmployerDocSig
     form_class = SignatureForm
     pk_url_kwarg = 'docsig_pk'
-    template_name = 'employer_documentation/signature_form.html'
+    template_name = 'employer_documentation/signature_form_agency.html'
     success_url = reverse_lazy('employer_list_route')
     model_field_name = None
-
-    def get_object(self, *args, **kwargs):
-        return EmployerDocSig.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
+    form_fields = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
+            self.model_field_name).verbose_name
+        return context
+
+class VerifyUserTokenView(
+    SuccessMessageMixin,
+    UpdateView
+):
+    model = EmployerDocSig
+    form_class = VerifyUserTokenForm
+    template_name = 'employer_documentation/token_form.html'
+    token_field_name = None
+    success_url_route_name = None
+    success_message = None # Assign this value in urls.py
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['slug'] = self.kwargs.get(self.slug_url_kwarg)
+        kwargs['session'] = self.request.session
+        kwargs['token_field_name'] = self.token_field_name
+        return kwargs
+
+    def get_success_url(self):
+        if self.success_url_route_name:
+            if self.token_field_name=='employer_token':
+                slug = self.object.employer_slug
+            elif self.token_field_name=='fdw_token':
+                slug = self.object.fdw_slug
+        else:
+            return reverse_lazy('home')
+        return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(cleaned_data,)
+
+class SignatureUpdateByTokenView(
+    SuccessMessageMixin,
+    CheckSignatureSessionTokenMixin,
+    UpdateView
+):
+    model = EmployerDocSig
+    form_class = SignatureForm
+    template_name = 'employer_documentation/signature_form_token.html'
+    model_field_name = None # Assign this value in urls.py
+    token_field_name = None # Assign this value in urls.py
+    form_fields = None # Assign this value in urls.py
+    success_url_route_name = None # Assign this value in urls.py
+    success_message = None # Assign this value in urls.py
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
+            self.model_field_name).verbose_name
+        return context
+
+    def get_success_url(self):
+        if self.success_url_route_name:
+            if self.token_field_name=='employer_token':
+                slug = self.object.employer_slug
+            elif self.token_field_name=='fdw_token':
+                slug = self.object.fdw_slug
+        else:
+            return reverse_lazy('home')
+        return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(cleaned_data,)
 
 
 # PDF Views
 class PdfEmployerDocumentView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
     DetailView
 ):
     model = EmployerDoc
@@ -301,7 +406,7 @@ class PdfEmployerDocumentView(
 class PdfServiceAgreementView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
     DetailView
 ):
     model = EmployerDoc
@@ -319,7 +424,7 @@ class PdfServiceAgreementView(
 class PdfRepaymentScheduleView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
-    PdfViewMixin,
+    PdfHtmlViewMixin,
     DetailView
 ):
     model = EmployerDoc
@@ -332,17 +437,25 @@ class PdfRepaymentScheduleView(
 
         payment_month = today.month
         payment_year = today.year
-        placement_fee = 3000
+        placement_fee = (
+            self.object.fdw.agency_fee_amount +
+            self.object.fdw.personal_loan_amount
+        )
         placement_fee_per_month = round(placement_fee/6, 0)
+        # work_days_in_month = 30 - self.object.fdw.days_off
+        # off_day_compensation = round(
+        #     self.object.fdw.salary/work_days_in_month, 0
+        # )
         work_days_in_month = 26
         off_day_compensation = round(
-            self.object.fdw.salary/work_days_in_month, 0
+            self.object.fdw.salary*self.object.fdw.days_off/work_days_in_month, 0
         )
         salary_per_month = self.object.fdw.salary + off_day_compensation
         
         if (
             self.object.rn_maidstatus_ed.fdw_work_commencement_date
-            .day==1
+            and
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date.day==1
         ):
             # If work start date is 1st of month, then payment does not need
             # to be pro-rated.
@@ -378,7 +491,11 @@ class PdfRepaymentScheduleView(
                 if payment_month%12 == 1:
                     payment_year += 1
 
-        else:
+        if (
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date
+            and not
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date.day==1
+        ):
             # Pro-rated payments
             month_current = (
                 12 if payment_month%12==0 else payment_month%12
@@ -463,9 +580,10 @@ class PdfRepaymentScheduleView(
                     payment_year += 1
 
             # 25th month pro-rated
-            final_payment_day = (
+            final_payment_day = min(
                 self.object.rn_maidstatus_ed
-                .fdw_work_commencement_date.day - 1
+                .fdw_work_commencement_date.day-1 ,
+                calendar.monthrange(payment_year, month_current)[1]
             )
             basic_salary = round(
                 self.object.fdw.salary*final_payment_day/calendar.monthrange(
@@ -474,6 +592,12 @@ class PdfRepaymentScheduleView(
             off_day_compensation = round(
                 off_day_compensation*final_payment_day/calendar.monthrange(
                     payment_year, month_current)[1]
+            )
+            month_current = 12 if payment_month%12==0 else payment_month%12
+            loan_repaid = min(
+                placement_fee,
+                placement_fee_per_month,
+                salary_per_month
             )
             context['repayment_table'][25] = {
                 'salary_date': '{day}/{month}/{year}'.format(
@@ -491,3 +615,30 @@ class PdfRepaymentScheduleView(
             }
         
         return context
+
+class PdfFileView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    DetailView
+):
+    model = JobOrder
+    slug_url_kwarg = 'slug'
+    as_attachment=False
+    filename='document.pdf'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            return FileResponse(
+                open(self.object.job_order_pdf.path, 'rb'),
+                as_attachment=self.as_attachment,
+                filename=self.filename,
+                content_type='application/pdf'
+            )
+        except:
+            return HttpResponseRedirect(
+                reverse('joborder_update_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                    'employersubdoc_pk': self.object.pk,
+            }))

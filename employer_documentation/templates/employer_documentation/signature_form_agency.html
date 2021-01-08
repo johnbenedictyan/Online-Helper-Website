@@ -1,0 +1,13 @@
+{% extends 'employer_documentation/base-ed-template.html' %}
+
+{% block sidenav_extra %}
+    {% include 'employer_documentation/sidenav_subdocument_snippet.html' %}
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+    {% include 'employer_documentation/signature_snippet_form.html' %}
+{% endblock ed_section %}
+
+{% block js %}
+    {% include 'employer_documentation/signature_snippet_js.html' %}
+{% endblock js %}

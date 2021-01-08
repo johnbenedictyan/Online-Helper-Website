@@ -1,10 +1,13 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 {% load crispy_forms_tags %}
 
-{% block e_d_section %}
-    <form method="post" class="mt-5 pt-5">
+{% block sidenav_extra %}
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+    <form method="post">
         {% csrf_token %}
         <p>Confirm deletion of {{ object }}</p>
         <input type="submit" value="Delete">
     </form>
-{% endblock e_d_section %}
+{% endblock ed_section %}

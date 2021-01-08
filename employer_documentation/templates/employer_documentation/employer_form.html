@@ -1,7 +1,58 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
-{% load crispy_forms_tags %}
 
-{% block e_d_section %}
+{% block sidenav_extra %}
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link " href="{% url 'employer_list_route' %}">
+        <p class="m-1 pl-2">Employer List</p>
+        </a>
+    </div>
+</div>
+{% if object.employer_doc %}
+    <!-- {% comment %}Sub Documents{% endcomment %} -->
+    {% include 'employer_documentation/sidenav_subdocument_snippet.html' %}
+{% elif object.employer %}
+    <!-- {% comment %}Documents{% endcomment %} -->
+    {% include 'employer_documentation/sidenav_document_snippet.html' %}
+
+    <div class="row">
+        <div class="col px-0">
+            <a class="nav-link side-nav-link " data-toggle="collapse" href="#forms-nav" role="button" aria-expanded="false" aria-controls="forms">
+            <p class="m-1 pl-2">Form Sections<i class="fa fa-caret-down float-right align-middle"></i></p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col px-0">
+            <ul class="collapse" id="forms-nav">
+                <li>
+                    <a href="#id-doc-general">Top</a>
+                </li>
+                <li>
+                    <a href="#id-doc-service-fee-schedule">Service & Fees Schedule</a>
+                </li>
+                <li>
+                    <a href="#id-doc-service-agreement">Service Agreement</a>
+                </li>
+                <li>
+                    <a href="#id-doc-employment-contract">Employment Contract</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% elif object.employer_name %}
+    <!-- {% comment %}Employers{% endcomment %} -->
+    <div class="row">
+        <div class="col px-0">
+            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object.pk %}">
+            <p class="m-1 pl-2">Employer Profile</p>
+            </a>
+        </div>
+    </div>
+{% endif %}
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -11,8 +62,32 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
+    
     <div class="container">
-        {{ object.employer }}
-        {% crispy form %}
+        {% block form %}{% endblock form %}
     </div>
-{% endblock e_d_section %}
+{% endblock ed_section %}
+
+{% block js %}
+    <script>
+        let replacementFdwSelector = document.querySelector('#id_fdw_is_replacement');
+        if (replacementFdwSelector) {
+            let fdwReplacedField = document.querySelector('#div_id_fdw_replaced');
+            let loanTransferredField = document.querySelector('#div_id_b4_loan_transferred');
+            if (replacementFdwSelector.value!=='True') {
+                fdwReplacedField.hidden = true;
+                loanTransferredField.hidden = true;
+            }
+            replacementFdwSelector.addEventListener('change', () => {
+                if (replacementFdwSelector.value!=='True') {
+                fdwReplacedField.hidden = true;
+                loanTransferredField.hidden = true;
+                }
+                else {
+                fdwReplacedField.hidden = false;
+                loanTransferredField.hidden = false;
+                }
+            })
+        }
+    </script>
+{% endblock js %}

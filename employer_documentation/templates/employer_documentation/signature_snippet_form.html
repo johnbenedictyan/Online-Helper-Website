@@ -1,0 +1,10 @@
+{% load crispy_forms_tags %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>{{ model_field_verbose_name }}</h3>
+            {% crispy form %}
+        </div>
+    </div>
+</div>

@@ -1,36 +1,73 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
-{% block e_d_section %}
+{% block sidenav_extra %}
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}">
+        <p class="m-1 pl-2">Employer Profile</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}">
+        <p class="m-1 pl-2">Edit Employer</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object_list.0.employer.pk %}">
+        <p class="m-1 pl-2">Documents List</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">
+        <p class="m-1 pl-2">Add Document</p>
+        </a>
+    </div>
+</div>
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
     <h1>Employer Docs</h1>
-    <a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">Create new employer document</a>
+    
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">document pk</th>
-                <th scope="col">case_ref_no</th>
-                <th scope="col">transaction status</th>
-                <th scope="col">agreement date</th>
-                <th scope="col">fdw</th>
-                <th scope="col">spouse_required</th>
-                <th scope="col">sponsor_required</th>
-                <th scope="col">update documentation</th>
+                <th scope="col">Ref No.</th>
+                <th scope="col">ID - FDW</th>
+                <th scope="col">Agreement</th>
+                <th scope="col">IPA</th>
+                <th scope="col">Bond</th>
+                <th scope="col">Arrival</th>
+                <th scope="col">Thumb Print</th>
+                <th scope="col">SIP</th>
+                <th scope="col">Work Commence</th>
+                <th scope="col">Work Permit</th>
+                <th scope="col">Edit Doc</th>
             </tr>
         </thead>
         <tbody>
         {% for object in object_list %}
             <tr>
-                <th scope="row">{{ object.pk }}</th>
                 <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">status</a></td>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}</a></td>
-                <td><a href="#">{{ object.fdw }}</a></td>
-                <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.spouse_required }}</a></td>
-                <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.sponsor_required }}</a></td>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">update</a></td>
+                <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
+                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agreement_date|date:"d/m/y" %}{{ object.rn_signatures_ed.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.arrival_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.sip_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
         {% empty %}
-            <p>No docs yet.</p>
+            <p><a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">No docs yet. Create documentation.</a></p>
         {% endfor %}
         </tbody>
     </table>
-{% endblock e_d_section %}
+{% endblock ed_section %}

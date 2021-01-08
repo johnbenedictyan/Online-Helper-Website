@@ -3,7 +3,7 @@
 
 {% block title %}Safety Agreement{% endblock %}
 
-{% block content %}
+{% block pdf_content %}
 <div class="header-workpass--bd-bluegrey">
 </div>
 <div>
@@ -43,7 +43,7 @@
                 <td class="text-bold--600">Instructions:</td>
             </tr>
             <tr>
-                <td><img width="300px;" src="{% static 'images/pdf/instructions.png' %}"></td>
+                <td><img id="safety-instructions-img" src="{% static 'images/pdf/instructions.png' %}"></td>
             </tr>
         </table>
     </div>
@@ -353,4 +353,4 @@
         </tr>
     </table>
 </div>
-{% endblock %}
+{% endblock pdf_content %}
