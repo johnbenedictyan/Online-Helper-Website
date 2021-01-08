@@ -282,9 +282,8 @@ class PdfHtmlViewMixin:
             base_url=request.build_absolute_uri()
             ).write_pdf(
                 # Load separate CSS stylesheet from static folder
-                # stylesheets=[CSS(settings.STATIC_ROOT + 'css/styles.css')]
-                stylesheets=[CSS('static/css/pdf.css'
-                )]
+                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:
