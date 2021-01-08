@@ -324,16 +324,14 @@ class VerifyUserTokenView(
         return kwargs
 
     def get_success_url(self):
-        if self.token_field_name=='employer_token':
-            slug = self.object.employer_slug
-        elif self.token_field_name=='fdw_token':
-            slug = self.object.fdw_slug
+        if self.success_url_route_name:
+            if self.token_field_name=='employer_token':
+                slug = self.object.employer_slug
+            elif self.token_field_name=='fdw_token':
+                slug = self.object.fdw_slug
         else:
             return reverse_lazy('home')
-        return reverse_lazy(
-                self.success_url_route_name,
-                kwargs={'slug': slug}
-        )
+        return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
 
 class SignatureUpdateByTokenView(
     CheckSignatureSessionTokenMixin,
@@ -360,16 +358,14 @@ class SignatureUpdateByTokenView(
         return context
 
     def get_success_url(self):
-        if self.token_field_name=='employer_token':
-            slug = self.object.employer_slug
-        elif self.token_field_name=='fdw_token':
-            slug = self.object.fdw_slug
+        if self.success_url_route_name:
+            if self.token_field_name=='employer_token':
+                slug = self.object.employer_slug
+            elif self.token_field_name=='fdw_token':
+                slug = self.object.fdw_slug
         else:
             return reverse_lazy('home')
-        return reverse_lazy(
-                self.success_url_route_name,
-                kwargs={'slug': slug}
-        )
+        return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
 
 
 # PDF Views

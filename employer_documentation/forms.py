@@ -883,30 +883,29 @@ class VerifyUserTokenForm(forms.ModelForm):
     def clean(self):
         if (
             self.is_employer
-            and (
-                not self.cleaned_data.get('nric') ==
-                self.object.employer_doc.employer.employer_nric
-                or
-                not int(self.cleaned_data.get('mobile')) ==
-                int(self.object.employer_doc.employer.employer_mobile_number)
+                and (
+                    self.cleaned_data.get('nric', '').lower() ==
+                    self.object.employer_doc.employer.employer_nric.lower()
+                    and
+                    int(self.cleaned_data.get('mobile', 0)) ==
+                    int(self.object.employer_doc.employer.employer_mobile_number)
+                )
+            or (
+            self.is_fdw
+                and ( ############################################## TO BE UPDATED
+                    self.cleaned_data.get('validation_1', '') ==
+                    '1'
+                    and
+                    int(self.cleaned_data.get('validation_2', 0)) ==
+                    int(1)
+                ) ############################################## TO BE UPDATED
             )
         ):
-            raise ValidationError(
-                'The details you entered did not match our records')
-        elif (
-            self.is_fdw
-            and ( ############################################## TO BE UPDATED
-                not self.cleaned_data.get('validation_1') ==
-                '1'
-                or
-                not int(self.cleaned_data.get('validation_2')) ==
-                int(1)
-            ) ############################################## TO BE UPDATED
-        ):
-            raise ValidationError(
-                'The details you entered did not match our records')
-        else:
             verification_token = secrets.token_urlsafe(32)
             self.cleaned_data[self.token_field_name] = verification_token
             self.session['signature_token'] = verification_token
-        return self.cleaned_data
+            self.session.set_expiry(60*10) # Session expires in 10 mins
+            return self.cleaned_data
+        else:
+            raise ValidationError(
+                'The details you entered did not match our records')

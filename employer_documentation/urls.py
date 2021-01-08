@@ -304,7 +304,7 @@ urlpatterns = [
                                     model_field_name='employer_signature',
                                     token_field_name='employer_token',
                                     form_fields=['employer_signature'],
-                                    success_url_route_name='',
+                                    success_url_route_name='token_signature_employer_witness_route',
                                 ),
                                 name='token_signature_employer_route'
                             ),
@@ -319,7 +319,7 @@ urlpatterns = [
                                         'employer_witness_name',
                                         'employer_witness_nric',
                                     ],
-                                    success_url_route_name='',
+                                    success_url_route_name=None, # Add thank you for signing message
                                 ),
                                 name='token_signature_employer_witness_route'
                             ),
@@ -344,7 +344,7 @@ urlpatterns = [
                                     model_field_name='fdw_signature',
                                     token_field_name='fdw_token',
                                     form_fields=['fdw_signature'],
-                                    success_url_route_name='',
+                                    success_url_route_name='token_signature_fdw_witness_route',
                                 ),
                                 name='token_signature_fdw_route'
                             ),
@@ -359,7 +359,7 @@ urlpatterns = [
                                         'fdw_witness_name',
                                         'fdw_witness_nric',
                                     ],
-                                    success_url_route_name='',
+                                    success_url_route_name=None, # Add thank you for signing message
                                 ),
                                 name='token_signature_fdw_witness_route'
                             ),
