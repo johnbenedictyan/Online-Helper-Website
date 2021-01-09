@@ -27,7 +27,8 @@ from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 # Start of Views
 
 # Template Views
-class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
+class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                        TemplateView):
     template_name = 'base/dashboard-home-page.html'
     authority = ''
     agency_id = ''
@@ -118,7 +119,8 @@ class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     model = Enquiry
     template_name = 'list/dashboard-enquiry-list.html'
 
-class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                                ListView):
     context_object_name = 'branches'
     http_method_names = ['get']
     model = AgencyBranch
@@ -132,8 +134,8 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin, Lis
         )
 
 # Detail Views
-class DashboardAgencyDetail(
-    AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
+class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                            DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
@@ -145,8 +147,8 @@ class DashboardAgencyDetail(
         agency = get_object_or_404(Agency, pk=self.agency_id)
         return agency
 
-class DashboardMaidDetail(
-    AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
+class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                          DetailView):
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
