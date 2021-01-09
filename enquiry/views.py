@@ -9,6 +9,7 @@ from django.views.generic.edit import CreateView
 # Imports from foreign installed apps
 from accounts.models import Employer
 from accounts.mixins import PotentialEmployerRequiredMixin
+from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import EnquiryForm
@@ -17,13 +18,15 @@ from .models import Enquiry
 # Start of Views
 
 # Form Views
-class EnquiryView(PotentialEmployerRequiredMixin, CreateView):
+class EnquiryView(PotentialEmployerRequiredMixin, SuccessMessageMixin,
+                  CreateView):
     context_object_name = 'enquiry'
     form_class = EnquiryForm
     http_method_names = ['get', 'post']
     model = Enquiry
     template_name = 'enquiry.html'
     success_url = reverse_lazy('home')
+    success_message = 'Enquiry created'
 
     def form_valid(self, form):
         form.instance.employer = Employer.objects.get(
