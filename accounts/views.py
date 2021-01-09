@@ -14,7 +14,7 @@ from onlinemaid.mixins import SuccessMessageMixin
 # Imports from local app
 from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
 from .models import Employer
-from .mixins import VerifiedEmployerMixin
+from .mixins import VerifiedEmployerMixin, PotentialEmployerRequiredMixin
 
 # Start of Views
 
@@ -45,7 +45,8 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ## Detail Views
-class EmployerDetail(LoginRequiredMixin, VerifiedEmployerMixin, DetailView):
+class EmployerDetail(PotentialEmployerRequiredMixin, VerifiedEmployerMixin,
+                     DetailView):
     context_object_name = 'employer'
     http_method_names = ['get']
     model = Employer
@@ -70,7 +71,8 @@ class EmployerCreate(SuccessMessageMixin, CreateView):
         return kwargs
 
 ## Update Views
-class EmployerUpdate(SuccessMessageMixin, LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
+class EmployerUpdate(SuccessMessageMixin, PotentialEmployerRequiredMixin,
+                     VerifiedEmployerMixin, UpdateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
@@ -89,7 +91,8 @@ class EmployerUpdate(SuccessMessageMixin, LoginRequiredMixin, VerifiedEmployerMi
         return kwargs
 
 ## Delete Views
-class EmployerDelete(SuccessMessageMixin, LoginRequiredMixin, VerifiedEmployerMixin, DeleteView):
+class EmployerDelete(SuccessMessageMixin, PotentialEmployerRequiredMixin,
+                     VerifiedEmployerMixin, DeleteView):
     context_object_name = 'employer'
     http_method_names = ['post']
     model = Employer
