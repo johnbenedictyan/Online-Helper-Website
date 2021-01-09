@@ -36,8 +36,6 @@ class MaidCreationForm(forms.ModelForm):
         exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
 
     def __init__(self, *args, **kwargs):
-        if kwargs.get('agency_id'):
-            self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -123,7 +121,7 @@ class MaidCreationForm(forms.ModelForm):
         cleaned_data = super().clean()
         reference_number = cleaned_data.get('reference_numnber')
         try:
-            existing_maid = Maid.objects.get(
+            Maid.objects.get(
                 agency = Agency.objects.get(
                     pk = self.agency_id
                 ),
