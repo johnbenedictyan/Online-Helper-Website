@@ -10,6 +10,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
+from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import (
@@ -59,16 +60,18 @@ class AgencyDetail(DetailView):
         return obj
     
 # Create Views
-class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
+class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
+                   CreateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
     model = Agency
     template_name = 'create/agency-create.html'
     success_url = reverse_lazy('admin_panel')
+    success_message = 'Agency created'
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        super().form_valid(form)
         AgencyBranch.objects.create(
             agency=self.object,
             main_branch=True
@@ -79,7 +82,8 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
-class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin, CreateView):
+class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
+                         SuccessMessageMixin, CreateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
@@ -90,6 +94,7 @@ class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin, CreateView
     authority = ''
     agency_id = ''
     form_type = 'CREATE'
+    success_message = 'Agency branch created'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -99,13 +104,15 @@ class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin, CreateView
         })
         return kwargs
 
-class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
+class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
+                        CreateView):
     context_object_name = 'agency_owner'
     form_class = AgencyOwnerCreationForm
     http_method_names = ['get','post']
     model = AgencyOwner
     template_name = 'create/agency-owner-create.html'
     success_url = reverse_lazy('admin_panel')
+    success_message = 'Agency owner created'
 
     def form_valid(self, form):
         form.instance.agency = Agency.objects.get(
@@ -115,13 +122,15 @@ class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
+class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, SuccessMessageMixin,
+                           CreateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeCreationForm
     http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'create/agency-employee-create.html'
     success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Agency employee created'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -136,13 +145,15 @@ class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
+class AgencyPlanCreate(AgencyOwnerRequiredMixin, SuccessMessageMixin,
+                       CreateView):
     context_object_name = 'agency_plan'
     form_class = AgencyPlanForm
     http_method_names = ['get','post']
     model = AgencyPlan
     template_name = 'create/agency-plan-create.html'
     success_url = reverse_lazy('')
+    success_message = 'Agency plan subscribed'
 
     def post(self, request, *args, **kwargs):
         """
@@ -166,7 +177,8 @@ class AgencyPlanCreate(AgencyOwnerRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Update Views
-class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
+class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, 
+                   SuccessMessageMixin, UpdateView):
     context_object_name = 'agency'
     form_class = AgencyCreationForm
     http_method_names = ['get','post']
@@ -175,13 +187,15 @@ class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
     success_url = reverse_lazy('dashboard_agency_detail')
     authority = ''
     agency_id = ''
+    success_message = 'Agency details updated'
 
     def get_object(self, queryset=None):
         return Agency.objects.get(
             pk = self.agency_id
     )
 
-class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
+class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
+                         SuccessMessageMixin, UpdateView):
     context_object_name = 'agency_branch'
     form_class = AgencyBranchForm
     http_method_names = ['get','post']
@@ -192,6 +206,7 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, Up
     authority = ''
     agency_id = ''
     form_type = 'UPDATE'
+    success_message = 'Agency branch details updated'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -201,7 +216,8 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, Up
         })
         return kwargs
 
-class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, UpdateView):
+class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
+                                 SuccessMessageMixin, UpdateView):
     context_object_name = 'agency_operating_hours'
     form_class = AgencyOperatingHoursForm
     http_method_names = ['get','post']
@@ -210,19 +226,22 @@ class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, Up
     success_url = reverse_lazy('dashboard_agency_detail')
     authority = ''
     agency_id = ''
+    success_message = 'Agency operating hours updated'
 
     def get_object(self, queryset=None):
         return AgencyOperatingHours.objects.get(
             agency__pk = self.agency_id
         )
 
-class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin, UpdateView):
+class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin,
+                           SuccessMessageMixin, UpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeUpdateForm
     http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'update/agency-employee-update.html'
     success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Employee details updated'
 
     def get_agency_id(self):
         if self.request.user.groups.filter(name='Agency Owners').exists():
@@ -267,22 +286,25 @@ class AgencyPlanUpdate(SpecificAgencyOwnerRequiredMixin, UpdateView):
     # Do we want to allow users to 'upgrade' their plans
 
 # Delete Views
-class AgencyDelete(AgencyOwnerRequiredMixin, DeleteView):
+class AgencyDelete(AgencyOwnerRequiredMixin, SuccessMessageMixin, DeleteView):
     context_object_name = 'agency'
     http_method_names = ['post']
     model = Agency
     success_url = reverse_lazy('home')
+    success_message = 'Agency deleted'
 
     def get_object(self, queryset=None):
         return Agency.objects.get(
             pk = self.request.user.pk
         )
 
-class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
+class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, 
+                           SuccessMessageMixin, DeleteView):
     context_object_name = 'agency_employee'
     http_method_names = ['post']
     model = AgencyEmployee
     check_type = 'employee'
+    success_message = 'Employee account deleted'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -296,14 +318,17 @@ class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
 
         return HttpResponseRedirect(success_url)
 
-class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
+class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
+                       DeleteView):
     context_object_name = 'agency_plan'
     http_method_names = ['post']
     model = AgencyPlan
     success_url = reverse_lazy('dashboard_agency_plan_list')
     check_type = 'plan'
+    success_message = 'Agency plan unsubscribed'
 
-class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, DeleteView):
+class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
+                         SuccessMessageMixin, DeleteView):
     context_object_name = 'agency_branch'
     http_method_names = ['post']
     model = AgencyBranch
@@ -311,3 +336,4 @@ class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin, De
     check_type = 'branch'
     authority = ''
     agency_id = ''
+    success_message = 'Agency branch deleted'

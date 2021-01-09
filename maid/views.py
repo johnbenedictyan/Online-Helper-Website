@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from project-wide files
-from onlinemaid.mixins import ListFilteredMixin
+from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
 # Imports from foreign installed apps
 from agency.models import Agency
@@ -97,7 +97,8 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     template_name = 'detail/maid-detail.html'
 
 # Create Views
-class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
+class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                 SuccessMessageMixin, CreateView):
     context_object_name = 'maid'
     form_class = MaidCreationForm
     http_method_names = ['get','post']
@@ -106,6 +107,7 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
     success_url = reverse_lazy('dashboard_maid_list')
     authority = ''
     agency_id = ''
+    success_message = 'FDW Biodata created'
 
     def form_valid(self, form):
         form.instance.agency = Agency.objects.get(
@@ -163,13 +165,15 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, CreateView):
             }
         )
 
-class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, CreateView):
+class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, 
+                                       SuccessMessageMixin, CreateView):
     context_object_name = 'maid_food_handling_preference'
     form_class = MaidFoodHandlingPreferenceForm
     http_method_names = ['get','post']
     model = MaidFoodHandlingPreference
     template_name = 'create/maid-food-handling-preference-create.html'
     success_url = reverse_lazy('')
+    success_message = 'Maid food handling preference created'
 
     def form_valid(self, form):
         form.instance.maid = Maid.objects.get(
@@ -179,13 +183,15 @@ class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin, CreateView):
+class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin, 
+                                   SuccessMessageMixin, CreateView):
     context_object_name = 'maid_dietary_restriction'
     form_class = MaidDietaryRestrictionForm
     http_method_names = ['get','post']
     model = MaidDietaryRestriction
     template_name = 'create/maid-dietary-restriction-create.html'
     success_url = reverse_lazy('')
+    success_message = 'Maid dietary restriction created'
 
     def form_valid(self, form):
         form.instance.maid = Maid.objects.get(
@@ -195,13 +201,15 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin, CreateView):
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, CreateView):
+class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin,
+                                  SuccessMessageMixin, CreateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
     model = MaidEmploymentHistory
     template_name = 'create/maid-employment-history-create.html'
     success_url = reverse_lazy('')
+    success_message = 'Maid employment history created'
 
     def form_valid(self, form):
         form.instance.maid = Maid.objects.get(
@@ -212,12 +220,14 @@ class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Update Views
-class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin,
+                 UpdateView):
     context_object_name = 'maid'
     form_class = MaidCreationForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'update/maid-update.html'
+    success_message = 'Maid details updated'
 
     def get_object(self, queryset=None):
         if self.request.user.groups.filter(name='Agency Owners').exists():
@@ -242,12 +252,13 @@ class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             }
         )
 
-class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_biodata'
     form_class = MaidBiodataForm
     http_method_names = ['get','post']
     model = MaidBiodata
     template_name = 'update/maid-biodata-update.html'
+    success_message = 'FDW biodata updated'
 
     def get_object(self, queryset=None):
         return MaidBiodata.objects.get(
@@ -268,12 +279,13 @@ class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             }
         )
 
-class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_family_details'
     form_class = MaidFamilyDetailsForm
     http_method_names = ['get','post']
     model = MaidFamilyDetails
     template_name = 'update/maid-family-details-update.html'
+    success_message = 'Maid family details updated'
 
     def get_object(self, queryset=None):
         return MaidFamilyDetails.objects.get(
@@ -295,12 +307,13 @@ class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
         )
 
 class MaidInfantChildCareUpdate(
-    SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+    SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_infant_child_care'
     form_class = MaidInfantChildCareForm
     http_method_names = ['get','post']
     model = MaidInfantChildCare
     template_name = 'update/maid-infant-child-care-update.html'
+    success_message = 'Maid infant child care information updated'
 
     def get_object(self, queryset=None):
         return MaidInfantChildCare.objects.get(
@@ -321,12 +334,14 @@ class MaidInfantChildCareUpdate(
             }
         )
 
-class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin,
+                            SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_elderly_care'
     form_class = MaidElderlyCareForm
     http_method_names = ['get','post']
     model = MaidElderlyCare
     template_name = 'update/maid-elderly-care-update.html'
+    success_message = 'Maid elderly care information updated'
 
     def get_object(self, queryset=None):
         return MaidElderlyCare.objects.get(
@@ -347,12 +362,14 @@ class MaidElderlyCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             }
         )
 
-class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin,
+                             SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_disabled_care'
     form_class = MaidDisabledCareForm
     http_method_names = ['get','post']
     model = MaidDisabledCare
     template_name = 'update/maid-disabled-care-update.html'
+    success_message = 'Maid disabled care information updated'
 
     def get_object(self, queryset=None):
         return MaidDisabledCare.objects.get(
@@ -373,13 +390,14 @@ class MaidDisabledCareUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             }
         )
 
-class MaidGeneralHouseworkUpdate(
-    SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidGeneralHouseworkUpdate(SpecificAgencyMaidLoginRequiredMixin,
+                                 SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_general_housework'
     form_class = MaidGeneralHouseworkForm
     http_method_names = ['get','post']
     model = MaidGeneralHousework
     template_name = 'update/maid-general-housework-update.html'
+    success_message = 'Maid general housework care information updated'
 
     def get_object(self, queryset=None):
         return MaidGeneralHousework.objects.get(
@@ -400,12 +418,14 @@ class MaidGeneralHouseworkUpdate(
             }
         )
 
-class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin,
+                        SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_cooking'
     form_class = MaidCookingForm
     http_method_names = ['get','post']
     model = MaidCooking
     template_name = 'update/maid-cooking-update.html'
+    success_message = 'Maid cooking care information updated'
 
     def get_object(self, queryset=None):
         return MaidCooking.objects.get(
@@ -426,14 +446,15 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin, UpdateView):
             }
         )
 
-class MaidEmploymentHistoryUpdate(
-    SpecificAgencyMaidLoginRequiredMixin, UpdateView):
+class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin,
+                                  SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryForm
     http_method_names = ['get','post']
     model = MaidEmploymentHistory
     template_name = 'update/maid-employment-history-update.html'
     success_url = reverse_lazy('')
+    success_message = 'Maid employment history updated'
 
     def get_object(self, queryset=None):
         return MaidEmploymentHistory.objects.get(
@@ -444,12 +465,14 @@ class MaidEmploymentHistoryUpdate(
         )
 
 # Delete Views
-class MaidDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
+class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
+                 DeleteView):
     context_object_name = 'maid'
     http_method_names = ['post']
     model = Maid
     success_url = reverse_lazy('')
     check_type = 'maid'
+    success_message = 'Maid deleted'
 
     def get_object(self, queryset=None):
         return Maid.objects.get(
@@ -459,28 +482,32 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
             agency = self.request.user.agency_owner.agency
         )
 
-class MaidFoodHandlingPreferenceDelete(
-    SpecificAgencyOwnerRequiredMixin, DeleteView):
+class MaidFoodHandlingPreferenceDelete(SpecificAgencyOwnerRequiredMixin,
+                                       SuccessMessageMixin, DeleteView):
     context_object_name = 'maid_food_handling_preference'
     http_method_names = ['post']
     model = MaidFoodHandlingPreference
     success_url = reverse_lazy('')
     check_type = 'maid'
+    success_message = 'Maid food handling information deleted'
 
-class MaidDietaryRestrictionDelete(
-    SpecificAgencyOwnerRequiredMixin, DeleteView):
+class MaidDietaryRestrictionDelete(SpecificAgencyOwnerRequiredMixin,
+                                   SuccessMessageMixin, DeleteView):
     context_object_name = 'maid_dietary_restriction'
     http_method_names = ['post']
     model = MaidDietaryRestriction
     success_url = reverse_lazy('')
     check_type = 'maid'
+    success_message = 'Maid dietary restriction deleted'
 
-class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin, DeleteView):
+class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
+                                  SuccessMessageMixin, DeleteView):
     context_object_name = 'maid_employment_history'
     http_method_names = ['post']
     model = MaidEmploymentHistory
     success_url = reverse_lazy('')
     check_type = 'maid'
+    success_message = 'Maid employment history deleted'
 
     def get_object(self, queryset=None):
         return MaidEmploymentHistory.objects.get(
