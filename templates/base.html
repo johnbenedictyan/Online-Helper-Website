@@ -36,6 +36,7 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/table.css' %}">
         <link rel="stylesheet" href="{% static 'css/vendor/argon/argon_table.css' %}">
+        <link rel="stylesheet" href="{% static 'css/toast.css' %}">
         {% block css %}{% endblock css %}
 
         <title>Online Maid</title>
@@ -44,7 +45,7 @@
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand" href="{% url 'home' %}">
-                    <img class="img-fluid" src="{% static 'images/logo.png' %}" alt=""/>
+                    <img class="w-75" src="{% static 'images/logo.png' %}" alt=""/>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
