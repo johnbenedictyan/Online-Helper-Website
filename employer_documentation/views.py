@@ -329,8 +329,8 @@ class VerifyUserTokenView(
     model = EmployerDocSig
     form_class = VerifyUserTokenForm
     template_name = 'employer_documentation/token_form.html'
-    token_field_name = None
-    success_url_route_name = None
+    token_field_name = None # Assign this value in urls.py
+    success_url_route_name = None # Assign this value in urls.py
     success_message = None # Assign this value in urls.py
 
     def get_form_kwargs(self):
