@@ -40,15 +40,16 @@
                     {% for maid in maids %}
                         <div class="col mb-4">
                             <div class="card">
-                                <img src="..." class="card-img-top" alt="...">
+                                <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title">{{maid.biodata.name}}</h5>
-                                    <p class="card-text">{{maid.biodata.country_of_origin}}</p>
-                                    <p class="card-text">{{maaid.biodata.age}} | {{maid.family_details.marital_status}}</p>
-                                    <p class="card-text">{{maid.maid_type}}</p>
+                                    <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
+                                    <p class="card-text">{{maid.biodata.age}} years old</p>
+                                    <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                                    <p class="card-text">{{maid.get_maid_type_display}}</p>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{% url 'add_to_shortlist' %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                                    <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
                                 </div>
                             </div>
                         </div>
