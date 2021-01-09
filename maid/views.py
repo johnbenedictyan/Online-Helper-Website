@@ -104,7 +104,7 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
     http_method_names = ['get','post']
     model = Maid
     template_name = 'create/maid-create.html'
-    success_url = reverse_lazy('dashboard_maid_list')
+    success_url = reverse_lazy('dashboard_maid_detail')
     authority = ''
     agency_id = ''
     success_message = 'FDW Biodata created'
@@ -159,7 +159,7 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
     def get_success_url(self):
         return reverse_lazy(
-            'maid_update',
+            'dashboard_maid_detail',
             kwargs={
                 'pk':self.object.pk
             }
