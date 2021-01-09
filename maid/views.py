@@ -25,7 +25,8 @@ from .forms import (
     MaidCreationForm, MaidBiodataForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
-    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm
+    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm,
+    MaidUpdateForm
 )
 
 from .models import (
@@ -220,26 +221,23 @@ class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin,
         return super().form_valid(form)
 
 # Update Views
-class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin,
-                 UpdateView):
+class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
+                 SuccessMessageMixin, UpdateView):
     context_object_name = 'maid'
-    form_class = MaidCreationForm
+    form_class = MaidUpdateForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'update/maid-update.html'
     success_message = 'Maid details updated'
+    authority = ''
+    agency_id = ''
 
     def get_object(self, queryset=None):
-        if self.request.user.groups.filter(name='Agency Owners').exists():
-            agency = self.request.user.agency_owner.agency
-        else:
-            agency = self.request.user.agency_employee.agency
-
         return Maid.objects.get(
             pk = self.kwargs.get(
                 self.pk_url_kwarg
             ),
-            agency = agency
+            agency__pk = self.agency_id
         )
 
     def get_success_url(self):
