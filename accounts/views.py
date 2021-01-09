@@ -9,6 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
+from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
@@ -18,13 +19,15 @@ from .mixins import VerifiedEmployerMixin
 # Start of Views
 
 ## Views that inherit from inbuilt django views
-class SignInView(LoginView):
+class SignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
+    success_message = 'Successful Login'
 
-class AgencySignInView(LoginView):
+class AgencySignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = AgencySignInForm
+    success_message = 'Successful Login'
     
 ## Template Views
 
@@ -36,7 +39,8 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         logout(self.request)
         messages.success(
             self.request,
-            'Log out successful'
+            'Log out successful',
+            extra_tags='sucess'
         )
         return super().get_redirect_url(*args, **kwargs)
 
@@ -48,7 +52,7 @@ class EmployerDetail(LoginRequiredMixin, VerifiedEmployerMixin, DetailView):
     template_name = 'detail/employer-detail.html'
 
 ## Create Views
-class EmployerCreate(CreateView):
+class EmployerCreate(SuccessMessageMixin, CreateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
@@ -56,6 +60,7 @@ class EmployerCreate(CreateView):
     template_name = 'create/employer-create.html'
     success_url = reverse_lazy('home')
     form_type = 'CREATE'
+    success_message = 'Account created'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -65,7 +70,7 @@ class EmployerCreate(CreateView):
         return kwargs
 
 ## Update Views
-class EmployerUpdate(LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
+class EmployerUpdate(SuccessMessageMixin, LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
@@ -73,6 +78,7 @@ class EmployerUpdate(LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
     template_name = 'update/employer-update.html'
     success_url = reverse_lazy('employer_detail')
     form_type = 'UPDATE'
+    success_message = 'Account details updated'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -83,8 +89,9 @@ class EmployerUpdate(LoginRequiredMixin, VerifiedEmployerMixin, UpdateView):
         return kwargs
 
 ## Delete Views
-class EmployerDelete(LoginRequiredMixin, VerifiedEmployerMixin, DeleteView):
+class EmployerDelete(SuccessMessageMixin, LoginRequiredMixin, VerifiedEmployerMixin, DeleteView):
     context_object_name = 'employer'
     http_method_names = ['post']
     model = Employer
     success_url = reverse_lazy('home')
+    success_message = 'Account deleted'
