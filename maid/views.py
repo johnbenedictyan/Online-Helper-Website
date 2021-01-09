@@ -252,7 +252,8 @@ class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin,
             }
         )
 
-class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, 
+                        SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_biodata'
     form_class = MaidBiodataForm
     http_method_names = ['get','post']
@@ -279,7 +280,8 @@ class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixi
             }
         )
 
-class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, 
+                              SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_family_details'
     form_class = MaidFamilyDetailsForm
     http_method_names = ['get','post']
