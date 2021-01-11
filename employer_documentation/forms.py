@@ -754,8 +754,8 @@ class SignatureForm(forms.ModelForm):
                 Column(
                     Submit("submit", "Submit"),
                     HTML("""
-                        <a href="#" onclick="signaturePad.clear()" class="btn btn-secondary">Clear</a>
-                    """)
+                        <button type="button" onclick="signaturePad.clear()" class="btn btn-secondary">Clear</button>
+                    """),
                 ),
                 css_class='form-row'
             )
