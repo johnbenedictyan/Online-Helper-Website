@@ -47,6 +47,7 @@ from .views import (
     PdfServiceAgreementView,
     PdfRepaymentScheduleView,
     PdfFileView,
+    PdfGenericTokenView,
 )
 
 # Start of Urls
@@ -324,6 +325,135 @@ urlpatterns = [
                                     success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
                                 ),
                                 name='token_signature_employer_witness_route'
+                            ),
+                            path(
+                                'pdf/service-fees/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-01-service-fee-schedule.html',
+                                    content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                ),
+                                name='pdf_token_employer_service_fee_schedule'
+                            ),
+                                    # path(
+                                    #     'pdf/service-agreement/',
+                                    #     .as_view(
+                                    #         slug_field='employer_slug',
+                                    #         token_field_name='employer_token',
+                                    #         template_name='employer_documentation/pdf-03-service-agreement.html',
+                                    #         content_disposition = 'inline; filename="service_agreement.pdf"',
+                                    #     ),
+                                    #     name='pdf_token_employer_service_agreement'
+                                    # ),
+                            path(
+                                'pdf/employment-contract/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-04-employment-contract.html',
+                                    content_disposition = 'inline; filename="employment-contract.pdf"',
+                                ),
+                                name='pdf_token_employer_employment_contract'
+                            ),
+                                # path(
+                                #     'pdf/repayment-schedule/',
+                                #     .as_view(
+                                #         slug_field='employer_slug',
+                                #         token_field_name='employer_token',
+                                #         template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                #         content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                #     ),
+                                #     name='pdf_token_employer_repayment_schedule'
+                                # ),
+                            path(
+                                'pdf/rest-day-agreement/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                    content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                ),
+                                name='pdf_token_employer_rest_day_agreement'
+                            ),
+                                    # path(
+                                    #     'pdf/job-order/',
+                                    #     .as_view(
+                                    #         slug_field='employer_slug',
+                                    #         token_field_name='employer_token',
+                                    #         filename='job-order.pdf',
+                                    #     ),
+                                    #     name='pdf_token_employer_job_order_route'
+                                    # ),
+                            path(
+                                'pdf/handover-checklist/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                    content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                ),
+                                name='pdf_token_employer_handover_checklist'
+                            ),
+                            path(
+                                'pdf/transfer-consent/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-09-transfer-consent.html',
+                                    content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                ),
+                                name='pdf_token_employer_transfer_consent'
+                            ),
+                            path(
+                                'pdf/work-pass-authorisation/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
+                                    content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                ),
+                                name='pdf_token_employer_work_pass_authorisation'
+                            ),
+                            path(
+                                'pdf/security-bond/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-11-security-bond.html',
+                                    content_disposition = 'inline; filename="security-bond.pdf"',
+                                ),
+                                name='pdf_token_employer_security_bond'
+                            ),
+                            path(
+                                'pdf/fdw-work-permit-12b/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                    content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                                ),
+                                name='pdf_token_employer_fdw_work_permit_12b'
+                            ),
+                            path(
+                                'pdf/income-tax-declaration/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-13-income-tax-declaration.html',
+                                    content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                ),
+                                name='pdf_token_employer_income_tax_declaration'
+                            ),
+                            path(
+                                'pdf/safety-agreement/',
+                                PdfGenericTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                    content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                ),
+                                name='pdf_token_employer_safety_agreement'
                             ),
                         ]),
                     ),

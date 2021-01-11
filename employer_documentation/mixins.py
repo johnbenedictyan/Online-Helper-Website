@@ -265,15 +265,25 @@ class PdfHtmlViewMixin:
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.rn_maidstatus_ed.fdw_work_commencement_date:
-            return HttpResponseRedirect(
-                reverse('employerdoc_status_update_route', kwargs={
-                    'employer_pk': self.object.employer.pk,
-                    'employerdoc_pk': self.object.pk,
-                    'employersubdoc_pk': self.object.rn_maidstatus_ed.pk,
-                }))
 
-        context = self.get_context_data(object=self.object)
+        if isinstance(self.object, EmployerDoc):
+            # If FDW work commencement date is empty, then redirect to update
+            if not self.object.rn_maidstatus_ed.fdw_work_commencement_date:
+                return HttpResponseRedirect(
+                    reverse('employerdoc_status_update_route', kwargs={
+                        'employer_pk': self.object.employer.pk,
+                        'employerdoc_pk': self.object.pk,
+                        'employersubdoc_pk': self.object.rn_maidstatus_ed.pk,
+                    }))
+            # Get context data
+            context = self.get_context_data(object=self.object)
+        
+        elif isinstance(self.object, EmployerDocSig):
+            # Get context data
+            context = self.get_context_data(object=self.object.employer_doc)
+        else:
+            return HttpResponseRedirect(
+                reverse('home'))
 
         # Render PDF
         html_template = render_to_string(self.template_name, context)

@@ -642,3 +642,12 @@ class PdfFileView(
                     'employerdoc_pk': self.object.employer_doc.pk,
                     'employersubdoc_pk': self.object.pk,
             }))
+
+class PdfGenericTokenView(
+    CheckSignatureSessionTokenMixin,
+    PdfHtmlViewMixin,
+    DetailView
+):
+    model = EmployerDocSig
+    slug_url_kwarg = 'slug'
+    token_field_name = None
