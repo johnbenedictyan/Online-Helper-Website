@@ -29,8 +29,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col mb-2">
                             <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'maid_list' %}" class="btn btn-secondary w-100">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -48,7 +53,7 @@
                                     <p class="card-text">{{maid.maid_type}}</p>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{% url 'add_to_shortlist' %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                                    <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
                                 </div>
                             </div>
                         </div>
