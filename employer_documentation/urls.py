@@ -48,6 +48,9 @@ from .views import (
     PdfRepaymentScheduleView,
     PdfFileView,
     PdfGenericTokenView,
+    PdfServiceAgreementTokenView,
+    PdfRepaymentScheduleTokenView,
+    PdfFileTokenView,
 )
 
 # Start of Urls
@@ -336,16 +339,16 @@ urlpatterns = [
                                 ),
                                 name='pdf_token_employer_service_fee_schedule'
                             ),
-                                    # path(
-                                    #     'pdf/service-agreement/',
-                                    #     .as_view(
-                                    #         slug_field='employer_slug',
-                                    #         token_field_name='employer_token',
-                                    #         template_name='employer_documentation/pdf-03-service-agreement.html',
-                                    #         content_disposition = 'inline; filename="service_agreement.pdf"',
-                                    #     ),
-                                    #     name='pdf_token_employer_service_agreement'
-                                    # ),
+                            path(
+                                'pdf/service-agreement/',
+                                PdfServiceAgreementTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-03-service-agreement.html',
+                                    content_disposition = 'inline; filename="service_agreement.pdf"',
+                                ),
+                                name='pdf_token_employer_service_agreement'
+                            ),
                             path(
                                 'pdf/employment-contract/',
                                 PdfGenericTokenView.as_view(
@@ -356,16 +359,16 @@ urlpatterns = [
                                 ),
                                 name='pdf_token_employer_employment_contract'
                             ),
-                                # path(
-                                #     'pdf/repayment-schedule/',
-                                #     .as_view(
-                                #         slug_field='employer_slug',
-                                #         token_field_name='employer_token',
-                                #         template_name='employer_documentation/pdf-05-repayment-schedule.html',
-                                #         content_disposition = 'inline; filename="repayment-schedule.pdf"',
-                                #     ),
-                                #     name='pdf_token_employer_repayment_schedule'
-                                # ),
+                            path(
+                                'pdf/repayment-schedule/',
+                                PdfRepaymentScheduleTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                    content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                ),
+                                name='pdf_token_employer_repayment_schedule'
+                            ),
                             path(
                                 'pdf/rest-day-agreement/',
                                 PdfGenericTokenView.as_view(
@@ -376,15 +379,15 @@ urlpatterns = [
                                 ),
                                 name='pdf_token_employer_rest_day_agreement'
                             ),
-                                    # path(
-                                    #     'pdf/job-order/',
-                                    #     .as_view(
-                                    #         slug_field='employer_slug',
-                                    #         token_field_name='employer_token',
-                                    #         filename='job-order.pdf',
-                                    #     ),
-                                    #     name='pdf_token_employer_job_order_route'
-                                    # ),
+                            path(
+                                'pdf/job-order/',
+                                PdfFileTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    token_field_name='employer_token',
+                                    filename='job-order.pdf',
+                                ),
+                                name='pdf_token_employer_job_order_route'
+                            ),
                             path(
                                 'pdf/handover-checklist/',
                                 PdfGenericTokenView.as_view(

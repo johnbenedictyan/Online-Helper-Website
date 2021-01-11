@@ -12,19 +12,19 @@
         <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_service_fee_schedule' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
 
         <dd class="col-sm-8 text-truncate">Service Agreement</dd>
-        <dd class="col-sm-4">PDF</dd>
+        <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_service_agreement' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
 
         <dd class="col-sm-8 text-truncate">Employment Contract</dd>
         <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_employment_contract' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
 
         <dd class="col-sm-8 text-truncate">Repayment Schedule</dd>
-        <dd class="col-sm-4">PDF</dd>
+        <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_repayment_schedule' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
 
         <dd class="col-sm-8 text-truncate">Rest Day Agreement</dd>
         <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_rest_day_agreement' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
 
         <dd class="col-sm-8 text-truncate">Job Order</dd>
-        <dd class="col-sm-4">PDF</dd>
+        <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_job_order_route' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
 
         <dd class="col-sm-8 text-truncate">Handover Checklist</dd>
         <dd class="col-sm-4"><a href="{% if request.resolver_match.url_name == 'token_signature_employer_route' %}{% url 'pdf_token_employer_handover_checklist' slug=object.employer_slug %}{% endif %}" target="_blank">PDF</a></dd>
