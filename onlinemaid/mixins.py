@@ -4,6 +4,7 @@ import re
 import six
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login, logout_then_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
@@ -17,6 +18,19 @@ except ImportError:
     from django.utils.encoding import force_text as force_string
 from django.utils.timezone import now
 from django.views.generic import ListView
+
+class SuccessMessageMixin:
+    def get_success_url(self):
+        if self.success_message:
+            messages.success(
+                self.request,
+                self.success_message,
+                extra_tags='success'
+            )
+            return super().get_success_url()
+        else:
+            raise ImproperlyConfigured(
+                "Set the success message attribute")
 
 class ListFilteredMixin(object):
     """

@@ -1,0 +1,30 @@
+div.toast-outerwrapper {
+  position: relative;
+}
+
+div.toast-innerwrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+div.toast {
+  min-width: 75vw;
+}
+
+@media (min-width: 768px) {
+  div.toast {
+    min-width: 10vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  div.toast {
+    min-width: 15vw;
+  }
+}
+
+div.toast img {
+  width: 10%;
+}
+/*# sourceMappingURL=toast.css.map */

@@ -1,4 +1,43 @@
 {% extends 'employer-base.html' %}
 {% block accounts_section %}
-    {{employer}}
+<section>
+    <div class="jumbotron jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
+                    <h1 class="display-4 pl-3 pl-md-2">Profile</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-4 text-center">
+                {{employer.first_name}} {{employer.last_name}}
+            </div>
+            <div class="col-8">
+                <h5>Information</h5>
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+                        {{employer.user.email}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a href="{% url 'employer_update' %}" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock accounts_section %}
