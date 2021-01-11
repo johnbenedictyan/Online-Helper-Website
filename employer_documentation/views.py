@@ -391,7 +391,7 @@ class SignatureUpdateByTokenView(
 
 
 # PDF Views
-class PdfEmployerDocumentView(
+class PdfGenericAgencyView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
     PdfHtmlViewMixin,
@@ -400,7 +400,7 @@ class PdfEmployerDocumentView(
     model = EmployerDoc
     pk_url_kwarg = 'employerdoc_pk'
 
-class PdfServiceAgreementView(
+class PdfServiceAgreementAgencyView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
     PdfHtmlViewMixin,
@@ -418,7 +418,7 @@ class PdfServiceAgreementView(
         )
         return context
 
-class PdfRepaymentScheduleView(
+class PdfRepaymentScheduleAgencyView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
     PdfHtmlViewMixin,
@@ -428,7 +428,7 @@ class PdfRepaymentScheduleView(
     model = EmployerDoc
     pk_url_kwarg = 'employerdoc_pk'
 
-class PdfFileView(
+class PdfFileAgencyView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
     DetailView
