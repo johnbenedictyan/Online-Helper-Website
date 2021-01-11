@@ -9,7 +9,7 @@ from .models import (
 )
 
 @receiver(post_save, sender=EmployerDoc)
-def create_subdocs(sender, instance, created, **kwargs):
+def employer_doc_post_save(sender, instance, created, **kwargs):
     if created:
         # If SQL INSERT, create EmployerDocSig, EmployerDocMaidStatus,
         # JobOrder instances.
@@ -25,3 +25,15 @@ def create_subdocs(sender, instance, created, **kwargs):
             EmployerDocMaidStatus.objects.create(employer_doc=instance)
         if not hasattr(instance, 'rn_joborder_ed'):
             JobOrder.objects.create(employer_doc=instance)
+        
+        # If SQL UPDATE, reset all e-signatures in EmployerDocSig instance
+        doc_sig_obj = instance.rn_signatures_ed
+        doc_sig_obj.employer_signature = None
+        doc_sig_obj.fdw_signature = None
+        doc_sig_obj.agency_staff_signature = None
+        doc_sig_obj.spouse_signature = None
+        doc_sig_obj.sponsor_signature = None
+        doc_sig_obj.employer_witness_signature = None
+        doc_sig_obj.fdw_witness_signature = None
+        doc_sig_obj.agency_staff_witness_signature = None
+        doc_sig_obj.save()
