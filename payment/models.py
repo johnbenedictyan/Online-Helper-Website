@@ -2,6 +2,7 @@
 
 # Imports from django
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
 
@@ -26,3 +27,13 @@ class Invoice(models.Model):
         auto_now_add=True
     )
 
+class Customer(models.Model):
+    agency = models.OneToOneField(
+        Agency,
+        on_delete=models.CASCADE,
+        related_name='customer_account'
+    )
+    stripe_customer_id = models.CharField(
+        verbose_name=_('Stripe\'s customer id'),
+        max_length=255
+    )
