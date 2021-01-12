@@ -48,9 +48,9 @@
                 </tr>
             {% endfor %}
         {% else %}
-                <tr>
-                    <td colspan="6">No results found...</td>
-                </tr>
+            <tr>
+                <td colspan="6">No results found. Click <a href="{% url 'employer_create_route' %}">here</a> to add employer.</td>
+            </tr>
         {% endif %}
         </tbody>
     </table>

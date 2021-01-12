@@ -34,7 +34,7 @@
 {% block ed_section %}
     <h1>Employer Docs</h1>
     
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Ref No.</th>
@@ -51,7 +51,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for object in object_list %}
+        {% if object_list.count %}
+            {% for object in object_list %}
             <tr>
                 <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
                 <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
@@ -65,9 +66,12 @@
                 <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></td>
                 <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Delete</a>{% endif %}</td>
             </tr>
-        {% empty %}
-            <p><a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">No docs yet. Create documentation.</a></p>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">here</a> to create doumentation.</td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 {% endblock ed_section %}
