@@ -262,7 +262,7 @@ class FullNationsChoices(models.TextChoices):
     ZIMBABWE	                = 'ZWE', _('Zimbabwe')
     ALAND_ISLANDS	            = 'ALA', _('Åland Islands')
 
-class CommonNationsChoices(models.TextChoices):
+class MaidCountryOfOrigin(models.TextChoices):
     BANGLADESH  = 'BGD', _('Bangladesh')
     CAMBODIA    = 'KHM', _('Cambodia')
     INDIA       = 'IND', _('India')
@@ -294,6 +294,12 @@ class MaidCareRemarkChoices(models.TextChoices):
     NOT_WILLING = 'NW', _('Not willing')
     OTHERS = 'OTH', _('Other remarks (Please specify)')
 
+class TypeOfMaidChoices(models.TextChoices):
+    NEW = 'NEW', _('No Experience')
+    TRANSFER = 'TRF', _('Transfer')
+    SINGAPORE_EXPERIENCE = 'SGE', _('Singapore Experience')
+    OVERSEAS_EXPERIENCE = 'OVE', _('Overseas Experience')
+        
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes

@@ -16,20 +16,50 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    CommonNationsChoices, PreferenceChoices, MaidCareRemarkChoices
+    TypeOfMaidChoices, MaidCountryOfOrigin, PreferenceChoices, 
+    MaidCareRemarkChoices
 )
 
 # Utiliy Classes and Functions
 
 # Start of Models
+class MaidResponsibility(models.Model):
+    # Settings
 
+    ## General
+    NO_PREFERENCE = 'ALL'
+    OTHERS        = 'OTH'
+
+    ## Maid Responsibilites
+    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
+    MAID_RESP_COOKING                   = 'COK'
+    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
+    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
+    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
+    MAID_RESP_CARE_FOR_PETS             = 'CFP'
+    MAID_RESP_GARDENING                 = 'GAR'
+
+    MAID_RESP_CHOICES = (
+        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
+        (MAID_RESP_COOKING, _('Cooking')),
+        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
+        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
+        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
+        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
+        (MAID_RESP_GARDENING, _('Gardening'))
+    )
+
+    name = models.CharField(
+        verbose_name=_('Name of maid\'s responsibility'),
+        max_length=255,
+        blank=False,
+        choices=MAID_RESP_CHOICES,
+    )
+    
+    def __str__(self) -> str:
+        return f'{self.get_name_display()}'
+    
 class Maid(models.Model):
-    class TypeOfMaidChoices(models.TextChoices):
-        NEW = 'NEW', _('No Experience')
-        TRANSFER = 'TRF', _('Transfer')
-        SINGAPORE_EXPERIENCE = 'SGE', _('Singapore Experience')
-        OVERSEAS_EXPERIENCE = 'OVE', _('Overseas Experience')
-
     class PassportStatusChoices(models.IntegerChoices):
         NOT_READY = 0, _('Not Ready')
         READY = 1, _('Ready')
@@ -102,6 +132,10 @@ class Maid(models.Model):
         verbose_name=_('Remarks'),
         max_length=255,
         blank=False
+    )
+    
+    responsibilities = models.ManyToManyField(
+        MaidResponsibility
     )
 
     created_on = models.DateTimeField(
@@ -309,16 +343,6 @@ class MaidAgencyFeeTransaction(models.Model):
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
-    class MaidCountryOfOrigin(models.TextChoices):
-        BANGLADESH  = 'BGD', _('Bangladesh')
-        CAMBODIA    = 'KHM', _('Cambodia')
-        INDIA       = 'IND', _('India')
-        INDONESIA   = 'IDN', _('Indonesia')
-        MYANMAR	    = 'MMR', _('Myanmar')
-        PHILIPPINES = 'PHL', _('Philippines (the)')
-        SRI_LANKA   = 'LKA', _('Sri Lanka')
-        OTHERS      = 'OTH', _('Others')
-
     class ReligionChoices(models.TextChoices):
         BUDDHIST = 'B', _('Buddhist')
         MUSLIM = 'M', _('Muslim')
@@ -807,37 +831,4 @@ class MaidCooking(models.Model):
     other_remarks = models.TextField(
         verbose_name=_('Other remarks for cooking'),
         blank=True
-    )
-
-class MaidResponsibility(models.Model):
-    # Settings
-
-    ## General
-    NO_PREFERENCE = 'ALL'
-    OTHERS        = 'OTH'
-
-    ## Maid Responsibilites
-    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
-    MAID_RESP_COOKING                   = 'COK'
-    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
-    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
-    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
-    MAID_RESP_CARE_FOR_PETS             = 'CFP'
-    MAID_RESP_GARDENING                 = 'GAR'
-
-    MAID_RESP_CHOICES = (
-        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
-        (MAID_RESP_COOKING, _('Cooking')),
-        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
-        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
-        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
-        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
-        (MAID_RESP_GARDENING, _('Gardening'))
-    )
-
-    name = models.CharField(
-        verbose_name=_('Name of maid\'s responsibility'),
-        max_length=255,
-        blank=False,
-        choices=MAID_RESP_CHOICES,
     )

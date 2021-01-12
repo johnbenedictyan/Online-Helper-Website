@@ -21,7 +21,13 @@
             </div>
             <div class="row">
                 <div class="col">
+                    {% if maid.complete == True %}
                     <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success w-100">Publish FDW Biodata</a>
+                    {% else %}
+                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="Complete the FDW profile to publish">
+                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success w-100 disabled">Publish FDW Biodata</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -103,7 +109,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
+                    <a href="{% url 'maid_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>
@@ -264,7 +270,7 @@
                             <h5 class="card-title">Number of Children</h5>
                         </div>
                         <div class="col">
-                            {% if maid.family_details.number_of_children %}
+                            {% if maid.family_details.number_of_children or maid.family_details.number_of_children is 0 %}
                             <p class="card-text">{{maid.family_details.number_of_children}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
@@ -276,8 +282,8 @@
                             <h5 class="card-title">Age of Children</h5>
                         </div>
                         <div class="col">
-                            {% if maid.family_details.number_of_children %}
-                            <p class="card-text">{{maid.family_details.number_of_children}}</p>
+                            {% if maid.family_details.age_of_children %}
+                            <p class="card-text">{{maid.family_details.age_of_children}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
                             {% endif %}
@@ -288,7 +294,7 @@
                             <h5 class="card-title">Number of Siblings</h5>
                         </div>
                         <div class="col">
-                            {% if maid.family_details.number_of_siblings %}
+                            {% if maid.family_details.number_of_siblings or maid.family_details.number_of_siblings is 0 %}
                             <p class="card-text">{{maid.family_details.number_of_siblings}}</p>
                             {% else %}
                             <p class="card-text">Incomplete</p>
