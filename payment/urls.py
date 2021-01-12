@@ -6,6 +6,7 @@ from django.urls import include, path
 # Imports from local app
 
 ## Redirect Views
+from .views import CustomerPortal
 
 ## List Views
 from .views import InvoiceList
@@ -36,5 +37,10 @@ urlpatterns = [
                 name='invoice_detail'
             )
         ])
+    ),
+    path(
+        'customer-portal/',
+        CustomerPortal.as_view(),
+        name='stripe_customer_portal'
     )
 ]
