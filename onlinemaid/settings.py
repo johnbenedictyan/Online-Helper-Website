@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # 3rd party packages
     'crispy_forms',
     'django_filters',
+    'djmoney',
     'mathfilters',
     'social_django',
     'storages',
