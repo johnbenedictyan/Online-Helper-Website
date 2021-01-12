@@ -47,7 +47,7 @@
                 <th scope="col">SIP</th>
                 <th scope="col">Work Commence</th>
                 <th scope="col">Work Permit</th>
-                <th scope="col">Edit Doc</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@
                 <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.sip_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
                 <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
                 <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Delete</a>{% endif %}</td>
             </tr>
         {% empty %}
             <p><a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">No docs yet. Create documentation.</a></p>
