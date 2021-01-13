@@ -6,6 +6,7 @@ from django.db.models.enums import IntegerChoices
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
+from onlinemaid.storage_backends import PrivateMediaStorage
 
 # Imports from other apps
 from agency.models import Agency
@@ -67,9 +68,11 @@ class SubscriptionProductImage(models.Model):
         related_name='images'
     )
     
-    uri = models.CharField(
-        verbose_name=_('Subscription Product\'s Image URI'),
-        max_length=255
+    photo = models.FileField(
+        verbose_name=_('Subscription Product\'s Photo'),
+        blank=False,
+        null=True,
+        storage=PrivateMediaStorage()
     )
     
 class SubscriptionProductPrice(models.Model):
