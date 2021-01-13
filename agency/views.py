@@ -1,4 +1,5 @@
 # Imports from django
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -10,7 +11,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
+import stripe
 from onlinemaid.mixins import SuccessMessageMixin
+from payment.models import Customer
 
 # Imports from local app
 from .forms import (
@@ -79,6 +82,35 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
         AgencyOperatingHours.objects.create(
             agency=self.object
         )
+        
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            stripe_customer = stripe.Customer.create(
+                address = {
+                    'city': 'Singapore',
+                    'country': 'Singapore',
+                    'line1': 'Singapore',
+                    'line2': 'Singapore',
+                    'postal_code': 'Singapore',
+                    'state': 'Singapore',
+                },
+                description = f'Customer account for {self.object.name}',
+                email=self.object.company_email,
+                name=self.object.name,
+                invoice_settings={
+                    'custom_fields': None,
+                    'default_payment_method': None,
+                    'footer': ''
+                }
+            )
+        except Exception as e:
+            print(e)
+        else:
+            new_customer = Customer(
+                agency = self.object
+            )
+            new_customer.id = stripe_customer.id
+            new_customer.save()
 
         return HttpResponseRedirect(self.get_success_url())
 
