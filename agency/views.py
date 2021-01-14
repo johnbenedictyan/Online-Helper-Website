@@ -83,35 +83,6 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
             agency=self.object
         )
         
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        try:
-            stripe_customer = stripe.Customer.create(
-                address = {
-                    'city': 'Singapore',
-                    'country': 'Singapore',
-                    'line1': 'Singapore',
-                    'line2': 'Singapore',
-                    'postal_code': 'Singapore',
-                    'state': 'Singapore',
-                },
-                description = f'Customer account for {self.object.name}',
-                email=self.object.company_email,
-                name=self.object.name,
-                invoice_settings={
-                    'custom_fields': None,
-                    'default_payment_method': None,
-                    'footer': ''
-                }
-            )
-        except Exception as e:
-            print(e)
-        else:
-            new_customer = Customer(
-                agency = self.object
-            )
-            new_customer.id = stripe_customer.id
-            new_customer.save()
-
         return HttpResponseRedirect(self.get_success_url())
 
 class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
