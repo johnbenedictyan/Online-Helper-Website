@@ -15,6 +15,10 @@ from .views import InvoiceList
 from .views import InvoiceDetail
 
 ## Create Views
+from .views import (
+    SubscriptionProductCreate, SubscriptionProductImageCreate,
+    SubscriptionProductPriceCreate
+)
 
 ## Update Views
 
@@ -23,6 +27,36 @@ from .views import InvoiceDetail
 # Start of Urls
 
 urlpatterns = [
+    path(
+        'create/',
+        include([
+            path(
+                'product/',
+                include([
+                    path(
+                        '',
+                        SubscriptionProductCreate.as_view(),
+                        name='subscription_product_create'
+                    ),
+                    path(
+                        '<slug:pk>/',
+                        include([
+                            path(
+                                'image/',
+                                SubscriptionProductImageCreate.as_view(),
+                                name='subscription_product_image_create'
+                            ),
+                            path(
+                                'price/',
+                                SubscriptionProductPriceCreate.as_view(),
+                                name='subscription_product_price_create'
+                            )
+                        ])
+                    )
+                ])
+            )
+        ])
+    ),
     path(
         'view/',
         include([
