@@ -119,8 +119,7 @@ class SubscriptionProductPrice(models.Model):
         default=Intervals.DAY
     )
     
-    interval_count = models.CharField(
-        max_length=2,
+    interval_count = models.IntegerField(
         choices=IntervalCounts.choices,
         default=IntervalCounts.ONE
     )
