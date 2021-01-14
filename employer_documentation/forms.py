@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML, Hidden
-from crispy_forms.bootstrap import FormActions, PrependedAppendedText
+from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton
 
 # Imports from local apps
 from .models import (
@@ -248,29 +248,16 @@ class EmployerDocForm(forms.ModelForm):
             """),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'b1_service_fee', '$', '.00'
+                    PrependedText(
+                        'b1_service_fee', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2a_work_permit_application_collection', '$', '.00'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    PrependedAppendedText(
-                        'b2b_medical_examination_fee', '$', '.00'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    PrependedAppendedText(
-                        'b2c_security_bond_accident_insurance', '$', '.00'
+                    PrependedText(
+                        'b2a_work_permit_application_collection', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -278,14 +265,16 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'b2d_indemnity_policy_reimbursement', '$', '.00'
+                    PrependedText(
+                        'b2b_medical_examination_fee', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2e_home_service', '$', '.00'
+                    PrependedText(
+                        'b2c_security_bond_accident_insurance', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -293,14 +282,33 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'b2f_counselling', '$', '.00'
+                    PrependedText(
+                        'b2d_indemnity_policy_reimbursement', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2g_sip', '$', '.00'
+                    PrependedText(
+                        'b2e_home_service', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedText(
+                        'b2f_counselling', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedText(
+                        'b2g_sip', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -312,8 +320,9 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2h_replacement_cost', '$', '.00'
+                    PrependedText(
+                        'b2h_replacement_cost', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -321,14 +330,16 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'b2i_work_permit_renewal', '$', '.00'
+                    PrependedText(
+                        'b2i_work_permit_renewal', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 # Column(
-                #     PrependedAppendedText(
-                #         '', '$', '.00'
+                #     PrependedText(
+                #         '', '$',
+                #         min='0', max='1000',
                 #     ),
                 #     css_class='form-group col-md-6'
                 # ),
@@ -340,8 +351,9 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2j1_other_services_fee', '$', '.00'
+                    PrependedText(
+                        'b2j1_other_services_fee', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -353,8 +365,9 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2j2_other_services_fee', '$', '.00'
+                    PrependedText(
+                        'b2j2_other_services_fee', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -366,8 +379,9 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b2j3_other_services_fee', '$', '.00'
+                    PrependedText(
+                        'b2j3_other_services_fee', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -375,8 +389,9 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'ca_deposit', '$', '.00'
+                    PrependedText(
+                        'ca_deposit', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -393,8 +408,9 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'b4_loan_transferred', '$', '.00'
+                    PrependedText(
+                        'b4_loan_transferred', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -411,8 +427,9 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 # Column(
-                #     PrependedAppendedText(
-                #         '', '$', '.00'
+                #     PrependedText(
+                #         '', '$',
+                #         min='0', max='1000',
                 #     ),
                 #     css_class='form-group col-md-6'
                 # ),
@@ -441,8 +458,9 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'c3_4_no_replacement_refund', '$', '.00'
+                    PrependedText(
+                        'c3_4_no_replacement_refund', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -476,8 +494,9 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'c5_1_1_failed_deployment_refund', '$', '.00'
+                    PrependedText(
+                        'c5_1_1_failed_deployment_refund', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -489,14 +508,16 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'c5_1_2_before_fdw_arrives_charge', '$', '.00'
+                    PrependedText(
+                        'c5_1_2_before_fdw_arrives_charge', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'c5_1_2_after_fdw_arrives_charge', '$', '.00'
+                    PrependedText(
+                        'c5_1_2_after_fdw_arrives_charge', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -515,14 +536,16 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'c6_4_per_day_food_accommodation_cost', '$', '.00'
+                    PrependedText(
+                        'c6_4_per_day_food_accommodation_cost', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'c6_6_per_session_counselling_cost', '$', '.00'
+                    PrependedText(
+                        'c6_6_per_session_counselling_cost', '$',
+                        min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -753,9 +776,7 @@ class SignatureForm(forms.ModelForm):
             Row(
                 Column(
                     Submit("submit", "Submit"),
-                    HTML("""
-                        <button type="button" onclick="signaturePad.clear()" class="btn btn-secondary">Clear</button>
-                    """),
+                    StrictButton("Clear", onclick="signaturePad.clear()", css_class="btn btn-secondary"),
                 ),
                 css_class='form-row'
             )
