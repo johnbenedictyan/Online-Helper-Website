@@ -5,21 +5,33 @@ import json
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http.response import JsonResponse
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+from django.utils.translation import ugettext_lazy as _
 
 # Imports from project-wide files
 
 # Imports from foreign installed apps
 import stripe
-from stripe.api_resources import line_item, payment_method
-from agency.mixins import AgencyOwnerRequiredMixin, GetAuthorityMixin
+from stripe.api_resources import line_item, payment_method, subscription
+from agency.mixins import (
+    AgencyOwnerRequiredMixin, GetAuthorityMixin, OnlineMaidStaffRequiredMixin
+)
+from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .models import Invoice, Customer
+from .forms import (
+    SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
+    SubscriptionProductPriceCreationForm
+)
+from .models import (
+    Invoice, Customer, SubscriptionProduct, SubscriptionProductPrice,
+    SubscriptionProductImage
+)
 
 # Start of Views
 
@@ -89,7 +101,108 @@ class InvoiceDetail(LoginRequiredMixin, DetailView):
     template_name = 'invoice-detail.html'
 
 # Create Views
+class SubscriptionProductCreate(OnlineMaidStaffRequiredMixin,
+                                SuccessMessageMixin, CreateView):
+    context_object_name = 'subscription_product'
+    form_class = SubscriptionProductCreationForm
+    http_method_names = ['get','post']
+    model = SubscriptionProduct
+    template_name = 'create/subscription-product-create.html'
+    success_url = reverse_lazy('admin_panel')
+    success_message = 'Subscription Product created'
+    
+    def form_valid(self, form):
+        cleaned_data = form.cleaned_data
+        subscription_product_name = cleaned_data.get('name')
+        subscription_product_description = cleaned_data.get('description')
+        subscription_product_active = cleaned_data.get('active')
+        try:
+            stripe_product = stripe.Product.create(
+                name = subscription_product_name,
+                description = subscription_product_description,
+                active = subscription_product_active
+            )
+        except Exception as e:
+            form.add_error(None, 'Something wrong happened. Please try again!')
+        else:
+            form.instance.id = stripe_product.id
+        return super().form_valid(form)
 
+class SubscriptionProductImageCreate(OnlineMaidStaffRequiredMixin,
+                                SuccessMessageMixin, CreateView):
+    context_object_name = 'subscription_product_image'
+    form_class = SubscriptionProductImageCreationForm
+    http_method_names = ['get','post']
+    model = SubscriptionProductImage
+    template_name = 'create/subscription-product-image-create.html'
+    success_url = reverse_lazy('admin_panel')
+    success_message = 'Subscription Product Image created'
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'subscription_product_id': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return kwargs
+    
+class SubscriptionProductPriceCreate(OnlineMaidStaffRequiredMixin,
+                                SuccessMessageMixin, CreateView):
+    context_object_name = 'subscription_product_price'
+    form_class = SubscriptionProductPriceCreationForm
+    http_method_names = ['get','post']
+    model = SubscriptionProductPrice
+    template_name = 'create/subscription-product-price-create.html'
+    success_url = reverse_lazy('admin_panel')
+    success_message = 'Subscription Product Price created'
+    
+    def form_valid(self, form):
+        cleaned_data = form.cleaned_data
+        subscription_product = SubscriptionProduct.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )  
+        )
+        try:
+            stripe_product = stripe.Product.retrieve(
+                subscription_product.pk
+            )
+        except Exception as e:
+            form.add_error(None, 'This product does not exist!')
+        else:
+            subscription_product_currency = cleaned_data.get('currency')
+            subscription_product_interval = cleaned_data.get('interval')
+            subscription_product_interval_count = cleaned_data.get(
+                'interval_count'
+            )
+            subscription_product_unit_amount = cleaned_data.get(
+                'unit_amount'
+            )
+            subscription_product_active = cleaned_data.get('active')
+            try:
+                stripe_price = stripe.Price.create(
+                    unit_amount=subscription_product_unit_amount,
+                    currency=subscription_product_currency,
+                    recurring={
+                        'aggregate_usage': None,
+                        'interval': subscription_product_interval,
+                        'interval_count': subscription_product_interval_count,
+                        'usage_type': 'licensed'
+                    },
+                    active = subscription_product_active,
+                    product = stripe_product.id
+                )
+            except Exception as e:
+                form.add_error(
+                    None,
+                    _('Something wrong happened. Please try again!')
+                )
+            else:
+                form.instance.id = stripe_price.id
+                form.instance.subscription_product = subscription_product
+        return super().form_valid(form)
+    
 # Delete Views
 
 # Generic Views
