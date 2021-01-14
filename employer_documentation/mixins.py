@@ -4,7 +4,6 @@ import calendar
 
 # Django
 from django.conf import settings
-from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.template.loader import render_to_string
@@ -310,10 +309,13 @@ class RepaymentScheduleMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['repayment_table'] = {}
-        today = timezone.now()
+        
+        work_commencement_date = (
+            self.object.rn_maidstatus_ed.fdw_work_commencement_date
+        )
 
-        payment_month = today.month
-        payment_year = today.year
+        payment_month = work_commencement_date.month
+        payment_year = work_commencement_date.year
         placement_fee = (
             self.object.fdw.agency_fee_amount +
             self.object.fdw.personal_loan_amount
@@ -329,11 +331,7 @@ class RepaymentScheduleMixin:
         )
         salary_per_month = self.object.fdw.salary + off_day_compensation
         
-        if (
-            self.object.rn_maidstatus_ed.fdw_work_commencement_date
-            and
-            self.object.rn_maidstatus_ed.fdw_work_commencement_date.day==1
-        ):
+        if work_commencement_date and work_commencement_date.day==1:
             # If work start date is 1st of month, then payment does not need
             # to be pro-rated.
             for i in range(1,25):
@@ -368,11 +366,7 @@ class RepaymentScheduleMixin:
                 if payment_month%12 == 1:
                     payment_year += 1
 
-        if (
-            self.object.rn_maidstatus_ed.fdw_work_commencement_date
-            and not
-            self.object.rn_maidstatus_ed.fdw_work_commencement_date.day==1
-        ):
+        if work_commencement_date and not work_commencement_date.day==1:
             # Pro-rated payments
             month_current = (
                 12 if payment_month%12==0 else payment_month%12
