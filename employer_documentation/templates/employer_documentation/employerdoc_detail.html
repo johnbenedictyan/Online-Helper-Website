@@ -129,55 +129,55 @@
         <tbody>
             <tr>
                 <th scope="row">Agreement: Service Fee Schedule</th>
-                <td><a href="{% url 'pdf_service_fee_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_service_fee_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Service Agreement</th>
-                <td><a href="{% url 'pdf_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Employment Contract</th>
-                <td><a href="{% url 'pdf_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Repayment Schedule</th>
-                <td><a href="{% url 'pdf_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Rest Day Agreement</th>
-                <td><a href="{% url 'pdf_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Job Order</th>
-                <td><a href="{% url 'job_order_pdf_route' employer_pk=object.employer.pk employerdoc_pk=object.pk slug=object.rn_joborder_ed.slug %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'joborder_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_joborder_ed.pk %}">Upload</a></td>
+                <td><a href="{% url 'pdf_agency_job_order_route' employer_pk=object.employer.pk employerdoc_pk=object.pk slug=object.rn_joborder_ed.slug %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'joborder_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_joborder_ed.pk %}">Upload</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Handover Checklist</th>
-                <td><a href="{% url 'pdf_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Transfer Consent</th>
-                <td><a href="{% url 'pdf_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Work Pass Authorisation</th>
-                <td><a href="{% url 'pdf_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Security Bond</th>
-                <td><a href="{% url 'pdf_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Work Permit Application - Form 12B</th>
-                <td><a href="{% url 'pdf_fdw_work_permit_12b' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_fdw_work_permit_12b' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Income Tax Declaration</th>
-                <td><a href="{% url 'pdf_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Safety Agreement</th>
-                <td><a href="{% url 'pdf_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
+                <td><a href="{% url 'pdf_agency_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank">PDF</a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></td>
             </tr>
             <tr>
                 <th scope="row" colspan="2"></th>

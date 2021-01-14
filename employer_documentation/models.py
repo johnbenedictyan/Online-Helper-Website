@@ -7,7 +7,11 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.core.files.storage import FileSystemStorage
-from django.core.validators import FileExtensionValidator
+from django.core.validators import (
+    FileExtensionValidator,
+    MinValueValidator,
+    MaxValueValidator,
+)
 
 # Imports from other apps
 from onlinemaid.constants import TrueFalseChoices
@@ -63,7 +67,6 @@ class Employer(models.Model):
         validators=[
             RegexValidator(
                 regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
-                # regex='^[8-9][0-9]{7}[0-9]*$',
                 message=_('Please enter a valid contact number')
             )
         ]
@@ -194,50 +197,100 @@ class EmployerDoc(models.Model):
     )
 
     # Service Fee Schedule
-    b1_service_fee = models.PositiveIntegerField(
-        # cents
+    b1_service_fee = models.DecimalField(
         verbose_name=_("Service Fee"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2a_work_permit_application_collection = models.PositiveIntegerField(
-        # cents
+    b2a_work_permit_application_collection = models.DecimalField(
         verbose_name=_("Application / Collection of Work Permit"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2b_medical_examination_fee = models.PositiveIntegerField(
-        # cents
+    b2b_medical_examination_fee = models.DecimalField(
         verbose_name=_("Medical Examination Fee"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2c_security_bond_accident_insurance = models.PositiveIntegerField(
-        # cents
+    b2c_security_bond_accident_insurance = models.DecimalField(
         verbose_name=_("Security Bond and Personal Accident Insurance"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2d_indemnity_policy_reimbursement = models.PositiveIntegerField(
-        # cents
+    b2d_indemnity_policy_reimbursement = models.DecimalField(
         verbose_name=_("Reimbursement of Indemnity Policy"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2e_home_service = models.PositiveIntegerField(
-        # cents
+    b2e_home_service = models.DecimalField(
         verbose_name=_("Home Service"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2f_counselling = models.PositiveIntegerField(
-        # cents
+    b2f_counselling = models.DecimalField(
         verbose_name=_("Each Counselling Session"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2g_sip = models.PositiveIntegerField(
-        # cents
+    b2g_sip = models.DecimalField(
         verbose_name=_("Settling-In-Programme (SIP)"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("Cost for replacement within __ month(s)"),
         choices=MONTH_CHOICES
     )
-    b2h_replacement_cost = models.PositiveIntegerField(
-        # cents
+    b2h_replacement_cost = models.DecimalField(
         verbose_name=_("Cost for replacement"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    b2i_work_permit_renewal = models.PositiveIntegerField(
-        # cents
+    b2i_work_permit_renewal = models.DecimalField(
         verbose_name=_("Renewal of Work Permit"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
     b2j1_other_services_description = models.CharField(
         verbose_name=_("Other services provided (i)"),
@@ -245,39 +298,59 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True
     )
-    b2j1_other_services_fee = models.PositiveIntegerField(
-        # cents
+    b2j1_other_services_fee = models.DecimalField(
         verbose_name=_("Other services fee (i)"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=True,
-        null=True
+        null=True,
     )
     b2j2_other_services_description = models.CharField(
         verbose_name=_("Other services provided (ii)"),
         max_length=40,
         blank=True,
-        null=True
+        null=True,
     )
-    b2j2_other_services_fee = models.PositiveIntegerField(
-        # cents
+    b2j2_other_services_fee = models.DecimalField(
         verbose_name=_("Other services fee (ii)"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=True,
-        null=True
+        null=True,
     )
     b2j3_other_services_description = models.CharField(
         verbose_name=_("Other services provided (iii)"),
         max_length=40,
         blank=True,
-        null=True
+        null=True,
     )
-    b2j3_other_services_fee = models.PositiveIntegerField(
-        # cents
+    b2j3_other_services_fee = models.DecimalField(
         verbose_name=_("Other services fee (iii)"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=True,
-        null=True
+        null=True,
     )
-    ca_deposit = models.PositiveIntegerField(
-        # cents
-        verbose_name=_("Deposit - upon confirmation of FDW")
+    ca_deposit = models.DecimalField(
+        verbose_name=_("Deposit - upon confirmation of FDW"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
 
     # If FDW is replacement, then additional fields
@@ -294,11 +367,16 @@ class EmployerDoc(models.Model):
         on_delete=models.RESTRICT,
         blank=True,
         null=True,
-        related_name='rn_ed_fdwreplaced'
+        related_name='rn_ed_fdwreplaced',
     )
-    b4_loan_transferred = models.PositiveIntegerField(
-        # cents
+    b4_loan_transferred = models.DecimalField(
         verbose_name=_("Loan Transferred* (required if FDW is replacement)"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=True,
         null=True,
     )
@@ -324,10 +402,15 @@ class EmployerDoc(models.Model):
             if any of following circumstances (iii)"),
         max_length=100
     )
-    c3_4_no_replacement_refund = models.PositiveIntegerField(
-        # cents
+    c3_4_no_replacement_refund = models.DecimalField(
         verbose_name=_("Refund amount if no replacement pursuant to Clause \
             3.1"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
         verbose_name=_("Number of replacement FDWs that Employer is entitled \
@@ -369,25 +452,40 @@ class EmployerDoc(models.Model):
             Service Agreement"),
         choices=DAY_CHOICES
     )
-    c5_1_1_failed_deployment_refund = models.PositiveIntegerField(
-        # cents
+    c5_1_1_failed_deployment_refund = models.DecimalField(
         verbose_name=_("Failed FDW deployment refund amount"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    c5_1_2_refund_within_days = models.PositiveIntegerField(
+    c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("If Employer terminates Agreement, Employer entitled \
             to Service Fee refund within __ day(s)"),
         choices=DAY_CHOICES
     )
-    c5_1_2_before_fdw_arrives_charge = models.PositiveIntegerField(
-        # cents
+    c5_1_2_before_fdw_arrives_charge = models.DecimalField(
         verbose_name=_("Charge if Employer terminates BEFORE FDW arrives in \
             Singapore"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    c5_1_2_after_fdw_arrives_charge = models.PositiveIntegerField(
-        # cents
+    c5_1_2_after_fdw_arrives_charge = models.DecimalField(
         verbose_name=_("Charge if Employer terminates AFTER FDW arrives in \
             Singapore"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
@@ -401,13 +499,23 @@ class EmployerDoc(models.Model):
             be transferred to new employer, refund within __ week(s)"),
         choices=WEEK_CHOICES
     )
-    c6_4_per_day_food_accommodation_cost = models.PositiveSmallIntegerField(
-        # cents
+    c6_4_per_day_food_accommodation_cost = models.DecimalField(
         verbose_name=_("Accommodation cost per day"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
-    c6_6_per_session_counselling_cost = models.PositiveIntegerField(
-        # cents
+    c6_6_per_session_counselling_cost = models.DecimalField(
         verbose_name=_("Counselling cost per day"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
     )
     c9_1_independent_mediator_1 = models.CharField(
         verbose_name=_("Independent mediator #1"),
