@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from crispy_forms.bootstrap import PrependedAppendedText
+from crispy_forms.bootstrap import PrependedAppendedText, InlineCheckboxes
 from agency.models import Agency
 
 # Imports from local apps
@@ -36,6 +36,7 @@ class MaidCreationForm(forms.ModelForm):
         exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
 
     def __init__(self, *args, **kwargs):
+        self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -87,6 +88,13 @@ class MaidCreationForm(forms.ModelForm):
                 Column(
                     'repatriation_airport',
                     css_class='form-group col-md-4'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    InlineCheckboxes('responsibilities'),
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),

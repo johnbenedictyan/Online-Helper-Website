@@ -6,6 +6,7 @@ from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
@@ -91,24 +92,42 @@ class Maid(models.Model):
         default=TypeOfMaidChoices.NEW
     )
 
-    salary = models.PositiveIntegerField(
+    salary = models.DecimalField(
         verbose_name=_('Salary'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=False,
         default=0
     )
 
-    agency_fee_amount = models.PositiveIntegerField(
+    agency_fee_amount = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         editable=False,
         default=0
     )
 
-    personal_loan_amount = models.PositiveIntegerField(
+    personal_loan_amount = models.DecimalField(
         verbose_name=_('Personal loan amount'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=False,
         default=0
     )
 
-    days_off = models.PositiveIntegerField(
+    days_off = models.PositiveSmallIntegerField(
         verbose_name=_('Days off'),
         blank=False,
         default=0
@@ -324,8 +343,14 @@ class MaidAgencyFeeTransaction(models.Model):
         related_name='agency_fee_transactions'
     )
 
-    amount = models.PositiveIntegerField(
+    amount = models.DecimalField(
         verbose_name=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=False
     )
 
@@ -380,13 +405,13 @@ class MaidBiodata(models.Model):
         choices=MaidCountryOfOrigin.choices
     )
 
-    height = models.PositiveIntegerField(
+    height = models.PositiveSmallIntegerField(
         verbose_name=_('Height (in cm)'),
         blank=False,
         null=True
     )
 
-    weight = models.PositiveIntegerField(
+    weight = models.PositiveSmallIntegerField(
         verbose_name=_('Weight (in kg)'),
         blank=False,
         null=True
@@ -480,7 +505,7 @@ class MaidFamilyDetails(models.Model):
         default=MaritalStatusChoices.SINGLE
     )
 
-    number_of_children = models.PositiveIntegerField(
+    number_of_children = models.PositiveSmallIntegerField(
         blank=False,
         default=0
     )
@@ -492,7 +517,7 @@ class MaidFamilyDetails(models.Model):
         default='N.A'
     )
 
-    number_of_siblings = models.PositiveIntegerField(
+    number_of_siblings = models.PositiveSmallIntegerField(
         blank=False,
         default=0
     )
