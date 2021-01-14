@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'dashboard',
     'employer_documentation.apps.EmployerDocumentationConfig',
     'maid.apps.MaidConfig',
-    'payment',
+    'payment.apps.PaymentConfig',
     'shortlist',
     'website',
     'enquiry',
