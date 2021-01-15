@@ -10,7 +10,7 @@ from django.urls.base import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project-wide files
@@ -32,6 +32,9 @@ from .models import (
     Invoice, Customer, SubscriptionProduct, SubscriptionProductPrice,
     SubscriptionProductImage
 )
+
+# Stripe Settings
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Start of Views
 
@@ -204,7 +207,31 @@ class SubscriptionProductPriceCreate(OnlineMaidStaffRequiredMixin,
         return super().form_valid(form)
     
 # Delete Views
-
+class SubscriptionProductImageDelete(OnlineMaidStaffRequiredMixin,
+                                SuccessMessageMixin, DeleteView):
+    context_object_name = 'subscription_product_image'
+    http_method_names = ['post']
+    model = SubscriptionProductImage
+    success_url = reverse_lazy('admin_panel')
+    success_message = 'Subscription Product Image deleted'
+    
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        product_images = [
+            img.photo.url for img in SubscriptionProductImage.objects.filter(
+                subscription_product = self.object
+            )
+        ]
+        try:
+            stripe.Product.modify(
+                self.object.pk,
+                images = product_images
+            )
+        except Exception as e:
+            print(e)
+            
+        return super().delete(request, *args, **kwargs)
+    
 # Generic Views
 class CheckoutSession(View):
     http_method_names = ['post']
