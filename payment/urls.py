@@ -23,6 +23,7 @@ from .views import (
 ## Update Views
 
 ## Delete Views
+from .views import SubscriptionProductImageDelete
 
 # Start of Urls
 
@@ -52,6 +53,21 @@ urlpatterns = [
                                 name='subscription_product_price_create'
                             )
                         ])
+                    )
+                ])
+            )
+        ])
+    ),
+    path(
+        'delete/',
+        include([
+            path(
+                'product/',
+                include([
+                    path(
+                        'image/<slug:pk>/',
+                        SubscriptionProductImageDelete.as_view(),
+                        name='subscription_product_image_delete'
                     )
                 ])
             )
