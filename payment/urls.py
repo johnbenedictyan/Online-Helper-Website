@@ -9,7 +9,10 @@ from django.urls import include, path
 from .views import CustomerPortal
 
 ## List Views
-from .views import InvoiceList
+from .views import (
+    InvoiceList, SubscriptionProductList, SubscriptionProductImageList,
+    SubscriptionProductPriceList
+)
 
 ## Detail Views
 from .views import InvoiceDetail
@@ -85,7 +88,32 @@ urlpatterns = [
                 '<int:pk>/',
                 InvoiceDetail.as_view(),
                 name='invoice_detail'
-            )
+            ),
+            path(
+                'products/',
+                include([
+                    path(
+                        '',
+                        SubscriptionProductList.as_view(),
+                        name='subscription_product_list'
+                    ),
+                    path(
+                        '<slug:pk>/',
+                        include([
+                            path(
+                                'images/',
+                                SubscriptionProductImageList.as_view(),
+                                name='subscription_product_image_list'
+                            ),
+                            path(
+                                'prices/',
+                                SubscriptionProductPriceList.as_view(),
+                                name='subscription_product_price_list'
+                            )
+                        ])
+                    )
+                ])
+            ),
         ])
     ),
     path(
