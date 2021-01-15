@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_list_or_404
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
@@ -94,6 +95,36 @@ class InvoiceList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Invoice.objects.filter(
             agency__pk = self.request.user.pk
+        )
+
+class SubscriptionProductList(OnlineMaidStaffRequiredMixin, ListView):
+    context_object_name = 'subscription_products'
+    http_method_names = ['get']
+    model = SubscriptionProduct
+    template_name = 'list/subscription-product-list.html'
+    
+class SubscriptionProductImageList(OnlineMaidStaffRequiredMixin, ListView):
+    context_object_name = 'subscription_product_images'
+    http_method_names = ['get']
+    model = SubscriptionProductImage
+    template_name = 'list/subscription-product-image-list.html'
+    
+    def get_queryset(self):
+        return get_list_or_404(
+            SubscriptionProductImage,
+            subscription_product__pk = self.kwargs.get('pk')
+        )
+
+class SubscriptionProductPriceList(OnlineMaidStaffRequiredMixin, ListView):
+    context_object_name = 'subscription_product_prices'
+    http_method_names = ['get']
+    model = SubscriptionProductPrice
+    template_name = 'list/subscription-product-price-list.html'
+    
+    def get_queryset(self):
+        return get_list_or_404(
+            SubscriptionProductPrice,
+            subscription_product__pk = self.kwargs.get('pk')
         )
 
 # Detail Views
