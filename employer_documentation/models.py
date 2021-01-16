@@ -360,6 +360,7 @@ class EmployerDoc(models.Model):
             'Yes, replacement',
             'No, not replacement'
         ),
+        default=False,
     )
     fdw_replaced = models.ForeignKey(
         Maid,
