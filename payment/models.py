@@ -60,6 +60,11 @@ class SubscriptionProduct(models.Model):
         verbose_name=_('Subscription Product\'s Active State'),
         default=True
     )
+
+    archived = models.BooleanField(
+        verbose_name=_('Subscription Product\'s Archived State'),
+        default=False
+    )
     
 class SubscriptionProductImage(models.Model):
     subscription_product = models.ForeignKey(
