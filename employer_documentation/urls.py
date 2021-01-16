@@ -24,6 +24,7 @@ from .views import (
     EmployerUpdateView,
     EmployerDocUpdateView,
     EmployerDocAgreementDateUpdateView,
+    EmployerDocSigSlugUpdateView,
     EmployerDocMaidStatusUpdateView,
     JobOrderUpdateView,
 )
@@ -133,7 +134,23 @@ urlpatterns = [
                                         name='joborder_update_route'
                                     ),
                                     path(
-                                        'signature/<int:docsig_pk>/',
+                                        '<int:employersubdoc_pk>/employer-url/',
+                                        EmployerDocSigSlugUpdateView.as_view(
+                                            model_field_name='employer_slug',
+                                            form_fields=['employer_slug'],
+                                        ),
+                                        name='sig_slug_employer_update_route'
+                                    ),
+                                    path(
+                                        '<int:employersubdoc_pk>/fdw-url/',
+                                        EmployerDocSigSlugUpdateView.as_view(
+                                            model_field_name='fdw_slug',
+                                            form_fields=['fdw_slug'],
+                                        ),
+                                        name='sig_slug_fdw_update_route'
+                                    ),
+                                    path(
+                                        'signature/<int:employersubdoc_pk>/',
                                         include([
                                             path(
                                                 'agent-access/employer/update/',

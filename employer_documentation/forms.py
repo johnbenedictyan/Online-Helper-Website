@@ -1,5 +1,6 @@
 # Python
 import secrets
+import uuid
 
 # Imports from django
 from django import forms
@@ -635,8 +636,6 @@ class EmployerDocAgreementDateForm(forms.ModelForm):
         fields = ['agreement_date']
 
     def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -651,6 +650,48 @@ class EmployerDocAgreementDateForm(forms.ModelForm):
             ),
             Submit('submit', 'Submit')
         )
+
+class EmployerDocSigSlugForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocSig
+        fields = ['employer_slug', 'fdw_slug']
+
+    def __init__(self, *args, **kwargs):
+        self.model_field_name = kwargs.pop('model_field_name')
+        self.form_fields = kwargs.pop('form_fields')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout()
+        
+        # Make copy of all field names, then remove fields that are not
+        # in self.form_fields.
+        fields_copy = list(self.fields)
+        for field in fields_copy:
+            if field!=self.model_field_name:
+                del self.fields[field]
+            else:
+                self.helper.layout.append(
+                    HTML(
+                        f'''
+                        <h3>Current {self.model_field_name[:-5]} URL:</h3>
+                        <p>{{% url 'token_verification_{self.model_field_name[:-5]}_route' slug=object.{self.model_field_name} %}}</p>
+                        '''
+                    )
+                )
+        self.helper.layout.append(
+            Hidden(self.model_field_name, self.model_field_name,)
+        )
+        self.helper.layout.append(
+            Submit('submit', 'Renew URL')
+        )
+
+    def clean_employer_slug(self):
+        return uuid.uuid4()
+
+    def clean_fdw_slug(self):
+        return uuid.uuid4()
 
 class EmployerDocMaidStatusForm(forms.ModelForm):
     class Meta:

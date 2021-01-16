@@ -87,41 +87,6 @@
         </tbody>
     </table>
 
-    <h4 class="doc-section-header">Signatures</h4>
-    <table class="table" width="100%">
-        <col style="width:50%">
-        <col style="width:50%">
-        <tbody>
-            <tr>
-                <th scope="row">Signature: Employer</th>
-                <td><a href="{% url 'signature_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.employer_signature %}Edit{% else %}Sign{% endif %}</a></td>
-            </tr>
-            {% if object.spouse_required %}
-                <tr>
-                    <th scope="row">Signature: Spouse</th>
-                    <td><a href="{% url 'signature_spouse_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.spouse_signature %}Edit{% else %}Sign{% endif %}</a></td>
-                </tr>
-            {% endif %}
-            {% if object.sponsor_required %}
-            <tr>
-                <th scope="row">Signature: Sponsor</th>
-                <td><a href="{% url 'signature_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_signature %}Edit{% else %}Sign{% endif %}</a></td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th scope="row">Signature: FDW</th>
-                <td><a href="{% url 'signature_fdw_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.fdw_signature %}Edit{% else %}Sign{% endif %}</a></td>
-            </tr>
-            <tr>
-                <th scope="row">Signature: Agency Staff</th>
-                <td><a href="{% url 'signature_agency_staff_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk docsig_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agency_staff_signature %}Edit{% else %}Sign{% endif %}</a></td>
-            </tr>
-            <tr>
-                <th scope="row" colspan="2"></th>
-            </tr>
-        </tbody>
-    </table>
-
     <h4 class="doc-section-header">Review Agreements</h4>
     <table class="table" width="100%">
         <col style="width:50%">
@@ -184,4 +149,48 @@
             </tr>
         </tbody>
     </table>
+
+    <h4 class="doc-section-header">Signatures</h4>
+    <table class="table" width="100%">
+        <col style="width:50%">
+        <col style="width:50%">
+        <tbody>
+            <tr>
+                <th scope="row">Employer Signing URL</th>
+                <td><a href="{% url 'sig_slug_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">View / Renew</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Signature: Employer</th>
+                <td><a href="{% url 'signature_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.employer_signature %}Edit{% else %}Sign{% endif %}</a></td>
+            </tr>
+            {% if object.spouse_required %}
+                <tr>
+                    <th scope="row">Signature: Spouse</th>
+                    <td><a href="{% url 'signature_spouse_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.spouse_signature %}Edit{% else %}Sign{% endif %}</a></td>
+                </tr>
+            {% endif %}
+            {% if object.sponsor_required %}
+            <tr>
+                <th scope="row">Signature: Sponsor</th>
+                <td><a href="{% url 'signature_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_signature %}Edit{% else %}Sign{% endif %}</a></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th scope="row">FDW Signing URL</th>
+                <td><a href="{% url 'sig_slug_fdw_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">View / Renew</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Signature: FDW</th>
+                <td><a href="{% url 'signature_fdw_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.fdw_signature %}Edit{% else %}Sign{% endif %}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Signature: Agency Staff</th>
+                <td><a href="{% url 'signature_agency_staff_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agency_staff_signature %}Edit{% else %}Sign{% endif %}</a></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="2"></th>
+            </tr>
+        </tbody>
+    </table>
+
 {% endblock ed_section %}

@@ -19,6 +19,7 @@ from .forms import (
     EmployerForm,
     EmployerDocForm,
     EmployerDocAgreementDateForm,
+    EmployerDocSigSlugForm,
     EmployerDocMaidStatusForm,
     JobOrderForm,
     SignatureForm,
@@ -233,10 +234,23 @@ class EmployerDocAgreementDateUpdateView(
     template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
+class EmployerDocSigSlugUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDocSig
+    form_class = EmployerDocSigSlugForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('employer_list_route')
+    model_field_name = None
+    form_fields = None
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
         return kwargs
 
 class EmployerDocMaidStatusUpdateView(
@@ -301,7 +315,7 @@ class SignatureUpdateByAgentView(
 ):
     model = EmployerDocSig
     form_class = SignatureForm
-    pk_url_kwarg = 'docsig_pk'
+    pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/signature_form_agency.html'
     success_url = reverse_lazy('employer_list_route')
     model_field_name = None
