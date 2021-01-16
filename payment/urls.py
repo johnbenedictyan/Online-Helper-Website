@@ -6,7 +6,7 @@ from django.urls import include, path
 # Imports from local app
 
 ## Redirect Views
-from .views import CustomerPortal
+from .views import CustomerPortal, ToggleSubscriptionProductArchive
 
 ## List Views
 from .views import (
@@ -54,6 +54,11 @@ urlpatterns = [
                                 'price/',
                                 SubscriptionProductPriceCreate.as_view(),
                                 name='subscription_product_price_create'
+                            ),
+                            path(
+                                'toggle-archive/',
+                                ToggleSubscriptionProductArchive.as_view(),
+                                name='toggle_subscription_product_archive'
                             )
                         ])
                     )
