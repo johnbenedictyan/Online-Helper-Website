@@ -84,7 +84,40 @@ class CheckoutCancel(RedirectView):
             extra_tags='info'
         )
         return super().get_redirect_url()
-    
+
+class ToggleSubscriptionProductArchive(RedirectView):
+    http_method_names = ['get']
+    pk_url_kwarg = 'pk'
+
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            subscription_product = SubscriptionProduct.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        except SubscriptionProduct.DoesNotExist:
+            messages.error(
+                self.request,
+                'This subscription product does not exist'
+            )
+        else:
+            try:
+                stripe.Product.modify(
+                    subscription_product.pk,
+                    active = not SubscriptionProduct.archived
+                )
+            except Exception as e:
+                print(e)
+            else:
+                subscription_product.archived = not subscription_product.archived
+                subscription_product.save()
+            kwargs.pop(self.pk_url_kwarg)
+        finally:
+            return reverse_lazy(
+                'admin_panel'
+            )
+
 # List Views
 class InvoiceList(LoginRequiredMixin, ListView):
     context_object_name = 'invoice'
