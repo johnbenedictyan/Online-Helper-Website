@@ -1,0 +1,68 @@
+{% extends 'employer_documentation/base-ed-template.html' %}
+
+{% block sidenav_extra %}
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+<div class="mx-3 ml-md-0">
+    <h1>Status Summary</h1>
+
+    <form method="get">
+        <div class="form-row">
+            <div class="col-md-6 input-group mb-3">
+                <input type="search" name="search" class="form-control input-text" placeholder="Search name, NRIC, email, mobile..." value="{{ request.GET.search }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Employer</th>
+                <th scope="col">Case Ref No.</th>
+                <th scope="col">ID - FDW</th>
+                <th scope="col">Agreement</th>
+                <th scope="col">Deployment</th>
+                <th scope="col">IPA</th>
+                <th scope="col">Bond</th>
+                <th scope="col">Arrival</th>
+                <th scope="col">Thumb Print</th>
+                <th scope="col">SIP</th>
+                <th scope="col">Work Permit</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if object_list.count %}
+            {% for object in object_list %}
+                <tr>
+                    <td>{{ object.employer.employer_name }}</td>
+                    <td>{{ object.case_ref_no }}</td>
+                    <td>{{ object.fdw }}</td>
+                    <td>{{ object.agreement_date|date:"d M Y" }}</td>
+                    <td>{{ object.fdw_work_commencement_date|date:"d M Y" }}</td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.arrival_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.sip_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="11">No results found</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-2 mb-4">
+{% include 'pagination.html' %}
+</div>
+{% endblock ed_section %}

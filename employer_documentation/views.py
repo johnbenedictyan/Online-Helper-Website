@@ -97,6 +97,60 @@ class EmployerListView(
         else:
             return self.handle_no_permission()
 
+class StatusListView(
+    LoginByAgencyUserGroupRequiredMixin,
+    ListView
+):
+    model = EmployerDoc
+    template_name = 'employer_documentation/status_list.html'
+    ordering = ['agreement_date']
+    paginate_by = 20
+
+    def get_queryset(self):
+        search_terms = self.request.GET.get('search')
+
+        # Only get locked/finalised documents
+        queryset = super().get_queryset().filter(is_locked = True)
+
+        # Filter results by user's search terms
+        if search_terms:
+            queryset = queryset.filter(
+                Q(employer__employer_name__icontains=search_terms) |
+                Q(employer__employer_nric__icontains=search_terms) |
+                Q(employer__employer_email__icontains=search_terms) |
+                Q(employer__employer_mobile_number__icontains=search_terms)
+            )
+        
+        # Further filter queryset to only show the employers that current user
+        # has necessary permission to access
+        if self.agency_user_group==AG_OWNERS:
+            # If agency owner, return all employers belonging to agency
+            queryset = queryset.filter(
+                employer__agency_employee__agency
+                = self.request.user.agency_owner.agency
+            )
+        elif self.agency_user_group==AG_ADMINS:
+            # If agency administrator, return all employers belonging to agency
+            queryset = queryset.filter(
+                employer__agency_employee__agency
+                = self.request.user.agency_employee.agency
+            )
+        elif self.agency_user_group==AG_MANAGERS:
+            # If agency manager, return all employers belonging to branch
+            queryset = queryset.filter(
+                employer__agency_employee__branch
+                = self.request.user.agency_employee.branch
+            )
+        elif self.agency_user_group==AG_SALES:
+            # If agency owner, return all employers belonging to self
+            queryset = queryset.filter(
+                employer__agency_employee = self.request.user.agency_employee
+            )
+        else:
+            return self.handle_no_permission()
+
+        return queryset
+
 class EmployerDocListView(
     CheckAgencyEmployeePermissionsMixin,
     ListView

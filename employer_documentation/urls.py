@@ -5,6 +5,7 @@ from django.urls import include, path
 from .views import (
     EmployerListView,
     EmployerDocListView,
+    StatusListView,
 )
 
 ## Detail Views
@@ -69,6 +70,11 @@ urlpatterns = [
                 'employer-list/',
                 EmployerListView.as_view(),
                 name='employer_list_route'
+            ),
+            path(
+                'status-list/',
+                StatusListView.as_view(),
+                name='status_list_route'
             ),
             path(
                 '<uuid:employer_pk>/',
