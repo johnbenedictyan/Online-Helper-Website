@@ -28,6 +28,9 @@ from .views import (
 ## Delete Views
 from .views import SubscriptionProductImageDelete
 
+## Generic Views
+from .views import StripeWebhookView
+
 # Start of Urls
 
 urlpatterns = [
@@ -125,5 +128,10 @@ urlpatterns = [
         'customer-portal/',
         CustomerPortal.as_view(),
         name='stripe_customer_portal'
+    ),
+    path(
+        'stripe-webhook/',
+        StripeWebhookView.as_view(),
+        name='stripe_webhook'
     )
 ]
