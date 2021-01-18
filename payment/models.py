@@ -104,7 +104,7 @@ class SubscriptionProductPrice(models.Model):
     subscription_product = models.ForeignKey(
         SubscriptionProduct,
         on_delete=models.CASCADE,
-        related_name='prices'
+        related_name='price'
     )
     
     active = models.BooleanField(
@@ -132,3 +132,40 @@ class SubscriptionProductPrice(models.Model):
     unit_amount = models.PositiveIntegerField(
         verbose_name=_('Unit amount in cents')
     )
+    
+class Subscription(models.Model):
+    class SubscriptionStatusChoices(models.TextChoices):
+        INCOMPLETE = 'INCOMPLETE', _('Incomplete')
+        INCOMPLETE_EXPIRED = 'INCOMPLETE_EXPIRED', _('Incomplete (Expired)')
+        TRIALING = 'TRIALING', _('Trialing')
+        ACTIVE = 'ACTIVE', _('Active')
+        PAST_DUE = 'PAST_DUE', _('Past Due')
+        CANCELED = 'CANCELED', _('Canceled')
+        UNPAID = 'UNPAID', _('Unpaid')
+        
+    customer = models.ManyToManyField(
+        Customer,
+        related_name='subscriptions'
+    )
+    
+    product = models.ForeignKey(
+        SubscriptionProduct,
+        on_delete=models.CASCADE,
+        related_name='subscription'
+    )
+    
+    start_date = models.DateTimeField(
+        editable=False
+    )
+    
+    end_date = models.DateTimeField(
+        editable=False
+    )
+    
+    status = models.CharField(
+        verbose_name=_('Subscription\'s status'),
+        max_length=18,
+        choices=SubscriptionStatusChoices.choices
+    )
+    
+    
