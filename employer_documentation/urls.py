@@ -125,7 +125,7 @@ urlpatterns = [
                                         name='employerdoc_lock_route'
                                     ),
                                     path(
-                                        'agreement-date/<int:employersubdoc_pk>/update/',
+                                        'agreement-date/',
                                         EmployerDocAgreementDateUpdateView.as_view(),
                                         name='employerdoc_agreement_date_update_route'
                                     ),

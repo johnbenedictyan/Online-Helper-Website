@@ -663,8 +663,8 @@ class EmployerDocLockForm(forms.ModelForm):
 
 class EmployerDocAgreementDateForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocSig
-        fields = ['agreement_date']
+        model = EmployerDoc
+        fields = ['agreement_date', 'fdw_work_commencement_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -678,6 +678,7 @@ class EmployerDocAgreementDateForm(forms.ModelForm):
                 
                 # Form fields - main
                 'agreement_date',
+                'fdw_work_commencement_date',
             ),
             Submit('submit', 'Submit')
         )
@@ -747,7 +748,6 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                 'arrival_date',
                 'thumb_print_date',
                 'sip_date',
-                'fdw_work_commencement_date',
                 'work_permit_no',
             ),
             Submit('submit', 'Submit')

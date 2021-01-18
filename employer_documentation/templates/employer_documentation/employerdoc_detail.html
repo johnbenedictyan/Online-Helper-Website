@@ -50,36 +50,32 @@
         <col style="width:50%">
         <tbody>
             <tr>
-                <th scope="row">Agreement Date</th>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agreement_date %}{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
-            </tr>
-            <tr>
                 <th scope="row">In Principle Approval (IPA) Date</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Security Bond Approval Date</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">FDW Arrival Date</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date %}{{ object.rn_maidstatus_ed.arrival_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date %}{{ object.rn_maidstatus_ed.arrival_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">FDW Thumb Print Date</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Settling-In Programme (SIP) Date</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date %}{{ object.rn_maidstatus_ed.sip_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date %}{{ object.rn_maidstatus_ed.sip_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">FDW Work Commencement Date</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Work Permit Number</th>
-                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row" colspan="2"></th>
@@ -92,6 +88,14 @@
         <col style="width:50%">
         <col style="width:50%">
         <tbody>
+            <tr>
+                <th scope="row">Agreement Date</th>
+                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.agreement_date %}{{ object.agreement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">FDW Work Commencement Date</th>
+                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.fdw_work_commencement_date %}{{ object.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+            </tr>
             <tr>
                 <th scope="row">Agreement: Service Fee Schedule</th>
                 <td><a href="{% url 'pdf_agency_service_fee_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
@@ -157,7 +161,7 @@
         <tbody>
             <tr>
                 <th scope="row">{% if object.is_locked %}Document is currently locked from editing{% else %}Document is unlocked and can be edited{% endif %}</th>
-                <td><a href="{% url 'employerdoc_lock_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.is_locked %}<i class="fa fa-lock" aria-hidden="true"></i>{% else %}<i class="fa fa-unlock" aria-hidden="true"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_lock_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.is_locked %}<i class="fa fa-lock" aria-hidden="true"></i>{% else %}<i class="fas fa-lock-open"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Employer Signature URL</th>

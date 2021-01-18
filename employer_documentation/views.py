@@ -229,7 +229,7 @@ class EmployerDocUpdateView(
         if not self.object.is_locked:
             return super().get(request, *args, **kwargs)
         else:
-            message = 'The document has been locked from editing.'
+            message = 'The document has been locked from editing'
             messages.error(request, message)
             return HttpResponseRedirect(
                 reverse('employerdoc_lock_route', kwargs={
@@ -254,22 +254,22 @@ class EmployerDocAgreementDateUpdateView(
     CheckEmployerDocRelationshipsMixin,
     UpdateView
 ):
-    model = EmployerDocSig
+    model = EmployerDoc
     form_class = EmployerDocAgreementDateForm
-    pk_url_kwarg = 'employersubdoc_pk'
+    pk_url_kwarg = 'employerdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
 
     def get(self, request, *args, **kwargs):
-        if not self.object.employer_doc.is_locked:
+        if not self.object.is_locked:
             return super().get(request, *args, **kwargs)
         else:
-            message = 'The document has been locked from editing.'
+            message = 'The document has been locked from editing'
             messages.error(request, message)
             return HttpResponseRedirect(
                 reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer_doc.employer.pk,
-                    'employerdoc_pk': self.object.employer_doc.pk,
+                    'employer_pk': self.object.employer.pk,
+                    'employerdoc_pk': self.object.pk,
                 })
             )
 
@@ -292,6 +292,19 @@ class EmployerDocSigSlugUpdateView(
         kwargs['form_fields'] = self.form_fields
         return kwargs
 
+    def get(self, request, *args, **kwargs):
+        if not self.object.employer_doc.is_locked:
+            return super().get(request, *args, **kwargs)
+        else:
+            message = 'The document has been locked from editing'
+            messages.error(request, message)
+            return HttpResponseRedirect(
+                reverse('employerdoc_lock_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                })
+            )
+
 class EmployerDocMaidStatusUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -308,6 +321,20 @@ class EmployerDocMaidStatusUpdateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
+
+    def get(self, request, *args, **kwargs):
+        if self.object.employer_doc.is_locked:
+            return super().get(request, *args, **kwargs)
+        else:
+            message = 'The document needs to be finalised and locked from \
+                editing before the status can be accessed'
+            messages.error(request, message)
+            return HttpResponseRedirect(
+                reverse('employerdoc_lock_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                })
+            )
 
 class JobOrderUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -330,7 +357,7 @@ class JobOrderUpdateView(
         if not self.object.employer_doc.is_locked:
             return super().get(request, *args, **kwargs)
         else:
-            message = 'The document has been locked from editing.'
+            message = 'The document has been locked from editing'
             messages.error(request, message)
             return HttpResponseRedirect(
                 reverse('employerdoc_lock_route', kwargs={

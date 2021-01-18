@@ -269,12 +269,11 @@ class PdfHtmlViewMixin:
 
         if isinstance(self.object, EmployerDoc):
             # If FDW work commencement date is empty, then redirect to update
-            if not self.object.rn_maidstatus_ed.fdw_work_commencement_date:
+            if not self.object.fdw_work_commencement_date:
                 return HttpResponseRedirect(
-                    reverse('employerdoc_status_update_route', kwargs={
+                    reverse('employerdoc_agreement_date_update_route', kwargs={
                         'employer_pk': self.object.employer.pk,
                         'employerdoc_pk': self.object.pk,
-                        'employersubdoc_pk': self.object.rn_maidstatus_ed.pk,
                     }))
             # Get context data
             context = self.get_context_data(object=self.object)
@@ -311,7 +310,7 @@ class RepaymentScheduleMixin:
         context['repayment_table'] = {}
         
         work_commencement_date = (
-            self.object.rn_maidstatus_ed.fdw_work_commencement_date
+            self.object.fdw_work_commencement_date
         )
 
         payment_month = work_commencement_date.month
@@ -321,19 +320,14 @@ class RepaymentScheduleMixin:
             self.object.fdw.personal_loan_amount
         )
         placement_fee_per_month = round(placement_fee/6, 0)
-        # work_days_in_month = 30 - self.object.fdw.days_off
-        # off_day_compensation = round(
-        #     self.object.fdw.salary/work_days_in_month, 0
-        # )
         work_days_in_month = 26
         off_day_compensation = round(
             self.object.fdw.salary*self.object.fdw.days_off/work_days_in_month, 0
         )
         salary_per_month = self.object.fdw.salary + off_day_compensation
         
+        # If work start date is 1st of month, then payment does not need to be pro-rated
         if work_commencement_date and work_commencement_date.day==1:
-            # If work start date is 1st of month, then payment does not need
-            # to be pro-rated.
             for i in range(1,25):
                 month_current = (
                     12 if payment_month%12==0 else payment_month%12
@@ -366,16 +360,15 @@ class RepaymentScheduleMixin:
                 if payment_month%12 == 1:
                     payment_year += 1
 
+        # Pro-rated payments
         if work_commencement_date and not work_commencement_date.day==1:
-            # Pro-rated payments
             month_current = (
                 12 if payment_month%12==0 else payment_month%12
             )
             first_month_days = (
                 calendar.monthrange(
-                    payment_year, month_current)[1]
-                - self.object.rn_maidstatus_ed
-                .fdw_work_commencement_date.day + 1
+                    payment_year,
+                    month_current)[1] - work_commencement_date.day + 1
             )
             first_month_salary = round(salary_per_month*first_month_days/
                 calendar.monthrange(payment_year, month_current)[1], 0)
@@ -452,8 +445,7 @@ class RepaymentScheduleMixin:
 
             # 25th month pro-rated
             final_payment_day = min(
-                self.object.rn_maidstatus_ed
-                .fdw_work_commencement_date.day-1 ,
+                work_commencement_date.day-1,
                 calendar.monthrange(payment_year, month_current)[1]
             )
             basic_salary = round(

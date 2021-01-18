@@ -203,6 +203,16 @@ class EmployerDoc(models.Model):
         ),
         default=False,
     )
+    agreement_date = models.DateField(
+        verbose_name=_('Agreement Date for Signed Documents'),
+        blank=True,
+        null=True
+    )
+    fdw_work_commencement_date = models.DateField(
+        verbose_name=_('FDW Work Commencement Date'),
+        blank=True,
+        null=True
+    )
 
     # Service Fee Schedule
     b1_service_fee = models.DecimalField(
@@ -562,11 +572,8 @@ class EmployerDocSig(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_signatures_ed'
     )
-    agreement_date = models.DateField(
-        verbose_name=_('Agreement Date for Signed Documents'),
-        blank=True,
-        null=True
-    )
+
+    # Mandatory signatures
     employer_signature = models.TextField(
         verbose_name=_('Employer Signature'),
         blank=True,
@@ -582,6 +589,8 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
+
+    # Optional signatures
     spouse_signature = models.TextField(
         verbose_name=_('Spouse Signature'),
         blank=True,
@@ -708,11 +717,6 @@ class EmployerDocMaidStatus(models.Model):
     )
     sip_date = models.DateField(
         verbose_name=_('Settling-In Programme (SIP) Date'),
-        blank=True,
-        null=True
-    )
-    fdw_work_commencement_date = models.DateField(
-        verbose_name=_('FDW Work Commencement Date'),
         blank=True,
         null=True
     )
