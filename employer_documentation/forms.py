@@ -186,7 +186,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
-        exclude = ['employer']
+        exclude = ['employer', 'agreement_date', 'fdw_work_commencement_date', 'is_locked']
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
