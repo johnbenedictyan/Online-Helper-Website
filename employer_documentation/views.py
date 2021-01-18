@@ -103,11 +103,17 @@ class StatusListView(
 ):
     model = EmployerDoc
     template_name = 'employer_documentation/status_list.html'
-    ordering = ['agreement_date']
+    ordering = ['-agreement_date']
     paginate_by = 20
 
     def get_queryset(self):
         search_terms = self.request.GET.get('search')
+        newer_or_older = self.request.GET.get('newer_or_older')
+        filter_date = self.request.GET.get('filter_date')
+        sort_by = self.request.GET.get('sort_by')
+
+        if sort_by=='agreement_date_asc':
+            self.ordering = ['agreement_date']
 
         # Only get locked/finalised documents
         queryset = super().get_queryset().filter(is_locked = True)
@@ -148,6 +154,11 @@ class StatusListView(
             )
         else:
             return self.handle_no_permission()
+
+        if filter_date and newer_or_older=='newer_than':
+            queryset = queryset.filter(agreement_date__gte=filter_date)
+        elif filter_date and newer_or_older=='older_than':
+            queryset = queryset.filter(agreement_date__lte=filter_date)
 
         return queryset
 
