@@ -87,10 +87,12 @@
                                             <td class="align-middle text-center">{{product.name}}</td>
                                             <td class="align-middle text-center">{{product.description}}</td>
                                             <td class="align-middle text-center">
+                                                {{product.images_set.count}}
                                                 <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
                                                 <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
                                             </td>
                                             <td class="align-middle text-center">
+                                                {{product.prices_set.count}}
                                                 <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
                                                 <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
                                             </td>
@@ -101,6 +103,8 @@
                                                 {% else %}
                                                 <a href="#" class="btn btn-light"><i class="fas fa-eye-slash"></i></a>
                                                 {% endif %}
+                                                <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
+                                                <a href="" class="btn btn-light"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         {% endfor %}
