@@ -23,6 +23,7 @@ from .views import (
 from .views import (
     EmployerUpdateView,
     EmployerDocUpdateView,
+    EmployerDocLockUpdateView,
     EmployerDocAgreementDateUpdateView,
     EmployerDocSigSlugUpdateView,
     EmployerDocMaidStatusUpdateView,
@@ -119,6 +120,11 @@ urlpatterns = [
                                         name='employerdoc_delete_route'
                                     ),
                                     path(
+                                        'lock/',
+                                        EmployerDocLockUpdateView.as_view(),
+                                        name='employerdoc_lock_route'
+                                    ),
+                                    path(
                                         'agreement-date/<int:employersubdoc_pk>/update/',
                                         EmployerDocAgreementDateUpdateView.as_view(),
                                         name='employerdoc_agreement_date_update_route'
@@ -164,7 +170,7 @@ urlpatterns = [
                                                 'agent-access/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='spouse_signature',
-                                                    form_fields=['employer_signature'],
+                                                    form_fields=['spouse_signature'],
                                                 ),
                                                 name='signature_spouse_update_route'
                                             ),
@@ -172,7 +178,7 @@ urlpatterns = [
                                                 'agent-access/sponsor/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='sponsor_signature',
-                                                    form_fields=['employer_signature'],
+                                                    form_fields=['sponsor_signature'],
                                                 ),
                                                 name='signature_sponsor_update_route'
                                             ),
@@ -180,7 +186,7 @@ urlpatterns = [
                                                 'agent-access/fdw/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='fdw_signature',
-                                                    form_fields=['employer_signature'],
+                                                    form_fields=['fdw_signature'],
                                                 ),
                                                 name='signature_fdw_update_route'
                                             ),
@@ -188,7 +194,7 @@ urlpatterns = [
                                                 'agent-access/agency-staff/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='agency_staff_signature',
-                                                    form_fields=['employer_signature'],
+                                                    form_fields=['agency_staff_signature'],
                                                 ),
                                                 name='signature_agency_staff_update_route'
                                             ),

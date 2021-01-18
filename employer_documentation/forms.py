@@ -630,6 +630,37 @@ class EmployerDocForm(forms.ModelForm):
         else:
             return cleaned_field
 
+class EmployerDocLockForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDoc
+        fields = ['is_locked']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'is_locked',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-md-6 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
 class EmployerDocAgreementDateForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSig

@@ -195,6 +195,14 @@ class EmployerDoc(models.Model):
             'No, sponsor not required'
         ),
     )
+    is_locked = models.BooleanField(
+        verbose_name=_("Document lock"),
+        choices=TrueFalseChoices(
+            'Yes, lock document',
+            'No, some changes are still required'
+        ),
+        default=False,
+    )
 
     # Service Fee Schedule
     b1_service_fee = models.DecimalField(

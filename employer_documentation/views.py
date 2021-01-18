@@ -6,6 +6,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 
 # From our apps
 from .models import (
@@ -18,6 +19,7 @@ from .models import (
 from .forms import (
     EmployerForm,
     EmployerDocForm,
+    EmployerDocLockForm,
     EmployerDocAgreementDateForm,
     EmployerDocSigSlugForm,
     EmployerDocMaidStatusForm,
@@ -223,6 +225,30 @@ class EmployerDocUpdateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
+    def get(self, request, *args, **kwargs):
+        if not self.object.is_locked:
+            return super().get(request, *args, **kwargs)
+        else:
+            message = 'The document has been locked from editing.'
+            messages.error(request, message)
+            return HttpResponseRedirect(
+                reverse('employerdoc_lock_route', kwargs={
+                    'employer_pk': self.object.employer.pk,
+                    'employerdoc_pk': self.object.pk,
+                })
+            )
+
+class EmployerDocLockUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDoc
+    form_class = EmployerDocLockForm
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('employer_list_route')
+
 class EmployerDocAgreementDateUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -233,6 +259,19 @@ class EmployerDocAgreementDateUpdateView(
     pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
     success_url = reverse_lazy('employer_list_route')
+
+    def get(self, request, *args, **kwargs):
+        if not self.object.employer_doc.is_locked:
+            return super().get(request, *args, **kwargs)
+        else:
+            message = 'The document has been locked from editing.'
+            messages.error(request, message)
+            return HttpResponseRedirect(
+                reverse('employerdoc_lock_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                })
+            )
 
 class EmployerDocSigSlugUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -287,6 +326,19 @@ class JobOrderUpdateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
+    def get(self, request, *args, **kwargs):
+        if not self.object.employer_doc.is_locked:
+            return super().get(request, *args, **kwargs)
+        else:
+            message = 'The document has been locked from editing.'
+            messages.error(request, message)
+            return HttpResponseRedirect(
+                reverse('employerdoc_lock_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                })
+            )
+
 # Delete Views
 class EmployerDeleteView(
     CheckUserIsAgencyOwnerMixin,
@@ -332,6 +384,20 @@ class SignatureUpdateByAgentView(
         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
             self.model_field_name).verbose_name
         return context
+
+    def get(self, request, *args, **kwargs):
+        if self.object.employer_doc.is_locked:
+            return super().get(request, *args, **kwargs)
+        else:
+            message = 'The document needs to be finalised and locked from \
+                editing before it can be signed'
+            messages.error(request, message)
+            return HttpResponseRedirect(
+                reverse('employerdoc_lock_route', kwargs={
+                    'employer_pk': self.object.employer_doc.employer.pk,
+                    'employerdoc_pk': self.object.employer_doc.pk,
+                })
+            )
 
 class VerifyUserTokenView(
     SuccessMessageMixin,
