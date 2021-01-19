@@ -250,7 +250,6 @@ class EmployerDocCreateView(
     form_class = EmployerDocForm
     pk_url_kwarg = 'employer_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
 
     def get_object(self, *args, **kwargs):
         return Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
@@ -272,6 +271,12 @@ class EmployerDocCreateView(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer.pk,
+            'employerdoc_pk': self.object.pk,
+        })
 
 # Update Views
 class EmployerUpdateView(
@@ -299,7 +304,6 @@ class EmployerDocUpdateView(
     form_class = EmployerDocForm
     pk_url_kwarg = 'employerdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -320,6 +324,12 @@ class EmployerDocUpdateView(
                 })
             )
 
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer.pk,
+            'employerdoc_pk': self.object.pk,
+        })
+
 class EmployerDocLockUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -329,7 +339,25 @@ class EmployerDocLockUpdateView(
     form_class = EmployerDocLockForm
     pk_url_kwarg = 'employerdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
+    
+    def get_success_url(self):
+        employer_pk = self.object.employer.pk
+        employerdoc_pk = self.object.pk
+
+        if self.object.is_locked:
+            return reverse_lazy(
+                'employerdoc_status_update_route',
+                kwargs = {
+                    'employer_pk': employer_pk,
+                    'employerdoc_pk': employerdoc_pk,
+                    'employersubdoc_pk': self.object.rn_maidstatus_ed.pk, 
+                }
+            )
+        else:
+            return reverse_lazy('employerdoc_detail_route', kwargs={
+                'employer_pk': employer_pk,
+                'employerdoc_pk': employerdoc_pk,
+            })
 
 class EmployerDocAgreementDateUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -340,7 +368,6 @@ class EmployerDocAgreementDateUpdateView(
     form_class = EmployerDocAgreementDateForm
     pk_url_kwarg = 'employerdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
 
     def get(self, request, *args, **kwargs):
         if not self.object.is_locked:
@@ -355,6 +382,12 @@ class EmployerDocAgreementDateUpdateView(
                 })
             )
 
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer.pk,
+            'employerdoc_pk': self.object.pk,
+        })
+
 class EmployerDocSigSlugUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -364,9 +397,9 @@ class EmployerDocSigSlugUpdateView(
     form_class = EmployerDocSigSlugForm
     pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
-    model_field_name = None
-    form_fields = None
+    model_field_name = None # Assign in urls.py
+    form_fields = None # Assign in urls.py
+    success_url_route_name = None # Assign in urls.py
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -375,10 +408,11 @@ class EmployerDocSigSlugUpdateView(
         return kwargs
 
     def get(self, request, *args, **kwargs):
-        if not self.object.employer_doc.is_locked:
+        if self.object.employer_doc.is_locked:
             return super().get(request, *args, **kwargs)
         else:
-            message = 'The document has been locked from editing'
+            message = 'Please finalise and lock the document from editing to \
+                generate signature URLs'
             messages.error(request, message)
             return HttpResponseRedirect(
                 reverse('employerdoc_lock_route', kwargs={
@@ -386,6 +420,13 @@ class EmployerDocSigSlugUpdateView(
                     'employerdoc_pk': self.object.employer_doc.pk,
                 })
             )
+
+    def get_success_url(self):
+        return reverse_lazy(self.success_url_route_name, kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+            'employersubdoc_pk': self.object.pk,
+        })
 
 class EmployerDocMaidStatusUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -396,7 +437,6 @@ class EmployerDocMaidStatusUpdateView(
     form_class = EmployerDocMaidStatusForm
     pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -417,6 +457,12 @@ class EmployerDocMaidStatusUpdateView(
                     'employerdoc_pk': self.object.employer_doc.pk,
                 })
             )
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
 
 class JobOrderUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -448,6 +494,12 @@ class JobOrderUpdateView(
                 })
             )
 
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
+
 # Delete Views
 class EmployerDeleteView(
     CheckUserIsAgencyOwnerMixin,
@@ -478,7 +530,6 @@ class SignatureUpdateByAgentView(
     form_class = SignatureForm
     pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/signature_form_agency.html'
-    success_url = reverse_lazy('employer_list_route')
     model_field_name = None
     form_fields = None
 
@@ -507,6 +558,12 @@ class SignatureUpdateByAgentView(
                     'employerdoc_pk': self.object.employer_doc.pk,
                 })
             )
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
 
 class VerifyUserTokenView(
     SuccessMessageMixin,

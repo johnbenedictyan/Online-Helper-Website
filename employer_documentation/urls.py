@@ -150,6 +150,7 @@ urlpatterns = [
                                         EmployerDocSigSlugUpdateView.as_view(
                                             model_field_name='employer_slug',
                                             form_fields=['employer_slug'],
+                                            success_url_route_name='sig_slug_employer_update_route',
                                         ),
                                         name='sig_slug_employer_update_route'
                                     ),
@@ -158,6 +159,7 @@ urlpatterns = [
                                         EmployerDocSigSlugUpdateView.as_view(
                                             model_field_name='fdw_slug',
                                             form_fields=['fdw_slug'],
+                                            success_url_route_name='sig_slug_fdw_update_route',
                                         ),
                                         name='sig_slug_fdw_update_route'
                                     ),
