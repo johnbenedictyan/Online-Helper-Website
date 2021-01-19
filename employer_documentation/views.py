@@ -108,14 +108,27 @@ class StatusListView(
 
     def get_queryset(self):
         search_terms = self.request.GET.get('search')
-        newer_or_older = self.request.GET.get('newer_or_older')
-        filter_date = self.request.GET.get('filter_date')
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
         sort_by = self.request.GET.get('sort_by')
 
-        if sort_by=='agreement_date_asc':
-            self.ordering = ['agreement_date']
+        # Sort by dates
+        if sort_by:
+            # Get field to sort by
+            if 'agreement_date' in sort_by:
+                sort_field_name = 'agreement_date'
+            elif 'ipa_date' in sort_by:
+                sort_field_name = 'rn_maidstatus_ed__ipa_approval_date'
+        
+            # Get ascending or descending user selection
+            if sort_by.endswith('asc'):
+                self.ordering = [sort_field_name]
+            elif sort_by.endswith('des'):
+                self.ordering = ['-' + sort_field_name]
+        else:
+            sort_field_name = self.ordering[0].replace('-', '')
 
-        # Only get locked/finalised documents
+        # Get queryset, but only locked/finalised documents
         queryset = super().get_queryset().filter(is_locked = True)
 
         # Filter results by user's search terms
@@ -155,10 +168,13 @@ class StatusListView(
         else:
             return self.handle_no_permission()
 
-        if filter_date and newer_or_older=='newer_than':
-            queryset = queryset.filter(agreement_date__gte=filter_date)
-        elif filter_date and newer_or_older=='older_than':
-            queryset = queryset.filter(agreement_date__lte=filter_date)
+        # Filter by start and end dates from user input
+        if start_date:
+            start_date_kwargs = {sort_field_name+'__gte': start_date}
+            queryset = queryset.filter(**start_date_kwargs)
+        if end_date:
+            end_date_kwargs = {sort_field_name+'__lte': end_date}
+            queryset = queryset.filter(**end_date_kwargs)
 
         return queryset
 
