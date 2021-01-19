@@ -185,7 +185,7 @@ class EmployerDocListView(
 ):
     model = EmployerDoc
     pk_url_kwarg = 'employer_pk'
-    ordering = ['pk']
+    ordering = ['-agreement_date']
 
     def get_object(self, *args, **kwargs):
         return Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
