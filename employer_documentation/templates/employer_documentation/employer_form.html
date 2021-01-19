@@ -82,5 +82,40 @@
                 }
             })
         }
+
+        function copyToClipboard(){
+            // Select the element with ID = "CopyMeID", can be a div, p, or a span, possibly others
+            var textToCopy = document.getElementById("copy-id");
+        
+            // Check and see if the user had a text selection range
+            var currentRange;
+            if (document.getSelection().rangeCount > 0) {
+                // If user has a text selection range, store it
+                currentRange = document.getSelection().getRangeAt(0);
+                // Remove the current selection
+                window.getSelection().removeRange(currentRange);
+            }
+            else {
+                // If user didn't have anything selected
+                currentRange = false;
+            }
+        
+            // Create a selection range
+            var CopyRange = document.createRange();
+            // Choose the element we want to select the text of
+            CopyRange.selectNode(textToCopy);
+            // Select the text inside the range
+            window.getSelection().addRange(CopyRange);
+            // Copy the text to the clipboard
+            document.execCommand("copy");
+        
+            // Remove our selection range
+            window.getSelection().removeRange(CopyRange);
+        
+            // Return the old selection range
+            if (currentRange) {
+                window.getSelection().addRange(currentRange);
+            }
+        }
     </script>
 {% endblock js %}

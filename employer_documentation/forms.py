@@ -7,6 +7,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
@@ -717,6 +718,8 @@ class EmployerDocSigSlugForm(forms.ModelForm):
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout()
         
+        current_site = Site.objects.get_current()
+        
         # Make copy of all field names, then remove fields that are not
         # in self.form_fields.
         fields_copy = list(self.fields)
@@ -728,7 +731,8 @@ class EmployerDocSigSlugForm(forms.ModelForm):
                     HTML(
                         f'''
                         <h3>Current {self.model_field_name[:-5]} URL:</h3>
-                        <p>{{% url 'token_verification_{self.model_field_name[:-5]}_route' slug=object.{self.model_field_name} %}}</p>
+                        <span id="copy-id">{current_site.domain}{{% url 'token_verification_{self.model_field_name[:-5]}_route' slug=object.{self.model_field_name} %}}</span>
+                        <span id="copy-button" onclick="copyToClipboard()"><i class="fas fa-copy"></i></span>
                         '''
                     )
                 )
