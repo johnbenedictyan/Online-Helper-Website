@@ -134,6 +134,7 @@ class StatusListView(
         # Filter results by user's search terms
         if search_terms:
             queryset = queryset.filter(
+                Q(case_ref_no__icontains=search_terms) |
                 Q(employer__employer_name__icontains=search_terms) |
                 Q(employer__employer_nric__icontains=search_terms) |
                 Q(employer__employer_email__icontains=search_terms) |
