@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML, Hidden
+from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden
 from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton
 
 # Imports from local apps
@@ -672,13 +672,33 @@ class EmployerDocAgreementDateForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Signing Date of Agreement',
-                
-                # Form fields - main
-                'agreement_date',
-                'fdw_work_commencement_date',
+            HTML('''
+                <h3>Document Dates</h3>
+                '''
+            ),
+            Row(
+                Column(
+                    Field(
+                        'agreement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Agreement date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'fdw_work_commencement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='FDW work commencement date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
             ),
             Submit('submit', 'Submit')
         )
@@ -738,17 +758,80 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Documentation Status Details',
-                
-                # Form fields - main
-                'ipa_approval_date',
-                'security_bond_approval_date',
-                'arrival_date',
-                'thumb_print_date',
-                'sip_date',
-                'work_permit_no',
+            HTML('''
+                <h3>Document Dates</h3>
+                '''
+            ),
+            Row(
+                Column(
+                    Field(
+                        'ipa_approval_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='IPA approval date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'security_bond_approval_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Security bond approval date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'arrival_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='FDW arrival date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'thumb_print_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Thumb print date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'sip_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Settling in Programme (SIP) date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'work_permit_no',
+                        type='text',
+                        placeholder='Work permit number'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
             ),
             Submit('submit', 'Submit')
         )
@@ -767,11 +850,7 @@ class JobOrderForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                '',
-                
-                # Form fields - main
+            Field(
                 'job_order_pdf',
             ),
             Submit('submit', 'Submit')
