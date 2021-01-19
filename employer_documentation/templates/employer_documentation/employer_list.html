@@ -31,7 +31,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Mobile</th>
                 <th scope="col">Documentation</th>
-                <th scope="col">ID - Agent</th>
+                <th scope="col">EA Agent</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -42,7 +42,7 @@
                     <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_name }}</a></td>
                     <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></td>
                     <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></td>
-                    <td>{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documentation</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</td>
+                    <td>{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</td>
                     <td>{{ object.agency_employee.ea_personnel_number }} - {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
                     <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Edit</a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}">Delete</a>{% endif %}</td>
                 </tr>

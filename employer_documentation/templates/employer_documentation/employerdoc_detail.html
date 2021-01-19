@@ -122,7 +122,7 @@
         <tbody>
             <tr>
                 <th scope="row">{% if object.is_locked %}Document is currently locked from editing{% else %}Document is unlocked and can be edited{% endif %}</th>
-                <td><a href="{% url 'employerdoc_lock_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.is_locked %}<i class="fa fa-lock" aria-hidden="true"></i>{% else %}<i class="fas fa-lock-open"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_lock_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.is_locked %}<i class="fas fa-lock"></i>{% else %}<i class="fas fa-lock-open"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Employer Signature URL</th>
