@@ -3,28 +3,28 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
         <p class="m-1 pl-2">Employer Profile</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object_list.0.employer.pk %}">
-        <p class="m-1 pl-2">Documents List</p>
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
         <p class="m-1 pl-2">Add Document</p>
         </a>
     </div>
@@ -33,7 +33,11 @@
 
 {% block ed_section %}
     <h1>Employer Docs</h1>
-    
+
+    <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
+        <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}" class="btn btn-secondary btn-sm">Create document</a>
+    </div>
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -69,7 +73,7 @@
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="6">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">here</a> to create doumentation.</td>
+                <td colspan="11">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">here</a> to create doumentation.</td>
             </tr>
         {% endif %}
         </tbody>
