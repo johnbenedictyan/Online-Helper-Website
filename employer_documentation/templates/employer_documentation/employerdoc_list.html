@@ -67,7 +67,7 @@
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="11">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">here</a> to create doumentation.</td>
+                <td colspan="6">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">here</a> to create doumentation.</td>
             </tr>
         {% endif %}
         </tbody>
