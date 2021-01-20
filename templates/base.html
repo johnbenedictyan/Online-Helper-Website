@@ -45,7 +45,11 @@
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand" href="{% url 'home' %}">
-                    <img class="w-75" src="{% static 'images/logo.png' %}" alt=""/>
+                    <div class="row">
+                        <div class="col">
+                            <img class="img-fluid" src="{% static 'images/logo.png' %}" alt=""/>
+                        </div>
+                    </div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -54,33 +58,9 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mr-auto">
                         {% with request.resolver_match.url_name as url_name %}
-                        <li class="nav-item {% if url_name == 'home' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'home' %}">
-                                Home
-                                {% if url_name == 'home' %} 
-                                    <span class="sr-only">(current)</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="nav-item {% if url_name == 'how_it_works' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'how_it_works' %}">
-                                How It Works
-                                {% if url_name == 'how_it_works' %} 
-                                    <span class="sr-only">(current)</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'about_us' %}">
-                                About Us
-                                {% if url_name == 'about_us' %} 
-                                    <span class="sr-only">(current)</span>
-                                {% endif %}
-                            </a>
-                        </li>
                         <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'maid_list' %}">
-                                Maids
+                                Search Maid
                                 {% if url_name == 'maid_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -88,7 +68,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'agency_list' %}">
-                                Agencies
+                                Maid Agencies
                                 {% if url_name == 'agency_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -106,6 +86,14 @@
                             <a class="nav-link" href="{% url 'enquiry' %}">
                                 Enquire
                                 {% if url_name == 'enquiry' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'about_us' %}">
+                                About Us
+                                {% if url_name == 'about_us' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
                             </a>
