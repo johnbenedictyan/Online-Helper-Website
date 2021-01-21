@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -16,7 +16,7 @@ from onlinemaid.mixins import SuccessMessageMixin
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
     AgencyOperatingHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
-    AgencyEmployeeUpdateForm
+    AgencyEmployeeUpdateForm, PotentialAgencyForm
 )
 
 from .models import (
@@ -37,6 +37,17 @@ from .mixins import (
 # Template Views
 
 # Redirect Views
+
+# Form Views
+class AgencySignUp(FormView):
+    form_class = PotentialAgencyForm
+    http_method_names = ['get', 'post']
+    success_url = reverse_lazy('home')
+    template_name = 'form/agency-sign-up.html'
+
+    def form_valid(self, form):
+        print(form)
+        return super().form_valid(form)
 
 # List Views
 class AgencyList(ListView):
