@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from crispy_forms.bootstrap import PrependedAppendedText
+from crispy_forms.bootstrap import PrependedAppendedText, InlineCheckboxes
 from agency.models import Agency
 
 # Imports from local apps
@@ -36,8 +36,7 @@ class MaidCreationForm(forms.ModelForm):
         exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
 
     def __init__(self, *args, **kwargs):
-        if kwargs.get('agency_id'):
-            self.agency_id = kwargs.pop('agency_id')
+        self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -94,6 +93,13 @@ class MaidCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    InlineCheckboxes('responsibilities'),
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     'initial_agency_fee_description',
                     css_class='form-group col'
                 ),
@@ -123,7 +129,7 @@ class MaidCreationForm(forms.ModelForm):
         cleaned_data = super().clean()
         reference_number = cleaned_data.get('reference_numnber')
         try:
-            existing_maid = Maid.objects.get(
+            Maid.objects.get(
                 agency = Agency.objects.get(
                     pk = self.agency_id
                 ),
@@ -135,6 +141,80 @@ class MaidCreationForm(forms.ModelForm):
             msg = _('A maid with this reference number already exist')
             self.add_error('reference_number', msg)
 
+class MaidUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Maid
+        exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'reference_number',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'maid_type',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'photo',
+                    css_class='form-group col-md-4'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedAppendedText(
+                        'salary', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedAppendedText(
+                        'personal_loan_amount', '$', '.00'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'days_off',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'passport_status',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'repatriation_airport',
+                    css_class='form-group col-md-4'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'remarks',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+        
 class MaidBiodataForm(forms.ModelForm):
     class Meta:
         model = MaidBiodata

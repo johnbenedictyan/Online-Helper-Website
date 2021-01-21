@@ -8,6 +8,7 @@ from django.views.generic.base import TemplateView
 # Imports from foreign installed apps
 from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
+from maid.filters import MiniMaidFilter
 
 # Imports from local app
 
@@ -17,6 +18,13 @@ from agency.models import Agency
 class HomeView(TemplateView):
     http_method_names = ['get']
     template_name = 'home.html'
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        kwargs.update({
+            'filter': MiniMaidFilter()
+        })
+        return kwargs
 
 class AboutUsView(TemplateView):
     http_method_names = ['get']

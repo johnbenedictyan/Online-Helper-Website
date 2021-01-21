@@ -188,6 +188,11 @@ class EmployerCreationForm(forms.ModelForm):
         exclude = ['user']
 
     def __init__(self, *args, **kwargs):
+        self.form_type = kwargs.pop('form_type', None)
+        if self.form_type == 'UPDATE':
+            kwargs.update(initial={
+                'email': kwargs.pop('email_address', None)
+            })
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(

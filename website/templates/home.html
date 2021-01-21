@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block main_content %}
 <section id="main-banner-section">
     <div class="jumbotron jumbotron-fluid bg-primary1">
@@ -13,43 +14,25 @@
             </div>
             <div class="row d-none d-md-flex">
                 <div class="col col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
-                    <form action="" method="get">
+                    <form action="{% url 'maid_list' %}" method="get">
                         <div class="form-row">
                             <div class="col">
                                 <label for="type-of-maid" class="text-light">
                                     <h5 class="mb-0">Type of Maid</h5>
                                 </label>
-                                <select class="form-control" id="type-of-maid">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    </select>
+                                {{filter.form.maid_type|as_crispy_field}}
                             </div>
                             <div class="col">
                                 <label for="type-of-maid" class="text-light">
-                                    <h5 class="mb-0">Nationality</h5>
+                                    <h5 class="mb-0">Country</h5>
                                 </label>
-                                <select class="form-control" id="type-of-maid">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    </select>
+                                {{filter.form.biodata__country_of_origin|as_crispy_field}}
                             </div>
                             <div class="col">
                                 <label for="type-of-maid" class="text-light">
                                     <h5 class="mb-0">Responsibility</h5>
                                 </label>
-                                <select class="form-control" id="type-of-maid">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    </select>
+                                {{filter.form.responsibilities|as_crispy_field}}
                             </div>
                             <div class="col mt-auto">
                                 <button type="submit" class="btn bg-dark1 text-light w-100">
@@ -82,7 +65,7 @@
             <div class="col mb-md-5">
                 <div class="card-deck">
                     <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
-                        <img src="static/images/homepage_preference/partTime1.jpg" class="card-img-top" alt="...">
+                        <img src="{% static 'images/homepage_preference/partTime1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">General Housework</h5>
                             <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
@@ -92,7 +75,7 @@
                         </div>
                     </div>
                     <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
-                        <img src="static/images/homepage_preference/cooking1.jpg" class="card-img-top" alt="...">
+                        <img src="{% static 'images/homepage_preference/cooking1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">Cooking</h5>
                             <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
@@ -102,7 +85,7 @@
                         </div>
                     </div>
                     <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
-                        <img src="static/images/homepage_preference/childrenCare1.jpg" class="card-img-top" alt="...">
+                        <img src="{% static 'images/homepage_preference/childrenCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">Care for Children</h5>
                             <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
@@ -118,7 +101,7 @@
             <div class="col-md-8 offset-md-2 mb-md-5">
                 <div class="card-deck">
                     <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
-                        <img src="static/images/homepage_preference/elderly.jpg" class="card-img-top" alt="...">
+                        <img src="{% static 'images/homepage_preference/elderly.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">Care for Elderly</h5>
                             <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>
@@ -128,7 +111,7 @@
                         </div>
                     </div>
                     <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="250">
-                        <img src="static/images/homepage_preference/elderlyCare1.jpg" class="card-img-top" alt="...">
+                        <img src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">Care for Disabled</h5>
                             <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum vel ab enim, placeat est tempora iusto illum culpa voluptate quia?</p>

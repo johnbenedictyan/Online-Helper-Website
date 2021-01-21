@@ -6,6 +6,7 @@ from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
@@ -16,20 +17,50 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    CommonNationsChoices, PreferenceChoices, MaidCareRemarkChoices
+    TypeOfMaidChoices, MaidCountryOfOrigin, PreferenceChoices, 
+    MaidCareRemarkChoices
 )
 
 # Utiliy Classes and Functions
 
 # Start of Models
+class MaidResponsibility(models.Model):
+    # Settings
 
+    ## General
+    NO_PREFERENCE = 'ALL'
+    OTHERS        = 'OTH'
+
+    ## Maid Responsibilites
+    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
+    MAID_RESP_COOKING                   = 'COK'
+    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
+    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
+    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
+    MAID_RESP_CARE_FOR_PETS             = 'CFP'
+    MAID_RESP_GARDENING                 = 'GAR'
+
+    MAID_RESP_CHOICES = (
+        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
+        (MAID_RESP_COOKING, _('Cooking')),
+        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
+        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
+        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
+        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
+        (MAID_RESP_GARDENING, _('Gardening'))
+    )
+
+    name = models.CharField(
+        verbose_name=_('Name of maid\'s responsibility'),
+        max_length=255,
+        blank=False,
+        choices=MAID_RESP_CHOICES,
+    )
+    
+    def __str__(self) -> str:
+        return f'{self.get_name_display()}'
+    
 class Maid(models.Model):
-    class TypeOfMaidChoices(models.TextChoices):
-        NEW = 'NEW', _('No Experience')
-        TRANSFER = 'TRF', _('Transfer')
-        SINGAPORE_EXPERIENCE = 'SGE', _('Singapore Experience')
-        OVERSEAS_EXPERIENCE = 'OVE', _('Overseas Experience')
-
     class PassportStatusChoices(models.IntegerChoices):
         NOT_READY = 0, _('Not Ready')
         READY = 1, _('Ready')
@@ -61,24 +92,42 @@ class Maid(models.Model):
         default=TypeOfMaidChoices.NEW
     )
 
-    salary = models.PositiveIntegerField(
+    salary = models.DecimalField(
         verbose_name=_('Salary'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=False,
         default=0
     )
 
-    agency_fee_amount = models.PositiveIntegerField(
+    agency_fee_amount = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         editable=False,
         default=0
     )
 
-    personal_loan_amount = models.PositiveIntegerField(
+    personal_loan_amount = models.DecimalField(
         verbose_name=_('Personal loan amount'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=False,
         default=0
     )
 
-    days_off = models.PositiveIntegerField(
+    days_off = models.PositiveSmallIntegerField(
         verbose_name=_('Days off'),
         blank=False,
         default=0
@@ -102,6 +151,10 @@ class Maid(models.Model):
         verbose_name=_('Remarks'),
         max_length=255,
         blank=False
+    )
+    
+    responsibilities = models.ManyToManyField(
+        MaidResponsibility
     )
 
     created_on = models.DateTimeField(
@@ -290,8 +343,14 @@ class MaidAgencyFeeTransaction(models.Model):
         related_name='agency_fee_transactions'
     )
 
-    amount = models.PositiveIntegerField(
+    amount = models.DecimalField(
         verbose_name=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
         blank=False
     )
 
@@ -309,16 +368,6 @@ class MaidAgencyFeeTransaction(models.Model):
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
-    class MaidCountryOfOrigin(models.TextChoices):
-        BANGLADESH  = 'BGD', _('Bangladesh')
-        CAMBODIA    = 'KHM', _('Cambodia')
-        INDIA       = 'IND', _('India')
-        INDONESIA   = 'IDN', _('Indonesia')
-        MYANMAR	    = 'MMR', _('Myanmar')
-        PHILIPPINES = 'PHL', _('Philippines (the)')
-        SRI_LANKA   = 'LKA', _('Sri Lanka')
-        OTHERS      = 'OTH', _('Others')
-
     class ReligionChoices(models.TextChoices):
         BUDDHIST = 'B', _('Buddhist')
         MUSLIM = 'M', _('Muslim')
@@ -356,13 +405,13 @@ class MaidBiodata(models.Model):
         choices=MaidCountryOfOrigin.choices
     )
 
-    height = models.PositiveIntegerField(
+    height = models.PositiveSmallIntegerField(
         verbose_name=_('Height (in cm)'),
         blank=False,
         null=True
     )
 
-    weight = models.PositiveIntegerField(
+    weight = models.PositiveSmallIntegerField(
         verbose_name=_('Weight (in kg)'),
         blank=False,
         null=True
@@ -456,7 +505,7 @@ class MaidFamilyDetails(models.Model):
         default=MaritalStatusChoices.SINGLE
     )
 
-    number_of_children = models.PositiveIntegerField(
+    number_of_children = models.PositiveSmallIntegerField(
         blank=False,
         default=0
     )
@@ -468,7 +517,7 @@ class MaidFamilyDetails(models.Model):
         default='N.A'
     )
 
-    number_of_siblings = models.PositiveIntegerField(
+    number_of_siblings = models.PositiveSmallIntegerField(
         blank=False,
         default=0
     )
@@ -807,37 +856,4 @@ class MaidCooking(models.Model):
     other_remarks = models.TextField(
         verbose_name=_('Other remarks for cooking'),
         blank=True
-    )
-
-class MaidResponsibility(models.Model):
-    # Settings
-
-    ## General
-    NO_PREFERENCE = 'ALL'
-    OTHERS        = 'OTH'
-
-    ## Maid Responsibilites
-    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
-    MAID_RESP_COOKING                   = 'COK'
-    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
-    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
-    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
-    MAID_RESP_CARE_FOR_PETS             = 'CFP'
-    MAID_RESP_GARDENING                 = 'GAR'
-
-    MAID_RESP_CHOICES = (
-        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
-        (MAID_RESP_COOKING, _('Cooking')),
-        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
-        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
-        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
-        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
-        (MAID_RESP_GARDENING, _('Gardening'))
-    )
-
-    name = models.CharField(
-        verbose_name=_('Name of maid\'s responsibility'),
-        max_length=255,
-        blank=False,
-        choices=MAID_RESP_CHOICES,
     )

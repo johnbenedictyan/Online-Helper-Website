@@ -18,6 +18,9 @@ from pathlib import Path
 # 3rd party libraries
 import dj_database_url
 
+# Imports from Django
+from django.contrib.messages import constants as messages
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -234,6 +237,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'sign_in'
 LOGIN_REDIRECT_URL = 'home'
 
+
 # Email Backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -241,3 +245,12 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'text-info',
+    messages.INFO: 'text-info',
+    messages.SUCCESS: 'text-success',
+    messages.WARNING: 'text-warning',
+    messages.ERROR: 'text-danger',
+}
+
