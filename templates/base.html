@@ -133,8 +133,14 @@
                             </div>
                         </li>
                         {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'employer_create' %}">Sign Up</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="signUpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sign Up
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signUpDropdown">
+                                <a class="dropdown-item" href="{% url 'employer_create' %}">Potential Employers</a>
+                                <a class="dropdown-item" href="{% url 'agency_sign_up' %}">Agencies</a>
+                            </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="signInDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

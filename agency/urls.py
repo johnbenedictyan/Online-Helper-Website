@@ -5,6 +5,9 @@ from django.urls import include, path
 
 # Imports from local app
 
+## Form Views
+from .views import AgencySignUp
+
 ## List Views
 from .views import AgencyList
 
@@ -130,5 +133,10 @@ urlpatterns = [
                 name='agency_detail'
             )
         ])
+    ),
+    path(
+        'sign-up/',
+        AgencySignUp.as_view(),
+        name='agency_sign_up'
     )
 ]
