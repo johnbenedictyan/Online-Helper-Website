@@ -21,7 +21,7 @@ from .forms import (
 
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
-    AgencyOwner
+    AgencyOwner, PotentialAgency
 )
 
 from .mixins import (
@@ -37,17 +37,6 @@ from .mixins import (
 # Template Views
 
 # Redirect Views
-
-# Form Views
-class AgencySignUp(FormView):
-    form_class = PotentialAgencyForm
-    http_method_names = ['get', 'post']
-    success_url = reverse_lazy('home')
-    template_name = 'form/agency-sign-up.html'
-
-    def form_valid(self, form):
-        print(form)
-        return super().form_valid(form)
 
 # List Views
 class AgencyList(ListView):
@@ -186,6 +175,16 @@ class AgencyPlanCreate(AgencyOwnerRequiredMixin, SuccessMessageMixin,
             pk = self.request.user.agency.pk
         )
         return super().form_valid(form)
+
+class AgencySignUp(SuccessMessageMixin, CreateView):
+    context_object_name = 'potential_agency'
+    form_class = PotentialAgencyForm
+    http_method_names = ['get','post']
+    model = PotentialAgency
+    template_name = 'create/agency-sign-up.html'
+    success_url = reverse_lazy('home')
+    success_message = '''
+        Your request has been submitted. We will get back to you shortly!'''
 
 # Update Views
 class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, 
