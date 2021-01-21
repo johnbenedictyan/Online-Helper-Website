@@ -1,5 +1,7 @@
 # Imports from django
 from django import forms
+from django.core.mail import BadHeaderError, send_mail
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
@@ -12,7 +14,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 # Imports from local apps
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
-    AgencyOwner
+    AgencyOwner, PotentialAgency
 )
 
 # Start of Forms
@@ -735,4 +737,94 @@ class AgencyPlanForm(forms.ModelForm):
             )
         )
 
+class PotentialAgencyForm(forms.ModelForm):
+    class Meta:
+        model = PotentialAgency
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'license_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'person_in_charge',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'email',
+                    css_class='form-group col-md-4'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+    def clean_license_number(self):
+        license_number = self.cleaned_data.get('license_number')
+        try:
+            Agency.objects.get(
+                license_number=license_number
+            )
+        except Agency.DoesNotExist as e:
+            pass
+        else:
+            msg = _('This license number is taken')
+            self.add_error('license_number', msg)
+        return license_number
+
+    def save(self, *args, **kwargs):
+        # There is a cleaner way to write this save method
+        cleaned_data = self.cleaned_data
+
+        pa_name = cleaned_data.get('name')
+        pa_license_number = cleaned_data.get('license_number')
+        pa_person_in_charge = cleaned_data.get('person_in_charge')
+        pa_contact_number = cleaned_data.get('contact_number')
+        pa_email = cleaned_data.get('email')
+
+        if pa_email:
+            try:
+                send_mail(
+                    'New Agency Registration',
+                    f"""
+                    Name: {pa_name}
+                    License Number: {pa_license_number}
+                    Person In Charge: {pa_person_in_charge}
+                    Contact Number: {pa_contact_number}
+                    Email Address: {pa_email}
+                    """,
+                    settings.EMAIL_HOST_USER,
+                    ['john@example.com', 'jane@example.com'],
+                )
+            except BadHeaderError:
+                msg = _('There is an error in this email. Please try again')
+                self.add_error('email', msg)
+
+        return super().save(*args, **kwargs)    
 # Generic Forms (forms.Form)
