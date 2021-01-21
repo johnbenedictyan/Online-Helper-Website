@@ -820,7 +820,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     Email Address: {pa_email}
                     """,
                     settings.EMAIL_HOST_USER,
-                    ['john@example.com', 'jane@example.com'],
+                    settings.EMAIL_HOST_SALES_USER
                 )
             except BadHeaderError:
                 msg = _('There is an error in this email. Please try again')
