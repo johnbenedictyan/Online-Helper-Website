@@ -5,14 +5,16 @@ import json
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http.response import (
+    HttpResponse, HttpResponseRedirect, JsonResponse
+)
 from django.shortcuts import get_list_or_404
 from django.urls.base import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
@@ -93,7 +95,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         try:
-            subscription_product = SubscriptionProduct.objects.get(
+            subscription_prod = SubscriptionProduct.objects.get(
                 pk = self.kwargs.get(
                     self.pk_url_kwarg
                 )
@@ -106,14 +108,14 @@ class ToggleSubscriptionProductArchive(RedirectView):
         else:
             try:
                 stripe.Product.modify(
-                    subscription_product.pk,
+                    subscription_prod.pk,
                     active = not SubscriptionProduct.archived
                 )
             except Exception as e:
                 print(e)
             else:
-                subscription_product.archived = not subscription_product.archived
-                subscription_product.save()
+                subscription_prod.archived = not subscription_prod.archived
+                subscription_prod.save()
             kwargs.pop(self.pk_url_kwarg)
         finally:
             return reverse_lazy(
@@ -311,9 +313,8 @@ class CheckoutSession(View):
                 mode = 'subscription',
                 line_items = [
                     {
-                        'price': 'fake',
-                        'quantity': 123
-                    }
+                        'price': i
+                    } for i in request.session.get('subscriptions')
                 ]
             )
             return JsonResponse(
