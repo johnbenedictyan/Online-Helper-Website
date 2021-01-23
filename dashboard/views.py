@@ -112,6 +112,13 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     http_method_names = ['get']
     model = AgencyPlan
     template_name = 'list/dashboard-agency-plan-list.html'
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        dashboard_agency_plan_kwargs = {
+        }
+        kwargs.update(dashboard_agency_plan_kwargs)
+        return kwargs
 
 class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'enquiries'
