@@ -56,6 +56,9 @@ class ViewCart(TemplateView):
             pk__in=current_cart
         )
         return context
+
+class CheckoutSuccess(TemplateView):
+    template_name = 'base/checkout-success.html'
     
 # Redirect Views
 class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
@@ -76,18 +79,6 @@ class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
         )
         return session.url
 
-class CheckoutSucess(RedirectView):
-    http_method_names = ['get']
-    pattern_name = None
-    
-    def get_redirect_url(self, *args, **kwargs):
-        messages.success(
-            self.request,
-            'Payment Sucessful',
-            extra_tags='sucess'
-        )
-        return super().get_redirect_url()
-    
 class CheckoutCancel(RedirectView):
     http_method_names = ['get']
     pattern_name = None
