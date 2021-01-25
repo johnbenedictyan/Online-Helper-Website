@@ -1,0 +1,65 @@
+{% extends 'payment-base.html' %}
+{% block payment_section %}
+<section>
+    <div class="jumbotron jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
+                    <h1 class="display-4 pl-3 pl-md-2">Cart</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
+            {% for product_price in cart %}
+                <div class="col mb-4">
+                    {{product_price}}
+                    <a href="{% url 'remove_from_cart' product_price.pk %}" class="btn btn-danger">Remove</a>
+                </div>
+            {% endfor %}
+        </div>
+        {% if cart_count > 0 %}
+        <button id="checkout-btn" class="btn btn-primary">Checkout</button>
+        {% endif %}
+    </div>
+</section>
+{% endblock payment_section %}
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<script>
+    const csrftoken = Cookies.get('csrftoken');
+    var createCheckoutSession = function() {
+        return fetch(`${location.origin}/payment/create-checkout-session/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            mode: 'same-origin'
+        }).then(function(result) {
+            return result.json();
+        });
+    };
+    document
+    .getElementById("checkout-btn")
+    .addEventListener("click", function(evt) {
+        createCheckoutSession().then(function(data) {
+            console.log(data)
+        stripe
+            .redirectToCheckout({
+            sessionId: data.sessionId
+            })
+            .then(handleResult);
+        });
+    });
+</script>
+{% endblock js %}
