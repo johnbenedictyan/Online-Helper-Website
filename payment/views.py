@@ -12,7 +12,7 @@ from django.shortcuts import get_list_or_404
 from django.urls.base import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
-from django.views.generic.base import RedirectView
+from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView
 from django.utils.decorators import method_decorator
@@ -44,8 +44,19 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 # Start of Views
 
 # Template Views
-from django.http import JsonResponse
+class ViewCart(TemplateView):
+    template_name = 'base/cart.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_cart = self.request.session.get('cart', [])
+        self.request.session['cart'] = current_cart
+
+        context['cart'] = SubscriptionProductPrice.objects.filter(
+            pk__in=current_cart
+        )
+        return context
+    
 # Redirect Views
 class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
                      RedirectView):
@@ -121,6 +132,56 @@ class ToggleSubscriptionProductArchive(RedirectView):
             return reverse_lazy(
                 'admin_panel'
             )
+
+class AddToCart(RedirectView):
+    pattern_name = 'view_cart'
+
+    def get_redirect_url(self, *args, **kwargs):
+        current_cart = self.request.session.get('cart', [])
+        try:
+            select_product_price = SubscriptionProductPrice.objects.get(
+                pk = kwargs.get('pk')
+            )
+        except SubscriptionProductPrice.DoesNotExist:
+            messages.error(
+                self.request,
+                'This product does not exist'
+            )
+        else:
+            current_cart.append(
+                select_product_price.pk
+            )
+            self.request.session['cart'] = current_cart
+        kwargs.pop('pk')
+        return super().get_redirect_url(*args, **kwargs)
+
+class RemoveFromCart(RedirectView):
+    pattern_name = 'view_cart'
+
+    def get_redirect_url(self, *args, **kwargs):
+        current_cart = self.request.session.get('cart', [])
+        try:
+            select_product_price = SubscriptionProductPrice.objects.get(
+                pk = kwargs.get('pk')
+            )
+        except SubscriptionProductPrice.DoesNotExist:
+            messages.error(
+                self.request,
+                'This product does not exist'
+            )
+        else:
+            if select_product_price.pk not in current_cart:
+                messages.error(
+                self.request,
+                    'This product is not in your cart'
+                )
+            else:
+                current_cart.remove(
+                    select_product_price.pk
+                )
+                self.request.session['cart'] = current_cart
+        kwargs.pop('pk')
+        return super().get_redirect_url(*args, **kwargs)
 
 # List Views
 class InvoiceList(LoginRequiredMixin, ListView):
@@ -305,8 +366,6 @@ class CheckoutSession(View):
     http_method_names = ['post']
     
     def post(self, request, *args, **kwargs):
-        data = json.loads(request.data)
-        
         try:
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types = ['card'],
@@ -314,7 +373,7 @@ class CheckoutSession(View):
                 line_items = [
                     {
                         'price': i
-                    } for i in request.session.get('subscriptions')
+                    } for i in request.session.get('cart')
                 ]
             )
             return JsonResponse(
