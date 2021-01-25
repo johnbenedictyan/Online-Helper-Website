@@ -114,6 +114,14 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
+                        {% if authority == 'Agency Owners' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'view_cart' %}">
+                                <i class="fas fa-shopping-cart"></i> 
+                                &#40;{{cart_count}}&#41;
+                            </a>
+                        </li>
+                        {% endif %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userActionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{user.email}}
