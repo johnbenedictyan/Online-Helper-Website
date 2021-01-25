@@ -6,7 +6,9 @@ from django.urls import include, path
 # Imports from local app
 
 ## Redirect Views
-from .views import AddToCart, CustomerPortal, RemoveFromCart, ToggleSubscriptionProductArchive, ViewCart
+from .views import (
+    AddToCart, CustomerPortal, RemoveFromCart, ViewCart, CheckoutSuccess,
+    CheckoutCancel, ToggleSubscriptionProductArchive
 
 ## List Views
 from .views import (
@@ -138,6 +140,21 @@ urlpatterns = [
         'create-checkout-session/',
         CheckoutSession.as_view(),
         name='checkout_session'
+    ),
+    path(
+        'checkout/',
+        include([
+            path(
+                'success/',
+                CheckoutSuccess.as_view(),
+                name='checkout_success'
+            ),
+            path(
+                'cancel/',
+                CheckoutCancel.as_view(),
+                name='checkout_cancel'
+            )
+        ])
     ),
     path(
         'cart/',
