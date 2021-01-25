@@ -359,15 +359,20 @@ class CheckoutSession(View):
     def post(self, request, *args, **kwargs):
         try:
             checkout_session = stripe.checkout.Session.create(
-                success_url=reverse_lazy('checkout_success').join(
+                success_url=request.build_absolute_uri(
+                    reverse_lazy('checkout_success').join(
                     '?session_id={CHECKOUT_SESSION_ID}'
+                    )   
                 ),
-                cancel_url=reverse_lazy('checkout_cancel'),
+                cancel_url=request.build_absolute_uri(
+                    reverse_lazy('checkout_cancel')
+                ),
                 payment_method_types = ['card'],
                 mode = 'subscription',
                 line_items = [
                     {
-                        'price': i
+                        'price': i,
+                        'quantity': 1
                     } for i in request.session.get('cart')
                 ]
             )
