@@ -6,7 +6,7 @@ from django.urls import include, path
 # Imports from local app
 
 ## Redirect Views
-from .views import CustomerPortal, ToggleSubscriptionProductArchive
+from .views import AddToCart, CustomerPortal, RemoveFromCart, ToggleSubscriptionProductArchive, ViewCart
 
 ## List Views
 from .views import (
@@ -29,7 +29,7 @@ from .views import (
 from .views import SubscriptionProductImageDelete
 
 ## Generic Views
-from .views import StripeWebhookView
+from .views import StripeWebhookView, CheckoutSession
 
 # Start of Urls
 
@@ -133,5 +133,30 @@ urlpatterns = [
         'stripe-webhook/',
         StripeWebhookView.as_view(),
         name='stripe_webhook'
+    ),
+    path(
+        'create-checkout-session/',
+        CheckoutSession.as_view(),
+        name='checkout_session'
+    ),
+    path(
+        'cart/',
+        include([
+            path(
+                'add/<slug:pk>/',
+                AddToCart.as_view(),
+                name='add_to_cart'
+            ),
+            path(
+                'remove/<slug:pk>/',
+                RemoveFromCart.as_view(),
+                name='remove_from_cart'
+            ),
+            path(
+                'view/',
+                ViewCart.as_view(),
+                name='view_cart'
+            )
+        ])
     )
 ]
