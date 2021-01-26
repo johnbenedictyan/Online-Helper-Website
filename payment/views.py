@@ -57,9 +57,6 @@ class ViewCart(TemplateView):
         )
         return context
 
-class CheckoutSuccess(TemplateView):
-    template_name = 'base/checkout-success.html'
-    
 # Redirect Views
 class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
                      RedirectView):
@@ -78,10 +75,23 @@ class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
             ),
         )
         return session.url
-
+    
+class CheckoutSuccess(RedirectView):
+    http_method_names = ['get']
+    pattern_name = 'dashboard_home'
+    
+    def get_redirect_url(self, *args, **kwargs):
+        self.request.session['cart'] = []
+        messages.success(
+            self.request,
+            'Payment Success',
+            extra_tags='success'
+        )
+        return super().get_redirect_url()
+    
 class CheckoutCancel(RedirectView):
     http_method_names = ['get']
-    pattern_name = None
+    pattern_name = 'view_cart'
     
     def get_redirect_url(self, *args, **kwargs):
         messages.info(
@@ -357,35 +367,58 @@ class CheckoutSession(View):
     http_method_names = ['post']
     
     def post(self, request, *args, **kwargs):
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                success_url=request.build_absolute_uri(
-                    reverse_lazy('checkout_success').join(
-                    '?session_id={CHECKOUT_SESSION_ID}'
-                    )   
-                ),
-                cancel_url=request.build_absolute_uri(
-                    reverse_lazy('checkout_cancel')
-                ),
-                payment_method_types = ['card'],
-                mode = 'subscription',
-                line_items = [
+        if self.request.user.is_authenticated:
+            if self.request.user.groups.filter(
+                name='Agency Owners'
+            ).exists() == True:
+                try:
+                    checkout_session = stripe.checkout.Session.create(
+                        success_url=request.build_absolute_uri(
+                            reverse_lazy('checkout_success')
+                        ),
+                        cancel_url=request.build_absolute_uri(
+                            reverse_lazy('checkout_cancel')
+                        ),
+                        customer=Customer.objects.get(
+                            agency__pk=request.user.agency_owner.agency.pk
+                        ).pk,
+                        payment_method_types = ['card'],
+                        mode = 'subscription',
+                        line_items = [
+                            {
+                                'price': i,
+                                'quantity': 1
+                            } for i in request.session.get('cart')
+                        ]
+                    )
+                    return JsonResponse(
+                        {
+                            'sessionId': checkout_session['id']
+                        }
+                    )
+                except Exception as e:
+                    return JsonResponse(
+                        {
+                            'error': {
+                                'message': str(e)
+                            }
+                        },
+                        status = 400
+                    )
+            else:
+                return JsonResponse(
                     {
-                        'price': i,
-                        'quantity': 1
-                    } for i in request.session.get('cart')
-                ]
-            )
-            return JsonResponse(
-                {
-                    'sessionId': checkout_session['id']
-                }
-            )
-        except Exception as e:
+                        'error': {
+                            'message': 'Agency Owner Required'
+                        }
+                    },
+                    status = 400
+                )
+        else:
             return JsonResponse(
                 {
                     'error': {
-                        'message': str(e)
+                        'message': 'Login Required'
                     }
                 },
                 status = 400
@@ -415,6 +448,12 @@ class StripeWebhookView(View):
             # Invalid signature
             return HttpResponse(status=400)
         else:
+            if event.type=='invoice.payment_failed':
+                print(event)
+            if event.type=='checkout.session.completed':
+                print(event)
+            if event.type=='invoice.paid':
+                print(event)
             if event.type=='invoice.payment_failed':
                 print(event)
             return HttpResponse(status=200)
