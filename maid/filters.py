@@ -37,10 +37,10 @@ class MiniMaidFilter(django_filters.FilterSet):
         
 class MaidFilter(django_filters.FilterSet):
     # TODO: Add main responsibility and language ability
-    languages = django_filters.ModelMultipleChoiceFilter(
+    biodata__languages = django_filters.ModelMultipleChoiceFilter(
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
-        label=''
+        label='Language Spoken'
     )
 
     class Meta:
