@@ -59,7 +59,15 @@ class MaidResponsibility(models.Model):
     
     def __str__(self) -> str:
         return f'{self.get_name_display()}'
-    
+
+class MaidLanguage(models.Model):
+    language = models.CharField(
+        verbose_name=_("Maid's spoken languages"),
+        max_length=3,
+        blank=False,
+        choices=MaidLanguageChoices.choices
+    )
+
 class Maid(models.Model):
     class PassportStatusChoices(models.IntegerChoices):
         NOT_READY = 0, _('Not Ready')
@@ -366,20 +374,6 @@ class MaidAgencyFeeTransaction(models.Model):
         blank=False
     )
 
-class MaidLanguage(models.Model):
-    maid = models.ForeignKey(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='languages'
-    )
-
-    language = models.CharField(
-        verbose_name=_("Maid's spoken languages"),
-        max_length=3,
-        blank=False,
-        choices=MaidLanguageChoices.choices
-    )
-    
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
     class ReligionChoices(models.TextChoices):
