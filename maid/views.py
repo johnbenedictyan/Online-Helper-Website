@@ -1,7 +1,7 @@
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
@@ -521,4 +521,8 @@ class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
 class MaidProfileView(View):
     http_method_names = ['get']
 
-    
+    def get(self, request, *args, **kwargs):
+        data = {
+            'foo': 'bar'
+        }
+        return JsonResponse(data)
