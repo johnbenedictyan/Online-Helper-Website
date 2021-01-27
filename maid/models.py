@@ -18,7 +18,7 @@ from agency.models import Agency
 # Imports from within the app
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, PreferenceChoices, 
-    MaidCareRemarkChoices
+    MaidCareRemarkChoices, MaidLanguageChoices
 )
 
 # Utiliy Classes and Functions
@@ -366,6 +366,20 @@ class MaidAgencyFeeTransaction(models.Model):
         blank=False
     )
 
+class MaidLanguage(models.Model):
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='languages'
+    )
+
+    language = models.CharField(
+        verbose_name=_("Maid's spoken languages"),
+        max_length=3,
+        blank=False,
+        choices=MaidLanguageChoices.choices
+    )
+    
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
     class ReligionChoices(models.TextChoices):
