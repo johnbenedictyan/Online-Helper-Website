@@ -7,7 +7,7 @@ import django_filters
 
 # Imports from local apps
 from .constants import TypeOfMaidChoices, MaidCountryOfOrigin
-from .models import Maid, MaidResponsibility
+from .models import Maid, MaidResponsibility, MaidLanguage
 
 # Start of Filters
 class MiniMaidFilter(django_filters.FilterSet):
@@ -37,6 +37,12 @@ class MiniMaidFilter(django_filters.FilterSet):
         
 class MaidFilter(django_filters.FilterSet):
     # TODO: Add main responsibility and language ability
+    languages = django_filters.ModelMultipleChoiceFilter(
+        queryset=MaidLanguage.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        label=''
+    )
+
     class Meta:
         model = Maid
         fields = {
@@ -44,5 +50,6 @@ class MaidFilter(django_filters.FilterSet):
             'maid_type': ['exact'],
             'biodata__age': ['lt', 'gt'],
             'family_details__marital_status': ['exact'],
-            'responsibilities': ['exact']
+            'responsibilities': ['exact'],
+            'biodata__languages': ['exact']
         }
