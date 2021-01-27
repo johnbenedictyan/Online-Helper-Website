@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -516,3 +516,9 @@ class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
             ),
             maid__agency = self.request.user.agency_owner.agency
         )
+
+# Generic Views
+class MaidProfileView(View):
+    http_method_names = ['get']
+
+    
