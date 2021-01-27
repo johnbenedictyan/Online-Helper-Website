@@ -272,6 +272,17 @@ class MaidCountryOfOrigin(models.TextChoices):
     SRI_LANKA   = 'LKA', _('Sri Lanka')
     OTHERS      = 'OTH', _('Others')
 
+class MaidLanguageChoices(models.TextChoices):
+    ENGLISH    = 'ENG', _('English')
+    CHINESE    = 'CHI', _('Mandarin Chinese')
+    HINDI      = 'HIN', _('Hindi')
+    BENGALI    = 'BEN', _('Bengali')
+    TAMIL      = 'TAM', _('Tamil')
+    KHMER      = 'KHM', _('Khmer')
+    INDONESIAN = 'IND', _('Bahasa Indonesia')
+    TAGALOG    = 'TAG', _('Tagalog')
+    SINHALA    = 'SIN', _('Sinhala')
+
 class PreferenceChoices(models.IntegerChoices):
     LEAST_PREFERRED = 1, _('Least preferred')
     LESS_PREFERRED = 2, _('Less preferred')
