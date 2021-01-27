@@ -68,6 +68,9 @@ class MaidLanguage(models.Model):
         choices=MaidLanguageChoices.choices
     )
 
+    def __str__(self) -> str:
+        return f'{self.get_language_display()}'
+
 class Maid(models.Model):
     class PassportStatusChoices(models.IntegerChoices):
         NOT_READY = 0, _('Not Ready')
@@ -457,7 +460,7 @@ class MaidBiodata(models.Model):
     languages = models.ManyToManyField(
         MaidLanguage
     )
-    
+
 class MaidStatus(models.Model):
     maid = models.OneToOneField(
         Maid,
