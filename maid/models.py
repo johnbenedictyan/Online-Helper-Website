@@ -454,6 +454,10 @@ class MaidBiodata(models.Model):
         default=ReligionChoices.NONE
     )
 
+    languages = models.ManyToManyField(
+        MaidLanguage
+    )
+    
 class MaidStatus(models.Model):
     maid = models.OneToOneField(
         Maid,
