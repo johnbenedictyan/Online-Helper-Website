@@ -522,7 +522,29 @@ class MaidProfileView(View):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        data = {
-            'foo': 'bar'
-        }
-        return JsonResponse(data)
+        try:
+            selected_maid = Maid.objects.get(
+                pk = self.kwargs.get('pk')
+            )
+        except Maid.DoesNotExist:
+            data = {
+                'error': 'Maid does not exist'
+            }
+            return JsonResponse(data, status=404)
+        else:
+            data = {
+                'salary': selected_maid.salary,
+                'days_off': selected_maid.days_off,
+                'employment_history': [
+                    {
+                        'start_date': eh.start_date,
+                        'end_date': eh.end_date,
+                        'country': eh.country,
+                        'work_duration': eh.work_duration,
+                        'work_duties': [
+                            work_duty for work_duty in eh.work_duties
+                        ]
+                    } for eh in selected_maid.employment_history
+                ]
+            }
+            return JsonResponse(data, status=200)
