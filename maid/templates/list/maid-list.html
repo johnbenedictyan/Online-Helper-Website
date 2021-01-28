@@ -44,7 +44,7 @@
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
                     {% for maid in maids %}
                         <div class="col mb-4">
-                            <div class="card">
+                            <div class="card maid-card" data-maid='{{maid.pk}}'>
                                 <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title">{{maid.biodata.name}}</h5>
