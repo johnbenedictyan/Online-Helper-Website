@@ -544,7 +544,7 @@ class MaidProfileView(View):
                         'work_duties': [
                             work_duty for work_duty in eh.work_duties
                         ]
-                    } for eh in selected_maid.employment_history
+                    } for eh in selected_maid.employment_history.all()
                 ]
             }
             return JsonResponse(data, status=200)
