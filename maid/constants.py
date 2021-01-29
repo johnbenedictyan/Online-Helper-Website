@@ -283,12 +283,12 @@ class MaidLanguageChoices(models.TextChoices):
     TAGALOG    = 'TAG', _('Tagalog')
     SINHALA    = 'SIN', _('Sinhala')
 
-class PreferenceChoices(models.IntegerChoices):
-    LEAST_PREFERRED = 1, _('Least preferred')
-    LESS_PREFERRED = 2, _('Less preferred')
-    NO_PREFERENCE = 3, _('No preference')
-    MORE_PREFERRED = 4, _('More preferred')
-    MOST_PREFERRED = 5, _('Most preferred')
+class AssessmentChoices(models.IntegerChoices):
+    POOR = 1, _('Poor')
+    FAIR = 2, _('Fair')
+    AVERAGE = 3, _('Average')
+    GOOD = 4, _('Good')
+    EXCELLENT = 5, _('Excellent')
 
 class MaidCareRemarkChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Experience in own country')
