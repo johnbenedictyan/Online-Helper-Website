@@ -283,7 +283,7 @@ class MaidLanguageChoices(models.TextChoices):
     TAGALOG    = 'TAG', _('Tagalog')
     SINHALA    = 'SIN', _('Sinhala')
 
-class AssessmentChoices(models.IntegerChoices):
+class MaidAssessmentChoices(models.IntegerChoices):
     POOR = 1, _('Poor')
     FAIR = 2, _('Fair')
     AVERAGE = 3, _('Average')
