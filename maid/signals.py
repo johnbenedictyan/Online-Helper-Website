@@ -1,4 +1,5 @@
 # Imports from python
+import random
 
 # Imports from django
 from django.db.models.signals import post_save
@@ -7,13 +8,88 @@ from django.dispatch import receiver
 # Imports from other apps
 
 # Imports from within the app
+from .constants import MaidResponsibilityChoices
+
 from .models import (
     Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidStatus, 
-    MaidAgencyFeeTransaction
+    MaidAgencyFeeTransaction, MaidResponsibility
 )
 
 # Utiliy Classes and Functions
+def maid_main_responsibility(maid):
+    care_models = [
+        MaidInfantChildCare,
+        MaidElderlyCare,
+        MaidDisabledCare,
+        MaidGeneralHousework,
+        MaidCooking
+    ]
+
+    maid_responsibility_translation_table = {
+        'MaidInfantChildCare': 'CFI',
+        'MaidElderlyCare': 'CFE',
+        'MaidDisabledCare': 'CFD',
+        'MaidGeneralHousework': 'GEH',
+        'MaidCooking': 'COK'
+    }
+
+    responsibility_dict = {}
+
+    for i in care_models:
+        for k,v in i.objects.get(maid=maid).__dict__.items():
+            if k == 'assessment':
+                responsibility_dict[i.__name__] = v
+
+    main_responsibility_value = max(responsibility_dict.values())
+    main_responsibilities = []
+    db_responsibilities = [
+        i.get_db_value() for i in maid.responsibilities.all()
+    ]
+    responsibilities_tbd = []
+
+    for k,v in responsibility_dict.items():
+        if v == main_responsibility_value:
+            main_responsibilities.append(
+                maid_responsibility_translation_table[k]
+            )
+
+    for i in main_responsibilities:
+        if i in db_responsibilities:
+            main_responsibilities = [i]
+        elif len(main_responsibilities) > 1:
+            main_responsibilities = [random.choice(main_responsibilities)]
+    
+    if maid.other_care.care_for_pets == True:
+        main_responsibilities.append(
+            MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
+        )
+    
+    if maid.other_care.gardening == True:
+        main_responsibilities.append(
+            MaidResponsibilityChoices.MAID_RESP_GARDENING
+        )
+
+    for i in db_responsibilities:
+        if i not in main_responsibilities:
+            responsibilities_tbd.append(i)
+        else:
+            main_responsibilities.remove(i)
+
+    for i in responsibilities_tbd:
+        maid.responsibilities.remove(
+            MaidResponsibility.objects.get(
+                name=i
+            )
+        )
+    
+    for i in main_responsibilities:
+        maid.responsibilities.add(
+            MaidResponsibility.objects.get(
+                name=i
+            )
+        )
+
 def maid_completed(maid):
     if(
         maid.biodata_complete == True and 
@@ -91,6 +167,7 @@ def maid_care_completed(sender, instance, created, **kwargs):
         maid.care_complete = care_complete
         maid.save()
         if care_complete == True:
+            maid_main_responsibility(maid)
             maid_completed(maid)
 
 @receiver(post_save, sender=MaidStatus)
