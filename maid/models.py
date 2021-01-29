@@ -35,6 +35,9 @@ class MaidResponsibility(models.Model):
     def __str__(self) -> str:
         return f'{self.get_name_display()}'
 
+    def get_db_value(self):
+        return self.name
+
 class MaidLanguage(models.Model):
     language = models.CharField(
         verbose_name=_("Maid's spoken languages"),
