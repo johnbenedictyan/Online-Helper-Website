@@ -17,7 +17,7 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, AssessmentChoices, 
+    TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidCareRemarkChoices, MaidLanguageChoices
 )
 
@@ -540,8 +540,8 @@ class MaidInfantChildCare(models.Model):
     assessment = models.IntegerField(
         verbose_name=_('Infant child care assessment'),
         blank=False,
-        choices=AssessmentChoices.choices,
-        default=AssessmentChoices.AVERAGE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -598,8 +598,8 @@ class MaidElderlyCare(models.Model):
     assessment = models.IntegerField(
         verbose_name=_('Elderly care assessment'),
         blank=False,
-        choices=AssessmentChoices.choices,
-        default=AssessmentChoices.AVERAGE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -657,8 +657,8 @@ class MaidDisabledCare(models.Model):
     assessment = models.IntegerField(
         verbose_name=_('Disabled care assessment'),
         blank=False,
-        choices=AssessmentChoices.choices,
-        default=AssessmentChoices.AVERAGE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -702,8 +702,8 @@ class MaidGeneralHousework(models.Model):
     assessment = models.IntegerField(
         verbose_name=_('General housework assessment'),
         blank=False,
-        choices=AssessmentChoices.choices,
-        default=AssessmentChoices.AVERAGE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -783,8 +783,8 @@ class MaidCooking(models.Model):
     assessment = models.IntegerField(
         verbose_name=_('Cooking assessment'),
         blank=False,
-        choices=AssessmentChoices.choices,
-        default=AssessmentChoices.AVERAGE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -812,4 +812,23 @@ class MaidCooking(models.Model):
     other_remarks = models.TextField(
         verbose_name=_('Other remarks for cooking'),
         blank=True
+    )
+
+class MaidOtherCare(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='other_care'
+    )
+
+    care_for_pets = models.BooleanField(
+        verbose_name=_('Care for pets'),
+        blank=False,
+        default=False
+    )
+
+    gardening = models.BooleanField(
+        verbose_name=_('Gardening'),
+        blank=False,
+        default=False
     )
