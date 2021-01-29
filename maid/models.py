@@ -198,31 +198,7 @@ class Maid(models.Model):
         editable=False
     )
 
-    infant_child_care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    elderly_care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    disabled_care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    general_housework_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    cooking_complete = models.BooleanField(
+    care_complete = models.BooleanField(
         default=False,
         blank=True,
         editable=False
