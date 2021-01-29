@@ -18,43 +18,18 @@ from agency.models import Agency
 # Imports from within the app
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
-    MaidCareRemarkChoices, MaidLanguageChoices
+    MaidCareRemarkChoices, MaidLanguageChoices, MaidResponsibilityChoices
 )
 
 # Utiliy Classes and Functions
 
 # Start of Models
 class MaidResponsibility(models.Model):
-    # Settings
-
-    ## General
-    NO_PREFERENCE = 'ALL'
-    OTHERS        = 'OTH'
-
-    ## Maid Responsibilites
-    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
-    MAID_RESP_COOKING                   = 'COK'
-    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
-    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
-    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
-    MAID_RESP_CARE_FOR_PETS             = 'CFP'
-    MAID_RESP_GARDENING                 = 'GAR'
-
-    MAID_RESP_CHOICES = (
-        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
-        (MAID_RESP_COOKING, _('Cooking')),
-        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
-        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
-        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
-        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
-        (MAID_RESP_GARDENING, _('Gardening'))
-    )
-
     name = models.CharField(
         verbose_name=_('Name of maid\'s responsibility'),
         max_length=255,
         blank=False,
-        choices=MAID_RESP_CHOICES,
+        choices=MaidResponsibilityChoices.choices
     )
     
     def __str__(self) -> str:
