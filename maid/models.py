@@ -254,8 +254,8 @@ class MaidFoodHandlingPreference(models.Model):
         verbose_name = _('Food preference'),
         max_length=1,
         blank=False,
-        choices=FoodAssessmentChoices.choices,
-        default=FoodAssessmentChoices.PORK
+        choices=FoodPreferenceChoices.choices,
+        default=FoodPreferenceChoices.PORK
     )
 
 class MaidDietaryRestriction(models.Model):
