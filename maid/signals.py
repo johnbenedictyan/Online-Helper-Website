@@ -18,11 +18,7 @@ def maid_completed(maid):
     if(
         maid.biodata_complete == True and 
         maid.family_details_complete == True and 
-        maid.infant_child_care_complete == True and 
-        maid.elderly_care_complete == True and 
-        maid.disabled_care_complete == True and 
-        maid.general_housework_complete == True and 
-        maid.cooking_complete == True
+        maid.care_complete == True
     ):
         maid.complete = True
         maid.save()
@@ -62,83 +58,39 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
             maid_completed(maid)
 
 @receiver(post_save, sender=MaidInfantChildCare)
-def maid_infant_child_care_completed(sender, instance, created, **kwargs):
-    if created == False:
-        maid = instance.maid
-        infant_child_care_valid = True
-
-        for k,v in instance.__dict__.items():
-            if k is not 'other_remarks':
-                if not v:
-                    infant_child_care_valid = False
-        
-        maid.infant_child_care_complete = infant_child_care_valid
-        maid.save()
-        if infant_child_care_valid == True:
-            maid_completed(maid)
-
 @receiver(post_save, sender=MaidElderlyCare)
-def maid_elderly_care_completed(sender, instance, created, **kwargs):
-    if created == False:
-        maid = instance.maid
-        elderly_care_valid = True
-
-        for k,v in instance.__dict__.items():
-            if k is not 'other_remarks':
-                if not v:
-                    elderly_care_valid = False
-        
-        maid.elderly_care_complete = elderly_care_valid
-        maid.save()
-        if elderly_care_valid == True:
-            maid_completed(maid)
-
 @receiver(post_save, sender=MaidDisabledCare)
-def maid_disabled_care_completed(sender, instance, created, **kwargs):
-    if created == False:
-        maid = instance.maid
-        disabled_care_valid = True
-
-        for k,v in instance.__dict__.items():
-            if k is not 'other_remarks':
-                if not v:
-                    disabled_care_valid = False
-    
-        maid.disabled_care_complete = disabled_care_valid
-        maid.save()
-        if disabled_care_valid == True:
-            maid_completed(maid)
-
 @receiver(post_save, sender=MaidGeneralHousework)
-def maid_general_housework_completed(sender, instance, created, **kwargs):
-    if created == False:
-        maid = instance.maid
-        general_housework_valid = True
-
-        for k,v in instance.__dict__.items():
-            if k is not 'other_remarks':
-                if not v:
-                    general_housework_valid = False
-        
-        maid.general_housework_complete = general_housework_valid
-        maid.save()
-        if general_housework_valid == True:
-            maid_completed(maid)
-
 @receiver(post_save, sender=MaidCooking)
-def maid_cooking_completed(sender, instance, created, **kwargs):
+def maid_care_completed(sender, instance, created, **kwargs):
     if created == False:
+        care_models = [
+            MaidInfantChildCare,
+            MaidElderlyCare,
+            MaidDisabledCare,
+            MaidGeneralHousework,
+            MaidCooking
+        ]
         maid = instance.maid
-        cooking_valid = True
+        care_complete = maid.care_complete
 
-        for k,v in instance.__dict__.items():
-            if k is not 'other_remarks':
-                if not v:
-                    cooking_valid = False
+        instance_model_class = instance.__class__
+        if instance_model_class in care_models:
+            care_models.remove(instance_model_class)
+            try:
+                for i in care_models:
+                    for k,v in i.objects.get(maid=maid).__dict__.items():
+                        if k is not 'other_remarks':
+                            if not v:
+                                raise Exception
+            except Exception as e:
+                care_complete = False
+            else:
+                care_complete = True
         
-        maid.cooking_complete = cooking_valid
+        maid.care_complete = care_complete
         maid.save()
-        if cooking_valid == True:
+        if care_complete == True:
             maid_completed(maid)
 
 @receiver(post_save, sender=MaidStatus)
