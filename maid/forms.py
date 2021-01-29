@@ -336,7 +336,7 @@ class MaidInfantChildCareForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'preference',
+                    'assessment',
                     css_class='form-group col-md'
                 ),
                 Column(
@@ -387,7 +387,7 @@ class MaidElderlyCareForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'preference',
+                    'assessment',
                     css_class='form-group col-md'
                 ),
                 Column(
@@ -438,7 +438,7 @@ class MaidDisabledCareForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'preference',
+                    'assessment',
                     css_class='form-group col-md'
                 ),
                 Column(
@@ -489,7 +489,7 @@ class MaidGeneralHouseworkForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'preference',
+                    'assessment',
                     css_class='form-group col-md'
                 ),
                 Column(
@@ -540,7 +540,7 @@ class MaidCookingForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'preference',
+                    'assessment',
                     css_class='form-group col-md'
                 ),
                 Column(
