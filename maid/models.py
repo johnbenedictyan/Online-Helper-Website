@@ -537,8 +537,8 @@ class MaidInfantChildCare(models.Model):
         related_name='infant_child_care'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Infant child care preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Infant child care assessment'),
         blank=False,
         choices=AssessmentChoices.choices,
         default=AssessmentChoices.AVERAGE
@@ -595,8 +595,8 @@ class MaidElderlyCare(models.Model):
         related_name='elderly_care'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Elderly care preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Elderly care assessment'),
         blank=False,
         choices=AssessmentChoices.choices,
         default=AssessmentChoices.AVERAGE
@@ -654,8 +654,8 @@ class MaidDisabledCare(models.Model):
         related_name='disabled_care'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Disabled care preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Disabled care assessment'),
         blank=False,
         choices=AssessmentChoices.choices,
         default=AssessmentChoices.AVERAGE
@@ -699,8 +699,8 @@ class MaidGeneralHousework(models.Model):
         related_name='general_housework'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('General housework preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('General housework assessment'),
         blank=False,
         choices=AssessmentChoices.choices,
         default=AssessmentChoices.AVERAGE
@@ -780,8 +780,8 @@ class MaidCooking(models.Model):
         related_name='cooking'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Cooking preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Cooking assessment'),
         blank=False,
         choices=AssessmentChoices.choices,
         default=AssessmentChoices.AVERAGE
