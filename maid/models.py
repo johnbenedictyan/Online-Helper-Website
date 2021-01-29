@@ -17,7 +17,7 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, PreferenceChoices, 
+    TypeOfMaidChoices, MaidCountryOfOrigin, AssessmentChoices, 
     MaidCareRemarkChoices, MaidLanguageChoices
 )
 
@@ -254,8 +254,8 @@ class MaidFoodHandlingPreference(models.Model):
         verbose_name = _('Food preference'),
         max_length=1,
         blank=False,
-        choices=FoodPreferenceChoices.choices,
-        default=FoodPreferenceChoices.PORK
+        choices=FoodAssessmentChoices.choices,
+        default=FoodAssessmentChoices.PORK
     )
 
 class MaidDietaryRestriction(models.Model):
@@ -514,13 +514,6 @@ class MaidFamilyDetails(models.Model):
     )
 
 class MaidInfantChildCare(models.Model):
-    class InfantChildCarePreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class InfantChildCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
         OVERSEAS = 'OV', _('Experience in overseas')
@@ -547,8 +540,8 @@ class MaidInfantChildCare(models.Model):
     preference = models.IntegerField(
         verbose_name=_('Infant child care preference'),
         blank=False,
-        choices=InfantChildCarePreferenceChoices.choices,
-        default=InfantChildCarePreferenceChoices.NO_PREFERENCE
+        choices=AssessmentChoices.choices,
+        default=AssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -579,13 +572,6 @@ class MaidInfantChildCare(models.Model):
     )
 
 class MaidElderlyCare(models.Model):
-    class ElderlyCarePreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class ElderlyCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
         OVERSEAS = 'OV', _('Experience in overseas')
@@ -612,8 +598,8 @@ class MaidElderlyCare(models.Model):
     preference = models.IntegerField(
         verbose_name=_('Elderly care preference'),
         blank=False,
-        choices=ElderlyCarePreferenceChoices.choices,
-        default=ElderlyCarePreferenceChoices.NO_PREFERENCE
+        choices=AssessmentChoices.choices,
+        default=AssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -644,13 +630,6 @@ class MaidElderlyCare(models.Model):
     )
 
 class MaidDisabledCare(models.Model):
-    class DisabledCarePreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class DisabledCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
         OVERSEAS = 'OV', _('Experience in overseas')
@@ -678,8 +657,8 @@ class MaidDisabledCare(models.Model):
     preference = models.IntegerField(
         verbose_name=_('Disabled care preference'),
         blank=False,
-        choices=DisabledCarePreferenceChoices.choices,
-        default=DisabledCarePreferenceChoices.NO_PREFERENCE
+        choices=AssessmentChoices.choices,
+        default=AssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -710,13 +689,6 @@ class MaidDisabledCare(models.Model):
     )
 
 class MaidGeneralHousework(models.Model):
-    class GeneralHouseworkPreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class GeneralHouseworkRemarksChoices(models.TextChoices):
         CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
@@ -730,8 +702,8 @@ class MaidGeneralHousework(models.Model):
     preference = models.IntegerField(
         verbose_name=_('General housework preference'),
         blank=False,
-        choices=GeneralHouseworkPreferenceChoices.choices,
-        default=GeneralHouseworkPreferenceChoices.NO_PREFERENCE
+        choices=AssessmentChoices.choices,
+        default=AssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -762,13 +734,6 @@ class MaidGeneralHousework(models.Model):
     )
 
 class MaidCooking(models.Model):
-    class CookingPreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class CookingRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Able to cook own country\'s cuisine')
         CHINESE = 'C', _('Able to cook chinese cuisine')
@@ -818,8 +783,8 @@ class MaidCooking(models.Model):
     preference = models.IntegerField(
         verbose_name=_('Cooking preference'),
         blank=False,
-        choices=CookingPreferenceChoices.choices,
-        default=CookingPreferenceChoices.NO_PREFERENCE
+        choices=AssessmentChoices.choices,
+        default=AssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
