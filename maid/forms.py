@@ -33,7 +33,10 @@ class MaidCreationForm(forms.ModelForm):
 
     class Meta:
         model = Maid
-        exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
+        exclude = [
+            'agency', 'created_on', 'updated_on', 'agency_fee_amount',
+            'responsibilities'
+        ]
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
@@ -88,13 +91,6 @@ class MaidCreationForm(forms.ModelForm):
                 Column(
                     'repatriation_airport',
                     css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    InlineCheckboxes('responsibilities'),
-                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
