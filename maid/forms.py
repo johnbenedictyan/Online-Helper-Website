@@ -69,7 +69,7 @@ class MaidCreationForm(forms.ModelForm):
                         <br>
                     '''),
                     HTML(f'''
-                        <input style="width: 100%;" type="text" name="passport_number" class="textinput textInput" placeholder="Passport number" id="id_passport_number" value="{plaintext}" maxlength="{self.FIELD_MAXLENGTH}">
+                        <input style="width: 100%;" type="text" name="passport_number" class="textinput textInput" placeholder="Passport number" id="id_passport_number" value="{plaintext}" maxlength="{self.FIELD_MAXLENGTH}" required="">
                     '''),
                     css_class='col-md-6',
                 ),
@@ -231,7 +231,7 @@ class MaidUpdateForm(forms.ModelForm):
                         <br>
                     '''),
                     HTML(f'''
-                        <input style="width: 100%;" type="text" name="passport_number" class="textinput textInput" placeholder="Passport number" id="id_passport_number" value="{plaintext}" maxlength="{self.FIELD_MAXLENGTH}">
+                        <input style="width: 100%;" type="text" name="passport_number" class="textinput textInput" placeholder="Passport number" id="id_passport_number" value="{plaintext}" maxlength="{self.FIELD_MAXLENGTH}" required="">
                     '''),
                     css_class='col-md-6',
                 ),
