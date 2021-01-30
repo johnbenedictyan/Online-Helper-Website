@@ -67,11 +67,15 @@ class Maid(models.Model):
         blank=False
     )
 
+    passport_number = models.BinaryField(editable=True)
+    nonce = models.BinaryField(editable=True)
+    tag = models.BinaryField(editable=True)
+
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
         blank=False,
         null=True,
-        storage=PublicMediaStorage()
+        # storage=PublicMediaStorage()
     )
 
     maid_type = models.CharField(

@@ -1,12 +1,15 @@
 # Imports from django
 from django import forms
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, HTML
 from crispy_forms.bootstrap import PrependedAppendedText, InlineCheckboxes
-from agency.models import Agency
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
 
 # Imports from local apps
 from .models import (
@@ -14,6 +17,7 @@ from .models import (
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
+from agency.models import Agency
 
 # Start of Forms
 
@@ -35,28 +39,45 @@ class MaidCreationForm(forms.ModelForm):
         model = Maid
         exclude = [
             'agency', 'created_on', 'updated_on', 'agency_fee_amount',
-            'responsibilities'
+            'responsibilities', 'nonce', 'tag'
         ]
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+        plaintext = ''
+
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
                     'reference_number',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    HTML('''
+                        <label for="id_passport_number" class="control-label requiredField">Passport number<span class="asteriskField">*</span></label>
+                        <br>
+                    '''),
+                    HTML(f'''
+                        <input style="width: 100%;" type="text" name="passport_number" class="textinput textInput" placeholder="Passport number" id="id_passport_number" value="{plaintext}" maxlength="{self.FIELD_MAXLENGTH}">
+                    '''),
+                    css_class='col-md-6',
                 ),
                 Column(
                     'photo',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                css_class='form-row form-group'
             ),
             Row(
                 Column(
@@ -121,9 +142,8 @@ class MaidCreationForm(forms.ModelForm):
             )
         )
 
-    def clean(self):
-        cleaned_data = super().clean()
-        reference_number = cleaned_data.get('reference_numnber')
+    def clean_reference_number(self):
+        reference_number = self.cleaned_data.get('reference_number')
         try:
             Maid.objects.get(
                 agency = Agency.objects.get(
@@ -132,34 +152,94 @@ class MaidCreationForm(forms.ModelForm):
                 reference_number = reference_number
             )
         except Maid.DoesNotExist:
-            pass
+            reference_number
         else:
-            msg = _('A maid with this reference number already exist')
+            msg = _('A maid with this reference number already exists')
             self.add_error('reference_number', msg)
+
+    def clean_passport_number(self):
+        cleaned_field = self.cleaned_data.get('passport_number')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError('Must not exceed 20 characters')
+
+        '''
+        Encryption
+        '''
+        # Data to be encrypted formatted as bytes literal
+        cleaned_field = cleaned_field.encode('ascii')
+
+        # Secret encryption key set in environment variables, does not change
+        key = settings.ENCRYPTION_KEY.encode('ascii')
+
+        # New nonce everytime
+        nonce = get_random_bytes(32)
+        self.instance.nonce = nonce
+        
+        # Create cipher object
+        cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+
+        # Generate encrypted ciphertext
+        ciphertext, tag = cipher.encrypt_and_digest(cleaned_field)
+        self.instance.tag = tag
+
+        return ciphertext
 
 class MaidUpdateForm(forms.ModelForm):
     class Meta:
         model = Maid
-        exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount']
+        exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount',
+            'responsibilities', 'nonce', 'tag'
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+        plaintext = ''
+
+        '''
+        Decryption
+        '''
+        ###################################################################################################### TO BE REMOVED
+        if self.instance.passport_number and self.instance.passport_number!=b'':
+            try:
+                cipher = AES.new(settings.ENCRYPTION_KEY.encode('ascii'), AES.MODE_GCM, nonce=self.instance.nonce)
+                # Decoded data
+                plaintext = cipher.decrypt_and_verify(self.instance.passport_number, self.instance.tag).decode('ascii')
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+        ###################################################################################################### TO BE REMOVED
+        
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
                     'reference_number',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    HTML('''
+                        <label for="id_passport_number" class="control-label requiredField">Passport number<span class="asteriskField">*</span></label>
+                        <br>
+                    '''),
+                    HTML(f'''
+                        <input style="width: 100%;" type="text" name="passport_number" class="textinput textInput" placeholder="Passport number" id="id_passport_number" value="{plaintext}" maxlength="{self.FIELD_MAXLENGTH}">
+                    '''),
+                    css_class='col-md-6',
                 ),
                 Column(
                     'photo',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                css_class='form-row form-group'
             ),
             Row(
                 Column(
@@ -211,6 +291,34 @@ class MaidUpdateForm(forms.ModelForm):
             )
         )
         
+    def clean_passport_number(self):
+        cleaned_field = self.cleaned_data.get('passport_number')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError('Must not exceed 20 characters')
+
+        '''
+        Encryption
+        '''
+        # Data to be encrypted formatted as bytes literal
+        cleaned_field = cleaned_field.encode('ascii')
+
+        # Secret encryption key set in environment variables, does not change
+        key = settings.ENCRYPTION_KEY.encode('ascii')
+
+        # New nonce everytime
+        nonce = get_random_bytes(32)
+        self.instance.nonce = nonce
+        
+        # Create cipher object
+        cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+
+        # Generate encrypted ciphertext
+        ciphertext, tag = cipher.encrypt_and_digest(cleaned_field)
+        self.instance.tag = tag
+
+        return ciphertext
+
 class MaidBiodataForm(forms.ModelForm):
     class Meta:
         model = MaidBiodata
