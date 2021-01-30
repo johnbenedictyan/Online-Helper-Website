@@ -18,7 +18,8 @@ from agency.models import Agency
 # Imports from within the app
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
-    MaidCareRemarkChoices, MaidLanguageChoices, MaidResponsibilityChoices
+    MaidCareRemarkChoices, MaidLanguageChoices, MaidResponsibilityChoices,
+    MaritalStatusChoices
 )
 
 # Utiliy Classes and Functions
@@ -453,13 +454,6 @@ class MaidStatus(models.Model):
     )
 
 class MaidFamilyDetails(models.Model):
-    class MaritalStatusChoices(models.TextChoices):
-        SINGLE = 'S', _('Single')
-        MARRIED = 'M', _('Married')
-        WIDOWED = 'W', _('Widowed')
-        SINGLE_PARENT = 'SP', _('Single Parent')
-        DIVORCED = 'D', _('Divorced')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,

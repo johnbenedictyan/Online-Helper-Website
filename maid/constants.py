@@ -290,6 +290,13 @@ class MaidAssessmentChoices(models.IntegerChoices):
     GOOD = 4, _('Good')
     EXCELLENT = 5, _('Excellent')
 
+class MaritalStatusChoices(models.TextChoices):
+        SINGLE = 'S', _('Single')
+        MARRIED = 'M', _('Married')
+        WIDOWED = 'W', _('Widowed')
+        SINGLE_PARENT = 'SP', _('Single Parent')
+        DIVORCED = 'D', _('Divorced')
+        
 class MaidResponsibilityChoices(models.TextChoices):
     MAID_RESP_GENERAL_HOUSEWORK         = 'GEH', _('General Housework')
     MAID_RESP_COOKING                   = 'COK', _('Cooking')
