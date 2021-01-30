@@ -71,7 +71,7 @@
 <script>
     $(function(){
         maidProfileRedirect = (pk) => {
-            location.replace(location.href+pk)
+            location.replace(location.origin + location.pathname + pk)
         }
         contentGenerator = (salary, days_off, employment_history) => {
             contentString = '<div>'
@@ -102,7 +102,7 @@
                 instance._error = null;
             },
             onShow(instance) {
-                let backend_uri = instance.reference.baseURI + (instance.reference.attributes.id.value).split('-')[1] + '/profile/';
+                let backend_uri = location.origin + location.pathname + (instance.reference.attributes.id.value).split('-')[1] + '/profile/';
                 if (instance._isFetching || instance._data || instance._error) {
                     return;
                 }
@@ -116,6 +116,7 @@
                 })
                 .catch((error) => {
                     instance._error = error;
+                    console.log(error)
                     instance.setContent(`Request failed. ${error}`);
                 })
                 .finally(() => {
