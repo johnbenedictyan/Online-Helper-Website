@@ -6,8 +6,10 @@ from django.utils.translation import ugettext_lazy as _
 import django_filters
 
 # Imports from local apps
-from .constants import TypeOfMaidChoices, MaidCountryOfOrigin
-from .models import Maid, MaidResponsibility
+from .constants import (
+    TypeOfMaidChoices, MaidCountryOfOrigin, MaritalStatusChoices
+)
+from .models import Maid, MaidResponsibility, MaidLanguage
 
 # Start of Filters
 class MiniMaidFilter(django_filters.FilterSet):
@@ -21,9 +23,9 @@ class MiniMaidFilter(django_filters.FilterSet):
         empty_label = _('Any'),
         label=''
     )
-    responsibilities = django_filters.ModelMultipleChoiceFilter(
+    responsibilities = django_filters.ModelChoiceFilter(
         queryset=MaidResponsibility.objects.all(),
-        widget=forms.CheckboxSelectMultiple(),
+        empty_label = _('Any'),
         label=''
     )
     
@@ -37,6 +39,24 @@ class MiniMaidFilter(django_filters.FilterSet):
         
 class MaidFilter(django_filters.FilterSet):
     # TODO: Add main responsibility and language ability
+    biodata__languages = django_filters.ModelMultipleChoiceFilter(
+        queryset=MaidLanguage.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        label='Language Spoken'
+    )
+    biodata__country_of_origin = django_filters.ChoiceFilter(
+        choices = MaidCountryOfOrigin.choices,
+        empty_label = _('Any')
+    )
+    maid_type = django_filters.ChoiceFilter(
+        choices = TypeOfMaidChoices.choices,
+        empty_label = _('Any')
+    )
+    family_details__marital_status = django_filters.ChoiceFilter(
+        choices = MaritalStatusChoices.choices,
+        empty_label = _('Any')
+    )
+
     class Meta:
         model = Maid
         fields = {
@@ -44,5 +64,6 @@ class MaidFilter(django_filters.FilterSet):
             'maid_type': ['exact'],
             'biodata__age': ['lt', 'gt'],
             'family_details__marital_status': ['exact'],
-            'responsibilities': ['exact']
+            'responsibilities': ['exact'],
+            'biodata__languages': ['exact']
         }

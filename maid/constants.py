@@ -272,12 +272,39 @@ class MaidCountryOfOrigin(models.TextChoices):
     SRI_LANKA   = 'LKA', _('Sri Lanka')
     OTHERS      = 'OTH', _('Others')
 
-class PreferenceChoices(models.IntegerChoices):
-    LEAST_PREFERRED = 1, _('Least preferred')
-    LESS_PREFERRED = 2, _('Less preferred')
-    NO_PREFERENCE = 3, _('No preference')
-    MORE_PREFERRED = 4, _('More preferred')
-    MOST_PREFERRED = 5, _('Most preferred')
+class MaidLanguageChoices(models.TextChoices):
+    ENGLISH    = 'ENG', _('English')
+    CHINESE    = 'CHI', _('Mandarin Chinese')
+    HINDI      = 'HIN', _('Hindi')
+    BENGALI    = 'BEN', _('Bengali')
+    TAMIL      = 'TAM', _('Tamil')
+    KHMER      = 'KHM', _('Khmer')
+    INDONESIAN = 'IND', _('Bahasa Indonesia')
+    TAGALOG    = 'TAG', _('Tagalog')
+    SINHALA    = 'SIN', _('Sinhala')
+
+class MaidAssessmentChoices(models.IntegerChoices):
+    POOR = 1, _('Poor')
+    FAIR = 2, _('Fair')
+    AVERAGE = 3, _('Average')
+    GOOD = 4, _('Good')
+    EXCELLENT = 5, _('Excellent')
+
+class MaritalStatusChoices(models.TextChoices):
+        SINGLE = 'S', _('Single')
+        MARRIED = 'M', _('Married')
+        WIDOWED = 'W', _('Widowed')
+        SINGLE_PARENT = 'SP', _('Single Parent')
+        DIVORCED = 'D', _('Divorced')
+        
+class MaidResponsibilityChoices(models.TextChoices):
+    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH', _('General Housework')
+    MAID_RESP_COOKING                   = 'COK', _('Cooking')
+    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI', _('Care for Infants/Children')
+    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE', _('Care for the Elderly')
+    MAID_RESP_CARE_FOR_DISABLED         = 'CFD', _('Care for the Disabled')
+    MAID_RESP_CARE_FOR_PETS             = 'CFP', _('Care for Pets')
+    MAID_RESP_GARDENING                 = 'GAR', _('Gardening')
 
 class MaidCareRemarkChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Experience in own country')
