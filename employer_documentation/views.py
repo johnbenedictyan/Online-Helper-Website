@@ -1,4 +1,5 @@
 # Django
+from django.conf import settings
 from django.urls import reverse, reverse_lazy
 from django.http import FileResponse, HttpResponseRedirect
 from django.db.models import Q
@@ -39,6 +40,7 @@ from onlinemaid.constants import (
     AG_MANAGERS,
     AG_SALES,
 )
+from onlinemaid.helper_functions import decrypt_string
 
 
 # Start of Views
@@ -127,6 +129,19 @@ class EmployerDetailView(
 ):
     model = Employer
     pk_url_kwarg = 'employer_pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context['object'].employer_nric = decrypt_string(
+                self.object.employer_nric,
+                settings.ENCRYPTION_KEY,
+                self.object.nonce,
+                self.object.tag
+            )
+        except (ValueError, KeyError):
+            print("Incorrect decryption")
+        return context
 
 class EmployerDocDetailView(
     CheckAgencyEmployeePermissionsMixin,

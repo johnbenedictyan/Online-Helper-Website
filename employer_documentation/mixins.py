@@ -26,6 +26,7 @@ from onlinemaid.constants import (
     AG_MANAGERS,
     AG_SALES,
 )
+from onlinemaid.helper_functions import decrypt_string
 from accounts.models import User
 
 
@@ -304,6 +305,30 @@ class PdfHtmlViewMixin:
                 'inline; filename=' + self.DEFAULT_DOWNLOAD_FILENAME
             )
         return response
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if isinstance(self.object, EmployerDoc):
+            try:
+                context['object'].employer.employer_nric = decrypt_string(
+                    self.object.employer.employer_nric,
+                    settings.ENCRYPTION_KEY,
+                    self.object.employer.nonce,
+                    self.object.employer.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+        elif isinstance(self.object, EmployerDocSig):
+            try:
+                context['object'].employer_doc.employer.employer_nric = decrypt_string(
+                    self.object.employer_doc.employer.employer_nric,
+                    settings.ENCRYPTION_KEY,
+                    self.object.employer_doc.employer.nonce,
+                    self.object.employer_doc.employer.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+        return context
 
 class RepaymentScheduleMixin:
     def get_context_data(self, **kwargs):
