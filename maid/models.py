@@ -75,7 +75,7 @@ class Maid(models.Model):
         verbose_name=_('Maid Photo'),
         blank=False,
         null=True,
-        # storage=PublicMediaStorage()
+        storage=PublicMediaStorage()
     )
 
     maid_type = models.CharField(
