@@ -308,6 +308,7 @@ class PdfHtmlViewMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if isinstance(self.object, EmployerDoc):
+            # Employer NRIC
             try:
                 context['object'].employer.employer_nric = decrypt_string(
                     self.object.employer.employer_nric,
@@ -318,7 +319,20 @@ class PdfHtmlViewMixin:
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].employer.employer_nric = ''
+            
+            # FDW passport number
+            try:
+                context['object'].fdw.passport_number = decrypt_string(
+                    self.object.fdw.passport_number,
+                    settings.ENCRYPTION_KEY,
+                    self.object.fdw.nonce,
+                    self.object.fdw.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].fdw.passport_number = ''
         elif isinstance(self.object, EmployerDocSig):
+            # Employer NRIC
             try:
                 context['object'].employer_doc.employer.employer_nric = decrypt_string(
                     self.object.employer_doc.employer.employer_nric,
@@ -328,7 +342,19 @@ class PdfHtmlViewMixin:
                 )
             except (ValueError, KeyError):
                 print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
+                context['object'].employer_doc.employer.employer_nric = ''
+            
+            # FDW passport number
+            try:
+                context['object'].employer_doc.fdw.passport_number = decrypt_string(
+                    self.object.employer_doc.fdw.passport_number,
+                    settings.ENCRYPTION_KEY,
+                    self.object.employer_doc.fdw.nonce,
+                    self.object.employer_doc.fdw.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].employer_doc.fdw.passport_number = ''
         return context
 
 class RepaymentScheduleMixin:
