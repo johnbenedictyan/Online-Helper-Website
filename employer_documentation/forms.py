@@ -60,6 +60,7 @@ class EmployerForm(forms.ModelForm):
                 self.initial.update({'employer_nric': plaintext})
             except (ValueError, KeyError):
                 print("Incorrect decryption")
+                self.initial.update({'employer_nric': ''})
         ###################################################################################################### TO BE REMOVED
 
         #  Remove employer_nric number from initial form display

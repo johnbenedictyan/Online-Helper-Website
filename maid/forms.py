@@ -203,6 +203,7 @@ class MaidUpdateForm(forms.ModelForm):
                 self.initial.update({'passport_number': plaintext})
             except (ValueError, KeyError):
                 print("Incorrect decryption")
+                self.initial.update({'passport_number': ''})
         ###################################################################################################### TO BE REMOVED
 
         #  Remove passport number from initial form display

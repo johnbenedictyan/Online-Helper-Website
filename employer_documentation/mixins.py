@@ -318,6 +318,7 @@ class PdfHtmlViewMixin:
                 )
             except (ValueError, KeyError):
                 print("Incorrect decryption")
+                context['object'].employer_nric = ''
         elif isinstance(self.object, EmployerDocSig):
             try:
                 context['object'].employer_doc.employer.employer_nric = decrypt_string(
@@ -328,6 +329,7 @@ class PdfHtmlViewMixin:
                 )
             except (ValueError, KeyError):
                 print("Incorrect decryption")
+                context['object'].employer_nric = ''
         return context
 
 class RepaymentScheduleMixin:
