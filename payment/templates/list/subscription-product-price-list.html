@@ -1,0 +1,6 @@
+{% extends 'payment-base.html' %}
+{% block payment_section %}
+{% for price in subscription_product_prices %}
+{{price}}
+{% endfor %}
+{% endblock payment_section %}

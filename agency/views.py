@@ -1,4 +1,5 @@
 # Imports from django
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -10,7 +11,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
+import stripe
 from onlinemaid.mixins import SuccessMessageMixin
+from payment.models import Customer
 
 # Imports from local app
 from .forms import (
@@ -79,7 +82,7 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
         AgencyOperatingHours.objects.create(
             agency=self.object
         )
-
+        
         return HttpResponseRedirect(self.get_success_url())
 
 class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin,

@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'dashboard',
     'employer_documentation.apps.EmployerDocumentationConfig',
     'maid.apps.MaidConfig',
-    'payment',
+    'payment.apps.PaymentConfig',
     'shortlist',
     'website',
     'enquiry',
@@ -96,7 +96,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'onlinemaid.context_processors.authority'
+                'onlinemaid.context_processors.authority',
+                'onlinemaid.context_processors.cartcount'
             ],
         },
     },
@@ -255,5 +256,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'text-danger',
 }
 
-# Pycryptodome key
+# Stripe
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
+# Pycryptodome Key
 ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')

@@ -25,3 +25,8 @@ def authority(request):
     return {
         'authority': authority
     }
+    
+def cartcount(request):
+    return {
+        'cart_count': len(request.session.get('cart',[]))
+    }
