@@ -4,7 +4,7 @@ from .models import (
     MaidEmploymentHistory, MaidBiodata, MaidStatus, MaidFamilyDetails,
     MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidResponsibility,
-    MaidAgencyFeeTransaction
+    MaidAgencyFeeTransaction, MaidLanguage, MaidOtherCare
 )
 
 # Register your models here.
@@ -23,3 +23,5 @@ admin.site.register(MaidGeneralHousework)
 admin.site.register(MaidCooking)
 admin.site.register(MaidResponsibility)
 admin.site.register(MaidAgencyFeeTransaction)
+admin.site.register(MaidLanguage)
+admin.site.register(MaidOtherCare)

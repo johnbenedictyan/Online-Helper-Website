@@ -71,10 +71,12 @@ class Employer(models.Model):
             )
         ]
     )
-    employer_nric = models.CharField(
+    employer_nric = models.BinaryField(
         verbose_name=_('NRIC / FIN'),
-        max_length=20
+        editable=True,
     )
+    nonce = models.BinaryField(editable=True)
+    tag = models.BinaryField(editable=True)
     employer_address_1 = models.CharField(
         verbose_name=_('Street Address'),
         max_length=100,

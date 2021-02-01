@@ -259,3 +259,6 @@ MESSAGE_TAGS = {
 
 # django.contrib.sites.models.Site
 SITE_ID = 1
+
+# Pycryptodome key
+ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')

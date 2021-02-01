@@ -17,49 +17,39 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, PreferenceChoices, 
-    MaidCareRemarkChoices
+    TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
+    MaidCareRemarkChoices, MaidLanguageChoices, MaidResponsibilityChoices,
+    MaritalStatusChoices
 )
 
 # Utiliy Classes and Functions
 
 # Start of Models
 class MaidResponsibility(models.Model):
-    # Settings
-
-    ## General
-    NO_PREFERENCE = 'ALL'
-    OTHERS        = 'OTH'
-
-    ## Maid Responsibilites
-    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH'
-    MAID_RESP_COOKING                   = 'COK'
-    MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI'
-    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE'
-    MAID_RESP_CARE_FOR_DISABLED         = 'CFD'
-    MAID_RESP_CARE_FOR_PETS             = 'CFP'
-    MAID_RESP_GARDENING                 = 'GAR'
-
-    MAID_RESP_CHOICES = (
-        (MAID_RESP_GENERAL_HOUSEWORK, _('General Housework')),
-        (MAID_RESP_COOKING, _('Cooking')),
-        (MAID_RESP_CARE_FOR_INFANTS_CHILDREN, _('Care for Infants/Children')),
-        (MAID_RESP_CARE_FOR_ELDERLY, _('Care for the Elderly')),
-        (MAID_RESP_CARE_FOR_DISABLED, _('Care for the Disabled')),
-        (MAID_RESP_CARE_FOR_PETS, _('Care for Pets')),
-        (MAID_RESP_GARDENING, _('Gardening'))
-    )
-
     name = models.CharField(
         verbose_name=_('Name of maid\'s responsibility'),
         max_length=255,
         blank=False,
-        choices=MAID_RESP_CHOICES,
+        choices=MaidResponsibilityChoices.choices
     )
     
     def __str__(self) -> str:
         return f'{self.get_name_display()}'
-    
+
+    def get_db_value(self):
+        return self.name
+
+class MaidLanguage(models.Model):
+    language = models.CharField(
+        verbose_name=_("Maid's spoken languages"),
+        max_length=3,
+        blank=False,
+        choices=MaidLanguageChoices.choices
+    )
+
+    def __str__(self) -> str:
+        return f'{self.get_language_display()}'
+
 class Maid(models.Model):
     class PassportStatusChoices(models.IntegerChoices):
         NOT_READY = 0, _('Not Ready')
@@ -76,6 +66,10 @@ class Maid(models.Model):
         max_length=255,
         blank=False
     )
+
+    passport_number = models.BinaryField(editable=True)
+    nonce = models.BinaryField(editable=True)
+    tag = models.BinaryField(editable=True)
 
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
@@ -187,31 +181,7 @@ class Maid(models.Model):
         editable=False
     )
 
-    infant_child_care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    elderly_care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    disabled_care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    general_housework_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    cooking_complete = models.BooleanField(
+    care_complete = models.BooleanField(
         default=False,
         blank=True,
         editable=False
@@ -446,6 +416,10 @@ class MaidBiodata(models.Model):
         default=ReligionChoices.NONE
     )
 
+    languages = models.ManyToManyField(
+        MaidLanguage
+    )
+
 class MaidStatus(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -484,13 +458,6 @@ class MaidStatus(models.Model):
     )
 
 class MaidFamilyDetails(models.Model):
-    class MaritalStatusChoices(models.TextChoices):
-        SINGLE = 'S', _('Single')
-        MARRIED = 'M', _('Married')
-        WIDOWED = 'W', _('Widowed')
-        SINGLE_PARENT = 'SP', _('Single Parent')
-        DIVORCED = 'D', _('Divorced')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -523,13 +490,6 @@ class MaidFamilyDetails(models.Model):
     )
 
 class MaidInfantChildCare(models.Model):
-    class InfantChildCarePreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class InfantChildCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
         OVERSEAS = 'OV', _('Experience in overseas')
@@ -553,11 +513,11 @@ class MaidInfantChildCare(models.Model):
         related_name='infant_child_care'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Infant child care preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Infant child care assessment'),
         blank=False,
-        choices=InfantChildCarePreferenceChoices.choices,
-        default=InfantChildCarePreferenceChoices.NO_PREFERENCE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -588,13 +548,6 @@ class MaidInfantChildCare(models.Model):
     )
 
 class MaidElderlyCare(models.Model):
-    class ElderlyCarePreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class ElderlyCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
         OVERSEAS = 'OV', _('Experience in overseas')
@@ -618,11 +571,11 @@ class MaidElderlyCare(models.Model):
         related_name='elderly_care'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Elderly care preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Elderly care assessment'),
         blank=False,
-        choices=ElderlyCarePreferenceChoices.choices,
-        default=ElderlyCarePreferenceChoices.NO_PREFERENCE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -653,13 +606,6 @@ class MaidElderlyCare(models.Model):
     )
 
 class MaidDisabledCare(models.Model):
-    class DisabledCarePreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class DisabledCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
         OVERSEAS = 'OV', _('Experience in overseas')
@@ -684,11 +630,11 @@ class MaidDisabledCare(models.Model):
         related_name='disabled_care'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Disabled care preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Disabled care assessment'),
         blank=False,
-        choices=DisabledCarePreferenceChoices.choices,
-        default=DisabledCarePreferenceChoices.NO_PREFERENCE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -719,13 +665,6 @@ class MaidDisabledCare(models.Model):
     )
 
 class MaidGeneralHousework(models.Model):
-    class GeneralHouseworkPreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class GeneralHouseworkRemarksChoices(models.TextChoices):
         CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
@@ -736,11 +675,11 @@ class MaidGeneralHousework(models.Model):
         related_name='general_housework'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('General housework preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('General housework assessment'),
         blank=False,
-        choices=GeneralHouseworkPreferenceChoices.choices,
-        default=GeneralHouseworkPreferenceChoices.NO_PREFERENCE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -771,13 +710,6 @@ class MaidGeneralHousework(models.Model):
     )
 
 class MaidCooking(models.Model):
-    class CookingPreferenceChoices(models.IntegerChoices):
-        LEAST_PREFERRED = 1, _('Least preferred')
-        LESS_PREFERRED = 2, _('Less preferred')
-        NO_PREFERENCE = 3, _('No preference')
-        MORE_PREFERRED = 4, _('More preferred')
-        MOST_PREFERRED = 5, _('Most preferred')
-
     class CookingRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Able to cook own country\'s cuisine')
         CHINESE = 'C', _('Able to cook chinese cuisine')
@@ -824,11 +756,11 @@ class MaidCooking(models.Model):
         related_name='cooking'
     )
 
-    preference = models.IntegerField(
-        verbose_name=_('Cooking preference'),
+    assessment = models.IntegerField(
+        verbose_name=_('Cooking assessment'),
         blank=False,
-        choices=CookingPreferenceChoices.choices,
-        default=CookingPreferenceChoices.NO_PREFERENCE
+        choices=MaidAssessmentChoices.choices,
+        default=MaidAssessmentChoices.AVERAGE
     )
 
     willingness = models.BooleanField(
@@ -856,4 +788,23 @@ class MaidCooking(models.Model):
     other_remarks = models.TextField(
         verbose_name=_('Other remarks for cooking'),
         blank=True
+    )
+
+class MaidOtherCare(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='other_care'
+    )
+
+    care_for_pets = models.BooleanField(
+        verbose_name=_('Care for pets'),
+        blank=False,
+        default=False
+    )
+
+    gardening = models.BooleanField(
+        verbose_name=_('Gardening'),
+        blank=False,
+        default=False
     )

@@ -1,9 +1,9 @@
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -516,3 +516,35 @@ class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
             ),
             maid__agency = self.request.user.agency_owner.agency
         )
+
+# Generic Views
+class MaidProfileView(View):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        try:
+            selected_maid = Maid.objects.get(
+                pk = self.kwargs.get('pk')
+            )
+        except Maid.DoesNotExist:
+            data = {
+                'error': 'Maid does not exist'
+            }
+            return JsonResponse(data, status=404)
+        else:
+            data = {
+                'salary': selected_maid.salary,
+                'days_off': selected_maid.days_off,
+                'employment_history': [
+                    {
+                        'start_date': eh.start_date,
+                        'end_date': eh.end_date,
+                        'country': eh.country,
+                        'work_duration': eh.work_duration,
+                        'work_duties': [
+                            work_duty for work_duty in eh.work_duties
+                        ]
+                    } for eh in selected_maid.employment_history.all()
+                ]
+            }
+            return JsonResponse(data, status=200)

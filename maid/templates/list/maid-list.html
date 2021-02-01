@@ -44,20 +44,24 @@
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
                     {% for maid in maids %}
                         <div class="col mb-4">
-                            <div class="card">
-                                <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{maid.biodata.name}}</h5>
-                                    <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
-                                    <p class="card-text">{{maid.biodata.age}} years old</p>
-                                    <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                                    <p class="card-text">{{maid.get_maid_type_display}}</p>
+                            <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
+                                <div onclick="maidProfileRedirect({{maid.pk}})">
+                                    <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{maid.biodata.name}}</h5>
+                                        <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
+                                        <p class="card-text">{{maid.biodata.age}} years old</p>
+                                        <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                                        <p class="card-text">{{maid.get_maid_type_display}}</p>
+                                    </div>
                                 </div>
                                 <div class="card-footer">
                                     <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
                                 </div>
                             </div>
                         </div>
+                    {% empty %}
+                    <h5>No Maids. Try a different search criteria.</h5>
                     {% endfor %}
                 </div>
             </div>
@@ -65,3 +69,69 @@
     </div>
 </section>
 {% endblock maid_section %}
+{% block js%}
+<script>
+    $(function(){
+        maidProfileRedirect = (pk) => {
+            location.replace(location.origin + location.pathname + pk)
+        }
+        contentGenerator = (salary, days_off, employment_history) => {
+            contentString = '<div>'
+            if(salary){
+                contentString += `<p>Salary: $${salary}</p>`
+            }
+            if(days_off){
+                contentString += `<p>Number of days off: ${days_off}</p>`
+            }
+            if(employment_history){
+                contentString += '<h5>Employment History</h5><ul>'
+                for(eh in employment_history){
+                    contentString += `Start Date: ${eh.start_date} End Date:${eh.end_date} Country:${eh.country} Work_duration:${eh.work_duration}`
+                }
+                contentString += '</ul>'
+            }
+            return contentString
+        }
+        
+        tippy('.maid-card', {
+            content: 'Loading',
+            placement: 'right',
+            allowHTML: true,
+            onCreate(instance) {
+                // Setup our own custom state properties
+                instance._isFetching = false;
+                instance._data = null;
+                instance._error = null;
+            },
+            onShow(instance) {
+                let backend_uri = location.origin + location.pathname + (instance.reference.attributes.id.value).split('-')[1] + '/profile/';
+                if (instance._isFetching || instance._data || instance._error) {
+                    return;
+                }
+                instance._isFetching = true;
+
+                fetch(backend_uri)
+                .then((response) => response.json())
+                .then((result) => {
+                    instance._data = contentGenerator(result.salary,result.days_off,result.employment_history);
+                    instance.setContent(instance._data);
+                })
+                .catch((error) => {
+                    instance._error = error;
+                    console.log(error)
+                    instance.setContent(`Request failed. ${error}`);
+                })
+                .finally(() => {
+                    instance._isFetching = false;
+                });
+            },
+            onHidden(instance) {
+                instance.setContent('Loading...');
+                // Unset these properties so new network requests can be initiated
+                instance._data = null;
+                instance._error = null;
+            }
+        })
+    })
+</script>
+{% endblock js %}
