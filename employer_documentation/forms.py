@@ -297,6 +297,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2a_work_permit_application_collection', '$',
@@ -304,9 +307,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2b_medical_examination_fee', '$',
@@ -314,6 +314,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2c_security_bond_accident_insurance', '$',
@@ -321,9 +324,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2d_indemnity_policy_reimbursement', '$',
@@ -331,6 +331,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2e_home_service', '$',
@@ -338,9 +341,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2f_counselling', '$',
@@ -348,6 +348,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2g_sip', '$',
@@ -355,13 +358,13 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'b2h_replacement_months',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2h_replacement_cost', '$',
@@ -369,9 +372,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2i_work_permit_renewal', '$',
@@ -379,13 +379,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                # Column(
-                #     PrependedText(
-                #         '', '$',
-                #         min='0', max='1000',
-                #     ),
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             Row(
