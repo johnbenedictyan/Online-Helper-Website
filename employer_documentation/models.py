@@ -218,7 +218,7 @@ class EmployerDoc(models.Model):
 
     # Service Fee Schedule
     b1_service_fee = models.DecimalField(
-        verbose_name=_("Service Fee"),
+        verbose_name=_("1. Service Fee"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -227,7 +227,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2a_work_permit_application_collection = models.DecimalField(
-        verbose_name=_("Application / Collection of Work Permit"),
+        verbose_name=_("2a. Application / Collection of Work Permit"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -236,7 +236,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2b_medical_examination_fee = models.DecimalField(
-        verbose_name=_("Medical Examination Fee"),
+        verbose_name=_("2b. Medical Examination Fee"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -245,7 +245,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2c_security_bond_accident_insurance = models.DecimalField(
-        verbose_name=_("Security Bond and Personal Accident Insurance"),
+        verbose_name=_("2c. Security Bond and Personal Accident Insurance"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -254,7 +254,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2d_indemnity_policy_reimbursement = models.DecimalField(
-        verbose_name=_("Reimbursement of Indemnity Policy"),
+        verbose_name=_("2d. Reimbursement of Indemnity Policy"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -263,7 +263,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2e_home_service = models.DecimalField(
-        verbose_name=_("Home Service"),
+        verbose_name=_("2e. Home Service"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -272,7 +272,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2f_counselling = models.DecimalField(
-        verbose_name=_("Each Counselling Session"),
+        verbose_name=_("2f. Each Counselling Session"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -281,7 +281,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2g_sip = models.DecimalField(
-        verbose_name=_("Settling-In-Programme (SIP)"),
+        verbose_name=_("2g. Settling-In-Programme (SIP)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -291,11 +291,11 @@ class EmployerDoc(models.Model):
     )
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("Cost for replacement within __ month(s)"),
+        verbose_name=_("2h. Cost for replacement within __ month(s)"),
         choices=MONTH_CHOICES
     )
     b2h_replacement_cost = models.DecimalField(
-        verbose_name=_("Cost for replacement"),
+        verbose_name=_("2h. Cost for replacement"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -304,7 +304,7 @@ class EmployerDoc(models.Model):
         ],
     )
     b2i_work_permit_renewal = models.DecimalField(
-        verbose_name=_("Renewal of Work Permit"),
+        verbose_name=_("2i. Renewal of Work Permit"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -313,13 +313,13 @@ class EmployerDoc(models.Model):
         ],
     )
     b2j1_other_services_description = models.CharField(
-        verbose_name=_("Other services provided (i)"),
+        verbose_name=_("2j. Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
     b2j1_other_services_fee = models.DecimalField(
-        verbose_name=_("Other services fee (i)"),
+        verbose_name=_("2j. Other services fee (i)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -330,13 +330,13 @@ class EmployerDoc(models.Model):
         null=True,
     )
     b2j2_other_services_description = models.CharField(
-        verbose_name=_("Other services provided (ii)"),
+        verbose_name=_("2j. Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True,
     )
     b2j2_other_services_fee = models.DecimalField(
-        verbose_name=_("Other services fee (ii)"),
+        verbose_name=_("2j. Other services fee (ii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -347,13 +347,13 @@ class EmployerDoc(models.Model):
         null=True,
     )
     b2j3_other_services_description = models.CharField(
-        verbose_name=_("Other services provided (iii)"),
+        verbose_name=_("2j. Other services provided (iii)"),
         max_length=40,
         blank=True,
         null=True,
     )
     b2j3_other_services_fee = models.DecimalField(
-        verbose_name=_("Other services fee (iii)"),
+        verbose_name=_("2j. Other services fee (iii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -364,7 +364,7 @@ class EmployerDoc(models.Model):
         null=True,
     )
     ca_deposit = models.DecimalField(
-        verbose_name=_("Deposit - upon confirmation of FDW"),
+        verbose_name=_("2c. Deposit - upon confirmation of FDW"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -375,10 +375,10 @@ class EmployerDoc(models.Model):
 
     # If FDW is replacement, then additional fields
     fdw_is_replacement = models.BooleanField(
-        verbose_name=_("Is this FDW a replacement?"),
+        verbose_name=_("Is this FDW a replacement? (Form A / Form B)"),
         choices=TrueFalseChoices(
-            'Yes, replacement',
-            'No, not replacement'
+            'Yes, replacement (Form B)',
+            'No, not replacement (Form A)'
         ),
         default=False,
     )
@@ -391,7 +391,7 @@ class EmployerDoc(models.Model):
         related_name='rn_ed_fdwreplaced',
     )
     b4_loan_transferred = models.DecimalField(
-        verbose_name=_("Loan Transferred* (required if FDW is replacement)"),
+        verbose_name=_("4. Loan Transferred* (required if FDW is replacement)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -405,26 +405,26 @@ class EmployerDoc(models.Model):
     # Service Agreement
     c1_3_handover_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("handover FDW to Employer within __ day(s)"),
+        verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
         choices=DAY_CHOICES
     )
     c3_2_no_replacement_criteria_1 = models.CharField(
-        verbose_name=_("No need to provide Employer with replacement FDW \
+        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (i)"),
         max_length=100
     )
     c3_2_no_replacement_criteria_2 = models.CharField(
-        verbose_name=_("No need to provide Employer with replacement FDW \
+        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (ii)"),
         max_length=100
     )
     c3_2_no_replacement_criteria_3 = models.CharField(
-        verbose_name=_("No need to provide Employer with replacement FDW \
+        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (iii)"),
         max_length=100
     )
     c3_4_no_replacement_refund = models.DecimalField(
-        verbose_name=_("Refund amount if no replacement pursuant to Clause \
+        verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
             3.1"),
         max_digits=7,
         decimal_places=2,
@@ -434,7 +434,7 @@ class EmployerDoc(models.Model):
         ],
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("Number of replacement FDWs that Employer is entitled \
+        verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
             to"),
         choices=[
             (0, "0 replacements"),
@@ -452,29 +452,29 @@ class EmployerDoc(models.Model):
     )
     c4_1_replacement_period = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("Replacement FDW period validity (months)"),
+        verbose_name=_("4.1 Replacement FDW period validity (months)"),
         choices=MONTH_CHOICES
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("Replacement only after FDW has worked for minimum of \
+        verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
             __ day(s)"),
         choices=DAY_CHOICES
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("Replacement FDW provided within __ month(s) from \
+        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
             date FDW returned"),
         choices=MONTH_CHOICES
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("Deploy FDW to Employer within __ day(s) of date of \
+        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
             Service Agreement"),
         choices=DAY_CHOICES
     )
     c5_1_1_failed_deployment_refund = models.DecimalField(
-        verbose_name=_("Failed FDW deployment refund amount"),
+        verbose_name=_("5.1.1 Failed FDW deployment refund amount"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -484,12 +484,12 @@ class EmployerDoc(models.Model):
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("If Employer terminates Agreement, Employer entitled \
+        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
             to Service Fee refund within __ day(s)"),
         choices=DAY_CHOICES
     )
     c5_1_2_before_fdw_arrives_charge = models.DecimalField(
-        verbose_name=_("Charge if Employer terminates BEFORE FDW arrives in \
+        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
             Singapore"),
         max_digits=7,
         decimal_places=2,
@@ -499,7 +499,7 @@ class EmployerDoc(models.Model):
         ],
     )
     c5_1_2_after_fdw_arrives_charge = models.DecimalField(
-        verbose_name=_("Charge if Employer terminates AFTER FDW arrives in \
+        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
             Singapore"),
         max_digits=7,
         decimal_places=2,
@@ -510,18 +510,18 @@ class EmployerDoc(models.Model):
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("If new FDW deployed to Employer and former FDW CAN \
+        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
             be transferred to new employer, refund within __ week(s)"),
         choices=WEEK_CHOICES
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("If new FDW deployed to Employer and former FDW CAN \
+        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
             be transferred to new employer, refund within __ week(s)"),
         choices=WEEK_CHOICES
     )
     c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("Accommodation cost per day"),
+        verbose_name=_("6.4 Accommodation cost per day"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -530,7 +530,7 @@ class EmployerDoc(models.Model):
         ],
     )
     c6_6_per_session_counselling_cost = models.DecimalField(
-        verbose_name=_("Counselling cost per day"),
+        verbose_name=_("6.6 Counselling cost per day"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -539,22 +539,22 @@ class EmployerDoc(models.Model):
         ],
     )
     c9_1_independent_mediator_1 = models.CharField(
-        verbose_name=_("Independent mediator #1"),
+        verbose_name=_("9.1 Independent mediator #1"),
         max_length=40
     )
     c9_2_independent_mediator_2 = models.CharField(
-        verbose_name=_("Independent mediator #2"),
+        verbose_name=_("9.2 Independent mediator #2"),
         max_length=40
     )
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("Service Agreement termination notice (days)"),
+        verbose_name=_("13. Service Agreement termination notice (days)"),
         choices=DAY_CHOICES
     )
 
     # Employment Contract
     c3_5_fdw_sleeping_arrangement = models.CharField(
-        verbose_name=_("FDW sleeping arrangement"),
+        verbose_name=_("3.5 FDW sleeping arrangement"),
         max_length=40,
         choices=[
             ("Have own room","Have own room"),
@@ -564,7 +564,7 @@ class EmployerDoc(models.Model):
     )
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("Employment Contract termination notice (days)"),
+        verbose_name=_("4.1 Employment Contract termination notice (days)"),
         choices=DAY_CHOICES
     )
 
