@@ -7,6 +7,8 @@ from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 
 # Imports from foreign installed apps
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
 
 UserModel = get_user_model()
 
@@ -36,3 +38,25 @@ def create_test_user():
             password=password
         )
     }
+
+def encrypt_string(plaintext, encryption_key):
+    # Data to be encrypted formatted as bytes literal
+    bytes_literal = plaintext.encode('ascii')
+
+    # Secret encryption key set in environment variables, does not change
+    key = encryption_key.encode('ascii')
+
+    # New nonce everytime
+    nonce = get_random_bytes(32)
+    
+    # Create cipher object
+    cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+
+    # Generate encrypted ciphertext
+    ciphertext, tag = cipher.encrypt_and_digest(bytes_literal)
+
+    return ciphertext, nonce, tag
+
+def decrypt_string(ciphertext, encryption_key, nonce, tag):
+    cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
+    return cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')

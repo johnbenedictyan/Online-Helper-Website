@@ -255,3 +255,5 @@ MESSAGE_TAGS = {
     messages.ERROR: 'text-danger',
 }
 
+# Pycryptodome key
+ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
