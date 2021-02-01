@@ -1,7 +1,7 @@
 {% extends 'employer_documentation/pdf-00-base.html' %}
 {% load mathfilters %}
 
-{% block title %}Form A: Service and Fees Schedule{% endblock %}
+{% block title %}{% if object.fdw_is_replacement %}Form B – Service & Fees Schedule For Replacement FDW{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
 
 {% block pdf_content %}
 
@@ -9,7 +9,7 @@
 {% with total_placement_fee=object.fdw.agency_fee_amount|add:object.fdw.personal_loan_amount %}
 {% include 'employer_documentation/pdf-00-header.html' %}
 <br>
-<h2 class="text-align-center">FORM A – SERVICE AND FEES SCHEDULE</h2>
+<h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT FDW{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
 <br>
 <div class="border--bottom"></div>
 <div>
@@ -191,6 +191,17 @@
             <td></td>
             <td class="text-align-right border--bottom">{{ total_placement_fee }}</td>
         </tr>
+        {% if object.fdw_is_replacement %}
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td colspan="3">Loan Transfer from previous FDW</td>
+                <td></td>
+                <td class="text-align-right">{% if object.b4_loan_transferred %}{{ object.b4_loan_transferred }}{% else %}0.00{% endif %}</td>
+            </tr>
+        {% endif %}
     </table>
 </div>
 
