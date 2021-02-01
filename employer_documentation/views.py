@@ -226,6 +226,7 @@ class EmployerDetailView(
             )
         except (ValueError, KeyError):
             print("Incorrect decryption")
+            context['object'].employer_nric = ''
         return context
 
 class EmployerDocDetailView(
