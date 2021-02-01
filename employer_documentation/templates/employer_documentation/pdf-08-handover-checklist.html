@@ -39,12 +39,12 @@
         <tr>
             <td>(B)</td>
             <td>Full Name of Foreign Domestic Worker</td>
-            <td>: {{ object.fdw }}</td>
+            <td>: {{ object.fdw.biodata.name }}</td>
         </tr>
         <tr>
             <td></td>
             <td>Passport No.</td>
-            <td>: {{ object.fdw }}</td>
+            <td>: {{ object.fdw.passport_number }}</td>
         </tr>
     </table>
     <table>
@@ -127,7 +127,7 @@
     <br>
     <table>
         <tr>
-            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw }} is the FDW selected by me and I take custody and responsibility of the FDW from the this date.</td>
+            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.biodata.name }} is the FDW selected by me and I take custody and responsibility of the FDW from the this date.</td>
         </tr>
         
         {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
