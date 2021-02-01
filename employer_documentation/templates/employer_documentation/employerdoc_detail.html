@@ -58,7 +58,7 @@
                 <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.fdw_work_commencement_date %}{{ object.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
-                <th scope="row">Agreement: Service Fee Schedule</th>
+                <th scope="row">Agreement: Service Fee Schedule {% if object.fdw_is_replacement %}(Form B){% else %}(Form A){% endif %}</th>
                 <td><a href="{% url 'pdf_agency_service_fee_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;-&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
             </tr>
             <tr>
