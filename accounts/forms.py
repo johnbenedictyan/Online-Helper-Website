@@ -182,6 +182,8 @@ class EmployerCreationForm(forms.ModelForm):
         max_length=255,
         widget=forms.PasswordInput()
     )
+    
+    terms_and_conditions = forms.BooleanField()
 
     class Meta:
         model = Employer
@@ -194,6 +196,13 @@ class EmployerCreationForm(forms.ModelForm):
                 'email': kwargs.pop('email_address', None)
             })
         super().__init__(*args, **kwargs)
+        self.fields['terms_and_conditions'].label = f'''
+            Check here to indicate that you have read and agree to the 
+            <a href="{reverse_lazy('about_us')}" target="_blank">terms
+            and conditions</a> as well as the 
+            <a href="{reverse_lazy('about_us')}" target="_blank">privacy
+            policy</a> of Online Maid Pte Ltd
+        '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -227,6 +236,13 @@ class EmployerCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    'terms_and_conditions',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
                         'Create',
@@ -238,6 +254,14 @@ class EmployerCreationForm(forms.ModelForm):
             )
         )
 
+    def clean_terms_and_conditions(self):
+        terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
+        if terms_and_conditions == False:
+            msg = -('You must agree to sign up for our services')
+            self.add_error('terms_and_conditions', msg)
+            
+        return terms_and_conditions
+    
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")

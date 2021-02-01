@@ -31,6 +31,9 @@ from .views import (
     MaidDelete
 )
 
+## Generic Views
+from .views import MaidProfileView
+
 # Start of Urls
 
 urlpatterns = [
@@ -109,8 +112,18 @@ urlpatterns = [
             ),
             path(
                 '<int:pk>/',
-                MaidDetail.as_view(),
-                name='maid_detail'
+                include([
+                    path(
+                        '',
+                        MaidDetail.as_view(),
+                        name='maid_detail'
+                    ),
+                    path(
+                        'profile/',
+                        MaidProfileView.as_view(),
+                        name='maid_profile'
+                    )
+                ])
             )
         ])
     ),

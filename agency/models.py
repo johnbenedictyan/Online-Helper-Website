@@ -380,3 +380,41 @@ class AgencyEmployee(models.Model):
         editable=False,
         default=False
     )
+
+class PotentialAgency(models.Model):
+    name = models.CharField(
+        verbose_name=_('Company Name'),
+        max_length=100,
+        blank=False
+    )
+
+    license_number = models.CharField(
+        verbose_name=_('License number'),
+        max_length=100,
+        blank=False
+    )
+
+    person_in_charge = models.CharField(
+        verbose_name=_('Name of person in charge'),
+        max_length=100,
+        blank=False
+    )
+
+    contact_number = models.CharField(
+        verbose_name=_('Contact Number of person in charge'),
+        max_length=50,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+        # This regex validator checks if the contact number provided is all 
+        # numbers.
+    )
+
+    email = models.EmailField(
+        verbose_name=_('Email Address of person in charge'),
+        blank=False
+    )

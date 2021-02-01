@@ -238,6 +238,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'sign_in'
 LOGIN_REDIRECT_URL = 'home'
 
+
+# Email Backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_SALES_USER = os.environ.get('EMAIL_HOST_SALES_USER')
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'text-info',
     messages.INFO: 'text-info',
@@ -249,3 +259,6 @@ MESSAGE_TAGS = {
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
+# Pycryptodome Key
+ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')

@@ -14,6 +14,7 @@
         <h1>Agency Sign In</h1>
         <form method="post" enctype="multipart/form-data">
             {% crispy form %}
+            <a href="{% url 'password_reset' %}">Forget your password?</a>
         </form>
     </div>
 {% endblock accounts_section %}

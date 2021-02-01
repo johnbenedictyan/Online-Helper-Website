@@ -10,7 +10,7 @@ import stripe
 from payment.models import Customer
 
 # Imports from within the app
-from .models import Agency, AgencyBranch, AgencyOperatingHours
+from .models import Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency
 
 # Utiliy Classes and Functions
 def agency_completed(agency):
@@ -31,6 +31,13 @@ def agency_completed(agency):
 
 
 # Start of Signals
+@receiver(post_save, sender=Agency)
+def agency_created(sender, instance, created, **kwargs):
+    if created == True:
+        pa = PotentialAgency.objects.get(
+            license_number = instance.license_number
+        )
+        pa.delete()
 
 @receiver(post_save, sender=AgencyBranch)
 def agency_location_completed(sender, instance, created, **kwargs):

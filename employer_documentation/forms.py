@@ -1,8 +1,10 @@
 # Python
+import re
 import secrets
 
 # Imports from django
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
@@ -28,6 +30,7 @@ from onlinemaid.constants import (
     AG_MANAGERS,
     AG_SALES,
 )
+from onlinemaid.helper_functions import encrypt_string, decrypt_string
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -36,13 +39,33 @@ from maid.models import Maid
 class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
-        fields = '__all__'
+        exclude = ['nonce', 'tag',]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.user_obj = get_user_model().objects.get(pk=self.user_pk)
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        ###################################################################################################### TO BE REMOVED
+        '''
+        Decryption
+        '''
+        print(self.instance.employer_nric)
+        if self.instance.employer_nric and self.instance.employer_nric!=b'':
+            try:
+                plaintext = decrypt_string(self.instance.employer_nric, settings.ENCRYPTION_KEY, self.instance.nonce, self.instance.tag)
+                self.initial.update({'employer_nric': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'employer_nric': ''})
+        ###################################################################################################### TO BE REMOVED
+
+        #  Remove employer_nric number from initial form display
+        # self.initial.update({'employer_nric':''})
+        
         self.helper = FormHelper()
         self.helper.form_class = 'employer-form'
 
@@ -166,21 +189,39 @@ class EmployerForm(forms.ModelForm):
     def clean_employer_nric(self):
         cleaned_field = self.cleaned_data.get('employer_nric')
 
-        try:
-            # Check if employer_nric exists in database
-            employer_queryset = Employer.objects.filter(
-                employer_nric=cleaned_field
-            )
-        except Employer.DoesNotExist:
-            # If no entries for employer_nric, then no further checks
-            return cleaned_field
-        else:
-            self.check_queryset(
-                employer_queryset,
-                'An employer with this NRIC/FIN already exists in your \
-                    agency'
-            )
-        return cleaned_field
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        
+        return ciphertext
+
+        ########################################################### Do we need to check NRIC is unique?
+        # try:
+        #     # Check if employer_nric exists in database
+        #     employer_queryset = Employer.objects.filter(
+        #         employer_nric=cleaned_field
+        #     )
+        # except Employer.DoesNotExist:
+        #     # If no entries for employer_nric, then no further checks
+        #     return cleaned_field
+        # else:
+        #     self.check_queryset(
+        #         employer_queryset,
+        #         'An employer with this NRIC/FIN already exists in your \
+        #             agency'
+        #     )
+        # return cleaned_field
 
 class EmployerDocForm(forms.ModelForm):
     class Meta:
