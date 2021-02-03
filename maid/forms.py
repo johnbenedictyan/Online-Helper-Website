@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from crispy_forms.bootstrap import PrependedAppendedText, InlineCheckboxes
+from crispy_forms.bootstrap import InlineCheckboxes, PrependedText
 from agency.models import Agency
 
 # Imports from local apps
@@ -60,20 +60,20 @@ class MaidCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'salary', '$', '.00'
+                    PrependedText(
+                        'salary', '$'
                     ),
                     css_class='form-group col-md-4'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'personal_loan_amount', '$', '.00'
+                    PrependedText(
+                        'personal_loan_amount', '$'
                     ),
                     css_class='form-group col-md-4'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'initial_agency_fee_amount', '$', '.00'
+                    PrependedText(
+                        'initial_agency_fee_amount', '$'
                     ),
                     css_class='form-group col-md-4'
                 ),
@@ -163,14 +163,14 @@ class MaidUpdateForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedAppendedText(
-                        'salary', '$', '.00'
+                    PrependedText(
+                        'salary', '$'
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    PrependedAppendedText(
-                        'personal_loan_amount', '$', '.00'
+                    PrependedText(
+                        'personal_loan_amount', '$'
                     ),
                     css_class='form-group col-md-6'
                 ),
