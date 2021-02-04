@@ -26,6 +26,7 @@ from .views import (
     EmployerDocUpdateView,
     EmployerDocSigSlugUpdateView,
     EmployerDocMaidStatusUpdateView,
+    EmployerDocMaidDeploymentUpdateView,
     JobOrderUpdateView,
 )
 
@@ -127,6 +128,11 @@ urlpatterns = [
                                         'status/<int:employersubdoc_pk>/update/',
                                         EmployerDocMaidStatusUpdateView.as_view(),
                                         name='employerdoc_status_update_route'
+                                    ),
+                                    path(
+                                        'deployment/<int:employersubdoc_pk>/update/',
+                                        EmployerDocMaidDeploymentUpdateView.as_view(),
+                                        name='employerdoc_deployment_update_route'
                                     ),
                                     path(
                                         'job-order/<int:employersubdoc_pk>/update/',

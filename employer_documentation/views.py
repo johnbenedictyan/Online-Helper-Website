@@ -379,6 +379,18 @@ class EmployerDocMaidStatusUpdateView(
             'employerdoc_pk': self.object.employer_doc.pk,
         })
 
+from .forms import EmployerDocMaidDeploymentForm
+class EmployerDocMaidDeploymentUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDocMaidStatus
+    form_class = EmployerDocMaidDeploymentForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('status_list_route')
+
 class JobOrderUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,

@@ -713,7 +713,7 @@ class EmployerDocSigSlugForm(forms.ModelForm):
 class EmployerDocMaidStatusForm(forms.ModelForm):
     class Meta:
         model = EmployerDocMaidStatus
-        exclude = ['employer_doc']
+        exclude = ['employer_doc', 'is_deployed']
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -803,6 +803,14 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
             ),
             Submit('submit', 'Submit')
         )
+
+class EmployerDocMaidDeploymentForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocMaidStatus
+        fields = ['is_deployed']
+    
+    def clean_is_deployed(self):
+        return True
 
 class JobOrderForm(forms.ModelForm):
     class Meta:

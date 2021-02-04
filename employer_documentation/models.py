@@ -718,6 +718,12 @@ class EmployerDocMaidStatus(models.Model):
         blank=True,
         null=True
     )
+    is_deployed = models.BooleanField(
+        _('deployed status'),
+        default=False,
+        help_text=_('Designates whether the FDW has been deployed.'),
+    )
+
 
 # from onlinemaid.storage_backends import PrivateMediaStorage
 class JobOrder(models.Model):
