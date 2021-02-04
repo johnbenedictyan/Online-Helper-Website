@@ -257,6 +257,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'text-danger',
 }
 
+# django.contrib.sites.models.Site
+SITE_ID = 1
+
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
