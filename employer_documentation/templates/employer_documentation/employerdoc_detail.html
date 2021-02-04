@@ -51,11 +51,11 @@
         <tbody>
             <tr>
                 <th scope="row">Agreement Date</th>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.agreement_date %}{{ object.agreement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.agreement_date %}{{ object.agreement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">FDW Work Commencement Date</th>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.fdw_work_commencement_date %}{{ object.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
             </tr>
             <tr>
                 <th scope="row">Agreement: Service Fee Schedule {% if object.fdw_is_replacement %}(Form B){% else %}(Form A){% endif %}</th>
@@ -120,10 +120,6 @@
         <col style="width:50%">
         <col style="width:50%">
         <tbody>
-            <tr>
-                <th scope="row">{% if object.is_locked %}Document is currently locked from editing{% else %}Document is unlocked and can be edited{% endif %}</th>
-                <td><a href="{% url 'employerdoc_lock_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.is_locked %}<i class="fas fa-lock"></i>{% else %}<i class="fas fa-lock-open"></i>{% endif %}</a></td>
-            </tr>
             <tr>
                 <th scope="row">Employer Signature URL</th>
                 <td><a href="{% url 'sig_slug_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}"><i class="fas fa-eye"></i> / <i class="fas fa-redo-alt"></i></a></td>

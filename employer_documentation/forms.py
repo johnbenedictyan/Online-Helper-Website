@@ -228,7 +228,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
-        exclude = ['employer', 'agreement_date', 'fdw_work_commencement_date', 'is_locked']
+        exclude = ['employer', 'agreement_date',]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -665,105 +665,6 @@ class EmployerDocForm(forms.ModelForm):
         else:
             return cleaned_field
 
-class EmployerDocLockForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDoc
-        fields = ['is_locked']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    HTML(
-                        f'''
-                        <a class="btn btn-secondary" href="{{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}}">Edit Documentation</a>
-                        '''
-                    ),
-                    HTML(
-                        f'''
-                        <a class="btn btn-secondary" href="{{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}}">Document Dates</a>
-                        '''
-                    ),
-                    css_class='col'
-                ),
-                css_class='form-row mb-5'
-            ),
-            Row(
-                Column(
-                    'is_locked',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-md-6 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-    def clean_is_locked(self):
-        cleaned_field = self.cleaned_data.get('is_locked')
-        if cleaned_field:
-            if not self.instance.agreement_date:
-                raise ValidationError('Please update documentation agreement date')
-            if not self.instance.fdw_work_commencement_date:
-                raise ValidationError('Please update FDW work commencement date')
-
-        return cleaned_field
-
-class EmployerDocAgreementDateForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDoc
-        fields = ['agreement_date', 'fdw_work_commencement_date']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            HTML('''
-                <h3>Document Dates</h3>
-                '''
-            ),
-            Row(
-                Column(
-                    Field(
-                        'agreement_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Agreement date'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Field(
-                        'fdw_work_commencement_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='FDW work commencement date'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Submit('submit', 'Submit')
-        )
-
 class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSig
@@ -829,22 +730,19 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
             Row(
                 Column(
                     Field(
+                        'fdw_work_commencement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='FDW work commencement date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Field(
                         'ipa_approval_date',
                         type='text',
                         onfocus="(this.type='date')",
                         placeholder='IPA approval date'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Field(
-                        'security_bond_approval_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Security bond approval date'
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -860,6 +758,15 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                Column(
+                    Field(
+                        'security_bond_approval_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Security bond approval date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
                 css_class='form-row'
             ),
             Row(
@@ -872,9 +779,6 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     Field(
                         'sip_date',

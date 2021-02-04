@@ -197,23 +197,8 @@ class EmployerDoc(models.Model):
             'No, sponsor not required'
         ),
     )
-    is_locked = models.BooleanField(
-        verbose_name=_("Document lock"),
-        choices=TrueFalseChoices(
-            'Yes, lock document',
-            'No, some changes are still required'
-        ),
-        default=False,
-    )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
-        blank=True,
-        null=True
-    )
-    fdw_work_commencement_date = models.DateField(
-        verbose_name=_('FDW Work Commencement Date'),
-        blank=True,
-        null=True
     )
 
     # Service Fee Schedule
@@ -696,6 +681,11 @@ class EmployerDocMaidStatus(models.Model):
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_maidstatus_ed'
+    )
+    fdw_work_commencement_date = models.DateField(
+        verbose_name=_('FDW Work Commencement Date'),
+        blank=True,
+        null=True
     )
     ipa_approval_date = models.DateField(
         verbose_name=_('In Principle Approval (IPA) Date'),

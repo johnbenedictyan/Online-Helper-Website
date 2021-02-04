@@ -59,10 +59,10 @@
             <tr>
                 <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
                 <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.agreement_date|date:"d/m/y" %}{{ object.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.fdw_work_commencement_date|date:"d/m/y" %}{{ object.fdw_work_commencement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.is_locked %}Status{% else %}<i class="far fa-times-circle"></i>{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_lock_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.is_locked %}<i class="fas fa-lock"></i>{% else %}<i class="fas fa-lock-open"></i>{% endif %}</a>&emsp;<a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}</td>
+                <td><a href="">{% if object.agreement_date|date:"d/m/y" %}{{ object.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="">Add</a></td>
+                <td></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}</td>
             </tr>
             {% endfor %}
         {% else %}

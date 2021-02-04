@@ -24,8 +24,6 @@ from .views import (
 from .views import (
     EmployerUpdateView,
     EmployerDocUpdateView,
-    EmployerDocLockUpdateView,
-    EmployerDocAgreementDateUpdateView,
     EmployerDocSigSlugUpdateView,
     EmployerDocMaidStatusUpdateView,
     JobOrderUpdateView,
@@ -124,16 +122,6 @@ urlpatterns = [
                                         'delete/',
                                         EmployerDocDeleteView.as_view(),
                                         name='employerdoc_delete_route'
-                                    ),
-                                    path(
-                                        'lock/',
-                                        EmployerDocLockUpdateView.as_view(),
-                                        name='employerdoc_lock_route'
-                                    ),
-                                    path(
-                                        'agreement-date/',
-                                        EmployerDocAgreementDateUpdateView.as_view(),
-                                        name='employerdoc_agreement_date_update_route'
                                     ),
                                     path(
                                         'status/<int:employersubdoc_pk>/update/',

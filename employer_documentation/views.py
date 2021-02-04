@@ -20,8 +20,6 @@ from .models import (
 from .forms import (
     EmployerForm,
     EmployerDocForm,
-    EmployerDocLockForm,
-    EmployerDocAgreementDateForm,
     EmployerDocSigSlugForm,
     EmployerDocMaidStatusForm,
     JobOrderForm,
@@ -130,8 +128,8 @@ class StatusListView(
         else:
             sort_field_name = self.ordering[0].replace('-', '')
 
-        # Get queryset, but only locked/finalised documents
-        queryset = super().get_queryset().filter(is_locked = True)
+        # Get queryset
+        queryset = super().get_queryset()
 
         # Filter results by user's search terms
         if search_terms:
@@ -327,77 +325,6 @@ class EmployerDocUpdateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
-    def get(self, request, *args, **kwargs):
-        if not self.object.is_locked:
-            return super().get(request, *args, **kwargs)
-        else:
-            message = 'The document has been locked from editing'
-            messages.error(request, message)
-            return HttpResponseRedirect(
-                reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer.pk,
-                    'employerdoc_pk': self.object.pk,
-                })
-            )
-
-    def get_success_url(self):
-        return reverse_lazy('employerdoc_detail_route', kwargs={
-            'employer_pk': self.object.employer.pk,
-            'employerdoc_pk': self.object.pk,
-        })
-
-class EmployerDocLockUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    UpdateView
-):
-    model = EmployerDoc
-    form_class = EmployerDocLockForm
-    pk_url_kwarg = 'employerdoc_pk'
-    template_name = 'employer_documentation/crispy_form.html'
-    
-    def get_success_url(self):
-        employer_pk = self.object.employer.pk
-        employerdoc_pk = self.object.pk
-
-        if self.object.is_locked:
-            return reverse_lazy(
-                'employerdoc_status_update_route',
-                kwargs = {
-                    'employer_pk': employer_pk,
-                    'employerdoc_pk': employerdoc_pk,
-                    'employersubdoc_pk': self.object.rn_maidstatus_ed.pk, 
-                }
-            )
-        else:
-            return reverse_lazy('employerdoc_detail_route', kwargs={
-                'employer_pk': employer_pk,
-                'employerdoc_pk': employerdoc_pk,
-            })
-
-class EmployerDocAgreementDateUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    UpdateView
-):
-    model = EmployerDoc
-    form_class = EmployerDocAgreementDateForm
-    pk_url_kwarg = 'employerdoc_pk'
-    template_name = 'employer_documentation/crispy_form.html'
-
-    def get(self, request, *args, **kwargs):
-        if not self.object.is_locked:
-            return super().get(request, *args, **kwargs)
-        else:
-            message = 'The document has been locked from editing'
-            messages.error(request, message)
-            return HttpResponseRedirect(
-                reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer.pk,
-                    'employerdoc_pk': self.object.pk,
-                })
-            )
-
     def get_success_url(self):
         return reverse_lazy('employerdoc_detail_route', kwargs={
             'employer_pk': self.object.employer.pk,
@@ -423,20 +350,6 @@ class EmployerDocSigSlugUpdateView(
         kwargs['form_fields'] = self.form_fields
         return kwargs
 
-    def get(self, request, *args, **kwargs):
-        if self.object.employer_doc.is_locked:
-            return super().get(request, *args, **kwargs)
-        else:
-            message = 'Please finalise and lock the document from editing to \
-                generate signature URLs'
-            messages.error(request, message)
-            return HttpResponseRedirect(
-                reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer_doc.employer.pk,
-                    'employerdoc_pk': self.object.employer_doc.pk,
-                })
-            )
-
     def get_success_url(self):
         return reverse_lazy(self.success_url_route_name, kwargs={
             'employer_pk': self.object.employer_doc.employer.pk,
@@ -460,20 +373,6 @@ class EmployerDocMaidStatusUpdateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
-    def get(self, request, *args, **kwargs):
-        if self.object.employer_doc.is_locked:
-            return super().get(request, *args, **kwargs)
-        else:
-            message = 'The document needs to be finalised and locked from \
-                editing before the status can be accessed'
-            messages.error(request, message)
-            return HttpResponseRedirect(
-                reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer_doc.employer.pk,
-                    'employerdoc_pk': self.object.employer_doc.pk,
-                })
-            )
-
     def get_success_url(self):
         return reverse_lazy('employerdoc_detail_route', kwargs={
             'employer_pk': self.object.employer_doc.employer.pk,
@@ -496,19 +395,6 @@ class JobOrderUpdateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
-
-    def get(self, request, *args, **kwargs):
-        if not self.object.employer_doc.is_locked:
-            return super().get(request, *args, **kwargs)
-        else:
-            message = 'The document has been locked from editing'
-            messages.error(request, message)
-            return HttpResponseRedirect(
-                reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer_doc.employer.pk,
-                    'employerdoc_pk': self.object.employer_doc.pk,
-                })
-            )
 
     def get_success_url(self):
         return reverse_lazy('employerdoc_detail_route', kwargs={
@@ -560,20 +446,6 @@ class SignatureUpdateByAgentView(
         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
             self.model_field_name).verbose_name
         return context
-
-    def get(self, request, *args, **kwargs):
-        if self.object.employer_doc.is_locked:
-            return super().get(request, *args, **kwargs)
-        else:
-            message = 'The document needs to be finalised and locked from \
-                editing before it can be signed'
-            messages.error(request, message)
-            return HttpResponseRedirect(
-                reverse('employerdoc_lock_route', kwargs={
-                    'employer_pk': self.object.employer_doc.employer.pk,
-                    'employerdoc_pk': self.object.employer_doc.pk,
-                })
-            )
 
     def get_success_url(self):
         return reverse_lazy('employerdoc_detail_route', kwargs={
