@@ -42,6 +42,13 @@
                 </div>
                 <div class="row">
                     <div class="col px-0">
+                        <a class="nav-link side-nav-link {% if url_name == 'sales_list_route' %}active{% endif %}" href="{% url 'sales_list_route' %}">
+                        <p class="m-1 pl-2">Sales Summary</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col px-0">
                         <a class="nav-link side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}" href="{% url 'employer_create_route' %}">
                         <p class="m-1 pl-2">Add Employer</p>
                         </a>

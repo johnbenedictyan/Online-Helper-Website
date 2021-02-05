@@ -22,6 +22,7 @@ from .forms import (
     EmployerDocForm,
     EmployerDocSigSlugForm,
     EmployerDocMaidStatusForm,
+    EmployerDocMaidDeploymentForm,
     JobOrderForm,
     SignatureForm,
     VerifyUserTokenForm,
@@ -97,14 +98,15 @@ class EmployerListView(
         else:
             return self.handle_no_permission()
 
-class StatusListView(
+class DocListView(
     LoginByAgencyUserGroupRequiredMixin,
     ListView
 ):
     model = EmployerDoc
-    template_name = 'employer_documentation/status_list.html'
+    template_name = 'employer_documentation/doc_list.html'
     ordering = ['-agreement_date']
     paginate_by = 20
+    is_deployed = None
 
     def get_queryset(self):
         search_terms = self.request.GET.get('search')
@@ -129,7 +131,9 @@ class StatusListView(
             sort_field_name = self.ordering[0].replace('-', '')
 
         # Get queryset
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(
+            rn_maidstatus_ed__is_deployed=self.is_deployed
+        )
 
         # Filter results by user's search terms
         if search_terms:
@@ -379,7 +383,6 @@ class EmployerDocMaidStatusUpdateView(
             'employerdoc_pk': self.object.employer_doc.pk,
         })
 
-from .forms import EmployerDocMaidDeploymentForm
 class EmployerDocMaidDeploymentUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -388,8 +391,12 @@ class EmployerDocMaidDeploymentUpdateView(
     model = EmployerDocMaidStatus
     form_class = EmployerDocMaidDeploymentForm
     pk_url_kwarg = 'employersubdoc_pk'
-    template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('status_list_route')
+
+    def get_success_url(self):
+        if self.object.is_deployed:
+            return reverse_lazy('status_list_route')
+        else:
+            return reverse_lazy('sales_list_route')
 
 class JobOrderUpdateView(
     CheckAgencyEmployeePermissionsMixin,

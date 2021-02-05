@@ -810,7 +810,8 @@ class EmployerDocMaidDeploymentForm(forms.ModelForm):
         fields = ['is_deployed']
     
     def clean_is_deployed(self):
-        return True
+        cleaned_field = self.cleaned_data.get('is_deployed')
+        return cleaned_field
 
 class JobOrderForm(forms.ModelForm):
     class Meta:
