@@ -719,9 +719,16 @@ class EmployerDocMaidStatus(models.Model):
         null=True
     )
     is_deployed = models.BooleanField(
-        _('deployed status'),
+        verbose_name=_('deployed status'),
         default=False,
-        help_text=_('Designates whether the FDW has been deployed.'),
+        choices=TrueFalseChoices(
+            'Yes, deployed',
+            'No, not yet deployed'
+        ),
+        help_text=_('''
+            Marking FDW as deployed will move case from status summary to 
+            sales summary.
+        '''),
     )
 
 
