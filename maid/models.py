@@ -19,7 +19,7 @@ from agency.models import Agency
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidCareRemarkChoices, MaidLanguageChoices, MaidResponsibilityChoices,
-    MaritalStatusChoices
+    MaritalStatusChoices, MaidReligionChoices
 )
 
 # Utiliy Classes and Functions
@@ -342,16 +342,6 @@ class MaidAgencyFeeTransaction(models.Model):
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidBiodata(models.Model):
-    class ReligionChoices(models.TextChoices):
-        BUDDHIST = 'B', _('Buddhist')
-        MUSLIM = 'M', _('Muslim')
-        HINDU = 'H', _('Hindu')
-        CHRISTIAN = 'CH', _('Christain')
-        CATHOLIC = 'CA', _('Catholic')
-        SIKH = 'S', _('Sikh')
-        OTHERS = 'OTH', _('Others')
-        NONE = 'NONE', _('None')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -416,8 +406,8 @@ class MaidBiodata(models.Model):
         verbose_name=_('Religion'),
         max_length=4,
         blank=False,
-        choices=ReligionChoices.choices,
-        default=ReligionChoices.NONE
+        choices=MaidReligionChoices.choices,
+        default=MaidReligionChoices.NONE
     )
 
     languages = models.ManyToManyField(

@@ -283,6 +283,16 @@ class MaidLanguageChoices(models.TextChoices):
     TAGALOG    = 'TAG', _('Tagalog')
     SINHALA    = 'SIN', _('Sinhala')
 
+class MaidReligionChoices(models.TextChoices):
+        BUDDHIST = 'B', _('Buddhist')
+        MUSLIM = 'M', _('Muslim')
+        HINDU = 'H', _('Hindu')
+        CHRISTIAN = 'CH', _('Christain')
+        CATHOLIC = 'CA', _('Catholic')
+        SIKH = 'S', _('Sikh')
+        OTHERS = 'OTH', _('Others')
+        NONE = 'NONE', _('None')
+
 class MaidAssessmentChoices(models.IntegerChoices):
     POOR = 1, _('Poor')
     FAIR = 2, _('Fair')
