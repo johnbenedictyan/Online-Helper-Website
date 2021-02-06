@@ -96,6 +96,20 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     http_method_names = ['get']
     model = Maid
     template_name = 'detail/maid-detail.html'
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        similar_maids = Maid.objects.filter(
+            biodata__country_of_origin=self.object.biodata.country_of_origin,
+            responsibilities=self.object.get_main_responsibility(),
+            biodata__languages__in=self.object.biodata.languages.all()
+        ).exclude(
+            pk=self.object.pk
+        ).distinct()
+        kwargs.update({
+            'similar_maids': similar_maids
+        })
+        return kwargs
 
 # Create Views
 class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 

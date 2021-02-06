@@ -192,6 +192,14 @@ class Maid(models.Model):
         default=False,
         blank=False
     )
+    
+    def get_main_responsibility(self):
+        main_responsibility = [
+            i for i in self.responsibilities.all()
+            if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
+            and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
+        ]
+        return(main_responsibility[0])
 
 class MaidWorkDuty(models.Model):
     class WorkDutyChoices(models.TextChoices):
