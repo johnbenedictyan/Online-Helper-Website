@@ -18,7 +18,7 @@ from agency.models import Agency
 # Imports from within the app
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
-    MaidCareRemarkChoices, MaidLanguageChoices, MaidResponsibilityChoices,
+    MaidCareRemarksChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices
 )
 
