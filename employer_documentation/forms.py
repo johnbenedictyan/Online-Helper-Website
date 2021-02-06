@@ -712,7 +712,7 @@ class EmployerDocSigSlugForm(forms.ModelForm):
 class EmployerDocMaidStatusForm(forms.ModelForm):
     class Meta:
         model = EmployerDocMaidStatus
-        exclude = ['employer_doc', 'is_deployed']
+        exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -723,7 +723,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             HTML('''
-                <h3>Document Dates</h3>
+                <h3>Document Status</h3>
                 '''
             ),
             Row(
@@ -796,6 +796,10 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                         type='text',
                         placeholder='Work permit number'
                     ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'is_deployed',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
