@@ -67,6 +67,13 @@ class Maid(models.Model):
         blank=False
     )
 
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
+        blank=False,
+        null=True
+    )
+
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
         blank=False,
@@ -82,41 +89,6 @@ class Maid(models.Model):
         default=TypeOfMaidChoices.NEW
     )
 
-    salary = models.DecimalField(
-        verbose_name=_('Salary'),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=False,
-        default=0
-    )
-
-    agency_fee_amount = models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        editable=False,
-        default=0
-    )
-
-    personal_loan_amount = models.DecimalField(
-        verbose_name=_('Personal loan amount'),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=False,
-        default=0
-    )
-
     days_off = models.PositiveSmallIntegerField(
         verbose_name=_('Days off'),
         blank=False,
@@ -129,12 +101,6 @@ class Maid(models.Model):
         blank=False,
         choices=PassportStatusChoices.choices,
         default=PassportStatusChoices.NOT_READY
-    )
-
-    repatriation_airport = models.CharField(
-        verbose_name=_('Repatriation airport'),
-        max_length=100,
-        blank=False
     )
 
     remarks = models.CharField(
@@ -341,18 +307,11 @@ class MaidAgencyFeeTransaction(models.Model):
     )
 
 ## Models which have a one-to-one relationship with the maid model 
-class MaidBiodata(models.Model):
+class MaidPersonalDetails(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
-        related_name='biodata'
-    )
-
-    name = models.CharField(
-        verbose_name=_('Name'),
-        max_length=255,
-        blank=False,
-        null=True
+        related_name='personal_details'
     )
 
     age = models.IntegerField(
@@ -412,6 +371,12 @@ class MaidBiodata(models.Model):
         null=True
     )
 
+    repatriation_airport = models.CharField(
+        verbose_name=_('Repatriation airport'),
+        max_length=100,
+        blank=False
+    )
+
     religion = models.CharField(
         verbose_name=_('Religion'),
         max_length=4,
@@ -422,6 +387,80 @@ class MaidBiodata(models.Model):
 
     languages = models.ManyToManyField(
         MaidLanguage
+    )
+
+class MaidFamilyDetails(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='family_details'
+    )
+
+    marital_status = models.CharField(
+        verbose_name=_('Marital Status'),
+        max_length=2,
+        blank=False,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE
+    )
+
+    number_of_children = models.PositiveSmallIntegerField(
+        blank=False,
+        default=0
+    )
+
+    age_of_children = models.CharField(
+        verbose_name=_('Age of children'),
+        max_length=50,
+        blank=False,
+        default='N.A'
+    )
+
+    number_of_siblings = models.PositiveSmallIntegerField(
+        blank=False,
+        default=0
+    )
+
+class MaidFinancialDetails(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='financial_details'
+    )
+
+    salary = models.DecimalField(
+        verbose_name=_('Salary'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        blank=False,
+        default=0
+    )
+
+    agency_fee_amount = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        editable=False,
+        default=0
+    )
+
+    personal_loan_amount = models.DecimalField(
+        verbose_name=_('Personal loan amount'),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        blank=False,
+        default=0
     )
 
 class MaidStatus(models.Model):
@@ -459,38 +498,6 @@ class MaidStatus(models.Model):
         verbose_name=_('Deployment Date'),
         blank=False,
         null=True
-    )
-
-class MaidFamilyDetails(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='family_details'
-    )
-
-    marital_status = models.CharField(
-        verbose_name=_('Marital Status'),
-        max_length=2,
-        blank=False,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE
-    )
-
-    number_of_children = models.PositiveSmallIntegerField(
-        blank=False,
-        default=0
-    )
-
-    age_of_children = models.CharField(
-        verbose_name=_('Age of children'),
-        max_length=50,
-        blank=False,
-        default='N.A'
-    )
-
-    number_of_siblings = models.PositiveSmallIntegerField(
-        blank=False,
-        default=0
     )
 
 class MaidInfantChildCare(models.Model):
