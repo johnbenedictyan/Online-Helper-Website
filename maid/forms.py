@@ -1,5 +1,6 @@
 # Imports from django
 from django import forms
+from django.contrib.admin.widgets import AdminDateWidget
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project-wide files
@@ -7,8 +8,8 @@ from onlinemaid.constants import TrueFalseChoices
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
-from crispy_forms.bootstrap import InlineCheckboxes, PrependedText
+from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
+from crispy_forms.bootstrap import InlineCheckboxes, PrependedText, AppendedText
 from agency.models import Agency
 
 # Imports from local apps
@@ -23,6 +24,8 @@ from .models import (
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
+
+from .widgets import CustomDateInput
 
 # Start of Forms
 
@@ -264,11 +267,15 @@ class MaidBiodataForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'height',
+                    AppendedText(
+                        'height', 'cm'
+                    ),
                     css_class='form-group col-md'
                 ),
                 Column(
-                    'weight',
+                    AppendedText(
+                        'weight', 'kg'
+                    ),
                     css_class='form-group col-md'
                 ),
                 Column(
@@ -695,7 +702,7 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
 class MainMaidCreationForm(forms.Form):
     # Maid Information
     photo = forms.ImageField(
-        label='',
+        label=_('Photo'),
         required=True
     )
 
@@ -726,7 +733,7 @@ class MainMaidCreationForm(forms.Form):
     )
 
     remarks = forms.CharField(
-        label='',
+        label=_('Remarks'),
         widget=forms.Textarea,
         required=True
     )
@@ -749,25 +756,27 @@ class MainMaidCreationForm(forms.Form):
     )
 
     religion = forms.ChoiceField(
-        label='',
+        label=_('Religion'),
         choices=MaidReligionChoices.choices,
         initial=MaidReligionChoices.NONE,
         required=True
     )
 
     language_spoken = forms.MultipleChoiceField(
-        label='',
+        label=_('Langauge Spoken'),
         choices=MaidLanguageChoices.choices,
+        widget=forms.CheckboxSelectMultiple(),
         required=True
     )
 
     date_of_birth = forms.DateField(
-        label='',
-        required=True
+        label=_('Date of Birth'),
+        required=True,
+        widget=CustomDateInput()
     )
 
     country_of_origin = forms.ChoiceField(
-        label='',
+        label=_('Country of Origin'),
         choices=MaidCountryOfOrigin.choices,
         required=True
     )
@@ -785,26 +794,27 @@ class MainMaidCreationForm(forms.Form):
     )
 
     repatriation_airport = forms.CharField(
-        label=_('Repatriation airport'),
+        label='',
         max_length=100,
         required=True
     )
 
     place_of_birth = forms.CharField(
-        label=_('Place of birth'),
+        label='',
         max_length=25,
         required=True
     )
 
     # Maid Family Details
     marital_status = forms.ChoiceField(
-        label=_('Marital Status'),
+        label='',
         required=True,
         choices=MaritalStatusChoices.choices,
         initial=MaritalStatusChoices.SINGLE
     )
 
     number_of_children = forms.IntegerField(
+        label='',
         required=True,
         initial=0,
         max_value=20,
@@ -812,13 +822,14 @@ class MainMaidCreationForm(forms.Form):
     )
 
     age_of_children = forms.CharField(
-        label=_('Age of children'),
+        label='',
         max_length=50,
         required=True,
         initial='N.A'
     )
 
     number_of_siblings = forms.IntegerField(
+        label='',
         required=True,
         initial=0,
         max_value=20,
@@ -1018,3 +1029,391 @@ class MainMaidCreationForm(forms.Form):
         required=True,
         initial=0
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    HTML(
+                        '<h3>Maid Information</h3>'
+                    ),
+                    css_class='col'
+                ),
+                css_class='row'
+            ),
+            Row(
+                Column(
+                    HTML(
+                        "<img src='{{ MEDIA_URL }}{% if form.photo.value%}{{form.photo.value}}{% else %}/thumbnails/default{% endif %}' alt='' class='img-fluid thumbnail' >"
+                    ),
+                    'photo',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    Row(
+                        HTML("<label for='id_reference_number' class='col-md-4 col-form-label'>Reference Number</label>"),
+                        Column(
+                            'reference_number',
+                            css_class='col-md-8'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_name' class='col-md-4 col-form-label'>Name</label>"),
+                        Column(
+                            'name',
+                            css_class='col-md-8'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_maid_type' class='col-md-4 col-form-label'>Type of Maid</label>"),
+                        Column(
+                            'maid_type',
+                            css_class='col-md-8'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_days_off' class='col-md-4 col-form-label'>Number of days off</label>"),
+                        Column(
+                            'days_off',
+                            css_class='col-md-8'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    css_class='form-group col-md-7 offset-md-1'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'remarks',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h3>Maid Personal Details</h3>'
+                    ),
+                    css_class='col'
+                ),
+                css_class='row'
+            ),
+            Row(
+                Column(
+                    'language_spoken',
+                    css_class='col-md-3'
+                ),
+                Column(
+                    Row(
+                        Column(
+                            AppendedText(
+                                'height', 'cm'
+                            ),
+                            css_class='form-group col-md-4'
+                        ),
+                        Column(
+                            AppendedText(
+                                'weight', 'kg'
+                            ),
+                            css_class='form-group col-md-4'
+                        ),
+                        Column(
+                            'country_of_origin',
+                            css_class='form-group col-md-4'
+                        ),
+                        Column(
+                            'date_of_birth',
+                            css_class='form-group col-md-4'
+                        ),
+                        Column(
+                            'religion',
+                            css_class='form-group col-md-4'
+                        ),
+                    ),
+                    css_class='col-md-9'
+                )
+            ),
+            Row(
+                Column(
+                    Row(
+                        HTML("<label for='id_address_1' class='col-md-4 col-form-label'>Address</label>"),
+                        Column(
+                            'address_1',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_address_2' class='col-md-4 col-form-label'>Address 2</label>"),
+                        Column(
+                            'address_2',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Row(
+                        HTML("<label for='id_place_of_birth' class='col-md-4 offset-md-1 col-form-label'>Place of Birth</label>"),
+                        Column(
+                            'place_of_birth',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_repatriation_airport' class='col-md-4 offset-md-1 col-form-label'>Repatriation Airport</label>"),
+                        Column(
+                            'repatriation_airport',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    css_class='form-group col-md-6'
+                )
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h3>Family Details</h3>'
+                    ),
+                    css_class='col'
+                ),
+                css_class='row'
+            ),
+            Row(
+                Column(
+                    Row(
+                        HTML("<label for='id_marital_status' class='col-md-4 col-form-label'>Marital Status</label>"),
+                        Column(
+                            'marital_status',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_number_of_children' class='col-md-4 col-form-label'>Number of children</label>"),
+                        Column(
+                            'number_of_children',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Row(
+                        HTML("<label for='id_age_of_children' class='col-md-4 offset-md-1 col-form-label'>Age of children</label>"),
+                        Column(
+                            'age_of_children',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_number_of_siblings' class='col-md-4 offset-md-1 col-form-label'>Number of siblings</label>"),
+                        Column(
+                            'number_of_siblings',
+                            css_class='col-md-7'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    css_class='form-group col-md-6'
+                )
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h3>Financial Details</h3>'
+                    ),
+                    css_class='col'
+                ),
+                css_class='row'
+            ),
+            Row(
+                Column(
+                    'salary',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'personal_loan_amount',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'initial_agency_fee_amount',
+                    css_class='form-group col-md-4'
+                )
+            ),
+            Row(
+                Column(
+                    'initial_agency_fee_description',
+                    css_class='col'
+                ),
+                css_class='form-group row'
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h3>Care Details</h3>'
+                    ),
+                ),
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5>Infant Child Care</h5>'
+                    ),
+                    css_class='col-12'
+                ),
+                Column(
+                    'cfi_assessment',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfi_willingness',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfi_experience',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfi_remarks',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfi_other_remarks',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5>Elderly Care</h5>'
+                    ),
+                    css_class='col-12'
+                ),
+                Column(
+                    'cfe_assessment',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfe_willingness',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfe_experience',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfe_remarks',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfe_other_remarks',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5>Disabled Care</h5>'
+                    ),
+                    css_class='col-12'
+                ),
+                Column(
+                    'cfd_assessment',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfd_willingness',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfd_experience',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfd_remarks',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cfd_other_remarks',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5>General Housework</h5>'
+                    ),
+                    css_class='col-12'
+                ),
+                Column(
+                    'geh_assessment',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'geh_willingness',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'geh_experience',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'geh_remarks',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'geh_other_remarks',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5>Cooking</h5>'
+                    ),
+                    css_class='col-12'
+                ),
+                Column(
+                    'cok_assessment',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cok_willingness',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cok_experience',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cok_remarks',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'cok_other_remarks',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
