@@ -3,15 +3,19 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
-from betterforms.multiform import MultiModelForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from crispy_forms.bootstrap import InlineCheckboxes, PrependedText
 from agency.models import Agency
 
 # Imports from local apps
+from .constants import (
+    TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
+    MaidCountryOfOrigin, MaritalStatusChoices
+)
+
 from .models import (
-    Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
+    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
@@ -214,7 +218,7 @@ class MaidUpdateForm(forms.ModelForm):
         
 class MaidBiodataForm(forms.ModelForm):
     class Meta:
-        model = MaidBiodata
+        model = MaidPersonalDetails
         exclude = ['maid']
 
     def __init__(self, *args, **kwargs):
@@ -684,3 +688,181 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
         )
 
 # Generic Forms (forms.Form)
+class MainMaidCreationForm(forms.Form):
+    # Maid Information
+    photo = forms.ImageField(
+        label='',
+        required=True
+    )
+
+    reference_number = forms.CharField(
+        label='',
+        max_length=50,
+        required=True
+    )
+
+    name = forms.CharField(
+        label='',
+        max_length=255,
+        required=True
+    )
+
+    maid_type = forms.ChoiceField(
+        label='',
+        choices=TypeOfMaidChoices.choices,
+        initial=TypeOfMaidChoices.NEW,
+        required=True
+    )
+
+    days_off = forms.IntegerField(
+        label='',
+        max_value=30,
+        min_value=0,
+        required=True
+    )
+
+    remarks =  forms.CharField(
+        label='',
+        widget=forms.Textarea,
+        required=True
+    )
+
+    # Maid Personal Details
+    height = forms.DecimalField(
+        max_value=200,
+        min_value=0,
+        max_digits=5,
+        decimal_places=2,
+        required=True
+    )
+
+    weight = forms.DecimalField(
+        max_value=100,
+        min_value=0,
+        max_digits=5,
+        decimal_places=2,
+        required=True
+    )
+
+    religion = forms.ChoiceField(
+        label='',
+        choices=MaidReligionChoices.choices,
+        initial=MaidReligionChoices.NONE,
+        required=True
+    )
+
+    language_spoken = forms.MultipleChoiceField(
+        label='',
+        choices=MaidLanguageChoices.choices,
+        required=True
+    )
+
+    date_of_birth = forms.DateField(
+        label='',
+        required=True
+    )
+
+    country_of_origin = forms.ChoiceField(
+        label='',
+        choices=MaidCountryOfOrigin.choices,
+        required=True
+    )
+
+    address_1 = forms.CharField(
+        label='',
+        max_length=255,
+        required=True
+    )
+
+    address_2 = forms.CharField(
+        label='',
+        max_length=255,
+        required=True
+    )
+
+    repatriation_airport = forms.CharField(
+        label=_('Repatriation airport'),
+        max_length=100,
+        required=True
+    )
+
+    place_of_birth = forms.CharField(
+        label=_('Place of birth'),
+        max_length=25,
+        required=True
+    )
+
+    # Maid Family Details
+    marital_status = forms.ChoiceField(
+        label=_('Marital Status'),
+        required=True,
+        choices=MaritalStatusChoices.choices,
+        initial=MaritalStatusChoices.SINGLE
+    )
+
+    number_of_children = forms.IntegerField(
+        required=True,
+        initial=0,
+        max_value=20,
+        min_value=0
+    )
+
+    age_of_children = forms.CharField(
+        label=_('Age of children'),
+        max_length=50,
+        required=True,
+        initial='N.A'
+    )
+
+    number_of_siblings = forms.IntegerField(
+        required=True,
+        initial=0,
+        max_value=20,
+        min_value=0
+    )
+
+    # Care
+    
+    # Financial
+    def __init__(self, *args, **kwargs):
+        self.form_type = kwargs.pop('form_type', None)
+        if self.form_type == 'UPDATE':
+            kwargs.update(initial={
+            })
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'country',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'work_duties',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'start_date',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'end_date',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Purchase',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
