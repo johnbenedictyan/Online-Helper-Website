@@ -808,40 +808,26 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         )
 
     def clean(self):
-        field = ''
-        error_msg = '''
-            To mark this case as deployed, {{field}} field must not be empty.'''.format(field=field)
+        error_msg = _('%(field)s field must not be empty.')
         
-        if self.cleaned_data.get('is_deployed'):
-            if not self.cleaned_data.get('fdw_work_commencement_date'):
-                self.add_error('fdw_work_commencement_date', error_msg.format(
-                    field = 'FDW work commencement date'
-                ))
+        def check_field_not_empty(field):
+            if not self.cleaned_data.get(field):
+                self.add_error(
+                    field,
+                    ValidationError(
+                        error_msg,
+                        code= 'error_' + field,
+                        params= {
+                            'field': EmployerDocMaidStatus._meta.get_field(
+                                field).verbose_name
+                        },
+                    )
+                )
 
-            if not self.cleaned_data.get('ipa_approval_date'):
-                self.add_error('ipa_approval_date', error_msg.format(
-                    field = 'IPA approval date'
-                ))
-            
-            if not self.cleaned_data.get('security_bond_approval_date'):
-                self.add_error('security_bond_approval_date', error_msg.format(
-                    field = 'security bond approval date'
-                ))
-            
-            if not self.cleaned_data.get('arrival_date'):
-                self.add_error('arrival_date', error_msg.format(
-                    field = 'arrival date'
-                ))
-            
-            if not self.cleaned_data.get('thumb_print_date'):
-                self.add_error('thumb_print_date', error_msg.format(
-                    field = 'thumb print date'
-                ))
-            
-            if not self.cleaned_data.get('sip_date'):
-                self.add_error('sip_date', error_msg.format(
-                    field = 'SIP date'
-                ))
+        if self.cleaned_data.get('is_deployed'):
+            for field in self.fields:
+                if field!='work_permit_no' and field!='is_deployed':
+                    check_field_not_empty(field)
 
         return self.cleaned_data
 
@@ -849,10 +835,6 @@ class EmployerDocMaidDeploymentForm(forms.ModelForm):
     class Meta:
         model = EmployerDocMaidStatus
         fields = ['is_deployed']
-    
-    def clean_is_deployed(self):
-        cleaned_field = self.cleaned_data.get('is_deployed')
-        return cleaned_field
 
 class JobOrderForm(forms.ModelForm):
     class Meta:
