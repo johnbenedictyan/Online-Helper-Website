@@ -2,6 +2,9 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+# Imports from project-wide files
+from onlinemaid.constants import TrueFalseChoices
+
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
@@ -11,7 +14,8 @@ from agency.models import Agency
 # Imports from local apps
 from .constants import (
     TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
-    MaidCountryOfOrigin, MaritalStatusChoices
+    MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
+    MaidCareRemarksChoices
 )
 
 from .models import (
@@ -822,47 +826,195 @@ class MainMaidCreationForm(forms.Form):
     )
 
     # Care
+    cfi_assessment = forms.IntegerField(
+        label=_('Infant child care assessment'),
+        required=True,
+        choices=MaidAssessmentChoices.choices,
+        initial=MaidAssessmentChoices.AVERAGE
+    )
+
+    cfi_willingness = forms.ChoiceField(
+        label=_('Willingness for infant child care'),
+        required=True,
+        choices=TrueFalseChoices('Willing', 'Not willing'),
+    )
+
+    cfi_experience = forms.ChoiceField(
+        label=_('Experience with infant child care'),
+        required=True,
+        choices=TrueFalseChoices('Experience', 'No experience'),
+    )
+
+    cfi_remarks = forms.ChoiceField(
+        label=_('Remarks for infant child care'),
+        required=True,
+        choices=MaidCareRemarksChoices.choices,
+        null=True
+    )
+
+    cfi_other_remarks = forms.TextField(
+        label=_('Other remarks for infant child care'),
+        blank=True
+    )
+
+    cfe_assessment = forms.IntegerField(
+        label=_('Elderly care assessment'),
+        required=True,
+        choices=MaidAssessmentChoices.choices,
+        initial=MaidAssessmentChoices.AVERAGE
+    )
+
+    cfe_willingness = forms.ChoiceField(
+        label=_('Willingness for elderly care'),
+        required=True,
+        choices=TrueFalseChoices('Willing', 'Not willing'),
+        
+    )
+
+    cfe_experience = forms.ChoiceField(
+        label=_('Experience with elderly care'),
+        required=True,
+        choices=TrueFalseChoices('Experience', 'No experience'),
+        
+    )
+
+    cfe_remarks = forms.ChoiceField(
+        label=_('Remarks for elderly care'),
+        required=True,
+        choices=MaidCareRemarksChoices.choices
+    )
+
+    cfe_other_remarks = forms.TextField(
+        label=_('Other remarks for elderly care'),
+        blank=True
+    )
     
+    cfd_assessment = forms.IntegerField(
+        label=_('Disabled care assessment'),
+        required=True,
+        choices=MaidAssessmentChoices.choices,
+        initial=MaidAssessmentChoices.AVERAGE
+    )
+
+    cfd_willingness = forms.ChoiceField(
+        label=_('Willingness for disabled care'),
+        required=True,
+        choices=TrueFalseChoices('Willing', 'Not willing'),
+    )
+
+    cfd_experience = forms.ChoiceField(
+        label=_('Experience with disabled care'),
+        required=True,
+        choices=TrueFalseChoices('Experience', 'No experience'),
+    )
+
+    cfd_remarks = forms.ChoiceField(
+        label=_('Remarks for disabled care'),
+        required=True,
+        choices=MaidCareRemarksChoices.choices,
+        null=True
+    )
+
+    cfd_other_remarks = forms.TextField(
+        label=_('Other remarks for disabled care'),
+        blank=True
+    )
+
+    geh_assessment = forms.IntegerField(
+        label=_('General housework care assessment'),
+        required=True,
+        choices=MaidAssessmentChoices.choices,
+        initial=MaidAssessmentChoices.AVERAGE
+    )
+
+    geh_willingness = forms.ChoiceField(
+        label=_('Willingness for general housework care'),
+        required=True,
+        choices=TrueFalseChoices('Willing', 'Not willing'),
+    )
+
+    geh_experience = forms.ChoiceField(
+        label=_('Experience with general housework care'),
+        required=True,
+        choices=TrueFalseChoices('Experience', 'No experience'),
+    )
+
+    geh_remarks = forms.ChoiceField(
+        label=_('Remarks for general housework care'),
+        required=True,
+        choices=MaidCareRemarksChoices.choices,
+        null=True
+    )
+
+    geh_other_remarks = forms.TextField(
+        label=_('Other remarks for general housework care'),
+        blank=True
+    )
+
+    cok_assessment = forms.IntegerField(
+        label=_('Cooking assessment'),
+        required=True,
+        choices=MaidAssessmentChoices.choices,
+        initial=MaidAssessmentChoices.AVERAGE
+    )
+
+    cok_willingness = forms.ChoiceField(
+        label=_('Willingness for cooking'),
+        required=True,
+        choices=TrueFalseChoices('Willing', 'Not willing'),
+    )
+
+    cok_experience = forms.ChoiceField(
+        label=_('Experience with cooking'),
+        required=True,
+        choices=TrueFalseChoices('Experience', 'No experience'),
+        
+    )
+
+    cok_remarks = forms.ChoiceField(
+        label=_('Remarks for cooking'),
+        required=True,
+        choices=MaidCareRemarksChoices.choices,
+        null=True
+    )
+
+    cok_other_remarks = forms.TextField(
+        label=_('Other remarks for cooking'),
+        blank=True
+    )
+
     # Financial
-    def __init__(self, *args, **kwargs):
-        self.form_type = kwargs.pop('form_type', None)
-        if self.form_type == 'UPDATE':
-            kwargs.update(initial={
-            })
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'country',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'work_duties',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'start_date',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'end_date',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Purchase',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
+    initial_agency_fee_amount = forms.DecimalField(
+        label=_('Initial agency fee amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=True,
+        initial=0
+    )
+
+    initial_agency_fee_description = forms.CharField(
+        required=True,
+        widget=forms.Textarea()
+    )
+
+    salary = forms.DecimalField(
+        label=_('Salary'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=True,
+        initial=0
+    )
+
+    personal_loan_amount = forms.DecimalField(
+        label=_('Personal loan amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=True,
+        initial=0
+    )
