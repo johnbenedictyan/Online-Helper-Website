@@ -726,8 +726,8 @@ class EmployerDocMaidStatus(models.Model):
             'No, not yet deployed'
         ),
         help_text=_('''
-            Marking FDW as deployed will move case from status summary to 
-            sales summary.
+            Marking FDW status as deployed will move case from status summary
+            to sales summary.
         '''),
     )
 
