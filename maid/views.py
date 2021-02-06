@@ -30,7 +30,7 @@ from .forms import (
 )
 
 from .models import (
-    Maid, MaidBiodata, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
+    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory,
     MaidAgencyFeeTransaction
@@ -100,9 +100,9 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
         similar_maids = Maid.objects.filter(
-            biodata__country_of_origin=self.object.biodata.country_of_origin,
+            personal_details__country_of_origin=self.object.biodata.country_of_origin,
             responsibilities=self.object.get_main_responsibility(),
-            biodata__languages__in=self.object.biodata.languages.all()
+            personal_details__languages__in=self.object.biodata.languages.all()
         ).exclude(
             pk=self.object.pk
         ).distinct()
@@ -135,7 +135,7 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
             'initial_agency_fee_description'
         )
         response = super().form_valid(form)
-        MaidBiodata.objects.create(
+        MaidPersonalDetails.objects.create(
             maid=self.object
         )
         MaidFamilyDetails.objects.create(
@@ -269,12 +269,12 @@ class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin,
     context_object_name = 'maid_biodata'
     form_class = MaidBiodataForm
     http_method_names = ['get','post']
-    model = MaidBiodata
+    model = MaidPersonalDetails
     template_name = 'update/maid-biodata-update.html'
     success_message = 'FDW biodata updated'
 
     def get_object(self, queryset=None):
-        return MaidBiodata.objects.get(
+        return MaidPersonalDetails.objects.get(
             maid = Maid.objects.get(
                 pk = self.kwargs.get(
                     self.pk_url_kwarg
