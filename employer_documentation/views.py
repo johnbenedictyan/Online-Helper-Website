@@ -220,12 +220,12 @@ class EmployerDetailView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            context['object'].employer_nric = decrypt_string(
+            context['object'].employer_nric = '●'*5 + decrypt_string(
                 self.object.employer_nric,
                 settings.ENCRYPTION_KEY,
                 self.object.nonce,
                 self.object.tag
-            )
+            )[-4:]
         except (ValueError, KeyError):
             print("Incorrect decryption")
             context['object'].employer_nric = ''
