@@ -316,7 +316,7 @@ class MaidResponsibilityChoices(models.TextChoices):
     MAID_RESP_CARE_FOR_PETS             = 'CFP', _('Care for Pets')
     MAID_RESP_GARDENING                 = 'GAR', _('Gardening')
 
-class MaidCareRemarkChoices(models.TextChoices):
+class MaidCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Experience in own country')
     OVERSEAS = 'OV', _('Experience in overseas')
     SINGAPORE = 'SG', _('Experience in Singapore')
