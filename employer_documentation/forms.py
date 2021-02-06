@@ -719,9 +719,6 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
 
-        self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD = '''
-            To mark this case as deployed, this field must not be empty.'''
-
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
@@ -810,53 +807,43 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
-    def clean_fdw_work_commencement_date(self):
-        cleaned_field = self.cleaned_data.get('fdw_work_commencement_date')
+    def clean(self):
+        field = ''
+        error_msg = '''
+            To mark this case as deployed, {{field}} field must not be empty.'''.format(field=field)
+        
+        if self.cleaned_data.get('is_deployed'):
+            if not self.cleaned_data.get('fdw_work_commencement_date'):
+                self.add_error('fdw_work_commencement_date', error_msg.format(
+                    field = 'FDW work commencement date'
+                ))
 
-        if self.instance.is_deployed and not cleaned_field:
-            raise ValidationError(self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD)
-        else:
-            return cleaned_field
+            if not self.cleaned_data.get('ipa_approval_date'):
+                self.add_error('ipa_approval_date', error_msg.format(
+                    field = 'IPA approval date'
+                ))
+            
+            if not self.cleaned_data.get('security_bond_approval_date'):
+                self.add_error('security_bond_approval_date', error_msg.format(
+                    field = 'security bond approval date'
+                ))
+            
+            if not self.cleaned_data.get('arrival_date'):
+                self.add_error('arrival_date', error_msg.format(
+                    field = 'arrival date'
+                ))
+            
+            if not self.cleaned_data.get('thumb_print_date'):
+                self.add_error('thumb_print_date', error_msg.format(
+                    field = 'thumb print date'
+                ))
+            
+            if not self.cleaned_data.get('sip_date'):
+                self.add_error('sip_date', error_msg.format(
+                    field = 'SIP date'
+                ))
 
-    def clean_ipa_approval_date(self):
-        cleaned_field = self.cleaned_data.get('ipa_approval_date')
-
-        if self.instance.is_deployed and not cleaned_field:
-            raise ValidationError(self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD)
-        else:
-            return cleaned_field
-
-    def clean_security_bond_approval_date(self):
-        cleaned_field = self.cleaned_data.get('security_bond_approval_date')
-
-        if self.instance.is_deployed and not cleaned_field:
-            raise ValidationError(self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD)
-        else:
-            return cleaned_field
-
-    def clean_arrival_date(self):
-        cleaned_field = self.cleaned_data.get('arrival_date')
-
-        if self.instance.is_deployed and not cleaned_field:
-            raise ValidationError(self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD)
-        else:
-            return cleaned_field
-
-    def clean_thumb_print_date(self):
-        cleaned_field = self.cleaned_data.get('thumb_print_date')
-
-        if self.instance.is_deployed and not cleaned_field:
-            raise ValidationError(self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD)
-        else:
-            return cleaned_field
-
-    def clean_sip_date(self):
-        cleaned_field = self.cleaned_data.get('sip_date')
-
-        if self.instance.is_deployed and not cleaned_field:
-            raise ValidationError(self.ERROR_MSG_DEPLOYMENT_EMPTY_FIELD)
-        else:
-            return cleaned_field
+        return self.cleaned_data
 
 class EmployerDocMaidDeploymentForm(forms.ModelForm):
     class Meta:
