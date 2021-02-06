@@ -725,7 +725,7 @@ class MainMaidCreationForm(forms.Form):
         required=True
     )
 
-    remarks =  forms.CharField(
+    remarks = forms.CharField(
         label='',
         widget=forms.Textarea,
         required=True
@@ -826,7 +826,7 @@ class MainMaidCreationForm(forms.Form):
     )
 
     # Care
-    cfi_assessment = forms.IntegerField(
+    cfi_assessment = forms.ChoiceField(
         label=_('Infant child care assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
@@ -847,17 +847,17 @@ class MainMaidCreationForm(forms.Form):
 
     cfi_remarks = forms.ChoiceField(
         label=_('Remarks for infant child care'),
-        required=True,
+        required=False,
         choices=MaidCareRemarksChoices.choices,
-        null=True
     )
 
-    cfi_other_remarks = forms.TextField(
+    cfi_other_remarks = forms.CharField(
         label=_('Other remarks for infant child care'),
-        blank=True
+        widget=forms.Textarea,
+        required=False
     )
 
-    cfe_assessment = forms.IntegerField(
+    cfe_assessment = forms.ChoiceField(
         label=_('Elderly care assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
@@ -884,12 +884,13 @@ class MainMaidCreationForm(forms.Form):
         choices=MaidCareRemarksChoices.choices
     )
 
-    cfe_other_remarks = forms.TextField(
+    cfe_other_remarks = forms.CharField(
         label=_('Other remarks for elderly care'),
-        blank=True
+        widget=forms.Textarea,
+        required=False
     )
     
-    cfd_assessment = forms.IntegerField(
+    cfd_assessment = forms.ChoiceField(
         label=_('Disabled care assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
@@ -912,15 +913,15 @@ class MainMaidCreationForm(forms.Form):
         label=_('Remarks for disabled care'),
         required=True,
         choices=MaidCareRemarksChoices.choices,
-        null=True
     )
 
-    cfd_other_remarks = forms.TextField(
+    cfd_other_remarks = forms.CharField(
         label=_('Other remarks for disabled care'),
-        blank=True
+        widget=forms.Textarea,
+        required=False
     )
 
-    geh_assessment = forms.IntegerField(
+    geh_assessment = forms.ChoiceField(
         label=_('General housework care assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
@@ -942,16 +943,16 @@ class MainMaidCreationForm(forms.Form):
     geh_remarks = forms.ChoiceField(
         label=_('Remarks for general housework care'),
         required=True,
-        choices=MaidCareRemarksChoices.choices,
-        null=True
+        choices=MaidCareRemarksChoices.choices
     )
 
-    geh_other_remarks = forms.TextField(
+    geh_other_remarks = forms.CharField(
         label=_('Other remarks for general housework care'),
-        blank=True
+        widget=forms.Textarea,
+        required=False
     )
 
-    cok_assessment = forms.IntegerField(
+    cok_assessment = forms.ChoiceField(
         label=_('Cooking assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
@@ -968,19 +969,18 @@ class MainMaidCreationForm(forms.Form):
         label=_('Experience with cooking'),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
-        
     )
 
     cok_remarks = forms.ChoiceField(
         label=_('Remarks for cooking'),
         required=True,
         choices=MaidCareRemarksChoices.choices,
-        null=True
     )
 
-    cok_other_remarks = forms.TextField(
+    cok_other_remarks = forms.CharField(
         label=_('Other remarks for cooking'),
-        blank=True
+        widget=forms.Textarea,
+        required=False
     )
 
     # Financial
