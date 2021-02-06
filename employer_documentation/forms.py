@@ -55,7 +55,6 @@ class EmployerForm(forms.ModelForm):
         '''
         Decryption
         '''
-        print(self.instance.employer_nric)
         if self.instance.employer_nric and self.instance.employer_nric!=b'':
             try:
                 plaintext = decrypt_string(self.instance.employer_nric, settings.ENCRYPTION_KEY, self.instance.nonce, self.instance.tag)
