@@ -135,7 +135,7 @@ class MaidCreationForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        reference_number = cleaned_data.get('reference_numnber')
+        reference_number = cleaned_data.get('reference_number')
         try:
             Maid.objects.get(
                 agency = Agency.objects.get(
@@ -1031,6 +1031,7 @@ class MainMaidCreationForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
+        self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -1417,3 +1418,23 @@ class MainMaidCreationForm(forms.Form):
                 css_class='form-row'
             )
         )
+
+    def clean_reference_number(self):
+        reference_number = self.cleaned_data.get('reference_number')
+        try:
+            Maid.objects.get(
+                agency = Agency.objects.get(
+                    pk = self.agency_id
+                ),
+                reference_number = reference_number
+            )
+        except Maid.DoesNotExist:
+            pass
+        else:
+            msg = _('A maid with this reference number already exist')
+            self.add_error('reference_number', msg)
+
+        return reference_number
+
+    def save(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
