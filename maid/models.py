@@ -369,16 +369,26 @@ class MaidBiodata(models.Model):
         choices=MaidCountryOfOrigin.choices
     )
 
-    height = models.PositiveSmallIntegerField(
-        verbose_name=_('Height (in cm)'),
-        blank=False,
-        null=True
+    height = models.DecimalField(
+        verbose_name=_('Height'),
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(200)
+        ],
+        blank=False
     )
 
-    weight = models.PositiveSmallIntegerField(
+    weight = models.DecimalField(
         verbose_name=_('Weight (in kg)'),
-        blank=False,
-        null=True
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ],
+        blank=False
     )
     
     place_of_birth = models.CharField(
