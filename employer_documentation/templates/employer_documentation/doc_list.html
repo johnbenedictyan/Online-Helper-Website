@@ -67,37 +67,16 @@
                     <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.sip_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
                     <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></td>
                     <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></td>
-                    <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}">{% if request.resolver_match.url_name == 'status_list_route' %}Deploy{% elif request.resolver_match.url_name == 'sales_list_route' %}Undo Deploy{% endif %}</button></td>
+                    {% if request.resolver_match.url_name == 'status_list_route' %}
+                        {% if not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.work_permit_no or not object.rn_maidstatus_ed.fdw_work_commencement_date %}
+                            <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">Update</a></td>
+                        {% else %}
+                            {% include 'employer_documentation/doc_list_modal_snippet.html' %}
+                        {% endif %}
+                    {% elif request.resolver_match.url_name == 'sales_list_route' %}
+                        {% include 'employer_documentation/doc_list_modal_snippet.html' %}
+                    {% endif %}
                 </tr>
-
-                <!-- Modal -->
-                <div class="modal fade" id="deployFdwModal-{{ object.rn_maidstatus_ed.pk }}" tabindex="-1" aria-labelledby="deployFdwModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Confirm {% if request.resolver_match.url_name == 'sales_list_route' %}Undo{% endif %} FDW Deployment</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            </div>
-                            <div class="modal-body">
-                                {% if request.resolver_match.url_name == 'status_list_route' %}
-                                    <p>Please confirm FDW has been deployed to employer.</p>
-                                    <p>After deployment confirmation, case will be moved to sales summary.</p>
-                                {% elif request.resolver_match.url_name == 'sales_list_route' %}
-                                    <p>Undo deployment?</p>
-                                    <p>After confirmation, case will be moved back to status summary.</p>
-                                {% endif %}
-                            </div>
-                            <div class="modal-footer">
-                                <form action="{% url 'employerdoc_deployment_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="text" name="is_deployed" id="is-deployed-{{ object.rn_maidstatus_ed.pk }}" hidden="True" {% if request.resolver_match.url_name == 'status_list_route' %}value="True"{% elif request.resolver_match.url_name == 'sales_list_route' %}value="False"{% endif %}>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <input type="submit" class="btn btn-primary" value="{% if request.resolver_match.url_name == 'status_list_route' %}Deploy{% elif request.resolver_match.url_name == 'sales_list_route' %}Undo Deploy{% endif %}">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             {% endfor %}
         {% else %}
             <tr>
