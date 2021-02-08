@@ -83,8 +83,9 @@
             })
         }
 
-        if (document.querySelector('#copy-button')) {
-            document.querySelector('#copy-button').addEventListener('click', () => {
+        let copyBtn = document.querySelector('#copy-button');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
                 let copyElement = document.getElementById("copy-id");
                 navigator.clipboard.writeText(copyElement.value)
                     .then(() => {
