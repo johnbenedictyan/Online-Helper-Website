@@ -259,13 +259,8 @@ MESSAGE_TAGS = {
     messages.ERROR: 'text-danger',
 }
 
-<<<<<<< HEAD
-# django.contrib.sites.models.Site
-SITE_ID = 1
-=======
 # Django-OTP
 OTP_TOTP_ISSUER = 'om-django-otp'
->>>>>>> master
 
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
@@ -273,3 +268,6 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # Pycryptodome Key
 ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
+
+# django.contrib.sites.models.Site
+SITE_ID = 1
