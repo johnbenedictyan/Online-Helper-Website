@@ -22,7 +22,6 @@ from django.urls import include,path
 
 # Imports from foreign installed apps
 from django_otp.admin import OTPAdminSite
-# from notifications.urls import urlpatterns as notifications_urls
 
 # Imports from local apps
 from accounts.urls import urlpatterns as accounts_urls
