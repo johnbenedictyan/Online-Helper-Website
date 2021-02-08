@@ -6,6 +6,7 @@ import uuid
 # Imports from django
 from django import forms
 from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
@@ -16,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden
-from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton
+from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
 
 # Imports from local apps
 from .models import (
@@ -668,6 +669,10 @@ class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSig
         fields = ['employer_slug', 'fdw_slug']
+        labels = {
+            'employer_slug': _('Employer signature URL'),
+            'fdw_slug': _('FDW signature URL'),
+        }
 
     def __init__(self, *args, **kwargs):
         self.model_field_name = kwargs.pop('model_field_name')
@@ -679,21 +684,32 @@ class EmployerDocSigSlugForm(forms.ModelForm):
         self.helper.layout = Layout()
         
         current_site = Site.objects.get_current()
+
+        self.initial.update({
+            self.model_field_name: current_site.domain + reverse(
+                'token_verification_' + self.model_field_name[:-5] + '_route',
+                kwargs={'slug':self.initial.get(self.model_field_name)}
+            )
+        })
         
-        # Make copy of all field names, then remove fields that are not
-        # in self.form_fields.
+        # Make copy of all field names, then remove fields that are not in self.form_fields.
         fields_copy = list(self.fields)
         for field in fields_copy:
             if field!=self.model_field_name:
                 del self.fields[field]
             else:
                 self.helper.layout.append(
-                    HTML(
-                        f'''
-                        <h3>Current {self.model_field_name[:-5]} URL:</h3>
-                        <span id="copy-id">{current_site.domain}{{% url 'token_verification_{self.model_field_name[:-5]}_route' slug=object.{self.model_field_name} %}}</span>
-                        <span id="copy-button" onclick="copyToClipboard()"><i class="fas fa-copy"></i></span>
-                        '''
+                    UneditableField(
+                        self.model_field_name,
+                        id='copy-id',
+                        css_class='col',
+                    )
+                )
+                self.helper.layout.append(
+                    StrictButton(
+                        '<i class="fas fa-copy"></i>',
+                        id="copy-button",
+                        css_class="btn btn-secondary",
                     )
                 )
         self.helper.layout.append(

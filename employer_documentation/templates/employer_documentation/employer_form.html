@@ -83,54 +83,29 @@
             })
         }
 
-        function copyToClipboard(){
-            // Select the element with ID = "CopyMeID", can be a div, p, or a span, possibly others
-            var textToCopy = document.getElementById("copy-id");
-            var copyButton = document.getElementById('copy-button');
-            
-            // Animate copy button
-            copyButton.children[0].animate([
-                { transform: 'scale(1)' },
-                { transform: 'scale(2)' },
-                { transform: 'scale(1)' },
-            ], {
-                duration: 500, //milliseconds
-                easing: 'ease-in', //'linear', a bezier curve, etc.
-                delay: 0, //milliseconds
-                iterations: 1, //or a number
-                direction: 'normal', //'normal', 'reverse', etc.
-                fill: 'forwards' //'backwards', 'both', 'none', 'auto'
-            });
-        
-            // Check and see if the user had a text selection range
-            var currentRange;
-            if (document.getSelection().rangeCount > 0) {
-                // If user has a text selection range, store it
-                currentRange = document.getSelection().getRangeAt(0);
-                // Remove the current selection
-                window.getSelection().removeRange(currentRange);
-            }
-            else {
-                // If user didn't have anything selected
-                currentRange = false;
-            }
-        
-            // Create a selection range
-            var CopyRange = document.createRange();
-            // Choose the element we want to select the text of
-            CopyRange.selectNode(textToCopy);
-            // Select the text inside the range
-            window.getSelection().addRange(CopyRange);
-            // Copy the text to the clipboard
-            document.execCommand("copy");
-        
-            // Remove our selection range
-            window.getSelection().removeRange(CopyRange);
-        
-            // Return the old selection range
-            if (currentRange) {
-                window.getSelection().addRange(currentRange);
-            }
+        if (document.querySelector('#copy-button')) {
+            document.querySelector('#copy-button').addEventListener('click', () => {
+                let copyElement = document.getElementById("copy-id");
+                navigator.clipboard.writeText(copyElement.value)
+                    .then(() => {
+                        // Animate copy button
+                        copyElement.animate([
+                            { transform: 'scale(1)' },
+                            { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
+                            { transform: 'scale(1)' },
+                        ], {
+                            duration: 500, //milliseconds
+                            easing: 'ease-in', //'linear', a bezier curve, etc.
+                            delay: 0, //milliseconds
+                            iterations: 1, //or a number
+                            direction: 'normal', //'normal', 'reverse', etc.
+                            fill: 'forwards' //'backwards', 'both', 'none', 'auto'
+                        });
+                    })
+                    .catch(err => {
+                        console.log('Error in copying text: ', err);
+                    });
+            })
         }
     </script>
 {% endblock js %}
