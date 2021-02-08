@@ -683,8 +683,8 @@ class EmployerDocSigSlugForm(forms.ModelForm):
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout()
         
+        # Insert full URL path to signature token URL
         current_site = Site.objects.get_current()
-
         self.initial.update({
             self.model_field_name: current_site.domain + reverse(
                 'token_verification_' + self.model_field_name[:-5] + '_route',
@@ -692,29 +692,40 @@ class EmployerDocSigSlugForm(forms.ModelForm):
             )
         })
         
-        # Make copy of all field names, then remove fields that are not in self.form_fields.
+        # Make copy of all field names, then remove fields that are not in self.form_fields
         fields_copy = list(self.fields)
         for field in fields_copy:
             if field!=self.model_field_name:
                 del self.fields[field]
-            else:
-                self.helper.layout.append(
-                    UneditableField(
-                        self.model_field_name,
-                        id='copy-id',
-                        css_class='col',
-                    )
-                )
-                self.helper.layout.append(
-                    StrictButton(
-                        '<i class="fas fa-copy"></i>',
-                        id="copy-button",
-                        css_class="btn btn-secondary",
-                    )
-                )
+        
         self.helper.layout.append(
-            Hidden(self.model_field_name, self.model_field_name,)
+            HTML('''
+                <h5>Unique URL</h5>
+            ''')
         )
+        self.helper.layout.append(
+            UneditableField(
+                self.model_field_name,
+                id='copy-id',
+                css_class='col',
+            )
+        )
+        self.helper.layout.append(
+            StrictButton(
+                '<i class="fas fa-copy"></i>',
+                id="copy-button",
+                css_class="btn btn-secondary",
+            )
+        )
+        
+        # Workaround for validation always failing due to missing field.
+        # This duplicates the input field, meaning that there are 2 HTML input fields with same name.
+        # Without this duplicate, the form validation fails, saying that first field is required.
+        self.helper.layout.append(
+            Hidden(self.model_field_name, 'null',)
+        )
+
+        # Submitting form will regen new slug
         self.helper.layout.append(
             Submit('submit', 'Renew URL')
         )
