@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include,path
 
 # Imports from foreign installed apps
+from django_otp.admin import OTPAdminSite
 # from notifications.urls import urlpatterns as notifications_urls
 
 # Imports from local apps
@@ -32,8 +33,11 @@ from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
 from enquiry.urls import urlpatterns as enquiry_urls
 
-# Start of Urls
+# Instantiate OTPAdminSite object
+''' Use this to toggle 2FA on/off '''
+admin.site.__class__ = OTPAdminSite
 
+# Start of Urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include(accounts_urls)),
