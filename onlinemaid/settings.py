@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     # 3rd party packages
     'crispy_forms',
     'django_filters',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
     'mathfilters',
     'social_django',
     'storages',
@@ -257,8 +259,13 @@ MESSAGE_TAGS = {
     messages.ERROR: 'text-danger',
 }
 
+<<<<<<< HEAD
 # django.contrib.sites.models.Site
 SITE_ID = 1
+=======
+# Django-OTP
+OTP_TOTP_ISSUER = 'om-django-otp'
+>>>>>>> master
 
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
