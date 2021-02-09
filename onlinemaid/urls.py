@@ -22,7 +22,6 @@ from django.urls import include,path
 
 # Imports from foreign installed apps
 from django_otp.admin import OTPAdminSite
-# from notifications.urls import urlpatterns as notifications_urls
 
 # Imports from local apps
 from accounts.urls import urlpatterns as accounts_urls
@@ -40,7 +39,6 @@ from enquiry.urls import urlpatterns as enquiry_urls
 # Django OTP
 ''' Use this to toggle 2FA on/off '''
 USE_2FA = os.environ.get('USE_2FA') == 'TRUE'
-# Instantiate OTPAdminSite object
 if USE_2FA:
     admin.site.__class__ = OTPAdminSite
 
