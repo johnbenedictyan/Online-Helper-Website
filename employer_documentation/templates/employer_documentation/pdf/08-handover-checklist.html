@@ -1,9 +1,9 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 
 {% block title %}Handover Checklist{% endblock %}
 
 {% block pdf_content %}
-{% include 'employer_documentation/pdf-00-header.html' %}
+{% include 'employer_documentation/pdf/00-header.html' %}
 <br>
     <h2 class="text-align-center">HANDLING AND TAKE OVER FORM</h2>
     <br>
@@ -130,7 +130,7 @@
             <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.biodata.name }} is the FDW selected by me and I take custody and responsibility of the FDW from the this date.</td>
         </tr>
         
-        {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+        {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
 
         <tr>
             <td width="40%" class="border--bottom"><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>

@@ -1,10 +1,10 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 
 {% block title %}Rest Day Agreement{% endblock %}
 
 {% block pdf_content %}
 
-{% include 'employer_documentation/pdf-00-header.html' %}
+{% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">REST DAY AGREEMENT BETWEEN EMPLOYER AND FDW</h2>
 <br>
@@ -60,7 +60,7 @@
         <td colspan="3">It was agreed between the contracting parties that the abovementioned FDW will have {{ object.fdw.days_off }} rest day(s) per month,{% comment %}on {{ object.fdw }}{% endcomment %} with compensation of S${{ object.fdw }} for each rest day forgone.</td>
     </tr>
     
-    {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+    {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
 
     <tr>
         <td><br></td>
@@ -82,7 +82,7 @@
     </tr>
 
     {% with object=None %}
-        {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+        {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
     {% endwith %}
 
 </table>

@@ -214,7 +214,7 @@ urlpatterns = [
                                     path(
                                         'pdf/service-fees/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-01-service-fee-schedule.html',
+                                            template_name='employer_documentation/pdf/01-service-fee-schedule.html',
                                             content_disposition = 'inline; filename="service_fee_schedule.pdf"',
                                         ),
                                         name='pdf_agency_service_fee_schedule'
@@ -222,7 +222,7 @@ urlpatterns = [
                                     path(
                                         'pdf/service-agreement/',
                                         PdfServiceAgreementAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-03-service-agreement.html',
+                                            template_name='employer_documentation/pdf/03-service-agreement.html',
                                             content_disposition = 'inline; filename="service_agreement.pdf"',
                                         ),
                                         name='pdf_agency_service_agreement'
@@ -230,7 +230,7 @@ urlpatterns = [
                                     path(
                                         'pdf/employment-contract/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-04-employment-contract.html',
+                                            template_name='employer_documentation/pdf/04-employment-contract.html',
                                             content_disposition = 'inline; filename="employment-contract.pdf"',
                                         ),
                                         name='pdf_agency_employment_contract'
@@ -238,7 +238,7 @@ urlpatterns = [
                                     path(
                                         'pdf/repayment-schedule/',
                                         PdfRepaymentScheduleAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                            template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                             content_disposition = 'inline; filename="repayment-schedule.pdf"',
                                         ),
                                         name='pdf_agency_repayment_schedule'
@@ -246,7 +246,7 @@ urlpatterns = [
                                     path(
                                         'pdf/rest-day-agreement/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                            template_name='employer_documentation/pdf/06-rest-day-agreement.html',
                                             content_disposition = 'inline; filename="rest-day-agreement.pdf"',
                                         ),
                                         name='pdf_agency_rest_day_agreement'
@@ -261,7 +261,7 @@ urlpatterns = [
                                     path(
                                         'pdf/handover-checklist/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                            template_name='employer_documentation/pdf/08-handover-checklist.html',
                                             content_disposition = 'inline; filename="handover-checklist.pdf"',
                                         ),
                                         name='pdf_agency_handover_checklist'
@@ -269,7 +269,7 @@ urlpatterns = [
                                     path(
                                         'pdf/transfer-consent/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-09-transfer-consent.html',
+                                            template_name='employer_documentation/pdf/09-transfer-consent.html',
                                             content_disposition = 'inline; filename="transfer-consent.pdf"',
                                         ),
                                         name='pdf_agency_transfer_consent'
@@ -277,7 +277,7 @@ urlpatterns = [
                                     path(
                                         'pdf/work-pass-authorisation/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
+                                            template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
                                             content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
                                         ),
                                         name='pdf_agency_work_pass_authorisation'
@@ -285,7 +285,7 @@ urlpatterns = [
                                     path(
                                         'pdf/security-bond/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-11-security-bond.html',
+                                            template_name='employer_documentation/pdf/11-security-bond.html',
                                             content_disposition = 'inline; filename="security-bond.pdf"',
                                         ),
                                         name='pdf_agency_security_bond'
@@ -293,7 +293,7 @@ urlpatterns = [
                                     path(
                                         'pdf/fdw-work-permit-12b/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                            template_name='employer_documentation/pdf/12-fdw-work-permit.html',
                                             content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
                                         ),
                                         name='pdf_agency_fdw_work_permit_12b'
@@ -301,7 +301,7 @@ urlpatterns = [
                                     path(
                                         'pdf/income-tax-declaration/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-13-income-tax-declaration.html',
+                                            template_name='employer_documentation/pdf/13-income-tax-declaration.html',
                                             content_disposition = 'inline; filename="income-tax-declaration.pdf"',
                                         ),
                                         name='pdf_agency_income_tax_declaration'
@@ -309,7 +309,7 @@ urlpatterns = [
                                     path(
                                         'pdf/safety-agreement/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                            template_name='employer_documentation/pdf/14-safety-agreement.html',
                                             content_disposition = 'inline; filename="safety-agreement.pdf"',
                                         ),
                                         name='pdf_agency_safety_agreement'
@@ -371,7 +371,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-01-service-fee-schedule.html',
+                                            template_name='employer_documentation/pdf/01-service-fee-schedule.html',
                                             content_disposition = 'inline; filename="service_fee_schedule.pdf"',
                                         ),
                                         name='pdf_token_employer_service_fee_schedule'
@@ -381,7 +381,7 @@ urlpatterns = [
                                         PdfServiceAgreementTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-03-service-agreement.html',
+                                            template_name='employer_documentation/pdf/03-service-agreement.html',
                                             content_disposition = 'inline; filename="service_agreement.pdf"',
                                         ),
                                         name='pdf_token_employer_service_agreement'
@@ -391,7 +391,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-04-employment-contract.html',
+                                            template_name='employer_documentation/pdf/04-employment-contract.html',
                                             content_disposition = 'inline; filename="employment-contract.pdf"',
                                         ),
                                         name='pdf_token_employer_employment_contract'
@@ -401,7 +401,7 @@ urlpatterns = [
                                         PdfRepaymentScheduleTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                            template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                             content_disposition = 'inline; filename="repayment-schedule.pdf"',
                                         ),
                                         name='pdf_token_employer_repayment_schedule'
@@ -411,7 +411,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                            template_name='employer_documentation/pdf/06-rest-day-agreement.html',
                                             content_disposition = 'inline; filename="rest-day-agreement.pdf"',
                                         ),
                                         name='pdf_token_employer_rest_day_agreement'
@@ -430,7 +430,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                            template_name='employer_documentation/pdf/08-handover-checklist.html',
                                             content_disposition = 'inline; filename="handover-checklist.pdf"',
                                         ),
                                         name='pdf_token_employer_handover_checklist'
@@ -440,7 +440,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-09-transfer-consent.html',
+                                            template_name='employer_documentation/pdf/09-transfer-consent.html',
                                             content_disposition = 'inline; filename="transfer-consent.pdf"',
                                         ),
                                         name='pdf_token_employer_transfer_consent'
@@ -450,7 +450,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-10-work-pass-authorisation.html',
+                                            template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
                                             content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
                                         ),
                                         name='pdf_token_employer_work_pass_authorisation'
@@ -460,7 +460,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-11-security-bond.html',
+                                            template_name='employer_documentation/pdf/11-security-bond.html',
                                             content_disposition = 'inline; filename="security-bond.pdf"',
                                         ),
                                         name='pdf_token_employer_security_bond'
@@ -470,7 +470,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                            template_name='employer_documentation/pdf/12-fdw-work-permit.html',
                                             content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
                                         ),
                                         name='pdf_token_employer_fdw_work_permit_12b'
@@ -480,7 +480,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-13-income-tax-declaration.html',
+                                            template_name='employer_documentation/pdf/13-income-tax-declaration.html',
                                             content_disposition = 'inline; filename="income-tax-declaration.pdf"',
                                         ),
                                         name='pdf_token_employer_income_tax_declaration'
@@ -490,7 +490,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                            template_name='employer_documentation/pdf/14-safety-agreement.html',
                                             content_disposition = 'inline; filename="safety-agreement.pdf"',
                                         ),
                                         name='pdf_token_employer_safety_agreement'
@@ -547,7 +547,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
-                                            template_name='employer_documentation/pdf-04-employment-contract.html',
+                                            template_name='employer_documentation/pdf/04-employment-contract.html',
                                             content_disposition = 'inline; filename="employment-contract.pdf"',
                                         ),
                                         name='pdf_token_fdw_employment_contract'
@@ -557,7 +557,7 @@ urlpatterns = [
                                         PdfRepaymentScheduleTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
-                                            template_name='employer_documentation/pdf-05-repayment-schedule.html',
+                                            template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                             content_disposition = 'inline; filename="repayment-schedule.pdf"',
                                         ),
                                         name='pdf_token_fdw_repayment_schedule'
@@ -567,7 +567,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
-                                            template_name='employer_documentation/pdf-06-rest-day-agreement.html',
+                                            template_name='employer_documentation/pdf/06-rest-day-agreement.html',
                                             content_disposition = 'inline; filename="rest-day-agreement.pdf"',
                                         ),
                                         name='pdf_token_fdw_rest_day_agreement'
@@ -586,7 +586,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
-                                            template_name='employer_documentation/pdf-08-handover-checklist.html',
+                                            template_name='employer_documentation/pdf/08-handover-checklist.html',
                                             content_disposition = 'inline; filename="handover-checklist.pdf"',
                                         ),
                                         name='pdf_token_fdw_handover_checklist'
@@ -596,7 +596,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
-                                            template_name='employer_documentation/pdf-12-fdw-work-permit.html',
+                                            template_name='employer_documentation/pdf/12-fdw-work-permit.html',
                                             content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
                                         ),
                                         name='pdf_token_fdw_fdw_work_permit_12b'
@@ -606,7 +606,7 @@ urlpatterns = [
                                         PdfGenericTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
-                                            template_name='employer_documentation/pdf-14-safety-agreement.html',
+                                            template_name='employer_documentation/pdf/14-safety-agreement.html',
                                             content_disposition = 'inline; filename="safety-agreement.pdf"',
                                         ),
                                         name='pdf_token_fdw_safety_agreement'
