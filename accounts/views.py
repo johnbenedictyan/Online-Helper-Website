@@ -25,7 +25,7 @@ class SignInView(SuccessMessageMixin, LoginView):
     success_message = 'Successful Login'
 
 class AgencySignInView(SuccessMessageMixin, LoginView):
-    template_name = 'base/sign-in.html'
+    template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
     success_message = 'Successful Login'
     
