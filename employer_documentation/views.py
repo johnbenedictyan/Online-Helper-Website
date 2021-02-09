@@ -63,7 +63,6 @@ class EmployerListView(
         if search_terms:
             queryset = super().get_queryset().filter(
                 Q(employer_name__icontains=search_terms) |
-                Q(employer_nric__icontains=search_terms) |
                 Q(employer_email__icontains=search_terms) |
                 Q(employer_mobile_number__icontains=search_terms)
             )
@@ -140,7 +139,6 @@ class SalesListView(
             queryset = queryset.filter(
                 Q(case_ref_no__icontains=search_terms) |
                 Q(employer__employer_name__icontains=search_terms) |
-                Q(employer__employer_nric__icontains=search_terms) |
                 Q(employer__employer_email__icontains=search_terms) |
                 Q(employer__employer_mobile_number__icontains=search_terms)
             )
@@ -225,7 +223,6 @@ class StatusListView(
             queryset = queryset.filter(
                 Q(case_ref_no__icontains=search_terms) |
                 Q(employer__employer_name__icontains=search_terms) |
-                Q(employer__employer_nric__icontains=search_terms) |
                 Q(employer__employer_email__icontains=search_terms) |
                 Q(employer__employer_mobile_number__icontains=search_terms)
             )
