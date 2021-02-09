@@ -553,6 +553,33 @@ class EmployerDoc(models.Model):
         choices=DAY_CHOICES
     )
 
+    def calc_admin_cost(self):
+        # Method to calculate total administrative cost
+        return (
+            self.b1_service_fee
+            + self.b2a_work_permit_application_collection
+            + self.b2b_medical_examination_fee
+            + self.b2c_security_bond_accident_insurance
+            + self.b2d_indemnity_policy_reimbursement
+            + self.b2e_home_service
+            + self.b2f_counselling
+            + self.b2g_sip
+            + self.b2h_replacement_cost
+            + self.b2i_work_permit_renewal
+            + self.b2j1_other_services_fee
+            + self.b2j2_other_services_fee
+            + self.b2j3_other_services_fee
+        )
+
+    def calc_bal(self):
+        # Method to calculate outstanding balance owed by employer
+        return (
+            self.calc_admin_cost()
+            + self.fdw.agency_fee_amount
+            + self.fdw.personal_loan_amount
+            - self.ca_deposit
+        )
+
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
