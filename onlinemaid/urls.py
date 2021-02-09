@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 # Imports from django
+from django.conf import settings
 from django.contrib import admin
 from django.urls import include,path
 
@@ -33,9 +34,11 @@ from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
 from enquiry.urls import urlpatterns as enquiry_urls
 
-# Instantiate OTPAdminSite object
-''' Use this to toggle 2FA on/off '''
-admin.site.__class__ = OTPAdminSite
+
+# Django OTP
+if settings.USE_DJANGO_OTP:
+    # Instantiate OTPAdminSite object
+    admin.site.__class__ = OTPAdminSite
 
 # Start of Urls
 urlpatterns = [
