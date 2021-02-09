@@ -1,10 +1,13 @@
 # Imports from python
 
 # Imports from django
+from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Imports from other apps
+import stripe
+from payment.models import Customer
 
 # Imports from within the app
 from .models import Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency
@@ -78,3 +81,38 @@ def agency_operating_hours_completed(sender, instance, created, **kwargs):
             ):
                 agency.completed = True
                 agency.save()
+
+@receiver(post_save, sender=Agency)
+def stripe_customer_created_or_update(sender, instance, created, **kwargs):
+    agency = instance
+    if created == True:
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            stripe_customer = stripe.Customer.create(
+                address = {
+                    'city': None,
+                    'country': None,
+                    'line1': None,
+                    'line2': None,
+                    'postal_code': None,
+                    'state': None,
+                },
+                description = f'Customer account for {agency.name}',
+                email=agency.company_email,
+                name=agency.name,
+                invoice_settings={
+                    'custom_fields': None,
+                    'default_payment_method': None,
+                    'footer': ''
+                }
+            )
+        except Exception as e:
+            print(e)
+        else:
+            new_customer = Customer(
+                agency = agency
+            )
+            new_customer.id = stripe_customer.id
+            new_customer.save()
+    else:
+        pass

@@ -1,0 +1,288 @@
+{% extends 'dashboard-base.html' %}
+{% block dashboard_section %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form>
+                    <div class="form-group">
+                        <label for="plansFormControlSelect">Available Plans</label>
+                        <select class="form-control" id="plansFormControlSelect" onchange="myFunction()">
+                            <option value="ppcp">Premium Platform &amp; CRM Plan</option>
+                            <option value="spcp">Standard Platform &amp; CRM Plan</option>
+                            <option value="pcp">Premium CRM Plan</option>
+                            <option value="scp">Standard CRM Plan</option>
+                            <option value="ppp">Premium Platform Plan</option>
+                            <option value="spp">Standard Platform Plan</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="ppcp" role="tabpanel" aria-labelledby="ppcp-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Premium Platform &amp; CRM Plan</h3>
+                                    <p><i class="far fa-check-circle mr-2"></i>Display 200 Biodata</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>Store 200 Employer E-Document</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>E-Signature & E-Invoice capability</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>1 Main Account User</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>12 Sub Account Users</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPPCP" id="planRadios1" value="3" checked>
+                                        <label class="form-check-label" for="planRadios1">
+                                            3 Months Plan $350/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPPCP" id="planRadios2" value="6">
+                                        <label class="form-check-label" for="planRadios2">
+                                            6 Months Plan $330/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPPCP" id="planRadios3" value="price_1I9nDRKvEbGNaxrCmYucgqfN">
+                                        <label class="form-check-label" for="planRadios3">
+                                            12 Months Plan $300/month
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button id="planRadiosPPCPbtn" class="btn btn-primary cart-button">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="spcp" role="tabpanel" aria-labelledby="spcp-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Standard Platform &amp; CRM Plan</h3>
+                                    <p><i class="far fa-check-circle mr-2"></i>Display 100 Biodata</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>Store 100 Employer E-Document</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>E-Signature & E-Invoice capability</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>1 Main Account User</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>8 Sub Account Users</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSPCP" id="planRadios4" value="3" checked>
+                                        <label class="form-check-label" for="planRadios4">
+                                            3 Months Plan $300/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSPCP" id="planRadios5" value="6">
+                                        <label class="form-check-label" for="planRadios5">
+                                            6 Months Plan $280/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSPCP" id="planRadios6" value="12">
+                                        <label class="form-check-label" for="planRadios6">
+                                            12 Months Plan $260/month
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary cart-button">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pcp" role="tabpanel" aria-labelledby="pcp-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Premium CRM Plan</h3>
+                                    <p><i class="far fa-check-circle mr-2"></i>Store 200 Employer E-Document</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>E-Signature & E-Invoice capability</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>1 Main Account User</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>12 Sub Account Users</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPCP" id="planRadios7" value="3" checked>
+                                        <label class="form-check-label" for="planRadios7">
+                                            3 Months Plan $240/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPCP" id="planRadios8" value="6">
+                                        <label class="form-check-label" for="planRadios8">
+                                            6 Months Plan $220/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPCP" id="planRadios9" value="12">
+                                        <label class="form-check-label" for="planRadios9">
+                                            12 Months Plan $200/month
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary cart-button">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="scp" role="tabpanel" aria-labelledby="scp-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Standard CRM Plan</h3>
+                                    <p><i class="far fa-check-circle mr-2"></i>Store 100 Employer E-Document</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>E-Signature & E-Invoice capability</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>1 Main Account User</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>8 Sub Account Users</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSCP" id="planRadios10" value="3" checked>
+                                        <label class="form-check-label" for="planRadios10">
+                                            3 Months Plan $200/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSCP" id="planRadios11" value="6">
+                                        <label class="form-check-label" for="planRadios11">
+                                            6 Months Plan $185/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSCP" id="planRadios12" value="12">
+                                        <label class="form-check-label" for="planRadios12">
+                                            12 Months Plan $170/month
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary cart-button">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="ppp" role="tabpanel" aria-labelledby="ppp-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Premium Platform Plan</h3>
+                                    <p><i class="far fa-check-circle mr-2"></i>Display 200 Biodata</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>Receive Shortlisted Enquiries</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>Receive General Sales Enquiries</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>1 Main Account User</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>12 Sub Account Users</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPPP" id="planRadios13" value="3" checked>
+                                        <label class="form-check-label" for="planRadios13">
+                                            3 Months Plan $170/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPPP" id="planRadios14" value="6">
+                                        <label class="form-check-label" for="planRadios14">
+                                            6 Months Plan $155/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosPPP" id="planRadios15" value="12">
+                                        <label class="form-check-label" for="planRadios15">
+                                            12 Months Plan $140/month
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary cart-button">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="spp" role="tabpanel" aria-labelledby="spp-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Standard Platform Plan</h3>
+                                    <p><i class="far fa-check-circle mr-2"></i>Display 200 Biodata</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>Receive Shortlisted Enquiries</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>Receive General Sales Enquiries</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>1 Main Account User</p>
+                                    <p><i class="far fa-check-circle mr-2"></i>8 Sub Account Users</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSPP" id="planRadios17" value="3" checked>
+                                        <label class="form-check-label" for="planRadios17">
+                                            3 Months Plan $140/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSPP" id="planRadios18" value="6">
+                                        <label class="form-check-label" for="planRadios18">
+                                            6 Months Plan $130/month
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="planRadiosSPP" id="planRadios19" value="12">
+                                        <label class="form-check-label" for="planRadios19">
+                                            12 Months Plan $120/month
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary cart-button">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    function myFunction(){
+        plan_name = document.getElementById("plansFormControlSelect").value;
+        $(`#${plan_name}`).tab('show')
+    }
+    $(function(){
+        $('.cart-button').click(function(){
+            let priceId = document.querySelector(`input[name="${String($(this).attr('id')).split('btn')[0]}"]:checked`).value;
+            location.replace(location.origin.concat(`/payment/cart/add/${priceId}`))
+        })
+    })
+</script>
+{% endblock js %}

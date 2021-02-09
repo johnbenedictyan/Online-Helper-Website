@@ -8,6 +8,7 @@ from django.views.generic.base import TemplateView
 # Imports from foreign installed apps
 from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
+from payment.models import SubscriptionProduct
 from maid.filters import MiniMaidFilter
 
 # Imports from local app
@@ -38,6 +39,10 @@ class TermsOfSerivceView(TemplateView):
     http_method_names = ['get']
     template_name = 'terms-of-service.html'
 
+class PrivacyPolicyView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'privacy-policy.html'
+    
 class HowItWorksView(TemplateView):
     http_method_names = ['get']
     template_name = 'how-it-works.html'
@@ -53,7 +58,8 @@ class AdminPanelView(OnlineMaidStaffRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
         kwargs.update({
-            'agencies': Agency.objects.all()
+            'agencies': Agency.objects.all(),
+            'subscription_products': SubscriptionProduct.objects.all() 
         })
         return kwargs
 

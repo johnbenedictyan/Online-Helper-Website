@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     # 3rd party packages
     'crispy_forms',
     'django_filters',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
     'mathfilters',
     'social_django',
     'storages',
@@ -63,7 +65,7 @@ INSTALLED_APPS = [
     'dashboard',
     'employer_documentation.apps.EmployerDocumentationConfig',
     'maid.apps.MaidConfig',
-    'payment',
+    'payment.apps.PaymentConfig',
     'shortlist',
     'website',
     'enquiry',
@@ -78,6 +80,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware', # django_otp requirement
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'onlinemaid.middleware.AdminAccessIPWhiteListMiddleware'
@@ -96,7 +99,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'onlinemaid.context_processors.authority'
+                'onlinemaid.context_processors.authority',
+                'onlinemaid.context_processors.cartcount'
             ],
         },
     },
@@ -255,3 +259,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'text-danger',
 }
 
+# Django-OTP
+OTP_TOTP_ISSUER = 'om-django-otp'
+
+# Stripe
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
+# Pycryptodome Key
+ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')

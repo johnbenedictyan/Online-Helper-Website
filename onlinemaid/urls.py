@@ -13,12 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# Imports from system
+import os
+
 # Imports from django
 from django.contrib import admin
 from django.urls import include,path
 
 # Imports from foreign installed apps
-# from notifications.urls import urlpatterns as notifications_urls
+from django_otp.admin import OTPAdminSite
 
 # Imports from local apps
 from accounts.urls import urlpatterns as accounts_urls
@@ -32,8 +35,14 @@ from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
 from enquiry.urls import urlpatterns as enquiry_urls
 
-# Start of Urls
 
+# Django OTP
+''' Use this to toggle 2FA on/off '''
+USE_2FA = os.environ.get('USE_2FA') == 'TRUE'
+if USE_2FA:
+    admin.site.__class__ = OTPAdminSite
+
+# Start of Urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include(accounts_urls)),

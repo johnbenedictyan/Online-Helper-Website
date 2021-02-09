@@ -2,6 +2,7 @@
 
 # Imports from django
 from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator, URLValidator
 from django.db.models.signals import post_save
@@ -55,7 +56,7 @@ class Agency(models.Model):
         verbose_name=_('Website Logo'),
         blank=False,
         null=True,
-        storage=PublicMediaStorage()
+        storage=PublicMediaStorage() if settings.USE_S3 else None
     )
 
     uen = models.CharField(
@@ -68,7 +69,7 @@ class Agency(models.Model):
         verbose_name=_('Website QR Code'),
         blank=False,
         null=True,
-        storage=PublicMediaStorage()
+        storage=PublicMediaStorage() if settings.USE_S3 else None
     )
 
     mission = models.TextField(
@@ -395,13 +396,13 @@ class PotentialAgency(models.Model):
     )
 
     person_in_charge = models.CharField(
-        verbose_name=_('Name of person in charge'),
+        verbose_name=_('Person In Charge'),
         max_length=100,
         blank=False
     )
 
     contact_number = models.CharField(
-        verbose_name=_('Contact Number of person in charge'),
+        verbose_name=_('Contact Number'),
         max_length=50,
         blank=False,
         validators=[
@@ -415,6 +416,6 @@ class PotentialAgency(models.Model):
     )
 
     email = models.EmailField(
-        verbose_name=_('Email Address of person in charge'),
+        verbose_name=_('Email Address'),
         blank=False
     )

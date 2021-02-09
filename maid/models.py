@@ -2,6 +2,7 @@
 
 # Imports from django
 from django.db import models
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -73,12 +74,15 @@ class Maid(models.Model):
         blank=False,
         null=True
     )
+    passport_number = models.BinaryField(editable=True)
+    nonce = models.BinaryField(editable=True)
+    tag = models.BinaryField(editable=True)
 
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
         blank=False,
         null=True,
-        storage=PublicMediaStorage()
+        storage=PublicMediaStorage() if settings.USE_S3 else None
     )
 
     maid_type = models.CharField(

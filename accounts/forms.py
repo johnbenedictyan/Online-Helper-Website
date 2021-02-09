@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse_lazy
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
@@ -32,9 +33,19 @@ class SignInForm(AuthenticationForm):
     # We cannot have it to be a static redirect, the next url must take
     # precedence
     redirect_named_url = 'home'
+    placeholders = {
+        'username': 'johndoe123',
+        'password': 'topsecret'
+    }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
+        for k, v in self.placeholders.items():
+            self.fields[k].widget.attrs['placeholder'] = v
+        self.fields['password'].help_text = '''
+            <a class='ml-1' 
+            href="{% url 'password_reset' %}">Forget your password?</a>
+        '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -91,8 +102,20 @@ class AgencySignInForm(AuthenticationForm):
         max_length=255,
     )
 
+    placeholders = {
+        'agency_license_number': 'abc123',
+        'username': 'johndoe123',
+        'password': 'topsecret'
+    }
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
+        for k, v in self.placeholders.items():
+            self.fields[k].widget.attrs['placeholder'] = v
+        self.fields['password'].help_text = '''
+            <a class='ml-1' 
+            href="{% url 'password_reset' %}">Forget your password?</a>
+        '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -182,18 +205,41 @@ class EmployerCreationForm(forms.ModelForm):
         max_length=255,
         widget=forms.PasswordInput()
     )
+    
+    terms_and_conditions = forms.BooleanField()
 
+    placeholders = {
+        'email': 'johndoe@example.com',
+        'password': 'topsecret',
+        'first_name': 'John',
+        'last_name': 'Doe',
+        'contact_number': '81234567'
+    }
+    
     class Meta:
         model = Employer
         exclude = ['user']
 
     def __init__(self, *args, **kwargs):
         self.form_type = kwargs.pop('form_type', None)
+        super().__init__(*args, **kwargs)
         if self.form_type == 'UPDATE':
             kwargs.update(initial={
                 'email': kwargs.pop('email_address', None)
             })
-        super().__init__(*args, **kwargs)
+        else:
+            for k, v in self.placeholders.items():
+                self.fields[k].widget.attrs['placeholder'] = v
+        self.fields['terms_and_conditions'].label = f'''
+            I agree to the 
+            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
+                terms and conditions
+            </a> 
+            as well as the 
+            <a href="{reverse_lazy('privacy_policy')}" target="_blank">
+                privacy policy
+            </a> of Online Maid Pte Ltd
+        '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -210,17 +256,21 @@ class EmployerCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'first_name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col'
                 ),
                 Column(
                     'last_name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'contact_number',
+                    'terms_and_conditions',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
@@ -238,6 +288,14 @@ class EmployerCreationForm(forms.ModelForm):
             )
         )
 
+    def clean_terms_and_conditions(self):
+        terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
+        if terms_and_conditions == False:
+            msg = -('You must agree to sign up for our services')
+            self.add_error('terms_and_conditions', msg)
+            
+        return terms_and_conditions
+    
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")

@@ -10,7 +10,7 @@ from django.urls import include, path
 ## Template Views 
 from .views import (
     HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
-    HowItWorksView, FAQView, AdminPanelView
+    HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView
 )
 
 ## List Views
@@ -45,6 +45,11 @@ urlpatterns = [
         'terms-of-service/',
         TermsOfSerivceView.as_view(),
         name='terms_of_service'
+    ),
+    path(
+        'privacy-policy/',
+        PrivacyPolicyView.as_view(),
+        name='privacy_policy'
     ),
     path(
         'how-it-works/',
