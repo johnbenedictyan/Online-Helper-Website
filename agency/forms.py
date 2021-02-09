@@ -739,7 +739,7 @@ class AgencyPlanForm(forms.ModelForm):
         )
 
 class PotentialAgencyForm(forms.ModelForm):
-    terms_and_conditions = forms.BooleanField()
+    terms_of_service = forms.BooleanField()
     
     placeholders = {
         'name': 'Test Agency',
@@ -755,10 +755,10 @@ class PotentialAgencyForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['terms_and_conditions'].label = f'''
+        self.fields['terms_of_service'].label = f'''
             I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
-                terms and conditions
+            <a href="{reverse_lazy('terms_of_service')}" target="_blank">
+                terms of service
             </a> 
             as well as the 
             <a href="{reverse_lazy('privacy_policy')}" target="_blank">
@@ -795,7 +795,7 @@ class PotentialAgencyForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'terms_and_conditions',
+                    'terms_of_service',
                     css_class='form-group col'
                 )
             ),
@@ -824,13 +824,13 @@ class PotentialAgencyForm(forms.ModelForm):
             self.add_error('license_number', msg)
         return license_number
     
-    def clean_terms_and_conditions(self):
-        terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
-        if terms_and_conditions == False:
+    def clean_terms_of_service(self):
+        terms_of_service = self.cleaned_data.get('terms_of_service')
+        if terms_of_service == False:
             msg = -('You must agree to sign up for our services')
-            self.add_error('terms_and_conditions', msg)
+            self.add_error('terms_of_service', msg)
             
-        return terms_and_conditions
+        return terms_of_service
 
     def save(self, *args, **kwargs):
         # There is a cleaner way to write this save method
