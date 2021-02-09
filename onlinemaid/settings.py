@@ -261,7 +261,6 @@ MESSAGE_TAGS = {
 }
 
 # Django-OTP
-USE_DJANGO_OTP = int(os.environ.get('USE_DJANGO_OTP', 0))
 OTP_TOTP_ISSUER = 'om-django-otp'
 
 # Stripe
