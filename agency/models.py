@@ -396,13 +396,13 @@ class PotentialAgency(models.Model):
     )
 
     person_in_charge = models.CharField(
-        verbose_name=_('Name of person in charge'),
+        verbose_name=_('Person In Charge'),
         max_length=100,
         blank=False
     )
 
     contact_number = models.CharField(
-        verbose_name=_('Contact Number of person in charge'),
+        verbose_name=_('Contact Number'),
         max_length=50,
         blank=False,
         validators=[
@@ -416,6 +416,6 @@ class PotentialAgency(models.Model):
     )
 
     email = models.EmailField(
-        verbose_name=_('Email Address of person in charge'),
+        verbose_name=_('Email Address'),
         blank=False
     )
