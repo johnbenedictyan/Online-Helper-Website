@@ -35,10 +35,10 @@ from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
 from enquiry.urls import urlpatterns as enquiry_urls
 
-# Instantiate OTPAdminSite object
+
+# Django OTP
 ''' Use this to toggle 2FA on/off '''
 USE_2FA = os.environ.get('USE_2FA') == 'TRUE'
-
 if USE_2FA:
     admin.site.__class__ = OTPAdminSite
 
