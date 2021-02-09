@@ -763,7 +763,7 @@ class PotentialAgencyForm(forms.ModelForm):
             as well as the 
             <a href="{reverse_lazy('privacy_policy')}" target="_blank">
                 privacy policy
-            </a> of Online Maid Pte Ltd
+            </a> of Online Maid
         '''
         for k, v in self.placeholders.items():
             self.fields[k].widget.attrs['placeholder'] = v
@@ -782,15 +782,15 @@ class PotentialAgencyForm(forms.ModelForm):
             Row(
                 Column(
                     'person_in_charge',
-                    css_class='form-group col'
+                    css_class='form-group col-md'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col'
+                    css_class='form-group col-md'
                 ),
                 Column(
                     'email',
-                    css_class='form-group col'
+                    css_class='form-group col-lg'
                 )
             ),
             Row(
@@ -804,7 +804,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-12 text-center'
                 )

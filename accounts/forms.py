@@ -238,7 +238,7 @@ class EmployerCreationForm(forms.ModelForm):
             as well as the 
             <a href="{reverse_lazy('privacy_policy')}" target="_blank">
                 privacy policy
-            </a> of Online Maid Pte Ltd
+            </a> of Online Maid
         '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
