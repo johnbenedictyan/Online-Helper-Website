@@ -740,7 +740,15 @@ class AgencyPlanForm(forms.ModelForm):
 
 class PotentialAgencyForm(forms.ModelForm):
     terms_and_conditions = forms.BooleanField()
-
+    
+    placeholders = {
+        'name': 'Test Agency',
+        'license_number': 'abc123',
+        'person_in_charge': 'John Doe',
+        'contact_number': '98765432',
+        'email': 'john@testagency.com'
+    }
+    
     class Meta:
         model = PotentialAgency
         fields = '__all__'
@@ -748,12 +756,17 @@ class PotentialAgencyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['terms_and_conditions'].label = f'''
-            Check here to indicate that you have read and agree to the 
-            <a href="{reverse_lazy('about_us')}" target="_blank">terms
-            and conditions</a> as well as the 
-            <a href="{reverse_lazy('about_us')}" target="_blank">privacy
-            policy</a> of Online Maid Pte Ltd
+            I agree to the 
+            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
+                terms and conditions
+            </a> 
+            as well as the 
+            <a href="{reverse_lazy('privacy_policy')}" target="_blank">
+                privacy policy
+            </a> of Online Maid Pte Ltd
         '''
+        for k, v in self.placeholders.items():
+            self.fields[k].widget.attrs['placeholder'] = v
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -764,30 +777,27 @@ class PotentialAgencyForm(forms.ModelForm):
                 Column(
                     'license_number',
                     css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
+                )
             ),
             Row(
                 Column(
                     'person_in_charge',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col'
                 ),
                 Column(
                     'email',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
+                    css_class='form-group col'
+                )
             ),
             Row(
                 Column(
                     'terms_and_conditions',
                     css_class='form-group col'
-                ),
-                css_class='form-row'
+                )
             ),
             Row(
                 Column(
@@ -797,8 +807,7 @@ class PotentialAgencyForm(forms.ModelForm):
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
+                )
             )
         )
 
