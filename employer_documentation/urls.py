@@ -5,7 +5,8 @@ from django.urls import include, path
 from .views import (
     EmployerListView,
     EmployerDocListView,
-    DocListView,
+    StatusListView,
+    SalesListView,
 )
 
 ## Detail Views
@@ -72,14 +73,14 @@ urlpatterns = [
             ),
             path(
                 'status-list/',
-                DocListView.as_view(
+                StatusListView.as_view(
                     is_deployed=False
                 ),
                 name='status_list_route'
             ),
             path(
                 'sales-list/',
-                DocListView.as_view(
+                SalesListView.as_view(
                     is_deployed=True
                 ),
                 name='sales_list_route'
