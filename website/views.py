@@ -39,6 +39,10 @@ class TermsOfSerivceView(TemplateView):
     http_method_names = ['get']
     template_name = 'terms-of-service.html'
 
+class PrivacyPolicyView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'privacy-policy.html'
+    
 class HowItWorksView(TemplateView):
     http_method_names = ['get']
     template_name = 'how-it-works.html'
