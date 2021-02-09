@@ -52,12 +52,6 @@ class User(AbstractUser):
         unique=True
     )
 
-    is_verified_status = models.BooleanField(
-        _('verified status'),
-        default=True,
-        help_text=_('Designates whether the user is verified.'),
-    )
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -65,10 +59,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'{self.email}'
-
-    # django-otp uses return value from this is_verified() method
-    def is_verified(self):
-        return self.is_verified_status
 
 class Employer(models.Model):
     user = models.OneToOneField(

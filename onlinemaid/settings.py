@@ -80,6 +80,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware', # django_otp requirement
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'onlinemaid.middleware.AdminAccessIPWhiteListMiddleware'
@@ -259,6 +260,7 @@ MESSAGE_TAGS = {
 }
 
 # Django-OTP
+USE_DJANGO_OTP = int(os.environ.get('USE_DJANGO_OTP', 0))
 OTP_TOTP_ISSUER = 'om-django-otp'
 
 # Stripe
