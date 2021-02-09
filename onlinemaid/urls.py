@@ -13,8 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# Imports from system
+import os
+
 # Imports from django
-from django.conf import settings
 from django.contrib import admin
 from django.urls import include,path
 
@@ -36,8 +38,10 @@ from enquiry.urls import urlpatterns as enquiry_urls
 
 
 # Django OTP
-if settings.USE_DJANGO_OTP:
-    # Instantiate OTPAdminSite object
+''' Use this to toggle 2FA on/off '''
+USE_2FA = os.environ.get('USE_2FA') == 'TRUE'
+# Instantiate OTPAdminSite object
+if USE_2FA:
     admin.site.__class__ = OTPAdminSite
 
 # Start of Urls
