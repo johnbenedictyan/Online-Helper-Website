@@ -379,9 +379,9 @@ class RepaymentScheduleMixin:
             placement_fee_per_month = round(placement_fee/6, 0)
             work_days_in_month = 26
             off_day_compensation = round(
-                self.object.fdw.salary*self.object.fdw.days_off/work_days_in_month, 0
+                self.object.fdw.financial_details.salary*self.object.fdw.days_off/work_days_in_month, 0
             )
-            salary_per_month = self.object.fdw.salary + off_day_compensation
+            salary_per_month = self.object.fdw.financial_details.salary + off_day_compensation
             
             # If work start date is 1st of month, then payment does not need to be pro-rated
             if work_commencement_date and work_commencement_date.day==1:
@@ -402,7 +402,7 @@ class RepaymentScheduleMixin:
                             month = month_current,
                             year = payment_year,
                         ),
-                        'basic_salary': self.object.fdw.salary,
+                        'basic_salary': self.object.fdw.financial_details.salary,
                         'off_day_compensation': off_day_compensation,
                         'salary_per_month': salary_per_month,
                         'salary_received': salary_per_month-loan_repaid,
@@ -445,7 +445,7 @@ class RepaymentScheduleMixin:
                         year = payment_year,
                         ),
                     'basic_salary': round(
-                        self.object.fdw.salary*first_month_days/
+                        self.object.fdw.financial_details.salary*first_month_days/
                         calendar.monthrange(
                             payment_year, month_current)[1], 0
                     ),
@@ -485,7 +485,7 @@ class RepaymentScheduleMixin:
                             month = month_current,
                             year = payment_year,
                         ),
-                        'basic_salary': self.object.fdw.salary,
+                        'basic_salary': self.object.fdw.financial_details.salary,
                         'off_day_compensation': off_day_compensation,
                         'salary_per_month': salary_per_month,
                         'salary_received': salary_per_month-loan_repaid,
@@ -506,7 +506,7 @@ class RepaymentScheduleMixin:
                     calendar.monthrange(payment_year, month_current)[1]
                 )
                 basic_salary = round(
-                    self.object.fdw.salary*final_payment_day/calendar.monthrange(
+                    self.object.fdw.financial_details.salary*final_payment_day/calendar.monthrange(
                         payment_year, month_current)[1]
                 )
                 off_day_compensation = round(
