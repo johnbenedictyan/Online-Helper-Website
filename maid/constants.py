@@ -283,6 +283,16 @@ class MaidLanguageChoices(models.TextChoices):
     TAGALOG    = 'TAG', _('Tagalog')
     SINHALA    = 'SIN', _('Sinhala')
 
+class MaidReligionChoices(models.TextChoices):
+        BUDDHIST = 'B', _('Buddhist')
+        MUSLIM = 'M', _('Muslim')
+        HINDU = 'H', _('Hindu')
+        CHRISTIAN = 'CH', _('Christain')
+        CATHOLIC = 'CA', _('Catholic')
+        SIKH = 'S', _('Sikh')
+        OTHERS = 'OTH', _('Others')
+        NONE = 'NONE', _('None')
+
 class MaidAssessmentChoices(models.IntegerChoices):
     POOR = 1, _('Poor')
     FAIR = 2, _('Fair')
@@ -306,7 +316,7 @@ class MaidResponsibilityChoices(models.TextChoices):
     MAID_RESP_CARE_FOR_PETS             = 'CFP', _('Care for Pets')
     MAID_RESP_GARDENING                 = 'GAR', _('Gardening')
 
-class MaidCareRemarkChoices(models.TextChoices):
+class MaidCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Experience in own country')
     OVERSEAS = 'OV', _('Experience in overseas')
     SINGAPORE = 'SG', _('Experience in Singapore')
