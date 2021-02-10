@@ -361,8 +361,8 @@ class RepaymentScheduleMixin:
             payment_month = work_commencement_date.month
             payment_year = work_commencement_date.year
             placement_fee = (
-                self.object.fdw.agency_fee_amount +
-                self.object.fdw.personal_loan_amount
+                self.object.fdw.financial_details.agency_fee_amount +
+                self.object.fdw.financial_details.personal_loan_amount
             )
             placement_fee_per_month = round(placement_fee/6, 0)
             work_days_in_month = 26

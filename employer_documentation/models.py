@@ -579,8 +579,8 @@ class EmployerDoc(models.Model):
         # Method to calculate outstanding balance owed by employer
         return (
             self.calc_admin_cost()
-            + self.fdw.agency_fee_amount
-            + self.fdw.personal_loan_amount
+            + self.fdw.financial_details.agency_fee_amount
+            + self.fdw.financial_details.personal_loan_amount
             - self.ca_deposit
         )
 
