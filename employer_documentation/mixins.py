@@ -298,7 +298,13 @@ class PdfHtmlViewMixin:
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+
         if isinstance(self.object, EmployerDoc):
+            # Document version number formatting
+            version_str = str(context.get('object').version).zfill(4)
+            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+
             # Employer NRIC
             try:
                 context['object'].employer.employer_nric = decrypt_string(
@@ -323,6 +329,11 @@ class PdfHtmlViewMixin:
                 print("Incorrect decryption")
                 context['object'].fdw.passport_number = ''
         elif isinstance(self.object, EmployerDocSig):
+            # Document version number formatting
+            version_str = str(
+                context.get('object').employer_doc.version).zfill(4)
+            context['object'].employer_doc.version = f'[{version_str}] - {version_explainer_text}'
+            
             # Employer NRIC
             try:
                 context['object'].employer_doc.employer.employer_nric = decrypt_string(
@@ -346,6 +357,7 @@ class PdfHtmlViewMixin:
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].employer_doc.fdw.passport_number = ''
+        
         return context
 
 class RepaymentScheduleMixin:
