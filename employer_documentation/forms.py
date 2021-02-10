@@ -1089,11 +1089,22 @@ class VerifyUserTokenForm(forms.ModelForm):
                 del self.fields[field]
 
     def clean(self):
+        input_nric = self.cleaned_data.get('nric', '')
+        try:
+            plaintext = decrypt_string(
+                self.object.employer_doc.employer.employer_nric,
+                settings.ENCRYPTION_KEY,
+                self.object.employer_doc.employer.nonce,
+                self.object.employer_doc.employer.tag
+            )
+        except (ValueError, KeyError):
+            plaintext = ''
+            print("Incorrect decryption")
         if (
             self.is_employer
                 and (
-                    self.cleaned_data.get('nric', '').lower() ==
-                    self.object.employer_doc.employer.employer_nric.lower()
+                    input_nric.lower() ==
+                    plaintext.lower()
                     and
                     int(self.cleaned_data.get('mobile', 0)) ==
                     int(self.object.employer_doc.employer.employer_mobile_number)

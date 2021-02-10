@@ -329,14 +329,19 @@ class PdfHtmlViewMixin:
                 print("Incorrect decryption")
                 context['object'].fdw.passport_number = ''
         elif isinstance(self.object, EmployerDocSig):
+            '''
+            context['object'] set as EmployerDoc object in get() method above
+            in this mixin, instead of EmployerDocSig so that same PDF
+            templates can be re-used
+            '''
             # Document version number formatting
             version_str = str(
-                context.get('object').employer_doc.version).zfill(4)
-            context['object'].employer_doc.version = f'[{version_str}] - {version_explainer_text}'
+                context.get('object').version).zfill(4)
+            context['object'].version = f'[{version_str}] - {version_explainer_text}'
             
             # Employer NRIC
             try:
-                context['object'].employer_doc.employer.employer_nric = decrypt_string(
+                context['object'].employer.employer_nric = decrypt_string(
                     self.object.employer_doc.employer.employer_nric,
                     settings.ENCRYPTION_KEY,
                     self.object.employer_doc.employer.nonce,
@@ -344,11 +349,11 @@ class PdfHtmlViewMixin:
                 )
             except (ValueError, KeyError):
                 print("Incorrect decryption")
-                context['object'].employer_doc.employer.employer_nric = ''
+                context['object'].employer.employer_nric = ''
             
             # FDW passport number
             try:
-                context['object'].employer_doc.fdw.passport_number = decrypt_string(
+                context['object'].fdw.passport_number = decrypt_string(
                     self.object.employer_doc.fdw.passport_number,
                     settings.ENCRYPTION_KEY,
                     self.object.employer_doc.fdw.nonce,
@@ -356,7 +361,7 @@ class PdfHtmlViewMixin:
                 )
             except (ValueError, KeyError):
                 print("Incorrect decryption")
-                context['object'].employer_doc.fdw.passport_number = ''
+                context['object'].fdw.passport_number = ''
         
         return context
 
