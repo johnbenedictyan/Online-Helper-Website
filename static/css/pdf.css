@@ -10,7 +10,8 @@
 @page {
     @bottom-right {
         content: "Page " counter(page) " of " counter(pages);
-        font-size: 10px;
+        font-size: 11px;
+        font-family: Arial;
     }
 }
 
