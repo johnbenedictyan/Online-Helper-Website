@@ -228,7 +228,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
-        exclude = ['employer', 'agreement_date',]
+        exclude = ['employer',]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -267,9 +267,18 @@ class EmployerDocForm(forms.ModelForm):
                     'case_ref_no',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     'fdw',
                     css_class='form-group col-md-6'
+                ),
+                Field(
+                    'agreement_date',
+                    type='text',
+                    onfocus="(this.type='date')",
+                    placeholder='Agreement date'
                 ),
                 css_class='form-row'
             ),
