@@ -168,6 +168,10 @@ class EmployerDoc(models.Model):
         editable=False,
         unique=True
     )
+    version = models.PositiveSmallIntegerField(
+        editable=False,
+        default=0,
+    )
     case_ref_no = models.CharField(
         verbose_name=_("Case Reference Number"),
         max_length=20,
@@ -579,6 +583,10 @@ class EmployerDoc(models.Model):
             + self.fdw.personal_loan_amount
             - self.ca_deposit
         )
+
+    def save(self, *args, **kwargs):
+        self.version += 1
+        super().save(*args, **kwargs)
 
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
