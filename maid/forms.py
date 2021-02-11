@@ -14,7 +14,7 @@ from onlinemaid.constants import TrueFalseChoices
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
-from crispy_forms.bootstrap import InlineCheckboxes, PrependedText, AppendedText
+from crispy_forms.bootstrap import InlineRadios, PrependedText, AppendedText
 from agency.models import Agency
 
 # Imports from local apps
@@ -25,8 +25,8 @@ from .constants import (
 )
 
 from .models import (
-    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
-    MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
+    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
 )
 from agency.models import Agency
@@ -946,32 +946,32 @@ class MainMaidCreationForm(forms.Form):
 
     # Care
     cfi_assessment = forms.ChoiceField(
-        label=_('Infant child care assessment'),
+        label=_('Assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
         initial=MaidAssessmentChoices.AVERAGE
     )
 
     cfi_willingness = forms.ChoiceField(
-        label=_('Willingness for infant child care'),
+        label=_('Willingness'),
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
     )
 
     cfi_experience = forms.ChoiceField(
-        label=_('Experience with infant child care'),
+        label=_('Experience'),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
     )
 
     cfi_remarks = forms.ChoiceField(
-        label=_('Remarks for infant child care'),
+        label=_('Remarks'),
         required=False,
         choices=MaidCareRemarksChoices.choices,
     )
 
     cfi_other_remarks = forms.CharField(
-        label=_('Other remarks for infant child care'),
+        label=_('Other remarks'),
         widget=forms.Textarea,
         required=False
     )
@@ -984,122 +984,134 @@ class MainMaidCreationForm(forms.Form):
     )
 
     cfe_willingness = forms.ChoiceField(
-        label=_('Willingness for elderly care'),
+        label=_('Willingness'),
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
         
     )
 
     cfe_experience = forms.ChoiceField(
-        label=_('Experience with elderly care'),
+        label=_('Experience'),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
         
     )
 
     cfe_remarks = forms.ChoiceField(
-        label=_('Remarks for elderly care'),
+        label=_('Remarks'),
         required=True,
         choices=MaidCareRemarksChoices.choices
     )
 
     cfe_other_remarks = forms.CharField(
-        label=_('Other remarks for elderly care'),
+        label=_('Other remarks'),
         widget=forms.Textarea,
         required=False
     )
     
     cfd_assessment = forms.ChoiceField(
-        label=_('Disabled care assessment'),
+        label=_('Assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
         initial=MaidAssessmentChoices.AVERAGE
     )
 
     cfd_willingness = forms.ChoiceField(
-        label=_('Willingness for disabled care'),
+        label=_('Willingness'),
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
     )
 
     cfd_experience = forms.ChoiceField(
-        label=_('Experience with disabled care'),
+        label=_('Experience'),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
     )
 
     cfd_remarks = forms.ChoiceField(
-        label=_('Remarks for disabled care'),
+        label=_('Remarks'),
         required=True,
         choices=MaidCareRemarksChoices.choices,
     )
 
     cfd_other_remarks = forms.CharField(
-        label=_('Other remarks for disabled care'),
+        label=_('Other remarks'),
         widget=forms.Textarea,
         required=False
     )
 
     geh_assessment = forms.ChoiceField(
-        label=_('General housework care assessment'),
+        label=_('Assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
         initial=MaidAssessmentChoices.AVERAGE
     )
 
     geh_willingness = forms.ChoiceField(
-        label=_('Willingness for general housework care'),
+        label=_('Willingness'),
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
     )
 
     geh_experience = forms.ChoiceField(
-        label=_('Experience with general housework care'),
+        label=_('Experience'),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
     )
 
     geh_remarks = forms.ChoiceField(
-        label=_('Remarks for general housework care'),
+        label=_('Remarks'),
         required=True,
         choices=MaidCareRemarksChoices.choices
     )
 
     geh_other_remarks = forms.CharField(
-        label=_('Other remarks for general housework care'),
+        label=_('Other remarks'),
         widget=forms.Textarea,
         required=False
     )
 
     cok_assessment = forms.ChoiceField(
-        label=_('Cooking assessment'),
+        label=_('Assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
         initial=MaidAssessmentChoices.AVERAGE
     )
 
     cok_willingness = forms.ChoiceField(
-        label=_('Willingness for cooking'),
+        label=_('Willingness '),
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
     )
 
     cok_experience = forms.ChoiceField(
-        label=_('Experience with cooking'),
+        label=_('Experience '),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
     )
 
     cok_remarks = forms.ChoiceField(
-        label=_('Remarks for cooking'),
+        label=_('Remarks '),
         required=True,
         choices=MaidCareRemarksChoices.choices,
     )
 
     cok_other_remarks = forms.CharField(
-        label=_('Other remarks for cooking'),
+        label=_('Other remarks '),
         widget=forms.Textarea,
         required=False
+    )
+    
+    care_for_pets = forms.ChoiceField(
+        label=_('Care for pets'),
+        required=True,
+        choices=TrueFalseChoices('Able', 'Unable')
+    )
+    
+    gardening = forms.ChoiceField(
+        label=_('Gardening'),
+        required=True,
+        choices=TrueFalseChoices('Able', 'Unable')
     )
 
     # Financial
@@ -1216,7 +1228,7 @@ class MainMaidCreationForm(forms.Form):
             Row(
                 Column(
                     'language_spoken',
-                    css_class='col-md-3'
+                    css_class='col-md-4 col-lg-3'
                 ),
                 Column(
                     Row(
@@ -1224,28 +1236,28 @@ class MainMaidCreationForm(forms.Form):
                             AppendedText(
                                 'height', 'cm'
                             ),
-                            css_class='form-group col-md-4'
+                            css_class='form-group col-md-6 col-lg-4'
                         ),
                         Column(
                             AppendedText(
                                 'weight', 'kg'
                             ),
-                            css_class='form-group col-md-4'
+                            css_class='form-group col-md-6 col-lg-4'
                         ),
                         Column(
                             'country_of_origin',
-                            css_class='form-group col-md-4'
+                            css_class='form-group col-md-6 col-lg-4'
                         ),
                         Column(
                             'date_of_birth',
-                            css_class='form-group col-md-4'
+                            css_class='form-group col-md-6 col-lg-4'
                         ),
                         Column(
                             'religion',
-                            css_class='form-group col-md-4'
+                            css_class='form-group col-md-6 col-lg-4'
                         ),
                     ),
-                    css_class='col-md-9'
+                    css_class='col-md-8 col-lg-9'
                 )
             ),
             Row(
@@ -1374,145 +1386,188 @@ class MainMaidCreationForm(forms.Form):
                     ),
                 ),
             ),
-            Row(
+            Div(
                 Column(
-                    HTML(
-                        '<h5>Infant Child Care</h5>'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5>Infant Child Care</h5>'
+                            ),
+                            css_class='col-12'
+                        ),
+                        Column(
+                            'cfi_assessment',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfi_willingness',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfi_experience',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfi_remarks',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfi_other_remarks',
+                            css_class='form-group'
+                        )
                     ),
-                    css_class='col-12'
+                    css_class='col-lg-6'
                 ),
                 Column(
-                    'cfi_assessment',
-                    css_class='form-group col-md-6'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5>Elderly Care</h5>'
+                            ),
+                            css_class='col-12'
+                        ),
+                        Column(
+                            'cfe_assessment',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfe_willingness',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfe_experience',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfe_remarks',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfe_other_remarks',
+                            css_class='form-group'
+                        )
+                    ),
+                    css_class='col-lg-6'
                 ),
-                Column(
-                    'cfi_willingness',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfi_experience',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfi_remarks',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfi_other_remarks',
-                    css_class='form-group'
-                )
+                css_class='row'
             ),
-            Row(
+            Div(
                 Column(
-                    HTML(
-                        '<h5>Elderly Care</h5>'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5>Disabled Care</h5>'
+                            ),
+                            css_class='col-12'
+                        ),
+                        Column(
+                            'cfd_assessment',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfd_willingness',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfd_experience',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfd_remarks',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cfd_other_remarks',
+                            css_class='form-group'
+                        )
                     ),
-                    css_class='col-12'
+                    css_class='col-lg-6'
                 ),
                 Column(
-                    'cfe_assessment',
-                    css_class='form-group col-md-6'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5>General Housework</h5>'
+                            ),
+                            css_class='col-12'
+                        ),
+                        Column(
+                            'geh_assessment',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'geh_willingness',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'geh_experience',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'geh_remarks',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'geh_other_remarks',
+                            css_class='form-group'
+                        )
+                    ),
+                    css_class='col-lg-6'
                 ),
-                Column(
-                    'cfe_willingness',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfe_experience',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfe_remarks',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfe_other_remarks',
-                    css_class='form-group'
-                )
+                css_class='row'
             ),
-            Row(
+            Div(
                 Column(
-                    HTML(
-                        '<h5>Disabled Care</h5>'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5>Cooking</h5>'
+                            ),
+                            css_class='col-12'
+                        ),
+                        Column(
+                            'cok_assessment',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cok_willingness',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cok_experience',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cok_remarks',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'cok_other_remarks',
+                            css_class='form-group'
+                        )
                     ),
-                    css_class='col-12'
+                    css_class='col-lg-6'
                 ),
                 Column(
-                    'cfd_assessment',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfd_willingness',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfd_experience',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfd_remarks',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cfd_other_remarks',
-                    css_class='form-group'
-                )
-            ),
-            Row(
-                Column(
-                    HTML(
-                        '<h5>General Housework</h5>'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5>Other Care</h5>'
+                            ),
+                            css_class='col-12'
+                        ),
+                        Column(
+                            'care_for_pets',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'gardening',
+                            css_class='form-group col-md-6'
+                        ),
                     ),
-                    css_class='col-12'
+                    css_class='col-lg-6'
                 ),
-                Column(
-                    'geh_assessment',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'geh_willingness',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'geh_experience',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'geh_remarks',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'geh_other_remarks',
-                    css_class='form-group'
-                )
-            ),
-            Row(
-                Column(
-                    HTML(
-                        '<h5>Cooking</h5>'
-                    ),
-                    css_class='col-12'
-                ),
-                Column(
-                    'cok_assessment',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cok_willingness',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cok_experience',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cok_remarks',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'cok_other_remarks',
-                    css_class='form-group'
-                )
+                css_class='row'
             ),
             Row(
                 Column(
