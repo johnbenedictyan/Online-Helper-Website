@@ -76,7 +76,7 @@ class SignInForm(AuthenticationForm):
                     Submit(
                         'submit',
                         'Sign In',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
@@ -153,7 +153,7 @@ class AgencySignInForm(AuthenticationForm):
                     Submit(
                         'submit',
                         'Sign In',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
@@ -206,7 +206,7 @@ class EmployerCreationForm(forms.ModelForm):
         widget=forms.PasswordInput()
     )
     
-    terms_and_conditions = forms.BooleanField()
+    terms_of_service = forms.BooleanField()
 
     placeholders = {
         'email': 'johndoe@example.com',
@@ -230,15 +230,15 @@ class EmployerCreationForm(forms.ModelForm):
         else:
             for k, v in self.placeholders.items():
                 self.fields[k].widget.attrs['placeholder'] = v
-        self.fields['terms_and_conditions'].label = f'''
+        self.fields['terms_of_service'].label = f'''
             I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
-                terms and conditions
+            <a href="{reverse_lazy('terms_of_service')}" target="_blank">
+                terms of service
             </a> 
             as well as the 
             <a href="{reverse_lazy('privacy_policy')}" target="_blank">
                 privacy policy
-            </a> of Online Maid Pte Ltd
+            </a> of Online Maid
         '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -270,7 +270,7 @@ class EmployerCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'terms_and_conditions',
+                    'terms_of_service',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
@@ -288,13 +288,13 @@ class EmployerCreationForm(forms.ModelForm):
             )
         )
 
-    def clean_terms_and_conditions(self):
-        terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
-        if terms_and_conditions == False:
+    def clean_terms_of_service(self):
+        terms_of_service = self.cleaned_data.get('terms_of_service')
+        if terms_of_service == False:
             msg = -('You must agree to sign up for our services')
-            self.add_error('terms_and_conditions', msg)
+            self.add_error('terms_of_service', msg)
             
-        return terms_and_conditions
+        return terms_of_service
     
     def clean(self):
         cleaned_data = super().clean()
