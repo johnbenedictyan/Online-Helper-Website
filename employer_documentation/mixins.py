@@ -263,6 +263,7 @@ class CheckSignatureSessionTokenMixin(UserPassesTestMixin):
 # PDF Mixin
 class PdfHtmlViewMixin:
     DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
+    target = None
     content_disposition = None
 
     def get(self, request, *args, **kwargs):
@@ -283,6 +284,7 @@ class PdfHtmlViewMixin:
             string=html_template,
             base_url=request.build_absolute_uri()
             ).write_pdf(
+                target=self.target,
                 # Load separate CSS stylesheet from static folder
                 # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
                 stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
