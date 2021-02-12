@@ -24,10 +24,11 @@ from .constants import (
 )
 
 from .models import (
-    Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, MaidFamilyDetails, 
-    MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
+    Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, 
+    MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
-    MaidDietaryRestriction, MaidEmploymentHistory, MaidAgencyFeeTransaction
+    MaidDietaryRestriction, MaidEmploymentHistory, MaidAgencyFeeTransaction,
+    MaidOtherCare
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -1734,6 +1735,11 @@ class MainMaidCreationForm(forms.Form):
                 experience=cleaned_data.get('cok_experience'),
                 remarks=cleaned_data.get('cok_remarks'),
                 other_remarks=cleaned_data.get('cok_other_remarks')
+            )
+            MaidOtherCare.objects.create(
+                maid=new_maid,
+                care_for_pets=cleaned_data.get('care_for_pets'),
+                gardening=cleaned_data.get('gardening')
             )
             MaidAgencyFeeTransaction.objects.create(
                 maid=new_maid,
