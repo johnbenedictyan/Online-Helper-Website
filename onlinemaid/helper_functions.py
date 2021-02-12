@@ -1,6 +1,7 @@
 # Imports from the system
 import random
 import string
+from datetime import date
 
 # Imports from django
 from django.contrib.auth import get_user_model
@@ -60,3 +61,8 @@ def encrypt_string(plaintext, encryption_key):
 def decrypt_string(ciphertext, encryption_key, nonce, tag):
     cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
     return cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
+
+def calculate_age(born):
+    today = date.today()
+    offset = ((today.month, today.day) < (born.month, born.day))
+    return today.year - born.year - offset
