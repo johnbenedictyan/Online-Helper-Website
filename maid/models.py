@@ -11,6 +11,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.helper_functions import calculate_age
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
@@ -323,6 +324,12 @@ class MaidPersonalDetails(models.Model):
         related_name='personal_details'
     )
 
+    date_of_birth = models.DateField(
+        verbose_name=_('Date of Birth'),
+        blank=False,
+        null=True
+    )
+    
     age = models.IntegerField(
         verbose_name=_('Age'),
         blank=False,
@@ -397,6 +404,10 @@ class MaidPersonalDetails(models.Model):
     languages = models.ManyToManyField(
         MaidLanguage
     )
+    
+    def save(self, *args, **kwargs):
+        self.age = calculate_age(self.date_of_birth)
+        return super().save(*args, **kwargs)
 
 class MaidFamilyDetails(models.Model):
     maid = models.OneToOneField(
