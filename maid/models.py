@@ -831,11 +831,13 @@ class MaidOtherCare(models.Model):
     care_for_pets = models.BooleanField(
         verbose_name=_('Care for pets'),
         blank=False,
+        choices=TrueFalseChoices('Able', 'Unable'),
         default=False
     )
 
     gardening = models.BooleanField(
         verbose_name=_('Gardening'),
         blank=False,
+        choices=TrueFalseChoices('Able', 'Unable'),
         default=False
     )
