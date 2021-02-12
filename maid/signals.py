@@ -11,9 +11,9 @@ from django.dispatch import receiver
 from .constants import MaidResponsibilityChoices
 
 from .models import (
-    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
-    MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidStatus, 
-    MaidAgencyFeeTransaction, MaidResponsibility
+    MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
+    MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility
 )
 
 # Utiliy Classes and Functions
