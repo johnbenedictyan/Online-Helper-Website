@@ -894,7 +894,7 @@ class MainMaidCreationForm(forms.Form):
         label=_('Date of Birth'),
         required=True,
         widget=CustomDateInput(),
-        input_formats=['%d-%m-%Y']
+        input_formats=['%d %b %Y']
     )
 
     country_of_origin = forms.ChoiceField(
@@ -1666,6 +1666,7 @@ class MainMaidCreationForm(forms.Form):
         else:
             new_maid_personal_details = MaidPersonalDetails.objects.create(
                 maid=new_maid,
+                date_of_birth=cleaned_data.get('date_of_birth'),
                 age=cleaned_data.get('age'),
                 country_of_origin=cleaned_data.get('country_of_origin'),
                 height=cleaned_data.get('height'),
@@ -1674,7 +1675,7 @@ class MainMaidCreationForm(forms.Form):
                 address_1=cleaned_data.get('address_1'),
                 address_2=cleaned_data.get('address_2'),
                 repatriation_airport=cleaned_data.get('repatriation_airport'),
-                religion=cleaned_data.get('religion'),
+                religion=cleaned_data.get('religion')
             )
             for language in cleaned_data.get('language_spoken'):
                 new_maid_personal_details.languages.add(
