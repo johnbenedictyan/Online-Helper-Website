@@ -33,15 +33,16 @@ from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
 
 # Utility functions
-def validate_passport_number(cleaned_field, max_length):
+def validate_passport_number(cleaned_field, max_length=None):
     if not isinstance(cleaned_field, str):
         raise ValidationError('Must be a string')
 
     if not re.match('^[A-Za-z0-9]*$', cleaned_field):
         raise ValidationError('Can only enter letters or numbers')
 
-    if len(cleaned_field)>max_length:
-        raise ValidationError(f'Must not exceed {max_length} characters')
+    if max_length:
+        if len(cleaned_field)>max_length:
+            raise ValidationError(f'Must not exceed {max_length} characters')
 
 
 from .widgets import CustomDateInput
@@ -839,6 +840,12 @@ class MainMaidCreationForm(forms.Form):
         min_value=0,
         required=True
     )
+    
+    passport_number = forms.CharField(
+        label='',
+        max_length=20,
+        required=True
+    )
 
     remarks = forms.CharField(
         label=_('Remarks'),
@@ -880,7 +887,8 @@ class MainMaidCreationForm(forms.Form):
     date_of_birth = forms.DateField(
         label=_('Date of Birth'),
         required=True,
-        widget=CustomDateInput()
+        widget=CustomDateInput(),
+        input_formats=['%d-%m-%Y']
     )
 
     country_of_origin = forms.ChoiceField(
@@ -1201,6 +1209,14 @@ class MainMaidCreationForm(forms.Form):
                         HTML("<label for='id_days_off' class='col-md-4 col-form-label'>Number of days off</label>"),
                         Column(
                             'days_off',
+                            css_class='col-md-8'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_passport_number' class='col-md-4 col-form-label'>Passport Number</label>"),
+                        Column(
+                            'passport_number',
                             css_class='col-md-8'
                         ),
                         css_class='form-group row'
@@ -1599,5 +1615,17 @@ class MainMaidCreationForm(forms.Form):
 
         return reference_number
 
+    def clean_passport_number(self):
+        passport_number = self.cleaned_data.get('passport_number')
+        validate_passport_number(passport_number)
+        return passport_number
+        
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
+        
+        # Encrypting the passport number
+        raw_passport_number = cleaned_data.get('passport_number')
+        ciphertext, nonce, tag = encrypt_string(
+            raw_passport_number,
+            settings.ENCRYPTION_KEY
+        )

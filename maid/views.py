@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
 # Imports from project-wide files
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
@@ -26,7 +26,7 @@ from .forms import (
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
     MaidDietaryRestrictionForm, MaidEmploymentHistoryForm,
-    MaidUpdateForm
+    MaidUpdateForm, MainMaidCreationForm
 )
 
 from .models import (
@@ -180,6 +180,38 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
             }
         )
 
+class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                 SuccessMessageMixin, FormView):
+    form_class = MainMaidCreationForm
+    http_method_names = ['get','post']
+    success_url = reverse_lazy('dashboard_maid_detail')
+    template_name = 'create/maid-create.html'
+    authority = ''
+    agency_id = ''
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id
+        })
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
+    
+    def form_valid(self, form):
+        data = form.cleaned_data
+        new_maid = Maid.objects.create(
+            
+        )
+        print(form.cleaned_data)
+        # return super().form_valid(form)
+        
 class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, 
                                        SuccessMessageMixin, CreateView):
     context_object_name = 'maid_food_handling_preference'

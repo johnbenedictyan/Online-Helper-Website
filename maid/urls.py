@@ -5,6 +5,9 @@ from django.urls import include, path
 
 # Imports from local app
 
+## Form Views
+from .views import MaidCreateFormView
+
 ## Redirect Views
 from .views import MaidTogglePublished
 
@@ -42,7 +45,7 @@ urlpatterns = [
         include([
             path(
                 '',
-                MaidCreate.as_view(),
+                MaidCreateFormView.as_view(),
                 name='maid_create'
             )
         ])
