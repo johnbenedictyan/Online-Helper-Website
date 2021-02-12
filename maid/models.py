@@ -19,7 +19,7 @@ from agency.models import Agency
 # Imports from within the app
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
-    MaidCareRemarksChoices, MaidLanguageChoices, MaidResponsibilityChoices,
+    MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices
 )
 
@@ -52,10 +52,6 @@ class MaidLanguage(models.Model):
         return f'{self.get_language_display()}'
 
 class Maid(models.Model):
-    class PassportStatusChoices(models.IntegerChoices):
-        NOT_READY = 0, _('Not Ready')
-        READY = 1, _('Ready')
-        
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
@@ -74,9 +70,18 @@ class Maid(models.Model):
         blank=False,
         null=True
     )
-    passport_number = models.BinaryField(editable=True)
-    nonce = models.BinaryField(editable=True)
-    tag = models.BinaryField(editable=True)
+    
+    passport_number = models.BinaryField(
+        editable=True
+    )
+    
+    nonce = models.BinaryField(
+        editable=True
+    )
+    
+    tag = models.BinaryField(
+        editable=True
+    )
 
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
@@ -103,8 +108,8 @@ class Maid(models.Model):
         verbose_name=_('Passport status'),
         max_length=1,
         blank=False,
-        choices=PassportStatusChoices.choices,
-        default=PassportStatusChoices.NOT_READY
+        choices=MaidPassportStatusChoices.choices,
+        default=MaidPassportStatusChoices.NOT_READY
     )
 
     remarks = models.CharField(
