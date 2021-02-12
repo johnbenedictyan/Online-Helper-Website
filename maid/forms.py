@@ -3,7 +3,6 @@ import re
 
 # Imports from django
 from django import forms
-from django.contrib.admin.widgets import AdminDateWidget
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -14,20 +13,21 @@ from onlinemaid.constants import TrueFalseChoices
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
-from crispy_forms.bootstrap import InlineRadios, PrependedText, AppendedText
+from crispy_forms.bootstrap import PrependedText, AppendedText
 from agency.models import Agency
 
 # Imports from local apps
 from .constants import (
     TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
     MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
-    MaidCareRemarksChoices
+    MaidCareRemarksChoices, MaidPassportStatusChoices
 )
 
 from .models import (
-    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
-    MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory
+    Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, MaidFamilyDetails, 
+    MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
+    MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
+    MaidDietaryRestriction, MaidEmploymentHistory, MaidAgencyFeeTransaction
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -846,6 +846,12 @@ class MainMaidCreationForm(forms.Form):
         max_length=20,
         required=True
     )
+    
+    passport_status = forms.ChoiceField(
+        label='',
+        choices=MaidPassportStatusChoices.choices,
+        initial=MaidPassportStatusChoices.NOT_READY
+    )
 
     remarks = forms.CharField(
         label=_('Remarks'),
@@ -1217,6 +1223,14 @@ class MainMaidCreationForm(forms.Form):
                         HTML("<label for='id_passport_number' class='col-md-4 col-form-label'>Passport Number</label>"),
                         Column(
                             'passport_number',
+                            css_class='col-md-8'
+                        ),
+                        css_class='form-group row'
+                    ),
+                    Row(
+                        HTML("<label for='id_passport_status' class='col-md-4 col-form-label'>Passport Status</label>"),
+                        Column(
+                            'passport_status',
                             css_class='col-md-8'
                         ),
                         css_class='form-group row'
@@ -1625,7 +1639,106 @@ class MainMaidCreationForm(forms.Form):
         
         # Encrypting the passport number
         raw_passport_number = cleaned_data.get('passport_number')
-        ciphertext, nonce, tag = encrypt_string(
+        encrypted_passport_number, nonce, tag = encrypt_string(
             raw_passport_number,
             settings.ENCRYPTION_KEY
         )
+        print(cleaned_data.get('language_spoken'))
+        try:
+            new_maid = Maid.objects.create(
+                agency=Agency.objects.get(
+                    pk=self.agency_id
+                ),
+                reference_number=cleaned_data.get('reference_number'),
+                name=cleaned_data.get('name'),
+                passport_number=encrypted_passport_number,
+                nonce=nonce,
+                tag=tag,
+                photo=cleaned_data.get('photo'),
+                maid_type=cleaned_data.get('maid_type'),
+                days_off=cleaned_data.get('days_off'),
+                passport_status=cleaned_data.get('passport_status'),
+                remarks=cleaned_data.get('remarks')
+            )
+        except Exception as e:
+            print('form level',e)
+            raise Exception
+        else:
+            new_maid_personal_details = MaidPersonalDetails.objects.create(
+                maid=new_maid,
+                age=cleaned_data.get('age'),
+                country_of_origin=cleaned_data.get('country_of_origin'),
+                height=cleaned_data.get('height'),
+                weight=cleaned_data.get('weight'),
+                place_of_birth=cleaned_data.get('place_of_birth'),
+                address_1=cleaned_data.get('address_1'),
+                address_2=cleaned_data.get('address_2'),
+                repatriation_airport=cleaned_data.get('repatriation_airport'),
+                religion=cleaned_data.get('religion'),
+            )
+            for language in cleaned_data.get('language_spoken'):
+                new_maid_personal_details.languages.add(
+                    MaidLanguage.objects.get(
+                        language=language
+                    )
+                )
+            MaidFamilyDetails.objects.create(
+                maid=new_maid,
+                marital_status=cleaned_data.get('marital_status'),
+                number_of_children=cleaned_data.get('number_of_children'),
+                age_of_children=cleaned_data.get('age_of_children'),
+                number_of_siblings=cleaned_data.get('number_of_siblings')
+            )
+            MaidFinancialDetails.objects.create(
+                maid=new_maid,
+                salary=cleaned_data.get('salary'),
+                personal_loan_amount=cleaned_data.get('personal_loan_amount')
+            )
+            MaidInfantChildCare.objects.create(
+                maid=new_maid,
+                assessment=cleaned_data.get('cfi_assessment'),
+                willingness=cleaned_data.get('cfi_willingness'),
+                experience=cleaned_data.get('cfi_experience'),
+                remarks=cleaned_data.get('cfi_remarks'),
+                other_remarks=cleaned_data.get('cfi_other_remarks')
+            )
+            MaidElderlyCare.objects.create(
+                maid=new_maid,
+                assessment=cleaned_data.get('cfe_assessment'),
+                willingness=cleaned_data.get('cfe_willingness'),
+                experience=cleaned_data.get('cfe_experience'),
+                remarks=cleaned_data.get('cfe_remarks'),
+                other_remarks=cleaned_data.get('cfe_other_remarks')
+            )
+            MaidDisabledCare.objects.create(
+                maid=new_maid,
+                assessment=cleaned_data.get('cfd_assessment'),
+                willingness=cleaned_data.get('cfd_willingness'),
+                experience=cleaned_data.get('cfd_experience'),
+                remarks=cleaned_data.get('cfd_remarks'),
+                other_remarks=cleaned_data.get('cfd_other_remarks')
+            )
+            MaidGeneralHousework.objects.create(
+                maid=new_maid,
+                assessment=cleaned_data.get('geh_assessment'),
+                willingness=cleaned_data.get('geh_willingness'),
+                experience=cleaned_data.get('geh_experience'),
+                remarks=cleaned_data.get('geh_remarks'),
+                other_remarks=cleaned_data.get('geh_other_remarks')
+            )
+            MaidCooking.objects.create(
+                maid=new_maid,
+                assessment=cleaned_data.get('cok_assessment'),
+                willingness=cleaned_data.get('cok_willingness'),
+                experience=cleaned_data.get('cok_experience'),
+                remarks=cleaned_data.get('cok_remarks'),
+                other_remarks=cleaned_data.get('cok_other_remarks')
+            )
+            MaidAgencyFeeTransaction.objects.create(
+                maid=new_maid,
+                amount=cleaned_data.get('initial_agency_fee_amount'),
+                transaction_type='ADD',
+                description=cleaned_data.get('initial_agency_fee_description')
+            )
+        finally:
+            return new_maid
