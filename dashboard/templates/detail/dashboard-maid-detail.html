@@ -1,6 +1,423 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Maid Information</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-3">
+            <img src="{{maid.photo.url}}" class="rounded img-thumbnail" alt="Maid Profile Picture">
+        </div>
+        <div class="col-md-8 col-lg-9">
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Reference Number</p>
+                </div>
+                <div class="col-md-8">
+                    <p>{{maid.reference_number}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Name</p>
+                </div>
+                <div class="col-md-8">
+                    <p>{{maid.name}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Type of Maid</p>
+                </div>
+                <div class="col-md-8">
+                    <p>{{maid.get_maid_type_display}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Number of days off</p>
+                </div>
+                <div class="col-md-8">
+                    <p>{{maid.days_off}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Passport Number</p>
+                </div>
+                <div class="col-md-8">
+                    <p>{{maid.passport_number}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Passport Status</p>
+                </div>
+                <div class="col-md-8">
+                    <p>{{maid.passport_status}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col ml-1 mt-2">
+            <p>Remarks</p>
+            <p>{{maid.remarks}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Maid Personal Details</h3>  
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Height</p>
+            <p>{{maid.personal_details.height}}cm</p>
+        </div>
+        <div class="col">
+            <p>Weight</p>
+            <p>{{maid.personal_details.weight}}kg</p>
+        </div>
+        <div class="col">
+            <p>Place of Birth</p>
+            <p>{{maid.personal_details.place_of_birth}}</p>
+        </div>
+        <div class="col">
+            <p>Address</p>
+            <p>{{maid.personal_details.address_1}}</p>
+            <p>{{maid.personal_details.address_2}}</p>
+        </div>
+        <div class="col">
+            <p>Repatraition Airport</p>
+            <p>{{maid.personal_details.repatriation_airport}}</p>
+        </div>
+        <div class="col">
+            <p>Religion</p>
+            <p>{{maid.personal_details.get_religion_display}}</p>
+        </div>
+        <div class="col">
+            <p>Languages Spoken</p>
+            {% for language in maid.personal_details.languages.all %}
+            <p>{{language}}</p>
+            {% endfor%}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Maid Family Details</h3>  
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Marital Status</p>
+            <p>{{maid.family_details.get_marital_status_display}}</p>
+        </div>
+        <div class="col">
+            <p>Number of Children</p>
+            <p>{{maid.family_details.number_of_children}}</p>
+        </div>
+        <div class="col">
+            <p>Age of Children</p>
+            <p>{{maid.family_details.age_of_children}}</p>
+        </div>
+        <div class="col">
+            <p>Number of Siblings</p>
+            <p>{{maid.family_details.number_of_siblings}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Maid Financial Details</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Salary</p>
+            <p>{{maid.financial_details.salary}}</p>
+        </div>
+        <div class="col">
+            <p>Personal Loan Amount</p>
+            <p>{{maid.financial_details.personal_loan_amount}}</p>
+        </div>
+        <div class="col">
+            <p>Agency Fee Amount</p>
+            <p>{{maid.financial_details.agency_fee_amount}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>Agency Fee Breakdown</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <span class="h3">Maid Care Details</span>
+            <a href="#" class="btn btn-primary">Modify</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Infant Care</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Assessment</p>
+                </div>
+                <div class="col">
+                    {{maid.infant_child_care.get_assessment_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Willingness</p>
+                </div>
+                <div class="col">
+                    {{maid.infant_child_care.get_willingness_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Experience</p>
+                </div>
+                <div class="col">
+                    {{maid.infant_child_care.get_experience_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.infant_child_care.get_remarks_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Other Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.infant_child_care.other_remarks}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Elderly Care</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Assessment</p>
+                </div>
+                <div class="col">
+                    {{maid.elderly_care.get_assessment_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Willingness</p>
+                </div>
+                <div class="col">
+                    {{maid.elderly_care.get_willingness_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Experience</p>
+                </div>
+                <div class="col">
+                    {{maid.elderly_care.get_experience_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.elderly_care.get_remarks_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Other Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.elderly_care.other_remarks}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Disabled Care</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Assessment</p>
+                </div>
+                <div class="col">
+                    {{maid.disabled_care.get_assessment_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Willingness</p>
+                </div>
+                <div class="col">
+                    {{maid.disabled_care.get_willingness_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Experience</p>
+                </div>
+                <div class="col">
+                    {{maid.disabled_care.get_experience_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.disabled_care.get_remarks_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Other Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.disabled_care.other_remarks}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <h5>General Housework</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Assessment</p>
+                </div>
+                <div class="col">
+                    {{maid.general_housework.get_assessment_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Willingness</p>
+                </div>
+                <div class="col">
+                    {{maid.general_housework.get_willingness_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Experience</p>
+                </div>
+                <div class="col">
+                    {{maid.general_housework.get_experience_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.general_housework.get_remarks_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Other Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.general_housework.other_remarks}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Cooking</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Assessment</p>
+                </div>
+                <div class="col">
+                    {{maid.cooking.get_assessment_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Willingness</p>
+                </div>
+                <div class="col">
+                    {{maid.cooking.get_willingness_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Experience</p>
+                </div>
+                <div class="col">
+                    {{maid.cooking.get_experience_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.cooking.get_remarks_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Other Remarks</p>
+                </div>
+                <div class="col">
+                    {{maid.cooking.other_remarks}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Other Care</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Care for Pets</p>
+                </div>
+                <div class="col">
+                    {{maid.other_care.get_care_for_pets_display}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Gardening</p>
+                </div>
+                <div class="col">
+                    {{maid.other_care.get_gardening_display}}
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row mb-3">
         <div class="col-6">
             <img src="" alt="" class="img-fluid">
