@@ -205,12 +205,17 @@ class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         )
     
     def form_valid(self, form):
-        data = form.cleaned_data
-        new_maid = Maid.objects.create(
-            
-        )
-        print(form.cleaned_data)
-        # return super().form_valid(form)
+        try:
+            self.object = form.save()
+        except Exception as e:
+            messages.warning(
+                self.request,
+                'Please try again',
+                extra_tags='warning'
+            )
+            return super().form_invalid(form)
+        else:
+            return super().form_valid(form)
         
 class MaidFoodHandlingPreferenceCreate(AgencyLoginRequiredMixin, 
                                        SuccessMessageMixin, CreateView):
