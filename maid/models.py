@@ -325,6 +325,11 @@ class MaidAgencyFeeTransaction(models.Model):
         blank=False
     )
 
+    transaction_date = models.DateField(
+        auto_now_add=True,
+        editable=False
+    )
+
 ## Models which have a one-to-one relationship with the maid model 
 class MaidPersonalDetails(models.Model):
     maid = models.OneToOneField(
@@ -412,6 +417,12 @@ class MaidPersonalDetails(models.Model):
 
     languages = models.ManyToManyField(
         MaidLanguage
+    )
+
+    preferred_language = models.OneToOneField(
+        MaidLanguage,
+        on_delete=models.PROTECT,
+        related_name='preferred_language'
     )
     
     def save(self, *args, **kwargs):
