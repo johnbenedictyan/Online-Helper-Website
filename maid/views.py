@@ -27,8 +27,9 @@ from .forms import (
     MaidCreationForm, MaidPersonalDetailsForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
-    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm,
-    MaidUpdateForm, MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm
+    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm, MaidUpdateForm, 
+    MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
+    MaidAgencyFeeTransactionForm
 )
 
 from .models import (
@@ -654,6 +655,30 @@ class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin,
                 self.pk_url_kwarg
             ),
             maid__agency = self.request.user.agency_owner.agency
+        )
+
+class MaidAgencyFeeTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
+                                  SuccessMessageMixin, UpdateView):
+    context_object_name = 'maid_agency_fee_transaction'
+    form_class = MaidAgencyFeeTransactionForm
+    http_method_names = ['get','post']
+    model = MaidAgencyFeeTransaction
+    template_name = 'update/maid-agency-fee-transaction-update.html'
+    success_message = 'Maid agency fee transaction updated'
+
+    def get_object(self, queryset=None):
+        return MaidAgencyFeeTransaction.objects.get(
+            pk = self.kwargs.get('agency_fee_transaction_pk'),
+            maid = self.kwargs.get('pk'),
+            maid__agency = self.request.user.agency_owner.agency
+        )
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'dashboard_maid_detail',
+            kwargs={
+                'pk':self.kwargs.get('pk')
+            }
         )
 
 # Delete Views
