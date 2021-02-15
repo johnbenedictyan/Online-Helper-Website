@@ -26,7 +26,8 @@ from .views import (
 from .views import (
     MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
-    MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate
+    MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate,
+    MaidAgencyFeeTransactionUpdate
 )
 
 ## Delete Views
@@ -87,6 +88,11 @@ urlpatterns = [
                 'care/',
                 MaidCareDetailsUpdate.as_view(),
                 name='maid_care_details_update'
+            ),
+            path(
+                'aft/<int:agency_fee_transaction_pk>/',
+                MaidAgencyFeeTransactionUpdate.as_view(),
+                name='maid_agency_fee_transaction_update'
             ),
             path(
                 'icc/',
