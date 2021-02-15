@@ -662,7 +662,7 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
     context_object_name = 'maid'
     http_method_names = ['post']
     model = Maid
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('dashboard_maid_list')
     check_type = 'maid'
     success_message = 'Maid deleted'
 
