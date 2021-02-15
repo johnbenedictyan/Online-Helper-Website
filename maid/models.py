@@ -11,7 +11,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import calculate_age
+from onlinemaid.helper_functions import calculate_age, decrypt_string
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
@@ -175,7 +175,16 @@ class Maid(models.Model):
             if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
             and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
         ]
-        return(main_responsibility[0])
+        return main_responsibility[0]
+
+    def get_passport_number(self):
+        plaintext = decrypt_string(
+            self.passport_number,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
+        return plaintext
 
 class MaidWorkDuty(models.Model):
     class WorkDutyChoices(models.TextChoices):
