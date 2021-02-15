@@ -221,6 +221,21 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-6">
+                            {% for transaction in maid.agency_fee_transactions.all %}
+                                <div class="card custom-card">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5>${{transaction.amount}}</h5>
+                                        <small class="mt-1">{{transaction.transaction_date}}</small>
+                                    </div>
+                                    <p class="mb-1">{{transaction.description}}</p>
+                                    <small class="mb-2">{{transaction.get_transaction_type_display}}</small>
+                                    <a href="{% url 'maid_agency_fee_transaction_update' pk=maid.pk agency_fee_transaction_pk=transaction.pk %}">Change</a>
+                                </div>
+                            {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col d-md-none">
                         <a href="{% url 'maid_financial_details_update' pk=maid.pk %}" class="btn btn-primary w-100">Modify Financial Details</a>
                     </div>
@@ -670,12 +685,15 @@
             <div class="card custom-card">
                 <div class="row">
                     <div class="col text-center">
-                        <a href="{% url 'maid_delete' pk=maid.pk %}" class="btn btn-danger mr-2 d-none d-md-inline">
-                            <strong>Delete FDW Biodata</strong>
-                        </a>
-                        <a href="{% url 'maid_delete' pk=maid.pk %}" class="btn btn-outline-danger d-md-none mb-2 w-100">
-                            <strong>Delete FDW Biodata</strong>
-                        </a>
+                        <form action="{% url 'maid_delete' pk=maid.pk %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger mr-2 d-none d-md-inline">
+                                <strong>Delete FDW Biodata</strong>
+                            </button>
+                            <button type="submit" class="btn btn-outline-danger d-md-none mb-2 w-100">
+                                <strong>Delete FDW Biodata</strong>
+                            </button>
+                        </form>
                         {% if maid.published == False %}
                         <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success ml-md-2 d-none d-md-inline">
                             <strong>Publish FDW Biodata</strong>
