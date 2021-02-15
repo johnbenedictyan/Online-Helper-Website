@@ -326,8 +326,7 @@ class MaidAgencyFeeTransaction(models.Model):
     )
 
     transaction_date = models.DateField(
-        auto_now_add=True,
-        editable=False
+        blank=False
     )
 
 ## Models which have a one-to-one relationship with the maid model 
@@ -419,7 +418,7 @@ class MaidPersonalDetails(models.Model):
         MaidLanguage
     )
 
-    preferred_language = models.OneToOneField(
+    preferred_language = models.ForeignKey(
         MaidLanguage,
         on_delete=models.PROTECT,
         related_name='preferred_language'
