@@ -19,6 +19,7 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
     JobOrder,
+    PdfArchive,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -129,6 +130,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 isinstance(self.object, EmployerDocMaidStatus)
                 or isinstance(self.object, EmployerDocSig)
                 or isinstance(self.object, JobOrder)
+                or isinstance(self.object, PdfArchive)
             ):
                 self.employer_subdoc_obj = self.object
 
@@ -263,28 +265,16 @@ class CheckSignatureSessionTokenMixin(UserPassesTestMixin):
 # PDF Mixin
 class PdfHtmlViewMixin:
     DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
-    target = None
     content_disposition = None
+    use_repayment_table = False
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-
-        if isinstance(self.object, EmployerDoc):
-            context = self.get_context_data(object=self.object)
-        
-        elif isinstance(self.object, EmployerDocSig):
-            context = self.get_context_data(object=self.object.employer_doc)
-        else:
-            return HttpResponseRedirect(
-                reverse('home'))
-
+    def generate_pdf_response(self, request, context):
         # Render PDF
         html_template = render_to_string(self.template_name, context)
         pdf_file = HTML(
             string=html_template,
             base_url=request.build_absolute_uri()
             ).write_pdf(
-                target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
                 # Load separate CSS stylesheet from static folder
                 # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
                 stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
@@ -298,79 +288,21 @@ class PdfHtmlViewMixin:
             )
         return response
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+    def generate_pdf_file(self, request, context, template_name):
+        # Render PDF
+        html_template = render_to_string(template_name, context)
+        return HTML(
+            string=html_template,
+            base_url=request.build_absolute_uri()
+            ).write_pdf(
+                # target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
+                # Load separate CSS stylesheet from static folder
+                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
+            )
 
-        if isinstance(self.object, EmployerDoc):
-            # Document version number formatting
-            version_str = str(context.get('object').version).zfill(4)
-            context['object'].version = f'[{version_str}] - {version_explainer_text}'
-
-            # Employer NRIC
-            try:
-                context['object'].employer.employer_nric = decrypt_string(
-                    self.object.employer.employer_nric,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer.nonce,
-                    self.object.employer.tag
-                )
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
-            
-            # FDW passport number
-            try:
-                context['object'].fdw.passport_number = decrypt_string(
-                    self.object.fdw.passport_number,
-                    settings.ENCRYPTION_KEY,
-                    self.object.fdw.nonce,
-                    self.object.fdw.tag
-                )
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].fdw.passport_number = ''
-        elif isinstance(self.object, EmployerDocSig):
-            '''
-            context['object'] set as EmployerDoc object in get() method above
-            in this mixin, instead of EmployerDocSig so that same PDF
-            templates can be re-used
-            '''
-            # Document version number formatting
-            version_str = str(
-                context.get('object').version).zfill(4)
-            context['object'].version = f'[{version_str}] - {version_explainer_text}'
-            
-            # Employer NRIC
-            try:
-                context['object'].employer.employer_nric = decrypt_string(
-                    self.object.employer_doc.employer.employer_nric,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer_doc.employer.nonce,
-                    self.object.employer_doc.employer.tag
-                )
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
-            
-            # FDW passport number
-            try:
-                context['object'].fdw.passport_number = decrypt_string(
-                    self.object.employer_doc.fdw.passport_number,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer_doc.fdw.nonce,
-                    self.object.employer_doc.fdw.tag
-                )
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].fdw.passport_number = ''
-        
-        return context
-
-class RepaymentScheduleMixin:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['repayment_table'] = {}
+    def calc_repayment_schedule(self):
+        repayment_table = {}
         
         work_commencement_date = (
             self.object.rn_maidstatus_ed.fdw_work_commencement_date
@@ -402,7 +334,7 @@ class RepaymentScheduleMixin:
                         salary_per_month
                     )
 
-                    context['repayment_table'][i] = {
+                    repayment_table[i] = {
                         'salary_date': '{day}/{month}/{year}'.format(
                             day = calendar.monthrange(
                                 payment_year, month_current)[1],
@@ -444,7 +376,7 @@ class RepaymentScheduleMixin:
                 )
 
                 # 1st month pro-rated
-                context['repayment_table'][1] = {
+                repayment_table[1] = {
                     'salary_date': '{day}/{month}/{year}'.format(
                         day = calendar.monthrange(
                             payment_year, month_current)[1],
@@ -485,7 +417,7 @@ class RepaymentScheduleMixin:
                         salary_per_month
                     )
 
-                    context['repayment_table'][i] = {
+                    repayment_table[i] = {
                         'salary_date': '{day}/{month}/{year}'.format(
                             day = calendar.monthrange(
                                 payment_year, month_current)[1],
@@ -526,7 +458,7 @@ class RepaymentScheduleMixin:
                     placement_fee_per_month,
                     salary_per_month
                 )
-                context['repayment_table'][25] = {
+                repayment_table[25] = {
                     'salary_date': '{day}/{month}/{year}'.format(
                         day = final_payment_day,
                         month = month_current,
@@ -543,7 +475,7 @@ class RepaymentScheduleMixin:
         
         else:
             for i in range(1,25):
-                context['repayment_table'][i] = {
+                repayment_table[i] = {
                     'salary_date': '',
                     'basic_salary': '',
                     'off_day_compensation': '',
@@ -551,5 +483,89 @@ class RepaymentScheduleMixin:
                     'salary_received': '',
                     'loan_repaid': '',
                 }
+        return repayment_table
 
-        return context    
+    def get_context_data(self, **kwargs):
+        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+
+        if isinstance(self.object, EmployerDoc):
+            context = super().get_context_data(object=self.object)
+
+            # Document version number formatting
+            version_str = str(context.get('object').version).zfill(4)
+            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+
+            # Get agency main branch
+            context['agency_main_branch'] = (
+                self.object.employer.agency_employee.agency.branches.filter(
+                    main_branch=True
+                ).all()[0]
+            )
+
+            # Employer NRIC
+            try:
+                context['object'].employer.employer_nric = decrypt_string(
+                    self.object.employer.employer_nric,
+                    settings.ENCRYPTION_KEY,
+                    self.object.employer.nonce,
+                    self.object.employer.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].employer.employer_nric = ''
+            
+            # FDW passport number
+            try:
+                context['object'].fdw.passport_number = decrypt_string(
+                    self.object.fdw.passport_number,
+                    settings.ENCRYPTION_KEY,
+                    self.object.fdw.nonce,
+                    self.object.fdw.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].fdw.passport_number = ''
+        elif isinstance(self.object, EmployerDocSig):
+            '''
+            context['object'] set as EmployerDoc object instead of
+            EmployerDocSig so that same PDF templates can be re-used
+            '''
+            context = super().get_context_data(object=self.object.employer_doc)
+
+            # Document version number formatting
+            version_str = str(
+                context.get('object').version).zfill(4)
+            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+            
+            # Get agency main branch
+            context['agency_main_branch'] = (
+                self.object.employer_doc.employer.agency_employee.agency.branches.filter(
+                    main_branch=True
+                ).all()[0]
+            )
+
+            # Employer NRIC
+            try:
+                context['object'].employer.employer_nric = decrypt_string(
+                    self.object.employer_doc.employer.employer_nric,
+                    settings.ENCRYPTION_KEY,
+                    self.object.employer_doc.employer.nonce,
+                    self.object.employer_doc.employer.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].employer.employer_nric = ''
+            
+            # FDW passport number
+            try:
+                context['object'].fdw.passport_number = decrypt_string(
+                    self.object.employer_doc.fdw.passport_number,
+                    settings.ENCRYPTION_KEY,
+                    self.object.employer_doc.fdw.nonce,
+                    self.object.employer_doc.fdw.tag
+                )
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].fdw.passport_number = ''
+        
+        return context

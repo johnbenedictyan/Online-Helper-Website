@@ -8,6 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # From our apps
 from .models import (
@@ -16,6 +17,7 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
     JobOrder,
+    PdfArchive,
 )
 from .forms import (
     EmployerForm,
@@ -34,7 +36,7 @@ from .mixins import (
     LoginByAgencyUserGroupRequiredMixin,
     PdfHtmlViewMixin,
     CheckSignatureSessionTokenMixin,
-    RepaymentScheduleMixin,
+    # RepaymentScheduleMixin,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -635,33 +637,14 @@ class PdfGenericAgencyView(
     model = EmployerDoc
     pk_url_kwarg = 'employerdoc_pk'
 
-class PdfServiceAgreementAgencyView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    PdfHtmlViewMixin,
-    DetailView
-):
-    model = EmployerDoc
-    pk_url_kwarg = 'employerdoc_pk'
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['agency_main_branch'] = (
-            self.object.employer.agency_employee.agency.branches.filter(
-                main_branch=True
-            ).all()[0]
-        )
-        return context
+        if self.use_repayment_table:
+            context['repayment_table'] = self.calc_repayment_schedule()
 
-class PdfRepaymentScheduleAgencyView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    PdfHtmlViewMixin,
-    RepaymentScheduleMixin,
-    DetailView
-):
-    model = EmployerDoc
-    pk_url_kwarg = 'employerdoc_pk'
+        return self.generate_pdf_response(request, context)
 
 class PdfFileAgencyView(
     CheckAgencyEmployeePermissionsMixin,
@@ -699,40 +682,14 @@ class PdfGenericTokenView(
     slug_url_kwarg = 'slug'
     token_field_name = None
 
-class PdfServiceAgreementTokenView(
-    CheckSignatureSessionTokenMixin,
-    PdfHtmlViewMixin,
-    DetailView
-):
-    model = EmployerDocSig
-    slug_url_kwarg = 'slug'
-    token_field_name = None
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['agency_main_branch'] = (
-            self.object.employer_doc.employer.agency_employee.agency.branches.filter(
-                main_branch=True
-            ).all()[0]
-        )
-        return context
+        if self.use_repayment_table:
+            context['repayment_table'] = self.calc_repayment_schedule()
 
-class PdfRepaymentScheduleTokenView(
-    CheckSignatureSessionTokenMixin,
-    PdfHtmlViewMixin,
-    RepaymentScheduleMixin,
-    DetailView
-):
-    model = EmployerDocSig
-    slug_url_kwarg = 'slug'
-    token_field_name = None
-
-    def get_context_data(self, **kwargs):
-        # Re-assign self.object to be instance of EmployerDoc object for
-        # RepaymentScheduleMixin's calculations
-        self.object = self.get_object().employer_doc
-        context = super().get_context_data(**kwargs)
-        return context
+        return self.generate_pdf_response(request, context)
 
 class PdfFileTokenView(
     CheckSignatureSessionTokenMixin,
@@ -755,5 +712,57 @@ class PdfFileTokenView(
                 content_type='application/pdf'
             )
         except:
-            return HttpResponseRedirect(
-                reverse('home'))
+            return HttpResponseRedirect(reverse('home'))
+
+class PdfArchiveSaveView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    PdfHtmlViewMixin,
+    DetailView
+):
+    model = EmployerDoc
+    pk_url_kwarg = 'employerdoc_pk'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+        context['repayment_table'] = self.calc_repayment_schedule()
+
+        instance = PdfArchive.objects.get(employer_doc=self.object)
+        folder = 'employer_documentation/pdf/'
+        templates = {
+            'f01_service_fee_schedule':     folder + '01-service-fee-schedule.html',
+            'f03_service_agreement':        folder + '03-service-agreement.html',
+            'f04_employment_contract':      folder + '04-employment-contract.html',
+            'f05_repayment_schedule':       folder + '05-repayment-schedule.html',
+            'f06_rest_day_agreement':       folder + '06-rest-day-agreement.html',
+            'f08_handover_checklist':       folder + '08-handover-checklist.html',
+            'f09_transfer_consent':         folder + '09-transfer-consent.html',
+            'f10_work_pass_authorisation':  folder + '10-work-pass-authorisation.html',
+            'f11_security_bond':            folder + '11-security-bond.html',
+            'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
+            'f13_income_tax_declaration':   folder + '13-income-tax-declaration.html',
+            'f14_safety_agreement':         folder + '14-safety-agreement.html',
+        }
+        for field_name, template_name in templates.items():
+            filename = template_name.split('/')[-1] + '.pdf'
+            relative_path = f'{self.object.pk}:{filename}'
+            pdf_file = self.generate_pdf_file(request, context, template_name)
+            file_wrapper = SimpleUploadedFile(
+                relative_path,
+                pdf_file,
+                'application/pdf'
+            )
+            setattr(instance, field_name, file_wrapper)
+        instance.save()
+
+        return HttpResponseRedirect(reverse_lazy('sales_list_route'))
+
+class PdfArchiveDetailView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    DetailView
+):
+    model = EmployerDoc
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/pdfarchive_detail.html'

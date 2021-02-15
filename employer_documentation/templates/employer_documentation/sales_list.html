@@ -61,7 +61,9 @@
                     <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></td>
                     <td><a href="">{{ object.ca_deposit }}</a></td>
                     <td><a href="">{{ object.calc_bal }}</a></td>
-                    {% include 'employer_documentation/doc_list_modal_snippet.html' %}
+                    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}">Undo Deploy</button><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}">Archive</button></td>
+                    {% include 'employer_documentation/snippet_modal_deploy.html' %}
+                    {% include 'employer_documentation/snippet_modal_archive.html' %}
                 </tr>
             {% endfor %}
         {% else %}

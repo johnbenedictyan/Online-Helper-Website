@@ -13,6 +13,7 @@ from .views import (
 from .views import (
     EmployerDetailView,
     EmployerDocDetailView,
+    PdfArchiveDetailView,
 )
 
 ## Create Views
@@ -47,13 +48,10 @@ from .views import (
 ## PDF Views
 from .views import (
     PdfGenericAgencyView,
-    PdfServiceAgreementAgencyView,
-    PdfRepaymentScheduleAgencyView,
     PdfFileAgencyView,
     PdfGenericTokenView,
-    PdfServiceAgreementTokenView,
-    PdfRepaymentScheduleTokenView,
     PdfFileTokenView,
+    PdfArchiveSaveView,
 )
 
 # Start of Urls
@@ -213,6 +211,21 @@ urlpatterns = [
                                         ]),
                                     ),
                                     path(
+                                        'archive/',
+                                        include([
+                                            path(
+                                                'save/',
+                                                PdfArchiveSaveView.as_view(),
+                                                name='pdf_archive_save'
+                                            ),
+                                            path(
+                                                'detail/',
+                                                PdfArchiveDetailView.as_view(),
+                                                name='pdf_archive_detail'
+                                            ),
+                                        ]),
+                                    ),
+                                    path(
                                         'pdf/service-fees/',
                                         PdfGenericAgencyView.as_view(
                                             template_name='employer_documentation/pdf/01-service-fee-schedule.html',
@@ -222,7 +235,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'pdf/service-agreement/',
-                                        PdfServiceAgreementAgencyView.as_view(
+                                        PdfGenericAgencyView.as_view(
                                             template_name='employer_documentation/pdf/03-service-agreement.html',
                                             content_disposition = 'inline; filename="service_agreement.pdf"',
                                         ),
@@ -238,9 +251,10 @@ urlpatterns = [
                                     ),
                                     path(
                                         'pdf/repayment-schedule/',
-                                        PdfRepaymentScheduleAgencyView.as_view(
+                                        PdfGenericAgencyView.as_view(
                                             template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                             content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                            use_repayment_table = True,
                                         ),
                                         name='pdf_agency_repayment_schedule'
                                     ),
@@ -379,7 +393,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'service-agreement/',
-                                        PdfServiceAgreementTokenView.as_view(
+                                        PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
                                             template_name='employer_documentation/pdf/03-service-agreement.html',
@@ -399,11 +413,12 @@ urlpatterns = [
                                     ),
                                     path(
                                         'repayment-schedule/',
-                                        PdfRepaymentScheduleTokenView.as_view(
+                                        PdfGenericTokenView.as_view(
                                             slug_field='employer_slug',
                                             token_field_name='employer_token',
                                             template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                             content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                            use_repayment_table = True,
                                         ),
                                         name='pdf_token_employer_repayment_schedule'
                                     ),
@@ -555,11 +570,12 @@ urlpatterns = [
                                     ),
                                     path(
                                         'repayment-schedule/',
-                                        PdfRepaymentScheduleTokenView.as_view(
+                                        PdfGenericTokenView.as_view(
                                             slug_field='fdw_slug',
                                             token_field_name='fdw_token',
                                             template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                             content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                            use_repayment_table = True,
                                         ),
                                         name='pdf_token_fdw_repayment_schedule'
                                     ),

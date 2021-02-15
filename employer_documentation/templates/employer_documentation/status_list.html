@@ -71,10 +71,12 @@
                         {% if not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}
                             <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">Update</a></td>
                         {% else %}
-                            {% include 'employer_documentation/doc_list_modal_snippet.html' %}
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}">{% if request.resolver_match.url_name == 'status_list_route' %}Deploy{% elif request.resolver_match.url_name == 'sales_list_route' %}Undo Deploy{% endif %}</button></td>
+                            {% include 'employer_documentation/snippet_modal_deploy.html' %}
                         {% endif %}
                     {% elif request.resolver_match.url_name == 'sales_list_route' %}
-                        {% include 'employer_documentation/doc_list_modal_snippet.html' %}
+                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}">{% if request.resolver_match.url_name == 'status_list_route' %}Deploy{% elif request.resolver_match.url_name == 'sales_list_route' %}Undo Deploy{% endif %}</button></td>
+                        {% include 'employer_documentation/snippet_modal_deploy.html' %}
                     {% endif %}
                 </tr>
             {% endfor %}

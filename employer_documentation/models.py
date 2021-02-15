@@ -35,10 +35,16 @@ def generate_joborder_path(instance, filename):
         # set filename as random string
         filename = '{}.{}'.format(uuid4().hex, ext)
     # return the whole path to the file
-    return os.path.join(
-        'employer-documentation/job-orders/',
-        filename
-    )
+    return os.path.join('ed/job-orders/', filename)
+
+def generate_archive_path(instance, filename):
+    # filename parameter is passed from view in format:
+    # 'employerdoc_pk:name_of_file.pdf'
+    filename_split = filename.split(':')
+    employerdoc_pk = filename_split[0]
+    relative_path = 'ed/archive/' + employerdoc_pk
+    # return the whole path to the file
+    return os.path.join(relative_path, filename_split[-1])
 
 
 # Start of Models
@@ -788,4 +794,95 @@ class JobOrder(models.Model):
         # storage=PrivateMediaStorage(),
         storage=OverwriteStorage(),
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
+
+class PdfArchive(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_pdfarchive_ed'
+    )
+    f01_service_fee_schedule = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f03_service_agreement = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f04_employment_contract = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f05_repayment_schedule = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f06_rest_day_agreement = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f08_handover_checklist = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f09_transfer_consent = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f10_work_pass_authorisation = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f11_security_bond = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f12_fdw_work_permit = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f13_income_tax_declaration = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+    )
+    f14_safety_agreement = models.FileField(
+        upload_to=generate_archive_path,
+        # storage=PrivateMediaStorage(),
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
     )
