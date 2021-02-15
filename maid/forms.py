@@ -333,7 +333,7 @@ class MaidUpdateForm(forms.ModelForm):
 
         return ciphertext
 
-class MaidBiodataForm(forms.ModelForm):
+class MaidPersonalDetailsForm(forms.ModelForm):
     class Meta:
         model = MaidPersonalDetails
         exclude = ['maid']
