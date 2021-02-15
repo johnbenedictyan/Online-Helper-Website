@@ -813,6 +813,50 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
             )
         )
 
+class MaidAgencyFeeTransactionForm(forms.ModelForm):
+    class Meta:
+        model = MaidAgencyFeeTransaction
+        exclude = ['maid']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'amount',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'transaction_type',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'transaction_date',
+                    css_class='form-group col-md-4'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'description',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
 # Generic Forms (forms.Form)
 class MainMaidCreationForm(forms.Form):
     # Maid Information
