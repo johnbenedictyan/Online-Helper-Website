@@ -890,9 +890,15 @@ class MainMaidCreationForm(forms.Form):
     )
 
     language_spoken = forms.MultipleChoiceField(
-        label=_('Langauge Spoken'),
+        label=_('Language Spoken'),
         choices=MaidLanguageChoices.choices,
         widget=forms.CheckboxSelectMultiple(),
+        required=True
+    )
+
+    preferred_language = forms.ChoiceField(
+        label=_('Preferred Language'),
+        choices=MaidLanguageChoices.choices,
         required=True
     )
 
@@ -1292,6 +1298,10 @@ class MainMaidCreationForm(forms.Form):
                             'religion',
                             css_class='form-group col-md-6 col-lg-4'
                         ),
+                        Column(
+                            'preferred_language',
+                            css_class='form-group col-md-6 col-lg-4'
+                        ),
                     ),
                     css_class='col-md-8 col-lg-9'
                 )
@@ -1680,7 +1690,8 @@ class MainMaidCreationForm(forms.Form):
                 address_1=cleaned_data.get('address_1'),
                 address_2=cleaned_data.get('address_2'),
                 repatriation_airport=cleaned_data.get('repatriation_airport'),
-                religion=cleaned_data.get('religion')
+                religion=cleaned_data.get('religion'),
+                preferred_language=cleaned_data.get('preferred_language')
             )
             for language in cleaned_data.get('language_spoken'):
                 new_maid_personal_details.languages.add(
