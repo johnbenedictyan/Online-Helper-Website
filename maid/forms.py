@@ -1176,6 +1176,13 @@ class MainMaidCreationForm(forms.Form):
         initial=0
     )
 
+    transaction_date = forms.DateField(
+        label=_('Transaction Date'),
+        required=True,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
@@ -1407,23 +1414,26 @@ class MainMaidCreationForm(forms.Form):
             Row(
                 Column(
                     'salary',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'personal_loan_amount',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'initial_agency_fee_amount',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 )
             ),
             Row(
                 Column(
-                    'initial_agency_fee_description',
-                    css_class='col'
+                    'initial_agency_fee_amount',
+                    css_class='form-group col-md-6'
                 ),
-                css_class='form-group row'
+                Column(
+                    'transaction_date',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'initial_agency_fee_description',
+                    css_class='form-group col-12'
+                )
             ),
             Row(
                 Column(
@@ -1676,7 +1686,6 @@ class MainMaidCreationForm(forms.Form):
                 remarks=cleaned_data.get('remarks')
             )
         except Exception as e:
-            print('form level',e)
             raise Exception
         else:
             new_maid_personal_details = MaidPersonalDetails.objects.create(
@@ -1691,7 +1700,9 @@ class MainMaidCreationForm(forms.Form):
                 address_2=cleaned_data.get('address_2'),
                 repatriation_airport=cleaned_data.get('repatriation_airport'),
                 religion=cleaned_data.get('religion'),
-                preferred_language=cleaned_data.get('preferred_language')
+                preferred_language=MaidLanguage.objects.get(
+                    language=cleaned_data.get('preferred_language')
+                )
             )
             for language in cleaned_data.get('language_spoken'):
                 new_maid_personal_details.languages.add(
@@ -1760,7 +1771,8 @@ class MainMaidCreationForm(forms.Form):
                 maid=new_maid,
                 amount=cleaned_data.get('initial_agency_fee_amount'),
                 transaction_type='ADD',
-                description=cleaned_data.get('initial_agency_fee_description')
+                description=cleaned_data.get('initial_agency_fee_description'),
+                transaction_date=cleaned_data.get('transaction_date')
             )
         finally:
             return new_maid
