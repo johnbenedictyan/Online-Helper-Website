@@ -6,7 +6,7 @@ from django.urls import include, path
 # Imports from local app
 
 ## Form Views
-from .views import MaidCreateFormView
+from .views import MaidCreateFormView, MaidCareDetailsUpdate
 
 ## Redirect Views
 from .views import MaidTogglePublished
@@ -26,7 +26,7 @@ from .views import (
 from .views import (
     MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
-    MaidGeneralHouseworkUpdate,MaidCookingUpdate
+    MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate
 )
 
 ## Delete Views
@@ -77,6 +77,16 @@ urlpatterns = [
                 'family-details/',
                 MaidFamilyDetailsUpdate.as_view(),
                 name='maid_family_details_update'
+            ),
+            path(
+                'finance/',
+                MaidFinancialDetailsUpdate.as_view(),
+                name='maid_financial_details_update'
+            ),
+            path(
+                'care/',
+                MaidCareDetailsUpdate.as_view(),
+                name='maid_care_details_update'
             ),
             path(
                 'icc/',
