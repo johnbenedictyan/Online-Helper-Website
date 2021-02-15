@@ -24,7 +24,7 @@ from .views import (
 
 ## Update Views
 from .views import (
-    MaidUpdate, MaidBiodataUpdate, MaidFamilyDetailsUpdate, 
+    MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
     MaidGeneralHouseworkUpdate,MaidCookingUpdate
 )
@@ -70,8 +70,8 @@ urlpatterns = [
             ),
             path(
                 'biodata/',
-                MaidBiodataUpdate.as_view(),
-                name='maid_biodata_update'
+                MaidPersonalDetailsUpdate.as_view(),
+                name='maid_personal_details_update'
             ),
             path(
                 'family-details/',

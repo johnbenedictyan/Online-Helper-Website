@@ -22,7 +22,7 @@ from .mixins import (
 )
 
 from .forms import (
-    MaidCreationForm, MaidBiodataForm, MaidFamilyDetailsForm, 
+    MaidCreationForm, MaidPersonalDetailsForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
     MaidDietaryRestrictionForm, MaidEmploymentHistoryForm,
@@ -301,10 +301,10 @@ class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
             }
         )
 
-class MaidBiodataUpdate(SpecificAgencyMaidLoginRequiredMixin, 
+class MaidPersonalDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, 
                         SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_biodata'
-    form_class = MaidBiodataForm
+    form_class = MaidPersonalDetailsForm
     http_method_names = ['get','post']
     model = MaidPersonalDetails
     template_name = 'update/maid-biodata-update.html'
