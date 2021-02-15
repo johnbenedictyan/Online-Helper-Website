@@ -284,11 +284,7 @@ class PdfHtmlViewMixin:
             string=html_template,
             base_url=request.build_absolute_uri()
             ).write_pdf(
-<<<<<<< HEAD
                 target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
-=======
-                target=self.target,
->>>>>>> 4af89b16e2cede7157ddb6479352581b65d04a09
                 # Load separate CSS stylesheet from static folder
                 # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
                 stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
