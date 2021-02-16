@@ -56,6 +56,11 @@ class MaidFilter(django_filters.FilterSet):
         choices = MaritalStatusChoices.choices,
         empty_label = _('Any')
     )
+    responsibilities = django_filters.ModelMultipleChoiceFilter(
+        queryset=MaidResponsibility.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        label='Maid Responsibilites'
+    )
 
     class Meta:
         model = Maid

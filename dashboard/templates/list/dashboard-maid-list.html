@@ -51,16 +51,16 @@
                             {{maid.id}}
                         </div>
                         <div class="cell" data-title="Name">
-                            {{maid.biodata.name}}
+                            {{maid.name}}
                         </div>
                         <div class="cell" data-title="Nationality">
-                            {{maid.biodata.get_country_of_origin_display}}
+                            {{maid.personal_details.get_country_of_origin_display}}
                         </div>
                         <div class="cell" data-title="Type">
                             {{maid.get_maid_type_display}}
                         </div>
                         <div class="cell" data-title="Age">
-                            {{maid.biodata.age}}
+                            {{maid.personal_details.age}}
                         </div>
                         <div class="cell" data-title="Job Preference">
                             None

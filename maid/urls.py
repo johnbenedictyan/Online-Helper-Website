@@ -5,6 +5,9 @@ from django.urls import include, path
 
 # Imports from local app
 
+## Form Views
+from .views import MaidCreateFormView, MaidCareDetailsUpdate
+
 ## Redirect Views
 from .views import MaidTogglePublished
 
@@ -21,9 +24,10 @@ from .views import (
 
 ## Update Views
 from .views import (
-    MaidUpdate, MaidBiodataUpdate, MaidFamilyDetailsUpdate, 
+    MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
-    MaidGeneralHouseworkUpdate,MaidCookingUpdate
+    MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate,
+    MaidAgencyFeeTransactionUpdate
 )
 
 ## Delete Views
@@ -42,7 +46,7 @@ urlpatterns = [
         include([
             path(
                 '',
-                MaidCreate.as_view(),
+                MaidCreateFormView.as_view(),
                 name='maid_create'
             )
         ])
@@ -67,13 +71,28 @@ urlpatterns = [
             ),
             path(
                 'biodata/',
-                MaidBiodataUpdate.as_view(),
-                name='maid_biodata_update'
+                MaidPersonalDetailsUpdate.as_view(),
+                name='maid_personal_details_update'
             ),
             path(
                 'family-details/',
                 MaidFamilyDetailsUpdate.as_view(),
                 name='maid_family_details_update'
+            ),
+            path(
+                'finance/',
+                MaidFinancialDetailsUpdate.as_view(),
+                name='maid_financial_details_update'
+            ),
+            path(
+                'care/',
+                MaidCareDetailsUpdate.as_view(),
+                name='maid_care_details_update'
+            ),
+            path(
+                'aft/<int:agency_fee_transaction_pk>/',
+                MaidAgencyFeeTransactionUpdate.as_view(),
+                name='maid_agency_fee_transaction_update'
             ),
             path(
                 'icc/',
