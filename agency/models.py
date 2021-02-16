@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from within the app
+from .constants import AreaChoices
 
 # Utiliy Classes and Functions
 
@@ -191,13 +192,6 @@ class AgencyOwner(models.Model):
     )
 
 class AgencyBranch(models.Model):
-    class AreaChoices(models.TextChoices):
-        CENTRAL = 'C', _('Central')
-        NORTH = 'N', _('North')
-        NORTH_EAST = 'NE', _('North East')
-        EAST = 'E', _('East')
-        WEST = 'W', _('West')
-
     MAIN_BRANCH_CHOICES = (
         (True, _('Yes')),
         (False, _('No'))
