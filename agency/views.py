@@ -49,6 +49,7 @@ class AgencyList(ListFilteredMixin, ListView):
     http_method_names = ['get']
     model = Agency
     template_name = 'list/agency-list.html'
+    queryset = Agency.objects.filter(complete=True)
     filter_set = AgencyFilter
 
 # Detail Views
