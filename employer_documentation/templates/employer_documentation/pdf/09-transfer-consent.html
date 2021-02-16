@@ -1,4 +1,4 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 
 {% block title %}Transfer Consent Form{% endblock %}
 
@@ -43,7 +43,7 @@
         </tr>
         <tr>
             <td width="27%">Foreign Domestic Worker</td>
-            <td>: {{ object.fdw }}</td>
+            <td>: {{ object.fdw.name }}</td>
         </tr>
         <tr>
             <td>Work Permit</td>

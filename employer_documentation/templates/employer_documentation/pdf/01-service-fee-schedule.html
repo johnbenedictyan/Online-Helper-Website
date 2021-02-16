@@ -1,15 +1,14 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 {% load mathfilters %}
 
-{% block title %}Form A: Service and Fees Schedule{% endblock %}
+{% block title %}{% if object.fdw_is_replacement %}Form B – Service & Fees Schedule For Replacement FDW{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
 
 {% block pdf_content %}
 
-{% with total_administrative_cost=object.b1_service_fee|add:object.b2a_work_permit_application_collection|add:object.b2b_medical_examination_fee|add:object.b2c_security_bond_accident_insurance|add:object.b2d_indemnity_policy_reimbursement|add:object.b2e_home_service|add:object.b2f_counselling|add:object.b2g_sip|add:object.b2h_replacement_cost|add:object.b2i_work_permit_renewal|add:object.b2j1_other_services_fee|add:object.b2j2_other_services_fee|add:object.b2j3_other_services_fee|add:object.ca_deposit %}
-{% with total_placement_fee=object.fdw.agency_fee_amount|add:object.fdw.personal_loan_amount %}
-{% include 'employer_documentation/pdf-00-header.html' %}
+{% with total_placement_fee=object.fdw.financial_details.agency_fee_amount|add:object.fdw.financial_details.personal_loan_amount %}
+{% include 'employer_documentation/pdf/00-header.html' %}
 <br>
-<h2 class="text-align-center">FORM A – SERVICE AND FEES SCHEDULE</h2>
+<h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT FDW{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
 <br>
 <div class="border--bottom"></div>
 <div>
@@ -20,7 +19,7 @@
         </tr>
         <tr>
             <td>Date</td>
-            <td>: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}</td>
+            <td>: {{ object.agreement_date|date:"d M Y" }}</td>
         </tr>
         <tr>
             <td colspan="2"></td>
@@ -30,7 +29,7 @@
         </tr>
         <tr>
             <td>Name of FDW</td>
-            <td>: {{ object.fdw.biodata.name }}</td>
+            <td>: {{ object.fdw.name }}</td>
         </tr>
         <tr>
             <td>Nationality</td>
@@ -38,11 +37,11 @@
         </tr>
         <tr>
             <td>Passport No.</td>
-            <td>: {{ object.fdw }}</td>
+            <td>: {{ object.fdw.passport_number }}</td>
         </tr>
         <tr>
             <td>Basic Salary</td>
-            <td>: S$ {{ object.fdw.salary }}</td>
+            <td>: S$ {{ object.fdw.financial_details.salary }}</td>
         </tr>
         <tr>
             <td></td>
@@ -163,7 +162,7 @@
         <tr>
             <td colspan="4">Total Administrative Cost</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ total_administrative_cost }}</td>
+            <td class="text-align-right border--bottom">{{ object.calc_admin_cost }}</td>
         </tr>
         <tr>
             <td></td>
@@ -177,20 +176,31 @@
             <td>a.</td>
             <td colspan="2">Agency fee charged on the FDW by the Agency</td>
             <td></td>
-            <td class="text-align-right">{{ object.fdw.agency_fee_amount }}</td>
+            <td class="text-align-right">{{ object.fdw.financial_details.agency_fee_amount }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td colspan="2">Personal loan incurred by FDW in overseas</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.fdw.personal_loan_amount }}</td>
+            <td class="text-align-right border--bottom">{{ object.fdw.financial_details.personal_loan_amount }}</td>
         </tr>
         <tr>
             <td colspan="4">Total Placement Fee</td>
             <td></td>
             <td class="text-align-right border--bottom">{{ total_placement_fee }}</td>
         </tr>
+        {% if object.fdw_is_replacement %}
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td colspan="3">Loan Transfer from previous FDW</td>
+                <td></td>
+                <td class="text-align-right">{% if object.b4_loan_transferred %}{{ object.b4_loan_transferred }}{% else %}0.00{% endif %}</td>
+            </tr>
+        {% endif %}
     </table>
 </div>
 
@@ -205,7 +215,7 @@
         </tr>
         <tr>
             <td colspan="3" width="85%">Total Amount</td>
-            <td class="text-align-right">{{ total_placement_fee|add:total_administrative_cost }}</td>
+            <td class="text-align-right">{{ total_placement_fee|add:object.calc_admin_cost }}</td>
         </tr>
         <tr>
             <td></td>
@@ -217,7 +227,7 @@
             <td></td>
             <td>b.</td>
             <td>Balance payment</td>
-            <td class="text-align-right">{{ total_placement_fee|add:total_administrative_cost|sub:object.ca_deposit }}</td>
+            <td class="text-align-right">{{ total_placement_fee|add:object.calc_admin_cost|sub:object.ca_deposit }}</td>
         </tr>
     </table>
     <br>
@@ -245,6 +255,5 @@
     </table>
 </div>
 {% endwith %} {% comment %}<!-- endwith: total_placement_fee -->{% endcomment %}
-{% endwith %} {% comment %}<!-- endwith: total_administrative_cost -->{% endcomment %}
 
 {% endblock pdf_content %}

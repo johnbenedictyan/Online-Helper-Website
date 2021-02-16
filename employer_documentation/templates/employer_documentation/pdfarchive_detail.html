@@ -1,0 +1,29 @@
+{% extends 'employer_documentation/base-ed-template.html' %}
+
+{% block sidenav_extra %}
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+<div class="mx-3 ml-md-0">
+    <h1>Archived Documents</h1>
+    <h3>Case Ref {{ object.case_ref_no }}</h3>
+</div>
+
+<div>
+    <dl class="row mx-0">
+        <dt class="col-lg-3">Service Fee Schedule</dt>      <dd class="col-lg-9"><a href="{% url 'pdf_archive_service_fees' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f01_service_fee_schedule }}</a></dd>
+        <dt class="col-lg-3">Service Agreement</dt>         <dd class="col-lg-9"><a href="{% url 'pdf_archive_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f03_service_agreement }}</a></dd>
+        <dt class="col-lg-3">Employment Contract</dt>       <dd class="col-lg-9"><a href="{% url 'pdf_archive_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f04_employment_contract }}</a></dd>
+        <dt class="col-lg-3">Repayment Schedule</dt>        <dd class="col-lg-9"><a href="{% url 'pdf_archive_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f05_repayment_schedule }}</a></dd>
+        <dt class="col-lg-3">Rest Day Agreement</dt>        <dd class="col-lg-9"><a href="{% url 'pdf_archive_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f06_rest_day_agreement }}</a></dd>
+        <dt class="col-lg-3">Handover Checklist</dt>        <dd class="col-lg-9"><a href="{% url 'pdf_archive_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f08_handover_checklist }}</a></dd>
+        <dt class="col-lg-3">Transfer Consent</dt>          <dd class="col-lg-9"><a href="{% url 'pdf_archive_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f09_transfer_consent }}</a></dd>
+        <dt class="col-lg-3">Work Pass Authorisation</dt>   <dd class="col-lg-9"><a href="{% url 'pdf_archive_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f10_work_pass_authorisation }}</a></dd>
+        <dt class="col-lg-3">Security Bond</dt>             <dd class="col-lg-9"><a href="{% url 'pdf_archive_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f11_security_bond }}</a></dd>
+        <dt class="col-lg-3">Work Permit Application</dt>   <dd class="col-lg-9"><a href="{% url 'pdf_archive_fdw_work_permit' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f12_fdw_work_permit }}</a></dd>
+        <dt class="col-lg-3">Income Tax Declaration</dt>    <dd class="col-lg-9"><a href="{% url 'pdf_archive_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f13_income_tax_declaration }}</a></dd>
+        <dt class="col-lg-3">Safety Agreement</dt>          <dd class="col-lg-9"><a href="{% url 'pdf_archive_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f14_safety_agreement }}</a></dd>
+    </dl>
+</div>
+
+{% endblock ed_section %}

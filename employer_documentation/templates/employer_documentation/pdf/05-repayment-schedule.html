@@ -1,11 +1,11 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 {% load mathfilters %}
 
 {% block title %}Repayment Schedule{% endblock %}
 
 {% block pdf_content %}
 
-{% include 'employer_documentation/pdf-00-header.html' %}
+{% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
 <br>
@@ -19,7 +19,7 @@
     </tr>
     <tr>
         <td>Date</td>
-        <td>: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}</td>
+        <td>: {{ object.agreement_date|date:"d M Y" }}</td>
     </tr>
     <tr>
         <td colspan="2"></td>
@@ -30,11 +30,11 @@
     </tr>
     <tr>
         <td>Name of FDW</td>
-        <td>: {{ object.fdw.biodata.name }}</td>
+        <td>: {{ object.fdw.name }}</td>
     </tr>
     <tr>
         <td>Placement Fee</td>
-        <td>: {{ object.fdw.agency_fee_amount|add:object.fdw.personal_loan_amount }} </td>
+        <td>: {{ object.fdw.financial_details.agency_fee_amount|add:object.fdw.financial_details.personal_loan_amount }} </td>
     </tr>
     <tr>
         <td>Work Commencement Date</td>
@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <td>Monthly Basic Salary</td>
-        <td>: {{ object.fdw.salary }}</td>
+        <td>: {{ object.fdw.financial_details.salary }}</td>
     </tr>
     <tr>
         <td>Balance Off Day Compensation</td>
@@ -82,7 +82,7 @@
 <p>I hereby acknowledge that I understand and agree to the above schedule.</p>
 
 <table>
-    {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+    {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
 </table>
 
 {% endblock pdf_content %}

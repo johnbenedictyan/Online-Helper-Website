@@ -1,6 +1,11 @@
 th, td {
     white-space: pre-wrap!important;
     word-wrap: break-word!important;
+    font-size: 0.95rem!important;
+}
+
+#copy-button:hover {
+    cursor: pointer;
 }
 
 .doc-section-header {

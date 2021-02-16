@@ -1,0 +1,83 @@
+{% extends 'employer_documentation/base-ed-template.html' %}
+
+{% block sidenav_extra %}
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+<div class="mx-3 ml-md-0">
+    <h1>{% if request.resolver_match.url_name == 'status_list_route' %}Status Summary{% elif request.resolver_match.url_name == 'sales_list_route' %}Sales Summary{% endif %}</h1>
+
+    <form method="get">
+        <div class="form-row">
+            <div class="col-md-6 input-group mb-3">
+                <input type="search" name="search" class="form-control input-text" placeholder="Search case ref, employer name, email, mobile..." value="{{ request.GET.search }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 input-group mb-3">
+                <input type="text" onfocus="(this.type='date')" name="start_date" class="form-control input-text" value="{{ request.GET.start_date }}" placeholder="Date from">
+                <input type="text" onfocus="(this.type='date')" name="end_date" class="form-control input-text" value="{{ request.GET.end_date }}" placeholder="Date to">
+                <select name="sort_by">
+                    <option value="agreement_date_asc" {% if request.GET.sort_by == 'agreement_date_asc' %}selected{% endif %}>Agmt Date Asc</option>
+                    <option value="agreement_date_des" {% if not request.GET.sort_by or request.GET.sort_by == 'agreement_date_des' %}selected{% endif %}>Agmt Date Desc</option>
+                    <option value="fdw_work_commencement_date_asc" {% if request.GET.sort_by == 'fdw_work_commencement_date_asc' %}selected{% endif %}>Work Commence Asc</option>
+                    <option value="fdw_work_commencement_date_des" {% if request.GET.sort_by == 'fdw_work_commencement_date_des' %}selected{% endif %}>Work Commence Desc</option>
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Employer</th>
+                <th scope="col">EA</th>
+                <th scope="col">Case Ref</th>
+                <th scope="col">FDW</th>
+                <th scope="col">Agreement Date</th>
+                <th scope="col">Work Commence</th>
+                <th scope="col">Deposit</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Archived</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if object_list.count %}
+            {% for object in object_list %}
+                <tr>
+                    <td><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_name }}</a></td>
+                    <td><a href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">{{ object.employer.agency_employee.ea_personnel_number }} {{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</a></td>
+                    <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
+                    <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.name }}</a></td>
+                    <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></td>
+                    <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></td>
+                    <td><a href="">{{ object.ca_deposit }}</a></td>
+                    <td><a href="">{{ object.calc_bal }}</a></td>
+                    <td><a href="{% url 'pdf_archive_detail' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-archive"></i> View</a></td>
+                    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button></td>
+                    {% include 'employer_documentation/snippet_modal_deploy.html' %}
+                    {% include 'employer_documentation/snippet_modal_archive.html' %}
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="10">No results found</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-2 mb-4">
+{% include 'pagination.html' %}
+</div>
+{% endblock ed_section %}

@@ -1,20 +1,23 @@
 # Python
 import re
 import secrets
+import uuid
 
 # Imports from django
 from django import forms
 from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML, Hidden
-from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton
+from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden
+from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
 
 # Imports from local apps
 from .models import (
@@ -53,7 +56,6 @@ class EmployerForm(forms.ModelForm):
         '''
         Decryption
         '''
-        print(self.instance.employer_nric)
         if self.instance.employer_nric and self.instance.employer_nric!=b'':
             try:
                 plaintext = decrypt_string(self.instance.employer_nric, settings.ENCRYPTION_KEY, self.instance.nonce, self.instance.tag)
@@ -226,7 +228,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
-        exclude = ['employer']
+        exclude = ['employer',]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -265,9 +267,18 @@ class EmployerDocForm(forms.ModelForm):
                     'case_ref_no',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     'fdw',
                     css_class='form-group col-md-6'
+                ),
+                Field(
+                    'agreement_date',
+                    type='text',
+                    onfocus="(this.type='date')",
+                    placeholder='Agreement date'
                 ),
                 css_class='form-row'
             ),
@@ -295,6 +306,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2a_work_permit_application_collection', '$',
@@ -302,9 +316,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2b_medical_examination_fee', '$',
@@ -312,6 +323,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2c_security_bond_accident_insurance', '$',
@@ -319,9 +333,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2d_indemnity_policy_reimbursement', '$',
@@ -329,6 +340,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2e_home_service', '$',
@@ -336,9 +350,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2f_counselling', '$',
@@ -346,6 +357,9 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2g_sip', '$',
@@ -353,13 +367,13 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'b2h_replacement_months',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'b2h_replacement_cost', '$',
@@ -367,9 +381,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'b2i_work_permit_renewal', '$',
@@ -377,13 +388,6 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                # Column(
-                #     PrependedText(
-                #         '', '$',
-                #         min='0', max='1000',
-                #     ),
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             Row(
@@ -670,28 +674,76 @@ class EmployerDocForm(forms.ModelForm):
         else:
             return cleaned_field
 
-class EmployerDocAgreementDateForm(forms.ModelForm):
+class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSig
-        fields = ['agreement_date']
+        fields = ['employer_slug', 'fdw_slug']
+        labels = {
+            'employer_slug': _('Employer signature URL'),
+            'fdw_slug': _('FDW signature URL'),
+        }
 
     def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.model_field_name = kwargs.pop('model_field_name')
+        self.form_fields = kwargs.pop('form_fields')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Signing Date of Agreement',
-                
-                # Form fields - main
-                'agreement_date',
-            ),
-            Submit('submit', 'Submit')
+        self.helper.layout = Layout()
+        
+        # Insert full URL path to signature token URL
+        current_site = Site.objects.get_current()
+        self.initial.update({
+            self.model_field_name: current_site.domain + reverse(
+                'token_verification_' + self.model_field_name[:-5] + '_route',
+                kwargs={'slug':self.initial.get(self.model_field_name)}
+            )
+        })
+        
+        # Make copy of all field names, then remove fields that are not in self.form_fields
+        fields_copy = list(self.fields)
+        for field in fields_copy:
+            if field!=self.model_field_name:
+                del self.fields[field]
+        
+        self.helper.layout.append(
+            HTML('''
+                <h5>Unique URL</h5>
+            ''')
         )
+        self.helper.layout.append(
+            UneditableField(
+                self.model_field_name,
+                id='copy-id',
+                css_class='col',
+            )
+        )
+        self.helper.layout.append(
+            StrictButton(
+                '<i class="fas fa-copy"></i>',
+                id="copy-button",
+                css_class="btn btn-secondary",
+            )
+        )
+        
+        # Workaround for validation always failing due to missing field.
+        # This duplicates the input field, meaning that there are 2 HTML input fields with same name.
+        # Without this duplicate, the form validation fails, saying that first field is required.
+        self.helper.layout.append(
+            Hidden(self.model_field_name, 'null',)
+        )
+
+        # Submitting form will regen new slug
+        self.helper.layout.append(
+            Submit('submit', 'Renew URL')
+        )
+
+    def clean_employer_slug(self):
+        return uuid.uuid4()
+
+    def clean_fdw_slug(self):
+        return uuid.uuid4()
 
 class EmployerDocMaidStatusForm(forms.ModelForm):
     class Meta:
@@ -706,21 +758,119 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                'Documentation Status Details',
-                
-                # Form fields - main
-                'ipa_approval_date',
-                'security_bond_approval_date',
-                'arrival_date',
-                'thumb_print_date',
-                'sip_date',
-                'fdw_work_commencement_date',
-                'work_permit_no',
+            HTML('''
+                <h3>Document Status</h3>
+                '''
+            ),
+            Row(
+                Column(
+                    Field(
+                        'fdw_work_commencement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='FDW work commencement date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Field(
+                        'ipa_approval_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='IPA approval date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'arrival_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='FDW arrival date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Field(
+                        'security_bond_approval_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Security bond approval date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'thumb_print_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Thumb print date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Field(
+                        'sip_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Settling in Programme (SIP) date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'work_permit_no',
+                        type='text',
+                        placeholder='Work permit number'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'is_deployed',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
             ),
             Submit('submit', 'Submit')
         )
+
+    def clean(self):
+        error_msg = _('%(field)s field must not be empty.')
+        
+        def check_field_not_empty(field):
+            if not self.cleaned_data.get(field):
+                self.add_error(
+                    field,
+                    ValidationError(
+                        error_msg,
+                        code= 'error_' + field,
+                        params= {
+                            'field': EmployerDocMaidStatus._meta.get_field(
+                                field).verbose_name
+                        },
+                    )
+                )
+
+        if self.cleaned_data.get('is_deployed'):
+            for field in self.fields:
+                if field!='work_permit_no' and field!='is_deployed':
+                    check_field_not_empty(field)
+
+        return self.cleaned_data
+
+class EmployerDocMaidDeploymentForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDocMaidStatus
+        fields = ['is_deployed']
 
 class JobOrderForm(forms.ModelForm):
     class Meta:
@@ -736,11 +886,7 @@ class JobOrderForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
-            Fieldset(
-                # Legend for form
-                '',
-                
-                # Form fields - main
+            Field(
                 'job_order_pdf',
             ),
             Submit('submit', 'Submit')
@@ -943,11 +1089,22 @@ class VerifyUserTokenForm(forms.ModelForm):
                 del self.fields[field]
 
     def clean(self):
+        input_nric = self.cleaned_data.get('nric', '')
+        try:
+            plaintext = decrypt_string(
+                self.object.employer_doc.employer.employer_nric,
+                settings.ENCRYPTION_KEY,
+                self.object.employer_doc.employer.nonce,
+                self.object.employer_doc.employer.tag
+            )
+        except (ValueError, KeyError):
+            plaintext = ''
+            print("Incorrect decryption")
         if (
             self.is_employer
                 and (
-                    self.cleaned_data.get('nric', '').lower() ==
-                    self.object.employer_doc.employer.employer_nric.lower()
+                    input_nric.lower() ==
+                    plaintext.lower()
                     and
                     int(self.cleaned_data.get('mobile', 0)) ==
                     int(self.object.employer_doc.employer.employer_mobile_number)

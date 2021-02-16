@@ -6,25 +6,29 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
     JobOrder,
+    PdfArchive,
 )
 
 @receiver(post_save, sender=EmployerDoc)
 def employer_doc_post_save(sender, instance, created, **kwargs):
     if created:
         # If SQL INSERT, create EmployerDocSig, EmployerDocMaidStatus,
-        # JobOrder instances.
+        # JobOrder, PdfArchive instances.
         EmployerDocSig.objects.create(employer_doc=instance)
         EmployerDocMaidStatus.objects.create(employer_doc=instance)
         JobOrder.objects.create(employer_doc=instance)
+        PdfArchive.objects.create(employer_doc=instance)
     else:
-        # If SQL UPDATE, check if EmployerDocSig, EmployerDocMaidStatus,
-        # JobOrder instances exist.
+        # If SQL UPDATE, create EmployerDocSig, EmployerDocMaidStatus,
+        # JobOrder, PdfArchive instances if they don't exist.
         if not hasattr(instance, 'rn_signatures_ed'):
             EmployerDocSig.objects.create(employer_doc=instance)
         if not hasattr(instance, 'rn_maidstatus_ed'):
             EmployerDocMaidStatus.objects.create(employer_doc=instance)
         if not hasattr(instance, 'rn_joborder_ed'):
             JobOrder.objects.create(employer_doc=instance)
+        if not hasattr(instance, 'rn_pdfarchive_ed'):
+            PdfArchive.objects.create(employer_doc=instance)
         
         # If SQL UPDATE, reset all e-signatures in EmployerDocSig instance
         doc_sig_obj = instance.rn_signatures_ed

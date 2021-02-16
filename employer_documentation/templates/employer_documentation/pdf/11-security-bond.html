@@ -1,4 +1,4 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
 
 {% block title %}Security Bond Form{% endblock %}
@@ -18,7 +18,7 @@
 
 <table>
     <tr>
-        <td colspan="2">BY THIS BOND received on {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
+        <td colspan="2">BY THIS BOND received on {{ object.agreement_date|date:"d M Y" }}
             <br><i>(Date indicated must be on/ before the Banker’s or Insurance Guarantee start date.)</i>
         </td>
     </tr>
@@ -142,8 +142,8 @@
     </tr>
     <tr>
         <td>1</td>
-        <td>{{ object.fdw }}</td>
-        <td>{{ object.fdw }}</td>
+        <td>{{ object.fdw.name }}</td>
+        <td>{{ object.rn_maidstatus_ed.work_permit_no }}</td>
         <td>S$5,000.00</td>
     </tr>
 </table>

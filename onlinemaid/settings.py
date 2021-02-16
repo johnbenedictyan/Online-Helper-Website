@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # 3rd party packages
     'crispy_forms',
@@ -270,6 +271,9 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # Pycryptodome Key
 ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
+
+# django.contrib.sites.models.Site
+SITE_ID = 1
 
 # Sentry
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
