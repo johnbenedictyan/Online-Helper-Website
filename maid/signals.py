@@ -11,9 +11,10 @@ from django.dispatch import receiver
 from .constants import MaidResponsibilityChoices
 
 from .models import (
-    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare,
-    MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidStatus, 
-    MaidAgencyFeeTransaction, MaidResponsibility
+    MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
+    MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility, 
+    MaidFinancialDetails
 )
 
 # Utiliy Classes and Functions
@@ -199,6 +200,9 @@ def update_agency_fee(sender, instance, **kwargs):
             amount += transaction.amount
         elif transaction.transaction_type == 'SUB':
             amount -= transaction.amount
-        
-    maid.agency_fee_amount = amount
-    maid.save()
+    
+    financial_details = MaidFinancialDetails.objects.get(
+        maid=maid
+    )
+    financial_details.agency_fee_amount = amount
+    financial_details.save()

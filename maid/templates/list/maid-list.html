@@ -1,5 +1,6 @@
 {% extends 'maid-base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block maid_section %}
 <section>
     <div class="jumbotron jumbotron-fluid bg-hero">
@@ -48,9 +49,9 @@
                                 <div onclick="maidProfileRedirect({{maid.pk}})">
                                     <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{maid.biodata.name}}</h5>
-                                        <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
-                                        <p class="card-text">{{maid.biodata.age}} years old</p>
+                                        <h5 class="card-title">{{maid.name}}</h5>
+                                        <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                        <p class="card-text">{{maid.personal_details.age}} years old</p>
                                         <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
                                         <p class="card-text">{{maid.get_maid_type_display}}</p>
                                     </div>
@@ -76,7 +77,48 @@
             location.replace(location.origin + location.pathname + pk)
         }
         contentGenerator = (salary, days_off, employment_history) => {
-            contentString = '<div>'
+            loaded_content = `<div id="maid-profile-card">
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center">
+                        <img src="{% static 'images/olmaid-logo.png' %}" alt="logo">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="text-muted">Salary</h6>
+                                <p>$${salary}</p>
+                            </div>
+                            <div class="col">
+                                <h6 class="text-muted">Days off</h6>
+                                <p>${days_off}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="text-muted">Employment History</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card custom-card">
+                            <p class="mb-1">01/02/12 - 01/02/14</p>
+                            <small class="mb-2 text-muted">2 years</small>
+                            <h6 class="text-muted mb-1">Work Duties</h6>
+                            <p class="mb-0">General Housework</p>
+                            <p>Cooking</p>
+                            <h6 class="text-muted mb-1">Country</h6>
+                            <p class="mb-0">Malaysia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`
+            contentString = `<div id='maid-profile-card'>`
             if(salary){
                 contentString += `<p>Salary: $${salary}</p>`
             }
@@ -90,13 +132,30 @@
                 }
                 contentString += '</ul>'
             }
-            return contentString
+            return loaded_content
         }
+        const loading_content = `
+            <div id="maid-profile-card">
+                <div class="container">
+                    <div class="row">
+                        <div class="col text-center my-md-3 my-lg-4 my-xl-5">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
         
         tippy('.maid-card', {
-            content: 'Loading',
+            content: loading_content,
             placement: 'right',
             allowHTML: true,
+            theme: 'light',
             onCreate(instance) {
                 // Setup our own custom state properties
                 instance._isFetching = false;
@@ -126,7 +185,7 @@
                 });
             },
             onHidden(instance) {
-                instance.setContent('Loading...');
+                instance.setContent(loading_content);
                 // Unset these properties so new network requests can be initiated
                 instance._data = null;
                 instance._error = null;

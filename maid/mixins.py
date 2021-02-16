@@ -97,3 +97,5 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
                 )
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
+        else:
+            return res
