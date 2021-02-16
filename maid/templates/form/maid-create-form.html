@@ -39,3 +39,32 @@
         </div>
     </div>
 {% endblock maid_section %}
+{% block js %}
+<script>
+    $(function(){
+        $(`
+            #id_cfi_other_remarks, 
+            #id_cfe_other_remarks, 
+            #id_cfd_other_remarks,
+            #id_geh_other_remarks,
+            #id_cok_other_remarks
+        `).prop('disabled', true);
+        $(`
+            #id_cfi_remarks, 
+            #id_cfe_remarks, 
+            #id_cfd_remarks,
+            #id_geh_remarks,
+            #id_cok_remarks
+        `).on('change', function(){
+            let care_type = $(this).prop('id').split('_')[1];
+            let selector_text = '#id_' + care_type + '_other_remarks'
+            if($(this).val() == 'OTH'){
+                $(selector_text).prop('disabled', false);
+            } else {
+                $(selector_text).val('')
+                $(selector_text).prop('disabled', true)
+            }
+        });
+    })
+</script>
+{% endblock js %}
