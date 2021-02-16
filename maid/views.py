@@ -750,7 +750,7 @@ class MaidProfileView(View):
             return JsonResponse(data, status=404)
         else:
             data = {
-                'salary': selected_maid.salary,
+                'salary': selected_maid.financial_details.salary,
                 'days_off': selected_maid.days_off,
                 'employment_history': [
                     {
