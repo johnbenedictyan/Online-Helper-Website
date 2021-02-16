@@ -48,9 +48,9 @@
                                 <div onclick="maidProfileRedirect({{maid.pk}})">
                                     <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{maid.biodata.name}}</h5>
-                                        <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
-                                        <p class="card-text">{{maid.biodata.age}} years old</p>
+                                        <h5 class="card-title">{{maid.name}}</h5>
+                                        <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                        <p class="card-text">{{maid.personal_details.age}} years old</p>
                                         <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
                                         <p class="card-text">{{maid.get_maid_type_display}}</p>
                                     </div>
