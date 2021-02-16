@@ -1,4 +1,5 @@
 {% extends 'agency-base.html' %}
+{% load crispy_forms_tags %}
 {% block agency_section %}
 <section>
     <div class="jumbotron jumbotron-fluid bg-hero">
@@ -22,31 +23,19 @@
         <div class="row">
             <div class="col-lg-10 col-xl-3 mb-3 offset-lg-1 offset-xl-0">
                 <form action="" method="get">
-                    <div class="form-row">
-                        <div class="col-md col-xl-12">
-                            <div class="form-group">
-                                <label for="agencySearchInput">Search</label>
-                                <input type="email" class="form-control" id="agencySearchInput" placeholder="Search">
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            {{filter.form|crispy}}
                         </div>
-                        <div class="col-md col-xl-12">
-                            <div class="form-group">
-                                <label for="sortBySelect">Sort By</label>
-                                <select class="form-control" id="sortBySelect">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-2">
+                            <button type="submit" class="btn btn-primary w-100">Submit</button>
                         </div>
-                        <div class="col-md col-xl-12 my-md-auto">
-                            <div class="row mt-md-3 mt-xl-0">
-                                <div class="col">
-                                    <button type="submit" class="btn btn-primary w-100">Search</button>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'agency_list' %}" class="btn btn-secondary w-100">Reset</a>
                         </div>
                     </div>
                 </form>
