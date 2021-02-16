@@ -127,4 +127,20 @@ button.mini-faq-button i {
 .custom-card__header {
   margin: 0 0 1rem 0;
 }
+
+#maid-profile-card {
+  width: 300px !important;
+}
+
+#maid-profile-card .custom-card {
+  padding: 1rem;
+  margin: 0 1rem 1.5rem 1rem;
+  border-radius: 0.5rem;
+  -webkit-box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
+          box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
+}
+
+#maid-profile-card .custom-card__header {
+  margin: 0 0 1rem 0;
+}
 /*# sourceMappingURL=style.css.map */
