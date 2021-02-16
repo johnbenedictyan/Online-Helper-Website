@@ -1703,7 +1703,62 @@ class MainMaidCreationForm(forms.Form):
         passport_number = self.cleaned_data.get('passport_number')
         validate_passport_number(passport_number)
         return passport_number
-        
+
+    def clean_preferred_language(self):
+        preferred_language = self.cleaned_data.get('preferred_language')
+        spoken_language = self.cleaned_data.get('spoken_language')
+        if preferred_language not in spoken_language:
+            self.add_error(
+                'preferred_language',
+                _('FDW must be able to speak this language')
+            ) 
+        return preferred_language
+
+    def clean_cfi_other_remarks(self):
+        cfi_remarks = self.cleaned_data.get('cfi_remarks')
+        cfi_other_remarks = self.cleaned_data.get('cfi_other_remarks')
+        if cfi_remarks == 'OTH' and cfi_other_remarks == '':
+            self.add_error(
+                'cfi_other_remarks',
+                _('Please specify the remarks')
+            )
+
+    def clean_cfe_other_remarks(self):
+        cfe_remarks = self.cleaned_data.get('cfe_remarks')
+        cfe_other_remarks = self.cleaned_data.get('cfe_other_remarks')
+        if cfe_remarks == 'OTH' and cfe_other_remarks == '':
+            self.add_error(
+                'cfe_other_remarks',
+                _('Please specify the remarks')
+            )
+
+    def clean_cfd_other_remarks(self):
+        cfd_remarks = self.cleaned_data.get('cfd_remarks')
+        cfd_other_remarks = self.cleaned_data.get('cfd_other_remarks')
+        if cfd_remarks == 'OTH' and cfd_other_remarks == '':
+            self.add_error(
+                'cfd_other_remarks',
+                _('Please specify the remarks')
+            )
+
+    def clean_geh_other_remarks(self):
+        geh_remarks = self.cleaned_data.get('geh_remarks')
+        geh_other_remarks = self.cleaned_data.get('geh_other_remarks')
+        if geh_remarks == 'OTH' and geh_other_remarks == '':
+            self.add_error(
+                'geh_other_remarks',
+                _('Please specify the remarks')
+            )
+
+    def clean_cok_other_remarks(self):
+        cok_remarks = self.cleaned_data.get('cok_remarks')
+        cok_other_remarks = self.cleaned_data.get('cok_other_remarks')
+        if cok_remarks == 'OTH' and cok_other_remarks == '':
+            self.add_error(
+                'cok_other_remarks',
+                _('Please specify the remarks')
+            )
+
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         
