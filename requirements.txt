@@ -18,6 +18,7 @@ pycryptodome==3.9.9
 pytz==2020.1
 qrcode==6.1
 requests==2.25.1
+sentry-sdk==0.20.2
 six==1.15.0
 stripe==2.55.1
 social-auth-app-django==3.1.0
