@@ -121,7 +121,7 @@
                         </li>
                         {% endif %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userActionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" id="userActionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{user.email}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
@@ -140,7 +140,7 @@
                         </li>
                         {% else %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="signUpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" id="signUpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Sign Up
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signUpDropdown">
@@ -179,8 +179,8 @@
                     </div>
                     <div class="col-6 col-md-2 mb-4 mb-md-0">
                         <a href="{% url 'about_us' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">About Us</p></a>
-                        <a href="#" class="text-reset"><p class="lead mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
-                        <a href="#" class="text-reset"><p class="lead mb-1 mb-xl-2">Privacy</p></a>
+                        <a href="{% url 'terms_of_service' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
+                        <a href="{% url 'privacy_policy' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Privacy</p></a>
                     </div>
                     <div class="col-10 col-md-4 col-lg-3 offset-md-1">
                         <h5 class="mb-3">About the company</h5>
