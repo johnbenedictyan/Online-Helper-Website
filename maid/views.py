@@ -51,7 +51,7 @@ class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     form_class = MainMaidCreationForm
     http_method_names = ['get','post']
     success_url = reverse_lazy('dashboard_maid_detail')
-    template_name = 'create/maid-create.html'
+    template_name = 'form/maid-create-form.html'
     authority = ''
     agency_id = ''
     
