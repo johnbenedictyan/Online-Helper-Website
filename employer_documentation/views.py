@@ -651,27 +651,44 @@ class PdfFileAgencyView(
     CheckEmployerDocRelationshipsMixin,
     DetailView
 ):
-    model = JobOrder
-    slug_url_kwarg = 'slug'
+    # model = None # To be passed as parameter in urls.py
+    # pk_url_kwarg = None # To be passed as parameter in urls.py
+    # slug_url_kwarg = None # To be passed as parameter in urls.py
     as_attachment=False
     filename='document.pdf'
+    field_name = None
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        try:
-            return FileResponse(
-                open(self.object.job_order_pdf.path, 'rb'),
-                as_attachment=self.as_attachment,
-                filename=self.filename,
-                content_type='application/pdf'
-            )
-        except:
-            return HttpResponseRedirect(
-                reverse('joborder_update_route', kwargs={
-                    'employer_pk': self.object.employer_doc.employer.pk,
-                    'employerdoc_pk': self.object.employer_doc.pk,
-                    'employersubdoc_pk': self.object.pk,
-            }))
+        if isinstance(self.object, JobOrder):
+            try:
+                return FileResponse(
+                    open(self.object.job_order_pdf.path, 'rb'),
+                    as_attachment=self.as_attachment,
+                    filename=self.filename,
+                    content_type='application/pdf'
+                )
+            except:
+                return HttpResponseRedirect(
+                    reverse('joborder_update_route', kwargs={
+                        'employer_pk': self.object.employer_doc.employer.pk,
+                        'employerdoc_pk': self.object.employer_doc.pk,
+                        'employersubdoc_pk': self.object.pk,
+                }))
+        elif isinstance(self.object, EmployerDoc):
+            try:
+                return FileResponse(
+                    open(getattr(self.object.rn_pdfarchive_ed, self.field_name).path, 'rb'),
+                    as_attachment=self.as_attachment,
+                    filename=self.filename,
+                    content_type='application/pdf'
+                )
+            except:
+                return HttpResponseRedirect(
+                    reverse('pdf_archive_detail', kwargs={
+                        'employer_pk': self.object.employer.pk,
+                        'employerdoc_pk': self.object.pk,
+                }))
 
 class PdfGenericTokenView(
     CheckSignatureSessionTokenMixin,

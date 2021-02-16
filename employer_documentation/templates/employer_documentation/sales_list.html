@@ -46,6 +46,7 @@
                 <th scope="col">Work Commence</th>
                 <th scope="col">Deposit</th>
                 <th scope="col">Balance</th>
+                <th scope="col">Archived</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -61,14 +62,15 @@
                     <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></td>
                     <td><a href="">{{ object.ca_deposit }}</a></td>
                     <td><a href="">{{ object.calc_bal }}</a></td>
-                    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}">Undo Deploy</button><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}">Archive</button></td>
+                    <td><a href="{% url 'pdf_archive_detail' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-archive"></i> View</a></td>
+                    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button></td>
                     {% include 'employer_documentation/snippet_modal_deploy.html' %}
                     {% include 'employer_documentation/snippet_modal_archive.html' %}
                 </tr>
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="12">No results found</td>
+                <td colspan="10">No results found</td>
             </tr>
         {% endif %}
         </tbody>

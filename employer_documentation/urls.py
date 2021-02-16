@@ -1,6 +1,8 @@
 # Imports from django
 from django.urls import include, path
 
+from . import models
+
 ## List Views
 from .views import (
     EmployerListView,
@@ -223,6 +225,114 @@ urlpatterns = [
                                                 PdfArchiveDetailView.as_view(),
                                                 name='pdf_archive_detail'
                                             ),
+                                            path(
+                                                'service-fees/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f01_service_fee_schedule',
+                                                ),
+                                                name='pdf_archive_service_fees'
+                                            ),
+                                            path(
+                                                'service-agreement/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f03_service_agreement',
+                                                ),
+                                                name='pdf_archive_service_agreement'
+                                            ),
+                                            path(
+                                                'employment-contract/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f04_employment_contract',
+                                                ),
+                                                name='pdf_archive_employment_contract'
+                                            ),
+                                            path(
+                                                'repayment-schedule/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f05_repayment_schedule',
+                                                ),
+                                                name='pdf_archive_repayment_schedule'
+                                            ),
+                                            path(
+                                                'rest-day-agreement/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f06_rest_day_agreement',
+                                                ),
+                                                name='pdf_archive_rest_day_agreement'
+                                            ),
+                                            path(
+                                                'handover-checklist/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f08_handover_checklist',
+                                                ),
+                                                name='pdf_archive_handover_checklist'
+                                            ),
+                                            path(
+                                                'transfer-consent/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f09_transfer_consent',
+                                                ),
+                                                name='pdf_archive_transfer_consent'
+                                            ),
+                                            path(
+                                                'work-pass-authorisation/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f10_work_pass_authorisation',
+                                                ),
+                                                name='pdf_archive_work_pass_authorisation'
+                                            ),
+                                            path(
+                                                'security-bond/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f11_security_bond',
+                                                ),
+                                                name='pdf_archive_security_bond'
+                                            ),
+                                            path(
+                                                'fdw-work-permit-12b/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f12_fdw_work_permit',
+                                                ),
+                                                name='pdf_archive_fdw_work_permit'
+                                            ),
+                                            path(
+                                                'income-tax-declaration/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f13_income_tax_declaration',
+                                                ),
+                                                name='pdf_archive_income_tax_declaration'
+                                            ),
+                                            path(
+                                                'safety-agreement/',
+                                                PdfFileAgencyView.as_view(
+                                                    model=models.EmployerDoc,
+                                                    pk_url_kwarg='employerdoc_pk',
+                                                    field_name='f14_safety_agreement',
+                                                ),
+                                                name='pdf_archive_safety_agreement'
+                                            ),
                                         ]),
                                     ),
                                     path(
@@ -269,6 +379,8 @@ urlpatterns = [
                                     path(
                                         'pdf/job-order/<slug:slug>/',
                                         PdfFileAgencyView.as_view(
+                                            model=models.JobOrder,
+                                            slug_url_kwarg='slug',
                                             filename='job-order.pdf',
                                         ),
                                         name='pdf_agency_job_order_route'
