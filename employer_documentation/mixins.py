@@ -27,7 +27,6 @@ from onlinemaid.constants import (
     AG_MANAGERS,
     AG_SALES,
 )
-from onlinemaid.helper_functions import decrypt_string
 from accounts.models import User
 
 
@@ -504,24 +503,14 @@ class PdfHtmlViewMixin:
 
             # Employer NRIC
             try:
-                context['object'].employer.employer_nric = decrypt_string(
-                    self.object.employer.employer_nric,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer.nonce,
-                    self.object.employer.tag
-                )
+                context['object'].employer.employer_nric = self.object.employer.get_nric()
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].employer.employer_nric = ''
             
             # FDW passport number
             try:
-                context['object'].fdw.passport_number = decrypt_string(
-                    self.object.fdw.passport_number,
-                    settings.ENCRYPTION_KEY,
-                    self.object.fdw.nonce,
-                    self.object.fdw.tag
-                )
+                context['object'].fdw.passport_number = self.object.fdw.get_passport_number()
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].fdw.passport_number = ''
@@ -546,24 +535,14 @@ class PdfHtmlViewMixin:
 
             # Employer NRIC
             try:
-                context['object'].employer.employer_nric = decrypt_string(
-                    self.object.employer_doc.employer.employer_nric,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer_doc.employer.nonce,
-                    self.object.employer_doc.employer.tag
-                )
+                context['object'].employer.employer_nric = self.object.employer_doc.employer.get_nric()
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].employer.employer_nric = ''
             
             # FDW passport number
             try:
-                context['object'].fdw.passport_number = decrypt_string(
-                    self.object.employer_doc.fdw.passport_number,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer_doc.fdw.nonce,
-                    self.object.employer_doc.fdw.tag
-                )
+                context['object'].fdw.passport_number = self.object.employer_doc.fdw.get_passport_number()
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].fdw.passport_number = ''
