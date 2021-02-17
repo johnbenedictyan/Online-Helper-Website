@@ -4,6 +4,7 @@ import uuid
 
 # Imports from django
 from django.db import models
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.core.files.storage import FileSystemStorage
@@ -15,6 +16,7 @@ from django.core.validators import (
 
 # Imports from other apps
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.helper_functions import decrypt_string
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -98,6 +100,23 @@ class Employer(models.Model):
         max_length=25,
     )
 
+    def get_nric_full(self):
+        plaintext = decrypt_string(
+            self.employer_nric,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
+        return plaintext
+    
+    def get_nric_partial(self):
+        plaintext = decrypt_string(
+            self.employer_nric,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
+        return '●'*5 + plaintext[-4:]
 
 class EmployerDoc(models.Model):
     DAY_CHOICES = [

@@ -33,7 +33,7 @@ from onlinemaid.constants import (
     AG_MANAGERS,
     AG_SALES,
 )
-from onlinemaid.helper_functions import encrypt_string, decrypt_string
+from onlinemaid.helper_functions import encrypt_string
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -58,7 +58,7 @@ class EmployerForm(forms.ModelForm):
         '''
         if self.instance.employer_nric and self.instance.employer_nric!=b'':
             try:
-                plaintext = decrypt_string(self.instance.employer_nric, settings.ENCRYPTION_KEY, self.instance.nonce, self.instance.tag)
+                plaintext = self.instance.get_nric_full()
                 self.initial.update({'employer_nric': plaintext})
             except (ValueError, KeyError):
                 print("Incorrect decryption")
@@ -1091,12 +1091,7 @@ class VerifyUserTokenForm(forms.ModelForm):
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
         try:
-            plaintext = decrypt_string(
-                self.object.employer_doc.employer.employer_nric,
-                settings.ENCRYPTION_KEY,
-                self.object.employer_doc.employer.nonce,
-                self.object.employer_doc.employer.tag
-            )
+            plaintext = self.object.employer_doc.employer.get_nric_full()
         except (ValueError, KeyError):
             plaintext = ''
             print("Incorrect decryption")
