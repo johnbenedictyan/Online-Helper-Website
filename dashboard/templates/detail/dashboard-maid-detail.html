@@ -1,765 +1,715 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <div class="container">
-    <div class="row mb-3">
-        <div class="col-6">
-            <img src="" alt="" class="img-fluid">
-            <h3>{{maid.biodata.name}}</h3>
-            <h5 class="text-muted">Ref No: {{maid.reference_number}}</h5>
-            {% if maid.complete == True %}
-            <h5>Status: Complete</h5>
-            {% else %}
-            <h5>Status: Not Complete</h5>
-            {% endif %}
-            <h5 class="text-muted">Last Updated: {{maid.updated_on}}</h5>
-        </div>
-        <div class="col-3 offset-3">
-            <div class="row my-4">
-                <div class="col">
-                    <a href="{% url 'maid_delete' pk=maid.pk %}" class="btn btn-danger w-100">Delete FDW Biodata</a>
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="custom-card__header">General Information</h3>
+                    </div>
+                    <div class="col d-none d-md-block">
+                        <a href="{% url 'maid_update' pk=maid.pk %}" class="btn btn-primary float-right mr-1">Modify</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-lg-3">
+                        <img src="{{maid.photo.url}}" class="rounded" alt="Maid Profile Picture">
+                    </div>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Reference Number</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{maid.reference_number}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Name</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{maid.name}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Type of Maid</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{maid.get_maid_type_display}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Days off</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{maid.days_off}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Passport Number</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{maid.get_passport_number}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Passport Status</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{maid.get_passport_status_display}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col ml-1 mt-2">
+                        <h6 class="text-muted">Remarks</h6>
+                        <p>{{maid.remarks}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-md-none">
+                        <a href="{% url 'maid_update' pk=maid.pk %}" class="btn btn-primary w-100">Modify General Information</a>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    {% if maid.complete == True %}
-                    <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success w-100">Publish FDW Biodata</a>
-                    {% else %}
-                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="Complete the FDW profile to publish">
-                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success w-100 disabled">Publish FDW Biodata</a>
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="custom-card__header">Personal Details</h3>
                     </div>
-                    {% endif %}
+                    <div class="col d-none d-md-block">
+                        <a href="{% url 'maid_personal_details_update' pk=maid.pk %}" class="btn btn-primary float-right mr-1">Modify</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h6 class="text-muted">Height</h6>
+                        <p>{{maid.personal_details.height}}cm</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="text-muted">Weight</h6>
+                        <p>{{maid.personal_details.weight}}kg</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="text-muted">Age</h6>
+                        <p>{{maid.personal_details.age}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="text-muted">Date of Birth</h6>
+                        <p>{{maid.personal_details.date_of_birth}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Address</h6>
+                        <p class="mb-0">{{maid.personal_details.address_1}}</p>
+                        <p>{{maid.personal_details.address_2}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="text-muted">Place of Birth</h6>
+                                <p>{{maid.personal_details.place_of_birth}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="text-muted">Repatraition Airport</h6>
+                                <p>{{maid.personal_details.repatriation_airport}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h6 class="text-muted">Religion</h6>
+                        <p>{{maid.personal_details.get_religion_display}}</p>
+                    </div>
+                    <div class="col-12">
+                        <h6 class="text-muted">Languages Spoken</h6>
+                        {% for language in maid.personal_details.languages.all %}
+                        <p>{{language}}</p>
+                        {% endfor%}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-md-none">
+                        <a href="{% url 'maid_personal_details_update' pk=maid.pk %}" class="btn btn-primary w-100">Modify Personal Details</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Maid Information</h4>
-                        </div>
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="custom-card__header">Family Details</h3>
+                    </div>
+                    <div class="col d-none d-md-block">
+                        <a href="{% url 'maid_family_details_update' pk=maid.pk %}" class="btn btn-primary float-right mr-1">Modify</a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Reference Number</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.reference_number}}</p>
-                        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Marital Status</h6>
+                        <p>{{maid.family_details.get_marital_status_display}}</p>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Maid Type</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.get_maid_type_display}}</p>
-                        </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Number of Siblings</h6>
+                        <p>{{maid.family_details.number_of_siblings}}</p>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Salary</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.salary}}</p>
-                        </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Number of Children</h6>
+                        <p>{{maid.family_details.number_of_children}}</p>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Loan Amount</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.loan_amount}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Days Off</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.days_off}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Passport Status</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.get_passport_status_display}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Repatraition Airport</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.repatraition_airport}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Remarks</h5>
-                        </div>
-                        <div class="col">
-                            <p class="card-text">{{maid.remarks}}</p>
-                        </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Age of Children</h6>
+                        <p>{{maid.family_details.age_of_children}}</p>
                     </div>
                 </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
+                <div class="row">
+                    <div class="col d-md-none">
+                        <a href="{% url 'maid_family_details_update' pk=maid.pk %}" class="btn btn-primary w-100">Modify Family Details</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Maid Biodata</h4>
-                        </div>
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="custom-card__header">Financial Details</h3>
                     </div>
-                    
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Name</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.name %}
-                            <p class="card-text">{{maid.biodata.name}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Age</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.age %}
-                            <p class="card-text">{{maid.biodata.age}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Country of Origin</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.country_of_origin %}
-                            <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Height</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.height %}
-                            <p class="card-text">{{maid.biodata.height}} cm</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Weight</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.weight %}
-                            <p class="card-text">{{maid.biodata.weight}} kg</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Place of Birth</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.place_of_birth %}
-                            <p class="card-text">{{maid.biodata.place_of_birth}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Address</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.address_1 and maid.biodata.address_2 %}
-                            <p class="card-text">
-                                <address>
-                                    {{maid.biodata.address_1}}
-                                    {{maid.biodata.address_2}}
-                                </address>
-                            </p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Religion</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata.religion != 'NONE' %}
-                            <p class="card-text">{{maid.biodata.get_religion_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.biodata_complete is True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
+                    <div class="col d-none d-md-block">
+                        <a href="{% url 'maid_financial_details_update' pk=maid.pk %}" class="btn btn-primary float-right mr-1">Modify</a>
                     </div>
                 </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_biodata_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h6 class="text-muted">Salary</h6>
+                        <p>{{maid.financial_details.salary}}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <h6 class="text-muted">Personal Loan Amount</h6>
+                        <p>{{maid.financial_details.personal_loan_amount}}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-muted">Agency Fee Amount</h6>
+                        <p>{{maid.financial_details.agency_fee_amount}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h5>Agency Fee Breakdown</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                            {% for transaction in maid.agency_fee_transactions.all %}
+                                <div class="card custom-card">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5>${{transaction.amount}}</h5>
+                                        <small class="mt-1">{{transaction.transaction_date}}</small>
+                                    </div>
+                                    <p class="mb-1">{{transaction.description}}</p>
+                                    <small class="mb-2">{{transaction.get_transaction_type_display}}</small>
+                                    <a href="{% url 'maid_agency_fee_transaction_update' pk=maid.pk agency_fee_transaction_pk=transaction.pk %}">Change</a>
+                                </div>
+                            {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-md-none">
+                        <a href="{% url 'maid_financial_details_update' pk=maid.pk %}" class="btn btn-primary w-100">Modify Financial Details</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Maid Family Details</h4>
-                        </div>
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="custom-card__header">Care Details</h3>
+                    </div>
+                    <div class="col d-none d-md-block">
+                        <a href="{% url 'maid_care_details_update' pk=maid.pk %}" class="btn btn-primary float-right mr-1">Modify</a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Marital Status</h5>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-md-8 col-xl-6 mb-md-3 mb-lg-4 mb-xl-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Infant Care</h5>
+                                        <hr class="mt-0">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Assessment</h6>
+                                        <p>{{maid.infant_child_care.get_assessment_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Willingness</h6>
+                                        <p>{{maid.infant_child_care.get_willingness_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Experience</h6>
+                                        <p>{{maid.infant_child_care.get_experience_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Remarks</h6>
+                                        <p>{{maid.infant_child_care.get_remarks_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Other Remarks</h6>
+                                        {% if maid.infant_child_care.other_remarks %}
+                                            <p>{{maid.infant_child_care.other_remarks}}</p>
+                                        {% else %}
+                                            <p>Not Applicable</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xl-6 mb-md-3 mb-lg-4 mb-xl-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Elderly Care</h5>
+                                        <hr class="mt-0">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Assessment</h6>
+                                        <p>{{maid.elderly_care.get_assessment_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Willingness</h6>
+                                        <p>{{maid.elderly_care.get_willingness_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Experience</h6>
+                                        <p>{{maid.elderly_care.get_experience_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Remarks</h6>
+                                        <p>{{maid.elderly_care.get_remarks_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Other Remarks</h6>
+                                        {% if maid.elderly_care.other_remarks %}
+                                            <p>{{maid.elderly_care.other_remarks}}</p>
+                                        {% else %}
+                                            <p>Not Applicable</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xl-6 mb-md-3 mb-lg-4 mb-xl-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Disabled Care</h5>
+                                        <hr class="mt-0">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Assessment</h6>
+                                        <p>{{maid.disabled_care.get_assessment_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Willingness</h6>
+                                        <p>{{maid.disabled_care.get_willingness_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Experience</h6>
+                                        <p>{{maid.disabled_care.get_experience_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Remarks</h6>
+                                        <p>{{maid.disabled_care.get_remarks_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Other Remarks</h6>
+                                        {% if maid.disabled_care.other_remarks %}
+                                            <p>{{maid.disabled_care.other_remarks}}</p>
+                                        {% else %}
+                                            <p>Not Applicable</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xl-6 mb-md-3 mb-lg-4 mb-xl-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>General Housework</h5>
+                                        <hr class="mt-0">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Assessment</h6>
+                                        <p>{{maid.general_housework.get_assessment_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Willingness</h6>
+                                        <p>{{maid.general_housework.get_willingness_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Experience</h6>
+                                        <p>{{maid.general_housework.get_experience_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Remarks</h6>
+                                        <p>{{maid.general_housework.get_remarks_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Other Remarks</h6>
+                                        {% if maid.general_housework.other_remarks %}
+                                            <p>{{maid.general_housework.other_remarks}}</p>
+                                        {% else %}
+                                            <p>Not Applicable</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xl-6 mb-md-3 mb-lg-4 mb-xl-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Cooking</h5>
+                                        <hr class="mt-0">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Assessment</h6>
+                                        <p>{{maid.cooking.get_assessment_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Willingness</h6>
+                                        <p>{{maid.cooking.get_willingness_display}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">Experience</h6>
+                                        <p>{{maid.cooking.get_experience_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Remarks</h6>
+                                        <p>{{maid.cooking.get_remarks_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Other Remarks</h6>
+                                        {% if maid.cooking.other_remarks %}
+                                            <p>{{maid.cooking.other_remarks}}</p>
+                                        {% else %}
+                                            <p>Not Applicable</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xl-6 mb-xl-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Other Care</h5>
+                                        <hr class="mt-0">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Care for Pets</h6>
+                                        <p>{{maid.other_care.get_care_for_pets_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-muted">Gardening</h6>
+                                        <p>{{maid.other_care.get_gardening_display}}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            {% if maid.family_details.marital_status %}
-                            <p class="card-text">{{maid.family_details.marital_status}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Number of Children</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.family_details.number_of_children or maid.family_details.number_of_children is 0 %}
-                            <p class="card-text">{{maid.family_details.number_of_children}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Age of Children</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.family_details.age_of_children %}
-                            <p class="card-text">{{maid.family_details.age_of_children}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Number of Siblings</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.family_details.number_of_siblings or maid.family_details.number_of_siblings is 0 %}
-                            <p class="card-text">{{maid.family_details.number_of_siblings}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.family_details_complete == True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
+                        <!-- <div class="card-deck">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Infant Care</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Assessment</h6>
+                                            <p>{{maid.infant_child_care.get_assessment_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Willingness</h6>
+                                            <p>{{maid.infant_child_care.get_willingness_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Experience</h6>
+                                            <p>{{maid.infant_child_care.get_experience_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Remarks</h6>
+                                            <p>{{maid.infant_child_care.get_remarks_display}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Other Remarks</h6>
+                                            {% if maid.infant_child_care.other_remarks %}
+                                                <p>{{maid.infant_child_care.other_remarks}}</p>
+                                            {% else %}
+                                                <p>Not Applicable</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Elderly Care</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Assessment</h6>
+                                            <p>{{maid.elderly_care.get_assessment_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Willingness</h6>
+                                            <p>{{maid.elderly_care.get_willingness_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Experience</h6>
+                                            <p>{{maid.elderly_care.get_experience_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Remarks</h6>
+                                            <p>{{maid.elderly_care.get_remarks_display}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Other Remarks</h6>
+                                            {% if maid.elderly_care.other_remarks %}
+                                                <p>{{maid.elderly_care.other_remarks}}</p>
+                                            {% else %}
+                                                <p>Not Applicable</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-none d-md-block d-lg-none"></div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Disabled Care</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Assessment</h6>
+                                            <p>{{maid.disabled_care.get_assessment_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Willingness</h6>
+                                            <p>{{maid.disabled_care.get_willingness_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Experience</h6>
+                                            <p>{{maid.disabled_care.get_experience_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Remarks</h6>
+                                            <p>{{maid.disabled_care.get_remarks_display}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Other Remarks</h6>
+                                            {% if maid.disabled_care.other_remarks %}
+                                                <p>{{maid.disabled_care.other_remarks}}</p>
+                                            {% else %}
+                                                <p>Not Applicable</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-none d-lg-block"></div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>General Housework</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Assessment</h6>
+                                            <p>{{maid.general_housework.get_assessment_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Willingness</h6>
+                                            <p>{{maid.general_housework.get_willingness_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Experience</h6>
+                                            <p>{{maid.general_housework.get_experience_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Remarks</h6>
+                                            <p>{{maid.general_housework.get_remarks_display}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Other Remarks</h6>
+                                            {% if maid.general_housework.other_remarks %}
+                                                <p>{{maid.general_housework.other_remarks}}</p>
+                                            {% else %}
+                                                <p>Not Applicable</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-none d-md-block d-lg-none"></div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Cooking</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Assessment</h6>
+                                            <p>{{maid.cooking.get_assessment_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Willingness</h6>
+                                            <p>{{maid.cooking.get_willingness_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Experience</h6>
+                                            <p>{{maid.cooking.get_experience_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Remarks</h6>
+                                            <p>{{maid.cooking.get_remarks_display}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Other Remarks</h6>
+                                            {% if maid.cooking.other_remarks %}
+                                                <p>{{maid.cooking.other_remarks}}</p>
+                                            {% else %}
+                                                <p>Not Applicable</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Other Care</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted">Care for Pets</h6>
+                                            <p>{{maid.other_care.get_care_for_pets_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="text-muted">Gardening</h6>
+                                            <p>{{maid.other_care.get_gardening_display}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-none d-lg-block"></div>
+                        </div> -->
                     </div>
                 </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_family_details_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
+                <div class="row">
+                    <div class="col d-md-none">
+                        <a href="{% url 'maid_care_details_update' pk=maid.pk %}" class="btn btn-primary w-100">Modify Care Details</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Infant/Child Care</h4>
-                        </div>
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col text-center">
+                        <form action="{% url 'maid_delete' pk=maid.pk %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger mr-2 d-none d-md-inline">
+                                <strong>Delete FDW Biodata</strong>
+                            </button>
+                            <button type="submit" class="btn btn-outline-danger d-md-none mb-2 w-100">
+                                <strong>Delete FDW Biodata</strong>
+                            </button>
+                        </form>
+                        {% if maid.published == False %}
+                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success ml-md-2 d-none d-md-inline">
+                            <strong>Publish FDW Biodata</strong>
+                        </a>
+                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success d-md-none mb-2 w-100">
+                            <strong>Publish FDW Biodata</strong>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-warning ml-md-2 d-none d-md-inline">
+                            <strong>Unpublish FDW Biodata</strong>
+                        </a>
+                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-warning d-md-none mb-2 w-100">
+                            <strong>Unpublish FDW Biodata</strong>
+                        </a>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Preference</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.infant_child_care.preference %}
-                            <p class="card-text">{{maid.infant_child_care.get_preference_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Willingness</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.infant_child_care.willingness %}
-                            <p class="card-text">{{maid.infant_child_care.get_willingness_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Experience</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.infant_child_care.experience %}
-                            <p class="card-text">{{maid.infant_child_care.get_experience_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.infant_child_care.remarks %}
-                            <p class="card-text">{{maid.infant_child_care.get_remarks_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Other remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.infant_child_care.other_remarks %}
-                            <p class="card-text">{{maid.infant_child_care.other_remarks}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.infant_child_care_complete is True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_infant_child_care_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Elderly Care</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Preference</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.elderly_care.preference %}
-                            <p class="card-text">{{maid.elderly_care.get_preference_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Willingness</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.elderly_care.willingness %}
-                            <p class="card-text">{{maid.elderly_care.get_willingness_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Experience</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.elderly_care.experience %}
-                            <p class="card-text">{{maid.elderly_care.get_experience_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.elderly_care.remarks %}
-                            <p class="card-text">{{maid.elderly_care.get_remarks_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Other remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.elderly_care.other_remarks %}
-                            <p class="card-text">{{maid.elderly_care.other_remarks}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.elderly_care_complete is True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_elderly_care_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Disabled Care</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Preference</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.disabled_care.preference %}
-                            <p class="card-text">{{maid.disabled_care.get_preference_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Willingness</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.disabled_care.willingness %}
-                            <p class="card-text">{{maid.disabled_care.get_willingness_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Experience</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.disabled_care.experience %}
-                            <p class="card-text">{{maid.disabled_care.get_experience_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.disabled_care.remarks %}
-                            <p class="card-text">{{maid.disabled_care.get_remarks_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Other remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.disabled_care.other_remarks %}
-                            <p class="card-text">{{maid.disabled_care.other_remarks}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.disabled_care_complete is True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_disabled_care_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-4 offset-2">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">General Housework</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Preference</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.general_housework.preference %}
-                            <p class="card-text">{{maid.general_housework.get_preference_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Willingness</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.general_housework.willingness %}
-                            <p class="card-text">{{maid.general_housework.get_willingness_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Experience</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.general_housework.experience %}
-                            <p class="card-text">{{maid.general_housework.get_experience_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.general_housework.remarks %}
-                            <p class="card-text">{{maid.general_housework.get_remarks_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Other remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.general_housework.other_remarks %}
-                            <p class="card-text">{{maid.general_housework.other_remarks}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.general_housework_complete is True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_general_housework_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header" style='background:grey'>
-                    <div class="row">
-                        <div class="col">
-                            <h4 class="mb-0">Cooking</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Preference</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.cooking.preference %}
-                            <p class="card-text">{{maid.cooking.get_preference_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Willingness</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.cooking.willingness %}
-                            <p class="card-text">{{maid.cooking.get_willingness_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Experience</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.cooking.experience %}
-                            <p class="card-text">{{maid.cooking.get_experience_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.cooking.remarks %}
-                            <p class="card-text">{{maid.cooking.get_remarks_display}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Other remarks</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.cooking.other_remarks %}
-                            <p class="card-text">{{maid.cooking.other_remarks}}</p>
-                            {% else %}
-                            <p class="card-text">Incomplete</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Completion Status</h5>
-                        </div>
-                        <div class="col">
-                            {% if maid.cooking_complete is True %}
-                            <h1><span class="badge badge-success">Complete</span></h1>
-                            {% else %}
-                            <h1><span class="badge badge-danger">Incomplete</span></h1>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'maid_cooking_update' pk=maid.pk %}" class="btn btn-primary w-50">Modify</a>
                 </div>
             </div>
         </div>

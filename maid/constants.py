@@ -336,6 +336,10 @@ class TypeOfMaidChoices(models.TextChoices):
     TRANSFER = 'TRF', _('Transfer')
     SINGAPORE_EXPERIENCE = 'SGE', _('Singapore Experience')
     OVERSEAS_EXPERIENCE = 'OVE', _('Overseas Experience')
+    
+class MaidPassportStatusChoices(models.IntegerChoices):
+    NOT_READY = 0, _('Not Ready')
+    READY = 1, _('Ready')
         
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes

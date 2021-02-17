@@ -12,10 +12,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
 import stripe
-from onlinemaid.mixins import SuccessMessageMixin
+from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 from payment.models import Customer
 
 # Imports from local app
+from .filters import AgencyFilter
+
 from .forms import (
     AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
     AgencyOperatingHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
@@ -42,11 +44,13 @@ from .mixins import (
 # Redirect Views
 
 # List Views
-class AgencyList(ListView):
+class AgencyList(ListFilteredMixin, ListView):
     context_object_name = 'agencies'
     http_method_names = ['get']
     model = Agency
     template_name = 'list/agency-list.html'
+    queryset = Agency.objects.filter(complete=True)
+    filter_set = AgencyFilter
 
 # Detail Views
 class AgencyDetail(DetailView):

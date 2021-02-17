@@ -11,6 +11,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.helper_functions import calculate_age, decrypt_string
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
@@ -19,7 +20,7 @@ from agency.models import Agency
 # Imports from within the app
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
-    MaidCareRemarksChoices, MaidLanguageChoices, MaidResponsibilityChoices,
+    MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices
 )
 
@@ -52,10 +53,6 @@ class MaidLanguage(models.Model):
         return f'{self.get_language_display()}'
 
 class Maid(models.Model):
-    class PassportStatusChoices(models.IntegerChoices):
-        NOT_READY = 0, _('Not Ready')
-        READY = 1, _('Ready')
-        
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
@@ -74,9 +71,18 @@ class Maid(models.Model):
         blank=False,
         null=True
     )
-    passport_number = models.BinaryField(editable=True)
-    nonce = models.BinaryField(editable=True)
-    tag = models.BinaryField(editable=True)
+    
+    passport_number = models.BinaryField(
+        editable=True
+    )
+    
+    nonce = models.BinaryField(
+        editable=True
+    )
+    
+    tag = models.BinaryField(
+        editable=True
+    )
 
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
@@ -103,8 +109,8 @@ class Maid(models.Model):
         verbose_name=_('Passport status'),
         max_length=1,
         blank=False,
-        choices=PassportStatusChoices.choices,
-        default=PassportStatusChoices.NOT_READY
+        choices=MaidPassportStatusChoices.choices,
+        default=MaidPassportStatusChoices.NOT_READY
     )
 
     remarks = models.CharField(
@@ -169,7 +175,16 @@ class Maid(models.Model):
             if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
             and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
         ]
-        return(main_responsibility[0])
+        return main_responsibility[0]
+
+    def get_passport_number(self):
+        plaintext = decrypt_string(
+            self.passport_number,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
+        return plaintext
 
 class MaidWorkDuty(models.Model):
     class WorkDutyChoices(models.TextChoices):
@@ -310,6 +325,10 @@ class MaidAgencyFeeTransaction(models.Model):
         blank=False
     )
 
+    transaction_date = models.DateField(
+        blank=False
+    )
+
 ## Models which have a one-to-one relationship with the maid model 
 class MaidPersonalDetails(models.Model):
     maid = models.OneToOneField(
@@ -318,6 +337,12 @@ class MaidPersonalDetails(models.Model):
         related_name='personal_details'
     )
 
+    date_of_birth = models.DateField(
+        verbose_name=_('Date of Birth'),
+        blank=False,
+        null=True
+    )
+    
     age = models.IntegerField(
         verbose_name=_('Age'),
         blank=False,
@@ -392,6 +417,16 @@ class MaidPersonalDetails(models.Model):
     languages = models.ManyToManyField(
         MaidLanguage
     )
+
+    preferred_language = models.ForeignKey(
+        MaidLanguage,
+        on_delete=models.PROTECT,
+        related_name='preferred_language'
+    )
+    
+    def save(self, *args, **kwargs):
+        self.age = calculate_age(self.date_of_birth)
+        return super().save(*args, **kwargs)
 
 class MaidFamilyDetails(models.Model):
     maid = models.OneToOneField(
@@ -815,11 +850,13 @@ class MaidOtherCare(models.Model):
     care_for_pets = models.BooleanField(
         verbose_name=_('Care for pets'),
         blank=False,
+        choices=TrueFalseChoices('Able', 'Unable'),
         default=False
     )
 
     gardening = models.BooleanField(
         verbose_name=_('Gardening'),
         blank=False,
+        choices=TrueFalseChoices('Able', 'Unable'),
         default=False
     )
