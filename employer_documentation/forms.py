@@ -58,7 +58,7 @@ class EmployerForm(forms.ModelForm):
         '''
         if self.instance.employer_nric and self.instance.employer_nric!=b'':
             try:
-                plaintext = self.instance.get_nric()
+                plaintext = self.instance.get_nric_full()
                 self.initial.update({'employer_nric': plaintext})
             except (ValueError, KeyError):
                 print("Incorrect decryption")
@@ -1091,7 +1091,7 @@ class VerifyUserTokenForm(forms.ModelForm):
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
         try:
-            plaintext = self.object.employer_doc.employer.get_nric()
+            plaintext = self.object.employer_doc.employer.get_nric_full()
         except (ValueError, KeyError):
             plaintext = ''
             print("Incorrect decryption")

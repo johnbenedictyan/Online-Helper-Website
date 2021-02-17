@@ -503,7 +503,7 @@ class PdfHtmlViewMixin:
 
             # Employer NRIC
             try:
-                context['object'].employer.employer_nric = self.object.employer.get_nric()
+                context['object'].employer.employer_nric = self.object.employer.get_nric_full()
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].employer.employer_nric = ''
@@ -535,7 +535,7 @@ class PdfHtmlViewMixin:
 
             # Employer NRIC
             try:
-                context['object'].employer.employer_nric = self.object.employer_doc.employer.get_nric()
+                context['object'].employer.employer_nric = self.object.employer_doc.employer.get_nric_full()
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].employer.employer_nric = ''

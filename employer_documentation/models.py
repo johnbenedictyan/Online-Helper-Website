@@ -100,7 +100,7 @@ class Employer(models.Model):
         max_length=25,
     )
 
-    def get_nric(self):
+    def get_nric_full(self):
         plaintext = decrypt_string(
             self.employer_nric,
             settings.ENCRYPTION_KEY,
@@ -108,6 +108,15 @@ class Employer(models.Model):
             self.tag
         )
         return plaintext
+    
+    def get_nric_partial(self):
+        plaintext = decrypt_string(
+            self.employer_nric,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
+        return '●'*5 + plaintext[-4:]
 
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
