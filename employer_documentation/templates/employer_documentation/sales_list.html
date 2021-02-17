@@ -1,5 +1,33 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
+{% block css %}
+<style>
+    .custom-table-header, .custom-table-data, .custom-table-data-hidden {
+        min-height: 2rem;
+        padding: 0.8rem 1rem;
+        border-top: 1px solid lightgrey;
+    }
+    .custom-table-header {
+        background-color: steelblue;
+        color: white;
+        font-weight: bold;
+    }
+    .custom-table-dataset:nth-child(even) {
+        background-color: #eee;
+    }
+    .custom-table-data-hidden {
+        border-bottom: 1px solid lightgrey;
+    }
+    .clickable:hover {
+        cursor: pointer;
+        background-color: lightblue;
+    }
+    .fa-file-pdf {
+        color: rgb(165, 0, 0);
+    }
+</style>
+{% endblock css %}
+
 {% block sidenav_extra %}
 {% endblock sidenav_extra %}
 
@@ -9,15 +37,13 @@
 
     <form method="get">
         <div class="form-row">
-            <div class="col-md-6 input-group mb-3">
+            <div class="col-12 col-xl-6 input-group mb-3">
                 <input type="search" name="search" class="form-control input-text" placeholder="Search case ref, employer name, email, mobile..." value="{{ request.GET.search }}">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-6 input-group mb-3">
+            <div class="col-12 col-xl-6 input-group mb-3">
                 <input type="text" onfocus="(this.type='date')" name="start_date" class="form-control input-text" value="{{ request.GET.start_date }}" placeholder="Date from">
                 <input type="text" onfocus="(this.type='date')" name="end_date" class="form-control input-text" value="{{ request.GET.end_date }}" placeholder="Date to">
                 <select name="sort_by">
@@ -34,6 +60,185 @@
     </form>
 </div>
 
+<div class="custom-table">
+    <div class="d-none d-xl-block">
+        <!-- Display for xl screens and above -->
+        <div class="row custom-table-header">
+            <div class="col">Employer</div>
+            <div class="col">Case No</div>
+            <div class="col">Staff</div>
+            <div class="col">FDW</div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-12 text-center">Date</div>
+                    <div class="col-6">Agreement</div>
+                    <div class="col-6">Deployment</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="row">
+                    <div class="col-12 text-center">Amount (S$)</div>
+                    <div class="col-6">Deposit</div>
+                    <div class="col-6">Balance</div>
+                </div>
+            </div>
+            <div class="col">Action</div>
+        </div>
+    </div>
+    <div class="row custom-table-body">
+        {% if object_list.count %}
+            {% for object in object_list %}
+                <div class="col-12 custom-table-dataset">
+                    <div class="clickable d-none d-xl-block">
+                        <!-- Display for xl screens and above -->
+                        <div class="row custom-table-data">
+                            <div class="col">{{ object.employer.employer_name }}</div>
+                            <div class="col">{{ object.case_ref_no }}</div>
+                            <div class="col">{{ object.employer.agency_employee.ea_personnel_number }}<br>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
+                            <div class="col">{{ object.fdw.reference_number }}<br>{{ object.fdw.name }}</div>
+                            <div class="col-3">
+                                <div class="row">
+                                    <div class="col">{{ object.agreement_date|date:"d M Y" }}</div>
+                                    <div class="col">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="row">
+                                    <div class="col">{{ object.ca_deposit }}</div>
+                                    <div class="col">{{ object.calc_bal }}</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button>
+                                {% include 'employer_documentation/snippet_modal_deploy.html' %}
+                                {% include 'employer_documentation/snippet_modal_archive.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clickable d-xl-none">
+                        <!-- Display for lg screens and smaller -->
+                        <div class="row custom-table-data">
+                            <div class="col-6">Employer</div>
+                            <div class="col-6">{{ object.employer.employer_name }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Case No</div>
+                            <div class="col-6">{{ object.case_ref_no }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Staff</div>
+                            <div class="col-6">{{ object.employer.agency_employee.ea_personnel_number }} {{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">FDW</div>
+                            <div class="col-6">{{ object.fdw.reference_number }} {{ object.fdw.name }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Agreement Date</div>
+                            <div class="col-6">{{ object.agreement_date|date:"d M Y" }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Deployment Date</div>
+                            <div class="col-6">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Deposit Amount (S$)</div>
+                            <div class="col-6">{{ object.ca_deposit }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Balance Amount (S$)</div>
+                            <div class="col-6">{{ object.calc_bal }}</div>
+                        </div>
+                        <div class="row custom-table-data">
+                            <div class="col-6">Action</div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button>
+                                {% include 'employer_documentation/snippet_modal_deploy.html' %}
+                                {% include 'employer_documentation/snippet_modal_archive.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row custom-table-data-hidden custom-table-dataset" hidden="True">
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Service Fee Schedule</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_service_fees' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Service Agreement</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Employment Contract</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Repayment Schedule</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Rest Day Agreement</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Handover Checklist</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Transfer Consent</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Work Pass Authorisation</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Security Bond</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">FDW Work Permit Application</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_fdw_work_permit' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Income Tax Declaration</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-8 col-md-9">Safety Agreement</div>
+                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- {% comment %}
 <div>
     <table class="table table-hover">
         <thead>
@@ -76,8 +281,25 @@
         </tbody>
     </table>
 </div>
+{% endcomment %} -->
 
 <div class="mt-2 mb-4">
 {% include 'pagination.html' %}
 </div>
 {% endblock ed_section %}
+
+{% block js %}
+<script>
+    for (let clickable of document.getElementsByClassName('clickable')) {
+        clickable.addEventListener('click', function() {
+            let formerElement = document.querySelector('.custom-table-data-toggle');
+            if (formerElement) {
+                formerElement.classList.remove("custom-table-data-toggle");
+                formerElement.hidden = true;
+            }
+            this.parentElement.children[this.parentElement.children.length-1].hidden = false;
+            this.parentElement.children[this.parentElement.children.length-1].classList.add("custom-table-data-toggle");
+        });
+    }
+</script>
+{% endblock js %}
