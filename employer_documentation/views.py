@@ -615,7 +615,17 @@ class SignatureUpdateByTokenView(
                 slug = self.object.fdw_slug
         else:
             return reverse_lazy('home')
-        return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
+        
+        if (
+            self.success_url_route_name=='token_signature_employer_spouse_route'
+            and not self.object.employer_doc.spouse_required
+        ):
+            return reverse_lazy('home')
+        else:
+            return reverse_lazy(
+                self.success_url_route_name,
+                kwargs={'slug':slug}
+            )
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(cleaned_data,)

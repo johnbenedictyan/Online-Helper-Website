@@ -486,9 +486,25 @@ urlpatterns = [
                                         'employer_witness_name',
                                         'employer_witness_nric',
                                     ],
-                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
+                                    success_url_route_name='token_signature_employer_spouse_route',
+                                    success_message = 'Thank you.',
                                 ),
                                 name='token_signature_employer_witness_route'
+                            ),
+                            path(
+                                'spouse/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    model_field_name='spouse_signature',
+                                    token_field_name='employer_token',
+                                    form_fields=[
+                                        'spouse_signature',
+                                        'spouse_name',
+                                        'spouse_nric',
+                                    ],
+                                    success_message = 'Thank you.',
+                                ),
+                                name='token_signature_employer_spouse_route'
                             ),
                             path(
                                 'pdf/',
@@ -663,7 +679,7 @@ urlpatterns = [
                                         'fdw_witness_name',
                                         'fdw_witness_nric',
                                     ],
-                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
+                                    success_message = 'Thank you.',
                                 ),
                                 name='token_signature_fdw_witness_route'
                             ),

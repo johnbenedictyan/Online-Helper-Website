@@ -1121,7 +1121,7 @@ class VerifyUserTokenForm(forms.ModelForm):
             verification_token = secrets.token_urlsafe(32)
             self.cleaned_data[self.token_field_name] = verification_token
             self.session['signature_token'] = verification_token
-            self.session.set_expiry(60*10) # Session expires in 10 mins
+            self.session.set_expiry(60*30) # Session expires in 30 mins
             return self.cleaned_data
         else:
             raise ValidationError(
