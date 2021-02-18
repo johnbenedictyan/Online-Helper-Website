@@ -10,6 +10,7 @@ from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaritalStatusChoices
 )
 from .models import Maid, MaidResponsibility, MaidLanguage
+from .widgets import CustomRangeWidget
 
 # Start of Filters
 class MiniMaidFilter(django_filters.FilterSet):
@@ -38,37 +39,65 @@ class MiniMaidFilter(django_filters.FilterSet):
         }
         
 class MaidFilter(django_filters.FilterSet):
-    # TODO: Add main responsibility and language ability
-    personal_details__languages = django_filters.ModelMultipleChoiceFilter(
+    def filter_age_between(self, queryset, name, value):
+        # gt and min value and lt max value
+        print(value)
+        return queryset
+        
+    name = django_filters.CharFilter(
+        field_name='name',
+        lookup_expr='icontains',
+        label=_('Name')
+    )
+    languages = django_filters.ModelMultipleChoiceFilter(
+        field_name='personal_details__languages',
+        lookup_expr='exact',
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
-        label='Language Spoken'
+        label=_('Language Spoken')
     )
-    personal_details__country_of_origin = django_filters.ChoiceFilter(
+    country_of_origin = django_filters.ChoiceFilter(
+        field_name='personal_details__country_of_origin',
+        lookup_expr='exact',
+        label = _('Country of Origin'),
         choices = MaidCountryOfOrigin.choices,
         empty_label = _('Any')
     )
     maid_type = django_filters.ChoiceFilter(
+        label = _('Type of Maid'),
         choices = TypeOfMaidChoices.choices,
         empty_label = _('Any')
     )
-    family_details__marital_status = django_filters.ChoiceFilter(
+    marital_status = django_filters.ChoiceFilter(
+        field_name='family_details__marital_status',
+        lookup_expr='exact',
+        label = _('Marital Status'),
         choices = MaritalStatusChoices.choices,
         empty_label = _('Any')
     )
     responsibilities = django_filters.ModelMultipleChoiceFilter(
         queryset=MaidResponsibility.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
-        label='Maid Responsibilites'
+        label=_('Maid Responsibilites')
+    )
+    age = django_filters.RangeFilter(
+        label=_('Age'),
+        field_name='personal_details__age',
+        widget=CustomRangeWidget(
+            attrs={
+                'hidden': True
+            }
+        )
     )
 
     class Meta:
         model = Maid
-        fields = {
-            'personal_details__country_of_origin': ['exact'],
-            'maid_type': ['exact'],
-            'personal_details__age': ['lt', 'gt'],
-            'family_details__marital_status': ['exact'],
-            'responsibilities': ['exact'],
-            'personal_details__languages': ['exact']
-        }
+        fields = [
+            'name',
+            'maid_type',
+            'country_of_origin',
+            'age',
+            'marital_status',
+            'languages',
+            'responsibilities'
+        ]

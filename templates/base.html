@@ -41,6 +41,9 @@
         <!-- Tippy CSS -->
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
 
+        <!-- No Ui Slider CSS -->
+        <link rel="stylesheet" href="{% static 'css/vendor/nouislider/nouislider.min.css' %}">
+
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/table.css' %}">
@@ -230,6 +233,8 @@
                 $(".toast").toast('show');
             }
         </script>
+        <script src="{% static 'js/vendor/nouislider/nouislider.min.js' %}"></script>
+        <script src="{% static 'js/index.js' %}"></script>
         {% block js %}
         {% endblock js %}
     </body>
