@@ -44,9 +44,9 @@
 }
 
 .faq-item.active {
-  color: #007bff;
+  color: #3D52D5;
   background-color: #fff;
-  border-bottom-color: #007bff;
+  border-bottom-color: #3D52D5;
   border-width: 0 0 1px 0;
 }
 
