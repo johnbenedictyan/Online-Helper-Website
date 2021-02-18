@@ -36,10 +36,12 @@
                     <th scope="row">Is spouse required?</th>
                     <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_spouse_required_display }}</a></td>
                 </tr>
+                {% comment %}
                 <tr>
                     <th scope="row">Is sponsor required?</th>
                     <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_sponsor_required_display }}</a></td>
                 </tr>
+                {% endcomment %}
                 <tr>
                     <th scope="row" colspan="2"></th>
                 </tr>
@@ -60,6 +62,10 @@
                 <tr>
                     <th scope="row">Signature: Employer</th>
                     <td><a href="{% url 'signature_employer_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.employer_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Signature: Employer Witness</th>
+                    <td><a href="{% url 'signature_employer_witness_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.employer_witness_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
                 </tr>
                 {% if object.spouse_required %}
                     <tr>
@@ -82,8 +88,16 @@
                     <td><a href="{% url 'signature_fdw_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.fdw_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
                 </tr>
                 <tr>
+                    <th scope="row">Signature: FDW Witness</th>
+                    <td><a href="{% url 'signature_fdw_witness_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.fdw_witness_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
+                </tr>
+                <tr>
                     <th scope="row">Signature: Agency Staff</th>
                     <td><a href="{% url 'signature_agency_staff_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agency_staff_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Signature: Agency Staff Witness</th>
+                    <td><a href="{% url 'signature_agency_staff_witness_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agency_staff_witness_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
                 </tr>
                 <tr>
                     <th scope="row" colspan="2"></th>

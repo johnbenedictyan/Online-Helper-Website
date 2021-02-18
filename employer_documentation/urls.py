@@ -179,6 +179,18 @@ urlpatterns = [
                                                 name='signature_employer_update_route'
                                             ),
                                             path(
+                                                'agent-access/employer-witness/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='employer_witness_signature',
+                                                    form_fields=[
+                                                        'employer_witness_signature',
+                                                        'employer_witness_name',
+                                                        'employer_witness_nric',
+                                                    ],
+                                                ),
+                                                name='signature_employer_witness_update_route'
+                                            ),
+                                            path(
                                                 'agent-access/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='spouse_signature',
@@ -203,12 +215,36 @@ urlpatterns = [
                                                 name='signature_fdw_update_route'
                                             ),
                                             path(
+                                                'agent-access/fdw-witness/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='fdw_witness_signature',
+                                                    form_fields=[
+                                                        'fdw_witness_signature',
+                                                        'fdw_witness_name',
+                                                        'fdw_witness_nric',
+                                                    ],
+                                                ),
+                                                name='signature_fdw_witness_update_route'
+                                            ),
+                                            path(
                                                 'agent-access/agency-staff/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='agency_staff_signature',
                                                     form_fields=['agency_staff_signature'],
                                                 ),
                                                 name='signature_agency_staff_update_route'
+                                            ),
+                                            path(
+                                                'agent-access/agency-staff-witness/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='agency_staff_witness_signature',
+                                                    form_fields=[
+                                                        'agency_staff_witness_signature',
+                                                        'agency_staff_witness_name',
+                                                        'agency_staff_witness_nric',
+                                                    ],
+                                                ),
+                                                name='signature_agency_staff_witness_update_route'
                                             ),
                                         ]),
                                     ),
