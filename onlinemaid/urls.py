@@ -35,6 +35,11 @@ from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
 from enquiry.urls import urlpatterns as enquiry_urls
 
+# Helper Function to populate all of the necessary db fields
+USE_DB_PLANTER = os.environ.get('USE_DB_PLANTER') == 'TRUE'
+if USE_DB_PLANTER:
+    from .helper_functions import populate_necessary_rows
+    populate_necessary_rows()
 
 # Django OTP
 ''' Use this to toggle 2FA on/off '''
