@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <th scope="row">FDW</th>
-                    <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.name }}</a></td>
+                    <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">Ref:&emsp;{{ object.fdw.reference_number }}<br>Name:&emsp;{{ object.fdw.name }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">Is spouse required?</th>
