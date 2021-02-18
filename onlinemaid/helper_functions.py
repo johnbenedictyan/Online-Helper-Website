@@ -9,11 +9,8 @@ from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
 
 # Imports from foreign installed apps
-from maid.constants import MaidLanguageChoices, MaidResponsibilityChoices
-from maid.models import MaidLanguage, MaidResponsibility
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
-from .constants import AUTHORITY_GROUPS
 
 UserModel = get_user_model()
 
@@ -72,6 +69,9 @@ def calculate_age(born):
     return today.year - born.year - offset
 
 def populate_necessary_rows():
+    from maid.constants import MaidLanguageChoices, MaidResponsibilityChoices
+    from maid.models import MaidLanguage, MaidResponsibility
+    from .constants import AUTHORITY_GROUPS
     for language in MaidLanguageChoices.choices:
         MaidLanguage.objects.get_or_create(
             language=language[0]
