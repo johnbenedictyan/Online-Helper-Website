@@ -22,6 +22,7 @@ from .views import (
 from .views import (
     EmployerCreateView,
     EmployerDocCreateView,
+    EmployerPaymentTransactionCreateView,
 )
 
 ## Update Views
@@ -150,6 +151,11 @@ urlpatterns = [
                                         name='joborder_update_route'
                                     ),
                                     path(
+                                        'payment/create',
+                                        EmployerPaymentTransactionCreateView.as_view(),
+                                        name='employer_payment_create_route'
+                                    ),
+                                    path(
                                         '<int:employersubdoc_pk>/employer-url/',
                                         EmployerDocSigSlugUpdateView.as_view(
                                             model_field_name='employer_slug',
@@ -179,6 +185,18 @@ urlpatterns = [
                                                 name='signature_employer_update_route'
                                             ),
                                             path(
+                                                'agent-access/employer-witness/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='employer_witness_signature',
+                                                    form_fields=[
+                                                        'employer_witness_signature',
+                                                        'employer_witness_name',
+                                                        'employer_witness_nric',
+                                                    ],
+                                                ),
+                                                name='signature_employer_witness_update_route'
+                                            ),
+                                            path(
                                                 'agent-access/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='spouse_signature',
@@ -203,12 +221,36 @@ urlpatterns = [
                                                 name='signature_fdw_update_route'
                                             ),
                                             path(
+                                                'agent-access/fdw-witness/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='fdw_witness_signature',
+                                                    form_fields=[
+                                                        'fdw_witness_signature',
+                                                        'fdw_witness_name',
+                                                        'fdw_witness_nric',
+                                                    ],
+                                                ),
+                                                name='signature_fdw_witness_update_route'
+                                            ),
+                                            path(
                                                 'agent-access/agency-staff/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='agency_staff_signature',
                                                     form_fields=['agency_staff_signature'],
                                                 ),
                                                 name='signature_agency_staff_update_route'
+                                            ),
+                                            path(
+                                                'agent-access/agency-staff-witness/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='agency_staff_witness_signature',
+                                                    form_fields=[
+                                                        'agency_staff_witness_signature',
+                                                        'agency_staff_witness_name',
+                                                        'agency_staff_witness_nric',
+                                                    ],
+                                                ),
+                                                name='signature_agency_staff_witness_update_route'
                                             ),
                                         ]),
                                     ),
@@ -486,9 +528,25 @@ urlpatterns = [
                                         'employer_witness_name',
                                         'employer_witness_nric',
                                     ],
-                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
+                                    success_url_route_name='token_signature_employer_spouse_route',
+                                    success_message = 'Thank you.',
                                 ),
                                 name='token_signature_employer_witness_route'
+                            ),
+                            path(
+                                'spouse/',
+                                SignatureUpdateByTokenView.as_view(
+                                    slug_field='employer_slug',
+                                    model_field_name='spouse_signature',
+                                    token_field_name='employer_token',
+                                    form_fields=[
+                                        'spouse_signature',
+                                        'spouse_name',
+                                        'spouse_nric',
+                                    ],
+                                    success_message = 'Thank you.',
+                                ),
+                                name='token_signature_employer_spouse_route'
                             ),
                             path(
                                 'pdf/',
@@ -663,7 +721,7 @@ urlpatterns = [
                                         'fdw_witness_name',
                                         'fdw_witness_nric',
                                     ],
-                                    success_message = 'Thank you, the document submission process is complete. Please contact your agent if you have any further queries.',
+                                    success_message = 'Thank you.',
                                 ),
                                 name='token_signature_fdw_witness_route'
                             ),

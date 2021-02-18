@@ -92,7 +92,7 @@
                     <div class="clickable d-none d-xl-block">
                         <!-- Display for xl screens and above -->
                         <div class="row custom-table-data">
-                            <div class="col">{{ object.employer.employer_name }}</div>
+                            <div class="col">Name:&emsp;{{ object.employer.employer_name }}<br>NRIC:&emsp;{{ object.employer.get_nric_partial }}</div>
                             <div class="col">{{ object.case_ref_no }}</div>
                             <div class="col">{{ object.employer.agency_employee.ea_personnel_number }}<br>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
                             <div class="col">{{ object.fdw.reference_number }}<br>{{ object.fdw.name }}</div>
@@ -117,120 +117,124 @@
                     </div>
                     <div class="clickable d-xl-none">
                         <!-- Display for lg screens and smaller -->
+                        {% with class_col_left="col-6" class_col_right="col-6" %}
                         <div class="row custom-table-data">
-                            <div class="col-6">Employer</div>
-                            <div class="col-6">{{ object.employer.employer_name }} - {{ object.employer.get_nric_partial }}</div>
+                            <div class="{{ class_col_left }}">Employer</div>
+                            <div class="{{ class_col_right }}">Name:&emsp;{{ object.employer.employer_name }}<br>NRIC:&emsp;{{ object.employer.get_nric_partial }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Case No</div>
-                            <div class="col-6">{{ object.case_ref_no }}</div>
+                            <div class="{{ class_col_left }}">Case No</div>
+                            <div class="{{ class_col_right }}">{{ object.case_ref_no }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Staff</div>
-                            <div class="col-6">{{ object.employer.agency_employee.ea_personnel_number }} {{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
+                            <div class="{{ class_col_left }}">Staff</div>
+                            <div class="{{ class_col_right }}">{{ object.employer.agency_employee.ea_personnel_number }} {{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">FDW</div>
-                            <div class="col-6">{{ object.fdw.reference_number }} {{ object.fdw.name }}</div>
+                            <div class="{{ class_col_left }}">FDW</div>
+                            <div class="{{ class_col_right }}">{{ object.fdw.reference_number }} {{ object.fdw.name }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Agreement Date</div>
-                            <div class="col-6">{{ object.agreement_date|date:"d M Y" }}</div>
+                            <div class="{{ class_col_left }}">Agreement Date</div>
+                            <div class="{{ class_col_right }}">{{ object.agreement_date|date:"d M Y" }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Deployment Date</div>
-                            <div class="col-6">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
+                            <div class="{{ class_col_left }}">Deployment Date</div>
+                            <div class="{{ class_col_right }}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Deposit Amount (S$)</div>
-                            <div class="col-6">{{ object.ca_deposit }}</div>
+                            <div class="{{ class_col_left }}">Deposit Amount (S$)</div>
+                            <div class="{{ class_col_right }}">{{ object.ca_deposit }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Balance Amount (S$)</div>
-                            <div class="col-6">{{ object.calc_bal }}</div>
+                            <div class="{{ class_col_left }}">Balance Amount (S$)</div>
+                            <div class="{{ class_col_right }}">{{ object.calc_bal }}</div>
                         </div>
                         <div class="row custom-table-data">
-                            <div class="col-6">Action</div>
-                            <div class="col-6">
+                            <div class="{{ class_col_left }}">Action</div>
+                            <div class="{{ class_col_right }}">
                                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button>
                                 {% include 'employer_documentation/snippet_modal_deploy.html' %}
                                 {% include 'employer_documentation/snippet_modal_archive.html' %}
                             </div>
                         </div>
+                        {% endwith %}
                     </div>
                     <div class="row custom-table-data-hidden custom-table-dataset" hidden="True">
-                        <div class="col-12 col-md-6 col-xl-4">
+                        {% with class_row_wrapper="col-12 col-md-6 col-xl-4" class_col_left="col-10 col-md-9" class_col_right="col-2 col-md-3" %}
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Service Fee Schedule</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_service_fees' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Service Fee Schedule</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_service_fees' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Service Agreement</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Service Agreement</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_service_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Employment Contract</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Employment Contract</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_employment_contract' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Repayment Schedule</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Repayment Schedule</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_repayment_schedule' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Rest Day Agreement</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Rest Day Agreement</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_rest_day_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Handover Checklist</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Handover Checklist</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Transfer Consent</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Transfer Consent</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Work Pass Authorisation</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Work Pass Authorisation</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Security Bond</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Security Bond</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">FDW Work Permit Application</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_fdw_work_permit' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">FDW Work Permit Application</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_fdw_work_permit' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Income Tax Declaration</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Income Tax Declaration</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-4">
+                        <div class="{{ class_row_wrapper }}">
                             <div class="row">
-                                <div class="col-8 col-md-9">Safety Agreement</div>
-                                <div class="col-4 col-md-3"><a href="{% url 'pdf_archive_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
+                                <div class="{{ class_col_left }}">Safety Agreement</div>
+                                <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
+                        {% endwith %}
                     </div>
                 </div>
             {% endfor %}
