@@ -18,6 +18,7 @@ from .models import (
     EmployerDocSig,
     JobOrder,
     PdfArchive,
+    EmployerPaymentTransaction,
 )
 from .forms import (
     EmployerForm,
@@ -26,6 +27,7 @@ from .forms import (
     EmployerDocMaidStatusForm,
     EmployerDocMaidDeploymentForm,
     JobOrderForm,
+    EmployerPaymentTransactionForm,
     SignatureForm,
     VerifyUserTokenForm,
 )
@@ -373,6 +375,32 @@ class EmployerDocCreateView(
             'employer_pk': self.object.employer.pk,
             'employerdoc_pk': self.object.pk,
         })
+
+class EmployerPaymentTransactionCreateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    CreateView
+):
+    model = EmployerPaymentTransaction
+    form_class = EmployerPaymentTransactionForm
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('sales_list_route')
+
+    def get_object(self, *args, **kwargs):
+        return EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
 # Update Views
 class EmployerUpdateView(

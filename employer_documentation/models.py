@@ -905,3 +905,31 @@ class PdfArchive(models.Model):
         blank=True,
         null=True,
     )
+
+class EmployerPaymentTransaction(models.Model):
+    TRANSCATION_CHOICES = (
+        ('SUB', _('Repayment')),
+        ('ADD', _('New charge')),
+    )
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_repayment_ed'
+    )
+    amount = models.DecimalField(
+        verbose_name=_("Amount"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+    )
+    transaction_type = models.CharField(
+        verbose_name=_("Type of transaction"),
+        max_length=3,
+        blank=False,
+        choices=TRANSCATION_CHOICES,
+        default=TRANSCATION_CHOICES[0][0]
+    )
+    transaction_date = models.DateField()

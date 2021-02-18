@@ -22,6 +22,7 @@ from .views import (
 from .views import (
     EmployerCreateView,
     EmployerDocCreateView,
+    EmployerPaymentTransactionCreateView,
 )
 
 ## Update Views
@@ -148,6 +149,11 @@ urlpatterns = [
                                         'job-order/<int:employersubdoc_pk>/update/',
                                         JobOrderUpdateView.as_view(),
                                         name='joborder_update_route'
+                                    ),
+                                    path(
+                                        'payment/create',
+                                        EmployerPaymentTransactionCreateView.as_view(),
+                                        name='employer_payment_create_route'
                                     ),
                                     path(
                                         '<int:employersubdoc_pk>/employer-url/',
