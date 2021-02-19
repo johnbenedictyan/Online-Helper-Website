@@ -33,6 +33,7 @@ from .views import (
     EmployerDocMaidStatusUpdateView,
     EmployerDocMaidDeploymentUpdateView,
     JobOrderUpdateView,
+    EmployerPaymentTransactionUpdateView,
 )
 
 ## Delete Views
@@ -154,6 +155,11 @@ urlpatterns = [
                                         'payment/create',
                                         EmployerPaymentTransactionCreateView.as_view(),
                                         name='employer_payment_create_route'
+                                    ),
+                                    path(
+                                        'payment/<int:employersubdoc_pk>/update',
+                                        EmployerPaymentTransactionUpdateView.as_view(),
+                                        name='employer_payment_update_route'
                                     ),
                                     path(
                                         '<int:employersubdoc_pk>/employer-url/',

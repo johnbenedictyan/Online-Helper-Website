@@ -527,6 +527,24 @@ class JobOrderUpdateView(
             'employerdoc_pk': self.object.employer_doc.pk,
         })
 
+class EmployerPaymentTransactionUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerPaymentTransaction
+    form_class = EmployerPaymentTransactionForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('sales_list_route')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+
 # Delete Views
 class EmployerDeleteView(
     CheckUserIsAgencyOwnerMixin,
