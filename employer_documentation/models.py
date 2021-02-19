@@ -605,14 +605,27 @@ class EmployerDoc(models.Model):
 
     def calc_bal(self):
         # Method to calculate outstanding balance owed by employer
-        return (
+        balance = (
             self.calc_admin_cost()
             + self.fdw.financial_details.agency_fee_amount
             + self.fdw.financial_details.personal_loan_amount
             - self.ca_deposit
         )
 
+        subsequent_transactions = EmployerPaymentTransaction.objects.filter(
+            employer_doc=self
+        )
+
+        for transaction in subsequent_transactions:
+            if transaction.transaction_type == 'ADD':
+                balance += transaction.amount
+            elif transaction.transaction_type == 'SUB':
+                balance -= transaction.amount
+        
+        return balance
+
     def save(self, *args, **kwargs):
+        # Auto-increment document version number on every save
         self.version += 1
         super().save(*args, **kwargs)
 
