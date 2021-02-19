@@ -294,6 +294,32 @@ class EmployerDocListView(
                 )
             )
 
+class EmployerPaymentTransactionListView(
+    CheckAgencyEmployeePermissionsMixin,
+    ListView
+):
+    model = EmployerPaymentTransaction
+    pk_url_kwarg = 'employerdoc_pk'
+    # ordering = ['-agreement_date']
+
+    def get_object(self, *args, **kwargs):
+        return EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_queryset(self):
+        return super().get_queryset().filter(employer_doc=self.kwargs.get(
+            self.pk_url_kwarg))
+
+    # def get(self, request, *args, **kwargs):
+    #     if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
+    #         return super().get(request, *args, **kwargs)
+    #     else:
+    #         return HttpResponseRedirect(
+    #             reverse(
+    #                 'employerdoc_create_route',
+    #                 kwargs={'employer_pk': self.object.pk}
+    #             )
+    #         )
+
 # Detail Views
 class EmployerDetailView(
     CheckAgencyEmployeePermissionsMixin,

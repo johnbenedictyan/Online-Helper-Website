@@ -1,0 +1,68 @@
+{% extends 'employer_documentation/base-ed-template.html' %}
+
+{% block sidenav_extra %}
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <p class="m-1 pl-2">Employer Profile</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <p class="m-1 pl-2">Edit Employer</p>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <p class="m-1 pl-2">Documents Summary</p>
+        </a>
+    </div>
+</div>
+{% endblock sidenav_extra %}
+
+{% block ed_section %}
+    <h2>Employer Docs</h2>
+    {% if object_list.count %}
+        <h4>{{ object_list.0.employer_doc.employer.employer_name }}</h4>
+        <h4>{{ object_list.0.employer_doc.employer.employer_mobile_number }}</h4>
+    {% endif %}
+
+    <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
+        <a href="{% url 'employer_payment_create_route' employer_pk=request.resolver_match.kwargs.employer_pk employerdoc_pk=request.resolver_match.kwargs.employerdoc_pk %}" class="btn btn-secondary btn-sm">Add transaction</a>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if object_list.count %}
+            {% for object in object_list %}
+            <tr>
+                <td>{{ object.transaction_date|date:"d M Y" }}</td>
+                <td>{% if object.transaction_type == 'SUB' %}&ndash; {% endif %}{{ object.amount }}</td>
+                <td>{{ object.amount }}</td>
+                <td>{{ object.amount }}</td>
+                <td>{{ object.amount }}</td>
+                <td>{{ object.amount }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6">No results found. Click <a href="{% url 'employer_payment_create_route' employer_pk=request.resolver_match.kwargs.employer_pk employerdoc_pk=request.resolver_match.kwargs.employerdoc_pk %}">here</a> to add transaction.</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock ed_section %}
