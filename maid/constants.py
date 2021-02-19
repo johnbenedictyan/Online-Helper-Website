@@ -273,15 +273,17 @@ class MaidCountryOfOrigin(models.TextChoices):
     OTHERS      = 'OTH', _('Others')
 
 class MaidLanguageChoices(models.TextChoices):
-    ENGLISH    = 'ENG', _('English')
-    CHINESE    = 'CHI', _('Mandarin Chinese')
-    HINDI      = 'HIN', _('Hindi')
-    BENGALI    = 'BEN', _('Bengali')
-    TAMIL      = 'TAM', _('Tamil')
-    KHMER      = 'KHM', _('Khmer')
-    INDONESIAN = 'IND', _('Bahasa Indonesia')
-    TAGALOG    = 'TAG', _('Tagalog')
-    SINHALA    = 'SIN', _('Sinhala')
+    ENGLISH     = 'ENG', _('English')
+    BENGALI     = 'BEN', _('Bengali')
+    BURMESE     = 'BUR', _('Burmese')
+    CHINESE     = 'CHI', _('Mandarin Chinese')
+    HINDI       = 'HIN', _('Hindi')
+    INDONESIAN  = 'IND', _('Bahasa Indonesia')
+    KHMER       = 'KHM', _('Khmer')
+    SINHALA     = 'SIN', _('Sinhala')
+    TAGALOG     = 'TAG', _('Tagalog')
+    TAMIL       = 'TAM', _('Tamil')
+    THAI        = 'THA', _('Thai')
 
 class MaidReligionChoices(models.TextChoices):
         BUDDHIST = 'B', _('Buddhist')
