@@ -927,7 +927,7 @@ class EmployerPaymentTransaction(models.Model):
         ('SUB', _('Repayment')),
         ('ADD', _('New charge')),
     )
-    employer_doc = models.OneToOneField(
+    employer_doc = models.ForeignKey(
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_repayment_ed'
