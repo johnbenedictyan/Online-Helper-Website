@@ -300,7 +300,7 @@ class EmployerPaymentTransactionListView(
 ):
     model = EmployerPaymentTransaction
     pk_url_kwarg = 'employerdoc_pk'
-    # ordering = ['-agreement_date']
+    ordering = ['transaction_date']
 
     def get_object(self, *args, **kwargs):
         return EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
