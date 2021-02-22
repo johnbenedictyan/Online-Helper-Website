@@ -35,6 +35,10 @@ from shortlist.urls import urlpatterns as shortlist_urls
 from website.urls import urlpatterns as website_urls
 from enquiry.urls import urlpatterns as enquiry_urls
 
+USE_MAID_DB_PLANTER = os.environ.get('USE_MAID_DB_PLANTER') == 'TRUE'
+if USE_MAID_DB_PLANTER:
+    from .helper_functions import maid_seed_data
+    maid_seed_data()
 
 # Django OTP
 ''' Use this to toggle 2FA on/off '''
