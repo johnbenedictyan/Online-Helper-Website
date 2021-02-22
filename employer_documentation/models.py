@@ -236,6 +236,7 @@ class EmployerDoc(models.Model):
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
+        editable=False,
         choices=TrueFalseChoices(
             'Yes, spouse required',
             'No, spouse not required'
@@ -607,6 +608,9 @@ class EmployerDoc(models.Model):
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         self.version += 1
+
+        # Spouse is required if monthly_combined_income < S$3,000 per month
+        self.spouse_required = True if self.monthly_combined_income<3 else False
         super().save(*args, **kwargs)
 
     def calc_admin_cost(self):
