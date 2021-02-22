@@ -268,18 +268,25 @@ class EmployerDocForm(forms.ModelForm):
                     'case_ref_no',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'fdw',
                     css_class='form-group col-md-6'
                 ),
-                Field(
-                    'agreement_date',
-                    type='text',
-                    onfocus="(this.type='date')",
-                    placeholder='Agreement date'
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'agreement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Agreement date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'monthly_combined_income',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),

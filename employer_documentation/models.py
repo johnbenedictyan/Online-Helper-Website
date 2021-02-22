@@ -215,6 +215,25 @@ class EmployerDoc(models.Model):
         verbose_name=_("Foreign Domestic Worker (FDW)"),
         on_delete=models.RESTRICT
     )
+    monthly_combined_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Monthly combined income of employer and spouse"),
+        choices=[
+            (0, "Below $2,000"),
+            (1, "$2,000 to $2,499"),
+            (2, "$2,500 to $2,999"),
+            (3, "$3,000 to $3,499"),
+            (4, "$3,500 to $3,999"),
+            (5, "$4,000 to $4,999"),
+            (6, "$5,000 to $5,999"),
+            (7, "$6,000 to $7,999"),
+            (8, "$8,000 to $9,999"),
+            (9, "$10,000 to $12,499"),
+            (10, "$12,500 to $14,999"),
+            (11, "$15,000 to $19,999"),
+            (12, "$20,000 to $24,999"),
+            (13, "$25,000 and above"),
+        ]
+    )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
         choices=TrueFalseChoices(
