@@ -63,7 +63,7 @@
 <div class="custom-table">
     <div class="d-none d-xl-block">
         <!-- Display for xl screens and above -->
-        <div class="row custom-table-header">
+        <div class="row mx-0 custom-table-header">
             <div class="col">Employer</div>
             <div class="col">Case No</div>
             <div class="col">Staff</div>
@@ -86,13 +86,13 @@
             <div class="col">Action</div>
         </div>
     </div>
-    <div class="row custom-table-body">
+    <div class="row mx-0 custom-table-body">
         {% if object_list.count %}
             {% for object in object_list %}
-                <div class="col-12 custom-table-dataset">
+                <div class="col-12 px-0 custom-table-dataset">
                     <div class="clickable d-none d-xl-block">
                         <!-- Display for xl screens and above -->
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="col">Name:&emsp;{{ object.employer.employer_name }}<br>NRIC:&emsp;{{ object.employer.get_nric_partial }}</div>
                             <div class="col"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
                             <div class="col">{{ object.employer.agency_employee.ea_personnel_number }}<br>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
@@ -120,39 +120,39 @@
                     <div class="clickable d-xl-none">
                         <!-- Display for lg screens and smaller -->
                         {% with class_col_left="col-6" class_col_right="col-6" %}
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Employer</div>
                             <div class="{{ class_col_right }}">Name:&emsp;{{ object.employer.employer_name }}<br>NRIC:&emsp;{{ object.employer.get_nric_partial }}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Case No</div>
                             <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Staff</div>
                             <div class="{{ class_col_right }}">{{ object.employer.agency_employee.ea_personnel_number }} {{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">FDW</div>
                             <div class="{{ class_col_right }}">{{ object.fdw.reference_number }} {{ object.fdw.name }}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Agreement Date</div>
                             <div class="{{ class_col_right }}">{{ object.agreement_date|date:"d M Y" }}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Deployment Date</div>
                             <div class="{{ class_col_right }}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Deposit Amount (S$)</div>
                             <div class="{{ class_col_right }}">{{ object.ca_deposit }}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Balance Amount (S$)</div>
                             <div class="{{ class_col_right }}">{{ object.calc_bal }}</div>
                         </div>
-                        <div class="row custom-table-data">
+                        <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Action</div>
                             <div class="{{ class_col_right }}">
                                 <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
@@ -163,7 +163,7 @@
                         </div>
                         {% endwith %}
                     </div>
-                    <div class="row custom-table-data-hidden custom-table-dataset" hidden="True">
+                    <div class="row mx-0 custom-table-data-hidden custom-table-dataset" hidden="True">
                         {% with class_row_wrapper="col-12 col-md-6 col-xl-4" class_col_left="col-10 col-md-9" class_col_right="col-2 col-md-3" %}
                         <div class="{{ class_row_wrapper }}">
                             <div class="row">
