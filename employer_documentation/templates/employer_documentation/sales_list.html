@@ -69,8 +69,8 @@
             <div class="col">Staff</div>
             <div class="col">FDW</div>
             <div class="col-3">
-                <div class="row">
-                    <div class="col-12 text-center">Date</div>
+                <div class="row text-center">
+                    <div class="col-12">Date</div>
                     <div class="col-6">Agreement</div>
                     <div class="col-6">Deployment</div>
                 </div>
@@ -97,13 +97,13 @@
                             <div class="col">{{ object.employer.agency_employee.ea_personnel_number }}<br>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
                             <div class="col">{{ object.fdw.reference_number }}<br>{{ object.fdw.name }}</div>
                             <div class="col-3">
-                                <div class="row">
+                                <div class="row text-center">
                                     <div class="col">{{ object.agreement_date|date:"d M Y" }}</div>
                                     <div class="col">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
                                 </div>
                             </div>
                             <div class="col-2">
-                                <div class="row">
+                                <div class="row text-right">
                                     <div class="col">{{ object.ca_deposit }}</div>
                                     <div class="col">{{ object.calc_bal }}</div>
                                 </div>
