@@ -111,7 +111,7 @@
         <td class="border--bottom">In the presence of:</td>
     </tr>
     <tr>
-        <td class="border--bottom border--right">NRIC/ Passport No, Name, Designation & Signature
+        <td class="border--bottom border--right" style="text-align: left;">NRIC/ Passport No, Name, Designation & Signature
             <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
             <br>{{ object.employer.employer_name }}
             <br>{{ object.employer.get_nric_full }}
@@ -120,13 +120,11 @@
             <p style="margin-left:160px;">Name of Company</p>
             (to be filled up if non-domestic workers are employed)
         </td>
-        <td class="border--bottom">Name & Address of Witness <span style="float:right;padding-right:40px;">Signature</span>
-            <img class="signature__img" src="">
-            <br>{Witness name}
-            <br>{Witness NRIC (last 4 characters)}
-            <br>{Witness address line 1}
-            <br>{Witness address line 2}
-            <br>Singapore {+ Witness post code}
+        <td class="border--bottom" style="text-align: left;">Name & Address of Witness <span style="float:right;padding-left:40px;">Signature</span>
+            <img class="signature__img" src="{{ object.rn_signatures_ed.employer_witness_signature }}">
+            <br>{{ object.rn_signatures_ed.employer_witness_name }}
+            <br>{{ object.rn_signatures_ed.employer_witness_address_1 }}, {{ object.rn_signatures_ed.employer_witness_address_2 }},
+            <br>Singapore {{ object.rn_signatures_ed.employer_witness_post_code }}
             <br>
         </td>
     </tr>
@@ -150,13 +148,13 @@
 <p>** For sole proprietorships or partnerships, it has to be signed by the sole proprietor or partner. For private limited companies, it has to be signed by a director, registered with ACRA. If the director wishes to appoint his employee to sign the
     form, he must provide a written authorisation to MOM.</p>
 <p>*** To provide another worker’s particulars, please provide the details on a separate A4 size paper and attach it together with this Security Bond Form.</p>
-<div style="display:flex;">
+<div style="display:flex; max-width: 48px;">
         <table class="border--all" width="10%">
             <tr>
                 <td class="main-safety-ag--bg-black main-safety-ag--text-white"><b>&nbsp;WPCM</b></td>
                 <td><b>&nbsp;013</b></td>
             </tr>
         </table>
-    <div style="margin:5px 0 0 200px;" class="text--xsmall">The information is updated on 31 July 2018</div>
+        <div style="margin:5px 0 0 200px;" class="text--xsmall">The information is updated on 31 July 2018</div>
 </div>
 {% endblock pdf_content %}
