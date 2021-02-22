@@ -109,7 +109,8 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i></button> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i></button>
                                 {% include 'employer_documentation/snippet_modal_deploy.html' %}
                                 {% include 'employer_documentation/snippet_modal_archive.html' %}
                             </div>
@@ -153,7 +154,8 @@
                         <div class="row custom-table-data">
                             <div class="{{ class_col_left }}">Action</div>
                             <div class="{{ class_col_right }}">
-                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i></button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i></button>
                                 {% include 'employer_documentation/snippet_modal_deploy.html' %}
                                 {% include 'employer_documentation/snippet_modal_archive.html' %}
                             </div>
@@ -272,7 +274,7 @@
                     <td><a href="">{{ object.ca_deposit }}</a></td>
                     <td><a href="">{{ object.calc_bal }}</a></td>
                     <td><a href="{% url 'pdf_archive_detail' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-archive"></i> View</a></td>
-                    <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i> Undo</button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i> Save</button></td>
+                    <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i></button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i></button></td>
                     {% include 'employer_documentation/snippet_modal_deploy.html' %}
                     {% include 'employer_documentation/snippet_modal_archive.html' %}
                 </tr>
