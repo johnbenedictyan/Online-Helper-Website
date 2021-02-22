@@ -303,11 +303,19 @@ class EmployerPaymentTransactionListView(
     ordering = ['transaction_date']
 
     def get_object(self, *args, **kwargs):
-        return EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+        self.object = EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+        return self.object
 
     def get_queryset(self):
         return super().get_queryset().filter(employer_doc=self.kwargs.get(
             self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.object
+        return context
 
     # def get(self, request, *args, **kwargs):
     #     if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
