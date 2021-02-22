@@ -5,6 +5,7 @@ from datetime import date
 
 # Imports from django
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
 
 # Imports from foreign installed apps
@@ -67,6 +68,25 @@ def calculate_age(born):
     offset = ((today.month, today.day) < (born.month, born.day))
     return today.year - born.year - offset
 
+def populate_necessary_rows():
+    from maid.constants import MaidLanguageChoices, MaidResponsibilityChoices
+    from maid.models import MaidLanguage, MaidResponsibility
+    from .constants import AUTHORITY_GROUPS
+    for language in MaidLanguageChoices.choices:
+        MaidLanguage.objects.get_or_create(
+            language=language[0]
+        )
+
+    for responsibility in MaidResponsibilityChoices.choices:
+        MaidResponsibility.objects.get_or_create(
+            name=responsibility[0]
+        )
+
+    for AG in AUTHORITY_GROUPS:
+        Group.objects.get_or_create(
+            name=AG
+        )
+    
 def maid_seed_data():
     from agency.models import Agency
 

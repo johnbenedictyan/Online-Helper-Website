@@ -1,4 +1,4 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
 
 {% block title %}Authorisation Form for Foreign Domestic Worker Work Pass Transactions{% endblock %}
@@ -6,13 +6,13 @@
 {% block pdf_content %}
 <div class="header-workpass--bd-bluegrey"></div>
     <div>
-        <span class="header__mom-logo1"><img src="{% static 'images/pdf/logo1.png' %}"></span>
-        <span class="header__mom-logo2"><img src="{% static 'images/pdf/logo2.png' %}"></span>
+        <span class="header__mom-logo1"><img style="max-width: 100px; height: auto; margin-top: 16px;" src="{% static 'images/pdf/logo1.png' %}"></span>
+        <span class="header__mom-logo2"><img style="max-width: 100px; height: auto; margin-top: 16px;" src="{% static 'images/pdf/logo2.png' %}"></span>
     </div>
     <div class="header-workpass--bd-bluegrey"></div>
     <br>
-    <div class="header-work-pass--bd-orange">
-        <h1>
+    <div class="header-work-pass--bd-bluegrey">
+        <h1 style="margin-top: 90px;">
             Authorisation Form for Foreign Domestic Worker Work Pass Transactions
         </h1>
         <p>
@@ -23,7 +23,7 @@
             *The softcopy of this form contains macros and can only be used with MS Word 2007 version or later. Please print out the PDF version and fill it in hardcopy if you do not have the required software.
         </p>
     </div>
-    <table class="border--all">
+    <table class="border--all" style="margin-top: 16px;">
         <tr>
             <td class="main-work-pass--bg-bluegrey text-bold--600" colspan="5">Declaration by Employer</td>
         </tr>
@@ -41,7 +41,7 @@
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Signature and Date</td>
-            <td colspan="3">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+            <td colspan="3">{{ object.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
         </tr>
         <tr>
             <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600">S/N</td>
@@ -51,8 +51,8 @@
         </tr>
         <tr>
             <td class="text-align-center">1</td>
-            <td colspan="2">{{ object.fdw }}</td>
-            <td>{{ object.fdw }}</td>
+            <td colspan="2">{{ object.fdw.name }}</td>
+            <td>{{ object.fdw.passport_number }}</td>
             <td></td>
         </tr>
         <tr>

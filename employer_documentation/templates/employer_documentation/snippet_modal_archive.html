@@ -1,0 +1,19 @@
+<!-- Modal -->
+<div class="modal fade" id="archive-{{ object.rn_pdfarchive_ed.pk }}" tabindex="-1" aria-labelledby="archiveModalLabel-{{ object.rn_pdfarchive_ed.pk }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="archiveModalLabel-{{ object.rn_pdfarchive_ed.pk }}">Confirm Archive</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                    <p>Archive employer documents, case ref {{ object.case_ref_no }}?</p>
+                    <p>This will generate PDF copy of the signed documents and save them for archiving purposes.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{% url 'pdf_archive_save' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" class="btn btn-primary">Archive</a>
+            </div>
+        </div>
+    </div>
+</div>

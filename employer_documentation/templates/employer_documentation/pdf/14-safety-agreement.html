@@ -1,19 +1,15 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
 
 {% block title %}Safety Agreement{% endblock %}
 
 {% block pdf_content %}
-<div class="header-workpass--bd-bluegrey">
-</div>
 <div>
-    <img class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}" />
-    <img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}" />
-</div>
-<div class="header-workpass--bd-bluegrey">
+    <img class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}"/>
+    <img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"/>
 </div>
 <br>
-<div class="header-safety-ag--bg-bluegrey">
+<div class="header-safety-ag--bg-bluegrey" style="margin-top: 48px;">
     <br>
     <h1> &nbsp; Safety Agreement Between Foreign Domestic</h1>
     <h1> &nbsp; Worker And Employer</h1>
@@ -175,7 +171,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -203,7 +199,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
 
@@ -217,7 +213,7 @@
         </tr>
         <tr>
             <td width="24%">Name</td>
-            <td colspan="2">{{ object.fdw }}</td>
+            <td colspan="2">{{ object.fdw.name }}</td>
         </tr>
         <tr>
             <td>WP No.</td>
@@ -276,7 +272,7 @@
             <p class="text-align-center">Signature / Date
             <br>Tanda Tangan / Tanggal</p>
         </td>
-        <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
+        <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -296,7 +292,7 @@
             <td width="24%">
                 <p class="text-align-center">Signature / Date</p>
             </td>
-            <td colspan="2">{{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>

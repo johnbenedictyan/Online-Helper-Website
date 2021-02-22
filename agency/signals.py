@@ -34,10 +34,14 @@ def agency_completed(agency):
 @receiver(post_save, sender=Agency)
 def agency_created(sender, instance, created, **kwargs):
     if created == True:
-        pa = PotentialAgency.objects.get(
-            license_number = instance.license_number
-        )
-        pa.delete()
+        try:
+            pa = PotentialAgency.objects.get(
+                license_number = instance.license_number
+            )
+        except PotentialAgency.DoesNotExist as e:
+            print(e)
+        else:
+            pa.delete()
 
 @receiver(post_save, sender=AgencyBranch)
 def agency_location_completed(sender, instance, created, **kwargs):

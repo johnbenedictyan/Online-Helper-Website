@@ -19,6 +19,8 @@ from .models import (
     EmployerDocMaidStatus,
     EmployerDocSig,
     JobOrder,
+    PdfArchive,
+    EmployerPaymentTransaction,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -26,7 +28,6 @@ from onlinemaid.constants import (
     AG_MANAGERS,
     AG_SALES,
 )
-from onlinemaid.helper_functions import decrypt_string
 from accounts.models import User
 
 
@@ -129,6 +130,8 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 isinstance(self.object, EmployerDocMaidStatus)
                 or isinstance(self.object, EmployerDocSig)
                 or isinstance(self.object, JobOrder)
+                or isinstance(self.object, PdfArchive)
+                or isinstance(self.object, EmployerPaymentTransaction)
             ):
                 self.employer_subdoc_obj = self.object
 
@@ -264,29 +267,9 @@ class CheckSignatureSessionTokenMixin(UserPassesTestMixin):
 class PdfHtmlViewMixin:
     DEFAULT_DOWNLOAD_FILENAME = "document.pdf"
     content_disposition = None
+    use_repayment_table = False
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-
-        if isinstance(self.object, EmployerDoc):
-            # If FDW work commencement date is empty, then redirect to update
-            if not self.object.rn_maidstatus_ed.fdw_work_commencement_date:
-                return HttpResponseRedirect(
-                    reverse('employerdoc_status_update_route', kwargs={
-                        'employer_pk': self.object.employer.pk,
-                        'employerdoc_pk': self.object.pk,
-                        'employersubdoc_pk': self.object.rn_maidstatus_ed.pk,
-                    }))
-            # Get context data
-            context = self.get_context_data(object=self.object)
-        
-        elif isinstance(self.object, EmployerDocSig):
-            # Get context data
-            context = self.get_context_data(object=self.object.employer_doc)
-        else:
-            return HttpResponseRedirect(
-                reverse('home'))
-
+    def generate_pdf_response(self, request, context):
         # Render PDF
         html_template = render_to_string(self.template_name, context)
         pdf_file = HTML(
@@ -306,166 +289,113 @@ class PdfHtmlViewMixin:
             )
         return response
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if isinstance(self.object, EmployerDoc):
-            try:
-                context['object'].employer.employer_nric = decrypt_string(
-                    self.object.employer.employer_nric,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer.nonce,
-                    self.object.employer.tag
-                )
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
-        elif isinstance(self.object, EmployerDocSig):
-            try:
-                context['object'].employer_doc.employer.employer_nric = decrypt_string(
-                    self.object.employer_doc.employer.employer_nric,
-                    settings.ENCRYPTION_KEY,
-                    self.object.employer_doc.employer.nonce,
-                    self.object.employer_doc.employer.tag
-                )
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
-        return context
+    def generate_pdf_file(self, request, context, template_name):
+        # Render PDF
+        html_template = render_to_string(template_name, context)
+        return HTML(
+            string=html_template,
+            base_url=request.build_absolute_uri()
+            ).write_pdf(
+                # target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
+                # Load separate CSS stylesheet from static folder
+                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
+            )
 
-class RepaymentScheduleMixin:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['repayment_table'] = {}
+    def calc_repayment_schedule(self):
+        repayment_table = {}
         
         work_commencement_date = (
             self.object.rn_maidstatus_ed.fdw_work_commencement_date
-        )
+        ) if self.object.rn_maidstatus_ed.fdw_work_commencement_date else None
 
-        payment_month = work_commencement_date.month
-        payment_year = work_commencement_date.year
-        placement_fee = (
-            self.object.fdw.agency_fee_amount +
-            self.object.fdw.personal_loan_amount
-        )
-        placement_fee_per_month = round(placement_fee/6, 0)
-        # work_days_in_month = 30 - self.object.fdw.days_off
-        # off_day_compensation = round(
-        #     self.object.fdw.salary/work_days_in_month, 0
-        # )
-        work_days_in_month = 26
-        off_day_compensation = round(
-            self.object.fdw.salary*self.object.fdw.days_off/work_days_in_month, 0
-        )
-        salary_per_month = self.object.fdw.salary + off_day_compensation
-        
-        if work_commencement_date and work_commencement_date.day==1:
-            # If work start date is 1st of month, then payment does not need
-            # to be pro-rated.
-            for i in range(1,25):
-                month_current = (
-                    12 if payment_month%12==0 else payment_month%12
-                )
-                loan_repaid = min(
-                    placement_fee,
-                    placement_fee_per_month,
-                    salary_per_month
-                )
-
-                context['repayment_table'][i] = {
-                    'salary_date': '{day}/{month}/{year}'.format(
-                        day = calendar.monthrange(
-                            payment_year, month_current)[1],
-                        month = month_current,
-                        year = payment_year,
-                    ),
-                    'basic_salary': self.object.fdw.salary,
-                    'off_day_compensation': off_day_compensation,
-                    'salary_per_month': salary_per_month,
-                    'salary_received': salary_per_month-loan_repaid,
-                    'loan_repaid': loan_repaid
-                }
-                placement_fee = (
-                    placement_fee-loan_repaid
-                    if placement_fee-loan_repaid>=0
-                    else 0
-                )
-                payment_month += 1
-                if payment_month%12 == 1:
-                    payment_year += 1
-
-        if work_commencement_date and not work_commencement_date.day==1:
-            # Pro-rated payments
-            month_current = (
-                12 if payment_month%12==0 else payment_month%12
-            )
-            first_month_days = (
-                calendar.monthrange(
-                    payment_year, month_current)[1]
-                - self.object.rn_maidstatus_ed
-                .fdw_work_commencement_date.day + 1
-            )
-            first_month_salary = round(salary_per_month*first_month_days/
-                calendar.monthrange(payment_year, month_current)[1], 0)
-            loan_repaid = min(
-                placement_fee,
-                placement_fee_per_month,
-                round(salary_per_month*first_month_days/calendar.monthrange(
-                    payment_year, month_current)[1], 0)
-            )
-
-            # 1st month pro-rated
-            context['repayment_table'][1] = {
-                'salary_date': '{day}/{month}/{year}'.format(
-                    day = calendar.monthrange(
-                        payment_year, month_current)[1],
-                    month = month_current,
-                    year = payment_year,
-                    ),
-                'basic_salary': round(
-                    self.object.fdw.salary*first_month_days/
-                    calendar.monthrange(
-                        payment_year, month_current)[1], 0
-                ),
-                'off_day_compensation': round(
-                    off_day_compensation*first_month_days/
-                    calendar.monthrange(
-                        payment_year, month_current)[1], 0
-                ),
-                'salary_per_month': first_month_salary,
-                'salary_received': first_month_salary - loan_repaid,
-                'loan_repaid': loan_repaid
-            }
+        if work_commencement_date:
+            payment_month = work_commencement_date.month
+            payment_year = work_commencement_date.year
             placement_fee = (
-                placement_fee-loan_repaid
-                if placement_fee-loan_repaid>=0
-                else 0
+                self.object.fdw.financial_details.agency_fee_amount +
+                self.object.fdw.financial_details.personal_loan_amount
             )
-            payment_month += 1
-            if payment_month%12 == 1:
-                payment_year += 1
+            placement_fee_per_month = round(placement_fee/6, 0)
+            work_days_in_month = 26
+            off_day_compensation = round(
+                self.object.fdw.financial_details.salary*self.object.fdw.days_off/work_days_in_month, 0
+            )
+            salary_per_month = self.object.fdw.financial_details.salary + off_day_compensation
+            
+            # If work start date is 1st of month, then payment does not need to be pro-rated
+            if work_commencement_date and work_commencement_date.day==1:
+                for i in range(1,25):
+                    month_current = (
+                        12 if payment_month%12==0 else payment_month%12
+                    )
+                    loan_repaid = min(
+                        placement_fee,
+                        placement_fee_per_month,
+                        salary_per_month
+                    )
 
-            # 2nd-23rd months of full month payments
-            for i in range(2,25):
+                    repayment_table[i] = {
+                        'salary_date': '{day}/{month}/{year}'.format(
+                            day = calendar.monthrange(
+                                payment_year, month_current)[1],
+                            month = month_current,
+                            year = payment_year,
+                        ),
+                        'basic_salary': self.object.fdw.financial_details.salary,
+                        'off_day_compensation': off_day_compensation,
+                        'salary_per_month': salary_per_month,
+                        'salary_received': salary_per_month-loan_repaid,
+                        'loan_repaid': loan_repaid
+                    }
+                    placement_fee = (
+                        placement_fee-loan_repaid
+                        if placement_fee-loan_repaid>=0
+                        else 0
+                    )
+                    payment_month += 1
+                    if payment_month%12 == 1:
+                        payment_year += 1
+
+            # Pro-rated payments
+            if work_commencement_date and not work_commencement_date.day==1:
                 month_current = (
                     12 if payment_month%12==0 else payment_month%12
                 )
+                first_month_days = (
+                    calendar.monthrange(
+                        payment_year,
+                        month_current)[1] - work_commencement_date.day + 1
+                )
+                first_month_salary = round(salary_per_month*first_month_days/
+                    calendar.monthrange(payment_year, month_current)[1], 0)
                 loan_repaid = min(
                     placement_fee,
                     placement_fee_per_month,
-                    salary_per_month
+                    round(salary_per_month*first_month_days/calendar.monthrange(
+                        payment_year, month_current)[1], 0)
                 )
 
-                context['repayment_table'][i] = {
+                # 1st month pro-rated
+                repayment_table[1] = {
                     'salary_date': '{day}/{month}/{year}'.format(
                         day = calendar.monthrange(
                             payment_year, month_current)[1],
                         month = month_current,
                         year = payment_year,
+                        ),
+                    'basic_salary': round(
+                        self.object.fdw.financial_details.salary*first_month_days/
+                        calendar.monthrange(
+                            payment_year, month_current)[1], 0
                     ),
-                    'basic_salary': self.object.fdw.salary,
-                    'off_day_compensation': off_day_compensation,
-                    'salary_per_month': salary_per_month,
-                    'salary_received': salary_per_month-loan_repaid,
+                    'off_day_compensation': round(
+                        off_day_compensation*first_month_days/
+                        calendar.monthrange(
+                            payment_year, month_current)[1], 0
+                    ),
+                    'salary_per_month': first_month_salary,
+                    'salary_received': first_month_salary - loan_repaid,
                     'loan_repaid': loan_repaid
                 }
                 placement_fee = (
@@ -477,39 +407,146 @@ class RepaymentScheduleMixin:
                 if payment_month%12 == 1:
                     payment_year += 1
 
-            # 25th month pro-rated
-            final_payment_day = min(
-                self.object.rn_maidstatus_ed
-                .fdw_work_commencement_date.day-1 ,
-                calendar.monthrange(payment_year, month_current)[1]
-            )
-            basic_salary = round(
-                self.object.fdw.salary*final_payment_day/calendar.monthrange(
-                    payment_year, month_current)[1]
-            )
-            off_day_compensation = round(
-                off_day_compensation*final_payment_day/calendar.monthrange(
-                    payment_year, month_current)[1]
-            )
-            month_current = 12 if payment_month%12==0 else payment_month%12
-            loan_repaid = min(
-                placement_fee,
-                placement_fee_per_month,
-                salary_per_month
-            )
-            context['repayment_table'][25] = {
-                'salary_date': '{day}/{month}/{year}'.format(
-                    day = final_payment_day,
-                    month = month_current,
-                    year = payment_year,
-                ),
-                'basic_salary': basic_salary,
-                'off_day_compensation': off_day_compensation,
-                'salary_per_month': basic_salary + off_day_compensation,
-                'salary_received': (
-                    basic_salary + off_day_compensation - loan_repaid
-                ),
-                'loan_repaid': loan_repaid
-            }
+                # 2nd-23rd months of full month payments
+                for i in range(2,25):
+                    month_current = (
+                        12 if payment_month%12==0 else payment_month%12
+                    )
+                    loan_repaid = min(
+                        placement_fee,
+                        placement_fee_per_month,
+                        salary_per_month
+                    )
+
+                    repayment_table[i] = {
+                        'salary_date': '{day}/{month}/{year}'.format(
+                            day = calendar.monthrange(
+                                payment_year, month_current)[1],
+                            month = month_current,
+                            year = payment_year,
+                        ),
+                        'basic_salary': self.object.fdw.financial_details.salary,
+                        'off_day_compensation': off_day_compensation,
+                        'salary_per_month': salary_per_month,
+                        'salary_received': salary_per_month-loan_repaid,
+                        'loan_repaid': loan_repaid
+                    }
+                    placement_fee = (
+                        placement_fee-loan_repaid
+                        if placement_fee-loan_repaid>=0
+                        else 0
+                    )
+                    payment_month += 1
+                    if payment_month%12 == 1:
+                        payment_year += 1
+
+                # 25th month pro-rated
+                final_payment_day = min(
+                    work_commencement_date.day-1,
+                    calendar.monthrange(payment_year, month_current)[1]
+                )
+                basic_salary = round(
+                    self.object.fdw.financial_details.salary*final_payment_day/calendar.monthrange(
+                        payment_year, month_current)[1]
+                )
+                off_day_compensation = round(
+                    off_day_compensation*final_payment_day/calendar.monthrange(
+                        payment_year, month_current)[1]
+                )
+                month_current = 12 if payment_month%12==0 else payment_month%12
+                loan_repaid = min(
+                    placement_fee,
+                    placement_fee_per_month,
+                    salary_per_month
+                )
+                repayment_table[25] = {
+                    'salary_date': '{day}/{month}/{year}'.format(
+                        day = final_payment_day,
+                        month = month_current,
+                        year = payment_year,
+                    ),
+                    'basic_salary': basic_salary,
+                    'off_day_compensation': off_day_compensation,
+                    'salary_per_month': basic_salary + off_day_compensation,
+                    'salary_received': (
+                        basic_salary + off_day_compensation - loan_repaid
+                    ),
+                    'loan_repaid': loan_repaid
+                }
         
-        return context    
+        else:
+            for i in range(1,25):
+                repayment_table[i] = {
+                    'salary_date': '',
+                    'basic_salary': '',
+                    'off_day_compensation': '',
+                    'salary_per_month': '',
+                    'salary_received': '',
+                    'loan_repaid': '',
+                }
+        return repayment_table
+
+    def get_context_data(self, **kwargs):
+        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+
+        if isinstance(self.object, EmployerDoc):
+            context = super().get_context_data(object=self.object)
+
+            # Document version number formatting
+            version_str = str(context.get('object').version).zfill(4)
+            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+
+            # Get agency main branch
+            context['agency_main_branch'] = (
+                self.object.employer.agency_employee.agency.branches.filter(
+                    main_branch=True
+                ).all()[0]
+            )
+
+            # Employer NRIC
+            try:
+                context['object'].employer.employer_nric = self.object.employer.get_nric_full()
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].employer.employer_nric = ''
+            
+            # FDW passport number
+            try:
+                context['object'].fdw.passport_number = self.object.fdw.get_passport_number()
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].fdw.passport_number = ''
+        elif isinstance(self.object, EmployerDocSig):
+            '''
+            context['object'] set as EmployerDoc object instead of
+            EmployerDocSig so that same PDF templates can be re-used
+            '''
+            context = super().get_context_data(object=self.object.employer_doc)
+
+            # Document version number formatting
+            version_str = str(
+                context.get('object').version).zfill(4)
+            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+            
+            # Get agency main branch
+            context['agency_main_branch'] = (
+                self.object.employer_doc.employer.agency_employee.agency.branches.filter(
+                    main_branch=True
+                ).all()[0]
+            )
+
+            # Employer NRIC
+            try:
+                context['object'].employer.employer_nric = self.object.employer_doc.employer.get_nric_full()
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].employer.employer_nric = ''
+            
+            # FDW passport number
+            try:
+                context['object'].fdw.passport_number = self.object.employer_doc.fdw.get_passport_number()
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                context['object'].fdw.passport_number = ''
+        
+        return context

@@ -1,7 +1,8 @@
 from django.forms import DateInput
+from django_filters.widgets import RangeWidget
 
 class CustomDateInput(DateInput):
-    template_name='widgets/custom-datepicker.html'
+    template_name='widgets/custom-date.html'
 
     def __init__(self, attrs=None):
         if attrs:
@@ -14,3 +15,6 @@ class CustomDateInput(DateInput):
                 'placeholder': 'Select Date'
             }
         super().__init__(attrs)
+
+class CustomRangeWidget(RangeWidget):
+    template_name='widgets/custom-range.html'

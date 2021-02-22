@@ -1,10 +1,10 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 
 {% block title %}Employment Contract{% endblock %}
 
 {% block pdf_content %}
 
-{% include 'employer_documentation/pdf-00-header.html' %}
+{% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <div class="text-align-center">
     <h2>STANDARD EMPLOYMENT CONTRACT</h2>
@@ -25,7 +25,7 @@
             <td colspan="3"></td>
         </tr>
         <tr>
-            <td colspan="3">This Service Agreement is dated {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }} and made between:</td>
+            <td colspan="3">This Service Agreement is dated {{ object.agreement_date|date:"d M Y" }} and made between:</td>
         </tr>
         <tr>
             <td></td>
@@ -66,17 +66,19 @@
         <tr>
             <td>(B)</td>
             <td>Full Name of Foreign Domestic Worker (“FDW”)</td>
-            <td>: {{ object.fdw }} </td>
+            <td>: {{ object.fdw.name }} </td>
         </tr>
+        {% comment %}
         <tr>
             <td></td>
             <td>Work Permit No.</td>
-            <td>: {{ object.fdw }} </td>
+            <td>: {{ object.rn_maidstatus_ed.work_permit_no }} </td>
         </tr>
+        {% endcomment %}
         <tr>
             <td></td>
             <td>Passport No.</td>
-            <td>: {{ object.fdw }}</td>
+            <td>: {{ object.fdw.passport_number }}</td>
         </tr>
         <tr>
             <td colspan="3"><br></td>
@@ -138,7 +140,7 @@
     </tr>
     <tr>
         <td>3.1</td>
-        <td>The Employer shall pay the FDW wages of S${{ object.fdw }} per month.</td>
+        <td>The Employer shall pay the FDW wages of S${{ object.fdw.financial_details.salary }} per month.</td>
     </tr>
     <tr>
         <td></td>
@@ -189,7 +191,7 @@
         </tr>
         <tr>
             <td>3.8</td>
-            <td>The FDW shall be entitled to {{ object.fdw }} rest day(s) a month, on a day mutually agreed. If the rest day was not taken, the FDW shall be compensated in cash as agreed in writing between the employer and the FDW. If there is no such existing agreement, the accreditation body’s prevailing compensation guideline shall apply.</td>
+            <td>The FDW shall be entitled to {{ object.fdw.days_off }} rest day(s) a month, on a day mutually agreed. If the rest day was not taken, the FDW shall be compensated in cash as agreed in writing between the employer and the FDW. If there is no such existing agreement, the accreditation body’s prevailing compensation guideline shall apply.</td>
         </tr>
         <tr>
             <td></td>
@@ -322,7 +324,7 @@
             <td></td>
         </tr>
         
-        {% include 'employer_documentation/pdf-00-signatures-employer-fdw.html' %}
+        {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
         
         <tr>
             <td></td>

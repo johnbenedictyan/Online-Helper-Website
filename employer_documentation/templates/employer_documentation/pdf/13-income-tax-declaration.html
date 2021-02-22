@@ -1,4 +1,4 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
 
 {% block title %}Employer and Spouse Income Tax Declaration{% endblock %}
@@ -130,10 +130,10 @@
     </tr>
     <tr>
         <td class="border--bottom border--right">
-            Date: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
+            Date: {{ object.agreement_date|date:"d M Y" }}
         </td>
         <td class="border--bottom">
-            Date: {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
+            Date: {{ object.agreement_date|date:"d M Y" }}
         </td>
     </tr>
 </table>

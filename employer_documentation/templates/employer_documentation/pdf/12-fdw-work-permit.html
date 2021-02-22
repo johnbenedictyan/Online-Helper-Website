@@ -1,4 +1,4 @@
-{% extends 'employer_documentation/pdf-00-base.html' %}
+{% extends 'employer_documentation/pdf/00-base.html' %}
 
 {% block title %}Form 12B For Work Permit Applicants/Holders Only{% endblock %}
 
@@ -29,7 +29,7 @@
     </tr>
     <tr>
         <td width="50%">Full Name in BLOCK LETTERS (Underline Surname)
-            <br>{{ object.fdw|upper }}</td>
+            <br>{{ object.fdw.name|upper }}</td>
         <td colspan="2">Name in Chinese Character, if applicable</td>
     </tr>
     <tr>
@@ -103,7 +103,7 @@
                     </td>
                     <td style="border:none;"></td>
                     <td width="40%"style="border:none;">
-                        {{ object.rn_signatures_ed.agreement_date|date:"d M Y" }}
+                        {{ object.agreement_date|date:"d M Y" }}
                         <br>____________________________________
                         <br>Date
                     </td>

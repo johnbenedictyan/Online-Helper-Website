@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col px-0">
         <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">
-        <p class="m-1 pl-2">Documents List</p>
+        <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
 </div>
@@ -43,7 +43,7 @@
 <div class="row">
     <div class="col px-0">
         <a class="nav-link side-nav-link {% if url_name == 'employerdoc_status_update_route' %}active{% endif %}" href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">
-        <p class="m-1 pl-2">Status</p>
+        <p class="m-1 pl-2">FDW Status</p>
         </a>
     </div>
 </div>

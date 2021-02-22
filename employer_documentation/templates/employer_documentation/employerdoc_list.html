@@ -3,28 +3,28 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=object_list.0.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
         <p class="m-1 pl-2">Employer Profile</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=object_list.0.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object_list.0.employer.pk %}">
-        <p class="m-1 pl-2">Documents List</p>
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
         <p class="m-1 pl-2">Add Document</p>
         </a>
     </div>
@@ -32,21 +32,24 @@
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
-    <h1>Employer Docs</h1>
-    
+    <h2>Employer Docs</h2>
+    {% if object_list.count %}
+        <h4>{{ object_list.0.employer.employer_name }}</h4>
+        <h4>{{ object_list.0.employer.employer_mobile_number }}</h4>
+    {% endif %}
+
+    <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
+        <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}" class="btn btn-secondary btn-sm">Create document</a>
+    </div>
+
     <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Ref No.</th>
-                <th scope="col">ID - FDW</th>
-                <th scope="col">Agreement</th>
-                <th scope="col">IPA</th>
-                <th scope="col">Bond</th>
-                <th scope="col">Arrival</th>
-                <th scope="col">Thumb Print</th>
-                <th scope="col">SIP</th>
+                <th scope="col">FDW</th>
+                <th scope="col">Agreement Date</th>
                 <th scope="col">Work Commence</th>
-                <th scope="col">Work Permit</th>
+                <th scope="col">FDW Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -55,21 +58,16 @@
             {% for object in object_list %}
             <tr>
                 <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
-                <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.biodata.name }}</a></td>
-                <td><a href="{% url 'employerdoc_agreement_date_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.agreement_date|date:"d/m/y" %}{{ object.rn_signatures_ed.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.arrival_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.sip_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Edit</a></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">Delete</a>{% endif %}</td>
+                <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.name }}</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.agreement_date|date:"d/m/y" %}{{ object.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.is_deployed %}<i class="far fa-check-circle text-success"></i>{% else %}<i class="far fa-times-circle text-danger"></i>{% endif %}</a></td>
+                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}</td>
             </tr>
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="6">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=object_list.0.employer.pk %}">here</a> to create doumentation.</td>
+                <td colspan="6">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">here</a> to create doumentation.</td>
             </tr>
         {% endif %}
         </tbody>

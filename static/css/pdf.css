@@ -10,7 +10,8 @@
 @page {
     @bottom-right {
         content: "Page " counter(page) " of " counter(pages);
-        font-size: 10px;
+        font-size: 11px;
+        font-family: Arial;
     }
 }
 
@@ -39,7 +40,7 @@ table {
 table th,
 table td {
     padding: 5px;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .border--all th, .border--all td {

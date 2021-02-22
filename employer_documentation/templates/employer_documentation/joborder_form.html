@@ -3,7 +3,7 @@
 
 {% block form %}
 <h3>Job Order</h3>
-    {% if object.job_order_pdf %}<a href="{% url 'job_order_pdf_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk slug=object.slug %}">Current Job Order (PDF)</a>{% endif %}
+    {% if object.job_order_pdf %}<a href="{% url 'pdf_agency_job_order_route' employer_pk=object.employer_doc.employer.pk employerdoc_pk=object.employer_doc.pk slug=object.slug %}" target="_blank">Current Job Order (PDF)</a>{% endif %}
     <br class="my-3">
     {% crispy form %}
 {% endblock form %}
