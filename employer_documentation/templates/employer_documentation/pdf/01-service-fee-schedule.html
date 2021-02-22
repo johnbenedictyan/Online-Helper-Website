@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <td>Passport No.</td>
-            <td>: {{ object.fdw.passport_number }}</td>
+            <td>: {{ object.fdw.get_passport_number }}</td>
         </tr>
         <tr>
             <td>Basic Salary</td>
@@ -248,7 +248,7 @@
             <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
         </tr>
         <tr>
-            <td>{{ object.employer.employer_nric }}</td>
+            <td>{{ object.employer.get_nric_full }}</td>
             <td></td>
             <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
         </tr>

@@ -32,7 +32,7 @@
     <tr>
         <td></td>
         <td>NRIC/ Passport</td>
-        <td>: {{ object.employer.employer_nric }} </td>
+        <td>: {{ object.employer.get_nric_full }} </td>
     </tr>
     <tr>
         <td colspan="3"></td>
@@ -45,7 +45,7 @@
     <tr>
         <td></td>
         <td>Passport No.</td>
-        <td>: {{ object.fdw.passport_number }}</td>
+        <td>: {{ object.fdw.get_passport_number }}</td>
     </tr>
 </table>
 

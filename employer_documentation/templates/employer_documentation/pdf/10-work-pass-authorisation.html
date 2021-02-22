@@ -33,7 +33,7 @@
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">NRIC No./ FIN</td>
-            <td colspan="3">{{ object.employer.employer_nric }}</td>
+            <td colspan="3">{{ object.employer.get_nric_full }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Contact No.</td>
@@ -52,7 +52,7 @@
         <tr>
             <td class="text-align-center">1</td>
             <td colspan="2">{{ object.fdw.name }}</td>
-            <td>{{ object.fdw.passport_number }}</td>
+            <td>{{ object.fdw.get_passport_number }}</td>
             <td></td>
         </tr>
         <tr>
