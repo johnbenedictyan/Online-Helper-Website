@@ -104,7 +104,7 @@
         </tr>
         <tr>
             <td class="text-bold-600" colspan="2">Signature and Date.</td>
-            <td><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td>{{ object.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>
