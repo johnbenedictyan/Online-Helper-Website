@@ -7,8 +7,8 @@ from . import models
 from .views import (
     EmployerListView,
     EmployerDocListView,
-    StatusListView,
-    SalesListView,
+    DocListView,
+    # DocListView,
     EmployerPaymentTransactionListView,
 )
 
@@ -76,15 +76,17 @@ urlpatterns = [
             ),
             path(
                 'status-list/',
-                StatusListView.as_view(
-                    is_deployed=False
+                DocListView.as_view(
+                    template_name = 'employer_documentation/status_list.html',
+                    is_deployed=False,
                 ),
                 name='status_list_route'
             ),
             path(
                 'sales-list/',
-                SalesListView.as_view(
-                    is_deployed=True
+                DocListView.as_view(
+                    template_name = 'employer_documentation/sales_list.html',
+                    is_deployed=True,
                 ),
                 name='sales_list_route'
             ),

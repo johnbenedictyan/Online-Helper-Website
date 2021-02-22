@@ -100,12 +100,12 @@ class EmployerListView(
         else:
             return self.handle_no_permission()
 
-class SalesListView(
+class DocListView(
     LoginByAgencyUserGroupRequiredMixin,
     ListView
 ):
     model = EmployerDoc
-    template_name = 'employer_documentation/sales_list.html'
+    # template_name = 'employer_documentation/sales_list.html'
     ordering = ['-agreement_date']
     paginate_by = 20
     is_deployed = None
@@ -123,88 +123,6 @@ class SalesListView(
                 sort_field_name = 'agreement_date'
             elif 'fdw_work_commencement_date' in sort_by:
                 sort_field_name = 'rn_maidstatus_ed__fdw_work_commencement_date'
-        
-            # Get ascending or descending user selection
-            if sort_by.endswith('asc'):
-                self.ordering = [sort_field_name]
-            elif sort_by.endswith('des'):
-                self.ordering = ['-' + sort_field_name]
-        else:
-            sort_field_name = self.ordering[0].replace('-', '')
-
-        # Get queryset
-        queryset = super().get_queryset().filter(
-            rn_maidstatus_ed__is_deployed=self.is_deployed
-        )
-
-        # Filter results by user's search terms
-        if search_terms:
-            queryset = queryset.filter(
-                Q(case_ref_no__icontains=search_terms) |
-                Q(employer__employer_name__icontains=search_terms) |
-                Q(employer__employer_email__icontains=search_terms) |
-                Q(employer__employer_mobile_number__icontains=search_terms)
-            )
-        
-        # Further filter queryset to only show the employers that current user
-        # has necessary permission to access
-        if self.agency_user_group==AG_OWNERS:
-            # If agency owner, return all employers belonging to agency
-            queryset = queryset.filter(
-                employer__agency_employee__agency
-                = self.request.user.agency_owner.agency
-            )
-        elif self.agency_user_group==AG_ADMINS:
-            # If agency administrator, return all employers belonging to agency
-            queryset = queryset.filter(
-                employer__agency_employee__agency
-                = self.request.user.agency_employee.agency
-            )
-        elif self.agency_user_group==AG_MANAGERS:
-            # If agency manager, return all employers belonging to branch
-            queryset = queryset.filter(
-                employer__agency_employee__branch
-                = self.request.user.agency_employee.branch
-            )
-        elif self.agency_user_group==AG_SALES:
-            # If agency owner, return all employers belonging to self
-            queryset = queryset.filter(
-                employer__agency_employee = self.request.user.agency_employee
-            )
-        else:
-            return self.handle_no_permission()
-
-        # Filter by start and end dates from user input
-        if start_date:
-            start_date_kwargs = {sort_field_name+'__gte': start_date}
-            queryset = queryset.filter(**start_date_kwargs)
-        if end_date:
-            end_date_kwargs = {sort_field_name+'__lte': end_date}
-            queryset = queryset.filter(**end_date_kwargs)
-
-        return queryset
-
-class StatusListView(
-    LoginByAgencyUserGroupRequiredMixin,
-    ListView
-):
-    model = EmployerDoc
-    template_name = 'employer_documentation/status_list.html'
-    ordering = ['-agreement_date']
-    paginate_by = 20
-    is_deployed = None
-
-    def get_queryset(self):
-        search_terms = self.request.GET.get('search')
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-        sort_by = self.request.GET.get('sort_by')
-
-        # Sort by dates
-        if sort_by:
-            # Get field to sort by
-            if 'agreement_date' in sort_by:
-                sort_field_name = 'agreement_date'
             elif 'ipa_date' in sort_by:
                 sort_field_name = 'rn_maidstatus_ed__ipa_approval_date'
         
@@ -267,6 +185,90 @@ class StatusListView(
             queryset = queryset.filter(**end_date_kwargs)
 
         return queryset
+
+# class StatusListView(
+#     LoginByAgencyUserGroupRequiredMixin,
+#     ListView
+# ):
+#     model = EmployerDoc
+#     template_name = 'employer_documentation/status_list.html'
+#     ordering = ['-agreement_date']
+#     paginate_by = 20
+#     is_deployed = None
+
+#     def get_queryset(self):
+#         search_terms = self.request.GET.get('search')
+#         start_date = self.request.GET.get('start_date')
+#         end_date = self.request.GET.get('end_date')
+#         sort_by = self.request.GET.get('sort_by')
+
+#         # Sort by dates
+#         if sort_by:
+#             # Get field to sort by
+#             if 'agreement_date' in sort_by:
+#                 sort_field_name = 'agreement_date'
+#             elif 'ipa_date' in sort_by:
+#                 sort_field_name = 'rn_maidstatus_ed__ipa_approval_date'
+        
+#             # Get ascending or descending user selection
+#             if sort_by.endswith('asc'):
+#                 self.ordering = [sort_field_name]
+#             elif sort_by.endswith('des'):
+#                 self.ordering = ['-' + sort_field_name]
+#         else:
+#             sort_field_name = self.ordering[0].replace('-', '')
+
+#         # Get queryset
+#         queryset = super().get_queryset().filter(
+#             rn_maidstatus_ed__is_deployed=self.is_deployed
+#         )
+
+#         # Filter results by user's search terms
+#         if search_terms:
+#             queryset = queryset.filter(
+#                 Q(case_ref_no__icontains=search_terms) |
+#                 Q(employer__employer_name__icontains=search_terms) |
+#                 Q(employer__employer_email__icontains=search_terms) |
+#                 Q(employer__employer_mobile_number__icontains=search_terms)
+#             )
+        
+#         # Further filter queryset to only show the employers that current user
+#         # has necessary permission to access
+#         if self.agency_user_group==AG_OWNERS:
+#             # If agency owner, return all employers belonging to agency
+#             queryset = queryset.filter(
+#                 employer__agency_employee__agency
+#                 = self.request.user.agency_owner.agency
+#             )
+#         elif self.agency_user_group==AG_ADMINS:
+#             # If agency administrator, return all employers belonging to agency
+#             queryset = queryset.filter(
+#                 employer__agency_employee__agency
+#                 = self.request.user.agency_employee.agency
+#             )
+#         elif self.agency_user_group==AG_MANAGERS:
+#             # If agency manager, return all employers belonging to branch
+#             queryset = queryset.filter(
+#                 employer__agency_employee__branch
+#                 = self.request.user.agency_employee.branch
+#             )
+#         elif self.agency_user_group==AG_SALES:
+#             # If agency owner, return all employers belonging to self
+#             queryset = queryset.filter(
+#                 employer__agency_employee = self.request.user.agency_employee
+#             )
+#         else:
+#             return self.handle_no_permission()
+
+#         # Filter by start and end dates from user input
+#         if start_date:
+#             start_date_kwargs = {sort_field_name+'__gte': start_date}
+#             queryset = queryset.filter(**start_date_kwargs)
+#         if end_date:
+#             end_date_kwargs = {sort_field_name+'__lte': end_date}
+#             queryset = queryset.filter(**end_date_kwargs)
+
+#         return queryset
 
 class EmployerDocListView(
     CheckAgencyEmployeePermissionsMixin,
