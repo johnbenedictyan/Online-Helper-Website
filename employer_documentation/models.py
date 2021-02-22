@@ -720,6 +720,27 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
+    employer_witness_address_1 = models.CharField(
+        verbose_name=_('Employer Witness Street Address'),
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    employer_witness_address_2 = models.CharField(
+        verbose_name=_('Employer Witness Unit Number'),
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
+    employer_witness_post_code = models.CharField(
+        verbose_name=_('Employer Witness Post Code'),
+        max_length=25,
+        blank=True,
+        null=True
+    )
+
     fdw_witness_signature = models.TextField(
         verbose_name=_('Signature of Witness for FDW'),
         blank=True,
