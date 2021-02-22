@@ -34,52 +34,52 @@
 <table>
     <tr>
         <td>
-            <input type="checkbox" class="checkbox" />Below $2,000
+            {% if object.monthly_combined_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$2,000 to $2,499
+            {% if object.monthly_combined_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$2,500 to $2,999
+            {% if object.monthly_combined_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$3,000 to $3,499
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="checkbox" class="checkbox" />$3,500 to $3,999
-        </td>
-        <td>
-            <input type="checkbox" class="checkbox" />$4,000 to $4,999
-        </td>
-        <td>
-            <input type="checkbox" class="checkbox" />$5,000 to $5,999
-        </td>
-        <td>
-            <input type="checkbox" class="checkbox" />$6,000 to $7,999
+            {% if object.monthly_combined_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" class="checkbox" />$8,000 to $9,999
+            {% if object.monthly_combined_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$10,000 to $12,499
+            {% if object.monthly_combined_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$12,500 to $14,999
+            {% if object.monthly_combined_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$15,000 to $19,999
+            {% if object.monthly_combined_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" class="checkbox" />$20,000 to $24,999
+            {% if object.monthly_combined_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />$25,000 and above
+            {% if object.monthly_combined_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499
+        </td>
+        <td>
+            {% if object.monthly_combined_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999
+        </td>
+        <td>
+            {% if object.monthly_combined_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {% if object.monthly_combined_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999
+        </td>
+        <td>
+            {% if object.monthly_combined_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above
         </td>
         <td>
         </td>
