@@ -45,9 +45,9 @@
     <tr>
         <td></td>
         <td>Registered Business Address</td>
-        <td>: {{ agency_main_branch.address_1 }}
-        <br> &nbsp; {{ agency_main_branch.address_2 }}
-        <br> &nbsp; Singapore {{ agency_main_branch.postal_code }}</td>
+        <td>: {{ object.employer.agency_employee.agency.get_main_office.address_1 }}
+        <br> &nbsp; {{ object.employer.agency_employee.agency.get_main_office.address_2 }}
+        <br> &nbsp; Singapore {{ object.employer.agency_employee.agency.get_main_office.postal_code }}</td>
     </tr>
     <tr>
         <td colspan="3"></td>
@@ -212,7 +212,7 @@
         </tr>
         <tr>
             <td>2.3</td>
-            <td colspan="3">All payments shall *include / exclude the prevailing Goods and Services Tax (GST). [*To delete accordingly]</td>
+            <td colspan="3">All fees payable in conjuction with this Agreement are inclusive of any Goods and Services Tax (GST), if applicable.</td>
         </tr>
         <tr>
             <td><br></td>

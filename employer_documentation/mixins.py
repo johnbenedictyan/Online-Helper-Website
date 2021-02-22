@@ -496,13 +496,6 @@ class PdfHtmlViewMixin:
             version_str = str(context.get('object').version).zfill(4)
             context['object'].version = f'[{version_str}] - {version_explainer_text}'
 
-            # Get agency main branch
-            context['agency_main_branch'] = (
-                self.object.employer.agency_employee.agency.branches.filter(
-                    main_branch=True
-                ).all()[0]
-            )
-
             # Employer NRIC
             try:
                 context['object'].employer.employer_nric = self.object.employer.get_nric_full()
@@ -528,13 +521,6 @@ class PdfHtmlViewMixin:
                 context.get('object').version).zfill(4)
             context['object'].version = f'[{version_str}] - {version_explainer_text}'
             
-            # Get agency main branch
-            context['agency_main_branch'] = (
-                self.object.employer_doc.employer.agency_employee.agency.branches.filter(
-                    main_branch=True
-                ).all()[0]
-            )
-
             # Employer NRIC
             try:
                 context['object'].employer.employer_nric = self.object.employer_doc.employer.get_nric_full()
