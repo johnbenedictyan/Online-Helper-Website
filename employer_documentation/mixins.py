@@ -493,8 +493,7 @@ class PdfHtmlViewMixin:
             context = super().get_context_data(object=self.object)
 
             # Document version number formatting
-            version_str = str(context.get('object').version).zfill(4)
-            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
 
         elif isinstance(self.object, EmployerDocSig):
             '''
@@ -504,8 +503,6 @@ class PdfHtmlViewMixin:
             context = super().get_context_data(object=self.object.employer_doc)
 
             # Document version number formatting
-            version_str = str(
-                context.get('object').version).zfill(4)
-            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
             
         return context

@@ -585,6 +585,11 @@ class EmployerDoc(models.Model):
         choices=DAY_CHOICES
     )
 
+    def save(self, *args, **kwargs):
+        # Auto-increment document version number on every save
+        self.version += 1
+        super().save(*args, **kwargs)
+
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
         return (
@@ -624,10 +629,8 @@ class EmployerDoc(models.Model):
         
         return balance
 
-    def save(self, *args, **kwargs):
-        # Auto-increment document version number on every save
-        self.version += 1
-        super().save(*args, **kwargs)
+    def get_version(self):
+        return str(self.version).zfill(4)
 
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
