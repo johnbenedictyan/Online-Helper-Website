@@ -516,6 +516,7 @@ class PdfHtmlViewMixin:
             except (ValueError, KeyError):
                 print("Incorrect decryption")
                 context['object'].fdw.passport_number = ''
+        
         elif isinstance(self.object, EmployerDocSig):
             '''
             context['object'] set as EmployerDoc object instead of
@@ -549,4 +550,7 @@ class PdfHtmlViewMixin:
                 print("Incorrect decryption")
                 context['object'].fdw.passport_number = ''
         
+        else:
+            context = super().get_context_data(object=self.object)
+
         return context
