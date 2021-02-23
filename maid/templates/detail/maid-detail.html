@@ -10,7 +10,7 @@
             <div class="col my-3">
                 <div class="row">
                     <div class="col">
-                        <h3>{{maid.biodata.name}}</h3>
+                        <h3>{{maid.name}}</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-xl-2">
                         <small class="text-muted">Nationality</small>
-                        <p>{{maid.biodata.get_country_of_origin_display}}</p>
+                        <p>{{maid.personal_details.get_country_of_origin_display}}</p>
                     </div>
                     <div class="col-xl-2">
                         <small class="text-muted">Type of Maid</small>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="row">
                     <div class="col mt-3">
-                        <a href="{% url 'add_to_shortlist' %}" class="btn btn-primary">Add to Shortlist</a>
+                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary">Add to Shortlist</a>
                         <a href="#" class="btn btn-outline-primary ml-3">Download Bio-data</a>
                     </div>
                 </div>
@@ -46,11 +46,11 @@
                         <h5>Profile</h5>
                         <div class="row">
                             <div class="col"><p>Age</p></div>
-                            <div class="col"><p>{{maid.biodata.age}} yr old</p></div>
+                            <div class="col"><p>{{maid.personal_details.age}} yr old</p></div>
                         </div>
                         <div class="row">
                             <div class="col"><p>Place of Birth</p></div>
-                            <div class="col"><p>{{maid.biodata.place_of_birth}}</p></div>
+                            <div class="col"><p>{{maid.personal_details.place_of_birth}}</p></div>
                         </div>
                         <div class="row">
                             <div class="col"><p>Marital Status</p></div>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="row">
                             <div class="col"><p>Religion</p></div>
-                            <div class="col"><p>{{maid.biodata.get_religion_display}}</p></div>
+                            <div class="col"><p>{{maid.personal_details.get_religion_display}}</p></div>
                         </div>
                         <div class="row">
                             <div class="col"><p>Education Level</p></div>
@@ -81,7 +81,7 @@
                 <div class="row">
                     <div class="col">
                         <h5>Language Spoken</h5>
-                        {% for language in maid.biodata.languages.all %}
+                        {% for language in maid.personal_details.languages.all %}
                             <p>{{language}}</p>
                         {% endfor%}
                     </div>
@@ -159,9 +159,9 @@
                             <div onclick="maidProfileRedirect({{maid.pk}})">
                                 <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{maid.biodata.name}}</h5>
-                                    <p class="card-text">{{maid.biodata.get_country_of_origin_display}}</p>
-                                    <p class="card-text">{{maid.biodata.age}} years old</p>
+                                    <h5 class="card-title">{{maid.name}}</h5>
+                                    <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                    <p class="card-text">{{maid.personal_details.age}} years old</p>
                                     <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
                                     <p class="card-text">{{maid.get_maid_type_display}}</p>
                                 </div>
