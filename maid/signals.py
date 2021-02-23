@@ -14,7 +14,7 @@ from .models import (
     MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility, 
-    MaidFinancialDetails
+    MaidFinancialDetails, MaidOtherCare
 )
 
 # Utiliy Classes and Functions
@@ -139,19 +139,37 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
 @receiver(post_save, sender=MaidDisabledCare)
 @receiver(post_save, sender=MaidGeneralHousework)
 @receiver(post_save, sender=MaidCooking)
+@receiver(post_save, sender=MaidOtherCare)
 def maid_care_completed(sender, instance, created, **kwargs):
-    if created == False:
-        care_models = [
-            MaidInfantChildCare,
-            MaidElderlyCare,
-            MaidDisabledCare,
-            MaidGeneralHousework,
-            MaidCooking
-        ]
-        maid = instance.maid
-        care_complete = maid.care_complete
+    care_models = [
+        MaidInfantChildCare,
+        MaidElderlyCare,
+        MaidDisabledCare,
+        MaidGeneralHousework,
+        MaidCooking,
+        MaidOtherCare
+    ]
 
-        instance_model_class = instance.__class__
+    related_names = {
+        'MaidInfantChildCare': 'infant_child_care',
+        'MaidElderlyCare': 'elderly_care',
+        'MaidDisabledCare': 'disabled_care',
+        'MaidGeneralHousework': 'general_housework',
+        'MaidCooking': 'cooking',
+        'MaidOtherCare': 'other_care'
+    }
+    
+    maid = instance.maid
+    safe_flag = True
+
+    for i in care_models:
+        if hasattr(maid, related_names[i.__name__]) == False:
+            safe_flag = False
+        
+    care_complete = maid.care_complete
+    instance_model_class = instance.__class__
+
+    if safe_flag == True:
         if instance_model_class in care_models:
             care_models.remove(instance_model_class)
             try:
