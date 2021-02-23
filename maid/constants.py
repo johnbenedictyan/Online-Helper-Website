@@ -343,6 +343,22 @@ class MaidPassportStatusChoices(models.IntegerChoices):
     NOT_READY = 0, _('Not Ready')
     READY = 1, _('Ready')
         
+class MaidEducationLevelChoices(models.TextChoices):
+    HIGH_SCHOOL = 'HS', _('High School')
+    COLLEGE = 'COL', _('College')
+    OTHERS = 'OTH', _('Others')
+    
+class MaidSkillsEvaluationMethod(models.TextChoices):
+    DECLARATION = 'DEC', _('''Based on FDW’s declaration, no 
+                           evaluation/observation by Singapore EA or overseas 
+                           training centre/EA''')
+    SG_EA = 'SGEA', _('''Interviewed by Singapore EA''')
+    TEL = 'TEL', _('''Interviewed via telephone/teleconference''')
+    VID = 'VID', _('''Interviewed via videoconference''')
+    PERSON = 'PERS', _('''Interviewed in person''')
+    PERSON_OBS = 'PERO', _('''Interviewed in person and also made observation 
+                           of FDW in the areas of work listed in table''')
+    
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes
