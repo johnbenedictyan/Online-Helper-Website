@@ -118,6 +118,9 @@ class Employer(models.Model):
         )
         return '●'*5 + plaintext[-4:]
 
+    def mobile_format_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
+
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
         (0, "0 days"),
@@ -212,8 +215,28 @@ class EmployerDoc(models.Model):
         verbose_name=_("Foreign Domestic Worker (FDW)"),
         on_delete=models.RESTRICT
     )
+    monthly_combined_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Monthly combined income of employer and spouse"),
+        choices=[
+            (0, "Below $2,000"),
+            (1, "$2,000 to $2,499"),
+            (2, "$2,500 to $2,999"),
+            (3, "$3,000 to $3,499"),
+            (4, "$3,500 to $3,999"),
+            (5, "$4,000 to $4,999"),
+            (6, "$5,000 to $5,999"),
+            (7, "$6,000 to $7,999"),
+            (8, "$8,000 to $9,999"),
+            (9, "$10,000 to $12,499"),
+            (10, "$12,500 to $14,999"),
+            (11, "$15,000 to $19,999"),
+            (12, "$20,000 to $24,999"),
+            (13, "$25,000 and above"),
+        ]
+    )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
+        editable=False,
         choices=TrueFalseChoices(
             'Yes, spouse required',
             'No, spouse not required'
@@ -582,6 +605,14 @@ class EmployerDoc(models.Model):
         choices=DAY_CHOICES
     )
 
+    def save(self, *args, **kwargs):
+        # Auto-increment document version number on every save
+        self.version += 1
+
+        # Spouse is required if monthly_combined_income < S$3,000 per month
+        self.spouse_required = True if self.monthly_combined_income<3 else False
+        super().save(*args, **kwargs)
+
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
         return (
@@ -602,16 +633,27 @@ class EmployerDoc(models.Model):
 
     def calc_bal(self):
         # Method to calculate outstanding balance owed by employer
-        return (
+        balance = (
             self.calc_admin_cost()
             + self.fdw.financial_details.agency_fee_amount
             + self.fdw.financial_details.personal_loan_amount
             - self.ca_deposit
         )
 
-    def save(self, *args, **kwargs):
-        self.version += 1
-        super().save(*args, **kwargs)
+        subsequent_transactions = EmployerPaymentTransaction.objects.filter(
+            employer_doc=self
+        )
+
+        for transaction in subsequent_transactions:
+            if transaction.transaction_type == 'ADD':
+                balance += transaction.amount
+            elif transaction.transaction_type == 'SUB':
+                balance -= transaction.amount
+        
+        return balance
+
+    def get_version(self):
+        return str(self.version).zfill(4)
 
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
@@ -701,6 +743,27 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
+    employer_witness_address_1 = models.CharField(
+        verbose_name=_('Employer Witness Street Address'),
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    employer_witness_address_2 = models.CharField(
+        verbose_name=_('Employer Witness Unit Number'),
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
+    employer_witness_post_code = models.CharField(
+        verbose_name=_('Employer Witness Post Code'),
+        max_length=25,
+        blank=True,
+        null=True
+    )
+
     fdw_witness_signature = models.TextField(
         verbose_name=_('Signature of Witness for FDW'),
         blank=True,
@@ -911,7 +974,7 @@ class EmployerPaymentTransaction(models.Model):
         ('SUB', _('Repayment')),
         ('ADD', _('New charge')),
     )
-    employer_doc = models.OneToOneField(
+    employer_doc = models.ForeignKey(
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_repayment_ed'

@@ -250,10 +250,12 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
+        country_of_origin = self.object.personal_details.country_of_origin
+        languages = self.object.personal_details.languages.all()
         similar_maids = Maid.objects.filter(
-            personal_details__country_of_origin=self.object.biodata.country_of_origin,
+            personal_details__country_of_origin=country_of_origin,
             responsibilities=self.object.get_main_responsibility(),
-            personal_details__languages__in=self.object.biodata.languages.all()
+            personal_details__languages__in=languages
         ).exclude(
             pk=self.object.pk
         ).distinct()

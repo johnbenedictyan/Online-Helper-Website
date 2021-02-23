@@ -1,9 +1,10 @@
 # Imports from the system
 import random
 import string
-from datetime import date
+from datetime import date, datetime
 
 # Imports from django
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
