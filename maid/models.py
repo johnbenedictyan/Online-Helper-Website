@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -427,6 +428,26 @@ class MaidPersonalDetails(models.Model):
     def save(self, *args, **kwargs):
         self.age = calculate_age(self.date_of_birth)
         return super().save(*args, **kwargs)
+
+    def get_age(self):
+        today = timezone.now().date()
+        try:
+            birthday_current_year = self.date_of_birth.replace(
+                year = today.year)
+    
+        # Raised when birth date is 29 February and the current year is not a
+        # leap year
+        except ValueError:
+            birthday_current_year = self.date_of_birth.replace(
+                year = today.year,
+                month = self.date_of_birth.month + 1,
+                day = 1
+            )
+    
+        if birthday_current_year > today:
+            return today.year - self.date_of_birth.year - 1
+        else:
+            return today.year - self.date_of_birth.year
 
 class MaidFamilyDetails(models.Model):
     maid = models.OneToOneField(
