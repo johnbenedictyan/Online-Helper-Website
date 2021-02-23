@@ -232,9 +232,9 @@
                 <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp; {{ object.personal_details.get_country_of_origin_display }}</span></p>
                 <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold"> &nbsp; {{ object.personal_details.address_1 }}, {{ object.personal_details.address_2 }}</span></p>
                 <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span class="bold"> &nbsp; {{ object.personal_details.repatriation_airport }}</span></p>
-                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; __________</span></p>
+                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; {{ object.personal_details.contact_number }}</span></p>
                 <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp; {{ object.personal_details.get_religion_display }}</span></p>
-                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; __________</span></p>
+                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; {{ object.personal_details.education_level }}</span></p>
                 <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_siblings }}</span></p>
                 <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp; {{ object.family_details.marital_status }}</span></p>
                 <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_children }}</span></p>
@@ -365,7 +365,7 @@
                             {% if object.infant_child_care.other_remarks == "Other remarks" %}
                             {{ object.infant_child_care.other_remarks }}
                             {% else %}
-                            {{ object.infant_child_care.remarks }}
+                            {{ object.infant_child_care.get_remarks_display }}
                             {% endif %}
                         </td>
                     </tr>
@@ -378,7 +378,7 @@
                             {% if object.elderly_care.other_remarks == "Other remarks" %}
                             {{ object.elderly_care.other_remarks }}
                             {% else %}
-                            {{ object.elderly_care.remarks }}
+                            {{ object.elderly_care.get_remarks_display }}
                             {% endif %}
                         </td>
                     </tr>
@@ -391,7 +391,7 @@
                             {% if object.disabled_care.other_remarks == "Other remarks" %}
                             {{ object.disabled_care.other_remarks }}
                             {% else %}
-                            {{ object.disabled_care.remarks }}
+                            {{ object.disabled_care.get_remarks_display }}
                             {% endif %}
                         </td>
                     </tr>
@@ -404,7 +404,7 @@
                             {% if object.general_housework.other_remarks == "Other remarks" %}
                             {{ object.general_housework.other_remarks }}
                             {% else %}
-                            {{ object.general_housework.remarks }}
+                            {{ object.general_housework.get_remarks_display }}
                             {% endif %}
                         </td>
                     </tr>
@@ -417,7 +417,7 @@
                             {% if object.cooking.other_remarks == "Other remarks" %}
                             {{ object.cooking.other_remarks }}
                             {% else %}
-                            {{ object.cooking.remarks }}
+                            {{ object.cooking.get_remarks_display }}
                             {% endif %}
                         </td>
                     </tr>
@@ -426,16 +426,24 @@
                         <td style="line-height:1.5">Language Abilities (Spoken)<br>Please specify:</td>
                         <td class="text-center">-</td>
                         <td class="text-center">-</td>
-                        <td class="text-center">{{ object.language_ability }}</td>
+                        <td class="text-center">
+                            {% for language in object.personal_details.languages.all %}
+                            {{ language }}
+                            {% endfor %}
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-center">7</td>
                         <td style="line-height:1.5">Other Skills, If Any<br>Please specify:</td>
                         <td class="text-center">-</td>
                         <td class="text-center">-</td>
-                        <td class="text-center">{{ object.other_skills }}<br>
-                            {% if object.other_skills == "Other skills" %}
-                            {{ object.other_skills.remarks }}
+                        <td class="text-center">
+                            {% if object.other_care.care_for_pets == True %}
+                            Care for pets
+                            {% endif %}
+                            <br/>
+                            {% if object.other_care.gardening == True %}
+                            Gardening
                             {% endif %}
                         </td>
                     </tr>
@@ -507,7 +515,7 @@
                         {% if object.infant_child_care.other_remarks == "Other remarks" %}
                         {{ object.infant_child_care.other_remarks }}
                         {% else %}
-                        {{ object.infant_child_care.remarks }}
+                        {{ object.infant_child_care.get_remarks_display }}
                         {% endif %}
                     </td>
                 </tr>
@@ -520,7 +528,7 @@
                         {% if object.elderly_care.other_remarks == "Other remarks" %}
                         {{ object.elderly_care.other_remarks }}
                         {% else %}
-                        {{ object.elderly_care.remarks }}
+                        {{ object.elderly_care.get_remarks_display }}
                         {% endif %}
                     </td>
                 </tr>
@@ -533,7 +541,7 @@
                         {% if object.disabled_care.other_remarks == "Other remarks" %}
                         {{ object.disabled_care.other_remarks }}
                         {% else %}
-                        {{ object.disabled_care.remarks }}
+                        {{ object.disabled_care.get_remarks_display }}
                         {% endif %}
                     </td>
                 </tr>
@@ -546,7 +554,7 @@
                         {% if object.general_housework.other_remarks == "Other remarks" %}
                         {{ object.general_housework.other_remarks }}
                         {% else %}
-                        {{ object.general_housework.remarks }}
+                        {{ object.general_housework.get_remarks_display }}
                         {% endif %}
                     </td>
                 </tr>
@@ -559,7 +567,7 @@
                         {% if object.cooking.other_remarks == "Other remarks" %}
                         {{ object.cooking.other_remarks }}
                         {% else %}
-                        {{ object.cooking.remarks }}
+                        {{ object.cooking.get_remarks_display }}
                         {% endif %}
                     </td>
                 </tr>
@@ -568,16 +576,24 @@
                     <td style="line-height:1.5">Language Abilities (Spoken)<br>Please specify:</td>
                     <td class="text-center">-</td>
                     <td class="text-center">-</td>
-                    <td class="text-center">{{ object.language_ability }}</td>
+                    <td class="text-center">
+                        {% for language in object.personal_details.languages.all %}
+                        {{ language }}
+                        {% endfor %}
+                    </td>
                 </tr>
                 <tr>
                     <td class="text-center">7</td>
                     <td style="line-height:1.5">Other Skills, If Any<br>Please specify:</td>
                     <td class="text-center">-</td>
                     <td class="text-center">-</td>
-                    <td class="text-center">{{ object.other_skills }}<br>
-                        {% if object.other_skills == "Other skills" %}
-                        {{ object.other_skills.remarks }}
+                    <td class="text-center">
+                        {% if object.other_care.care_for_pets == True %}
+                        Care for pets
+                        {% endif %}
+                        <br/>
+                        {% if object.other_care.gardening == True %}
+                        Gardening
                         {% endif %}
                     </td>
                 </tr>

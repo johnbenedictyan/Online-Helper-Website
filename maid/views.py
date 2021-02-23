@@ -101,6 +101,7 @@ class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
             pk=self.maid_id
         )
         initial.update({
+            'skills_evaluation_method': maid.skills_evaluation_method,
             'cfi_assessment': maid.infant_child_care.assessment,
             'cfi_willingness': maid.infant_child_care.willingness,
             'cfi_experience': maid.infant_child_care.experience,
@@ -133,6 +134,13 @@ class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
+        Maid.objects.filter(
+            pk=self.maid_id
+        ).update(
+            skills_evaluation_method=cleaned_data.get(
+                'skills_evaluation_method'
+            )
+        )
         MaidInfantChildCare.objects.filter(
             maid__pk=self.maid_id
         ).update(
@@ -782,6 +790,4 @@ class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
             context['agency_employee'] = request.user.agency_employee
         
         context['employment_history'] = self.object.employment_history.all()
-        # print(context['employment_history'])
-
         return self.generate_pdf_response(request, context)

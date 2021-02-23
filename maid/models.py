@@ -22,7 +22,8 @@ from agency.models import Agency
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
-    MaritalStatusChoices, MaidReligionChoices
+    MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
+    MaidSkillsEvaluationMethod
 )
 
 # Utiliy Classes and Functions
@@ -122,6 +123,14 @@ class Maid(models.Model):
     
     responsibilities = models.ManyToManyField(
         MaidResponsibility
+    )
+    
+    skills_evaluation_method = models.CharField(
+        verbose_name=_('Skills evaluation method'),
+        max_length=4,
+        blank=False,
+        choices=MaidSkillsEvaluationMethod.choices,
+        default=MaidSkillsEvaluationMethod.DECLARATION
     )
 
     created_on = models.DateTimeField(
@@ -414,7 +423,27 @@ class MaidPersonalDetails(models.Model):
         choices=MaidReligionChoices.choices,
         default=MaidReligionChoices.NONE
     )
+    
+    contact_number = models.CharField(
+        verbose_name=_('Contact number in home country'),
+        max_length=30,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
 
+    education_level = models.CharField(
+        verbose_name=_('Education Level'),
+        max_length=3,
+        blank=False,
+        choices=MaidEducationLevelChoices.choices,
+        default=MaidEducationLevelChoices.HIGH_SCHOOL
+    )
+    
     languages = models.ManyToManyField(
         MaidLanguage
     )
