@@ -765,3 +765,18 @@ class MaidProfileView(View):
                 ]
             }
             return JsonResponse(data, status=200)
+
+# PDF Views
+from employer_documentation.mixins import PdfHtmlViewMixin
+class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
+    model = Maid
+    template_name = 'detail/pdf-biodata-detail.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+
+        if hasattr(request.user, 'agency_employee'):
+            context['agency_employee'] = request.user.agency_employee
+        
+        return self.generate_pdf_response(request, context)
