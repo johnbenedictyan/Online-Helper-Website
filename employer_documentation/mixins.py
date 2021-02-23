@@ -504,5 +504,8 @@ class PdfHtmlViewMixin:
 
             # Document version number formatting
             context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
-            
+        
+        else:
+            context = super().get_context_data(object=self.object)
+
         return context

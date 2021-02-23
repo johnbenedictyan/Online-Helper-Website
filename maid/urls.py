@@ -15,7 +15,7 @@ from .views import MaidTogglePublished
 from .views import MaidList
 
 ## Detail Views
-from .views import MaidDetail
+from .views import MaidDetail, PdfMaidBiodataView
 
 ## Create Views
 from .views import (
@@ -141,7 +141,12 @@ urlpatterns = [
                         'profile/',
                         MaidProfileView.as_view(),
                         name='maid_profile'
-                    )
+                    ),
+                    path(
+                        'biodata/pdf/',
+                        PdfMaidBiodataView.as_view(),
+                        name='maid_biodata_pdf'
+                    ),
                 ])
             )
         ])

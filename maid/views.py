@@ -16,6 +16,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from foreign installed apps
 from agency.models import Agency
 from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
+from employer_documentation.mixins import PdfHtmlViewMixin
 
 # Imports from local app
 from .filters import MaidFilter
@@ -767,3 +768,20 @@ class MaidProfileView(View):
                 ]
             }
             return JsonResponse(data, status=200)
+
+# PDF Views
+class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
+    model = Maid
+    template_name = 'detail/pdf-biodata-detail.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+
+        if hasattr(request.user, 'agency_employee'):
+            context['agency_employee'] = request.user.agency_employee
+        
+        context['employment_history'] = self.object.employment_history.all()
+        # print(context['employment_history'])
+
+        return self.generate_pdf_response(request, context)
