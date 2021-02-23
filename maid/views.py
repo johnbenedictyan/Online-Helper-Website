@@ -16,6 +16,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from foreign installed apps
 from agency.models import Agency
 from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
+from employer_documentation.mixins import PdfHtmlViewMixin
 
 # Imports from local app
 from .filters import MaidFilter
@@ -769,7 +770,6 @@ class MaidProfileView(View):
             return JsonResponse(data, status=200)
 
 # PDF Views
-from employer_documentation.mixins import PdfHtmlViewMixin
 class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
     model = Maid
     template_name = 'detail/pdf-biodata-detail.html'
