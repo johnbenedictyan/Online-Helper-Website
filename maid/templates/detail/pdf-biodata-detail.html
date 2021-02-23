@@ -472,8 +472,7 @@
             <p>&#9744; Interviewed via telephone/teleconference</p>
             <p>&#9744; Interviewed via videoconference</p>
             <p>&#9744; Interviewed in person</p>
-            <p>&#9744; Interviewed in person and also made observation of FDW in
-                the areas of work listed in table</p>
+            <p>&#9744; Interviewed in person and also made observation of FDW in the areas of work listed in table</p>
         </div>
         <table class="mt-3 table2">
             <thead>
@@ -601,8 +600,8 @@
             </tr>
             {% for entry in employment_history %}
             <tr>
-                <td class="text-left">{{ entry.date_from }} To {{ entry.date_to }}</td>
-                <td class="text-center text-top">{{ entry.country }}</td>
+                <td class="text-left">{{ entry.start_date|date:"d M Y" }} To {{ entry.end_date|date:"d M Y" }}</td>
+                <td class="text-center text-top">{{ entry.get_country_display }}</td>
                 <td class="text-center text-top">{{ entry.employer }}</td>
                 <td class="text-left text-top">{{ entry.work_duties }}</td>
                 <td class="text-left text-top">{{ entry.remarks }}</td>
@@ -653,8 +652,7 @@
             <tr>
                 <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">FDW Name and Signature</td>
                 <td class="w-15"></td>
-                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">EA Personnel Name and
-                    Registration Number</td>
+                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">EA Personnel Name and Registration Number</td>
             </tr>
             <tr>
                 <td class="w-30">Date:</td>

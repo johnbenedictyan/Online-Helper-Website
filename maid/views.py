@@ -779,4 +779,7 @@ class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
         if hasattr(request.user, 'agency_employee'):
             context['agency_employee'] = request.user.agency_employee
         
+        context['employment_history'] = self.object.employment_history.all()
+        # print(context['employment_history'])
+
         return self.generate_pdf_response(request, context)
