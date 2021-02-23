@@ -7,8 +7,9 @@ from . import models
 from .views import (
     EmployerListView,
     EmployerDocListView,
-    StatusListView,
-    SalesListView,
+    DocListView,
+    # DocListView,
+    EmployerPaymentTransactionListView,
 )
 
 ## Detail Views
@@ -33,6 +34,7 @@ from .views import (
     EmployerDocMaidStatusUpdateView,
     EmployerDocMaidDeploymentUpdateView,
     JobOrderUpdateView,
+    EmployerPaymentTransactionUpdateView,
 )
 
 ## Delete Views
@@ -74,15 +76,17 @@ urlpatterns = [
             ),
             path(
                 'status-list/',
-                StatusListView.as_view(
-                    is_deployed=False
+                DocListView.as_view(
+                    template_name = 'employer_documentation/status_list.html',
+                    is_deployed=False,
                 ),
                 name='status_list_route'
             ),
             path(
                 'sales-list/',
-                SalesListView.as_view(
-                    is_deployed=True
+                DocListView.as_view(
+                    template_name = 'employer_documentation/sales_list.html',
+                    is_deployed=True,
                 ),
                 name='sales_list_route'
             ),
@@ -151,9 +155,19 @@ urlpatterns = [
                                         name='joborder_update_route'
                                     ),
                                     path(
-                                        'payment/create',
+                                        'payment/list/',
+                                        EmployerPaymentTransactionListView.as_view(),
+                                        name='employer_payment_list_route'
+                                    ),
+                                    path(
+                                        'payment/create/',
                                         EmployerPaymentTransactionCreateView.as_view(),
                                         name='employer_payment_create_route'
+                                    ),
+                                    path(
+                                        'payment/<int:employersubdoc_pk>/update/',
+                                        EmployerPaymentTransactionUpdateView.as_view(),
+                                        name='employer_payment_update_route'
                                     ),
                                     path(
                                         '<int:employersubdoc_pk>/employer-url/',
@@ -192,6 +206,9 @@ urlpatterns = [
                                                         'employer_witness_signature',
                                                         'employer_witness_name',
                                                         'employer_witness_nric',
+                                                        'employer_witness_address_1',
+                                                        'employer_witness_address_2',
+                                                        'employer_witness_post_code',
                                                     ],
                                                 ),
                                                 name='signature_employer_witness_update_route'
@@ -527,6 +544,9 @@ urlpatterns = [
                                         'employer_witness_signature',
                                         'employer_witness_name',
                                         'employer_witness_nric',
+                                        'employer_witness_address_1',
+                                        'employer_witness_address_2',
+                                        'employer_witness_post_code',
                                     ],
                                     success_url_route_name='token_signature_employer_spouse_route',
                                     success_message = 'Thank you.',

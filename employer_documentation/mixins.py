@@ -493,29 +493,8 @@ class PdfHtmlViewMixin:
             context = super().get_context_data(object=self.object)
 
             # Document version number formatting
-            version_str = str(context.get('object').version).zfill(4)
-            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
 
-            # Get agency main branch
-            context['agency_main_branch'] = (
-                self.object.employer.agency_employee.agency.branches.filter(
-                    main_branch=True
-                ).all()[0]
-            )
-
-            # Employer NRIC
-            try:
-                context['object'].employer.employer_nric = self.object.employer.get_nric_full()
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
-            
-            # FDW passport number
-            try:
-                context['object'].fdw.passport_number = self.object.fdw.get_passport_number()
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].fdw.passport_number = ''
         elif isinstance(self.object, EmployerDocSig):
             '''
             context['object'] set as EmployerDoc object instead of
@@ -524,29 +503,6 @@ class PdfHtmlViewMixin:
             context = super().get_context_data(object=self.object.employer_doc)
 
             # Document version number formatting
-            version_str = str(
-                context.get('object').version).zfill(4)
-            context['object'].version = f'[{version_str}] - {version_explainer_text}'
+            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
             
-            # Get agency main branch
-            context['agency_main_branch'] = (
-                self.object.employer_doc.employer.agency_employee.agency.branches.filter(
-                    main_branch=True
-                ).all()[0]
-            )
-
-            # Employer NRIC
-            try:
-                context['object'].employer.employer_nric = self.object.employer_doc.employer.get_nric_full()
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].employer.employer_nric = ''
-            
-            # FDW passport number
-            try:
-                context['object'].fdw.passport_number = self.object.employer_doc.fdw.get_passport_number()
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                context['object'].fdw.passport_number = ''
-        
         return context

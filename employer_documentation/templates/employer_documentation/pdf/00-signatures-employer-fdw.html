@@ -11,10 +11,10 @@
 <tr>
     <td>{{ object.employer.employer_name }}</td>
     <td></td>
-    <td>{{ object.fdw }}</td>
+    <td>{{ object.fdw.name }}</td>
 </tr>
 <tr>
-    <td>{{ object.employer.employer_nric }}</td>
+    <td>{{ object.employer.get_nric_full }}</td>
     <td></td>
-    <td>{{ object.fdw }}</td>
+    <td>{{ object.fdw.get_passport_number }}</td>
 </tr>

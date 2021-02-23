@@ -77,11 +77,11 @@
     </tr>
     <tr>
         <td>NRIC No. / FIN</td>
-        <td colspan="2">{{ object.employer.employer_nric }}</td>
+        <td colspan="2">{{ object.employer.get_nric_full }}</td>
     </tr>
     <tr>
         <td>Contact No.</td>
-        <td colspan="2">{{ object.employer.employer_mobile_number }}</td>
+        <td colspan="2">{{ object.employer.mobile_format_sg }}</td>
     </tr>
     <tr>
         <td>Residential Address</td>
@@ -171,7 +171,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -199,12 +199,13 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
 
     <br>
 
+    {% with lang_img_style='style="width: auto; height: 18px;"' %}
     <table class="border--all">
         <tr>
             <td colspan="3" class="main-safety-ag--bg-grey text-bold--600 text-align-center">
@@ -227,18 +228,7 @@
         <tr>
             <td colspan="3">
                 [The FDW is required to choose only <b><u>one</u></b> of the following options.]
-                <br>[PLRT Asing diharuskan memilih <b><u>satu</u></b> saja dari pilihan-pilihan berikut.]
-                <br><br> As indicated by the Employer above: -
-                <br>Sebagaimana yang diusulkan oleh majikan yang tertera di atas: -
-                <br><br>
-                <input type="checkbox" class="checkbox" />I understand that I am not required to clean the window exterior of my employer’s home.
-                <br>Saya mengerti bahwa saya tidak dikehendaki untuk membersihkan jendela bagian luar di rumah majikan saya.
-                <br><br>
-                <input type="checkbox" class="checkbox" /> I understand that I am required to clean only the window exterior on the ground floor of my employer’s home.
-                <br>Saya mengerti bahwa saya dikehendaki untuk membersihkan jendela bagian luar dilantai dasar saja di rumah majikan saya.
-                <br><br>
-                <input type="checkbox" class="checkbox" /> I understand that I am required to clean only the window exterior along the common corridor of my employer’s home.
-                <br>Saya mengerti bahwa saya dikehendaki untuk membersihkan jendela bagian luar disepanjang gang umum saja di rumah majikan saya.
+                {% include lang_snippet_01 %}
             </td>
         </tr>
     </table>
@@ -262,19 +252,19 @@
                     </tr>
                     <tr>
                         <td style="border:none;"></td>
-                        <td style="border:none;">Saya mengerti bahwa saya dikehendaki untuk membersihkan jendela bagian luar di rumah majikan saya, dan saya akan memastikan bahwa saya membersihkan jendela bagian luar hanya jika teralis-teralis dikunci dan hanya jika diawasi
-                            oleh majikan saya atau orang dewasa yang mewakilinya.</td>
+                        {% include lang_snippet_02 %}
                     </tr>
                 </table>
             </td>
         </tr>
         <td width="24%">
-            <p class="text-align-center">Signature / Date
-            <br>Tanda Tangan / Tanggal</p>
+            <p class="text-align-center">Signature / Date</p>
+            {% include lang_snippet_03 %}
         </td>
-        <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
+        <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
         </tr>
     </table>
+    {% endwith %}
     <br>
 
     <table class="border--all">
@@ -292,7 +282,7 @@
             <td width="24%">
                 <p class="text-align-center">Signature / Date</p>
             </td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>
