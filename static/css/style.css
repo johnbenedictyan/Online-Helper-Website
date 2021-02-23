@@ -128,6 +128,10 @@ button.mini-faq-button i {
   margin: 0 0 1rem 0;
 }
 
+.maid-card {
+  cursor: pointer;
+}
+
 #maid-profile-card {
   width: 300px !important;
 }
