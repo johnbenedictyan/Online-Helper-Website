@@ -185,7 +185,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 offset-md-1">
+            <div class="col-md-5 offset-md-2">
                 <div class="row">
                     <div class="col mb-md-2 mb-xl-4">
                         <img src="{% static 'images/olmaid-logo.png'%}" alt="" class="img-thumbnail img-fluid">
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 mb-3">
                 <div class="row">
                     <div class="col">
                         <h5>Employment History</h5>
@@ -225,15 +225,33 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-body p-3">
-                                <span>ASd</span>
-                                <span>ASd</span>
-                                <span>ASd</span>
-                                <span>ASd</span>
-                                <small class="d-inline-block">13/04/21</small>
-                                    <div class="progress" style="height: 2px;" class="d-inline-block">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-8 offset-2 text-center">
+                                                <small class="text-muted mb-0">2 Years</small>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center text-center">
+                                            <div class="col-2">
+                                                <small>13/04/2021</small>
+                                            </div>
+                                            <div class="col-8 px-0">
+                                                <div class="progress" style="height: 2px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <small>13/04/2021</small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-0 badge badge-primary px-3 py-2 mr-1">Chinese Employer</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                <small class="d-inline-block">13/04/22</small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -251,23 +269,21 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row" id="similar-profiles">
+                <div class="maid-carousel">
                     {% for maid in similar_maids %}
-                    <div class="col mb-4">
-                        <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
-                            <div onclick="maidProfileRedirect({{maid.pk}})">
-                                <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{maid.name}}</h5>
-                                    <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
-                                    <p class="card-text">{{maid.personal_details.age}} years old</p>
-                                    <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                                    <p class="card-text">{{maid.get_maid_type_display}}</p>
-                                </div>
+                    <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
+                        <div onclick="maidProfileRedirect({{maid.pk}})">
+                            <img src="{{maid.photo.url}}" class="card-img-top" alt="Maid Photo">
+                            <div class="card-body">
+                                <h5 class="card-title">{{maid.name}}</h5>
+                                <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                <p class="card-text">{{maid.personal_details.age}} years old</p>
+                                <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                                <p class="card-text">{{maid.get_maid_type_display}}</p>
                             </div>
-                            <div class="card-footer">
-                                <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
-                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -280,8 +296,8 @@
 {% endblock maid_section %}
 {% block js %}
 <script>
-    $(function(){
-        $('#similar-profiles').slick({
+    $(document).ready(function(){
+        $('.maid-carousel').slick({
             dots: true,
             infinite: false,
             speed: 300,
@@ -315,7 +331,7 @@
                 // settings: "unslick"
                 // instead of a settings object
             ]
-            });
-    })
+        });
+    });
 </script>
 {% endblock js %}
