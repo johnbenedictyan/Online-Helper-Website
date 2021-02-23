@@ -211,274 +211,127 @@
 </head>
 
 <body>
-    <section>
-        <div>
-            <div style="background-color:#c6d9ec;" class="text-center">
-                <h1 class="bold text-center" style="padding:5px 0; margin:0;">{{ object.agency.name }} ({{ object.agency.license_number }})</h1>
-                <p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ object.agency.get_main_office.address_1 }}, {{ object.agency.get_main_office.address_2 }}, {{ object.agency.get_main_office.postal_code }} &nbsp; Tel: {{ object.agency.get_main_office_number }}</p>
-                {% if agency_employee %}<p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ agency_employee.first_name }} {{ agency_employee.last_name }}&nbsp; Mobile: {{ agency_employee.contact_number }}</p>{% endif %}
-            </div>
-            <h1 class="text-center">BIO-DATA OF FOREIGN DOMESTIC WORKER (FDW)</h1>
-            <p class="text-center">*Please ensure that you run through the information within the Biodata as it is an important document to help you select a suitable FDW </p>
-            <h2 class="">(A) PROFILE OF FDW</h2>
-            <div style="display: flex;flex-direction: row;">
-                <div style="width:400px; margin-right:20px">
+    <div>
+        <div style="background-color:#c6d9ec;" class="text-center">
+            <h1 class="bold text-center" style="padding:5px 0; margin:0;">{{ object.agency.name }} ({{ object.agency.license_number }})</h1>
+            <p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ object.agency.get_main_office.address_1 }}, {{ object.agency.get_main_office.address_2 }}, {{ object.agency.get_main_office.postal_code }} &nbsp; Tel: {{ object.agency.get_main_office_number }}</p>
+            {% if agency_employee %}<p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ agency_employee.first_name }} {{ agency_employee.last_name }}&nbsp; Mobile: {{ agency_employee.contact_number }}</p>{% endif %}
+        </div>
+        <h1 class="text-center"><strong>BIO-DATA OF FOREIGN DOMESTIC WORKER (FDW)</strong></h1>
+        <p class="text-center">*Please ensure that you run through the information within the Biodata as it is an important document to help you select a suitable FDW </p>
+        <h2 class="">(A) PROFILE OF FDW</h2>
+        <div style="display: flex;flex-direction: row;">
+            <div style="width:400px; margin-right:20px">
 
-                    <h3>A1: Personal Information</h3>
+                <h3>A1: Personal Information</h3>
 
-                    <p class="ul mt-15"><span class="nu">1. Name: </span><span class="bold"> &nbsp; {{ object.name }}</span></p>
-                    <p class="ul mt-15"><span class="nu">2. Date of Birth: </span><span class="bold"> &nbsp; {{ object.personal_details.date_of_birth|date:"d M Y" }} &nbsp; </span><span class="nu"> &nbsp; Age: </span><span class="bold">&nbsp; {{ object.personal_details.get_age }} years old</span></p>
-                    <p class="ul mt-15"><span class="nu">3. Place of Birth: </span><span class="bold"> &nbsp; {{ object.personal_details.place_of_birth }}</span></p>
-                    <p class="ul mt-15"><span class="nu">4. Height & Weight: </span><span class="bold"> &nbsp; {{ object.personal_details.height|floatformat }} cm &nbsp; {{ object.personal_details.weight|floatformat }} kg</span></p>
-                    <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp; {{ object.personal_details.get_country_of_origin_display }}</span></p>
-                    <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold"> &nbsp; {{ object.personal_details.address_1 }}, {{ object.personal_details.address_2 }}</span></p>
-                    <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span class="bold"> &nbsp; {{ object.personal_details.repatriation_airport }}</span></p>
-                    <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; __________</span></p>
-                    <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp; {{ object.personal_details.get_religion_display }}</span></p>
-                    <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; __________</span></p>
-                    <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_siblings }}</span></p>
-                    <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp; {{ object.family_details.marital_status }}</span></p>
-                    <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_children }}</span></p>
-                    <p class="ul mt-15"><span class="nu">-Age(s) of children (if any): </span><span class="bold"> &nbsp;{{ object.family_details.age_of_children }}</span></p>
-                    <p class="ul mt-15"><span class="nu">-Passport Status: </span><span class="bold"> &nbsp; {{ object.get_passport_status_display }}</span></p>
-                </div>
-                <div>
-                    <p class="bold">Code: {{ object.reference_number }} ({{ object.financial_details.personal_loan_amount }} 6 months) </p>
-                    <p class="bold">Basic Salary: S${{ object.financial_details.salary }} with {{ object.days_off }} off day(s) per month</p>
-                    <p class="bold">Type of Maid: {{ object.get_maid_type_display }}</p>
-                    <p class="text-center"><img src="{{ object.photo }}"></p>
-                </div>
+                <p class="ul mt-15"><span class="nu">1. Name: </span><span class="bold"> &nbsp; {{ object.name }}</span></p>
+                <p class="ul mt-15"><span class="nu">2. Date of Birth: </span><span class="bold"> &nbsp; {{ object.personal_details.date_of_birth|date:"d M Y" }} &nbsp; </span><span class="nu"> &nbsp; Age: </span><span class="bold">&nbsp; {{ object.personal_details.get_age }} years old</span></p>
+                <p class="ul mt-15"><span class="nu">3. Place of Birth: </span><span class="bold"> &nbsp; {{ object.personal_details.place_of_birth }}</span></p>
+                <p class="ul mt-15"><span class="nu">4. Height & Weight: </span><span class="bold"> &nbsp; {{ object.personal_details.height|floatformat }} cm &nbsp; {{ object.personal_details.weight|floatformat }} kg</span></p>
+                <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp; {{ object.personal_details.get_country_of_origin_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold"> &nbsp; {{ object.personal_details.address_1 }}, {{ object.personal_details.address_2 }}</span></p>
+                <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span class="bold"> &nbsp; {{ object.personal_details.repatriation_airport }}</span></p>
+                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; __________</span></p>
+                <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp; {{ object.personal_details.get_religion_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; __________</span></p>
+                <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_siblings }}</span></p>
+                <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp; {{ object.family_details.marital_status }}</span></p>
+                <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_children }}</span></p>
+                <p class="ul mt-15"><span class="nu">-Age(s) of children (if any): </span><span class="bold"> &nbsp;{{ object.family_details.age_of_children }}</span></p>
+                <p class="ul mt-15"><span class="nu">-Passport Status: </span><span class="bold"> &nbsp; {{ object.get_passport_status_display }}</span></p>
             </div>
             <div>
-                <h3 class="mt">A2: Medical History/Dietary Restrictions</h3>
-                <p class="ul mt-15"><span class="nu">14. Allergies (if any): </span> &nbsp; Nil</p>
-                <p class="mt-15">15. Past and existing illnesses (including chronic ailments and illnesses requiring medication):</p>
-            </div>
-
-            <div>
-                <table class="table3">
-                    <tbody>
-                        <tr>
-                            <th></th>
-                            <th class="text-center">Yes</th>
-                            <th class="text-center">No</th>
-                            <th></th>
-                            <th class="text-center">Yes</th>
-                            <th class="text-center">No</th>
-                        </tr>
-                        <tr>
-                            <td width="26%">i. Mental illness</td>
-                            <td width="12%" class="text-center">&#9744; </td>
-                            <td width="12%" class="text-center">&#9745;</td>
-                            <td width="26%">vi. Tuberculosis</td>
-                            <td width="12%" class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                        </tr>
-                        <tr>
-                            <td>ii. Epilepsy</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                            <td>vii. Heart disease</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                        </tr>
-                        <tr>
-                            <td>iii. Asthma</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                            <td>viii. Malaria</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                        </tr>
-                        <tr>
-                            <td>iv. Diabetes</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                            <td>ix. Operations</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                        </tr>
-                        <tr>
-                            <td>v. Hypertension</td>
-                            <td class="text-center">&#9744; </td>
-                            <td class="text-center">&#9745;</td>
-                            <td>x. Others:</td>
-                            <td colspan="2"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div>
-                <p class="ul"><span class="nu">16. Physical disabilities: </span> &nbsp; Nil</p>
-                <p class="ul mt-15"><span class="nu">17. Dietary restrictions: </span> &nbsp; {{ object.dietary_restriction }}</p>
-                <p class="ul mt-15"><span class="nu">18. Food handling preferences: </span> &nbsp; {{ object.food_handling_preferences }}</p>
-            </div>
-
-            <!--<div style="page-break-before: always;">-->
-            <!--    <h3 class="mt-3">A3: Others</h3>-->
-            <!--    <p class="ul mt-15"><span class="nu">19. Preference for rest day: </span> &nbsp; {{ object.number_of_off_days_per_month }} rest day(s) per month.</p>-->
-            <!--    <p class="ul mt-15"><span class="nu">20. Any other remarks: </span> &nbsp; Nil</p>-->
-            <!--</div>-->
-
-            <div class="mt-3" style="page-break-before: always;">
-                <h3 class="mt">(B) SKILLS OF FDW</h3>
-                <h4>B1: Method of Evaluation of Skills</h4>
-                <p class="mb">Please indicate the method(s) used to evaluate the FDW’s skills (can tick more than one):
-                </p>
-                <p>&#9744; Based on FDW’s declaration, no evaluation/observation by
-                    Singapore EA or overseas training centre/EA</p>
-                <div style="padding-left:20px">
-                    <p>&#9744; Interviewed by Singapore EA</p>
-                    <p>&#9744; Interviewed via telephone/teleconference</p>
-                    <p>&#9744; Interviewed via videoconference</p>
-                    <p>&#9744; Interviewed in person</p>
-                    <p>&#9744; Interviewed in person and also made observation of FDW
-                        in the areas of work listed in table</p>
-                </div>
-                <table class="mt-3 table2">
-                    <thead>
-                        <tr style="background-color:#c6d9ec;">
-                            <th class="text-center text-top" width="5%">No</th>
-                            <th class="text-center text-top" width="26%">Areas of Work</th>
-                            <th class="text-center text-top" width="12%">Willingness
-                                <p class="weight-400" style="line-height:1.2; padding:0; margin:5px 0;">Yes/No</p>
-                            </th>
-                            <th class="text-center text-top" width="12%">Experience
-                                <p class="weight-400" style="line-height:1.2; padding:0; margin:5px 0;">Yes/No</p>
-                                <p class="weight-400">If yes, state the no. of years</p>
-                            </th>
-                            <th class="text-center text-top" width="45%">
-                                <p style="line-height:1.2; padding:0; margin:0 0 5px 0;">Assessment/ Observation</p>
-                                <p class="weight-400" style="line-height:1.2; padding:0; margin:0 0 5px 0;">Please state
-                                    qualitative observations of FDW and/or rate the FDW (indicate N.A. if no evaluation
-                                    was done)</p>
-                                <p class="weight-400" style="line-height:1.2; padding:0; margin:0">
-                                    Poor....................Excellent...N.A</p>
-                                <p class="weight-400" style="line-height:1.2; padding:0; margin:0">1 2 3 4 5 N.A</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>Care for Infant/Children</td>
-                            <td class="text-center">{{ object.care_for_infants_and_children_willingness }}</td>
-                            <td class="text-center">{{ object.care_for_infants_and_children_experience }}</td>
-                            <td class="text-center">{{ object.care_for_infants_and_children_assessment }}<br>
-                                {% if object.care_for_infants_and_children_remarks == "Other remarks" %}
-                                {{ object.care_for_infants_and_children_other_remarks }}
-                                {% else %}
-                                {{ object.care_for_infants_and_children_remarks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td scope="row" class="pl-2">Care for Elderly</td>
-                            <td class="text-center">{{ object.care_for_elderly_willingness }}</td>
-                            <td class="text-center">{{ object.care_for_elderly_experience }}</td>
-                            <td class="text-center">{{ object.care_for_elderly_assessment }}<br>
-                                {% if object.care_for_elderly_remarks == "Other remarks" %}
-                                {{ object.care_for_elderly_other_remarks }}
-                                {% else %}
-                                {{ object.care_for_elderly_remarks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td scope="row" class="pl-2">Care for the Disabled</td>
-                            <td class="text-center">{{ object.care_for_the_disabled_willingness }}</td>
-                            <td class="text-center">{{ object.care_for_the_disabled_experience }}</td>
-                            <td class="text-center">{{ object.care_for_the_disabled_assessment }}<br>
-                                {% if object.care_for_the_disabled_remarks == "Other remarks" %}
-                                {{ object.care_for_the_disabled_other_remarks }}
-                                {% else %}
-                                {{ object.care_for_the_disabled_remarks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td scope="row" class="pl-2">General Housework</td>
-                            <td class="text-center">{{ object.general_housework_willingness }}</td>
-                            <td class="text-center">{{ object.general_housework_experience }}</td>
-                            <td class="text-center">{{ object.general_housework_assessment }}<br>
-                                {% if object.general_housework_remarks == "Other remarks" %}
-                                {{ object.general_housework_other_remarks }}
-                                {% else %}
-                                {{ object.general_housework_remarks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td scope="row" class="pl-2">Cooking</td>
-                            <td class="text-center">{{ object.cooking_willingness }}</td>
-                            <td class="text-center">{{ object.cooking_experience }}</td>
-                            <td class="text-center">{{ object.cooking_assessment }}<br>
-                                {% if object.cooking_remarks == "Other remarks" %}
-                                {{ object.cooking_other_remarks }}
-                                {% else %}
-                                {{ object.cooking_remarks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">6</td>
-                            <td style="line-height:1.5">Language Abilities (Spoken)<br>Please specify:</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">{{ object.language_ability }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">7</td>
-                            <td style="line-height:1.5">Other Skills, If Any<br>Please specify:</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">{{ object.other_skills }}<br>
-                                {% if object.other_skills == "Other skills" %}
-                                {{ object.other_skills_remarks }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="mt-3 table2">
-                    <thead>
-                        <tr style="background-color:#c6d9ec;">
-                            <th colspan="3">Job Preferences (1- Most preferred.... 5- Least preferred)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="pl-2">1 - {{ responsibility_preference.1 }}</td>
-                            <td class="pl-2">2 - {{ responsibility_preference.2 }}</td>
-                            <td class="pl-2">3 - {{ responsibility_preference.3 }}</td>
-                        </tr>
-                        <td class="pl-2">4 - {{ responsibility_preference.4 }}</td>
-                        <td class="pl-2">5 - {{ responsibility_preference.5 }}</td>
-                        <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <p class="bold">Code: {{ object.reference_number }} ({{ object.financial_details.personal_loan_amount }} 6 months) </p>
+                <p class="bold">Basic Salary: S${{ object.financial_details.salary }} with {{ object.days_off }} off day(s) per month</p>
+                <p class="bold">Type of Maid: {{ object.get_maid_type_display }}</p>
+                <p class="text-center"><img src="{{ object.photo }}"></p>
             </div>
         </div>
+        <div>
+            <h3 class="mt">A2: Medical History/Dietary Restrictions</h3>
+            <p class="ul mt-15"><span class="nu">14. Allergies (if any): </span> &nbsp; Nil</p>
+            <p class="mt-15">15. Past and existing illnesses (including chronic ailments and illnesses requiring medication):</p>
+        </div>
 
-        <div style="page-break-before: always;">
-            <p class="mt">&#9744; Interviewed by overseas training centre / EA (Please
-                state name of foreign training centre / EA): </p>
-            <p>State if the third party is certified (e.g. ISO9001) or audited periodically by the
-                EA:_______________________</p>
-            <div style="padding-left:20px">
-                <p>&#9744; Interviewed via telephone/teleconference</p>
-                <p>&#9744; Interviewed via videoconference</p>
-                <p>&#9744; Interviewed in person</p>
-                <p>&#9744; Interviewed in person and also made observation of FDW in
-                    the areas of work listed in table</p>
-            </div>
+        <div>
+            <table class="table3">
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th class="text-center">Yes</th>
+                        <th class="text-center">No</th>
+                        <th></th>
+                        <th class="text-center">Yes</th>
+                        <th class="text-center">No</th>
+                    </tr>
+                    <tr>
+                        <td width="26%">i. Mental illness</td>
+                        <td width="12%" class="text-center">&#9744; </td>
+                        <td width="12%" class="text-center">&#9745;</td>
+                        <td width="26%">vi. Tuberculosis</td>
+                        <td width="12%" class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                    </tr>
+                    <tr>
+                        <td>ii. Epilepsy</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                        <td>vii. Heart disease</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                    </tr>
+                    <tr>
+                        <td>iii. Asthma</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                        <td>viii. Malaria</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                    </tr>
+                    <tr>
+                        <td>iv. Diabetes</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                        <td>ix. Operations</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                    </tr>
+                    <tr>
+                        <td>v. Hypertension</td>
+                        <td class="text-center">&#9744; </td>
+                        <td class="text-center">&#9745;</td>
+                        <td>x. Others:</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <p class="ul"><span class="nu">16. Physical disabilities: </span> &nbsp; Nil</p>
+            <p class="ul mt-15"><span class="nu">17. Dietary restrictions: </span> &nbsp; {{ object.dietary_restrictions.get_restriction_display }}</p>
+            <p class="ul mt-15"><span class="nu">18. Food handling preferences: </span> &nbsp; {{ object.food_handling_preferences.get_preference_display }}</p>
+        </div>
+
+        <!-- {% comment %} -->
+        <!--<div style="page-break-before: always;">-->
+        <!--    <h3 class="mt-3">A3: Others</h3>-->
+        <!--    <p class="ul mt-15"><span class="nu">19. Preference for rest day: </span> &nbsp; {{ object.number_of_off_days_per_month }} rest day(s) per month.</p>-->
+        <!--    <p class="ul mt-15"><span class="nu">20. Any other remarks: </span> &nbsp; Nil</p>-->
+        <!--</div>-->
+        <!-- {% endcomment %} -->
+
+        <div class="mt-3" style="page-break-before: always;">
+            <h3 class="mt">(B) SKILLS OF FDW</h3>
+            <h4>B1: Method of Evaluation of Skills</h4>
+            <p class="mb">Please indicate the method(s) used to evaluate the FDW’s skills (can tick more than one):</p>
+            <p>&#9744; Based on FDW’s declaration, no evaluation/observation by Singapore EA or overseas training centre/EA</p>
+            <p>&#9744; Interviewed by Singapore EA</p>
+            <p>&#9744; Interviewed via telephone/teleconference</p>
+            <p>&#9744; Interviewed via videoconference</p>
+            <p>&#9744; Interviewed in person</p>
+            <p>&#9744; Interviewed in person and also made observation of FDW in the areas of work listed in table</p>
             <table class="mt-3 table2">
                 <thead>
                     <tr style="background-color:#c6d9ec;">
@@ -494,8 +347,8 @@
                         <th class="text-center text-top" width="45%">
                             <p style="line-height:1.2; padding:0; margin:0 0 5px 0;">Assessment/ Observation</p>
                             <p class="weight-400" style="line-height:1.2; padding:0; margin:0 0 5px 0;">Please state
-                                qualitative observations of FDW and/or rate the FDW (indicate N.A. if no evaluation was
-                                done)</p>
+                                qualitative observations of FDW and/or rate the FDW (indicate N.A. if no evaluation
+                                was done)</p>
                             <p class="weight-400" style="line-height:1.2; padding:0; margin:0">
                                 Poor....................Excellent...N.A</p>
                             <p class="weight-400" style="line-height:1.2; padding:0; margin:0">1 2 3 4 5 N.A</p>
@@ -506,65 +359,65 @@
                     <tr>
                         <td class="text-center">1</td>
                         <td>Care for Infant/Children</td>
-                        <td class="text-center">{{ object.care_for_infants_and_children_willingness }}</td>
-                        <td class="text-center">{{ object.care_for_infants_and_children_experience }}</td>
-                        <td class="text-center">{{ object.care_for_infants_and_children_assessment }}<br>
-                            {% if object.care_for_infants_and_children_remarks == "Other remarks" %}
-                            {{ object.care_for_infants_and_children_other_remarks }}
+                        <td class="text-center">{{ object.infant_child_care.get_willingness_display }}</td>
+                        <td class="text-center">{{ object.infant_child_care.get_experience_display }}</td>
+                        <td class="text-center">{{ object.infant_child_care.get_assessment_display }}<br>
+                            {% if object.infant_child_care.other_remarks == "Other remarks" %}
+                            {{ object.infant_child_care.other_remarks }}
                             {% else %}
-                            {{ object.care_for_infants_and_children_remarks }}
+                            {{ object.infant_child_care.remarks }}
                             {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td class="text-center">2</td>
                         <td scope="row" class="pl-2">Care for Elderly</td>
-                        <td class="text-center">{{ object.care_for_elderly_willingness }}</td>
-                        <td class="text-center">{{ object.care_for_elderly_experience }}</td>
-                        <td class="text-center">{{ object.care_for_elderly_assessment }}<br>
-                            {% if object.care_for_elderly_remarks == "Other remarks" %}
-                            {{ object.care_for_elderly_other_remarks }}
+                        <td class="text-center">{{ object.elderly_care.get_willingness_display }}</td>
+                        <td class="text-center">{{ object.elderly_care.get_experience_display }}</td>
+                        <td class="text-center">{{ object.elderly_care.get_assessment_display }}<br>
+                            {% if object.elderly_care.other_remarks == "Other remarks" %}
+                            {{ object.elderly_care.other_remarks }}
                             {% else %}
-                            {{ object.care_for_elderly_remarks }}
+                            {{ object.elderly_care.remarks }}
                             {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td class="text-center">3</td>
                         <td scope="row" class="pl-2">Care for the Disabled</td>
-                        <td class="text-center">{{ object.care_for_the_disabled_willingness }}</td>
-                        <td class="text-center">{{ object.care_for_the_disabled_experience }}</td>
-                        <td class="text-center">{{ object.care_for_the_disabled_assessment }}<br>
-                            {% if object.care_for_the_disabled_remarks == "Other remarks" %}
-                            {{ object.care_for_the_disabled_other_remarks }}
+                        <td class="text-center">{{ object.disabled_care.get_willingness_display }}</td>
+                        <td class="text-center">{{ object.disabled_care.get_experience_display }}</td>
+                        <td class="text-center">{{ object.disabled_care.get_assessment_display }}<br>
+                            {% if object.disabled_care.other_remarks == "Other remarks" %}
+                            {{ object.disabled_care.other_remarks }}
                             {% else %}
-                            {{ object.care_for_the_disabled_remarks }}
+                            {{ object.disabled_care.remarks }}
                             {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td class="text-center">4</td>
                         <td scope="row" class="pl-2">General Housework</td>
-                        <td class="text-center">{{ object.general_housework_willingness }}</td>
-                        <td class="text-center">{{ object.general_housework_experience }}</td>
-                        <td class="text-center">{{ object.general_housework_assessment }}<br>
-                            {% if object.general_housework_remarks == "Other remarks" %}
-                            {{ object.general_housework_other_remarks }}
+                        <td class="text-center">{{ object.general_housework.get_willingness_display }}</td>
+                        <td class="text-center">{{ object.general_housework.get_experience_display }}</td>
+                        <td class="text-center">{{ object.general_housework.get_assessment_display }}<br>
+                            {% if object.general_housework.other_remarks == "Other remarks" %}
+                            {{ object.general_housework.other_remarks }}
                             {% else %}
-                            {{ object.general_housework_remarks }}
+                            {{ object.general_housework.remarks }}
                             {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td class="text-center">5</td>
                         <td scope="row" class="pl-2">Cooking</td>
-                        <td class="text-center">{{ object.cooking_willingness }}</td>
-                        <td class="text-center">{{ object.cooking_experience }}</td>
-                        <td class="text-center">{{ object.cooking_assessment }}<br>
-                            {% if object.cooking_remarks == "Other remarks" %}
-                            {{ object.cooking_other_remarks }}
+                        <td class="text-center">{{ object.cooking.get_willingness_display }}</td>
+                        <td class="text-center">{{ object.cooking.get_experience_display }}</td>
+                        <td class="text-center">{{ object.cooking.get_assessment_display }}<br>
+                            {% if object.cooking.other_remarks == "Other remarks" %}
+                            {{ object.cooking.other_remarks }}
                             {% else %}
-                            {{ object.cooking_remarks }}
+                            {{ object.cooking.remarks }}
                             {% endif %}
                         </td>
                     </tr>
@@ -582,126 +435,265 @@
                         <td class="text-center">-</td>
                         <td class="text-center">{{ object.other_skills }}<br>
                             {% if object.other_skills == "Other skills" %}
-                            {{ object.other_skills_remarks }}
+                            {{ object.other_skills.remarks }}
                             {% endif %}
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-        </div>
 
-        <div class="mt-3">
-            <h3 class="mt">(C) EMPLOYMENT HISTORY OF THE FDW</h3>
-            <h4>C1: Employment History</h4>
-            <table class="mt-5 text-center table4">
+            <table class="mt-3 table2">
+                <thead>
+                    <tr style="background-color:#c6d9ec;">
+                        <th colspan="3">Job Preferences (1- Most preferred.... 5- Least preferred)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pl-2">1 - {{ responsibility_preference.1 }}</td>
+                        <td class="pl-2">2 - {{ responsibility_preference.2 }}</td>
+                        <td class="pl-2">3 - {{ responsibility_preference.3 }}</td>
+                    </tr>
+                    <td class="pl-2">4 - {{ responsibility_preference.4 }}</td>
+                    <td class="pl-2">5 - {{ responsibility_preference.5 }}</td>
+                    <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="page-break-before: always;">
+        <p class="mt">&#9744; Interviewed by overseas training centre / EA (Please
+            state name of foreign training centre / EA): </p>
+        <p>State if the third party is certified (e.g. ISO9001) or audited periodically by the
+            EA:_______________________</p>
+        <div style="padding-left:20px">
+            <p>&#9744; Interviewed via telephone/teleconference</p>
+            <p>&#9744; Interviewed via videoconference</p>
+            <p>&#9744; Interviewed in person</p>
+            <p>&#9744; Interviewed in person and also made observation of FDW in
+                the areas of work listed in table</p>
+        </div>
+        <table class="mt-3 table2">
+            <thead>
                 <tr style="background-color:#c6d9ec;">
-                    <th class="text-center" width="10%">Date
+                    <th class="text-center text-top" width="5%">No</th>
+                    <th class="text-center text-top" width="26%">Areas of Work</th>
+                    <th class="text-center text-top" width="12%">Willingness
+                        <p class="weight-400" style="line-height:1.2; padding:0; margin:5px 0;">Yes/No</p>
                     </th>
-                    <th class="text-center" width="10%">Country</th>
-                    <th class="text-center" width="10%">Employer</th>
-                    <th class="text-center" width="45%">Work Duties</th>
-                    <th class="text-center" width="25%">Remarks</th>
+                    <th class="text-center text-top" width="12%">Experience
+                        <p class="weight-400" style="line-height:1.2; padding:0; margin:5px 0;">Yes/No</p>
+                        <p class="weight-400">If yes, state the no. of years</p>
+                    </th>
+                    <th class="text-center text-top" width="45%">
+                        <p style="line-height:1.2; padding:0; margin:0 0 5px 0;">Assessment/ Observation</p>
+                        <p class="weight-400" style="line-height:1.2; padding:0; margin:0 0 5px 0;">Please state
+                            qualitative observations of FDW and/or rate the FDW (indicate N.A. if no evaluation was
+                            done)</p>
+                        <p class="weight-400" style="line-height:1.2; padding:0; margin:0">
+                            Poor....................Excellent...N.A</p>
+                        <p class="weight-400" style="line-height:1.2; padding:0; margin:0">1 2 3 4 5 N.A</p>
+                    </th>
                 </tr>
-                {% for entry in employment_history %}
+            </thead>
+            <tbody>
                 <tr>
-                    <td class="text-left">{{ entry.date_from }} To {{ entry.date_to }}</td>
-                    <td class="text-center text-top">{{ entry.country }}</td>
-                    <td class="text-center text-top">{{ entry.employer }}</td>
-                    <td class="text-left text-top">{{ entry.work_duties }}</td>
-                    <td class="text-left text-top">{{ entry.remarks }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-
-        <div style="page-break-before: always;">
-            <h4 style="line-height:1.2; padding:0; margin:10px 0 5px 0;">C2: Employment History in Singapore:</h4>
-            <p style="line-height:1.2; padding:0; margin:0 0 5px 0;">Previous working experience in Singapore <input
-                    type="checkbox" class="checkbox" />Yes &nbsp; &#9744; No</p>
-            <p style="line-height:1.5; padding:0; margin:0 0 5px 0;">(The EA is required to obtain the FDW’s employment
-                history from MOM and furnish the employer with the employment history of the FDW. The employer may also
-                verify the FDW’s employment history in Singapore through WPOL using SingPass)</p>
-            <h4 style="line-height:1.2; padding:0; margin:0 0 5px 0;">C3: Feedback from previous employers in Singapore:
-            </h4>
-            <p style="line-height:1.5; padding:0; margin:0 0 15px 0;">Feedback was/was not obtained by the EA from the
-                previous employers. If feedback was obtained (attach testimonial if possible), please indicate the
-                feedback in the table below:</p>
-            <table class="table4">
-                <tr style="background-color:#c6d9ec;">
-                    <th width="20%"></th>
-                    <th class="text-center" width="80%">Feedback</th>
-                </tr>
-                <tr>
-                    <td class="text-center">Employer 1</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="text-center">Employer 2</td>
-                    <td></td>
-                </tr>
-            </table>
-            <h3 class="mt">(D) AVAILABILITY OF FDW TO BE INTERVIEWED BY PROSPECTIVE EMPLOYER</h3>
-            <p>&#9744; FDW is not available for interview</p>
-            <p>&#9744; FDW can be interviewed by phone</p>
-            <p>&#9744; FDW can be interviewed by video-conference</p>
-            <p>&#9744; FDW can be interviewed in person</p>
-        </div>
-
-        <h3 class="mt">(E) OTHER REMARKS</h3>
-        <p><b>{{ object.other_remarks }}</b></p>
-
-
-        <div class="mt-3">
-            <table style="border:none; margin-top:90px;">
-                <tr>
-                    <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">FDW Name and Signature</td>
-                    <td class="w-15"></td>
-                    <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">EA Personnel Name and
-                        Registration Number</td>
-                </tr>
-                <tr>
-                    <td class="w-30">Date:</td>
-                    <td class="w-15"></td>
-                    <td class="w-30">Date:</td>
-                </tr>
-            </table>
-            <p class="mt">* I have gone through the 4 page biodata of this FDW and confirm that I would like to employ
-                her</p>
-            <table style="border:none;margin-top:90px;width:100%;padding-bottom:0;">
-                <tr>
-                    <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">Employer Name and NRIC No.
+                    <td class="text-center">1</td>
+                    <td>Care for Infant/Children</td>
+                    <td class="text-center">{{ object.infant_child_care.get_willingness_display }}</td>
+                    <td class="text-center">{{ object.infant_child_care.get_experience_display }}</td>
+                    <td class="text-center">{{ object.infant_child_care.get_assessment_display }}<br>
+                        {% if object.infant_child_care.other_remarks == "Other remarks" %}
+                        {{ object.infant_child_care.other_remarks }}
+                        {% else %}
+                        {{ object.infant_child_care.remarks }}
+                        {% endif %}
                     </td>
-                    <td class="w-15"></td>
-                    <td class="w-30"></td>
                 </tr>
                 <tr>
-                    <td class="w-30">Date:</td>
-                    <td class="w-15"></td>
-                    <td class="w-30"></td>
+                    <td class="text-center">2</td>
+                    <td scope="row" class="pl-2">Care for Elderly</td>
+                    <td class="text-center">{{ object.elderly_care.get_willingness_display }}</td>
+                    <td class="text-center">{{ object.elderly_care.get_experience_display }}</td>
+                    <td class="text-center">{{ object.elderly_care.get_assessment_display }}<br>
+                        {% if object.elderly_care.other_remarks == "Other remarks" %}
+                        {{ object.elderly_care.other_remarks }}
+                        {% else %}
+                        {{ object.elderly_care.remarks }}
+                        {% endif %}
+                    </td>
                 </tr>
-            </table>
-        </div>
+                <tr>
+                    <td class="text-center">3</td>
+                    <td scope="row" class="pl-2">Care for the Disabled</td>
+                    <td class="text-center">{{ object.disabled_care.get_willingness_display }}</td>
+                    <td class="text-center">{{ object.disabled_care.get_experience_display }}</td>
+                    <td class="text-center">{{ object.disabled_care.get_assessment_display }}<br>
+                        {% if object.disabled_care.other_remarks == "Other remarks" %}
+                        {{ object.disabled_care.other_remarks }}
+                        {% else %}
+                        {{ object.disabled_care.remarks }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">4</td>
+                    <td scope="row" class="pl-2">General Housework</td>
+                    <td class="text-center">{{ object.general_housework.get_willingness_display }}</td>
+                    <td class="text-center">{{ object.general_housework.get_experience_display }}</td>
+                    <td class="text-center">{{ object.general_housework.get_assessment_display }}<br>
+                        {% if object.general_housework.other_remarks == "Other remarks" %}
+                        {{ object.general_housework.other_remarks }}
+                        {% else %}
+                        {{ object.general_housework.remarks }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">5</td>
+                    <td scope="row" class="pl-2">Cooking</td>
+                    <td class="text-center">{{ object.cooking.get_willingness_display }}</td>
+                    <td class="text-center">{{ object.cooking.get_experience_display }}</td>
+                    <td class="text-center">{{ object.cooking.get_assessment_display }}<br>
+                        {% if object.cooking.other_remarks == "Other remarks" %}
+                        {{ object.cooking.other_remarks }}
+                        {% else %}
+                        {{ object.cooking.remarks }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">6</td>
+                    <td style="line-height:1.5">Language Abilities (Spoken)<br>Please specify:</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center">{{ object.language_ability }}</td>
+                </tr>
+                <tr>
+                    <td class="text-center">7</td>
+                    <td style="line-height:1.5">Other Skills, If Any<br>Please specify:</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center">{{ object.other_skills }}<br>
+                        {% if object.other_skills == "Other skills" %}
+                        {{ object.other_skills.remarks }}
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
 
-        <div>
-            <h4 class="text-center">**********************************</h4>
-            <h4 class="text-center">IMPORTANT NOTES FOR EMPLOYERS WHEN USING THE SERVICES OF AN EA</h4>
-            <ul class="text-justify" style="line-height: 1.5; padding-left:0; margin-left:0;">
-                <li>Do consider asking for an FDW who is able to communicate in a language you require, and interview
-                    her (in person/phone/videoconference) to ensure that she can communicate adequately.</li>
-                <li>Do consider requesting for an FDW who has a proven ability to perform the chores you require, for
-                    example, performing household chores (especially if she is required to hang laundry from a high-rise
-                    unit), cooking and caring for young
-                    children or the elderly.</li>
-                <li>Do work together with the EA to ensure that a suitable FDW is matched to you according to your needs
-                    and requirements. </li>
-                <li>You may wish to pay special attention to your prospective FDW's employment history and feedback from
-                    the FDW's Previous employer(s) before employing her.</li>
-        </div>
+    <div class="mt-3">
+        <h3 class="mt">(C) EMPLOYMENT HISTORY OF THE FDW</h3>
+        <h4>C1: Employment History</h4>
+        <table class="mt-5 text-center table4">
+            <tr style="background-color:#c6d9ec;">
+                <th class="text-center" width="10%">Date
+                </th>
+                <th class="text-center" width="10%">Country</th>
+                <th class="text-center" width="10%">Employer</th>
+                <th class="text-center" width="45%">Work Duties</th>
+                <th class="text-center" width="25%">Remarks</th>
+            </tr>
+            {% for entry in employment_history %}
+            <tr>
+                <td class="text-left">{{ entry.date_from }} To {{ entry.date_to }}</td>
+                <td class="text-center text-top">{{ entry.country }}</td>
+                <td class="text-center text-top">{{ entry.employer }}</td>
+                <td class="text-left text-top">{{ entry.work_duties }}</td>
+                <td class="text-left text-top">{{ entry.remarks }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div style="page-break-before: always;">
+        <h4 style="line-height:1.2; padding:0; margin:10px 0 5px 0;">C2: Employment History in Singapore:</h4>
+        <p style="line-height:1.2; padding:0; margin:0 0 5px 0;">Previous working experience in Singapore <input
+                type="checkbox" class="checkbox" />Yes &nbsp; &#9744; No</p>
+        <p style="line-height:1.5; padding:0; margin:0 0 5px 0;">(The EA is required to obtain the FDW’s employment
+            history from MOM and furnish the employer with the employment history of the FDW. The employer may also
+            verify the FDW’s employment history in Singapore through WPOL using SingPass)</p>
+        <h4 style="line-height:1.2; padding:0; margin:0 0 5px 0;">C3: Feedback from previous employers in Singapore:
+        </h4>
+        <p style="line-height:1.5; padding:0; margin:0 0 15px 0;">Feedback was/was not obtained by the EA from the
+            previous employers. If feedback was obtained (attach testimonial if possible), please indicate the
+            feedback in the table below:</p>
+        <table class="table4">
+            <tr style="background-color:#c6d9ec;">
+                <th width="20%"></th>
+                <th class="text-center" width="80%">Feedback</th>
+            </tr>
+            <tr>
+                <td class="text-center">Employer 1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="text-center">Employer 2</td>
+                <td></td>
+            </tr>
+        </table>
+        <h3 class="mt">(D) AVAILABILITY OF FDW TO BE INTERVIEWED BY PROSPECTIVE EMPLOYER</h3>
+        <p>&#9744; FDW is not available for interview</p>
+        <p>&#9744; FDW can be interviewed by phone</p>
+        <p>&#9744; FDW can be interviewed by video-conference</p>
+        <p>&#9744; FDW can be interviewed in person</p>
+    </div>
+
+    <h3 class="mt">(E) OTHER REMARKS</h3>
+    <p><b>{{ object.other_remarks }}</b></p>
 
 
-    </section>
-    <!-- /.container-fluid -->
+    <div class="mt-3">
+        <table style="border:none; margin-top:90px;">
+            <tr>
+                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">FDW Name and Signature</td>
+                <td class="w-15"></td>
+                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">EA Personnel Name and
+                    Registration Number</td>
+            </tr>
+            <tr>
+                <td class="w-30">Date:</td>
+                <td class="w-15"></td>
+                <td class="w-30">Date:</td>
+            </tr>
+        </table>
+        <p class="mt">* I have gone through the 4 page biodata of this FDW and confirm that I would like to employ
+            her</p>
+        <table style="border:none;margin-top:90px;width:100%;padding-bottom:0;">
+            <tr>
+                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">Employer Name and NRIC No.
+                </td>
+                <td class="w-15"></td>
+                <td class="w-30"></td>
+            </tr>
+            <tr>
+                <td class="w-30">Date:</td>
+                <td class="w-15"></td>
+                <td class="w-30"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h4 class="text-center">**********************************</h4>
+        <h4 class="text-center">IMPORTANT NOTES FOR EMPLOYERS WHEN USING THE SERVICES OF AN EA</h4>
+        <ul class="text-justify" style="line-height: 1.5; padding-left:0; margin-left:0;">
+            <li>Do consider asking for an FDW who is able to communicate in a language you require, and interview
+                her (in person/phone/videoconference) to ensure that she can communicate adequately.</li>
+            <li>Do consider requesting for an FDW who has a proven ability to perform the chores you require, for
+                example, performing household chores (especially if she is required to hang laundry from a high-rise
+                unit), cooking and caring for young
+                children or the elderly.</li>
+            <li>Do work together with the EA to ensure that a suitable FDW is matched to you according to your needs
+                and requirements. </li>
+            <li>You may wish to pay special attention to your prospective FDW's employment history and feedback from
+                the FDW's Previous employer(s) before employing her.</li>
+    </div>
 </body>
 
 </html>
