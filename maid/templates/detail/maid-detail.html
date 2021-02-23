@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col mt-3">
                         <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary">Add to Shortlist</a>
-                        <a href="#" class="btn btn-outline-primary ml-3">Download Bio-data</a>
+                        <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn btn-outline-primary ml-3">Download Bio-data</a>
                     </div>
                 </div>
             </div>
@@ -79,15 +79,13 @@
                                 <div class="row">
                                     <div class="col">
                                         <small class="text-muted">Education</small>
-                                        <p></p>
+                                        <p>{{maid.personal_details.education_level}}</p>
                                     </div>
                                     <div class="col">
                                         <small class="text-muted">Preferred Language</small>
                                         <p>{{maid.personal_details.preferred_language}}</p>
                                     </div>
                                     <div class="col">
-                                        <small class="text-muted">Number of days off</small>
-                                        <p>{{maid.days_off}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +196,7 @@
                             <div class="col mb-md-2 mb-xl-3">
                                 <h5>Top Skills</h5>
                                 {% for responsibility in maid.responsibilities.all %}
-                                <p class="mb-0 badge badge-primary px-3 py-2 mr-1">{{responsibility}}</p>
+                                <p class="mb-0 badge badge-secondary px-3 py-2 mr-1">{{responsibility}}</p>
                                 {% endfor%}
                             </div>
                         </div>
@@ -206,7 +204,7 @@
                             <div class="col mb-md-2">
                                 <h5>Language Spoken</h5>
                                 {% for language in maid.personal_details.languages.all %}
-                                <p class="mb-0 badge badge-primary px-3 py-2 mr-1">{{language}}</p>
+                                <p class="mb-0 badge badge-secondary px-3 py-2 mr-1">{{language}}</p>
                                 {% endfor%}
                             </div>
                         </div>
