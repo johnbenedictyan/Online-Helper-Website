@@ -404,6 +404,18 @@ class EmployerDocCreateView(
         form.instance.employer = Employer.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
+        if form.instance.fdw_clean_window_exterior==False:
+            form.instance.window_exterior_location = None
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.window_exterior_location=='OTHER':
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.grilles_installed_require_cleaning:
+            form.instance.adult_supervision = None
+
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -476,6 +488,21 @@ class EmployerDocUpdateView(
             'employer_pk': self.object.employer.pk,
             'employerdoc_pk': self.object.pk,
         })
+    
+    def form_valid(self, form):
+        if form.instance.fdw_clean_window_exterior==False:
+            form.instance.window_exterior_location = None
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.window_exterior_location=='OTHER':
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.grilles_installed_require_cleaning:
+            form.instance.adult_supervision = None
+
+        return super().form_valid(form)
 
 class EmployerDocSigSlugUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -822,7 +849,6 @@ class PdfFileTokenView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object().employer_doc.rn_joborder_ed
-        print(self.object.job_order_pdf)
         try:
             return FileResponse(
                 open(self.object.job_order_pdf.path, 'rb'),
@@ -842,10 +868,57 @@ class PdfArchiveSaveView(
     model = EmployerDoc
     pk_url_kwarg = 'employerdoc_pk'
 
+    def check_signatures(self, employer_doc):
+        if (
+            not employer_doc.rn_signatures_ed.employer_signature or
+            not employer_doc.rn_signatures_ed.fdw_signature or
+            not employer_doc.rn_signatures_ed.agency_staff_signature or
+            not employer_doc.rn_signatures_ed.employer_witness_signature or
+            not employer_doc.rn_signatures_ed.employer_witness_name or
+            not employer_doc.rn_signatures_ed.employer_witness_nric or
+            not employer_doc.rn_signatures_ed.fdw_witness_signature or
+            not employer_doc.rn_signatures_ed.fdw_witness_name or
+            not employer_doc.rn_signatures_ed.fdw_witness_nric or
+            not employer_doc.rn_signatures_ed.agency_staff_witness_signature or
+            not employer_doc.rn_signatures_ed.agency_staff_witness_name or
+            not employer_doc.rn_signatures_ed.agency_staff_witness_nric
+        ):
+            return 'Missing required signatures or witness details.'
+        
+        if (
+            employer_doc.spouse_required and (
+                not employer_doc.rn_signatures_ed.spouse_signature or
+                not employer_doc.rn_signatures_ed.spouse_name or
+                not employer_doc.rn_signatures_ed.spouse_nric
+            )
+        ):
+            return 'Missing spouse signature and/or details.'
+
+        if (
+            employer_doc.sponsor_required and (
+                not employer_doc.rn_signatures_ed.sponsor_signature or
+                not employer_doc.rn_signatures_ed.sponsor_name or
+                not employer_doc.rn_signatures_ed.sponsor_nric
+            )
+        ):
+            return 'Missing sponsor signature and/or details.'
+        
+        return False
+
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data()
         context['repayment_table'] = self.calc_repayment_schedule()
+
+        signatures_check = self.check_signatures(self.object)
+        if signatures_check:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                'Could not save documents. ' + signatures_check
+            )
+            return HttpResponseRedirect(reverse_lazy('sales_list_route'))
 
         instance = PdfArchive.objects.get(employer_doc=self.object)
         folder = 'employer_documentation/pdf/'

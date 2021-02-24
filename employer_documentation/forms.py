@@ -642,6 +642,44 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            # Safety Agreement
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-safety-agreement">Safety Agreement</h5>
+            """),
+            Row(
+                Column(
+                    'residential_dwelling_type',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'fdw_clean_window_exterior',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'window_exterior_location',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'grilles_installed_require_cleaning',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'adult_supervision',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'verifiy_employer_understands_window_cleaning',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
             # Submit
             Row(
                 Column(
@@ -681,6 +719,83 @@ class EmployerDocForm(forms.ModelForm):
                 field')
         else:
             return cleaned_field
+
+    def clean(self):
+        window_exterior_location_verbose_name = EmployerDoc._meta.get_field('window_exterior_location').verbose_name
+        window_exterior_error_msg = window_exterior_location_verbose_name + ' field cannot be blank'
+        if self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('window_exterior_location'):
+            self.add_error(
+                'window_exterior_location',
+                ValidationError(
+                    window_exterior_error_msg,
+                    code= 'error_window_exterior_location',
+                    params= {
+                        'window_exterior_location': window_exterior_location_verbose_name
+                    },
+                )
+            )
+        
+        grilles_installed_verbose_name = EmployerDoc._meta.get_field('grilles_installed_require_cleaning').verbose_name
+        grilles_installed_error_msg = grilles_installed_verbose_name + ' field cannot be blank'
+        if self.cleaned_data.get('window_exterior_location')=='OTHER' and self.cleaned_data.get('grilles_installed_require_cleaning')==None:
+            self.add_error(
+                'grilles_installed_require_cleaning',
+                ValidationError(
+                    grilles_installed_error_msg,
+                    code= 'error_grilles_installed_require_cleaning',
+                    params= {
+                        'grilles_installed_require_cleaning': grilles_installed_verbose_name
+                    },
+                )
+            )
+        
+        adult_supervision_verbose_name = EmployerDoc._meta.get_field('adult_supervision').verbose_name
+        adult_supervision_error_msg = 'Adult supervision is required if grilles installed on windows are to be cleaned by FDW'
+        if self.cleaned_data.get('grilles_installed_require_cleaning') and not self.cleaned_data.get('adult_supervision'):
+            self.add_error(
+                'adult_supervision',
+                ValidationError(
+                    adult_supervision_error_msg,
+                    code= 'error_adult_supervision',
+                    params= {
+                        'adult_supervision': adult_supervision_verbose_name
+                    },
+                )
+            )
+        
+        verifiy_employer_understands_verbose_name = EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
+        verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
+        if (
+            (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior')
+            or
+            (self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only')
+            or
+            (self.cleaned_data.get('window_exterior_location')=='COMMON_CORRIDOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='common_corridor_windows_only')
+            or
+            (self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning')
+            or
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior' and self.cleaned_data.get('fdw_clean_window_exterior'))
+            or
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only' and not self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR')
+            or
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='common_corridor_windows_only' and not self.cleaned_data.get('window_exterior_location')=='COMMON_CORRIDOR')
+            or
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning' and not self.cleaned_data.get('window_exterior_location')=='OTHER')
+            or
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning' and self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('grilles_installed_require_cleaning'))
+        ):
+            self.add_error(
+                'verifiy_employer_understands_window_cleaning',
+                ValidationError(
+                    verifiy_employer_understands_error_msg,
+                    code= 'error_verifiy_employer_understands',
+                    params= {
+                        'verifiy_employer_understands_window_cleaning': verifiy_employer_understands_verbose_name
+                    },
+                )
+            )
+        
+        return self.cleaned_data
 
 class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:

@@ -33,74 +33,80 @@
 <p class="text-bold--600">Please tick the appropriate box.</p>
 <table>
     <tr>
-        <td>
-            {% if object.monthly_combined_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499
-        </td>
+        <td>{% if object.monthly_combined_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000</td>
+        <td>{% if object.monthly_combined_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499</td>
+        <td>{% if object.monthly_combined_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999</td>
+        <td>{% if object.monthly_combined_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499</td>
     </tr>
     <tr>
-        <td>
-            {% if object.monthly_combined_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999
-        </td>
+        <td>{% if object.monthly_combined_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999</td>
+        <td>{% if object.monthly_combined_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999</td>
+        <td>{% if object.monthly_combined_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999</td>
+        <td>{% if object.monthly_combined_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999</td>
     </tr>
     <tr>
-        <td>
-            {% if object.monthly_combined_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999
-        </td>
+        <td>{% if object.monthly_combined_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999</td>
+        <td>{% if object.monthly_combined_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499</td>
+        <td>{% if object.monthly_combined_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999</td>
+        <td>{% if object.monthly_combined_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999</td>
     </tr>
     <tr>
-        <td>
-            {% if object.monthly_combined_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999
-        </td>
-        <td>
-            {% if object.monthly_combined_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
+        <td>{% if object.monthly_combined_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999</td>
+        <td>{% if object.monthly_combined_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above</td>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 <br>
 <p class="text-bold--600">Part II – Authorisation by Employer and His/Her Spouse</p>
 <br>
-<p>If either you and/or your spouse do not wish to submit a copy of your Income Tax Notice of Assessment, please complete Part II and authorise the Controller of Income Tax to verify your income range stated in Part I above and communicate the results of
-    the verification to the Controller of Work Passes.
+<p>
+    If either you and/or your spouse do not wish to submit a copy of your Income Tax Notice of Assessment, please 
+    complete Part II and authorise the Controller of Income Tax to verify your income range stated in Part I above 
+    and communicate the results of the verification to the Controller of Work Passes.
 </p>
 <br>
-<p>I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: <u>&nbsp;{{ object.employer.get_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_name }}&nbsp;</u>{% else %}________________{% endif %}, NRIC/ WP No/FIN: {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>{% else %}________________{% endif %}.</p>
-<br>
-<p>authorise the Controller of Income Tax to verify *my/our income tax range stated in Part I above, based on *my/our assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. *I/We
-    also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
+<p>
+    I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: 
+    <u>&nbsp;{{ object.employer.get_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}
+    <u>&nbsp;{{ object.rn_signatures_ed.spouse_name }}&nbsp;</u>{% else %}________________{% endif %}, 
+    NRIC/ WP No/FIN: {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>
+    {% else %}________________{% endif %},
 </p>
 <br>
-<p>In the event that *my/our assessment record(s) for the current Year of Assessment *is/are not available or finalised at the point of verification, I*/we understand that the Controller of Income Tax will verify *my/our income range stated in Part I against *my/our assessment record(s) for the two previous Years of Assessment.</p>
+{% if object.spouse_required %}
+    {% with my_or_our='<span style="text-decoration: line-through;">my</span>/our' i_or_we='<span style="text-decoration: line-through;">I</span>/we' %}
+    <p>
+        authorise the Controller of Income Tax to verify 
+        *{{ my_or_our }} income tax range stated in Part I above, based on 
+        *{{ my_or_our }} assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. 
+        *{{ i_or_we }} also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
+    </p>
+    <br>
+    <p>
+        In the event that *{{ my_or_our }} assessment record(s) for the current Year of Assessment 
+        *<span style="text-decoration: line-through;">is</span>/are not available or finalised at the point of verification, 
+        *{{ i_or_we }} understand that the Controller of Income Tax will verify 
+        *{{ my_or_our }} income range stated in Part I against *{{ my_or_our }} assessment record(s) for the two previous Years of Assessment.
+    </p>
+    {% endwith my_or_our %}
+{% else %}
+    {% with my_or_our='my/<span style="text-decoration: line-through;">our</span>' i_or_we='I/<span style="text-decoration: line-through;">we</span>' %}
+    <p>
+        authorise the Controller of Income Tax to verify 
+        *{{ my_or_our }} income tax range stated in Part I above, based on 
+        *{{ my_or_our }} assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. 
+        *{{ i_or_we }} also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
+    </p>
+    <br>
+    <p>
+        In the event that *{{ my_or_our }} assessment record(s) for the current Year of Assessment 
+        *is/<span style="text-decoration: line-through;">are</span> not available or finalised at the point of verification, 
+        *{{ i_or_we }} understand that the Controller of Income Tax will verify 
+        *{{ my_or_our }} income range stated in Part I against *{{ my_or_our }} assessment record(s) for the two previous Years of Assessment.
+    </p>
+    {% endwith my_or_our %}
+{% endif %}
 <br>
 <table>
     <tr>
@@ -111,30 +117,16 @@
         <td class="text-bold--600 text-align-center border--bottom">Employer's Spouse</td>
     </tr>
     <tr>
-        <td class="border--bottom border--right">
-            Income Tax Notice of Assessment No:
-            <br>{{ object.employer.get_nric_full }}
-        </td>
-        <td class="border--bottom">
-            Income Tax Notice of Assessment No:
-            <br>{% if object.spouse_required %}{{ object.rn_signatures_ed.spouse_nric }}{% endif %}
-        </td>
+        <td class="border--bottom border--right">Income Tax Notice of Assessment No:<br>{{ object.employer.get_nric_full }}</td>
+        <td class="border--bottom">Income Tax Notice of Assessment No:<br>{% if object.spouse_required %}{{ object.rn_signatures_ed.spouse_nric }}{% endif %}</td>
     </tr>
     <tr>
-        <td class="border--bottom border--right">
-            Signature: <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
-        </td>
-        <td class="border--bottom">
-            Signature: <img class="signature__img" src="{{ object.rn_signatures_ed.spouse_signature }}">
-        </td>
+        <td class="border--bottom border--right">Signature: <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+        <td class="border--bottom">Signature: <img class="signature__img" src="{{ object.rn_signatures_ed.spouse_signature }}"></td>
     </tr>
     <tr>
-        <td class="border--bottom border--right">
-            Date: {{ object.agreement_date|date:"d M Y" }}
-        </td>
-        <td class="border--bottom">
-            Date: {{ object.agreement_date|date:"d M Y" }}
-        </td>
+        <td class="border--bottom border--right">Date: {{ object.agreement_date|date:"d M Y" }}</td>
+        <td class="border--bottom">Date: {% if object.spouse_required %}{{ object.agreement_date|date:"d M Y" }}{% endif %}</td>
     </tr>
 </table>
 <p class="text--xsmall">*Delete where inapplicable</p>
@@ -142,12 +134,12 @@
 <br>
 <br>
 <div style="display:flex; max-width: 48px;">
-        <table class="border--all" width="10%">
-            <tr>
-                <td class="main-safety-ag--bg-black main-safety-ag--text-white"><b>&nbsp;WPDP</b></td>
-                <td><b>&nbsp;004</b></td>
-            </tr>
-        </table>
+    <table class="border--all" width="10%">
+        <tr>
+            <td class="main-safety-ag--bg-black main-safety-ag--text-white"><b>&nbsp;WPDP</b></td>
+            <td><b>&nbsp;004</b></td>
+        </tr>
+    </table>
     <div style="margin:5px 0 0 200px;" class="text--xsmall">The information is updated on 1 July 2007</div>
 </div>
 {% endblock pdf_content %}
