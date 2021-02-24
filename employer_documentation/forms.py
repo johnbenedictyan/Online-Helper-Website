@@ -766,6 +766,12 @@ class EmployerDocForm(forms.ModelForm):
         verifiy_employer_understands_verbose_name = EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
         verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
         if (
+            (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior')
+            or
+            (self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only')
+            or
+            (self.cleaned_data.get('window_exterior_location')=='COMMON_CORRIDOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='common_corridor_windows_only')
+            or
             (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior' and self.cleaned_data.get('fdw_clean_window_exterior'))
             or
             (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only' and not self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR')
