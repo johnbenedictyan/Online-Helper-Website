@@ -655,6 +655,17 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True,
     )
+    received_sip_assessment_checklist = models.BooleanField(
+        verbose_name=_('Employer has received advisory letter and assessment checklist from SIP?'),
+        choices=TrueFalseChoices(
+            'Yes, received',
+            'Not received'
+        ),
+        default=True,
+        blank=True,
+        null=True,
+        help_text=_('For employers of first-time FDWs only')
+    )
     verifiy_employer_understands_window_cleaning = models.CharField(
         verbose_name=_("Verifiy employer understands window cleaning conditions"),
         max_length=40,
