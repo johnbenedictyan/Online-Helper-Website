@@ -404,6 +404,18 @@ class EmployerDocCreateView(
         form.instance.employer = Employer.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
+        if form.instance.fdw_clean_window_exterior==False:
+            form.instance.window_exterior_location = None
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.window_exterior_location=='OTHER':
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.grilles_installed_require_cleaning:
+            form.instance.adult_supervision = None
+
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -476,6 +488,21 @@ class EmployerDocUpdateView(
             'employer_pk': self.object.employer.pk,
             'employerdoc_pk': self.object.pk,
         })
+    
+    def form_valid(self, form):
+        if form.instance.fdw_clean_window_exterior==False:
+            form.instance.window_exterior_location = None
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.window_exterior_location=='OTHER':
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.grilles_installed_require_cleaning:
+            form.instance.adult_supervision = None
+
+        return super().form_valid(form)
 
 class EmployerDocSigSlugUpdateView(
     CheckAgencyEmployeePermissionsMixin,
