@@ -772,6 +772,8 @@ class EmployerDocForm(forms.ModelForm):
             or
             (self.cleaned_data.get('window_exterior_location')=='COMMON_CORRIDOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='common_corridor_windows_only')
             or
+            (self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning')
+            or
             (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior' and self.cleaned_data.get('fdw_clean_window_exterior'))
             or
             (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only' and not self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR')
