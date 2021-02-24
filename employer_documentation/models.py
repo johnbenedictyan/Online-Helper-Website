@@ -605,6 +605,68 @@ class EmployerDoc(models.Model):
         choices=DAY_CHOICES
     )
 
+    # Safety Agreement
+    residential_dwelling_type = models.CharField(
+        max_length=30,
+        choices=[
+            ("HDB","HDB Apartment"),
+            ("CONDO","Private Apartment/Condominium"),
+            ("LANDED","Landed Property"),
+        ],
+        default='HDB',
+    )
+    fdw_clean_window_exterior = models.BooleanField(
+        verbose_name=_('Does Employer require FDW to clean window exterior?'),
+        choices=TrueFalseChoices(
+            'Yes, clean window exterior',
+            'No, not required'
+        ),
+        default=True,
+        help_text=_('If yes, must complete field (i).'),
+    )
+    window_exterior_location = models.CharField(
+        verbose_name=_("(i) Location of window exterior"),
+        max_length=40,
+        choices=[
+            ("GROUND_FLOOR","On the ground floor"),
+            ("COMMON_CORRIDOR","Facing common corridor"),
+            ("OTHER","Other"),
+        ],
+        blank=True,
+        null=True,
+        help_text=_("If 'Other' is selected, must complete field (ii)."),
+    )
+    grilles_installed_require_cleaning = models.BooleanField(
+        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        choices=TrueFalseChoices(
+            'Yes, grilles installed require cleaning',
+            'No, not required'
+        ),
+        blank=True,
+        null=True,
+        help_text=_('If yes, must complete field (iii).'),
+    )
+    adult_supervision = models.BooleanField(
+        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        choices=TrueFalseChoices(
+            'Yes, adult supervision',
+            'No supervision'
+        ),
+        blank=True,
+        null=True,
+    )
+    verifiy_employer_understands_window_cleaning = models.CharField(
+        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        max_length=40,
+        choices=[
+            ("not_required_to_clean_window_exterior","FDW not required to clean window exterior"),
+            ("ground_floor_windows_only","FDW to clean only window exterior on ground floor"),
+            ("common_corridor_windows_only","FDW to clean only window exterior along common corridor"),
+            ("require_window_exterior_cleaning","Ensure grilles are locked and only cleaned under adult supervision"),
+        ],
+        default='require_window_exterior_cleaning',
+    )
+
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         self.version += 1
