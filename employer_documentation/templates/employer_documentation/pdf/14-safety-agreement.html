@@ -122,7 +122,7 @@
         </td>
         <td>
             {% if object.grilles_installed_require_cleaning %}&#9745;{% else %}&#9744;{% endif %} Yes
-            <span style="margin-left:30px;">{% if not object.grilles_installed_require_cleaning %}&#9745;{% else %}&#9744;{% endif %} No</span>
+            <span style="margin-left:30px;">{% if object.grilles_installed_require_cleaning == False %}&#9745;{% else %}&#9744;{% endif %} No</span>
             <br> If "Yes" is selected, proceed to (iii)
         </td>
     </tr>
@@ -133,7 +133,7 @@
         <td>
             <br>
             {% if object.adult_supervision %}&#9745;{% else %}&#9744;{% endif %} Yes
-            <span style="margin-left:30px;">{% if not object.adult_supervision %}&#9745;{% else %}&#9744;{% endif %} No</span>
+            <span style="margin-left:30px;">{% if object.adult_supervision == False %}&#9745;{% else %}&#9744;{% endif %} No</span>
         </td>
     </tr>
 </table>
@@ -238,7 +238,7 @@
         </tr>
         <tr>
             <td colspan="3">
-                <table border="0">
+                <table>
                     <tr>
                         <td style="border:none;">{% if object.verifiy_employer_understands_window_cleaning == 'require_window_exterior_cleaning' %}&#9745;{% else %}&#9744;{% endif %}</td>
                         <td style="border:none;">I understand that I am required to clean the window exterior of my employer’s home, and I shall ensure that I clean the window exterior only when the grilles are locked and only when supervised by my employer or his adult representative.
