@@ -165,6 +165,7 @@
                     </div>
                     <div class="row mx-0 custom-table-data-hidden custom-table-dataset" hidden="True">
                         {% with class_row_wrapper="col-12 col-md-6 col-xl-4" class_col_left="col-10 col-md-9" class_col_right="col-2 col-md-3" %}
+                        {% if object.rn_pdfarchive_ed.f01_service_fee_schedule %}
                         <div class="{{ class_row_wrapper }}">
                             <div class="row">
                                 <div class="{{ class_col_left }}">Service Fee Schedule</div>
@@ -237,6 +238,15 @@
                                 <div class="{{ class_col_right }}"><a href="{% url 'pdf_archive_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a></div>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="{{ class_row_wrapper }}">
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                         {% endwith %}
                     </div>
                 </div>
