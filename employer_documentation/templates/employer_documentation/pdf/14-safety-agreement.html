@@ -90,32 +90,28 @@
     <tr>
         <td>Residential Dwelling Type</td>
         <td colspan="2">
-            <input type="checkbox" class="checkbox" />HDB Apartment
+            {% if object.residential_dwelling_type == 'HDB' %}&#9745;{% else %}&#9744;{% endif %} HDB Apartment
             <br>
-            <input type="checkbox" class="checkbox" />Private Apartment/Condominium
+            {% if object.residential_dwelling_type == 'CONDO' %}&#9745;{% else %}&#9744;{% endif %} Private Apartment/Condominium
             <br>
-            <input type="checkbox" class="checkbox" />Landed Property
+            {% if object.residential_dwelling_type == 'LANDED' %}&#9745;{% else %}&#9744;{% endif %} Landed Property
         </td>
     </tr>
     <tr>
-        <td colspan="3" class="main-safety-ag--bg-black main-safety-ag--text-white text-align-center">
-            Do I require my FDW to clean window exterior?
-        </td>
+        <td colspan="3" class="main-safety-ag--bg-black main-safety-ag--text-white text-align-center">Do I require my FDW to clean window exterior?</td>
     </tr>
     <tr>
-        <td colspan="2" class="text-align-center">
-            <input type="checkbox" class="checkbox" />Yes
-        </td>
-        <td align="center"><input type="checkbox" class="checkbox" />No</td>
+        <td colspan="2" class="text-align-center">{% if object.fdw_clean_window_exterior %}&#9745;{% else %}&#9744;{% endif %} Yes</td>
+        <td>{% if not object.fdw_clean_window_exterior %}&#9745;{% else %}&#9744;{% endif %} No</td>
     </tr>
     <tr>
         <td width="24%">(i) Location of window exterior</td>
         <td>
-            <input type="checkbox" class="checkbox" />On the ground
+            {% if object.window_exterior_location == 'GROUND_FLOOR' %}&#9745;{% else %}&#9744;{% endif %} On the ground
             <br>
-            <input type="checkbox" class="checkbox" />Facing common corridor
+            {% if object.window_exterior_location == 'COMMON_CORRIDOR' %}&#9745;{% else %}&#9744;{% endif %} Facing common corridor
             <br>
-            <input type="checkbox" class="checkbox" />Others
+            {% if object.window_exterior_location == 'OTHER' %}&#9745;{% else %}&#9744;{% endif %} Others
             <br> If "Others" is selected, proceed to (ii)
         </td>
         <td rowspan="3" class="main-safety-ag--bg-black"></td>
@@ -125,8 +121,8 @@
             (ii) Grilles installed on windows required to be cleaned by FDW
         </td>
         <td>
-            <input type="checkbox" class="checkbox" />Yes
-            <input type="checkbox" class="checkbox" style="margin-left:30px;" />No
+            {% if object.grilles_installed_require_cleaning %}&#9745;{% else %}&#9744;{% endif %} Yes
+            <span style="margin-left:30px;">{% if not object.grilles_installed_require_cleaning %}&#9745;{% else %}&#9744;{% endif %} No</span>
             <br> If "Yes" is selected, proceed to (iii)
         </td>
     </tr>
@@ -136,8 +132,8 @@
         </td>
         <td>
             <br>
-            <input type="checkbox" class="checkbox" />Yes
-            <input type="checkbox" class="checkbox" style="margin-left:30px;" />No
+            {% if object.adult_supervision %}&#9745;{% else %}&#9744;{% endif %} Yes
+            <span style="margin-left:30px;">{% if not object.adult_supervision %}&#9745;{% else %}&#9744;{% endif %} No</span>
         </td>
     </tr>
 </table>
@@ -151,21 +147,19 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">
-                <input type="checkbox" class="checkbox" />I have received the advisory letter and trainer’s assessment checklist from the Settling-In-Programme (for employers of first-time FDWs)
-            </td>
+            <td colspan="3">{% if object.received_sip_assessment_checklist %}&#9745;{% else %}&#9744;{% endif %} I have received the advisory letter and trainer’s assessment checklist from the Settling-In-Programme (for employers of first-time FDWs)</td>
         </tr>
         <tr>
             <td colspan="3">
                 <p>[The Employer is required to choose only <b><u>one</u></b> of the following options]</p>
                 <br>
-                <input type="checkbox" class="checkbox" />I understand the Conditions and I will not require my FDW to clean the window exterior of my home.
+                {% if object.verifiy_employer_understands_window_cleaning == 'not_required_to_clean_window_exterior' %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I will not require my FDW to clean the window exterior of my home.
                 <br><br>
-                <input type="checkbox" class="checkbox" />I understand the Conditions and I require my FDW to clean only the window exterior on the ground floor of my home.
+                {% if object.verifiy_employer_understands_window_cleaning == 'ground_floor_windows_only' %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I require my FDW to clean only the window exterior on the ground floor of my home.
                 <br><br>
-                <input type="checkbox" class="checkbox" />I understand the Conditions and I require my FDW to clean only the window exterior along the common corridor of my home.
+                {% if object.verifiy_employer_understands_window_cleaning == 'common_corridor_windows_only' %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I require my FDW to clean only the window exterior along the common corridor of my home.
                 <br><br>
-                <input type="checkbox" class="checkbox" />I require my FDW to clean the window exterior of my home, and I shall ensure that the grilles are locked when cleaning the window exterior and cleaned only when supervised by myself or my adult
+                {% if object.verifiy_employer_understands_window_cleaning == 'require_window_exterior_cleaning' %}&#9745;{% else %}&#9744;{% endif %} I require my FDW to clean the window exterior of my home, and I shall ensure that the grilles are locked when cleaning the window exterior and cleaned only when supervised by myself or my adult
                 representative.
             </td>
         </tr>
@@ -222,7 +216,7 @@
         </tr>
         <tr>
             <td colspan="3">
-                <input type="checkbox" class="checkbox" />I shall abide by my Employer’s instructions to clean the window exterior safely in compliance with the Condition
+                &#9745; I shall abide by my Employer’s instructions to clean the window exterior safely in compliance with the Condition
             </td>
         </tr>
         <tr>
@@ -246,7 +240,7 @@
             <td colspan="3">
                 <table border="0">
                     <tr>
-                        <td style="border:none;"><input type="checkbox" class="checkbox" /></td>
+                        <td style="border:none;">{% if object.verifiy_employer_understands_window_cleaning == 'require_window_exterior_cleaning' %}&#9745;{% else %}&#9744;{% endif %}</td>
                         <td style="border:none;">I understand that I am required to clean the window exterior of my employer’s home, and I shall ensure that I clean the window exterior only when the grilles are locked and only when supervised by my employer or his adult representative.
                         </td>
                     </tr>
