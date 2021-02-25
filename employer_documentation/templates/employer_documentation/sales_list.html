@@ -100,7 +100,7 @@
                             <div class="col-3">
                                 <div class="row text-center">
                                     <div class="col">{{ object.agreement_date|date:"d M Y" }}</div>
-                                    <div class="col">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -142,7 +142,7 @@
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Deployment Date</div>
-                            <div class="{{ class_col_right }}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Deposit Amount (S$)</div>
