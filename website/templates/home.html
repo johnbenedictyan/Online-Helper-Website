@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% block main_content %}
 <section id="main-banner-section">
-    <div class="jumbotron jumbotron-fluid bg-primary">
+    <div class="jumbotron jumbotron-fluid bg-info">
         <div class="container">
             <div class="row">
                 <div class="col col-lg-6 offset-lg-3 text-center py-2 py-md-3 text-light">
@@ -61,13 +61,13 @@
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <h1 class="mb-4">Preferences</h1>
+                <h2 class="mb-4">Preferences</h2>
             </div>
         </div>
         <div class="row">
-            <div class="col mb-md-5">
+            <div class="col mb-md-4">
                 <div class="card-deck">
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-50">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/partTime1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">General Housework</h5>
@@ -76,7 +76,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-50">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/cooking1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Cooking</h5>
@@ -85,7 +85,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-50">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/childrenCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Children</h5>
@@ -100,7 +100,7 @@
         <div class="row">
             <div class="col-md-8 offset-md-2 mb-md-5">
                 <div class="card-deck">
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-250">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/elderly.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Elderly</h5>
@@ -109,7 +109,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-250">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Disabled</h5>
@@ -127,14 +127,14 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col text-center">
-                <h1>Featured Maids</h1>
+                <h2>Featured Maids</h>
             </div>
         </div>
         <div class="row bg-featured-maids mb-3 mb-md-4">
             <div class="col-md-6 offset-md-6 py-5">
                 <div class="row mb-3">
                     <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
-                        <label for="nationalitySelect">Nationality</label>
+                        <label for="nationalitySelect" class="ml-1">Nationality</label>
                         <select class="form-control" id="nationalitySelect">
                             <option>1</option>
                             <option>2</option>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col offset-1 offset-md-0 ">
-                        <h4>Browse our featured maids</h4>
+                        <h5 class="ml-1">Browse our featured maids</h5>
                     </div>
                 </div>
             </div>
