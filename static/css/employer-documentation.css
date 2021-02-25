@@ -19,3 +19,32 @@ p {
     background-color: steelblue;
     color: white;
 }
+
+.custom-table-header, .custom-table-data, .custom-table-data-hidden {
+    min-height: 2rem;
+    padding: 0.8rem 1rem;
+    border-top: 1px solid lightgrey;
+}
+
+.custom-table-header {
+    background-color: steelblue;
+    color: white;
+    font-weight: bold;
+}
+
+.custom-table-dataset:nth-child(even) {
+    background-color: #eee;
+}
+
+.custom-table-data-hidden {
+    border-bottom: 1px solid lightgrey;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    background-color: lightblue;
+}
+
+.fa-file-pdf {
+    color: rgb(165, 0, 0);
+}
