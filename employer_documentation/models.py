@@ -879,7 +879,7 @@ class EmployerDocMaidStatus(models.Model):
         related_name='rn_maidstatus_ed'
     )
     fdw_work_commencement_date = models.DateField(
-        verbose_name=_('FDW Work Commencement Date'),
+        verbose_name=_('Deployment Date'),
         blank=True,
         null=True
     )
