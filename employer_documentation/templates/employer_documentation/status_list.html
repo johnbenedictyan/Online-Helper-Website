@@ -109,8 +109,11 @@
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Action</div>
                             <div class="{{ class_col_right }}">
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>
                                 <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
-                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i></button><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#archive-{{ object.rn_pdfarchive_ed.pk }}"><i class="fas fa-save"></i></button>
+                                {% if not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}{% else %}
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-paper-plane"></i></button>
+                                {% endif %}
                             </div>
                         </div>
                         {% endwith %}
