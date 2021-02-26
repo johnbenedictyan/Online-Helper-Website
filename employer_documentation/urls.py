@@ -356,24 +356,24 @@ urlpatterns = [
                                                 ),
                                                 name='pdf_archive_work_pass_authorisation'
                                             ),
-                                            path(
-                                                'security-bond/',
-                                                PdfFileAgencyView.as_view(
-                                                    model=models.EmployerDoc,
-                                                    pk_url_kwarg='employerdoc_pk',
-                                                    field_name='f11_security_bond',
-                                                ),
-                                                name='pdf_archive_security_bond'
-                                            ),
-                                            path(
-                                                'fdw-work-permit-12b/',
-                                                PdfFileAgencyView.as_view(
-                                                    model=models.EmployerDoc,
-                                                    pk_url_kwarg='employerdoc_pk',
-                                                    field_name='f12_fdw_work_permit',
-                                                ),
-                                                name='pdf_archive_fdw_work_permit'
-                                            ),
+                                            # path(
+                                            #     'security-bond/',
+                                            #     PdfFileAgencyView.as_view(
+                                            #         model=models.EmployerDoc,
+                                            #         pk_url_kwarg='employerdoc_pk',
+                                            #         field_name='f11_security_bond',
+                                            #     ),
+                                            #     name='pdf_archive_security_bond'
+                                            # ),
+                                            # path(
+                                            #     'fdw-work-permit-12b/',
+                                            #     PdfFileAgencyView.as_view(
+                                            #         model=models.EmployerDoc,
+                                            #         pk_url_kwarg='employerdoc_pk',
+                                            #         field_name='f12_fdw_work_permit',
+                                            #     ),
+                                            #     name='pdf_archive_fdw_work_permit'
+                                            # ),
                                             path(
                                                 'income-tax-declaration/',
                                                 PdfFileAgencyView.as_view(
@@ -468,22 +468,22 @@ urlpatterns = [
                                         ),
                                         name='pdf_agency_work_pass_authorisation'
                                     ),
-                                    path(
-                                        'pdf/security-bond/',
-                                        PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf/11-security-bond.html',
-                                            content_disposition = 'inline; filename="security-bond.pdf"',
-                                        ),
-                                        name='pdf_agency_security_bond'
-                                    ),
-                                    path(
-                                        'pdf/fdw-work-permit-12b/',
-                                        PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf/12-fdw-work-permit.html',
-                                            content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
-                                        ),
-                                        name='pdf_agency_fdw_work_permit_12b'
-                                    ),
+                                    # path(
+                                    #     'pdf/security-bond/',
+                                    #     PdfGenericAgencyView.as_view(
+                                    #         template_name='employer_documentation/pdf/11-security-bond.html',
+                                    #         content_disposition = 'inline; filename="security-bond.pdf"',
+                                    #     ),
+                                    #     name='pdf_agency_security_bond'
+                                    # ),
+                                    # path(
+                                    #     'pdf/fdw-work-permit-12b/',
+                                    #     PdfGenericAgencyView.as_view(
+                                    #         template_name='employer_documentation/pdf/12-fdw-work-permit.html',
+                                    #         content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                                    #     ),
+                                    #     name='pdf_agency_fdw_work_permit_12b'
+                                    # ),
                                     path(
                                         'pdf/income-tax-declaration/',
                                         PdfGenericAgencyView.as_view(
@@ -661,26 +661,26 @@ urlpatterns = [
                                         ),
                                         name='pdf_token_employer_work_pass_authorisation'
                                     ),
-                                    path(
-                                        'security-bond/',
-                                        PdfGenericTokenView.as_view(
-                                            slug_field='employer_slug',
-                                            token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf/11-security-bond.html',
-                                            content_disposition = 'inline; filename="security-bond.pdf"',
-                                        ),
-                                        name='pdf_token_employer_security_bond'
-                                    ),
-                                    path(
-                                        'fdw-work-permit-12b/',
-                                        PdfGenericTokenView.as_view(
-                                            slug_field='employer_slug',
-                                            token_field_name='employer_token',
-                                            template_name='employer_documentation/pdf/12-fdw-work-permit.html',
-                                            content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
-                                        ),
-                                        name='pdf_token_employer_fdw_work_permit_12b'
-                                    ),
+                                    # path(
+                                    #     'security-bond/',
+                                    #     PdfGenericTokenView.as_view(
+                                    #         slug_field='employer_slug',
+                                    #         token_field_name='employer_token',
+                                    #         template_name='employer_documentation/pdf/11-security-bond.html',
+                                    #         content_disposition = 'inline; filename="security-bond.pdf"',
+                                    #     ),
+                                    #     name='pdf_token_employer_security_bond'
+                                    # ),
+                                    # path(
+                                    #     'fdw-work-permit-12b/',
+                                    #     PdfGenericTokenView.as_view(
+                                    #         slug_field='employer_slug',
+                                    #         token_field_name='employer_token',
+                                    #         template_name='employer_documentation/pdf/12-fdw-work-permit.html',
+                                    #         content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                                    #     ),
+                                    #     name='pdf_token_employer_fdw_work_permit_12b'
+                                    # ),
                                     path(
                                         'income-tax-declaration/',
                                         PdfGenericTokenView.as_view(

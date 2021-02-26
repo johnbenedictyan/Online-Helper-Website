@@ -32,44 +32,119 @@
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
-    <h2>Employer Docs</h2>
-    {% if object_list.count %}
-        <h4>{{ object_list.0.employer.employer_name }}</h4>
-        <h4>{{ object_list.0.employer.employer_mobile_number }}</h4>
-    {% endif %}
+<h2>Employer Docs</h2>
+{% if object_list.count %}
+    <h5>Name:&emsp;{{ object_list.0.employer.employer_name }}</h5>
+    <h5>NRIC:&emsp;{{ object_list.0.employer.get_nric_partial }}</h5>
+    <h5>Mobile:&emsp;{{ object_list.0.employer.mobile_format_sg }}</h5>
+{% endif %}
 
-    <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
-        <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}" class="btn btn-secondary btn-sm">Create document</a>
+<div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
+    <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}" class="btn btn-secondary btn-sm">Create document</a>
+</div>
+
+<div class="custom-table">
+    <div class="d-none d-xl-block">
+        <!-- Display for xl screens and above -->
+        <div class="row mx-0 custom-table-header">
+            <div class="col">Case No</div>
+            <div class="col">Staff</div>
+            <div class="col">FDW</div>
+            <div class="col-3">
+                <div class="row text-center">
+                    <div class="col-12" style="border-bottom: 2px solid white;">Date</div>
+                    <div class="col-6">Agreement</div>
+                    <div class="col-6">Deployment</div>
+                </div>
+            </div>
+            <div class="col text-center">Deployed?</div>
+            <div class="col">Action</div>
+        </div>
     </div>
-
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Ref No.</th>
-                <th scope="col">FDW</th>
-                <th scope="col">Agreement Date</th>
-                <th scope="col">Work Commence</th>
-                <th scope="col">FDW Status</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row mx-0 custom-table-body">
         {% if object_list.count %}
             {% for object in object_list %}
-            <tr>
-                <td><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
-                <td><a href="{% url 'maid_detail' pk=object.fdw.pk %}">{{ object.fdw.reference_number }} - {{ object.fdw.name }}</a></td>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{% if object.agreement_date|date:"d/m/y" %}{{ object.agreement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d/m/y" }}{% else %}Add{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.is_deployed %}<i class="far fa-check-circle text-success"></i>{% else %}<i class="far fa-times-circle text-danger"></i>{% endif %}</a></td>
-                <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}</td>
-            </tr>
+                <div class="col-12 px-0 custom-table-dataset">
+                    <div class="clickable d-none d-xl-block">
+                        <!-- Display for xl screens and above -->
+                        <div class="row mx-0 custom-table-data">
+                            <div class="col"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
+                            <div class="col">{{ object.employer.agency_employee.ea_personnel_number }}<br>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
+                            <div class="col">{{ object.fdw.reference_number }}<br>{{ object.fdw.name }}</div>
+                            <div class="col-3">
+                                <div class="row text-center">
+                                    <div class="col"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                                </div>
+                            </div>
+                            <div class="col text-center"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.is_deployed %}<i class="far fa-check-circle text-success"></i>{% else %}<i class="far fa-times-circle text-danger"></i>{% endif %}</a></div>
+                            <div class="col">
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
+                                <!-- {% comment %}
+                                    {% if object.rn_maidstatus_ed.is_deployed %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i></button>
+                                    {% elif not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-paper-plane"></i></button>
+                                    {% endif %}
+                                {% endcomment %} -->
+                                <!-- {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %} -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clickable d-xl-none">
+                        <!-- Display for lg screens and smaller -->
+                        {% with class_col_left="col-6" class_col_right="col-6" %}
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Case No</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Staff</div>
+                            <div class="{{ class_col_right }}">{{ object.employer.agency_employee.ea_personnel_number }} {{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">FDW</div>
+                            <div class="{{ class_col_right }}">{{ object.fdw.reference_number }} {{ object.fdw.name }}</div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Agreement Date</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Deployment Date</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Deployed?</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.is_deployed %}<i class="far fa-check-circle text-success"></i>{% else %}<i class="far fa-times-circle text-danger"></i>{% endif %}</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Action</div>
+                            <div class="{{ class_col_right }}">
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
+                                <!-- {% comment %}
+                                    {% if object.rn_maidstatus_ed.is_deployed %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-undo"></i></button>
+                                    {% elif not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-paper-plane"></i></button>
+                                    {% endif %}
+                                {% endcomment %} -->
+                                <!-- {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employerdoc_delete_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %} -->
+                            </div>
+                        </div>
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="row mx-0 custom-table-data-hidden custom-table-dataset" hidden="True"></div>
+                {% include 'employer_documentation/snippet_modal_deploy.html' %}
             {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="6">No results found. Click <a href="{% url 'employerdoc_create_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">here</a> to create doumentation.</td>
-            </tr>
         {% endif %}
-        </tbody>
-    </table>
+    </div>
+</div>
+
+<div class="mt-2 mb-4">
+{% include 'pagination.html' %}
+</div>
 {% endblock ed_section %}
