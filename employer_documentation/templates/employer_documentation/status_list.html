@@ -57,7 +57,7 @@
                             <div class="col">
                                 <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>
                                 <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
-                                {% if object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}
+                                {% if not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}{% else %}
                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-paper-plane"></i></button>
                                 {% endif %}
                             </div>
