@@ -931,8 +931,8 @@ class PdfArchiveSaveView(
             'f08_handover_checklist':       folder + '08-handover-checklist.html',
             'f09_transfer_consent':         folder + '09-transfer-consent.html',
             'f10_work_pass_authorisation':  folder + '10-work-pass-authorisation.html',
-            'f11_security_bond':            folder + '11-security-bond.html',
-            'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
+            # 'f11_security_bond':            folder + '11-security-bond.html',
+            # 'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
             'f13_income_tax_declaration':   folder + '13-income-tax-declaration.html',
             'f14_safety_agreement':         folder + '14-safety-agreement.html',
         }
