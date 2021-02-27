@@ -47,19 +47,42 @@
                             <div class="card">
                                 <img src="{{agency.logo.url}}" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{agency.name}}</h5>
+                                    <h6 class="card-title">{{agency.name}}</h6>
                                     <p class="card-text text-muted">{{agency.license_number}}</p>
                                     <hr>
                                     <address>
-                                        123 Fake Street
+                                        {{ agency.get_main_office.address_1 }}
+                                        {{ agency.get_main_office.address_2 }}
+                                        {{ agency.get_main_office.postal_code }}
                                     </address>
                                     <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text">Email: {{agency.company_email}}</p>
+                                    <p class="card-text">Email: {{agency.sales_email}}</p>
                                     <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link">Learn More</a>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1" class="btn btn-primary">first</a>
+                                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">previous</a>
+                                {% endif %}
+                        
+                                <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </span>
+                        
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">next</a>
+                                    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-primary">last &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -38,7 +38,6 @@
 }
 
 .bg-enquiry-banner {
-  background-image: url("/static/images/home-page-bg.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -126,10 +125,6 @@ button.mini-faq-button i {
 
 .custom-card__header {
   margin: 0 0 1rem 0;
-}
-
-.maid-card {
-  cursor: pointer;
 }
 
 #maid-profile-card {

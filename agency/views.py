@@ -51,6 +51,7 @@ class AgencyList(ListFilteredMixin, ListView):
     template_name = 'list/agency-list.html'
     queryset = Agency.objects.filter(complete=True)
     filter_set = AgencyFilter
+    paginate_by = settings.AGENCY_PAGINATE_BY
 
 # Detail Views
 class AgencyDetail(DetailView):
