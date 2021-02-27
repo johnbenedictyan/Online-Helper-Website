@@ -1,4 +1,5 @@
 # Imports from django
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, JsonResponse
@@ -235,6 +236,7 @@ class MaidList(ListFilteredMixin, ListView):
     queryset = Maid.objects.filter(published=True)
     template_name = 'list/maid-list.html'
     filter_set = MaidFilter
+    paginate_by = settings.MAID_PAGINATE_BY
 
 class MaidEmploymentHistoryList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'maid_employment_history_list'

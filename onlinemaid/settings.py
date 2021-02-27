@@ -290,3 +290,7 @@ SITE_ID = 1
 #     # django.contrib.auth) you may enable sending PII data.
 #     send_default_pii=True
 # )
+
+# Pagination
+MAID_PAGINATE_BY = 10
+AGENCY_PAGINATE_BY = 10
