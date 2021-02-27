@@ -47,14 +47,16 @@
                             <div class="card">
                                 <img src="{{agency.logo.url}}" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{agency.name}}</h5>
+                                    <h6 class="card-title">{{agency.name}}</h6>
                                     <p class="card-text text-muted">{{agency.license_number}}</p>
                                     <hr>
                                     <address>
-                                        123 Fake Street
+                                        {{ agency.get_main_office.address_1 }}
+                                        {{ agency.get_main_office.address_2 }}
+                                        {{ agency.get_main_office.postal_code }}
                                     </address>
                                     <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text">Email: {{agency.company_email}}</p>
+                                    <p class="card-text">Email: {{agency.sales_email}}</p>
                                     <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link">Learn More</a>
                                 </div>
                             </div>
