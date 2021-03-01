@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -23,7 +23,20 @@ class SignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
     success_message = 'Successful Login'
-
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        request = self.request
+        if(
+            request.META.get('QUERY_STRING') == 'next=' + reverse(
+                'maid_list'
+            )
+        ):
+            kwargs.update({
+                'show_disclaimer': True
+            })
+        return kwargs
+    
 class AgencySignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
