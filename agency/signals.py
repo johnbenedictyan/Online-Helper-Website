@@ -26,7 +26,7 @@ def agency_completed(agency):
         agency.branch_complete == True and 
         agency.operating_hours_complete == True
     ):
-        agency.completed = True
+        agency.complete = True
         agency.save()
 
 
@@ -60,7 +60,7 @@ def agency_location_completed(sender, instance, created, **kwargs):
                 agency.branch_complete == True and 
                 agency.operating_hours_complete == True
             ):
-                agency.completed = True
+                agency.complete = True
                 agency.save()
             else:
                 agency.save()
@@ -83,7 +83,7 @@ def agency_operating_hours_completed(sender, instance, created, **kwargs):
                 agency.branch_complete == True and 
                 agency.operating_hours_complete == True
             ):
-                agency.completed = True
+                agency.complete = True
                 agency.save()
             else:
                 agency.save()
