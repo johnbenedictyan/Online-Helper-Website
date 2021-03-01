@@ -55,13 +55,14 @@ def agency_location_completed(sender, instance, created, **kwargs):
         
         if branch_valid == True:
             agency.branch_complete = branch_valid
-            agency.save()
         
             if(
                 agency.branch_complete == True and 
                 agency.operating_hours_complete == True
             ):
                 agency.completed = True
+                agency.save()
+            else:
                 agency.save()
 
 @receiver(post_save, sender=AgencyOperatingHours)
@@ -77,13 +78,14 @@ def agency_operating_hours_completed(sender, instance, created, **kwargs):
         
         if operating_hours_valid == True:
             agency.operating_hours_complete = operating_hours_valid
-            agency.save()
         
             if(
                 agency.branch_complete == True and 
                 agency.operating_hours_complete == True
             ):
                 agency.completed = True
+                agency.save()
+            else:
                 agency.save()
 
 @receiver(post_save, sender=Agency)
