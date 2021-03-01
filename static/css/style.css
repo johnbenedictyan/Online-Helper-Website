@@ -143,6 +143,10 @@ button.mini-faq-button i {
   margin: 0 0 1rem 0;
 }
 
+.maid-card {
+  cursor: pointer;
+}
+
 .noUi-target,
 .noUi-target * {
   -webkit-touch-callout: none;
