@@ -229,7 +229,7 @@ class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
             )
         
 # List Views
-class MaidList(ListFilteredMixin, ListView):
+class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
