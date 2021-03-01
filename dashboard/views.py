@@ -84,7 +84,7 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     def get_queryset(self):
         return Maid.objects.filter(
             agency__pk = self.agency_id
-        )
+        ).order_by('id')
 
 class DashboardAccountList(
     AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
