@@ -61,60 +61,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col mb-4">
-                            <div class="card">
-                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{agency.name}}</h5>
-                                    <p class="card-text text-muted">{{agency.license_number}}</p>
-                                    <hr>
-                                    <address>
-                                        {{ agency.get_main_office.address_1 }}<br/>
-                                        {{ agency.get_main_office.address_2 }}<br/>
-                                        Singapore {{ agency.get_main_office.postal_code }}
-                                    </address>
-                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
-                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-4">
-                            <div class="card">
-                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{agency.name}}</h5>
-                                    <p class="card-text text-muted">{{agency.license_number}}</p>
-                                    <hr>
-                                    <address>
-                                        {{ agency.get_main_office.address_1 }}<br/>
-                                        {{ agency.get_main_office.address_2 }}<br/>
-                                        Singapore {{ agency.get_main_office.postal_code }}
-                                    </address>
-                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
-                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-4">
-                            <div class="card">
-                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{agency.name}}</h5>
-                                    <p class="card-text text-muted">{{agency.license_number}}</p>
-                                    <hr>
-                                    <address>
-                                        {{ agency.get_main_office.address_1 }}<br/>
-                                        {{ agency.get_main_office.address_2 }}<br/>
-                                        Singapore {{ agency.get_main_office.postal_code }}
-                                    </address>
-                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
-                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
                     {% endfor %}
                 </div>
                 <div class="row">
