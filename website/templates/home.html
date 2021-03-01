@@ -136,8 +136,13 @@
                     <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
                         <label for="nationalitySelect" class="ml-1">Nationality</label>
                         <select class="form-control" id="nationalitySelect">
-                            <option>1</option>
-                            <option>2</option>
+                            <option value="BGD">Bangladesh</option>
+                            <option value="KHM">Cambodia</option>
+                            <option value="IND">India</option>
+                            <option value="IDN">Indonesia</option>
+                            <option value="MMR">Myanmar</option>
+                            <option value="PHL">Philippines</option>
+                            <option value="LKA">Sri Lanka</option>
                         </select>
                     </div>
                 </div>
@@ -148,29 +153,41 @@
                 </div>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
+        {% if request.user.is_authenticated %}
+        <div class="maid-carousel">
+            {% for maid in featured_maids %}
+            <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
+                <div onclick="maidProfileRedirect({{maid.pk}})">
+                    <img src="{{maid.photo.url}}" class="card-img-top" alt="Maid Photo">
                     <div class="card-body">
-                        <h5 class="card-title">Maid Name</h5>
-                        <p class="card-text">Nationality</p>
-                        <p class="card-text">Age / Marital Status</p>
-                        <p class="card-text">Type</p>
-                        <p class="card-text">Main Responsibility</p>
+                        <h5 class="card-title">{{maid.name}}</h5>
+                        <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                        <p class="card-text">{{maid.personal_details.age}} years old</p>
+                        <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                        <p class="card-text">{{maid.get_maid_type_display}}</p>
                     </div>
-                    <a href="" class="text-decoration-none">
-                        <div class="card-footer bg-primary text-light">
-                            <div class="row">
-                                <div class="col text-center">
-                                    <h6 class="mb-0">Add to Shortlist</h6>
-                                </div>
-                            </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col">
+                <img src="{% static 'images/featured-maids.png' %}" alt="" class="img-fluid" style="filter:blur(4px); opacity: 50%;">
+                <div class="featured-maids-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
+                    <div class="jumbotron jumbotron-fluid" style="background-color: transparent;">
+                        <div class="container text-center">
+                          <h3 class="display-4">Sign in to view biodata</h3>
+                          <a href="{% url 'sign_in' %}" class="btn btn-primary"><h5 class="mb-0">Sign in</h5></a>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </section>
 {% include 'sections/cta-banner.html' %}
@@ -263,3 +280,44 @@
     </div>
 </section>
 {% endblock main_content %}
+{% block js %}
+<script>
+    $(document).ready(function(){
+        $('.maid-carousel').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 4,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
+            ]
+        });
+    });
+</script>
+{% endblock js %}

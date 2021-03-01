@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'storages',
 
     # Our apps
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'advertisement',
     'agency.apps.AgencyConfig',
     'dashboard',
@@ -243,7 +243,7 @@ SOCIAL_AUTH_PIPELINE = (
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'sign_in'
-LOGIN_REDIRECT_URL = 'home'
+# LOGIN_REDIRECT_URL = 'home'
 
 
 # Email Backend
