@@ -94,7 +94,8 @@ def maid_seed_data():
     from maid.constants import (
         TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
         MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
-        MaidCareRemarksChoices, MaidPassportStatusChoices
+        MaidCareRemarksChoices, MaidPassportStatusChoices,
+        MaidGeneralHouseworkRemarksChoices
     )
 
     from maid.models import (
@@ -128,24 +129,21 @@ def maid_seed_data():
                     maid['passport_number'],
                     settings.ENCRYPTION_KEY
                 )
-                new_maid = Maid.objects.create(
+                new_maid = Maid(
                     agency = agency,
                     reference_number = maid['reference_number'],
                     name = maid['name'],
                     passport_number = encrption_thing[0],
                     nonce = encrption_thing[1],
                     tag = encrption_thing[2],
-                    photo = SimpleUploadedFile(
-                        'small.gif',
-                         small_gif, 
-                         content_type='image/gif'
-                    ),
                     maid_type = TypeOfMaidChoices.NEW,
                     days_off = maid['days_off'],
                     passport_status = MaidPassportStatusChoices.NOT_READY,
                     remarks = maid['remarks'],
                     published = True
                 )
+                new_maid.photo = 'maid.png'
+                new_maid.save()
                 selected_maid_personal_details = MaidPersonalDetails.objects.create(
                     maid=new_maid,
                     date_of_birth=datetime.strptime(
@@ -210,7 +208,7 @@ def maid_seed_data():
                     assessment=random.randint(1,5),
                     willingness=True,
                     experience=True,
-                    remarks=MaidCareRemarksChoices.OWN_COUNTRY,
+                    remarks=MaidGeneralHouseworkRemarksChoices.CAN_DO_ALL_HOUSEWORK,
                     other_remarks=''
                 )
                 MaidCooking.objects.create(
