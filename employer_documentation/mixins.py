@@ -487,7 +487,7 @@ class PdfHtmlViewMixin:
         return repayment_table
 
     def get_context_data(self, **kwargs):
-        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+        version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
 
         if isinstance(self.object, EmployerDoc):
             context = super().get_context_data(object=self.object)
@@ -507,5 +507,20 @@ class PdfHtmlViewMixin:
         
         else:
             context = super().get_context_data(object=self.object)
+
+        # MoM Safety Agreements are available in different languages.
+        # Relevant language template snippet is selected based on FDW's
+        # preferred language.
+        unavailable_languages = ['CHI', 'HIN', 'BEN',]
+        default_language = 'IDN'
+        try:
+            preferred_language = context['object'].fdw.personal_details.preferred_language.language
+        except:
+            preferred_language = default_language
+        else:
+            if preferred_language in unavailable_languages:
+                preferred_language = default_language
+        for i in range(1,4):
+            context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
         return context

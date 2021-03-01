@@ -937,7 +937,8 @@ class PdfArchiveSaveView(
             'f14_safety_agreement':         folder + '14-safety-agreement.html',
         }
         for field_name, template_name in templates.items():
-            filename = template_name.split('/')[-1] + '.pdf'
+            # filename = template_name.split('/')[-1].split('.')[-2] + '.pdf'
+            filename = field_name + '.pdf'
             relative_path = f'{self.object.pk}:{filename}'
             pdf_file = self.generate_pdf_file(request, context, template_name)
             file_wrapper = SimpleUploadedFile(
