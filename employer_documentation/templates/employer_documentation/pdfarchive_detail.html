@@ -19,8 +19,10 @@
         <dt class="col-lg-3">Handover Checklist</dt>        <dd class="col-lg-9"><a href="{% url 'pdf_archive_handover_checklist' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f08_handover_checklist }}</a></dd>
         <dt class="col-lg-3">Transfer Consent</dt>          <dd class="col-lg-9"><a href="{% url 'pdf_archive_transfer_consent' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f09_transfer_consent }}</a></dd>
         <dt class="col-lg-3">Work Pass Authorisation</dt>   <dd class="col-lg-9"><a href="{% url 'pdf_archive_work_pass_authorisation' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f10_work_pass_authorisation }}</a></dd>
+        <!-- {% comment %}
         <dt class="col-lg-3">Security Bond</dt>             <dd class="col-lg-9"><a href="{% url 'pdf_archive_security_bond' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f11_security_bond }}</a></dd>
         <dt class="col-lg-3">Work Permit Application</dt>   <dd class="col-lg-9"><a href="{% url 'pdf_archive_fdw_work_permit' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f12_fdw_work_permit }}</a></dd>
+        {% endcomment %} -->
         <dt class="col-lg-3">Income Tax Declaration</dt>    <dd class="col-lg-9"><a href="{% url 'pdf_archive_income_tax_declaration' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f13_income_tax_declaration }}</a></dd>
         <dt class="col-lg-3">Safety Agreement</dt>          <dd class="col-lg-9"><a href="{% url 'pdf_archive_safety_agreement' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.rn_pdfarchive_ed.f14_safety_agreement }}</a></dd>
     </dl>
