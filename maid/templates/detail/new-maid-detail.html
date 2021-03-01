@@ -4,7 +4,7 @@
 {% block maid_section %}
 <section>
     <div class="container">
-        <div class="row my-3">
+        <div cglass="row my-3">
             <div class="col my-3">
                 <div class="row">
                     <div class="col">
@@ -99,7 +99,7 @@
                             <div class="col mb-2">
                                 <h6>Infant Child Care</h6>
                                 <div class="progress" style="height: 15px;">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.infant_child_care.assessment}}" aria-valuenow="{{maid.infant_child_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -116,7 +116,7 @@
                             <div class="col mb-2">
                                 <h6>Elderly Care</h6>
                                 <div class="progress" style="height: 15px;">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.elderly_care.assessment}}" aria-valuenow="{{maid.elderly_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -133,7 +133,7 @@
                             <div class="col mb-2">
                                 <h6>Disabled Care</h6>
                                 <div class="progress" style="height: 15px;">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.disabled_care.assessment}}" aria-valuenow="{{maid.disabled_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -150,7 +150,7 @@
                             <div class="col mb-2">
                                 <h6>General Housework</h6>
                                 <div class="progress" style="height: 15px;">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.general_housework.assessment}}" aria-valuenow="{{maid.general_housework.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -167,7 +167,7 @@
                             <div class="col mb-2">
                                 <h6>Cooking</h6>
                                 <div class="progress" style="height: 15px;">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.cooking.assessment}}" aria-valuenow="{{maid.cooking.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -329,17 +329,6 @@
                 // settings: "unslick"
                 // instead of a settings object
             ]
-        });
-        width_map = {
-            '1': '20',
-            '2': '40',
-            '3': '60',
-            '4': '80',
-            '5': '100'
-        }
-        $('.assessment-progress-bar').each(function(){
-            let width_value = $(this).data('value');
-            $(this).css('width', width_map[width_value] + '%' );
         });
     });
 </script>
