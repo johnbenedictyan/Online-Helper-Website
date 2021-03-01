@@ -227,7 +227,31 @@ class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
             return reverse_lazy(
                 'dashboard_maid_list'
             )
-        
+
+class MaidToggleFeatured(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
+    pk_url_kwarg = 'pk'
+
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            maid = Maid.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        except Maid.DoesNotExist:
+            messages.error(
+                self.request,
+                'This maid does not exist'
+            )
+        else:
+            maid.featured = not maid.featured
+            maid.save()
+            kwargs.pop(self.pk_url_kwarg)
+        finally:
+            return reverse_lazy(
+                'dashboard_maid_list'
+            )
+            
 # List Views
 class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
