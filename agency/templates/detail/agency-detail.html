@@ -21,7 +21,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-4">
-                <img src="..." alt="" class="img-fluid">
+                <img src="{{agency.logo.url}}" alt="" class="img-fluid">
             </div>
             <div class="col-12 col-md-7 mb-3">
                 <h2>{{agency.name}}</h2>
@@ -42,7 +42,7 @@
                                 <div class="col-md-4 col-lg-6 mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <h5 class="mb-0">{{branch.name}}</h5>
+                                            <h5 class="mb-0">{{branch.name|title}}</h5>
                                         </div>
                                     </div>
                                     <hr>
@@ -56,7 +56,7 @@
                                     <div class="row">
                                         <div class="col mb-3">
                                             <p class="mb-1">Postal Code</p>
-                                            <p class="font-weight-bold mb-0">{{branch.postal_code}}</p>
+                                            <p class="font-weight-bold mb-0">Singapore {{branch.postal_code}}</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -246,13 +246,13 @@
                     <div class="card">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">{{maid.name}}</h5>
-                            <p class="card-text">{{maid.personal_details.country_of_origin}}</p>
-                            <p class="card-text">{{maid.personal_details.age}} | {{maid.family_details.marital_status}}</p>
-                            <p class="card-text">{{maid.maid_type}}</p>
+                            <h5 class="card-title">{{maid.name|title}}</h5>
+                            <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                            <p class="card-text">{{maid.personal_details.age}} | {{maid.family_details.get_marital_status_display}}</p>
+                            <p class="card-text">{{maid.get_maid_type_display}}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{% url 'add_to_shortlist' %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                            <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
                         </div>
                     </div>
                 </div>
