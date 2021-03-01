@@ -41,23 +41,77 @@
                 </form>
             </div>
             <div class="col-xl-9">
-                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 row-cols-xl-4">
                     {% for agency in agencies %}
                         <div class="col mb-4">
                             <div class="card">
-                                <img src="{{agency.logo.url}}" class="card-img-top" alt="...">
+                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
                                 <div class="card-body">
-                                    <h6 class="card-title">{{agency.name}}</h6>
+                                    <h5 class="card-title">{{agency.name}}</h5>
                                     <p class="card-text text-muted">{{agency.license_number}}</p>
                                     <hr>
                                     <address>
-                                        {{ agency.get_main_office.address_1 }}
-                                        {{ agency.get_main_office.address_2 }}
-                                        {{ agency.get_main_office.postal_code }}
+                                        {{ agency.get_main_office.address_1 }}<br/>
+                                        {{ agency.get_main_office.address_2 }}<br/>
+                                        Singapore {{ agency.get_main_office.postal_code }}
                                     </address>
                                     <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text">Email: {{agency.sales_email}}</p>
-                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link">Learn More</a>
+                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
+                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{agency.name}}</h5>
+                                    <p class="card-text text-muted">{{agency.license_number}}</p>
+                                    <hr>
+                                    <address>
+                                        {{ agency.get_main_office.address_1 }}<br/>
+                                        {{ agency.get_main_office.address_2 }}<br/>
+                                        Singapore {{ agency.get_main_office.postal_code }}
+                                    </address>
+                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
+                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
+                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{agency.name}}</h5>
+                                    <p class="card-text text-muted">{{agency.license_number}}</p>
+                                    <hr>
+                                    <address>
+                                        {{ agency.get_main_office.address_1 }}<br/>
+                                        {{ agency.get_main_office.address_2 }}<br/>
+                                        Singapore {{ agency.get_main_office.postal_code }}
+                                    </address>
+                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
+                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
+                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{agency.name}}</h5>
+                                    <p class="card-text text-muted">{{agency.license_number}}</p>
+                                    <hr>
+                                    <address>
+                                        {{ agency.get_main_office.address_1 }}<br/>
+                                        {{ agency.get_main_office.address_2 }}<br/>
+                                        Singapore {{ agency.get_main_office.postal_code }}
+                                    </address>
+                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
+                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
+                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
                                 </div>
                             </div>
                         </div>
