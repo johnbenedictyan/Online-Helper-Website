@@ -487,7 +487,7 @@ class PdfHtmlViewMixin:
         return repayment_table
 
     def get_context_data(self, **kwargs):
-        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+        version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
 
         if isinstance(self.object, EmployerDoc):
             context = super().get_context_data(object=self.object)
