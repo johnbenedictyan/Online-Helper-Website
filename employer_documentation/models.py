@@ -858,7 +858,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     agency_staff_witness_signature = models.TextField(
-        verbose_name=_('Signature of Witness for Agency Staff Memeber'),
+        verbose_name=_('Signature of Witness for Agency Staff Member'),
         blank=True,
         null=True
     )
