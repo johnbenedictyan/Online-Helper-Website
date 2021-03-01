@@ -145,22 +145,23 @@
             }
             return loaded_content
         }
-        const loading_content = `
-            <div id="maid-profile-card">
-                <div class="container">
-                    <div class="row">
-                        <div class="col text-center my-md-3 my-lg-4 my-xl-5">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="spinner-border" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`
+        const loading_content = null;
+        // const loading_content = `
+        //     <div id="maid-profile-card">
+        //         <div class="container">
+        //             <div class="row">
+        //                 <div class="col text-center my-md-3 my-lg-4 my-xl-5">
+        //                     <div class="row">
+        //                         <div class="col">
+        //                             <div class="spinner-border" role="status">
+        //                                 <span class="sr-only">Loading...</span>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>`
         
         tippy('.maid-card', {
             content: loading_content,
