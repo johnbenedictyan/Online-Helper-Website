@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'storages',
 
     # Our apps
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'advertisement',
     'agency.apps.AgencyConfig',
     'dashboard',

@@ -51,6 +51,9 @@ class User(AbstractUser):
         _('Email Address'), 
         unique=True
     )
+    is_online = models.BooleanField(
+        default=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
