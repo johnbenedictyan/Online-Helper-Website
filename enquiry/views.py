@@ -12,27 +12,33 @@ from accounts.mixins import PotentialEmployerRequiredMixin
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import EnquiryForm
-from .models import Enquiry
+from .forms import GeneralEnquiryForm
+from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
 
 # Start of Views
 
 # Form Views
-class EnquiryView(PotentialEmployerRequiredMixin, SuccessMessageMixin,
-                  CreateView):
-    context_object_name = 'enquiry'
-    form_class = EnquiryForm
+class GeneralEnquiryView(SuccessMessageMixin, CreateView):
+    context_object_name = 'general_enquiry'
+    form_class = GeneralEnquiryForm
     http_method_names = ['get', 'post']
-    model = Enquiry
-    template_name = 'enquiry.html'
+    model = GeneralEnquiry
+    template_name = 'general_enquiry.html'
     success_url = reverse_lazy('home')
-    success_message = 'Enquiry created'
+    success_message = 'General Enquiry created'
 
     def form_valid(self, form):
-        form.instance.employer = Employer.objects.get(
-            user = self.request.user
-        )
+        if self.request.user:
+            form.instance.employer = Employer.objects.get(
+                user = self.request.user
+            )
         return super().form_valid(form)
+
+class AgencyEnquiryView(SuccessMessageMixin, CreateView):
+    pass
+
+class MaidEnquiryView(SuccessMessageMixin, CreateView):
+    pass
 
 # Redirect Views
 class DeactivateEnquiryView(PotentialEmployerRequiredMixin, RedirectView):
