@@ -9,7 +9,6 @@ from django.urls import include, path
 from .views import DeactivateEnquiryView
 
 ## Template Views 
-from .views import EnquiryView
 
 ## List Views
 from .views import EnquiryListView
@@ -17,6 +16,7 @@ from .views import EnquiryListView
 ## Detail Views
 
 ## Create Views
+from .views import GeneralEnquiryView
 
 ## Update Views
 
@@ -27,8 +27,8 @@ from .views import EnquiryListView
 urlpatterns = [
         path(
             '',
-            EnquiryView.as_view(),
-            name='enquiry'
+            GeneralEnquiryView.as_view(),
+            name='general_enquiry'
         ),
         path(
             'all/',
