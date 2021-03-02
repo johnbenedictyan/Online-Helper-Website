@@ -18,7 +18,7 @@ from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
-from enquiry.models import Enquiry
+from enquiry.models import GeneralEnquiry
 from maid.models import Maid
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 
@@ -123,7 +123,7 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
 class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
-    model = Enquiry
+    model = GeneralEnquiry
     template_name = 'list/dashboard-enquiry-list.html'
 
 class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,

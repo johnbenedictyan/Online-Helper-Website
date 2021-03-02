@@ -3,7 +3,7 @@
 # Imports from django
 
 # Imports from foreign installed apps
-from enquiry.forms import EnquiryForm
+from enquiry.forms import GeneralEnquiryForm
 
 # Start of Context Processors
 
@@ -34,6 +34,6 @@ def cartcount(request):
     
 def enquiry_form(request):
     return {
-        'enquiry_form': EnquiryForm()
+        'enquiry_form': GeneralEnquiryForm()
     }
         
