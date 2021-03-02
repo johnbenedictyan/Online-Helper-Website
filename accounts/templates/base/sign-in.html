@@ -23,6 +23,14 @@
     </div>
     <div class="row">
         <div class="col-md-8 col-xl-6 offset-md-2 offset-xl-3">
+            {% if show_disclaimer %}
+            <div class="row">
+                <div class="col text-center mb-3">
+                    <h4 class="mb-1">In accordance with Ministry of Manpower directives</h4>
+                    <h4>Please sign in to view further biodata details</h4>
+                </div>
+            </div>
+            {% endif %}
             <form method="post" enctype="multipart/form-data">
                 {% crispy form %}
             </form>

@@ -1741,8 +1741,8 @@ class MainMaidCreationForm(forms.Form):
 
     def clean_preferred_language(self):
         preferred_language = self.cleaned_data.get('preferred_language')
-        spoken_language = self.cleaned_data.get('spoken_language')
-        if preferred_language not in spoken_language:
+        language_spoken = self.cleaned_data.get('language_spoken')
+        if preferred_language not in language_spoken:
             self.add_error(
                 'preferred_language',
                 _('FDW must be able to speak this language')

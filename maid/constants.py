@@ -332,6 +332,10 @@ class MaidCareRemarksChoices(models.TextChoices):
     NO_EXP = 'NE', _('No experience, but willing to learn')
     NOT_WILLING = 'NW', _('Not willing')
     OTHERS = 'OTH', _('Other remarks (Please specify)')
+    
+class MaidGeneralHouseworkRemarksChoices(models.TextChoices):
+        CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
+        OTHERS = 'OTH', _('Other remarks (Please specify)')
 
 class TypeOfMaidChoices(models.TextChoices):
     NEW = 'NEW', _('No Experience')

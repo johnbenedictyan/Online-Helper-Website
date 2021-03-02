@@ -757,21 +757,21 @@ class PdfGenericAgencyView(
         if self.use_repayment_table:
             context['repayment_table'] = self.calc_repayment_schedule()
         
-        # MoM Safety Agreements are available in different languages.
-        # Relevant language template snippet is selected based on FDW's
-        # preferred language.
-        if self.template_name == 'employer_documentation/pdf/14-safety-agreement.html':
-            unavailable_languages = ['CHI', 'HIN', 'BEN',]
-            default_language = 'IDN'
-            try:
-                preferred_language = context['object'].fdw.personal_details.preferred_language.language
-            except:
-                preferred_language = default_language
-            else:
-                if preferred_language in unavailable_languages:
-                    preferred_language = default_language
-            for i in range(1,4):
-                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
+        # # MoM Safety Agreements are available in different languages.
+        # # Relevant language template snippet is selected based on FDW's
+        # # preferred language.
+        # if self.template_name == 'employer_documentation/pdf/14-safety-agreement.html':
+        #     unavailable_languages = ['CHI', 'HIN', 'BEN',]
+        #     default_language = 'IDN'
+        #     try:
+        #         preferred_language = context['object'].fdw.personal_details.preferred_language.language
+        #     except:
+        #         preferred_language = default_language
+        #     else:
+        #         if preferred_language in unavailable_languages:
+        #             preferred_language = default_language
+        #     for i in range(1,4):
+        #         context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
         return self.generate_pdf_response(request, context)
 
@@ -931,13 +931,14 @@ class PdfArchiveSaveView(
             'f08_handover_checklist':       folder + '08-handover-checklist.html',
             'f09_transfer_consent':         folder + '09-transfer-consent.html',
             'f10_work_pass_authorisation':  folder + '10-work-pass-authorisation.html',
-            'f11_security_bond':            folder + '11-security-bond.html',
-            'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
+            # 'f11_security_bond':            folder + '11-security-bond.html',
+            # 'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
             'f13_income_tax_declaration':   folder + '13-income-tax-declaration.html',
             'f14_safety_agreement':         folder + '14-safety-agreement.html',
         }
         for field_name, template_name in templates.items():
-            filename = template_name.split('/')[-1] + '.pdf'
+            # filename = template_name.split('/')[-1].split('.')[-2] + '.pdf'
+            filename = field_name + '.pdf'
             relative_path = f'{self.object.pk}:{filename}'
             pdf_file = self.generate_pdf_file(request, context, template_name)
             file_wrapper = SimpleUploadedFile(
