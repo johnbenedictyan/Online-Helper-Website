@@ -11,7 +11,7 @@ from maid.models import MaidResponsibility
 
 # Imports from local apps
 from .fields import MaidResponsibilityChoiceField
-from .models import Enquiry 
+from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
 
 # Start of Forms
 
@@ -19,7 +19,6 @@ from .models import Enquiry
 
 # Model Forms
 
-# Generic Forms (forms.Form)
 class GeneralEnquiryForm(forms.ModelForm):
     maid_responsibility = MaidResponsibilityChoiceField(
         queryset=MaidResponsibility.objects.all(),
@@ -27,7 +26,7 @@ class GeneralEnquiryForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Enquiry
+        model = GeneralEnquiry
         exclude = ['employer']
         widgets = {
             'first_name': forms.TextInput(
@@ -166,3 +165,112 @@ class GeneralEnquiryForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+        
+class AgencyEnquiryForm(forms.ModelForm):
+    maid_responsibility = MaidResponsibilityChoiceField(
+        queryset=MaidResponsibility.objects.all(),
+        widget=forms.CheckboxSelectMultiple()
+    )
+
+    class Meta:
+        model = AgencyEnquiry
+        exclude = ['agency']
+        widgets = {
+            'remarks': forms.Textarea(
+                attrs={
+                    'rows': 20,
+                    'cols': 15
+                }
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'name',
+                    css_class='form-group'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group'
+                ),
+                Column(
+                    'email',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_nationality',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_type',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_age_group',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_responsibility',
+                    css_class='form-group'
+                ),
+                Column(
+                    'remarks',
+                    css_class='form-group'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-100"
+                    ),
+                    css_class='form-group col text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class MaidEnquiryForm(forms.ModelForm):
+    class Meta:
+        model = AgencyEnquiry
+        exclude = ['employer', 'maid']
+        widgets = {
+            'remarks': forms.Textarea(
+                attrs={
+                    'rows': 20,
+                    'cols': 15
+                }
+            )
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'remarks',
+                    css_class='form-group'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-100"
+                    ),
+                    css_class='form-group col text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+# Generic Forms (forms.Form)
