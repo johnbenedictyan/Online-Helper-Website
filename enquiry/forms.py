@@ -20,7 +20,7 @@ from .models import Enquiry
 # Model Forms
 
 # Generic Forms (forms.Form)
-class EnquiryForm(forms.ModelForm):
+class GeneralEnquiryForm(forms.ModelForm):
     maid_responsibility = MaidResponsibilityChoiceField(
         queryset=MaidResponsibility.objects.all(),
         widget=forms.CheckboxSelectMultiple()
