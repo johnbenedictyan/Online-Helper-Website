@@ -25,7 +25,7 @@ class GeneralEnquiry(models.Model):
     employer = models.ForeignKey(
         Employer,
         on_delete=models.CASCADE,
-        related_name='employer',
+        related_name='general_enquiry',
         null=True
     )
     
@@ -71,7 +71,7 @@ class GeneralEnquiry(models.Model):
 
     maid_responsibility = models.ManyToManyField(
         MaidResponsibility,
-        related_name='enquiry'
+        related_name='general_enquiry'
     )
 
     maid_type = models.CharField(
@@ -127,9 +127,27 @@ class AgencyEnquiry(models.Model):
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
-        related_name='agency'
+        related_name='enquiry'
     )
     
+    name = models.CharField(
+        verbose_name=_('Name'),
+        blank=False,
+        max_length=100
+    )
+
+    contact_number = models.CharField(
+        verbose_name=_('Contact Number'),
+        blank=False,
+        max_length=100
+    )
+
+    email = models.EmailField(
+        verbose_name=_('Email'),
+        blank=False,
+        max_length=255
+    )
+
     maid_nationality = models.CharField(
         verbose_name=_('Maid\'s Nationality'),
         blank=False,
@@ -140,7 +158,7 @@ class AgencyEnquiry(models.Model):
 
     maid_responsibility = models.ManyToManyField(
         MaidResponsibility,
-        related_name='enquiry'
+        related_name='agency_enquiry'
     )
 
     maid_type = models.CharField(
@@ -168,13 +186,13 @@ class MaidEnquiry(models.Model):
     employer = models.ForeignKey(
         Employer,
         on_delete=models.CASCADE,
-        related_name='employer'
+        related_name='maid_enquiry'
     )
     
     maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
-        related_name='maid'
+        related_name='enquiry'
     )
     
     remarks = models.TextField(
