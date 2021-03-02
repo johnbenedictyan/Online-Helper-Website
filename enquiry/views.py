@@ -9,10 +9,12 @@ from django.views.generic.edit import CreateView
 # Imports from foreign installed apps
 from accounts.models import Employer
 from accounts.mixins import PotentialEmployerRequiredMixin
+from agency.models import Agency
+from maid.models import Maid
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import GeneralEnquiryForm
+from .forms import GeneralEnquiryForm, AgencyEnquiryForm, MaidEnquiryForm
 from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
 
 # Start of Views
@@ -35,25 +37,62 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 class AgencyEnquiryView(SuccessMessageMixin, CreateView):
-    pass
+    context_object_name = 'agency_enquiry'
+    form_class = AgencyEnquiryForm
+    http_method_names = ['post']
+    model = AgencyEnquiry
+    template_name = 'general_enquiry.html'
+    success_url = reverse_lazy('home')
+    success_message = 'Enquiry created'
+
+    def form_valid(self, form):
+        if self.request.user:
+            form.instance.agency = Agency.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        return super().form_valid(form)
+
 
 class MaidEnquiryView(SuccessMessageMixin, CreateView):
-    pass
+    context_object_name = 'general_enquiry'
+    form_class = GeneralEnquiryForm
+    http_method_names = ['post']
+    model = GeneralEnquiry
+    template_name = 'general_enquiry.html'
+    success_url = reverse_lazy('home')
+    success_message = 'Enquiry created'
+
+    def form_valid(self, form):
+        if self.request.user:
+            form.instance.employer = Employer.objects.get(
+                user = self.request.user
+            )
+            form.instance.maid = Maid.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        return super().form_valid(form)
+
 
 # Redirect Views
-class DeactivateEnquiryView(PotentialEmployerRequiredMixin, RedirectView):
+class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
+                                   RedirectView):
     http_method_names = ['get']
     pattern_name = None
+    pk_url_kwarg = 'pk'	
 
     def get_redirect_url(self, *args, **kwargs):
         try:
-            selected_enquiry = Enquiry.objects.get(
+            selected_enquiry = GeneralEnquiry.objects.get(
                 pk = kwargs.get(
                     self.pk_url_kwarg
                 ),
                 active = True
             )
-        except Enquiry.DoesNotExist:
+        except GeneralEnquiry.DoesNotExist:
             messages.error(
                 self.request,
                 'This enquiry does not exist'
@@ -76,11 +115,11 @@ class DeactivateEnquiryView(PotentialEmployerRequiredMixin, RedirectView):
 class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
-    model = Enquiry
+    model = GeneralEnquiry
     template_name = 'list/enquiry-list.html'
 
     def get_queryset(self):
-        return Enquiry.objects.filter(
+        return GeneralEnquiry.objects.filter(
             employer__user = self.request.user,
             active = True
         )

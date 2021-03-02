@@ -1,6 +1,7 @@
 # Imports from django
 from django import forms
 from django.contrib.postgres.forms import SimpleArrayField
+from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -174,8 +175,9 @@ class AgencyEnquiryForm(forms.ModelForm):
 
     class Meta:
         model = AgencyEnquiry
-        exclude = ['agency']
+        fields = '__all__'
         widgets = {
+            'agency': forms.HiddenInput(),
             'remarks': forms.Textarea(
                 attrs={
                     'rows': 20,
@@ -185,10 +187,16 @@ class AgencyEnquiryForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        agency = kwargs.pop('agency')
         super().__init__(*args, **kwargs)
+        self.fields['agency'].initial = agency
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
+                Column(
+                    'agency',
+                    css_class='form-group'
+                ),
                 Column(
                     'name',
                     css_class='form-group'
@@ -239,8 +247,10 @@ class AgencyEnquiryForm(forms.ModelForm):
 class MaidEnquiryForm(forms.ModelForm):
     class Meta:
         model = AgencyEnquiry
-        exclude = ['employer', 'maid']
+        fields = '__all__'
         widgets = {
+            'employer': forms.HiddenInput(),
+            'maid': forms.HiddenInput(),
             'remarks': forms.Textarea(
                 attrs={
                     'rows': 20,
@@ -250,10 +260,22 @@ class MaidEnquiryForm(forms.ModelForm):
         }
     
     def __init__(self, *args, **kwargs):
+        employer = kwargs.pop('employer')
+        maid = kwargs.pop('maid')
         super().__init__(*args, **kwargs)
+        self.fields['employer'].initial = employer
+        self.fields['maid'].initial = maid
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
+                Column(
+                    'employer',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid',
+                    css_class='form-group'
+                ),
                 Column(
                     'remarks',
                     css_class='form-group'
