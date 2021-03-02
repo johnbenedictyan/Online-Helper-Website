@@ -511,14 +511,15 @@ class PdfHtmlViewMixin:
         # MoM Safety Agreements are available in different languages.
         # Relevant language template snippet is selected based on FDW's
         # preferred language.
-        unavailable_languages = ['CHI', 'HIN', 'BEN',]
+        available_languages = ['BUR', 'ENG', 'IDN', 'KHM', 'SIN', 'TAG', 'TAM', 'THA']
+        # unavailable_languages = ['CHI', 'HIN', 'BEN',]
         default_language = 'IDN'
         try:
             preferred_language = context['object'].fdw.personal_details.preferred_language.language
         except:
             preferred_language = default_language
         else:
-            if preferred_language in unavailable_languages:
+            if preferred_language not in available_languages:
                 preferred_language = default_language
         for i in range(1,4):
             context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
