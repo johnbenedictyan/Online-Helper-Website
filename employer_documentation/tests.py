@@ -1,15 +1,19 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import AnonymousUser, Group
 
 from accounts.models import User
 from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee
+
+from .views import *
 
 class SetUp():
     '''
     Setup class to populate test database with agency, users, etc
     '''
     def setUp(self):
+        self.factory = RequestFactory()
+
         group_choices = {
             'AO': 'Agency Owners',
             'AA': 'Agency Administrators',
@@ -129,16 +133,32 @@ class SetUp():
 
 # Start of tests
 class EmployerListViewTestCase(SetUp, TestCase):
-    def test_get_response(self):
-        # response = self.client.get(reverse('employer_list_route'))
-        # self.assertEqual(response.status_code, 302)
-        # self.client.force_login(self.user_owner, backend=None)
+    def test_owner_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = self.user_owner
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
-        print(self.AO in User.objects.get(email='user_owner@a.com').groups.all())
-        print(self.AA in User.objects.get(email='user_owner@a.com').groups.all())
-        print(self.AM in User.objects.get(email='user_owner@a.com').groups.all())
-        print(self.AS in User.objects.get(email='user_owner@a.com').groups.all())
+    def test_admin_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = self.user_admin
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
-        print(self.AA in User.objects.get(email='user_admin@a.com').groups.all())
-        print(self.AM in User.objects.get(email='user_manager@a.com').groups.all())
-        print(self.AS in User.objects.get(email='user_sales@a.com').groups.all())
+    def test_manager_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = self.user_manager
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_sales_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = self.user_sales
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_anon_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = AnonymousUser()
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
