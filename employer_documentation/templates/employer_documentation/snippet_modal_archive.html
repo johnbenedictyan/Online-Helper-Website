@@ -7,8 +7,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                    <p>Archive employer documents, case ref {{ object.case_ref_no }}?</p>
-                    <p>This will generate PDF copy of the signed documents and save them for archiving purposes.</p>
+                    <p>Archive documents for case #: <strong>{{ object.case_ref_no }}</strong>?</p>
+                    <br>
+                    <p>This will generate PDF copies of the signed documents and save them for archiving purposes.</p>
+                    <br>
+                    <p>Any previously archived documents for case # {{ object.case_ref_no }} will be overwritten.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

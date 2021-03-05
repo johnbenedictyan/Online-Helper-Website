@@ -2,7 +2,7 @@
 {% block dashboard_section %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 offset-lg-1">
+        <div class="col-lg-10">
             <div class="card custom-card">
                 <div class="row">
                     <div class="col">
@@ -14,7 +14,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-lg-3">
-                        <img src="{{maid.photo.url}}" class="rounded" alt="Maid Profile Picture">
+                        <img src="{{maid.photo.url}}" class="rounded img-fluid" alt="Maid Profile Picture">
                     </div>
                     <div class="col-md-8 col-lg-9">
                         <div class="row">
@@ -682,33 +682,70 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-2">
             <div class="card custom-card">
                 <div class="row">
-                    <div class="col text-center">
-                        <form action="{% url 'maid_delete' pk=maid.pk %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger mr-2 d-none d-md-inline">
-                                <strong>Delete FDW Biodata</strong>
-                            </button>
-                            <button type="submit" class="btn btn-outline-danger d-md-none mb-2 w-100">
-                                <strong>Delete FDW Biodata</strong>
-                            </button>
-                        </form>
-                        {% if maid.published == False %}
-                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success ml-md-2 d-none d-md-inline">
-                            <strong>Publish FDW Biodata</strong>
-                        </a>
-                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-success d-md-none mb-2 w-100">
-                            <strong>Publish FDW Biodata</strong>
-                        </a>
-                        {% else %}
-                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-warning ml-md-2 d-none d-md-inline">
-                            <strong>Unpublish FDW Biodata</strong>
-                        </a>
-                        <a href="{% url 'maid_toggle_published' pk=maid.pk %}" class="btn btn-warning d-md-none mb-2 w-100">
-                            <strong>Unpublish FDW Biodata</strong>
-                        </a>
-                        {% endif %}
+                    <div class="col">
+                        <div class="row">
+                            <div class="col mb-2">
+                                <form action="{% url 'maid_delete' pk=maid.pk %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger d-none d-md-flex w-100">
+                                        <strong>Delete</strong>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-danger d-md-none w-100">
+                                        <strong>Delete</strong>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                {% if maid.published == False %}
+                                <form action="{% url 'maid_toggle_published' pk=maid.pk %}" method="get">
+                                    <button type="submit" class="btn btn-success d-none d-md-flex w-100">
+                                        <strong>Publish</strong>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-success d-md-none w-100">
+                                        <strong>Publish</strong>
+                                    </button>
+                                </form>
+                                {% else %}
+                                <form action="{% url 'maid_toggle_published' pk=maid.pk %}" method="get">
+                                    <button type="submit" class="btn btn-warning d-none d-md-flex w-100">
+                                        <strong>Unpublish</strong>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-warning d-md-none w-100">
+                                        <strong>Unpublish</strong>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                {% if maid.featured == False %}
+                                <form action="{% url 'maid_toggle_featured' pk=maid.pk %}" method="get">
+                                    <button type="submit" class="btn btn-success d-none d-md-flex w-100">
+                                        <strong>Feature</strong>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-success d-md-none w-100">
+                                        <strong>Feature</strong>
+                                    </button>
+                                </form>
+                                {% else %}
+                                <form action="{% url 'maid_toggle_featured' pk=maid.pk %}" method="get">
+                                    <button type="submit" class="btn btn-warning d-none d-md-flex w-100">
+                                        <strong>Unfeature</strong>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-warning d-md-none w-100">
+                                        <strong>Unfeature</strong>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

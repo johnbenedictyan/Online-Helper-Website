@@ -1,3 +1,6 @@
+# Imports from python
+from random import shuffle
+
 # Imports from django
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -9,6 +12,7 @@ from django.views.generic.base import TemplateView
 from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
 from payment.models import SubscriptionProduct
+from maid.models import Maid
 from maid.filters import MiniMaidFilter
 
 # Imports from local app
@@ -22,8 +26,13 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
+        featured_maids = list(Maid.objects.filter(
+            featured=True
+        ))
+        shuffle(featured_maids)
         kwargs.update({
-            'filter': MiniMaidFilter()
+            'filter': MiniMaidFilter(),
+            'featured_maids': featured_maids
         })
         return kwargs
 
