@@ -233,3 +233,26 @@ def maid_seed_data():
                     description='this is a description',
                     transaction_date=date.today()
                 )
+
+def subscription_seed_data():
+    from payment.models import SubscriptionProduct, SubscriptionProductPrice
+    
+    import json
+    subscription_data = json.load(open('./subscriptions.json'))
+    
+    for subscription in subscription_data:
+        sub_product, created = SubscriptionProduct.objects.get_or_create(
+            id=subscription['subscription_product_id'],
+            name=subscription['subscription_product_name'],
+            description=subscription['subscription_product_description']
+        )
+        
+        if created == True:
+            for subscription_price in subscription['prices']:
+                sub_product_price, created = SubscriptionProductPrice.objects.get_or_create(
+                    id=subscription_price['subcription_price_id'],
+                    subscription_product=sub_product,
+                    interval=subscription_price['subcription_price_interval'],
+                    interval_count=subscription_price['subcription_price_interval_count'],
+                    unit_amount=subscription_price['subcription_price_unit_amount']
+                )
