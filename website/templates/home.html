@@ -175,10 +175,10 @@
         </div>
         {% else %}
         <div class="row">
-            <div class="col">
-                <img src="{% static 'images/featured-maids.png' %}" alt="" class="img-fluid" style="filter:blur(4px); opacity: 50%;">
-                <div class="featured-maids-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%;">
-                    <div class="jumbotron jumbotron-fluid" style="background-color: transparent;">
+            <div class="col text-center">
+                <img src="{% static 'images/featured-maids.png' %}" alt="" class="img-fluid blurred-image">
+                <div class="featured-maids-overlay">
+                    <div class="jumbotron jumbotron-fluid bg-transparent">
                         <div class="container text-center">
                           <h3 class="display-4">Sign in to view biodata</h3>
                           <a href="{% url 'sign_in' %}" class="btn btn-primary"><h5 class="mb-0">Sign in</h5></a>
