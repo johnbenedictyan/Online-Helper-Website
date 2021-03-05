@@ -170,6 +170,10 @@ button.mini-faq-button i {
   width: 100%;
 }
 
+.progress-wrapper {
+  height: 15px;
+}
+
 .noUi-target,
 .noUi-target * {
   -webkit-touch-callout: none;
