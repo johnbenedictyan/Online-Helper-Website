@@ -77,6 +77,18 @@ class Agency(models.Model):
         verbose_name=_('Mission Statement'),
         blank=False
     )
+    
+    amount_of_biodata = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of FDW Biodata allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_featured_biodata = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of featured FDW Biodata allowed'),
+        default=0,
+        null=False
+    )
 
     active = models.BooleanField(
         default=True,
