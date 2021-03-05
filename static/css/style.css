@@ -42,6 +42,10 @@
   background-position: center;
 }
 
+.bg-home-hero {
+  background-image: url("/static/images/hero-image.png");
+}
+
 .faq-item.active {
   color: #3D52D5;
   background-color: #fff;
