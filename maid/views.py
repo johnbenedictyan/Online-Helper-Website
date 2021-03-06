@@ -73,17 +73,28 @@ class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         )
     
     def form_valid(self, form):
-        try:
-            self.object = form.save()
-        except Exception as e:
-            messages.warning(
-                self.request,
-                'Please try again',
-                extra_tags='warning'
-            )
-            return super().form_invalid(form)
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        if agency.amount_of_biodata < agency.amount_of_biodata_allowed:
+            try:
+                self.object = form.save()
+            except Exception as e:
+                messages.warning(
+                    self.request,
+                    'Please try again',
+                    extra_tags='warning'
+                )
+                return super().form_invalid(form)
+            else:
+                return super().form_valid(form)
         else:
-            return super().form_valid(form)
+            messages.warning(
+                    self.request,
+                    'You have reached the limit of biodata',
+                    extra_tags='error'
+                )
+            return super().form_invalid(form)
 
 class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                  SuccessMessageMixin, FormView):
