@@ -10,13 +10,14 @@ from django.db.models.query_utils import subclasses
 from django.http.response import (
     HttpResponse, HttpResponseRedirect, JsonResponse
 )
-from django.shortcuts import get_list_or_404
+from django.shortcuts import get_list_or_404, redirect
 from django.urls.base import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
@@ -31,7 +32,9 @@ from agency.mixins import (
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .constants import SubscriptionStatusChoices, SubscriptionLimitMap
+from .constants import (
+    SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
+)
 
 from .forms import (
     SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
@@ -153,12 +156,31 @@ class AddToCart(RedirectView):
                 'This product does not exist'
             )
         else:
-            subscription_product = select_product_price.product
+            subscription_product = select_product_price.subscription_product
+            agency = self.request.user.agency_owner.agency
             if SubscriptionLimitMap[subscription_product.pk]['type'] == 'plan':
-                # if Subscription.objects.filter(
-                    
-                # )
-                pass
+                if Subscription.objects.filter(
+                    customer=Customer.objects.get(
+                        agency=agency
+                    ),
+                    subscription_type=SubscriptionTypeChoices.PLAN,
+                    status=SubscriptionStatusChoices.ACTIVE,
+                    end_date__gt=timezone.now()
+                ).count() >= 1:
+                    messages.warning(
+                        self.request,
+                        f'''
+                        You already have an active subscription.
+                        If you would like to change that subscription,
+                        <a href="{reverse_lazy('stripe_customer_portal')}">
+                            Click Here
+                        </a> 
+                        ''',
+                        extra_tags='error'
+                    )
+                    kwargs.pop('pk')
+                    return reverse_lazy('dashboard_agency_plan_list')
+                
             current_cart.append(
                 select_product_price.pk
             )
