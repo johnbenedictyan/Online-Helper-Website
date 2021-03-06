@@ -137,8 +137,8 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
         for k,v in instance.__dict__.items():
             if not v:
                 family_details_valid = False
-                if k is 'number_of_children' or k is 'number_of_siblings':
-                    if v is 0:
+                if k == 'number_of_children' or k == 'number_of_siblings':
+                    if v == 0:
                         family_details_valid = True
 
         maid.family_details_complete = family_details_valid
@@ -187,7 +187,7 @@ def maid_care_completed(sender, instance, created, **kwargs):
             try:
                 for i in care_models:
                     for k,v in i.objects.get(maid=maid).__dict__.items():
-                        if k is not 'other_remarks':
+                        if k != 'other_remarks':
                             if not v:
                                 raise Exception
             except Exception as e:
