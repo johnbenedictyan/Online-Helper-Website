@@ -2,7 +2,7 @@
 
 # Imports from django
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 # Imports from other apps
@@ -136,16 +136,35 @@ def agency_employee_counter(sender, instance, created, **kwargs):
     agency.save()
     
 @receiver(post_save, sender=Agency)
-def agency_employee_counter(sender, instance, created, **kwargs):
+def deactivate_agency(sender, instance, created, **kwargs):
     agency = instance
     if agency.active == False:
         Maid.objects.filter(
             agency=agency
         ).update(
-            published=False
+            frozen=True
         )
         Advertisement.objects.filter(
             agency=agency
         ).update(
-            approved=False
+            frozen=True
         )
+        
+@receiver(pre_save, sender=Agency)
+def reactivate_agency(sender, instance, **kwargs):
+    if instance.id:
+        current = instance
+        prev, agency = Agency.objects.get(
+            pk=instance.pk
+        )
+        if prev.active == False and current.active == True:
+            Maid.objects.filter(
+                agency=agency
+            ).update(
+                frozen=False
+            )
+            Advertisement.objects.filter(
+                agency=agency
+            ).update(
+                frozen=False
+            )
