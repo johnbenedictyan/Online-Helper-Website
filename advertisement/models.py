@@ -100,3 +100,8 @@ class Advertisement(models.Model):
         blank=False,
         null=True
     )
+    
+    frozen = models.BooleanField(
+        default=False,
+        editable=False
+    )
