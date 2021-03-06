@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 # Imports from within the app
 from .constants import (
-    SubscriptionStatusChoices, SubscriptionBiodataLimitChoicesMap
+    SubscriptionStatusChoices, SubscriptionLimitMap
 )
 
 from .models import (
@@ -24,9 +24,15 @@ def provision_subscription(sender, instance, created, **kwargs):
     agency = instance.customer.agency
     product = instance.product
     if instance.status == SubscriptionStatusChoices.ACTIVE:
-        agency.amount_of_biodata_allowed  = SubscriptionBiodataLimitChoicesMap[
+        agency.amount_of_biodata_allowed  = SubscriptionLimitMap[
             product.pk
-        ]
+        ]['biodata']
+        agency.amount_of_documents_allowed  = SubscriptionLimitMap[
+            product.pk
+        ]['documents']
+        agency.amount_of_employees_allowed  = SubscriptionLimitMap[
+            product.pk
+        ]['employee_accounts']
     elif instance.status == SubscriptionStatusChoices.CANCELED:
         agency.active = False
         
