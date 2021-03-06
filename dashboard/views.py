@@ -20,6 +20,7 @@ from agency.mixins import (
 )
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
+from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 
 # Imports from local app
@@ -35,27 +36,34 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
         dashboard_home_page_kwargs = {
             'accounts': {
                 'current': AgencyEmployee.objects.filter(
-                    agency__pk = self.agency_id
+                    agency=agency
                 ).count(),
-                'max': 123
+                'max': agency.amount_of_employees_allowed
             },
             'biodata': {
                 'current': Maid.objects.filter(
-                    agency__pk = self.agency_id
+                    agency=agency
                 ).count(),
-                'max': 123
+                'max': agency.amount_of_biodata_allowed
             },
             'branches': {
                 'current': AgencyBranch.objects.filter(
-                    agency__pk = self.agency_id
+                    agency=agency
                 ).count(),
                 'max': None
             },
             'subscriptions': {
-                'current': 123,
+                'current': Subscription.objects.filter(
+                    customer=Customer.objects.get(
+                        agency=agency
+                    )
+                ).count(),
                 'max': None
             },
             'employers': {

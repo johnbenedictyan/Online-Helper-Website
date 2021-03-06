@@ -107,6 +107,10 @@ def maid_counter(sender, instance, created, **kwargs):
     agency.amount_of_biodata = Maid.objects.filter(
         agency=agency
     ).count()
+    agency.amount_of_featured_biodata = Maid.objects.filter(
+        agency=agency,
+        featured=True
+    ).count()
     agency.save()
     
 @receiver(post_save, sender=MaidPersonalDetails)
