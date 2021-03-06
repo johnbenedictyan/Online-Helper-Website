@@ -168,4 +168,7 @@ class Subscription(models.Model):
         choices=SubscriptionStatusChoices.choices
     )
     
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+    
     

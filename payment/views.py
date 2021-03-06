@@ -31,15 +31,15 @@ from agency.mixins import (
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .constants import SubscriptionStatusChoices
+from .constants import SubscriptionStatusChoices, SubscriptionLimitMap
 
 from .forms import (
     SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
     SubscriptionProductPriceCreationForm
 )
 from .models import (
-    Invoice, Customer, Subscription, SubscriptionProduct, SubscriptionProductPrice,
-    SubscriptionProductImage
+    Invoice, Customer, Subscription, SubscriptionProduct, 
+    SubscriptionProductPrice, SubscriptionProductImage 
 )
 
 # Stripe Settings
@@ -153,6 +153,12 @@ class AddToCart(RedirectView):
                 'This product does not exist'
             )
         else:
+            subscription_product = select_product_price.product
+            if SubscriptionLimitMap[subscription_product.pk]['type'] == 'plan':
+                # if Subscription.objects.filter(
+                    
+                # )
+                pass
             current_cart.append(
                 select_product_price.pk
             )
