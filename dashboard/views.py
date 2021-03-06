@@ -20,7 +20,7 @@ from agency.mixins import (
 )
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
-from payment.models import Subscription
+from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 
 # Imports from local app
@@ -60,7 +60,9 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
             },
             'subscriptions': {
                 'current': Subscription.objects.filter(
-                    agency=agency    
+                    customer=Customer.objects.get(
+                        agency=agency
+                    )
                 ).count(),
                 'max': None
             },
