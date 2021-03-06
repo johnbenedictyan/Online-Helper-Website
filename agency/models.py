@@ -77,6 +77,54 @@ class Agency(models.Model):
         verbose_name=_('Mission Statement'),
         blank=False
     )
+    
+    amount_of_biodata = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of FDW Biodata'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_biodata_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of FDW Biodata allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_featured_biodata = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of featured FDW Biodata'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_featured_biodata_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of featured FDW Biodata allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_employees = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employee accounts'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_employees_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employee accounts allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_documents = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employer documents'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_documents_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employer documents allowed'),
+        default=0,
+        null=False
+    )
 
     active = models.BooleanField(
         default=True,

@@ -179,6 +179,11 @@ class Maid(models.Model):
         blank=False
     )
     
+    frozen = models.BooleanField(
+        default=False,
+        editable=False
+    )
+    
     def get_main_responsibility(self):
         main_responsibility = [
             i for i in self.responsibilities.all()

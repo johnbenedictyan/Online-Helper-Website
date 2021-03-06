@@ -1,10 +1,12 @@
 # Imports from modules
 import json
+from datetime import date, datetime
 
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query_utils import subclasses
 from django.http.response import (
     HttpResponse, HttpResponseRedirect, JsonResponse
 )
@@ -29,12 +31,14 @@ from agency.mixins import (
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
+from .constants import SubscriptionStatusChoices
+
 from .forms import (
     SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
     SubscriptionProductPriceCreationForm
 )
 from .models import (
-    Invoice, Customer, SubscriptionProduct, SubscriptionProductPrice,
+    Invoice, Customer, Subscription, SubscriptionProduct, SubscriptionProductPrice,
     SubscriptionProductImage
 )
 
@@ -448,12 +452,31 @@ class StripeWebhookView(View):
             # Invalid signature
             return HttpResponse(status=400)
         else:
-            if event.type=='invoice.payment_failed':
-                print(event)
-            if event.type=='checkout.session.completed':
-                print(event)
+            if event.type=='invoice.created':
+                Subscription.objects.get_or_create(
+                    id=event.data.object.subscription,
+                    customer=Customer.objects.get(
+                        pk=event.data.object.customer
+                    ),
+                    product=SubscriptionProduct.objects.get(
+                        pk=event.data.object.lines.data[0].price.product
+                    ),
+                    status=SubscriptionStatusChoices.UNPAID
+                )
             if event.type=='invoice.paid':
-                print(event)
+                subscription = Subscription.objects.get(
+                    id=event.data.object.subscription
+                )
+                subscription.start_date = datetime.utcfromtimestamp(
+                    event.data.object.lines.data[0].period.start
+                )
+                subscription.end_date = datetime.utcfromtimestamp(
+                    event.data.object.lines.data[0].period.end
+                )
+                subscription.status = SubscriptionStatusChoices.ACTIVE
+                subscription.save()
+                
             if event.type=='invoice.payment_failed':
                 print(event)
+                
             return HttpResponse(status=200)
