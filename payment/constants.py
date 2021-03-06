@@ -10,6 +10,10 @@ class SubscriptionStatusChoices(models.TextChoices):
     CANCELED = 'CANCELED', _('Canceled')
     UNPAID = 'UNPAID', _('Unpaid')
     
+class SubscriptionTypeChoices(models.TextChoices):
+    PLAN = 'PLAN', _('Plan')
+    ADVERTISEMENT = 'AD', _('Advertisement')
+    
 SubscriptionLimitMap = {
     "prod_IlJqpv40JRgCa6": {
         "name": "Premium Platform & CRM Plan",
