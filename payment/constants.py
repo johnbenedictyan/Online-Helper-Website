@@ -9,3 +9,10 @@ class SubscriptionStatusChoices(models.TextChoices):
     PAST_DUE = 'PAST_DUE', _('Past Due')
     CANCELED = 'CANCELED', _('Canceled')
     UNPAID = 'UNPAID', _('Unpaid')
+    
+SubscriptionBiodataLimitChoicesMap = {
+    "prod_IlJqpv40JRgCa6": 200,
+    "prod_IlJl5XiqUt2O3Q": 200,
+    "prod_IlJiwIHP2LXuRI": 100,
+    "prod_IlJVbv4ixfNtNg": 100,
+}
