@@ -148,5 +148,80 @@
                 "subcription_price_unit_amount": 42000
             }
         ]
+    },
+    {
+        "subscription_product_id": "prod_J434xmRtR0HI8c",
+        "subscription_product_name": "Premium Advertisement",
+        "subscription_product_description": "Premium Advertisement",
+        "prices": [
+            {
+                "subcription_price_id": "price_1IRuzqKvEbGNaxrCXDtsX3Jl",
+                "subcription_price_interval": "year",
+                "subcription_price_interval_count": 1,
+                "subcription_price_unit_amount": 540000
+            },
+            {
+                "subcription_price_id": "price_1IRuzqKvEbGNaxrCa1E9LoSk",
+                "subcription_price_interval": "month",
+                "subcription_price_interval_count": 6,
+                "subcription_price_unit_amount": 300000
+            },
+            {
+                "subcription_price_id": "price_1IRuy0KvEbGNaxrCHC8qmMsU",
+                "subcription_price_interval": "month",
+                "subcription_price_interval_count": 3,
+                "subcription_price_unit_amount": 165000
+            }
+        ]
+    },
+    {
+        "subscription_product_id": "prod_J436TNwqM3fOBW",
+        "subscription_product_name": "Standard Advertisement",
+        "subscription_product_description": "Standard Advertisement",
+        "prices": [
+            {
+                "subcription_price_id": "price_1IRv0hKvEbGNaxrCBVxaVk0O",
+                "subcription_price_interval": "year",
+                "subcription_price_interval_count": 1,
+                "subcription_price_unit_amount": 336000
+            },
+            {
+                "subcription_price_id": "price_1IRv0hKvEbGNaxrClpHJQJno",
+                "subcription_price_interval": "month",
+                "subcription_price_interval_count": 6,
+                "subcription_price_unit_amount": 192000
+            },
+            {
+                "subcription_price_id": "price_1IRv0hKvEbGNaxrCidzck1UF",
+                "subcription_price_interval": "month",
+                "subcription_price_interval_count": 3,
+                "subcription_price_unit_amount": 105000
+            }
+        ]
+    },
+    {
+        "subscription_product_id": "prod_J438kMRsmpiPZR",
+        "subscription_product_name": "Featured Maid Advertisement",
+        "subscription_product_description": "Featured Maid Advertisement",
+        "prices": [
+            {
+                "subcription_price_id": "price_1IRv25KvEbGNaxrCn3rZlUoB",
+                "subcription_price_interval": "year",
+                "subcription_price_interval_count": 1,
+                "subcription_price_unit_amount": 60000
+            },
+            {
+                "subcription_price_id": "price_1IRv25KvEbGNaxrC1bv2xA82",
+                "subcription_price_interval": "month",
+                "subcription_price_interval_count": 6,
+                "subcription_price_unit_amount": 33000
+            },
+            {
+                "subcription_price_id": "price_1IRv25KvEbGNaxrCp5WqQv8M",
+                "subcription_price_interval": "month",
+                "subcription_price_interval_count": 3,
+                "subcription_price_unit_amount": 18000
+            }
+        ]
     }
 ]
