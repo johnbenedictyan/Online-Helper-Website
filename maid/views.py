@@ -90,10 +90,10 @@ class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
                 return super().form_valid(form)
         else:
             messages.warning(
-                    self.request,
-                    'You have reached the limit of biodata',
-                    extra_tags='error'
-                )
+                self.request,
+                'You have reached the limit of biodata',
+                extra_tags='warning'
+            )
             return super().form_invalid(form)
 
 class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
@@ -255,7 +255,19 @@ class MaidToggleFeatured(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
                 'This maid does not exist'
             )
         else:
-            maid.featured = not maid.featured
+            if maid.featured == False:
+                amt_of_featured = maid.agency.amount_of_featured_biodata
+                amt_allowed = maid.agency.amount_of_featured_biodata_allowed
+                if amt_of_featured < amt_allowed:
+                    maid.featured = not maid.featured
+                else:
+                    messages.warning(
+                        self.request,
+                        'You have reached the limit of featured biodata',
+                        extra_tags='error'
+                    )
+            else:
+                maid.featured = not maid.featured
             maid.save()
             kwargs.pop(self.pk_url_kwarg)
         finally:
