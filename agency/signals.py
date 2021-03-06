@@ -10,7 +10,9 @@ import stripe
 from payment.models import Customer
 
 # Imports from within the app
-from .models import Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency
+from .models import (
+    Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency, AgencyEmployee
+)
 
 # Utiliy Classes and Functions
 def agency_completed(agency):
@@ -122,3 +124,11 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
             new_customer.save()
     else:
         pass
+    
+@receiver(post_save, sender=AgencyEmployee)
+def agency_employee_counter(sender, instance, created, **kwargs):
+    agency = instance.agency
+    agency.amount_of_employees = AgencyEmployee.objects.filter(
+        agency=agency
+    ).count()
+    agency.save()
