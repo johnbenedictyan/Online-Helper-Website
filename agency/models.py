@@ -113,6 +113,18 @@ class Agency(models.Model):
         default=0,
         null=False
     )
+    
+    amount_of_documents = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employer documents'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_documents_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employer documents allowed'),
+        default=0,
+        null=False
+    )
 
     active = models.BooleanField(
         default=True,
