@@ -189,6 +189,16 @@ class AgencySignInForm(AuthenticationForm):
                     code='invalid-signin'
                 )
             )
+        if agency.active == False:
+            self.add_error(
+                'agency_license_number',
+                ValidationError(
+                    _(
+                        '''This agency has been deactivate. 
+                        Please contact Online Maid Pte Ltd.'''),
+                    code='invalid-signin'
+                )
+            )
         return cleaned_data
 
 # Model Forms
