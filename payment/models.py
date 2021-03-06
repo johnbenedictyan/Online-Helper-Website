@@ -12,7 +12,9 @@ from onlinemaid.storage_backends import PublicMediaStorage
 from agency.models import Agency
 
 # Imports from within the app
-from .constants import SubscriptionStatusChoices
+from .constants import (
+    SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
+)
 
 # Utiliy Classes and Functions
 
@@ -168,7 +170,21 @@ class Subscription(models.Model):
         choices=SubscriptionStatusChoices.choices
     )
     
+    subscription_type = models.CharField(
+        verbose_name=_('Subscription type'),
+        max_length=4,
+        blank=False,
+        choices=SubscriptionTypeChoices.choices,
+        default=SubscriptionTypeChoices.PLAN
+    )
+    
     def save(self, *args, **kwargs):
+        if SubscriptionLimitMap[self.product.pk]['type'] == 'plan':
+            self.subscription_type = SubscriptionTypeChoices.PLAN
+            
+        elif SubscriptionLimitMap[self.product.pk]['type'] == 'advertisement':
+            self.subscription_type = SubscriptionTypeChoices.ADVERTISEMENT
+            
         super().save(*args, **kwargs)
     
     
