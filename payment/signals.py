@@ -24,7 +24,7 @@ def provision_subscription(sender, instance, created, **kwargs):
     agency = instance.customer.agency
     product = instance.product
     if instance.status == SubscriptionStatusChoices.ACTIVE:
-        agency.amount_of_biodata  = SubscriptionBiodataLimitChoicesMap[
+        agency.amount_of_biodata_allowed  = SubscriptionBiodataLimitChoicesMap[
             product.pk
         ]
     elif instance.status == SubscriptionStatusChoices.CANCELED:
