@@ -21,10 +21,13 @@ from .models import (
 # Start of Signals
 @receiver(post_save, sender=Subscription)
 def provision_subscription(sender, instance, created, **kwargs):
+    agency = instance.customer.agency
+    product = instance.product
     if instance.status == SubscriptionStatusChoices.ACTIVE:
-        agency = instance.customer.agency
-        product = instance.product
         agency.amount_of_biodata  = SubscriptionBiodataLimitChoicesMap[
             product.pk
         ]
-        agency.save()
+    elif instance.status == SubscriptionStatusChoices.CANCELED:
+        agency.active = False
+        
+    agency.save()
