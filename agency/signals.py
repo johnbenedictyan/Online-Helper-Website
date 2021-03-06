@@ -7,6 +7,8 @@ from django.dispatch import receiver
 
 # Imports from other apps
 import stripe
+from advertisement.models import Advertisement
+from maid.models import Maid
 from payment.models import Customer
 
 # Imports from within the app
@@ -132,3 +134,18 @@ def agency_employee_counter(sender, instance, created, **kwargs):
         agency=agency
     ).count()
     agency.save()
+    
+@receiver(post_save, sender=Agency)
+def agency_employee_counter(sender, instance, created, **kwargs):
+    agency = instance
+    if agency.active == False:
+        Maid.objects.filter(
+            agency=agency
+        ).update(
+            published=False
+        )
+        Advertisement.objects.filter(
+            agency=agency
+        ).update(
+            approved=False
+        )
