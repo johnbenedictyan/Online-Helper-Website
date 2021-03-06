@@ -42,6 +42,14 @@
   background-position: center;
 }
 
+.bg-home-hero {
+  background-image: url("/static/images/hero-image.png");
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
 .faq-item.active {
   color: #3D52D5;
   background-color: #fff;
@@ -145,6 +153,25 @@ button.mini-faq-button i {
 
 .maid-card {
   cursor: pointer;
+}
+
+.blurred-image {
+  -webkit-filter: blur(4px);
+          filter: blur(4px);
+  opacity: 50%;
+}
+
+.featured-maids-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.progress-wrapper {
+  height: 15px;
 }
 
 .noUi-target,
