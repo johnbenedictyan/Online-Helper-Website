@@ -102,7 +102,7 @@ def maid_completed(maid):
 
 # Start of Signals
 @receiver(post_save, sender=Maid)
-def maid_counter(sender, instance,created, **kwargs):
+def maid_counter(sender, instance, created, **kwargs):
     agency = instance.agency
     agency.amount_of_biodata = Maid.objects.filter(
         agency=agency
