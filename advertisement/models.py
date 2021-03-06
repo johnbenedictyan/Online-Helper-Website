@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
 from agency.models import Agency
+from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
 
@@ -15,10 +16,8 @@ from agency.models import Agency
 
 class AdvertisementLocation(models.Model):
     class AdvertisementTierChoices(models.TextChoices):
-        NONE = 'NONE', _('None')
-        TIER_1 = 'TIER1', _('Tier 1')
-        TIER_2 = 'TIER2', _('Tier 2')
-        TIER_3 = 'TIER3', _('Tier 3')
+        STANDARD = 'STANDARD', _('Standard')
+        PREMIUM = 'PREMIUM', _('Premium')
 
     name = models.CharField(
         verbose_name=_('Page name'),
@@ -28,15 +27,20 @@ class AdvertisementLocation(models.Model):
 
     tier = models.CharField(
         verbose_name=_('Advertisment tier'),
-        max_length=5,
+        max_length=8,
         blank=False,
         choices=AdvertisementTierChoices.choices,
-        default=AdvertisementTierChoices.NONE
+        default=AdvertisementTierChoices.STANDARD
+    )
+    
+    total_amount_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Total number of allowed advertisements'),
+        blank=False,
+        default=5
     )
 
 class Advertisement(models.Model):
     class AdvertisementTypeChoices(models.TextChoices):
-        NONE = 'NONE', _('None')
         BANNER = 'BANNER', _('Banner')
         TESTIMONIAL = 'TESTI', _('Testimonial')
 
@@ -57,7 +61,7 @@ class Advertisement(models.Model):
         max_length=6,
         blank=False,
         choices=AdvertisementTypeChoices.choices,
-        default=AdvertisementTypeChoices.NONE
+        default=AdvertisementTypeChoices.BANNER
     )
 
     start_date = models.DateTimeField(
@@ -66,7 +70,7 @@ class Advertisement(models.Model):
         editable=False
     )
 
-    start_date = models.DateTimeField(
+    end_date = models.DateTimeField(
         verbose_name=_('Advertisment end date'),
         null=True,
         editable=False
@@ -82,4 +86,17 @@ class Advertisement(models.Model):
         verbose_name=_('Paid'),
         default=False,
         editable=False
+    )
+    
+    photo = models.FileField(
+        verbose_name=_('Advertisement Photo'),
+        blank=False,
+        null=True,
+        storage=PublicMediaStorage()
+    )
+    
+    remarks = models.TextField(
+        verbose_name=_('Testimonial statment'),
+        blank=False,
+        null=True
     )
