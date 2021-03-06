@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from .constants import MaidResponsibilityChoices
 
 from .models import (
-    MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility, 
     MaidFinancialDetails, MaidOtherCare
@@ -101,6 +101,14 @@ def maid_completed(maid):
         maid.save()
 
 # Start of Signals
+@receiver(post_save, sender=Maid)
+def maid_counter(sender, instance,created, **kwargs):
+    agency = instance.agency
+    agency.amount_of_biodata = Maid.objects.filter(
+        agency=agency
+    ).count()
+    agency.save()
+    
 @receiver(post_save, sender=MaidPersonalDetails)
 def maid_biodata_completed(sender, instance, created, **kwargs):
     if created == False:
