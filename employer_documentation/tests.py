@@ -34,10 +34,6 @@ class SetUp():
             website_uri = 'https://a.com',
             uen = '98765',
             mission = 'Custom mission',
-            active = True,
-            complete = True,
-            branch_complete = True,
-            operating_hours_complete = True,
         )
         self.agency.save()
 
