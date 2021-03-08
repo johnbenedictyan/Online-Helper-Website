@@ -32,6 +32,7 @@ class SetUp():
             is_online=True,
         )
         self.user_potential_employer.save()
+        self.user_potential_employer.groups.set([self.PE])
 
         self.potential_employer = accounts.models.Employer(
             user=self.user_potential_employer,
