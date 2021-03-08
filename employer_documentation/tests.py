@@ -4,7 +4,6 @@ from django.contrib.auth.models import AnonymousUser, Group
 
 import accounts
 from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee
-
 from .views import *
 
 class SetUp():
@@ -145,6 +144,18 @@ class SetUp():
 
 # Start of tests
 class EmployerListViewTestCase(SetUp, TestCase):
+    def test_anon_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = AnonymousUser()
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_potential_employer_access(self):
+        request = self.factory.get(reverse('employer_list_route'))
+        request.user = self.user_potential_employer
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+
     def test_owner_access(self):
         request = self.factory.get(reverse('employer_list_route'))
         request.user = self.user_owner
@@ -168,9 +179,3 @@ class EmployerListViewTestCase(SetUp, TestCase):
         request.user = self.user_sales
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
-
-    def test_anon_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
-        request.user = AnonymousUser()
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 302)
