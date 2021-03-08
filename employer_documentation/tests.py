@@ -1,6 +1,7 @@
 from django.test import TestCase, RequestFactory
 from django.conf import settings
 from django.urls import reverse
+from django.utils import timezone
 from django.core.files.images import ImageFile
 from django.contrib.auth.models import AnonymousUser, Group
 
@@ -224,122 +225,151 @@ class SetUp():
         )
         self.employer_sales.save()
 
-        # self.employerdoc_admin = EmployerDoc(
-        #     case_ref_no = 'DOC-01',
-        #     employer = self.employer_admin,
-        #     fdw = ,
-        #     monthly_combined_income = ,
-        #     spouse_required = ,
-        #     sponsor_required = ,
-        #     agreement_date = ,
-        #     b1_service_fee = ,
-        #     b2a_work_permit_application_collection = ,
-        #     b2b_medical_examination_fee = ,
-        #     b2c_security_bond_accident_insurance = ,
-        #     b2d_indemnity_policy_reimbursement = ,
-        #     b2e_home_service = ,
-        #     b2f_counselling = ,
-        #     b2g_sip = ,
-        #     b2h_replacement_months = ,
-        #     b2h_replacement_cost = ,
-        #     b2i_work_permit_renewal = ,
-        #     b2j1_other_services_description = ,
-        #     b2j1_other_services_fee = ,
-        #     b2j2_other_services_description = ,
-        #     b2j2_other_services_fee = ,
-        #     b2j3_other_services_description = ,
-        #     b2j3_other_services_fee = ,
-        #     ca_deposit = ,
-        #     fdw_is_replacement = ,
-        #     fdw_replaced = ,
-        #     b4_loan_transferred = ,
-        #     c1_3_handover_days = ,
-        #     c3_2_no_replacement_criteria_1 = ,
-        #     c3_2_no_replacement_criteria_2 = ,
-        #     c3_2_no_replacement_criteria_3 = ,
-        #     c3_4_no_replacement_refund = ,
-        #     c4_1_number_of_replacements = ,
-        #     c4_1_replacement_period = ,
-        #     c4_1_replacement_after_min_working_days = ,
-        #     c4_1_5_replacement_deadline = ,
-        #     c5_1_1_deployment_deadline = ,
-        #     c5_1_1_failed_deployment_refund = ,
-        #     c5_1_2_refund_within_days = ,
-        #     c5_1_2_before_fdw_arrives_charge = ,
-        #     c5_1_2_after_fdw_arrives_charge = ,
-        #     c5_2_2_can_transfer_refund_within = ,
-        #     c5_3_2_cannot_transfer_refund_within = ,
-        #     c6_4_per_day_food_accommodation_cost = ,
-        #     c6_6_per_session_counselling_cost = ,
-        #     c9_1_independent_mediator_1 = ,
-        #     c9_2_independent_mediator_2 = ,
-        #     c13_termination_notice = ,
-        #     c3_5_fdw_sleeping_arrangement = ,
-        #     c4_1_termination_notice = ,
-        #     residential_dwelling_type = ,
-        #     fdw_clean_window_exterior = ,
-        #     window_exterior_location = ,
-        #     grilles_installed_require_cleaning = ,
-        #     adult_supervision = ,
-        #     received_sip_assessment_checklist = ,
-        #     verifiy_employer_understands_window_cleaning = ,
-        # )
-
-    def test_anon_redirect(self, **kwargs):
-        request = self.factory.get(reverse(self.ROUTE, **kwargs))
-        request.user = AnonymousUser()
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 302)
-
-    def test_potential_employer_redirect(self, **kwargs):
-        request = self.factory.get(reverse(self.ROUTE, **kwargs))
-        request.user = self.user_potential_employer
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 302)
-
-    def test_owner_access(self, **kwargs):
-        request = self.factory.get(reverse(self.ROUTE, **kwargs))
-        request.user = self.user_owner
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 200)
-
-    def test_admin_access(self, **kwargs):
-        request = self.factory.get(reverse(self.ROUTE, **kwargs))
-        request.user = self.user_admin
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 200)
-
-    def test_manager_access(self, **kwargs):
-        request = self.factory.get(reverse(self.ROUTE, **kwargs))
-        request.user = self.user_manager
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 200)
-
-    def test_sales_access(self, **kwargs):
-        request = self.factory.get(reverse(self.ROUTE, **kwargs))
-        request.user = self.user_sales
-        response = EmployerListView.as_view()(request)
-        self.assertEqual(response.status_code, 200)
+        const_decimal = 100
+        const_int = 1
+        self.employerdoc_admin = EmployerDoc(
+            case_ref_no = 'DOC-01',
+            employer = self.employer_admin,
+            fdw = self.maid,
+            monthly_combined_income = 3,
+            # spouse_required = False,
+            # sponsor_required = False,
+            agreement_date = timezone.now(),
+            b1_service_fee = const_decimal,
+            b2a_work_permit_application_collection = const_decimal,
+            b2b_medical_examination_fee = const_decimal,
+            b2c_security_bond_accident_insurance = const_decimal,
+            b2d_indemnity_policy_reimbursement = const_decimal,
+            b2e_home_service = const_decimal,
+            b2f_counselling = const_decimal,
+            b2g_sip = const_decimal,
+            b2h_replacement_months = const_int,
+            b2h_replacement_cost = const_decimal,
+            b2i_work_permit_renewal = const_decimal,
+            b2j1_other_services_description = '1',
+            b2j1_other_services_fee = const_decimal,
+            b2j2_other_services_description = '2',
+            b2j2_other_services_fee = const_decimal,
+            b2j3_other_services_description = '3',
+            b2j3_other_services_fee = const_decimal,
+            ca_deposit = 1500,
+            fdw_is_replacement = False,
+            # fdw_replaced = ,
+            # b4_loan_transferred = ,
+            c1_3_handover_days = const_int,
+            c3_2_no_replacement_criteria_1 = 'Criteria 1',
+            c3_2_no_replacement_criteria_2 = 'Criteria 2',
+            c3_2_no_replacement_criteria_3 = 'Criteria 3',
+            c3_4_no_replacement_refund = const_decimal,
+            c4_1_number_of_replacements = const_int,
+            c4_1_replacement_period = const_int,
+            c4_1_replacement_after_min_working_days = const_int,
+            c4_1_5_replacement_deadline = const_int,
+            c5_1_1_deployment_deadline = const_int,
+            c5_1_1_failed_deployment_refund = const_decimal,
+            c5_1_2_refund_within_days = const_int,
+            c5_1_2_before_fdw_arrives_charge = const_decimal,
+            c5_1_2_after_fdw_arrives_charge = const_decimal,
+            c5_2_2_can_transfer_refund_within = const_int,
+            c5_3_2_cannot_transfer_refund_within = const_int,
+            c6_4_per_day_food_accommodation_cost = const_decimal,
+            c6_6_per_session_counselling_cost = const_decimal,
+            c9_1_independent_mediator_1 = 'Mediator 1',
+            c9_2_independent_mediator_2 = 'Mediator 2',
+            c13_termination_notice = const_int,
+            c3_5_fdw_sleeping_arrangement = 'Have own room',
+            c4_1_termination_notice = const_int,
+            residential_dwelling_type = 'HDB',
+            fdw_clean_window_exterior = False,
+            # window_exterior_location = ,
+            # grilles_installed_require_cleaning = ,
+            # adult_supervision = ,
+            # received_sip_assessment_checklist = ,
+            # verifiy_employer_understands_window_cleaning = ,
+        )
+        self.employerdoc_admin.save()
 
 # Start of tests
 class EmployerListViewTestCase(SetUp, TestCase):
     ROUTE = 'employer_list_route'
 
-    def run_default_tests(self):
-        self.test_anon_redirect()
-        self.test_potential_employer_redirect()
-        self.test_owner_access()
-        self.test_admin_access()
-        self.test_manager_access()
-        self.test_sales_access()
+    def test_anon_redirect(self):
+        request = self.factory.get(reverse(self.ROUTE))
+        request.user = AnonymousUser()
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
 
-# class DocListViewTestCase(SetUp, TestCase):
-#     ROUTE = 'employerdoc_list_route'
+    def test_potential_employer_redirect(self):
+        request = self.factory.get(reverse(self.ROUTE))
+        request.user = self.user_potential_employer
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
 
-#     def run_default_tests(self):
-#         self.test_anon_redirect()
-#         self.test_potential_employer_redirect()
-#         self.test_owner_access()
-#         self.test_admin_access()
-#         self.test_manager_access()
-#         self.test_sales_access()
+    def test_owner_access(self):
+        request = self.factory.get(reverse(self.ROUTE))
+        request.user = self.user_owner
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_access(self):
+        request = self.factory.get(reverse(self.ROUTE))
+        request.user = self.user_admin
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_manager_access(self):
+        request = self.factory.get(reverse(self.ROUTE))
+        request.user = self.user_manager
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_sales_access(self):
+        request = self.factory.get(reverse(self.ROUTE))
+        request.user = self.user_sales
+        response = EmployerListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+class DocListViewTestCase(SetUp, TestCase):
+    ROUTE = 'employerdoc_list_route'
+    
+    def setUp(self):
+        super().setUp()
+        self.kwargs_ed_admin = {
+            'employer_pk': self.employer_admin.pk,
+        }
+        self.request = self.factory.get(reverse(
+            self.ROUTE,
+            kwargs=self.kwargs_ed_admin)
+        )
+
+    def test_anon_redirect(self):
+        self.request.user = AnonymousUser()
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_potential_employer_redirect(self):
+        self.request.user = self.user_potential_employer
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_owner_access(self):
+        self.request.user = self.user_owner
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_access(self):
+        self.request.user = self.user_admin
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 200)
+
+    # def test_manager_access(self):
+    #     request = self.factory.get(reverse(self.ROUTE))
+    #     request.user = self.user_manager
+    #     response = EmployerListView.as_view()(request)
+    #     self.assertEqual(response.status_code, 200)
+
+    # def test_sales_access(self):
+    #     request = self.factory.get(reverse(self.ROUTE))
+    #     request.user = self.user_sales
+    #     response = EmployerListView.as_view()(request)
+    #     self.assertEqual(response.status_code, 200)
