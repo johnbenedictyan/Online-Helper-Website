@@ -41,6 +41,15 @@ class SetUp():
         )
         self.potential_employer.save()
 
+        self.potential_agency = PotentialAgency(
+            name = 'pa',
+            license_number = '12345',
+            person_in_charge = 'pa',
+            contact_number = '1',
+            email = 'a@a.com',
+        )
+        self.potential_agency.save()
+        
         self.agency = Agency(
             company_email = 'a@a.com',
             sales_email = 'a@a.com',
