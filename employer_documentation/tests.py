@@ -1,9 +1,13 @@
 from django.test import TestCase, RequestFactory
+from django.conf import settings
 from django.urls import reverse
+from django.core.files.images import ImageFile
 from django.contrib.auth.models import AnonymousUser, Group
 
 import accounts
+from onlinemaid.helper_functions import encrypt_string
 from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee, PotentialAgency
+from maid.models import Maid
 from .views import *
 
 class SetUp():
@@ -151,38 +155,168 @@ class SetUp():
         )
         self.agency_employee_sales.save()
 
-    def test_anon_redirect(self):
-        request = self.factory.get(reverse(self.ROUTE))
+        self.fdw_passport, self.fdw_nonce, self.fdw_tag = encrypt_string(
+            'PPT1000001',
+            settings.ENCRYPTION_KEY
+        )
+        self.maid = Maid(
+            agency=self.agency,
+            name='fdw name',
+            reference_number='FDW-01',
+            passport_number=self.fdw_passport,
+            nonce=self.fdw_nonce,
+            tag=self.fdw_tag,
+            maid_type='NEW',
+            days_off=4,
+            passport_status=0,
+            remarks='Some remarks',
+            skills_evaluation_method='DEC',
+            published=True,
+            featured=False,
+        )
+        with open('static/favicon-16x16.png', 'rb') as fp:
+            self.maid.photo = ImageFile(fp, 'photo.png')
+            self.maid.save()
+    
+        self.employer_nric, self.employer_nonce, self.employer_tag = encrypt_string(
+            'S0000000C',
+            settings.ENCRYPTION_KEY
+        )
+        self.employer_admin = Employer(
+            agency_employee = self.agency_employee_admin,
+            employer_name = 'employer admin',
+            employer_email = 'employer_admin@e.com',
+            employer_mobile_number = '83838383',
+            employer_nric = self.employer_nric,
+            nonce = self.employer_nonce,
+            tag = self.employer_tag,
+            employer_address_1 = 'The Road',
+            employer_address_2 = '123',
+            employer_post_code = '098765',
+        )
+        self.employer_admin.save()
+
+        self.employer_manager = Employer(
+            agency_employee = self.agency_employee_manager,
+            employer_name = 'employer manager',
+            employer_email = 'employer_manager@e.com',
+            employer_mobile_number = '84848484',
+            employer_nric = self.employer_nric,
+            nonce = self.employer_nonce,
+            tag = self.employer_tag,
+            employer_address_1 = 'The Road',
+            employer_address_2 = '123',
+            employer_post_code = '098765',
+        )
+        self.employer_manager.save()
+
+        self.employer_sales = Employer(
+            agency_employee = self.agency_employee_sales,
+            employer_name = 'employer sales',
+            employer_email = 'employer_sales@e.com',
+            employer_mobile_number = '85858585',
+            employer_nric = self.employer_nric,
+            nonce = self.employer_nonce,
+            tag = self.employer_tag,
+            employer_address_1 = 'The Road',
+            employer_address_2 = '123',
+            employer_post_code = '098765',
+        )
+        self.employer_sales.save()
+
+        # self.employerdoc_admin = EmployerDoc(
+        #     case_ref_no = 'DOC-01',
+        #     employer = self.employer_admin,
+        #     fdw = ,
+        #     monthly_combined_income = ,
+        #     spouse_required = ,
+        #     sponsor_required = ,
+        #     agreement_date = ,
+        #     b1_service_fee = ,
+        #     b2a_work_permit_application_collection = ,
+        #     b2b_medical_examination_fee = ,
+        #     b2c_security_bond_accident_insurance = ,
+        #     b2d_indemnity_policy_reimbursement = ,
+        #     b2e_home_service = ,
+        #     b2f_counselling = ,
+        #     b2g_sip = ,
+        #     b2h_replacement_months = ,
+        #     b2h_replacement_cost = ,
+        #     b2i_work_permit_renewal = ,
+        #     b2j1_other_services_description = ,
+        #     b2j1_other_services_fee = ,
+        #     b2j2_other_services_description = ,
+        #     b2j2_other_services_fee = ,
+        #     b2j3_other_services_description = ,
+        #     b2j3_other_services_fee = ,
+        #     ca_deposit = ,
+        #     fdw_is_replacement = ,
+        #     fdw_replaced = ,
+        #     b4_loan_transferred = ,
+        #     c1_3_handover_days = ,
+        #     c3_2_no_replacement_criteria_1 = ,
+        #     c3_2_no_replacement_criteria_2 = ,
+        #     c3_2_no_replacement_criteria_3 = ,
+        #     c3_4_no_replacement_refund = ,
+        #     c4_1_number_of_replacements = ,
+        #     c4_1_replacement_period = ,
+        #     c4_1_replacement_after_min_working_days = ,
+        #     c4_1_5_replacement_deadline = ,
+        #     c5_1_1_deployment_deadline = ,
+        #     c5_1_1_failed_deployment_refund = ,
+        #     c5_1_2_refund_within_days = ,
+        #     c5_1_2_before_fdw_arrives_charge = ,
+        #     c5_1_2_after_fdw_arrives_charge = ,
+        #     c5_2_2_can_transfer_refund_within = ,
+        #     c5_3_2_cannot_transfer_refund_within = ,
+        #     c6_4_per_day_food_accommodation_cost = ,
+        #     c6_6_per_session_counselling_cost = ,
+        #     c9_1_independent_mediator_1 = ,
+        #     c9_2_independent_mediator_2 = ,
+        #     c13_termination_notice = ,
+        #     c3_5_fdw_sleeping_arrangement = ,
+        #     c4_1_termination_notice = ,
+        #     residential_dwelling_type = ,
+        #     fdw_clean_window_exterior = ,
+        #     window_exterior_location = ,
+        #     grilles_installed_require_cleaning = ,
+        #     adult_supervision = ,
+        #     received_sip_assessment_checklist = ,
+        #     verifiy_employer_understands_window_cleaning = ,
+        # )
+
+    def test_anon_redirect(self, **kwargs):
+        request = self.factory.get(reverse(self.ROUTE, **kwargs))
         request.user = AnonymousUser()
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 302)
 
-    def test_potential_employer_redirect(self):
-        request = self.factory.get(reverse(self.ROUTE))
+    def test_potential_employer_redirect(self, **kwargs):
+        request = self.factory.get(reverse(self.ROUTE, **kwargs))
         request.user = self.user_potential_employer
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 302)
 
-    def test_owner_access(self):
-        request = self.factory.get(reverse(self.ROUTE))
+    def test_owner_access(self, **kwargs):
+        request = self.factory.get(reverse(self.ROUTE, **kwargs))
         request.user = self.user_owner
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_admin_access(self):
-        request = self.factory.get(reverse(self.ROUTE))
+    def test_admin_access(self, **kwargs):
+        request = self.factory.get(reverse(self.ROUTE, **kwargs))
         request.user = self.user_admin
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_manager_access(self):
-        request = self.factory.get(reverse(self.ROUTE))
+    def test_manager_access(self, **kwargs):
+        request = self.factory.get(reverse(self.ROUTE, **kwargs))
         request.user = self.user_manager
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_sales_access(self):
-        request = self.factory.get(reverse(self.ROUTE))
+    def test_sales_access(self, **kwargs):
+        request = self.factory.get(reverse(self.ROUTE, **kwargs))
         request.user = self.user_sales
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
@@ -198,3 +332,14 @@ class EmployerListViewTestCase(SetUp, TestCase):
         self.test_admin_access()
         self.test_manager_access()
         self.test_sales_access()
+
+# class DocListViewTestCase(SetUp, TestCase):
+#     ROUTE = 'employerdoc_list_route'
+
+#     def run_default_tests(self):
+#         self.test_anon_redirect()
+#         self.test_potential_employer_redirect()
+#         self.test_owner_access()
+#         self.test_admin_access()
+#         self.test_manager_access()
+#         self.test_sales_access()
