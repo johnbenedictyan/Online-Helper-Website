@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import AnonymousUser, Group
 
 import accounts
-from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee
+from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee, PotentialAgency
 from .views import *
 
 class SetUp():
@@ -142,40 +142,50 @@ class SetUp():
         )
         self.agency_employee_sales.save()
 
-# Start of tests
-class EmployerListViewTestCase(SetUp, TestCase):
-    def test_anon_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
+    def test_anon_redirect(self):
+        request = self.factory.get(reverse(self.ROUTE))
         request.user = AnonymousUser()
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 302)
 
-    def test_potential_employer_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
+    def test_potential_employer_redirect(self):
+        request = self.factory.get(reverse(self.ROUTE))
         request.user = self.user_potential_employer
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 302)
 
     def test_owner_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
+        request = self.factory.get(reverse(self.ROUTE))
         request.user = self.user_owner
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_admin_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
+        request = self.factory.get(reverse(self.ROUTE))
         request.user = self.user_admin
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_manager_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
+        request = self.factory.get(reverse(self.ROUTE))
         request.user = self.user_manager
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_sales_access(self):
-        request = self.factory.get(reverse('employer_list_route'))
+        request = self.factory.get(reverse(self.ROUTE))
         request.user = self.user_sales
         response = EmployerListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
+
+# Start of tests
+class EmployerListViewTestCase(SetUp, TestCase):
+    ROUTE = 'employer_list_route'
+
+    def run_default_tests(self):
+        self.test_anon_redirect()
+        self.test_potential_employer_redirect()
+        self.test_owner_access()
+        self.test_admin_access()
+        self.test_manager_access()
+        self.test_sales_access()
