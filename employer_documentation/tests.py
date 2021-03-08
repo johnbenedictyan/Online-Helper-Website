@@ -52,7 +52,7 @@ class SetUp():
 
         self.user_owner = User(
             email='user_owner@a.com',
-            password=b'12345678',
+            password='12345678',
             is_online=True,
         )
         self.user_owner.save()
@@ -66,7 +66,7 @@ class SetUp():
 
         self.user_admin = User(
             email='user_admin@a.com',
-            password=b'12345678',
+            password='12345678',
             is_online=True,
         )
         self.user_admin.save()
@@ -87,7 +87,7 @@ class SetUp():
 
         self.user_manager = User(
             email = 'user_manager@a.com',
-            password = b'12345678',
+            password = '12345678',
             is_online = True,
         )
         self.user_manager.save()
@@ -108,7 +108,7 @@ class SetUp():
 
         self.user_sales = User(
             email = 'user_sales@a.com',
-            password = b'12345678',
+            password = '12345678',
             is_online = True,
         )
         self.user_sales.save()
