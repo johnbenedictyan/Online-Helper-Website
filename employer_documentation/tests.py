@@ -2,7 +2,7 @@ from django.test import TestCase, RequestFactory
 from django.urls import reverse
 from django.contrib.auth.models import AnonymousUser, Group
 
-from accounts.models import User
+import accounts
 from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee
 
 from .views import *
@@ -50,7 +50,7 @@ class SetUp():
         )
         self.branch.save()
 
-        self.user_owner = User(
+        self.user_owner = accounts.models.User(
             email='user_owner@a.com',
             password='12345678',
             is_online=True,
@@ -64,7 +64,7 @@ class SetUp():
         )
         self.agency_owner.save()
 
-        self.user_admin = User(
+        self.user_admin = accounts.models.User(
             email='user_admin@a.com',
             password='12345678',
             is_online=True,
@@ -85,7 +85,7 @@ class SetUp():
         )
         self.agency_employee_admin.save()
 
-        self.user_manager = User(
+        self.user_manager = accounts.models.User(
             email = 'user_manager@a.com',
             password = '12345678',
             is_online = True,
@@ -106,7 +106,7 @@ class SetUp():
         )
         self.agency_employee_manager.save()
 
-        self.user_sales = User(
+        self.user_sales = accounts.models.User(
             email = 'user_sales@a.com',
             password = '12345678',
             is_online = True,
