@@ -26,6 +26,21 @@ class SetUp():
             setattr(self, k, instance)
             instance.save()
 
+        self.user_potential_employer = accounts.models.User(
+            email='user_potential_employer@e.com',
+            password='12345678',
+            is_online=True,
+        )
+        self.user_potential_employer.save()
+
+        self.potential_employer = accounts.models.Employer(
+            user=self.user_potential_employer,
+            first_name='first_name',
+            last_name='last_name',
+            contact_number='91919191',
+        )
+        self.potential_employer.save()
+
         self.agency = Agency(
             company_email = 'a@a.com',
             sales_email = 'a@a.com',
