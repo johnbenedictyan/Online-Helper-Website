@@ -67,7 +67,7 @@ class SetUp():
         )
         self.agency.save()
 
-        self.branch = AgencyBranch(
+        self.branch_1 = AgencyBranch(
             agency = self.agency,
             name = 'main',
             address_1 = 'Road',
@@ -78,7 +78,20 @@ class SetUp():
             mobile_number = '4371856',
             main_branch = True,
         )
-        self.branch.save()
+        self.branch_1.save()
+
+        self.branch_2 = AgencyBranch(
+            agency = self.agency,
+            name = 'main',
+            address_1 = 'Road',
+            address_2 = '123',
+            postal_code = '748562',
+            area = 'CENTRAL',
+            office_number = '7623542',
+            mobile_number = '4371856',
+            main_branch = True,
+        )
+        self.branch_2.save()
 
         self.user_owner = accounts.models.User(
             email='user_owner@a.com',
@@ -109,53 +122,95 @@ class SetUp():
             contact_number = '91919191',
             ea_personnel_number = 'EA#1',
             agency = self.agency,
-            branch = self.branch,
+            branch = self.branch_1,
             role = 'AA',
             deleted = False,
         )
         self.agency_employee_admin.save()
 
-        self.user_manager = accounts.models.User(
-            email = 'user_manager@a.com',
+        self.user_manager_b1 = accounts.models.User(
+            email = 'user_manager_1@a.com',
             password = '12345678',
             is_online = True,
         )
-        self.user_manager.save()
-        self.user_manager.groups.set([self.AM])
+        self.user_manager_b1.save()
+        self.user_manager_b1.groups.set([self.AM])
 
-        self.agency_employee_manager = AgencyEmployee(
-            user=self.user_manager,
+        self.agency_employee_manager_b1 = AgencyEmployee(
+            user=self.user_manager_b1,
             first_name = 'manager',
-            last_name = 'manager',
+            last_name = '1',
             contact_number = '92929292',
             ea_personnel_number = 'EA#2',
             agency = self.agency,
-            branch = self.branch,
+            branch = self.branch_1,
             role = 'AM',
             deleted = False,
         )
-        self.agency_employee_manager.save()
+        self.agency_employee_manager_b1.save()
 
-        self.user_sales = accounts.models.User(
+        self.user_manager_b2 = accounts.models.User(
+            email = 'user_manager_2@a.com',
+            password = '12345678',
+            is_online = True,
+        )
+        self.user_manager_b2.save()
+        self.user_manager_b2.groups.set([self.AM])
+
+        self.agency_employee_manager_b2 = AgencyEmployee(
+            user=self.user_manager_b2,
+            first_name = 'manager',
+            last_name = '2',
+            contact_number = '92929292',
+            ea_personnel_number = 'EA#3',
+            agency = self.agency,
+            branch = self.branch_2,
+            role = 'AM',
+            deleted = False,
+        )
+        self.agency_employee_manager_b2.save()
+
+        self.user_sales_b1 = accounts.models.User(
+            email = 'user_sales_1@a.com',
+            password = '12345678',
+            is_online = True,
+        )
+        self.user_sales_b1.save()
+        self.user_sales_b1.groups.set([self.AS])
+
+        self.agency_employee_sales_b1 = AgencyEmployee(
+            user = self.user_sales_b1,
+            first_name = 'sales',
+            last_name = '1',
+            contact_number = '93939393',
+            ea_personnel_number = 'EA#4',
+            agency = self.agency,
+            branch = self.branch_1,
+            role = 'AS',
+            deleted = False,
+        )
+        self.agency_employee_sales_b1.save()
+
+        self.user_sales_b2 = accounts.models.User(
             email = 'user_sales@a.com',
             password = '12345678',
             is_online = True,
         )
-        self.user_sales.save()
-        self.user_sales.groups.set([self.AS])
+        self.user_sales_b2.save()
+        self.user_sales_b2.groups.set([self.AS])
 
-        self.agency_employee_sales = AgencyEmployee(
-            user = self.user_sales,
+        self.agency_employee_sales_b2 = AgencyEmployee(
+            user = self.user_sales_b2,
             first_name = 'sales',
-            last_name = 'sales',
+            last_name = '2',
             contact_number = '93939393',
-            ea_personnel_number = 'EA#3',
+            ea_personnel_number = 'EA#5',
             agency = self.agency,
-            branch = self.branch,
+            branch = self.branch_1,
             role = 'AS',
             deleted = False,
         )
-        self.agency_employee_sales.save()
+        self.agency_employee_sales_b2.save()
 
         self.fdw_passport, self.fdw_nonce, self.fdw_tag = encrypt_string(
             'PPT1000001',
@@ -198,10 +253,10 @@ class SetUp():
         )
         self.employer_admin.save()
 
-        self.employer_manager = Employer(
-            agency_employee = self.agency_employee_manager,
-            employer_name = 'employer manager',
-            employer_email = 'employer_manager@e.com',
+        self.employer_manager_b1 = Employer(
+            agency_employee = self.agency_employee_manager_b1,
+            employer_name = 'employer manager 1',
+            employer_email = 'employer_manager_1@e.com',
             employer_mobile_number = '84848484',
             employer_nric = self.employer_nric,
             nonce = self.employer_nonce,
@@ -210,12 +265,12 @@ class SetUp():
             employer_address_2 = '123',
             employer_post_code = '098765',
         )
-        self.employer_manager.save()
+        self.employer_manager_b1.save()
 
-        self.employer_sales = Employer(
-            agency_employee = self.agency_employee_sales,
-            employer_name = 'employer sales',
-            employer_email = 'employer_sales@e.com',
+        self.employer_manager_b2 = Employer(
+            agency_employee = self.agency_employee_manager_b2,
+            employer_name = 'employer manager 2',
+            employer_email = 'employer_manager_2@e.com',
             employer_mobile_number = '85858585',
             employer_nric = self.employer_nric,
             nonce = self.employer_nonce,
@@ -224,12 +279,40 @@ class SetUp():
             employer_address_2 = '123',
             employer_post_code = '098765',
         )
-        self.employer_sales.save()
+        self.employer_manager_b2.save()
+
+        self.employer_sales_b1 = Employer(
+            agency_employee = self.agency_employee_sales_b1,
+            employer_name = 'employer sales 1',
+            employer_email = 'employer_sales_1@e.com',
+            employer_mobile_number = '86868686',
+            employer_nric = self.employer_nric,
+            nonce = self.employer_nonce,
+            tag = self.employer_tag,
+            employer_address_1 = 'The Road',
+            employer_address_2 = '123',
+            employer_post_code = '098765',
+        )
+        self.employer_sales_b1.save()
+
+        self.employer_sales_b2 = Employer(
+            agency_employee = self.agency_employee_sales_b2,
+            employer_name = 'employer sales 2',
+            employer_email = 'employer_sales_2@e.com',
+            employer_mobile_number = '87878787',
+            employer_nric = self.employer_nric,
+            nonce = self.employer_nonce,
+            tag = self.employer_tag,
+            employer_address_1 = 'The Road',
+            employer_address_2 = '123',
+            employer_post_code = '098765',
+        )
+        self.employer_sales_b2.save()
 
         const_decimal = 100
         const_int = 1
         employer_count = 1
-        for employer in [self.employer_admin, self.employer_manager, self.employer_sales]:
+        for employer in [self.employer_admin, self.employer_manager_b1, self.employer_manager_b2, self.employer_sales_b1, self.employer_sales_b2]:
             setattr(self, 'employerdoc_' + employer.agency_employee.first_name, EmployerDoc(
                 case_ref_no = 'DOC-0' + str(employer_count),
                 employer = employer,
@@ -319,12 +402,12 @@ def test_admin_access(self):
     self.assertEqual(response.status_code, 200)
 
 def test_manager_access(self):
-    self.request.user = self.user_manager
+    self.request.user = self.user_manager_b1
     response = EmployerListView.as_view()(self.request)
     self.assertEqual(response.status_code, 200)
 
 def test_sales_access(self):
-    self.request.user = self.user_sales
+    self.request.user = self.user_sales_b1
     response = EmployerListView.as_view()(self.request)
     self.assertEqual(response.status_code, 200)
 
@@ -444,6 +527,38 @@ class SalesListViewTestCase(SetUp, TestCase):
 
 class EmployerDetailViewTestCase(SetUp, TestCase):
     ROUTE = 'employer_detail_route'
+    
+    def setUp(self):
+        super().setUp()
+        self.kwargs_ed_admin = {
+            'employer_pk': self.employer_admin.pk,
+        }
+        self.request = self.factory.get(reverse(
+            self.ROUTE,
+            kwargs=self.kwargs_ed_admin
+            )
+        )
+
+    def test_anon_redirect(self):
+        test_anon_redirect(self)
+
+    def test_potential_employer_redirect(self):
+        test_potential_employer_redirect(self)
+
+    def test_owner_access(self):
+        test_owner_access(self)
+
+    def test_admin_access(self):
+        test_admin_access(self)
+
+    def test_manager_access(self):
+        test_manager_access(self)
+
+    def test_sales_access(self):
+        test_sales_access(self)
+
+class EmployerUpdateViewTestCase(SetUp, TestCase):
+    ROUTE = 'employer_update_route'
     
     def setUp(self):
         super().setUp()
