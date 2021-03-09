@@ -297,6 +297,46 @@ class SetUp():
         # print(self.employerdoc_sales.employer.employer_name)
 
 # Start of tests
+class EmployerCreateViewTestCase(SetUp, TestCase):
+    ROUTE = 'employer_create_route'
+
+    def setUp(self):
+        super().setUp()
+        self.request = self.factory.get(reverse(
+            self.ROUTE,
+            )
+        )
+
+    def test_anon_redirect(self):
+        self.request.user = AnonymousUser()
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_potential_employer_redirect(self):
+        self.request.user = self.user_potential_employer
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_owner_access(self):
+        self.request.user = self.user_owner
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_access(self):
+        self.request.user = self.user_admin
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_manager_access(self):
+        self.request.user = self.user_manager
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_sales_access(self):
+        self.request.user = self.user_sales
+        response = EmployerListView.as_view()(self.request)
+        self.assertEqual(response.status_code, 200)
+
 class EmployerListViewTestCase(SetUp, TestCase):
     ROUTE = 'employer_list_route'
 
