@@ -154,6 +154,9 @@ class Agency(models.Model):
 
     def get_main_office(self):
         return self.branches.get(main_branch=True)
+    
+    def get_enquiries(self):
+        return self.enquiries.all()
         
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
