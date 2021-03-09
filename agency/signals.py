@@ -154,7 +154,7 @@ def deactivate_agency(sender, instance, created, **kwargs):
 def reactivate_agency(sender, instance, **kwargs):
     if instance.id:
         current = instance
-        prev, agency = Agency.objects.get(
+        prev = agency = Agency.objects.get(
             pk=instance.pk
         )
         if prev.active == False and current.active == True:
