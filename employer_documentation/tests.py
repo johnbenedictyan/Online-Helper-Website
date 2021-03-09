@@ -296,6 +296,39 @@ class SetUp():
         # print(self.employerdoc_manager.employer.employer_name)
         # print(self.employerdoc_sales.employer.employer_name)
 
+
+# Re-usable tests
+def test_anon_redirect(self):
+    self.request.user = AnonymousUser()
+    response = EmployerListView.as_view()(self.request)
+    self.assertEqual(response.status_code, 302)
+
+def test_potential_employer_redirect(self):
+    self.request.user = self.user_potential_employer
+    response = EmployerListView.as_view()(self.request)
+    self.assertEqual(response.status_code, 302)
+
+def test_owner_access(self):
+    self.request.user = self.user_owner
+    response = EmployerListView.as_view()(self.request)
+    self.assertEqual(response.status_code, 200)
+
+def test_admin_access(self):
+    self.request.user = self.user_admin
+    response = EmployerListView.as_view()(self.request)
+    self.assertEqual(response.status_code, 200)
+
+def test_manager_access(self):
+    self.request.user = self.user_manager
+    response = EmployerListView.as_view()(self.request)
+    self.assertEqual(response.status_code, 200)
+
+def test_sales_access(self):
+    self.request.user = self.user_sales
+    response = EmployerListView.as_view()(self.request)
+    self.assertEqual(response.status_code, 200)
+
+
 # Start of tests
 class EmployerCreateViewTestCase(SetUp, TestCase):
     ROUTE = 'employer_create_route'
@@ -308,34 +341,22 @@ class EmployerCreateViewTestCase(SetUp, TestCase):
         )
 
     def test_anon_redirect(self):
-        self.request.user = AnonymousUser()
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_anon_redirect(self)
 
     def test_potential_employer_redirect(self):
-        self.request.user = self.user_potential_employer
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_potential_employer_redirect(self)
 
     def test_owner_access(self):
-        self.request.user = self.user_owner
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_owner_access(self)
 
     def test_admin_access(self):
-        self.request.user = self.user_admin
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_admin_access(self)
 
     def test_manager_access(self):
-        self.request.user = self.user_manager
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_manager_access(self)
 
     def test_sales_access(self):
-        self.request.user = self.user_sales
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_sales_access(self)
 
 class EmployerListViewTestCase(SetUp, TestCase):
     ROUTE = 'employer_list_route'
@@ -348,34 +369,22 @@ class EmployerListViewTestCase(SetUp, TestCase):
         )
 
     def test_anon_redirect(self):
-        self.request.user = AnonymousUser()
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_anon_redirect(self)
 
     def test_potential_employer_redirect(self):
-        self.request.user = self.user_potential_employer
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_potential_employer_redirect(self)
 
     def test_owner_access(self):
-        self.request.user = self.user_owner
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_owner_access(self)
 
     def test_admin_access(self):
-        self.request.user = self.user_admin
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_admin_access(self)
 
     def test_manager_access(self):
-        self.request.user = self.user_manager
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_manager_access(self)
 
     def test_sales_access(self):
-        self.request.user = self.user_sales
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_sales_access(self)
 
 class StatusListViewTestCase(SetUp, TestCase):
     ROUTE = 'status_list_route'
@@ -388,34 +397,22 @@ class StatusListViewTestCase(SetUp, TestCase):
         )
 
     def test_anon_redirect(self):
-        self.request.user = AnonymousUser()
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_anon_redirect(self)
 
     def test_potential_employer_redirect(self):
-        self.request.user = self.user_potential_employer
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_potential_employer_redirect(self)
 
     def test_owner_access(self):
-        self.request.user = self.user_owner
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_owner_access(self)
 
     def test_admin_access(self):
-        self.request.user = self.user_admin
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_admin_access(self)
 
     def test_manager_access(self):
-        self.request.user = self.user_manager
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_manager_access(self)
 
     def test_sales_access(self):
-        self.request.user = self.user_sales
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_sales_access(self)
 
 class SalesListViewTestCase(SetUp, TestCase):
     ROUTE = 'sales_list_route'
@@ -428,34 +425,54 @@ class SalesListViewTestCase(SetUp, TestCase):
         )
 
     def test_anon_redirect(self):
-        self.request.user = AnonymousUser()
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_anon_redirect(self)
 
     def test_potential_employer_redirect(self):
-        self.request.user = self.user_potential_employer
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_potential_employer_redirect(self)
 
     def test_owner_access(self):
-        self.request.user = self.user_owner
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_owner_access(self)
 
     def test_admin_access(self):
-        self.request.user = self.user_admin
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_admin_access(self)
 
     def test_manager_access(self):
-        self.request.user = self.user_manager
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_manager_access(self)
 
     def test_sales_access(self):
-        self.request.user = self.user_sales
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_sales_access(self)
+
+class EmployerDetailViewTestCase(SetUp, TestCase):
+    ROUTE = 'employer_detail_route'
+    
+    def setUp(self):
+        super().setUp()
+        self.kwargs_ed_admin = {
+            'employer_pk': self.employer_admin.pk,
+        }
+        self.request = self.factory.get(reverse(
+            self.ROUTE,
+            kwargs=self.kwargs_ed_admin
+            )
+        )
+
+    def test_anon_redirect(self):
+        test_anon_redirect(self)
+
+    def test_potential_employer_redirect(self):
+        test_potential_employer_redirect(self)
+
+    def test_owner_access(self):
+        test_owner_access(self)
+
+    def test_admin_access(self):
+        test_admin_access(self)
+
+    def test_manager_access(self):
+        test_manager_access(self)
+
+    def test_sales_access(self):
+        test_sales_access(self)
 
 class DocListViewTestCase(SetUp, TestCase):
     ROUTE = 'employerdoc_list_route'
@@ -472,31 +489,19 @@ class DocListViewTestCase(SetUp, TestCase):
         )
 
     def test_anon_redirect(self):
-        self.request.user = AnonymousUser()
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_anon_redirect(self)
 
     def test_potential_employer_redirect(self):
-        self.request.user = self.user_potential_employer
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 302)
+        test_potential_employer_redirect(self)
 
     def test_owner_access(self):
-        self.request.user = self.user_owner
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_owner_access(self)
 
     def test_admin_access(self):
-        self.request.user = self.user_admin
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_admin_access(self)
 
     def test_manager_access(self):
-        self.request.user = self.user_manager
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_manager_access(self)
 
     def test_sales_access(self):
-        self.request.user = self.user_sales
-        response = EmployerListView.as_view()(self.request)
-        self.assertEqual(response.status_code, 200)
+        test_sales_access(self)
