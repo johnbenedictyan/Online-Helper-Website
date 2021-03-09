@@ -6,6 +6,7 @@ from django.core.files.images import ImageFile
 from django.contrib.auth.models import AnonymousUser, Group
 
 import accounts
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
 from onlinemaid.helper_functions import encrypt_string
 from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee, PotentialAgency
 from maid.models import Maid
@@ -19,16 +20,16 @@ class SetUp():
         self.factory = RequestFactory()
 
         group_choices = {
-            'AO': 'Agency Owners',
-            'AA': 'Agency Administrators',
-            'AM': 'Agency Managers',
-            'AS': 'Agency Sales Staff',
-            'PE': 'Potential Employer',
+            'AO': AG_OWNERS,
+            'AA': AG_ADMINS,
+            'AM': AG_MANAGERS,
+            'AS': AG_SALES,
+            'PE': P_EMPLOYERS,
         }
         for k,v in group_choices.items():
-            instance = Group(name=v)
-            setattr(self, k, instance)
-            instance.save()
+            group_instance = Group(name=v)
+            setattr(self, k, group_instance)
+            group_instance.save()
 
         self.user_potential_employer = accounts.models.User(
             email='user_potential_employer@e.com',
