@@ -149,24 +149,27 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
 
     # Method to check object's agency is same as current user's agency
     def check_object_belongs_to_agency(self):
-        if (
-            self.employer_obj and
-            not self.employer_obj.agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return HttpResponseRedirect(reverse_lazy('home'))
-        elif (
-            self.employer_doc_obj and
-            not self.employer_doc_obj.employer.agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return HttpResponseRedirect(reverse_lazy('home'))
-        elif (
-            self.employer_subdoc_obj and
-            not self.employer_subdoc_obj.employer_doc.employer
-            .agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
+        if self.agency_user_obj:
+            if (
+                self.employer_obj and
+                not self.employer_obj.agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return HttpResponseRedirect(reverse_lazy('home'))
+            elif (
+                self.employer_doc_obj and
+                not self.employer_doc_obj.employer.agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return HttpResponseRedirect(reverse_lazy('home'))
+            elif (
+                self.employer_subdoc_obj and
+                not self.employer_subdoc_obj.employer_doc.employer
+                .agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return HttpResponseRedirect(reverse_lazy('home'))
+        else:
             return HttpResponseRedirect(reverse_lazy('home'))
 
     def dispatch(self, request, *args, **kwargs):
