@@ -379,6 +379,108 @@ class SetUp():
         # print(self.employerdoc_manager.employer.employer_name)
         # print(self.employerdoc_sales.employer.employer_name)
 
+        # Different agency
+        self.potential_agency_other = PotentialAgency(
+            name = 'pa',
+            license_number = '23456',
+            person_in_charge = 'pa',
+            contact_number = '1',
+            email = 'b@a.com',
+        )
+        self.potential_agency_other.save()
+        
+        self.agency_other = Agency(
+            company_email = 'b@a.com',
+            sales_email = 'b@a.com',
+            name = 'BBB Agency Pte Ltd',
+            license_number = '23456',
+            website_uri = 'https://b.com',
+            uen = '87654',
+            mission = 'Custom mission',
+        )
+        self.agency_other.save()
+
+        self.branch_1_other = AgencyBranch(
+            agency = self.agency_other,
+            name = 'main',
+            address_1 = 'Road',
+            address_2 = '123',
+            postal_code = '748562',
+            area = 'CENTRAL',
+            office_number = '7623542',
+            mobile_number = '4371856',
+            main_branch = True,
+        )
+        self.branch_1_other.save()
+
+        self.user_owner_other = accounts.models.User(
+            email='user_owner_other@a.com',
+            password='12345678',
+            is_online=True,
+        )
+        self.user_owner_other.save()
+        self.user_owner_other.groups.set([self.AO])
+
+        self.agency_owner_other = AgencyOwner(
+            user = self.user_owner_other,
+            agency = self.agency_other,
+        )
+        self.agency_owner_other.save()
+
+        self.user_admin_other = accounts.models.User(
+            email='user_admin_other@a.com',
+            password='12345678',
+            is_online=True,
+        )
+        self.user_admin_other.save()
+        self.user_admin_other.groups.set([self.AA])
+
+        self.agency_employee_admin_other = AgencyEmployee(
+            user = self.user_admin_other,
+            first_name = 'admin',
+            last_name = 'admin',
+            contact_number = '91919191',
+            ea_personnel_number = 'EA#1',
+            agency = self.agency_other,
+            branch = self.branch_1_other,
+            role = 'AA',
+            deleted = False,
+        )
+        self.agency_employee_admin_other.save()
+
+        # self.maid_other = Maid(
+        #     agency=self.agency_other,
+        #     name='fdw name',
+        #     reference_number='FDW-01',
+        #     passport_number=self.fdw_passport,
+        #     nonce=self.fdw_nonce,
+        #     tag=self.fdw_tag,
+        #     maid_type='NEW',
+        #     days_off=4,
+        #     passport_status=0,
+        #     remarks='Some remarks',
+        #     skills_evaluation_method='DEC',
+        #     published=True,
+        #     featured=False,
+        # )
+        # with open('static/favicon-16x16.png', 'rb') as fp:
+        #     self.maid_other.photo = ImageFile(fp, 'photo.png')
+        #     self.maid_other.save()
+    
+        # self.employer_admin_other = Employer(
+        #     agency_employee = self.agency_employee_admin_other,
+        #     employer_name = 'employer admin',
+        #     employer_email = 'employer_admin@e.com',
+        #     employer_mobile_number = '83838383',
+        #     employer_nric = self.employer_nric,
+        #     nonce = self.employer_nonce,
+        #     tag = self.employer_tag,
+        #     employer_address_1 = 'The Road',
+        #     employer_address_2 = '123',
+        #     employer_post_code = '098765',
+        # )
+        # self.employer_admin_other.save()
+
 
 # Re-usable tests
 def test_anon_redirect(self, **url_kwargs):
@@ -416,6 +518,15 @@ def test_admin_access(self, **url_kwargs):
     self.request.user = self.user_admin
     response = self.test_view.as_view()(self.request, **url_kwargs)
     self.assertEqual(response.status_code, 200)
+
+def test_admin_redirect(self, **url_kwargs):
+    self.request = self.factory.get(reverse(
+        self.url_route,
+        kwargs=url_kwargs,
+    ))
+    self.request.user = self.user_admin_other
+    response = self.test_view.as_view()(self.request, **url_kwargs)
+    self.assertEqual(response.status_code, 302)
 
 def test_manager_access(self, **url_kwargs):
     self.request = self.factory.get(reverse(
@@ -565,11 +676,17 @@ class EmployerDetailViewTestCase(SetUp, TestCase):
         }
         test_owner_access(self, **url_kwargs)
 
-    def test_admin_access(self):
+    def test_admin_access_because_same_agency(self):
         url_kwargs={
             'employer_pk': self.employer_admin.pk,
         }
         test_admin_access(self, **url_kwargs)
+
+    def test_admin_redirect_because_not_agency(self):
+        url_kwargs={
+            'employer_pk': self.employer_admin.pk,
+        }
+        test_admin_redirect(self, **url_kwargs)
 
     def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
