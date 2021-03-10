@@ -571,9 +571,15 @@ class EmployerDetailViewTestCase(SetUp, TestCase):
         }
         test_admin_access(self, **url_kwargs)
 
-    def test_manager_access_because_same_branch(self):
+    def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
             'employer_pk': self.employer_admin.pk,
+        }
+        test_manager_access(self, **url_kwargs)
+
+    def test_manager_access_because_same_branch_sales(self):
+        url_kwargs={
+            'employer_pk': self.employer_sales_b1.pk,
         }
         test_manager_access(self, **url_kwargs)
 
