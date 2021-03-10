@@ -571,21 +571,33 @@ class EmployerDetailViewTestCase(SetUp, TestCase):
         }
         test_admin_access(self, **url_kwargs)
 
-    def test_manager_redirect(self):
+    def test_manager_access_because_same_branch(self):
+        url_kwargs={
+            'employer_pk': self.employer_admin.pk,
+        }
+        test_manager_access(self, **url_kwargs)
+
+    def test_manager_redirect_because_not_branch(self):
         url_kwargs={
             'employer_pk': self.employer_admin.pk,
         }
         test_manager_redirect(self, **url_kwargs)
 
-    def test_sales_access(self):
+    def test_sales_access_because_same_user(self):
         url_kwargs={
             'employer_pk': self.employer_sales_b1.pk,
         }
         test_sales_access(self, **url_kwargs)
 
-    def test_sales_redirect(self):
+    def test_sales_redirect_because_not_user_manager(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'employer_pk': self.employer_manager_b1.pk,
+        }
+        test_sales_redirect(self, **url_kwargs)
+
+    def test_sales_redirect_because_not_user_sales(self):
+        url_kwargs={
+            'employer_pk': self.employer_sales_b1.pk,
         }
         test_sales_redirect(self, **url_kwargs)
 
