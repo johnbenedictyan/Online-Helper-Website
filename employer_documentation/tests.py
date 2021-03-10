@@ -553,11 +553,11 @@ class EmployerDetailViewTestCase(SetUp, TestCase):
         }
         test_anon_redirect(self, **url_kwargs)
 
-    # def test_potential_employer_redirect(self):
-    #     url_kwargs={
-    #         'employer_pk': self.employer_admin.pk,
-    #     }
-    #     test_potential_employer_redirect(self, **url_kwargs)
+    def test_potential_employer_redirect(self):
+        url_kwargs={
+            'employer_pk': self.employer_admin.pk,
+        }
+        test_potential_employer_redirect(self, **url_kwargs)
 
     def test_owner_access(self):
         url_kwargs={
