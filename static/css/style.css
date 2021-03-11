@@ -178,6 +178,11 @@ button.mini-faq-button i {
   background-position: center center;
 }
 
+@media screen and (min-width: 768px) {
+  .card-wrapper {
+    min-height: 60vh;
+  }
+
 .blurred-image {
   -webkit-filter: blur(4px);
           filter: blur(4px);
