@@ -45,7 +45,7 @@
                     {% for agency in agencies %}
                         <div class="col mb-4">
                             <div class="card">
-                                <img src="{{agency.logo.url}}" class="card-img-top p-2" alt="...">
+                                <img src="{%if agency.logo%}{{agency.logo.url}}{%endif%}" class="card-img-top p-2" alt="Agency Logo">
                                 <div class="card-body">
                                     <h5 class="card-title">{{agency.name}}</h5>
                                     <p class="card-text text-muted">{{agency.license_number}}</p>
