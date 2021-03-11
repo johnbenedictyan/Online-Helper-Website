@@ -19,6 +19,8 @@ import os
 # Imports from django
 from django.contrib import admin
 from django.urls import include,path
+from django.conf import settings
+from django.conf.urls.static import static
 
 # Imports from foreign installed apps
 from django_otp.admin import OTPAdminSite
@@ -70,3 +72,6 @@ urlpatterns = [
     path('enquiry/', include(enquiry_urls)),
     path('', include(website_urls))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
