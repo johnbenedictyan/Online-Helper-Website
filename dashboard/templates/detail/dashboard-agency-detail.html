@@ -1,235 +1,226 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <div class="container">
-    <div class="row mb-3">
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-primary1 text-light">
-                    <h4 class="my-1 d-inline-block">Agency Details</h4>
-                    <a href="{% url 'agency_update' %}" class="btn btn-secondary float-right">Modify Agency Details</a>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
-                            <img src="{{agency.logo.url}}" alt="" class="img-fluid">
-                        </div>
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">Name</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.name}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">License Number</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.license_number}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">Company Email</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.company_email}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">Sales Email</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.sales_email}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">Website</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.website_uri}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">Mission</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.mission}}</p>
-                                </div>
-                            </div>
-                        </div>
+    <div class="row">
+        <div class="col mt-md-5">
+            <div class="card custom-card">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="custom-card__header">Agency Details</h3>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    <h4>Bank Account Details</h4>
+                    <div class="col d-none d-md-block">
+                        <a href="{% url 'agency_update' %}" class="btn btn-primary float-right mr-1">Modify Agency Details</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-lg-3">
+                        <img src="{{agency.logo.url}}" class="rounded img-fluid" alt="Agency Logo">
+                    </div>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">License Number</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{agency.license_number}}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">UEN</h5>
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text">{{agency.uen}}</p>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Name</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{agency.name}}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <h5 class="card-title">QR Code</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Company Email</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{agency.company_email}}</p>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <img src="{{agency.qr_code.url}}" alt="" class="img-fluid">
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Sales Email</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{agency.sales_email}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">Website</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{agency.website_uri}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted">UEN</h6>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>{{agency.uen}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary1 text-light">
-                    <h4 class="my-1 d-inline-block">Main Office</h4>
-                    <a href="{% url 'dashboard_branches_list' %}" class="btn btn-secondary float-right">View all branches</a>
+                <div class="row">
+                    <div class="col ml-1 mt-3">
+                        <h6 class="text-muted">Mission</h6>
+                        <p>{{agency.mission}}</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Address</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text mb-0">{{agency.get_main_office.address_1}}</p>
-                            <p class="card-text">{{agency.get_main_office.address_2}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Website</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">{{agency.website_uri}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Sales Email</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">{{agency.sales_email}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Office Number</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">+65 {{agency.get_main_office.office_number}}</p>
+                <div class="row">
+                    <div class="col ml-1">
+                        <h5>Bank Account Details</h5>
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="text-muted">QR Code</h6>
+                                <img src="{{agency.qr_code.url}}" alt="" class="img-fluid d-md-none mb-3">
+                                <button type="button" class="btn btn-primary d-none d-md-block" data-toggle="modal" data-target=".qr-code-modal">View</button>
+                                <div class="modal fade qr-code-modal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">QR Code</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="card custom-card">
+                                                    <div class="row">
+                                                        <div class="col text-center my-5">
+                                                            <img src="{{agency.qr_code.url}}" alt="" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Mobile Number</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">+65 {{agency.get_main_office.mobile_number}}</p>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col d-md-none">
+                        <a href="{% url 'agency_update' %}" class="btn btn-primary w-100">Modify Agency Details</a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary1 text-light">
-                    <h4 class="my-1 d-inline-block">Operating Hours</h4>
-                    <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-secondary float-right">Modify Operating Hours</a>
+            <div class="row">
+                <div class="col">
+                    <div class="card custom-card">
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="custom-card__header">Main Office</h3>
+                            </div>
+                            <div class="col d-none d-md-block">
+                                <a href="{% url 'dashboard_branches_list' %}" class="btn btn-primary float-right mr-1">View All Branches</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-muted">Address</h6>
+                                <p class="mb-0">{{agency.get_main_office.address_1|default:"Incomplete"}}</p>
+                                <p>{{agency.get_main_office.address_2|default:"Incomplete"}}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-muted">Postal Code</h6>
+                                <p>{{agency.get_main_office.postal_code|default:"Incomplete"}}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-muted">Area</h6>
+                                <p>{{agency.get_main_office.get_area_display|default:"Incomplete"}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Office Number</h6>
+                                <p>{{agency.get_main_office.office_number|default:"Incomplete"}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Mobile Number</h6>
+                                <p>{{agency.get_main_office.mobile_number|default:"Incomplete"}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col d-md-none">
+                                <a href="{% url 'dashboard_branches_list' %}" class="btn btn-primary w-100">View All Branches</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Monday</h5>
+                <div class="col">
+                    <div class="card custom-card">
+                        <div class="row">
+                            <div class="col mb-md-4">
+                                <h3 class="custom-card__header">Operating Hours</h3>
+                            </div>
+                            <div class="col d-none d-md-block">
+                                <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-primary float-right mr-1">Modify Operating Hours</a>
+                            </div>
                         </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.monday "Not Completed" %}
-                            </p>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Monday</h6>
+                                <p>{{agency.operating_hours.monday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Tuesday</h6>
+                                <p>{{agency.operating_hours.tuesday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Wednesday</h6>
+                                <p>{{agency.operating_hours.wednesday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Thursday</h6>
+                                <p>{{agency.operating_hours.thursday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Friday</h6>
+                                <p>{{agency.operating_hours.friday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Saturday</h6>
+                                <p>{{agency.operating_hours.saturday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Sunday</h6>
+                                <p>{{agency.operating_hours.sunday|default:"Not Completed"}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="text-muted">Public Holidays</h6>
+                                <p>{{agency.operating_hours.public_holiday|default:"Not Completed"}}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Tuesday</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.tuesday "Not Completed" %}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Wednesday</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.wednesday "Not Completed" %}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Thursday</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.thursday "Not Completed" %}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Friday</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.friday "Not Completed" %}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Saturday</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.saturday "Not Completed" %}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Sunday</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.sunday "Not Completed" %}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <h5 class="card-title">Public Holidays</h5>
-                        </div>
-                        <div class="col-8">
-                            <p class="card-text">
-                                {% firstof agency.operating_hours.public_holiday "Not Completed" %}
-                            </p>
+                        <div class="row">
+                            <div class="col d-md-none">
+                                <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-primary w-100">Modify Operating Hours</a>
+                            </div>
                         </div>
                     </div>
                 </div>
