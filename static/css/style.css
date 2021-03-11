@@ -15,7 +15,7 @@
 }
 
 .bg-hero {
-  background-image: url("/static/images/home-page-bg.jpg");
+  background-image: url("/static/images/hero-image.png");
   background-size: cover;
   background-position: center;
 }
@@ -172,6 +172,17 @@ button.mini-faq-button i {
 
 .progress-wrapper {
   height: 15px;
+}
+
+.agency-card {
+  height: 44rem;
+}
+
+.agency-thumbnail {
+  height: 15rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .noUi-target,
