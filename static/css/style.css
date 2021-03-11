@@ -15,7 +15,7 @@
 }
 
 .bg-hero {
-  background-image: url("/static/images/home-page-bg.jpg");
+  background-image: url("/static/images/hero-image.png");
   background-size: cover;
   background-position: center;
 }
@@ -153,6 +153,35 @@ button.mini-faq-button i {
 
 .maid-card {
   cursor: pointer;
+}
+
+@media screen and (max-width: 1920px) {
+  .maid-card .card-title {
+    height: 3rem;
+  }
+}
+
+.maid-thumbnail {
+  height: 20rem;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.agency-card {
+  height: 44rem;
+}
+
+.agency-thumbnail {
+  height: 15rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+@media screen and (min-width: 768px) {
+  .card-wrapper {
+    min-height: 60vh;
+  }
 }
 
 .blurred-image {
