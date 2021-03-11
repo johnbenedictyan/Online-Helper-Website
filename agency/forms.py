@@ -26,7 +26,7 @@ from .models import (
 class AgencyCreationForm(forms.ModelForm):
     class Meta:
         model = Agency
-        exclude = ['amount_of_biodata','amount_of_featured_biodata']
+        fields = ['name', 'license_number', 'company_email', 'sales_email', 'uen', 'website_uri', 'logo', 'qr_code', 'mission']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
