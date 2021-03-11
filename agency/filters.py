@@ -11,6 +11,7 @@ from .models import Agency
 
 # Start of Filters
 class AgencyFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
     branches__area = django_filters.ChoiceFilter(
         label = _('Location'),
         choices = AreaChoices.choices,
@@ -21,5 +22,5 @@ class AgencyFilter(django_filters.FilterSet):
         model = Agency
         fields = {
             'name': ['exact'],
-            'branches__area': ['exact']
+            'branches__area': ['exact'],
         }
