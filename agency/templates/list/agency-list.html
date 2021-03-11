@@ -44,19 +44,23 @@
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 row-cols-xl-4">
                     {% for agency in agencies %}
                         <div class="col mb-4">
-                            <div class="card">
-                                <img src="{%if agency.logo%}{{agency.logo.url}}{%endif%}" class="card-img-top p-2" alt="Agency Logo">
+                            <div class="card agency-card">
+                                <div class="m-2 agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
                                 <div class="card-body">
                                     <h5 class="card-title">{{agency.name}}</h5>
                                     <p class="card-text text-muted">{{agency.license_number}}</p>
                                     <hr>
+                                    <h6 class="card-text text-muted mb-1">Address</h6>
                                     <address>
                                         {{ agency.get_main_office.address_1 }}<br/>
                                         {{ agency.get_main_office.address_2 }}<br/>
-                                        Singapore {{ agency.get_main_office.postal_code }}
                                     </address>
-                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text mb-0">Email: {{agency.sales_email}}</p>
+                                    <h6 class="card-text text-muted mb-1">Postal Code</h6>
+                                    <p class="card-text">Singapore {{ agency.get_main_office.postal_code }}</p>
+                                    <h6 class="card-text text-muted mb-1">Tel</h6>
+                                    <p class="card-text">{{agency.get_main_office_number}}</p>
+                                    <h6 class="card-text text-muted mb-1">Email</h6>
+                                    <p class="card-text mb-0">{{agency.sales_email}}</p>
                                     <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
                                 </div>
                             </div>
@@ -64,7 +68,7 @@
                     {% endfor %}
                 </div>
                 <div class="row mb-4">
-                    <div class="col">
+                    <div class="col text-center">
                         {% include 'pagination.html' %}
                         <!-- {% comment %}
                         <div class="pagination">

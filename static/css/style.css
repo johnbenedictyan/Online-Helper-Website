@@ -182,7 +182,6 @@ button.mini-faq-button i {
   .card-wrapper {
     min-height: 60vh;
   }
-}
 
 .blurred-image {
   -webkit-filter: blur(4px);

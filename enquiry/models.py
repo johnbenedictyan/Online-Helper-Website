@@ -113,9 +113,10 @@ class GeneralEnquiry(models.Model):
         blank=False
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks'),
-        blank=False
+        blank=False,
+        max_length=3000
     )
 
     active = models.BooleanField(

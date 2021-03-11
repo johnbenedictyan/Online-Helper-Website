@@ -67,7 +67,7 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             'remarks': forms.Textarea(
                 attrs={
-                    'rows': 20,
+                    'rows': 15,
                     'cols': 15
                 }
             )
