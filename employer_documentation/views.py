@@ -286,6 +286,7 @@ class EmployerDocListView(
             self.pk_url_kwarg))
 
     def get(self, request, *args, **kwargs):
+        self.object = self.get_object(*args, **kwargs)
         if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
             return super().get(request, *args, **kwargs)
         else:

@@ -120,3 +120,4 @@ scss/
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+delete_migrations.sh

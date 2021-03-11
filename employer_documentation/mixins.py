@@ -149,25 +149,34 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
 
     # Method to check object's agency is same as current user's agency
     def check_object_belongs_to_agency(self):
-        if (
-            self.employer_obj and
-            not self.employer_obj.agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return HttpResponseRedirect(reverse_lazy('home'))
-        elif (
-            self.employer_doc_obj and
-            not self.employer_doc_obj.employer.agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return HttpResponseRedirect(reverse_lazy('home'))
-        elif (
-            self.employer_subdoc_obj and
-            not self.employer_subdoc_obj.employer_doc.employer
-            .agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return HttpResponseRedirect(reverse_lazy('home'))
+        '''
+        return 1 if check FAILED
+        return 0 if check PASSES
+        '''
+        if self.agency_user_obj:
+            if (
+                self.employer_obj and
+                self.employer_obj.agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return 0
+            elif (
+                self.employer_doc_obj and
+                self.employer_doc_obj.employer.agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return 0
+            elif (
+                self.employer_subdoc_obj and
+                self.employer_subdoc_obj.employer_doc.employer
+                .agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return 0
+            else:
+                return 1
+        else:
+            return 1
 
     def dispatch(self, request, *args, **kwargs):
         # First check if current user is logged in, if not immediately return
@@ -200,7 +209,8 @@ class CheckAgencyEmployeePermissionsMixin(
         self.assign_ed_object()
 
         # Check test object's agency is same as current user's agency
-        self.check_object_belongs_to_agency()
+        if self.check_object_belongs_to_agency():
+            return HttpResponseRedirect(reverse_lazy('home'))
 
         # Check user belongs to required group to access view
         if (
@@ -260,7 +270,8 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
         self.assign_ed_object()
         
         # Check test object's agency is same as current user's agency
-        self.check_object_belongs_to_agency()
+        if self.check_object_belongs_to_agency():
+            return HttpResponseRedirect(reverse_lazy('home'))
 
         # Check if current user is agency owner
         if self.agency_user_group==AG_OWNERS:
