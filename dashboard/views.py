@@ -73,6 +73,10 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
             'sales': {
                 'current': 123,
                 'max': None
+            },
+            'enquiries': {
+                'current': agency.get_enquiries().count(),
+                'max': None
             }
         }
         kwargs.update(dashboard_home_page_kwargs)
