@@ -155,6 +155,27 @@ button.mini-faq-button i {
   cursor: pointer;
 }
 
+.maid-card .card-title {
+  height: 3rem;
+}
+
+.maid-thumbnail {
+  height: 20rem;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.agency-card {
+  height: 44rem;
+}
+
+.agency-thumbnail {
+  height: 15rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 .blurred-image {
   -webkit-filter: blur(4px);
           filter: blur(4px);
@@ -172,17 +193,6 @@ button.mini-faq-button i {
 
 .progress-wrapper {
   height: 15px;
-}
-
-.agency-card {
-  height: 44rem;
-}
-
-.agency-thumbnail {
-  height: 15rem;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
 }
 
 .noUi-target,
