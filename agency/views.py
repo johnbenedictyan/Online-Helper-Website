@@ -52,6 +52,7 @@ class AgencyList(ListFilteredMixin, ListView):
     queryset = Agency.objects.filter(complete=True)
     filter_set = AgencyFilter
     paginate_by = settings.AGENCY_PAGINATE_BY
+    ordering = ['name']
 
 # Detail Views
 class AgencyDetail(DetailView):

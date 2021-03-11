@@ -45,7 +45,8 @@ class Agency(models.Model):
     website_uri = models.CharField(
         verbose_name=_('Website URL'),
         max_length=100,
-        blank=False,
+        blank=True,
+        null=True,
         validators=[
             URLValidator(
                 message=_('Please enter a valid URL')
@@ -55,7 +56,7 @@ class Agency(models.Model):
 
     logo = models.FileField(
         verbose_name=_('Website Logo'),
-        blank=False,
+        blank=True,
         null=True,
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
@@ -68,7 +69,7 @@ class Agency(models.Model):
 
     qr_code = models.FileField(
         verbose_name=_('Website QR Code'),
-        blank=False,
+        blank=True,
         null=True,
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
