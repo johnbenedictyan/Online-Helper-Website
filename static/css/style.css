@@ -155,8 +155,10 @@ button.mini-faq-button i {
   cursor: pointer;
 }
 
-.maid-card .card-title {
-  height: 3rem;
+@media screen and (max-width: 1920px) {
+  .maid-card .card-title {
+    height: 3rem;
+  }
 }
 
 .maid-thumbnail {
