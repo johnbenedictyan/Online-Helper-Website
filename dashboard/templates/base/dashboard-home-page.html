@@ -4,94 +4,119 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Account Management</div>
-                    <div class="card-body">
-                        <i class="fas fa-user fa-5x my-3 text-secondary1"></i>
-                        <h1 class="card-title">{{accounts.current}} &#47; {{accounts.max}}</h1>
-                        <h5><a href="{% url 'agency_employee_create' %}" class="card-link">Add Account</a></h5>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Accounts</a></h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Account Management</h3>
+                            <i class="fas fa-user fa-5x my-3"></i>
+                            <h3 class="card-title">{{accounts.current}} &#47; {{accounts.max}}</h3>
+                            <h5><a href="{% url 'agency_employee_create' %}" class="card-link">Add Account</a></h5>
+                            <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Accounts</a></h5>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Agency Management</div>
-                    <div class="card-body">
-                        <i class="fas fa-building fa-5x my-3"></i>
-                        <h1 class="card-title">{{branches.current}}</h1>
-                        <h5><a href="{% url 'dashboard_branches_list' %}" class="card-link">View Branches</a></h5>
-                        <h5><a href="{% url 'dashboard_agency_detail' %}" class="card-link">View Agency Details</a></h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Agency <br/>Management</h3>
+                            <i class="fas fa-building fa-5x my-3"></i>
+                            <h3 class="card-title">{{branches.current}}</h3>
+                            <h5><a href="{% url 'dashboard_branches_list' %}" class="card-link">View Branches</a></h5>
+                            <h5><a href="{% url 'dashboard_agency_detail' %}" class="card-link">View Agency Details</a></h5>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">FDW Biodata</div>
-                    <div class="card-body">
-                        <i class="fas fa-portrait fa-5x my-3"></i>
-                        <h1 class="card-title">{{biodata.current}} &#47; {{biodata.max}}</h1>
-                        <h5><a href="{% url 'maid_create' %}" class="card-link">Add Biodata</a></h5>
-                        <h5><a href="{% url 'dashboard_maid_list' %}" class="card-link">View Biodata</a></h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>FDW <br/>Biodata</h3>
+                            <i class="fas fa-portrait fa-5x my-3"></i>
+                            <h3 class="card-title">{{biodata.current}} &#47; {{biodata.max}}</h3>
+                            <h5><a href="{% url 'maid_create' %}" class="card-link">Add Biodata</a></h5>
+                            <h5><a href="{% url 'dashboard_maid_list' %}" class="card-link">View Biodata</a></h5>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Subscriptions</div>
-                    <div class="card-body">
-                        <i class="fas fa-file-invoice-dollar fa-5x my-3"></i>
-                        <h1 class="card-title">{{subscriptions.current}}</h1>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">Add Subscription</a></h5>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Subscriptions</a></h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center mt-4 mb-2">
+                            <h3 class="mb-4">Subscriptions</h3>
+                            <i class="fas fa-file-invoice-dollar fa-5x my-3"></i>
+                            <h3 class="card-title">{{subscriptions.current}}</h3>
+                            <h5><a href="{% url 'dashboard_agency_plan_list' %}" class="card-link">View Subscriptions</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Employer Summary</div>
-                    <div class="card-body">
-                        <i class="fas fa-users fa-5x my-3"></i>
-                        <h1 class="card-title">{{employers.current}}</h1>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">Add Employer</a></h5>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Employers</a></h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Employer <br/>Summary</h3>
+                            <i class="fas fa-users fa-5x my-3"></i>
+                            <h3 class="card-title">{{employers.current}}</h3>
+                            <h5><a href="#" class="card-link">Add Employer</a></h5>
+                            <h5><a href="#" class="card-link">View Employers</a></h5>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Sales Summary</div>
-                    <div class="card-body">
-                        <i class="fas fa-money-check fa-5x my-3"></i>
-                        <h1 class="card-title">{{sales.current}}</h1>
-                        <h5><a href="{% url 'dashboard_maid_list' %}" class="card-link">View Sales</a></h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center mt-4 mb-2">
+                            <h3 class="mb-4">Enquiries</h3>
+                            <i class="fas fa-search fa-5x my-3"></i>
+                            <h3 class="card-title">{{enquiries.current}}</h3>
+                            <h5><a href="#" class="card-link">View Enquiries</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Billing History</div>
-                    <div class="card-body">
-                        <i class="fas fa-history fa-5x my-3"></i>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View History</a></h5>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Sales <br/>Summary</h3>
+                            <i class="fas fa-money-check fa-5x my-3"></i>
+                            <h3 class="card-title">{{sales.current}}</h3>
+                            <h5><a href="#" class="card-link">View Sales</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Status Summary</div>
-                    <div class="card-body">
-                        <i class="fas fa-signal fa-5x my-3"></i>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Status</a></h5>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Status <br/>Summary</h3>
+                            <i class="fas fa-signal fa-5x my-3"></i>
+                            <h3 class="card-title">&nbsp;</h3>
+                            <h5><a href="#" class="card-link">View Status</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="card bg-light mb-3 text-center">
-                    <div class="card-header">Enquiries</div>
-                    <div class="card-body">
-                        <i class="fas fa-search fa-5x my-3"></i>
-                        <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Enquiries</a></h5>
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Billing <br/>History</h3>
+                            <i class="fas fa-history fa-5x my-3"></i>
+                            <h3 class="card-title">&nbsp;</h3>
+                            <h5><a href="#" class="card-link">View History</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
                     </div>
                 </div>
             </div>

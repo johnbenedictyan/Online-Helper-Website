@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% block main_content %}
 <section id="main-banner-section">
-    <div class="jumbotron jumbotron-fluid bg-primary">
+    <div class="jumbotron jumbotron-fluid bg-info bg-home-hero">
         <div class="container">
             <div class="row">
                 <div class="col col-lg-6 offset-lg-3 text-center py-2 py-md-3 text-light">
@@ -48,7 +48,7 @@
             </div>
             <div class="row d-md-none">
                 <div class="col text-center">
-                    <a href="" class="btn btn-lg bg-secondary text-light w-50">
+                    <a href="{% url 'maid_list' %}" class="btn btn-lg bg-secondary text-light w-50">
                         <h5 class="mb-0">Search</h5>
                     </a>
                 </div>
@@ -61,35 +61,35 @@
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <h1 class="mb-4">Preferences</h1>
+                <h2 class="mb-4">Preferences</h2>
             </div>
         </div>
         <div class="row">
-            <div class="col mb-md-5">
+            <div class="col mb-md-4">
                 <div class="card-deck">
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-50">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/partTime1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">General Housework</h5>
-                            <a href="">
+                            <a href="{% url 'maid_list' %}?responsibilities=1">
                                 <h6 class="card-subtitle">Learn More</h6>
                             </a>
                         </div>
                     </div>
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-50">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/cooking1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Cooking</h5>
-                            <a href="">
+                            <a href="{% url 'maid_list' %}?responsibilities=2">
                                 <h6 class="card-subtitle">Learn More</h6>
                             </a>
                         </div>
                     </div>
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-50">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/childrenCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Children</h5>
-                            <a href="">
+                            <a href="{% url 'maid_list' %}?responsibilities=3">
                                 <h6 class="card-subtitle">Learn More</h6>
                             </a>
                         </div>
@@ -100,20 +100,20 @@
         <div class="row">
             <div class="col-md-8 offset-md-2 mb-md-5">
                 <div class="card-deck">
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-250">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/elderly.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Elderly</h5>
-                            <a href="">
+                            <a href="{% url 'maid_list' %}?responsibilities=4">
                                 <h6 class="card-subtitle">Learn More</h6>
                             </a>
                         </div>
                     </div>
-                    <div class="card mb-4" data-aos="fade-up" data-aos-easing="ease-in-out-back" data-aos-duration="600" data-aos-offset="-250">
+                    <div class="card">
                         <img src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Disabled</h5>
-                            <a href="">
+                            <a href="{% url 'maid_list' %}?responsibilities=5">
                                 <h6 class="card-subtitle">Learn More</h6>
                             </a>
                         </div>
@@ -127,50 +127,67 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col text-center">
-                <h1>Featured Maids</h1>
+                <h2>Featured Maids</h>
             </div>
         </div>
         <div class="row bg-featured-maids mb-3 mb-md-4">
             <div class="col-md-6 offset-md-6 py-5">
                 <div class="row mb-3">
                     <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
-                        <label for="nationalitySelect">Nationality</label>
+                        <label for="nationalitySelect" class="ml-1">Nationality</label>
                         <select class="form-control" id="nationalitySelect">
-                            <option>1</option>
-                            <option>2</option>
+                            <option value="BGD">Bangladesh</option>
+                            <option value="KHM">Cambodia</option>
+                            <option value="IND">India</option>
+                            <option value="IDN">Indonesia</option>
+                            <option value="MMR">Myanmar</option>
+                            <option value="PHL">Philippines</option>
+                            <option value="LKA">Sri Lanka</option>
                         </select>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col offset-1 offset-md-0 ">
-                        <h4>Browse our featured maids</h4>
+                        <h5 class="ml-1">Browse our featured maids</h5>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
+        {% if request.user.is_authenticated %}
+        <div class="maid-carousel">
+            {% for maid in featured_maids %}
+            <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
+                <div onclick="maidProfileRedirect({{maid.pk}})">
+                    <img src="{{maid.photo.url}}" class="card-img-top" alt="Maid Photo">
                     <div class="card-body">
-                        <h5 class="card-title">Maid Name</h5>
-                        <p class="card-text">Nationality</p>
-                        <p class="card-text">Age / Marital Status</p>
-                        <p class="card-text">Type</p>
-                        <p class="card-text">Main Responsibility</p>
+                        <h5 class="card-title">{{maid.name}}</h5>
+                        <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                        <p class="card-text">{{maid.personal_details.age}} years old</p>
+                        <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                        <p class="card-text">{{maid.get_maid_type_display}}</p>
                     </div>
-                    <a href="" class="text-decoration-none">
-                        <div class="card-footer bg-primary text-light">
-                            <div class="row">
-                                <div class="col text-center">
-                                    <h6 class="mb-0">Add to Shortlist</h6>
-                                </div>
-                            </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col text-center">
+                <img src="{% static 'images/featured-maids.png' %}" alt="" class="img-fluid blurred-image">
+                <div class="featured-maids-overlay">
+                    <div class="jumbotron jumbotron-fluid bg-transparent">
+                        <div class="container text-center">
+                          <h3 class="display-4">Sign in to view biodata</h3>
+                          <a href="{% url 'sign_in' %}" class="btn btn-primary"><h5 class="mb-0">Sign in</h5></a>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </section>
 {% include 'sections/cta-banner.html' %}
@@ -263,3 +280,44 @@
     </div>
 </section>
 {% endblock main_content %}
+{% block js %}
+<script>
+    $(document).ready(function(){
+        $('.maid-carousel').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 4,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
+            ]
+        });
+    });
+</script>
+{% endblock js %}

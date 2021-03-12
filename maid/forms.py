@@ -20,7 +20,8 @@ from agency.models import Agency
 from .constants import (
     TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
     MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
-    MaidCareRemarksChoices, MaidPassportStatusChoices
+    MaidCareRemarksChoices, MaidPassportStatusChoices, 
+    MaidEducationLevelChoices, MaidSkillsEvaluationMethod
 )
 
 from .models import (
@@ -982,7 +983,20 @@ class MainMaidCreationForm(forms.Form):
         max_length=25,
         required=True
     )
+    
+    contact_number = forms.CharField(
+        label=_('Contact Number'),
+        max_length=30,
+        required=True
+    )
 
+    education_level = forms.ChoiceField(
+        label=_('Education Level'),
+        required=True,
+        choices=MaidEducationLevelChoices.choices,
+        initial=MaidEducationLevelChoices.HIGH_SCHOOL
+    )
+    
     # Maid Family Details
     marital_status = forms.ChoiceField(
         label='',
@@ -1015,6 +1029,13 @@ class MainMaidCreationForm(forms.Form):
     )
 
     # Care
+    skills_evaluation_method = forms.ChoiceField(
+        label=_('Skills evaluation method'),
+        required=True,
+        choices=MaidSkillsEvaluationMethod.choices,
+        initial=MaidSkillsEvaluationMethod.DECLARATION
+    )
+    
     cfi_assessment = forms.ChoiceField(
         label=_('Assessment'),
         required=True,
@@ -1353,6 +1374,14 @@ class MainMaidCreationForm(forms.Form):
                             'preferred_language',
                             css_class='form-group col-md-6 col-lg-4'
                         ),
+                        Column(
+                            'contact_number',
+                            css_class='form-group col-md-6 col-lg-4'
+                        ),
+                        Column(
+                            'education_level',
+                            css_class='form-group col-md-6 col-lg-4'
+                        )
                     ),
                     css_class='col-md-8 col-lg-9'
                 )
@@ -1485,6 +1514,12 @@ class MainMaidCreationForm(forms.Form):
                         '<h3>Care Details</h3>'
                     ),
                 ),
+            ),
+            Row(
+                Column(
+                    'skills_evaluation_method',
+                    css_class='col'
+                )
             ),
             Div(
                 Column(
@@ -1706,14 +1741,23 @@ class MainMaidCreationForm(forms.Form):
 
     def clean_preferred_language(self):
         preferred_language = self.cleaned_data.get('preferred_language')
-        spoken_language = self.cleaned_data.get('spoken_language')
-        if preferred_language not in spoken_language:
+        language_spoken = self.cleaned_data.get('language_spoken')
+        if preferred_language not in language_spoken:
             self.add_error(
                 'preferred_language',
                 _('FDW must be able to speak this language')
             ) 
         return preferred_language
 
+    def clean_contact_number(self):
+        contact_number = self.cleaned_data.get('contact_number')
+        if contact_number.isnumeric() == False:
+            self.add_error(
+                'contact_number',
+                _('Contact Number must be a number')
+            ) 
+        return contact_number
+    
     def clean_cfi_other_remarks(self):
         cfi_remarks = self.cleaned_data.get('cfi_remarks')
         cfi_other_remarks = self.cleaned_data.get('cfi_other_remarks')
@@ -1782,7 +1826,10 @@ class MainMaidCreationForm(forms.Form):
                 maid_type=cleaned_data.get('maid_type'),
                 days_off=cleaned_data.get('days_off'),
                 passport_status=cleaned_data.get('passport_status'),
-                remarks=cleaned_data.get('remarks')
+                remarks=cleaned_data.get('remarks'),
+                skills_evaluation_method=cleaned_data.get(
+                    'skills_evaluation_method'
+                )
             )
         except Exception as e:
             raise Exception
@@ -1801,7 +1848,9 @@ class MainMaidCreationForm(forms.Form):
                 religion=cleaned_data.get('religion'),
                 preferred_language=MaidLanguage.objects.get(
                     language=cleaned_data.get('preferred_language')
-                )
+                ),
+                contact_number=cleaned_data.get('contact_number'),
+                education_level=cleaned_data.get('education_level')
             )
             for language in cleaned_data.get('language_spoken'):
                 new_maid_personal_details.languages.add(
@@ -1877,6 +1926,13 @@ class MainMaidCreationForm(forms.Form):
             return new_maid
 
 class MaidCareForm(forms.Form):
+    skills_evaluation_method = forms.ChoiceField(
+        label=_('Skills evaluation method'),
+        required=True,
+        choices=MaidSkillsEvaluationMethod.choices,
+        initial=MaidSkillsEvaluationMethod.DECLARATION
+    )
+    
     cfi_assessment = forms.ChoiceField(
         label=_('Assessment'),
         required=True,
@@ -2050,6 +2106,11 @@ class MaidCareForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Row(
+                Column(
+                    'skills_evaluation_method'
+                )
+            ),
             Div(
                 Column(
                     Row(

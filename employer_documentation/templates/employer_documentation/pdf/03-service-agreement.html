@@ -45,9 +45,9 @@
     <tr>
         <td></td>
         <td>Registered Business Address</td>
-        <td>: {{ agency_main_branch.address_1 }}
-        <br> &nbsp; {{ agency_main_branch.address_2 }}
-        <br> &nbsp; Singapore {{ agency_main_branch.postal_code }}</td>
+        <td>: {{ object.employer.agency_employee.agency.get_main_office.address_1 }}
+        <br> &nbsp; {{ object.employer.agency_employee.agency.get_main_office.address_2 }}
+        <br> &nbsp; Singapore {{ object.employer.agency_employee.agency.get_main_office.postal_code }}</td>
     </tr>
     <tr>
         <td colspan="3"></td>
@@ -60,7 +60,7 @@
     <tr>
         <td></td>
         <td>NRIC/Passport Number</td>
-        <td>: {{ object.employer.employer_nric }} </td>
+        <td>: {{ object.employer.get_nric_full }} </td>
     </tr>
     <tr>
         <td></td>
@@ -72,9 +72,6 @@
 </table>
 <br>
 <table>
-    <tr>
-        <td colspan="3" class="text--xsmall"><i>*Delete where appropriate in the contract.</i></td>
-    </tr>
     <tr>
         <td colspan="3">It is hereby agreed between the parties that:</td>
     </tr>
@@ -212,7 +209,7 @@
         </tr>
         <tr>
             <td>2.3</td>
-            <td colspan="3">All payments shall *include / exclude the prevailing Goods and Services Tax (GST). [*To delete accordingly]</td>
+            <td colspan="3">All fees payable in conjuction with this Agreement are inclusive of any Goods and Services Tax (GST), if applicable.</td>
         </tr>
         <tr>
             <td><br></td>
@@ -785,7 +782,7 @@
             <td>{{ object.employer.agency_employee.first_name }} {{ object.employer.agency_employee.last_name }}</td>
         </tr>
         <tr>
-            <td>{{ object.employer.employer_nric }}</td>
+            <td>{{ object.employer.get_nric_full }}</td>
             <td></td>
             <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
         </tr>

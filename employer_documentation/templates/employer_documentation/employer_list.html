@@ -1,11 +1,8 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
 
-{% block sidenav_extra %}
-{% endblock sidenav_extra %}
-
 {% block ed_section %}
-<div class="mx-3 ml-md-0">
-    <h1>Employers</h1>
+<div class="mx-0">
+    <h3>Employers</h3>
 
     <form method="get">
         <div class="form-row">
@@ -15,73 +12,79 @@
                     <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </div>
+            <div class="col-md-6 d-flex justify-content-end">
+                <span><a href="{% url 'employer_create_route' %}" class="btn btn-secondary">Add Employer</a></span>
+            </div>
         </div>
     </form>
 </div>
 
-<div>
-    <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
-        <a href="{% url 'employer_create_route' %}" class="btn btn-secondary btn-sm">Add Employer</a>
+<div class="custom-table">
+    <div class="d-none d-xl-block">
+        <!-- Display for xl screens and above -->
+        <div class="row mx-0 custom-table-header">
+            <div class="col">Employer</div>
+            <div class="col">Email</div>
+            <div class="col">Mobile</div>
+            <div class="col">Cases</div>
+            <div class="col">Staff</div>
+            <div class="col">Action</div>
+        </div>
     </div>
-
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Employer Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Mobile</th>
-                <th scope="col">Documentation</th>
-                <th scope="col">EA Agent</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row mx-0 custom-table-body">
         {% if object_list.count %}
             {% for object in object_list %}
-                <tr>
-                    <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_name }}</a></td>
-                    <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></td>
-                    <td><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></td>
-                    <td>{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</td>
-                    <td>{{ object.agency_employee.ea_personnel_number }} - {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</td>
-                    <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Edit</a>&emsp;{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}">Delete</a>{% endif %}</td>
-                </tr>
+                <div class="col-12 px-0 custom-table-dataset">
+                    <div class="clickable d-none d-xl-block">
+                        <!-- Display for xl screens and above -->
+                        <div class="row mx-0 custom-table-data">
+                            <div class="col"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
+                            <div class="col"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></div>
+                            <div class="col"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></div>
+                            <div class="col">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
+                            <div class="col">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</div>
+                            <div class="col">
+                                <a href="{% url 'employer_update_route' employer_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
+                                {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clickable d-xl-none">
+                        <!-- Display for lg screens and smaller -->
+                        {% with class_col_left="col-6" class_col_right="col-6" %}
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Employer</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Email</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Mobile</div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Cases</div>
+                            <div class="{{ class_col_right }}">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Staff</div>
+                            <div class="{{ class_col_right }}">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</div>
+                        </div>
+                        <div class="row mx-0 custom-table-data">
+                            <div class="{{ class_col_left }}">Action</div>
+                            <div class="{{ class_col_right }}">
+                                <a href="{% url 'employer_update_route' employer_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
+                                {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
+                            </div>
+                        </div>
+                        {% endwith %}
+                    </div>
+                </div>
             {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="6">No results found. Click <a href="{% url 'employer_create_route' %}">here</a> to add employer.</td>
-            </tr>
         {% endif %}
-        </tbody>
-    </table>
-    
-    <!-- {% comment %}
-    <dl class="row mx-0">
-        <dt class="col-lg-2 d-none d-lg-block">Employer Name</dt>
-        <dt class="col-lg-2 d-none d-lg-block">Email</dt>
-        <dt class="col-lg-2 d-none d-lg-block">Mobile</dt>
-        <dt class="col-lg-2 d-none d-lg-block">Documentation</dt>
-        <dt class="col-lg-2 d-none d-lg-block">ID - Agent</dt>
-        <dt class="col-lg-2 d-none d-lg-block mb-5">Action</dt>
-
-        {% for object in object_list %}
-            <dt class="col-6 d-lg-none">Employer Name</dt>
-            <dd class="col-6 col-lg-2"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_name }}</a></dd>
-            <dt class="col-6 d-lg-none">Email</dt>                
-            <dd class="col-6 col-lg-2"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></dd>
-            <dt class="col-6 d-lg-none">Mobile</dt>
-            <dd class="col-6 col-lg-2"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></dd>
-            <dt class="col-6 d-lg-none">Documentation</dt>
-            <dd class="col-6 col-lg-2">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documentation</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</dd>
-            <dt class="col-6 d-lg-none">ID - Agent</dt>
-            <dd class="col-6 col-lg-2">{{ object.agency_employee.ea_personnel_number }} - {{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</dd>
-            <dt class="col-6 d-lg-none">Action</dt>
-            <dd class="col-6 col-lg-2 mb-5"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Edit</a></dd>
-            <dt class="col-6 d-lg-none">&emsp;</dt>
-            <dd class="col-6 d-lg-none">&emsp;</dd>
-        {% endfor %}
-    </dl>
-    {% endcomment %} -->
+    </div>
 </div>
 
 <div class="mt-2 mb-4">

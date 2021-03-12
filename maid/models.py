@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -21,7 +22,8 @@ from agency.models import Agency
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
-    MaritalStatusChoices, MaidReligionChoices
+    MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
+    MaidSkillsEvaluationMethod
 )
 
 # Utiliy Classes and Functions
@@ -122,6 +124,14 @@ class Maid(models.Model):
     responsibilities = models.ManyToManyField(
         MaidResponsibility
     )
+    
+    skills_evaluation_method = models.CharField(
+        verbose_name=_('Skills evaluation method'),
+        max_length=4,
+        blank=False,
+        choices=MaidSkillsEvaluationMethod.choices,
+        default=MaidSkillsEvaluationMethod.DECLARATION
+    )
 
     created_on = models.DateTimeField(
         verbose_name=_('Created On'),
@@ -167,6 +177,11 @@ class Maid(models.Model):
     featured = models.BooleanField(
         default=False,
         blank=False
+    )
+    
+    frozen = models.BooleanField(
+        default=False,
+        editable=False
     )
     
     def get_main_responsibility(self):
@@ -413,7 +428,27 @@ class MaidPersonalDetails(models.Model):
         choices=MaidReligionChoices.choices,
         default=MaidReligionChoices.NONE
     )
+    
+    contact_number = models.CharField(
+        verbose_name=_('Contact number in home country'),
+        max_length=30,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
 
+    education_level = models.CharField(
+        verbose_name=_('Education Level'),
+        max_length=3,
+        blank=False,
+        choices=MaidEducationLevelChoices.choices,
+        default=MaidEducationLevelChoices.HIGH_SCHOOL
+    )
+    
     languages = models.ManyToManyField(
         MaidLanguage
     )
@@ -427,6 +462,26 @@ class MaidPersonalDetails(models.Model):
     def save(self, *args, **kwargs):
         self.age = calculate_age(self.date_of_birth)
         return super().save(*args, **kwargs)
+
+    def get_age(self):
+        today = timezone.now().date()
+        try:
+            birthday_current_year = self.date_of_birth.replace(
+                year = today.year)
+    
+        # Raised when birth date is 29 February and the current year is not a
+        # leap year
+        except ValueError:
+            birthday_current_year = self.date_of_birth.replace(
+                year = today.year,
+                month = self.date_of_birth.month + 1,
+                day = 1
+            )
+    
+        if birthday_current_year > today:
+            return today.year - self.date_of_birth.year - 1
+        else:
+            return today.year - self.date_of_birth.year
 
 class MaidFamilyDetails(models.Model):
     maid = models.OneToOneField(

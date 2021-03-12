@@ -1,6 +1,7 @@
 # Imports from django
 from django import forms
 from django.contrib.postgres.forms import SimpleArrayField
+from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -11,7 +12,7 @@ from maid.models import MaidResponsibility
 
 # Imports from local apps
 from .fields import MaidResponsibilityChoiceField
-from .models import Enquiry 
+from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
 
 # Start of Forms
 
@@ -19,15 +20,14 @@ from .models import Enquiry
 
 # Model Forms
 
-# Generic Forms (forms.Form)
-class EnquiryForm(forms.ModelForm):
+class GeneralEnquiryForm(forms.ModelForm):
     maid_responsibility = MaidResponsibilityChoiceField(
         queryset=MaidResponsibility.objects.all(),
         widget=forms.CheckboxSelectMultiple()
     )
 
     class Meta:
-        model = Enquiry
+        model = GeneralEnquiry
         exclude = ['employer']
         widgets = {
             'first_name': forms.TextInput(
@@ -67,7 +67,7 @@ class EnquiryForm(forms.ModelForm):
             ),
             'remarks': forms.Textarea(
                 attrs={
-                    'rows': 20,
+                    'rows': 15,
                     'cols': 15
                 }
             )
@@ -166,3 +166,133 @@ class EnquiryForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+        
+class AgencyEnquiryForm(forms.ModelForm):
+    maid_responsibility = MaidResponsibilityChoiceField(
+        queryset=MaidResponsibility.objects.all(),
+        widget=forms.CheckboxSelectMultiple()
+    )
+
+    class Meta:
+        model = AgencyEnquiry
+        fields = '__all__'
+        widgets = {
+            'agency': forms.HiddenInput(),
+            'remarks': forms.Textarea(
+                attrs={
+                    'rows': 20,
+                    'cols': 15
+                }
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        agency = kwargs.pop('agency')
+        super().__init__(*args, **kwargs)
+        self.fields['agency'].initial = agency
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'agency',
+                    css_class='form-group'
+                ),
+                Column(
+                    'name',
+                    css_class='form-group'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group'
+                ),
+                Column(
+                    'email',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_nationality',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_type',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_age_group',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid_responsibility',
+                    css_class='form-group'
+                ),
+                Column(
+                    'remarks',
+                    css_class='form-group'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-100"
+                    ),
+                    css_class='form-group col text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class MaidEnquiryForm(forms.ModelForm):
+    class Meta:
+        model = AgencyEnquiry
+        fields = '__all__'
+        widgets = {
+            'employer': forms.HiddenInput(),
+            'maid': forms.HiddenInput(),
+            'remarks': forms.Textarea(
+                attrs={
+                    'rows': 20,
+                    'cols': 15
+                }
+            )
+        }
+    
+    def __init__(self, *args, **kwargs):
+        employer = kwargs.pop('employer')
+        maid = kwargs.pop('maid')
+        super().__init__(*args, **kwargs)
+        self.fields['employer'].initial = employer
+        self.fields['maid'].initial = maid
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'employer',
+                    css_class='form-group'
+                ),
+                Column(
+                    'maid',
+                    css_class='form-group'
+                ),
+                Column(
+                    'remarks',
+                    css_class='form-group'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-100"
+                    ),
+                    css_class='form-group col text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+# Generic Forms (forms.Form)

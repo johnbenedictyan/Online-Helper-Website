@@ -2,7 +2,7 @@
 <div class="toast-outerwrapper" aria-live="polite" aria-atomic="true">
   <div class="toast-innerwrapper">
     {% for message in messages %}
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{% if 'sustain' in message.extra_tags%}10000{% else %}2000{% endif %}">
       <div class="toast-header">
         <img src="{% static 'favicon.ico' %}" class="rounded mr-2" alt="...">
         <strong class="mr-auto {{message.tags}}">
@@ -22,7 +22,7 @@
         </button>
       </div>
       <div class="toast-body p-4">
-        <h6>{{ message }}</h6>
+        <h6>{% if 'safe' in message.extra_tags%}{{ message|safe }}{% else %}{{ message }}{% endif %}</h6>
       </div>
     </div>
     {% endfor %}

@@ -273,15 +273,17 @@ class MaidCountryOfOrigin(models.TextChoices):
     OTHERS      = 'OTH', _('Others')
 
 class MaidLanguageChoices(models.TextChoices):
-    ENGLISH    = 'ENG', _('English')
-    CHINESE    = 'CHI', _('Mandarin Chinese')
-    HINDI      = 'HIN', _('Hindi')
-    BENGALI    = 'BEN', _('Bengali')
-    TAMIL      = 'TAM', _('Tamil')
-    KHMER      = 'KHM', _('Khmer')
-    INDONESIAN = 'IND', _('Bahasa Indonesia')
-    TAGALOG    = 'TAG', _('Tagalog')
-    SINHALA    = 'SIN', _('Sinhala')
+    ENGLISH     = 'ENG', _('English')
+    BENGALI     = 'BEN', _('Bengali')
+    BURMESE     = 'BUR', _('Burmese')
+    CHINESE     = 'CHI', _('Mandarin Chinese')
+    HINDI       = 'HIN', _('Hindi')
+    INDONESIAN  = 'IND', _('Bahasa Indonesia')
+    KHMER       = 'KHM', _('Khmer')
+    SINHALA     = 'SIN', _('Sinhala')
+    TAGALOG     = 'TAG', _('Tagalog')
+    TAMIL       = 'TAM', _('Tamil')
+    THAI        = 'THA', _('Thai')
 
 class MaidReligionChoices(models.TextChoices):
         BUDDHIST = 'B', _('Buddhist')
@@ -330,6 +332,10 @@ class MaidCareRemarksChoices(models.TextChoices):
     NO_EXP = 'NE', _('No experience, but willing to learn')
     NOT_WILLING = 'NW', _('Not willing')
     OTHERS = 'OTH', _('Other remarks (Please specify)')
+    
+class MaidGeneralHouseworkRemarksChoices(models.TextChoices):
+        CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
+        OTHERS = 'OTH', _('Other remarks (Please specify)')
 
 class TypeOfMaidChoices(models.TextChoices):
     NEW = 'NEW', _('No Experience')
@@ -341,6 +347,22 @@ class MaidPassportStatusChoices(models.IntegerChoices):
     NOT_READY = 0, _('Not Ready')
     READY = 1, _('Ready')
         
+class MaidEducationLevelChoices(models.TextChoices):
+    HIGH_SCHOOL = 'HS', _('High School')
+    COLLEGE = 'COL', _('College')
+    OTHERS = 'OTH', _('Others')
+    
+class MaidSkillsEvaluationMethod(models.TextChoices):
+    DECLARATION = 'DEC', _('''Based on FDW’s declaration, no 
+                           evaluation/observation by Singapore EA or overseas 
+                           training centre/EA''')
+    SG_EA = 'SGEA', _('''Interviewed by Singapore EA''')
+    TEL = 'TEL', _('''Interviewed via telephone/teleconference''')
+    VID = 'VID', _('''Interviewed via videoconference''')
+    PERSON = 'PERS', _('''Interviewed in person''')
+    PERSON_OBS = 'PERO', _('''Interviewed in person and also made observation 
+                           of FDW in the areas of work listed in table''')
+    
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes

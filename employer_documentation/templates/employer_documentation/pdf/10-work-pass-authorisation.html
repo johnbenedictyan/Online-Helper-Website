@@ -33,11 +33,11 @@
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">NRIC No./ FIN</td>
-            <td colspan="3">{{ object.employer.employer_nric }}</td>
+            <td colspan="3">{{ object.employer.get_nric_full }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Contact No.</td>
-            <td colspan="3">{{ object.employer.employer_mobile_number }}</td>
+            <td colspan="3">{{ object.employer.mobile_format_sg }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Signature and Date</td>
@@ -52,7 +52,7 @@
         <tr>
             <td class="text-align-center">1</td>
             <td colspan="2">{{ object.fdw.name }}</td>
-            <td>{{ object.fdw.passport_number }}</td>
+            <td>{{ object.fdw.get_passport_number }}</td>
             <td></td>
         </tr>
         <tr>
@@ -104,7 +104,7 @@
         </tr>
         <tr>
             <td class="text-bold-600" colspan="2">Signature and Date.</td>
-            <td><img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td>{{ object.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>

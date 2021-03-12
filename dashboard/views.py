@@ -18,8 +18,9 @@ from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
-from enquiry.models import Enquiry
+from enquiry.models import GeneralEnquiry
 from maid.models import Maid
+from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 
 # Imports from local app
@@ -35,27 +36,34 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
         dashboard_home_page_kwargs = {
             'accounts': {
                 'current': AgencyEmployee.objects.filter(
-                    agency__pk = self.agency_id
+                    agency=agency
                 ).count(),
-                'max': 123
+                'max': agency.amount_of_employees_allowed
             },
             'biodata': {
                 'current': Maid.objects.filter(
-                    agency__pk = self.agency_id
+                    agency=agency
                 ).count(),
-                'max': 123
+                'max': agency.amount_of_biodata_allowed
             },
             'branches': {
                 'current': AgencyBranch.objects.filter(
-                    agency__pk = self.agency_id
+                    agency=agency
                 ).count(),
                 'max': None
             },
             'subscriptions': {
-                'current': 123,
+                'current': Subscription.objects.filter(
+                    customer=Customer.objects.get(
+                        agency=agency
+                    )
+                ).count(),
                 'max': None
             },
             'employers': {
@@ -64,6 +72,10 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
             },
             'sales': {
                 'current': 123,
+                'max': None
+            },
+            'enquiries': {
+                'current': agency.get_enquiries().count(),
                 'max': None
             }
         }
@@ -84,7 +96,7 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     def get_queryset(self):
         return Maid.objects.filter(
             agency__pk = self.agency_id
-        )
+        ).order_by('id')
 
 class DashboardAccountList(
     AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
@@ -123,7 +135,7 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
 class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
-    model = Enquiry
+    model = GeneralEnquiry
     template_name = 'list/dashboard-enquiry-list.html'
 
 class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,

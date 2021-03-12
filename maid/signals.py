@@ -11,10 +11,10 @@ from django.dispatch import receiver
 from .constants import MaidResponsibilityChoices
 
 from .models import (
-    MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility, 
-    MaidFinancialDetails
+    MaidFinancialDetails, MaidOtherCare
 )
 
 # Utiliy Classes and Functions
@@ -101,6 +101,18 @@ def maid_completed(maid):
         maid.save()
 
 # Start of Signals
+@receiver(post_save, sender=Maid)
+def maid_counter(sender, instance, created, **kwargs):
+    agency = instance.agency
+    agency.amount_of_biodata = Maid.objects.filter(
+        agency=agency
+    ).count()
+    agency.amount_of_featured_biodata = Maid.objects.filter(
+        agency=agency,
+        featured=True
+    ).count()
+    agency.save()
+    
 @receiver(post_save, sender=MaidPersonalDetails)
 def maid_biodata_completed(sender, instance, created, **kwargs):
     if created == False:
@@ -125,8 +137,8 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
         for k,v in instance.__dict__.items():
             if not v:
                 family_details_valid = False
-                if k is 'number_of_children' or k is 'number_of_siblings':
-                    if v is 0:
+                if k == 'number_of_children' or k == 'number_of_siblings':
+                    if v == 0:
                         family_details_valid = True
 
         maid.family_details_complete = family_details_valid
@@ -139,25 +151,43 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
 @receiver(post_save, sender=MaidDisabledCare)
 @receiver(post_save, sender=MaidGeneralHousework)
 @receiver(post_save, sender=MaidCooking)
+@receiver(post_save, sender=MaidOtherCare)
 def maid_care_completed(sender, instance, created, **kwargs):
-    if created == False:
-        care_models = [
-            MaidInfantChildCare,
-            MaidElderlyCare,
-            MaidDisabledCare,
-            MaidGeneralHousework,
-            MaidCooking
-        ]
-        maid = instance.maid
-        care_complete = maid.care_complete
+    care_models = [
+        MaidInfantChildCare,
+        MaidElderlyCare,
+        MaidDisabledCare,
+        MaidGeneralHousework,
+        MaidCooking,
+        MaidOtherCare
+    ]
 
-        instance_model_class = instance.__class__
+    related_names = {
+        'MaidInfantChildCare': 'infant_child_care',
+        'MaidElderlyCare': 'elderly_care',
+        'MaidDisabledCare': 'disabled_care',
+        'MaidGeneralHousework': 'general_housework',
+        'MaidCooking': 'cooking',
+        'MaidOtherCare': 'other_care'
+    }
+    
+    maid = instance.maid
+    safe_flag = True
+
+    for i in care_models:
+        if hasattr(maid, related_names[i.__name__]) == False:
+            safe_flag = False
+        
+    care_complete = maid.care_complete
+    instance_model_class = instance.__class__
+
+    if safe_flag == True:
         if instance_model_class in care_models:
             care_models.remove(instance_model_class)
             try:
                 for i in care_models:
                     for k,v in i.objects.get(maid=maid).__dict__.items():
-                        if k is not 'other_remarks':
+                        if k != 'other_remarks':
                             if not v:
                                 raise Exception
             except Exception as e:

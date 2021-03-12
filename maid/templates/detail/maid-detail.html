@@ -1,12 +1,10 @@
 {% extends 'maid-base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block maid_section %}
 <section>
     <div class="container">
         <div class="row my-3">
-            <div class="col-xl-3">
-                <img src="{{maid.photo.url}}" class="rounded img-thumbnail" alt="...">
-            </div>
             <div class="col my-3">
                 <div class="row">
                     <div class="col">
@@ -34,109 +32,226 @@
                 <div class="row">
                     <div class="col mt-3">
                         <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary">Add to Shortlist</a>
-                        <a href="#" class="btn btn-outline-primary ml-3">Download Bio-data</a>
+                        <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn btn-outline-primary ml-3">Download Bio-data</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-md-5">
                 <div class="row">
-                    <div class="col">
-                        <h5>Profile</h5>
+                    <div class="col mb-xl-3">
                         <div class="row">
-                            <div class="col"><p>Age</p></div>
-                            <div class="col"><p>{{maid.personal_details.age}} yr old</p></div>
+                            <div class="col">
+                                <h5>Profile</h5>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col"><p>Place of Birth</p></div>
-                            <div class="col"><p>{{maid.personal_details.place_of_birth}}</p></div>
-                        </div>
-                        <div class="row">
-                            <div class="col"><p>Marital Status</p></div>
-                            <div class="col"><p>{{maid.family_details.get_marital_status_display}}</p></div>
-                        </div>
-                        <div class="row">
-                            <div class="col"><p>Number of Children</p></div>
-                            <div class="col"><p>{{maid.family_details.number_of_children}}</p></div>
-                        </div>
-                        <div class="row">
-                            <div class="col"><p>Religion</p></div>
-                            <div class="col"><p>{{maid.personal_details.get_religion_display}}</p></div>
-                        </div>
-                        <div class="row">
-                            <div class="col"><p>Education Level</p></div>
-                            <div class="col"><p>We dont save this</p></div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <small class="text-muted">Age</small>
+                                        <p>{{maid.personal_details.age}} years old</p>
+                                    </div>
+                                    <div class="col">
+                                        <small class="text-muted">Salary</small>
+                                        <p>${{maid.financial_details.salary}}</p>
+                                    </div>
+                                    <div class="col">
+                                        <small class="text-muted">Number of days off</small>
+                                        <p>{{maid.days_off}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <small class="text-muted">Marital Status</small>
+                                        <p>{{maid.family_details.get_marital_status_display}}</p>
+                                    </div>
+                                    <div class="col">
+                                        <small class="text-muted">Number of Children</small>
+                                        <p>{{maid.family_details.number_of_children}}</p>
+                                    </div>
+                                    <div class="col">
+                                        <small class="text-muted">Religion</small>
+                                        <p>{{maid.personal_details.get_religion_display}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <small class="text-muted">Education</small>
+                                        <p>{{maid.personal_details.education_level}}</p>
+                                    </div>
+                                    <div class="col">
+                                        <small class="text-muted">Preferred Language</small>
+                                        <p>{{maid.personal_details.preferred_language}}</p>
+                                    </div>
+                                    <div class="col">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col mb-xl-3">
                         <h5>Experience</h5>
-                        {% for responsibility in maid.responsibilities.all %}
-                            <p>{{responsibility}}</p>
-                        {% endfor%}
+                        <div class="row">
+                            <div class="col mb-2">
+                                <h6>Infant Child Care</h6>
+                                <div class="progress progress-wrapper">
+                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.infant_child_care.assessment}}" aria-valuenow="{{maid.infant_child_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <small class="text-muted ml-1">Poor</small>
+                                    </div>
+                                    <div class="col text-right">
+                                        <small class="text-muted mr-1">Excellent</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <h6>Elderly Care</h6>
+                                <div class="progress progress-wrapper">
+                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.elderly_care.assessment}}" aria-valuenow="{{maid.elderly_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <small class="text-muted ml-1">Poor</small>
+                                    </div>
+                                    <div class="col text-right">
+                                        <small class="text-muted mr-1">Excellent</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <h6>Disabled Care</h6>
+                                <div class="progress progress-wrapper">
+                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.disabled_care.assessment}}" aria-valuenow="{{maid.disabled_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <small class="text-muted ml-1">Poor</small>
+                                    </div>
+                                    <div class="col text-right">
+                                        <small class="text-muted mr-1">Excellent</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <h6>General Housework</h6>
+                                <div class="progress progress-wrapper">
+                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.general_housework.assessment}}" aria-valuenow="{{maid.general_housework.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <small class="text-muted ml-1">Poor</small>
+                                    </div>
+                                    <div class="col text-right">
+                                        <small class="text-muted mr-1">Excellent</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <h6>Cooking</h6>
+                                <div class="progress progress-wrapper">
+                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.cooking.assessment}}" aria-valuenow="{{maid.cooking.assessment}}" aria-valuemin="0" aria-valuemax="5">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <small class="text-muted ml-1">Poor</small>
+                                    </div>
+                                    <div class="col text-right">
+                                        <small class="text-muted mr-1">Excellent</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 offset-md-2">
+                <div class="row">
+                    <div class="col mb-md-2 mb-xl-4">
+                        <img src="{% static 'images/olmaid-logo.png'%}" alt="" class="img-thumbnail img-fluid">
+                        <img src="{{maid.photo.url}}" alt="Maid Photo" class="rounded d-none">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <h5>Language Spoken</h5>
-                        {% for language in maid.personal_details.languages.all %}
-                            <p>{{language}}</p>
-                        {% endfor%}
+                        <div class="row">
+                            <div class="col mb-md-2 mb-xl-3">
+                                <h5>Top Skills</h5>
+                                {% for responsibility in maid.responsibilities.all %}
+                                <p class="mb-0 badge badge-secondary px-3 py-2 mr-1">{{responsibility}}</p>
+                                {% endfor%}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-md-2">
+                                <h5>Language Spoken</h5>
+                                {% for language in maid.personal_details.languages.all %}
+                                <p class="mb-0 badge badge-secondary px-3 py-2 mr-1">{{language}}</p>
+                                {% endfor%}
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 mb-3">
                 <div class="row">
                     <div class="col">
                         <h5>Employment History</h5>
                     </div>
                 </div>
-            </div>
-            <div class="col border rounded">
                 <div class="row">
-                    <div class="col my-2">
-                        <div class="media">
-                            <img src="{{maid.agency.logo.url}}" class="mr-3" alt="...">
-                            <div class="media-body">
-                              <h5 class="mt-0">{{maid.agency.name}}</h5>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body p-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-8 offset-2 text-center">
+                                                <small class="text-muted mb-0">2 Years</small>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center text-center">
+                                            <div class="col-2">
+                                                <small>13/04/2021</small>
+                                            </div>
+                                            <div class="col-8 px-0">
+                                                <div class="progress" style="height: 2px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <small>13/04/2021</small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-0 badge badge-primary px-3 py-2 mr-1">Chinese Employer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col my-2">
-                        <address>
-                            {{maid.agency.get_main_office.address_1}}
-                            {{maid.agency.get_main_office.address_2}}
-                        </address>
-                        <div class="row">
-                            <div class="col">
-                                <p>Tel</p>
-                            </div>
-                            <div class="col">
-                                <p>{{maid.agency.get_main_office.office_number}} / {{maid.agency.get_main_office.mobile_number}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>Email</p>
-                            </div>
-                            <div class="col">
-                                <p>{{maid.agency.sales_email}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>Website</p>
-                            </div>
-                            <div class="col">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col my-2">
-                          
                     </div>
                 </div>
             </div>
@@ -147,28 +262,26 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h3>similar Profiles</h3>
+                <h3>Similar Profiles</h3>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <div class="row" id="similar-profiles">
+                <div class="maid-carousel">
                     {% for maid in similar_maids %}
-                    <div class="col mb-4">
-                        <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
-                            <div onclick="maidProfileRedirect({{maid.pk}})">
-                                <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{maid.name}}</h5>
-                                    <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
-                                    <p class="card-text">{{maid.personal_details.age}} years old</p>
-                                    <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                                    <p class="card-text">{{maid.get_maid_type_display}}</p>
-                                </div>
+                    <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
+                        <div onclick="maidProfileRedirect({{maid.pk}})">
+                            <div class="m-2 maid-thumbnail" style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{maid.name}}</h5>
+                                <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                <p class="card-text">{{maid.personal_details.age}} years old</p>
+                                <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                                <p class="card-text">{{maid.get_maid_type_display}}</p>
                             </div>
-                            <div class="card-footer">
-                                <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
-                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -181,8 +294,8 @@
 {% endblock maid_section %}
 {% block js %}
 <script>
-    $(function(){
-        $('#similar-profiles').slick({
+    $(document).ready(function(){
+        $('.maid-carousel').slick({
             dots: true,
             infinite: false,
             speed: 300,
@@ -216,7 +329,18 @@
                 // settings: "unslick"
                 // instead of a settings object
             ]
-            });
-    })
+        });
+        width_map = {
+            '1': '20',
+            '2': '40',
+            '3': '60',
+            '4': '80',
+            '5': '100'
+        }
+        $('.assessment-progress-bar').each(function(){
+            let width_value = $(this).data('value');
+            $(this).css('width', width_map[width_value] + '%' );
+        });
+    });
 </script>
 {% endblock js %}

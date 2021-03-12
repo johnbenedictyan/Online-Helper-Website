@@ -51,6 +51,8 @@ class AgencyList(ListFilteredMixin, ListView):
     template_name = 'list/agency-list.html'
     queryset = Agency.objects.filter(complete=True)
     filter_set = AgencyFilter
+    paginate_by = settings.AGENCY_PAGINATE_BY
+    ordering = ['name']
 
 # Detail Views
 class AgencyDetail(DetailView):
@@ -147,10 +149,19 @@ class AgencyEmployeeCreate(AgencyOwnerRequiredMixin, SuccessMessageMixin,
         return kwargs
 
     def form_valid(self, form):
-        form.instance.agency = Agency.objects.get(
+        agency = Agency.objects.get(
             pk = self.request.user.agency_owner.agency.pk
         )
-        return super().form_valid(form)
+        form.instance.agency = agency
+        if agency.amount_of_employees < agency.amount_of_employees_allowed:
+            return super().form_valid(form)
+        else:
+            messages.warning(
+                self.request,
+                'You have reached the limit of employee accounts',
+                extra_tags='error'
+            )
+            return super().form_invalid(form)
 
 class AgencyPlanCreate(AgencyOwnerRequiredMixin, SuccessMessageMixin,
                        CreateView):

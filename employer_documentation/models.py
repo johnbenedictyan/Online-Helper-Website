@@ -118,6 +118,9 @@ class Employer(models.Model):
         )
         return '●'*5 + plaintext[-4:]
 
+    def mobile_format_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
+
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
         (0, "0 days"),
@@ -212,8 +215,28 @@ class EmployerDoc(models.Model):
         verbose_name=_("Foreign Domestic Worker (FDW)"),
         on_delete=models.RESTRICT
     )
+    monthly_combined_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Monthly combined income of employer and spouse"),
+        choices=[
+            (0, "Below $2,000"),
+            (1, "$2,000 to $2,499"),
+            (2, "$2,500 to $2,999"),
+            (3, "$3,000 to $3,499"),
+            (4, "$3,500 to $3,999"),
+            (5, "$4,000 to $4,999"),
+            (6, "$5,000 to $5,999"),
+            (7, "$6,000 to $7,999"),
+            (8, "$8,000 to $9,999"),
+            (9, "$10,000 to $12,499"),
+            (10, "$12,500 to $14,999"),
+            (11, "$15,000 to $19,999"),
+            (12, "$20,000 to $24,999"),
+            (13, "$25,000 and above"),
+        ]
+    )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
+        editable=False,
         choices=TrueFalseChoices(
             'Yes, spouse required',
             'No, spouse not required'
@@ -225,6 +248,9 @@ class EmployerDoc(models.Model):
             'Yes, sponsor required',
             'No, sponsor not required'
         ),
+        default=False,
+        blank=True,
+        null=True,
     )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
@@ -582,6 +608,87 @@ class EmployerDoc(models.Model):
         choices=DAY_CHOICES
     )
 
+    # Safety Agreement
+    residential_dwelling_type = models.CharField(
+        max_length=30,
+        choices=[
+            ("HDB","HDB Apartment"),
+            ("CONDO","Private Apartment/Condominium"),
+            ("LANDED","Landed Property"),
+        ],
+        default='HDB',
+    )
+    fdw_clean_window_exterior = models.BooleanField(
+        verbose_name=_('Does Employer require FDW to clean window exterior?'),
+        choices=TrueFalseChoices(
+            'Yes, clean window exterior',
+            'No, not required'
+        ),
+        default=True,
+        help_text=_('If yes, must complete field (i).'),
+    )
+    window_exterior_location = models.CharField(
+        verbose_name=_("(i) Location of window exterior"),
+        max_length=40,
+        choices=[
+            ("GROUND_FLOOR","On the ground floor"),
+            ("COMMON_CORRIDOR","Facing common corridor"),
+            ("OTHER","Other"),
+        ],
+        blank=True,
+        null=True,
+        help_text=_("If 'Other' is selected, must complete field (ii)."),
+    )
+    grilles_installed_require_cleaning = models.BooleanField(
+        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        choices=TrueFalseChoices(
+            'Yes, grilles installed require cleaning',
+            'No, not required'
+        ),
+        blank=True,
+        null=True,
+        help_text=_('If yes, must complete field (iii).'),
+    )
+    adult_supervision = models.BooleanField(
+        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        choices=TrueFalseChoices(
+            'Yes, adult supervision',
+            'No supervision'
+        ),
+        blank=True,
+        null=True,
+    )
+    received_sip_assessment_checklist = models.BooleanField(
+        verbose_name=_('Employer has received advisory letter and assessment checklist from SIP?'),
+        choices=TrueFalseChoices(
+            'Yes, received',
+            'Not received'
+        ),
+        default=True,
+        blank=True,
+        null=True,
+        help_text=_('For employers of first-time FDWs only')
+    )
+    verifiy_employer_understands_window_cleaning = models.CharField(
+        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        max_length=40,
+        choices=[
+            ("not_required_to_clean_window_exterior","FDW not required to clean window exterior"),
+            ("ground_floor_windows_only","FDW to clean only window exterior on ground floor"),
+            ("common_corridor_windows_only","FDW to clean only window exterior along common corridor"),
+            ("require_window_exterior_cleaning","Ensure grilles are locked and only cleaned under adult supervision"),
+        ],
+        default='require_window_exterior_cleaning',
+    )
+
+    def save(self, *args, **kwargs):
+        # Auto-increment document version number on every save
+        self.version += 1
+
+        # Spouse is required if monthly_combined_income < S$3,000 per month
+        self.spouse_required = True if self.monthly_combined_income<3 else False
+        super().save(*args, **kwargs)
+
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
         return (
@@ -602,16 +709,27 @@ class EmployerDoc(models.Model):
 
     def calc_bal(self):
         # Method to calculate outstanding balance owed by employer
-        return (
+        balance = (
             self.calc_admin_cost()
             + self.fdw.financial_details.agency_fee_amount
             + self.fdw.financial_details.personal_loan_amount
             - self.ca_deposit
         )
 
-    def save(self, *args, **kwargs):
-        self.version += 1
-        super().save(*args, **kwargs)
+        subsequent_transactions = EmployerPaymentTransaction.objects.filter(
+            employer_doc=self
+        )
+
+        for transaction in subsequent_transactions:
+            if transaction.transaction_type == 'ADD':
+                balance += transaction.amount
+            elif transaction.transaction_type == 'SUB':
+                balance -= transaction.amount
+        
+        return balance
+
+    def get_version(self):
+        return str(self.version).zfill(4)
 
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
@@ -701,6 +819,27 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
+    employer_witness_address_1 = models.CharField(
+        verbose_name=_('Employer Witness Street Address'),
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    employer_witness_address_2 = models.CharField(
+        verbose_name=_('Employer Witness Unit Number'),
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
+    employer_witness_post_code = models.CharField(
+        verbose_name=_('Employer Witness Post Code'),
+        max_length=25,
+        blank=True,
+        null=True
+    )
+
     fdw_witness_signature = models.TextField(
         verbose_name=_('Signature of Witness for FDW'),
         blank=True,
@@ -719,7 +858,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     agency_staff_witness_signature = models.TextField(
-        verbose_name=_('Signature of Witness for Agency Staff Memeber'),
+        verbose_name=_('Signature of Witness for Agency Staff Member'),
         blank=True,
         null=True
     )
@@ -743,7 +882,7 @@ class EmployerDocMaidStatus(models.Model):
         related_name='rn_maidstatus_ed'
     )
     fdw_work_commencement_date = models.DateField(
-        verbose_name=_('FDW Work Commencement Date'),
+        verbose_name=_('Deployment Date'),
         blank=True,
         null=True
     )
@@ -911,7 +1050,7 @@ class EmployerPaymentTransaction(models.Model):
         ('SUB', _('Repayment')),
         ('ADD', _('New charge')),
     )
-    employer_doc = models.OneToOneField(
+    employer_doc = models.ForeignKey(
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_repayment_ed'

@@ -1,4 +1,5 @@
 # Imports from django
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, JsonResponse
@@ -16,6 +17,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from foreign installed apps
 from agency.models import Agency
 from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
+from employer_documentation.mixins import PdfHtmlViewMixin
 
 # Imports from local app
 from .filters import MaidFilter
@@ -71,17 +73,28 @@ class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         )
     
     def form_valid(self, form):
-        try:
-            self.object = form.save()
-        except Exception as e:
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        if agency.amount_of_biodata < agency.amount_of_biodata_allowed:
+            try:
+                self.object = form.save()
+            except Exception as e:
+                messages.warning(
+                    self.request,
+                    'Please try again',
+                    extra_tags='warning'
+                )
+                return super().form_invalid(form)
+            else:
+                return super().form_valid(form)
+        else:
             messages.warning(
                 self.request,
-                'Please try again',
+                'You have reached the limit of biodata',
                 extra_tags='warning'
             )
             return super().form_invalid(form)
-        else:
-            return super().form_valid(form)
 
 class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                  SuccessMessageMixin, FormView):
@@ -100,6 +113,7 @@ class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
             pk=self.maid_id
         )
         initial.update({
+            'skills_evaluation_method': maid.skills_evaluation_method,
             'cfi_assessment': maid.infant_child_care.assessment,
             'cfi_willingness': maid.infant_child_care.willingness,
             'cfi_experience': maid.infant_child_care.experience,
@@ -132,6 +146,13 @@ class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
+        Maid.objects.filter(
+            pk=self.maid_id
+        ).update(
+            skills_evaluation_method=cleaned_data.get(
+                'skills_evaluation_method'
+            )
+        )
         MaidInfantChildCare.objects.filter(
             maid__pk=self.maid_id
         ).update(
@@ -217,15 +238,52 @@ class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
             return reverse_lazy(
                 'dashboard_maid_list'
             )
-        
+
+class MaidToggleFeatured(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
+    pk_url_kwarg = 'pk'
+
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            maid = Maid.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        except Maid.DoesNotExist:
+            messages.error(
+                self.request,
+                'This maid does not exist'
+            )
+        else:
+            if maid.featured == False:
+                amt_of_featured = maid.agency.amount_of_featured_biodata
+                amt_allowed = maid.agency.amount_of_featured_biodata_allowed
+                if amt_of_featured < amt_allowed:
+                    maid.featured = not maid.featured
+                else:
+                    messages.warning(
+                        self.request,
+                        'You have reached the limit of featured biodata',
+                        extra_tags='error'
+                    )
+            else:
+                maid.featured = not maid.featured
+            maid.save()
+            kwargs.pop(self.pk_url_kwarg)
+        finally:
+            return reverse_lazy(
+                'dashboard_maid_list'
+            )
+            
 # List Views
-class MaidList(ListFilteredMixin, ListView):
+class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     queryset = Maid.objects.filter(published=True)
     template_name = 'list/maid-list.html'
     filter_set = MaidFilter
+    paginate_by = settings.MAID_PAGINATE_BY
 
 class MaidEmploymentHistoryList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'maid_employment_history_list'
@@ -250,10 +308,12 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
+        country_of_origin = self.object.personal_details.country_of_origin
+        languages = self.object.personal_details.languages.all()
         similar_maids = Maid.objects.filter(
-            personal_details__country_of_origin=self.object.biodata.country_of_origin,
+            personal_details__country_of_origin=country_of_origin,
             responsibilities=self.object.get_main_responsibility(),
-            personal_details__languages__in=self.object.biodata.languages.all()
+            personal_details__languages__in=languages
         ).exclude(
             pk=self.object.pk
         ).distinct()
@@ -765,3 +825,18 @@ class MaidProfileView(View):
                 ]
             }
             return JsonResponse(data, status=200)
+
+# PDF Views
+class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
+    model = Maid
+    template_name = 'detail/pdf-biodata-detail.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+
+        if hasattr(request.user, 'agency_employee'):
+            context['agency_employee'] = request.user.agency_employee
+        
+        context['employment_history'] = self.object.employment_history.all()
+        return self.generate_pdf_response(request, context)

@@ -2,15 +2,19 @@
 
 # Imports from django
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 # Imports from other apps
 import stripe
+from advertisement.models import Advertisement
+from maid.models import Maid
 from payment.models import Customer
 
 # Imports from within the app
-from .models import Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency
+from .models import (
+    Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency, AgencyEmployee
+)
 
 # Utiliy Classes and Functions
 def agency_completed(agency):
@@ -26,7 +30,7 @@ def agency_completed(agency):
         agency.branch_complete == True and 
         agency.operating_hours_complete == True
     ):
-        agency.completed = True
+        agency.complete = True
         agency.save()
 
 
@@ -55,13 +59,14 @@ def agency_location_completed(sender, instance, created, **kwargs):
         
         if branch_valid == True:
             agency.branch_complete = branch_valid
-            agency.save()
         
             if(
                 agency.branch_complete == True and 
                 agency.operating_hours_complete == True
             ):
-                agency.completed = True
+                agency.complete = True
+                agency.save()
+            else:
                 agency.save()
 
 @receiver(post_save, sender=AgencyOperatingHours)
@@ -77,13 +82,14 @@ def agency_operating_hours_completed(sender, instance, created, **kwargs):
         
         if operating_hours_valid == True:
             agency.operating_hours_complete = operating_hours_valid
-            agency.save()
         
             if(
                 agency.branch_complete == True and 
                 agency.operating_hours_complete == True
             ):
-                agency.completed = True
+                agency.complete = True
+                agency.save()
+            else:
                 agency.save()
 
 @receiver(post_save, sender=Agency)
@@ -120,3 +126,45 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
             new_customer.save()
     else:
         pass
+    
+@receiver(post_save, sender=AgencyEmployee)
+def agency_employee_counter(sender, instance, created, **kwargs):
+    agency = instance.agency
+    agency.amount_of_employees = AgencyEmployee.objects.filter(
+        agency=agency
+    ).count()
+    agency.save()
+    
+@receiver(post_save, sender=Agency)
+def deactivate_agency(sender, instance, created, **kwargs):
+    agency = instance
+    if agency.active == False:
+        Maid.objects.filter(
+            agency=agency
+        ).update(
+            frozen=True
+        )
+        Advertisement.objects.filter(
+            agency=agency
+        ).update(
+            frozen=True
+        )
+        
+@receiver(pre_save, sender=Agency)
+def reactivate_agency(sender, instance, **kwargs):
+    if instance.id:
+        current = instance
+        prev = agency = Agency.objects.get(
+            pk=instance.pk
+        )
+        if prev.active == False and current.active == True:
+            Maid.objects.filter(
+                agency=agency
+            ).update(
+                frozen=False
+            )
+            Advertisement.objects.filter(
+                agency=agency
+            ).update(
+                frozen=False
+            )

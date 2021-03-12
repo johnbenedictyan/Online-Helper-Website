@@ -9,13 +9,13 @@ from django.urls import include, path
 from .views import MaidCreateFormView, MaidCareDetailsUpdate
 
 ## Redirect Views
-from .views import MaidTogglePublished
+from .views import MaidTogglePublished, MaidToggleFeatured
 
 ## List Views
 from .views import MaidList
 
 ## Detail Views
-from .views import MaidDetail
+from .views import MaidDetail, PdfMaidBiodataView
 
 ## Create Views
 from .views import (
@@ -141,14 +141,29 @@ urlpatterns = [
                         'profile/',
                         MaidProfileView.as_view(),
                         name='maid_profile'
-                    )
+                    ),
+                    path(
+                        'biodata/pdf/',
+                        PdfMaidBiodataView.as_view(),
+                        name='maid_biodata_pdf'
+                    ),
                 ])
             )
         ])
     ),
     path(
-        'togglepublished/<int:pk>/',
-        MaidTogglePublished.as_view(),
-        name='maid_toggle_published'
+        'toggle/<int:pk>/',
+        include([
+            path(
+                'published',
+                MaidTogglePublished.as_view(),
+                name='maid_toggle_published'
+            ),
+            path(
+                'featured',
+                MaidToggleFeatured.as_view(),
+                name='maid_toggle_featured'
+            )
+        ])
     )
 ]

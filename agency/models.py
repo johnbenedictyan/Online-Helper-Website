@@ -45,7 +45,8 @@ class Agency(models.Model):
     website_uri = models.CharField(
         verbose_name=_('Website URL'),
         max_length=100,
-        blank=False,
+        blank=True,
+        null=True,
         validators=[
             URLValidator(
                 message=_('Please enter a valid URL')
@@ -55,7 +56,7 @@ class Agency(models.Model):
 
     logo = models.FileField(
         verbose_name=_('Website Logo'),
-        blank=False,
+        blank=True,
         null=True,
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
@@ -68,7 +69,7 @@ class Agency(models.Model):
 
     qr_code = models.FileField(
         verbose_name=_('Website QR Code'),
-        blank=False,
+        blank=True,
         null=True,
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
@@ -76,6 +77,54 @@ class Agency(models.Model):
     mission = models.TextField(
         verbose_name=_('Mission Statement'),
         blank=False
+    )
+    
+    amount_of_biodata = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of FDW Biodata'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_biodata_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of FDW Biodata allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_featured_biodata = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of featured FDW Biodata'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_featured_biodata_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of featured FDW Biodata allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_employees = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employee accounts'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_employees_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employee accounts allowed'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_documents = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employer documents'),
+        default=0,
+        null=False
+    )
+    
+    amount_of_documents_allowed = models.PositiveSmallIntegerField(
+        verbose_name=_('Amount of employer documents allowed'),
+        default=0,
+        null=False
     )
 
     active = models.BooleanField(
@@ -106,6 +155,9 @@ class Agency(models.Model):
 
     def get_main_office(self):
         return self.branches.get(main_branch=True)
+    
+    def get_enquiries(self):
+        return self.enquiries.all()
         
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):

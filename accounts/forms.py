@@ -32,7 +32,7 @@ class SignInForm(AuthenticationForm):
 
     # We cannot have it to be a static redirect, the next url must take
     # precedence
-    redirect_named_url = 'home'
+    # redirect_named_url = 'home'
     placeholders = {
         'username': 'johndoe123',
         'password': 'topsecret'
@@ -62,15 +62,15 @@ class SignInForm(AuthenticationForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    Hidden(
-                        'next',
-                        f"{{% url '{self.redirect_named_url}' %}}"
-                    )
-                ),
-                css_class='form-row'
-            ),
+            # Row(
+            #     Column(
+            #         Hidden(
+            #             'next',
+            #             f"{{% url '{self.redirect_named_url}' %}}"
+            #         )
+            #     ),
+            #     css_class='form-row'
+            # ),
             Row(
                 Column(
                     Submit(
@@ -94,7 +94,7 @@ class AgencySignInForm(AuthenticationForm):
 
     # We cannot have it to be a static redirect, the next url must take
     # precedence
-    redirect_named_url = 'dashboard_home'
+    # redirect_named_url = 'dashboard_home'
 
     agency_license_number = forms.CharField(
         label=_('Agency License Number'),
@@ -139,15 +139,15 @@ class AgencySignInForm(AuthenticationForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    Hidden(
-                        'next',
-                        f"{{% url '{self.redirect_named_url}' %}}"
-                    )
-                ),
-                css_class='form-row'
-            ),
+            # Row(
+            #     Column(
+            #         Hidden(
+            #             'next',
+            #             f"{{% url '{self.redirect_named_url}' %}}"
+            #         )
+            #     ),
+            #     css_class='form-row'
+            # ),
             Row(
                 Column(
                     Submit(
@@ -186,6 +186,16 @@ class AgencySignInForm(AuthenticationForm):
                 'agency_license_number',
                 ValidationError(
                     _('Invalid Agency License Number'),
+                    code='invalid-signin'
+                )
+            )
+        if agency.active == False:
+            self.add_error(
+                'agency_license_number',
+                ValidationError(
+                    _(
+                        '''This agency has been deactivate. 
+                        Please contact Online Maid Pte Ltd.'''),
                     code='invalid-signin'
                 )
             )

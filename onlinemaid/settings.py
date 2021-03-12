@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'storages',
 
     # Our apps
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'advertisement',
     'agency.apps.AgencyConfig',
     'dashboard',
@@ -103,7 +103,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'onlinemaid.context_processors.authority',
-                'onlinemaid.context_processors.cartcount'
+                'onlinemaid.context_processors.cartcount',
+                'onlinemaid.context_processors.enquiry_form'
             ],
         },
     },
@@ -242,7 +243,7 @@ SOCIAL_AUTH_PIPELINE = (
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'sign_in'
-LOGIN_REDIRECT_URL = 'home'
+# LOGIN_REDIRECT_URL = 'home'
 
 
 # Email Backend
@@ -290,3 +291,7 @@ SITE_ID = 1
 #     # django.contrib.auth) you may enable sending PII data.
 #     send_default_pii=True
 # )
+
+# Pagination
+MAID_PAGINATE_BY = 10
+AGENCY_PAGINATE_BY = 12

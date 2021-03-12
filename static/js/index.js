@@ -6,30 +6,32 @@ $(document).ready(function () {
         $(this).width(50);
     });
     var rangeSlider = document.getElementById('slider-range');
-    const rangeSliderSetting = {
-        start: [20, 40],
-        step: 1,
-        range: {
-            'min': [20],
-            'max': [40]
-        },
-        format: wNumb({
-            decimals: 0
-        }),
-        connect: true
+    if(rangeSlider != null){
+        const rangeSliderSetting = {
+            start: [20, 40],
+            step: 1,
+            range: {
+                'min': [20],
+                'max': [40]
+            },
+            format: wNumb({
+                decimals: 0
+            }),
+            connect: true
+        }
+        noUiSlider.create(rangeSlider, rangeSliderSetting);
+    
+        document.getElementById('id_age_0').value = rangeSliderSetting['range']['min'][0];
+        document.getElementById('id_age_1').value = rangeSliderSetting['range']['max'][0];
+    
+        // Set visual min and max values and also update value hidden form inputs
+        rangeSlider.noUiSlider.on('update', function (values, handle) {
+            document.getElementById('slider-range-value1').innerHTML = values[0];
+            document.getElementById('slider-range-value2').innerHTML = values[1];
+            document.getElementById('id_age_0').value = values[0];
+            document.getElementById('id_age_1').value = values[1];
+        });
     }
-    noUiSlider.create(rangeSlider, rangeSliderSetting);
-
-    document.getElementById('id_age_0').value = rangeSliderSetting['range']['min'][0];
-    document.getElementById('id_age_1').value = rangeSliderSetting['range']['max'][0];
-
-    // Set visual min and max values and also update value hidden form inputs
-    rangeSlider.noUiSlider.on('update', function (values, handle) {
-        document.getElementById('slider-range-value1').innerHTML = values[0];
-        document.getElementById('slider-range-value2').innerHTML = values[1];
-        document.getElementById('id_age_0').value = values[0];
-        document.getElementById('id_age_1').value = values[1];
-    });
 });
 
 

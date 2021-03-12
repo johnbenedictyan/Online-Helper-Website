@@ -100,12 +100,12 @@ class EmployerListView(
         else:
             return self.handle_no_permission()
 
-class SalesListView(
+class DocListView(
     LoginByAgencyUserGroupRequiredMixin,
     ListView
 ):
     model = EmployerDoc
-    template_name = 'employer_documentation/sales_list.html'
+    # template_name = 'employer_documentation/sales_list.html'
     ordering = ['-agreement_date']
     paginate_by = 20
     is_deployed = None
@@ -123,88 +123,6 @@ class SalesListView(
                 sort_field_name = 'agreement_date'
             elif 'fdw_work_commencement_date' in sort_by:
                 sort_field_name = 'rn_maidstatus_ed__fdw_work_commencement_date'
-        
-            # Get ascending or descending user selection
-            if sort_by.endswith('asc'):
-                self.ordering = [sort_field_name]
-            elif sort_by.endswith('des'):
-                self.ordering = ['-' + sort_field_name]
-        else:
-            sort_field_name = self.ordering[0].replace('-', '')
-
-        # Get queryset
-        queryset = super().get_queryset().filter(
-            rn_maidstatus_ed__is_deployed=self.is_deployed
-        )
-
-        # Filter results by user's search terms
-        if search_terms:
-            queryset = queryset.filter(
-                Q(case_ref_no__icontains=search_terms) |
-                Q(employer__employer_name__icontains=search_terms) |
-                Q(employer__employer_email__icontains=search_terms) |
-                Q(employer__employer_mobile_number__icontains=search_terms)
-            )
-        
-        # Further filter queryset to only show the employers that current user
-        # has necessary permission to access
-        if self.agency_user_group==AG_OWNERS:
-            # If agency owner, return all employers belonging to agency
-            queryset = queryset.filter(
-                employer__agency_employee__agency
-                = self.request.user.agency_owner.agency
-            )
-        elif self.agency_user_group==AG_ADMINS:
-            # If agency administrator, return all employers belonging to agency
-            queryset = queryset.filter(
-                employer__agency_employee__agency
-                = self.request.user.agency_employee.agency
-            )
-        elif self.agency_user_group==AG_MANAGERS:
-            # If agency manager, return all employers belonging to branch
-            queryset = queryset.filter(
-                employer__agency_employee__branch
-                = self.request.user.agency_employee.branch
-            )
-        elif self.agency_user_group==AG_SALES:
-            # If agency owner, return all employers belonging to self
-            queryset = queryset.filter(
-                employer__agency_employee = self.request.user.agency_employee
-            )
-        else:
-            return self.handle_no_permission()
-
-        # Filter by start and end dates from user input
-        if start_date:
-            start_date_kwargs = {sort_field_name+'__gte': start_date}
-            queryset = queryset.filter(**start_date_kwargs)
-        if end_date:
-            end_date_kwargs = {sort_field_name+'__lte': end_date}
-            queryset = queryset.filter(**end_date_kwargs)
-
-        return queryset
-
-class StatusListView(
-    LoginByAgencyUserGroupRequiredMixin,
-    ListView
-):
-    model = EmployerDoc
-    template_name = 'employer_documentation/status_list.html'
-    ordering = ['-agreement_date']
-    paginate_by = 20
-    is_deployed = None
-
-    def get_queryset(self):
-        search_terms = self.request.GET.get('search')
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-        sort_by = self.request.GET.get('sort_by')
-
-        # Sort by dates
-        if sort_by:
-            # Get field to sort by
-            if 'agreement_date' in sort_by:
-                sort_field_name = 'agreement_date'
             elif 'ipa_date' in sort_by:
                 sort_field_name = 'rn_maidstatus_ed__ipa_approval_date'
         
@@ -268,6 +186,90 @@ class StatusListView(
 
         return queryset
 
+# class StatusListView(
+#     LoginByAgencyUserGroupRequiredMixin,
+#     ListView
+# ):
+#     model = EmployerDoc
+#     template_name = 'employer_documentation/status_list.html'
+#     ordering = ['-agreement_date']
+#     paginate_by = 20
+#     is_deployed = None
+
+#     def get_queryset(self):
+#         search_terms = self.request.GET.get('search')
+#         start_date = self.request.GET.get('start_date')
+#         end_date = self.request.GET.get('end_date')
+#         sort_by = self.request.GET.get('sort_by')
+
+#         # Sort by dates
+#         if sort_by:
+#             # Get field to sort by
+#             if 'agreement_date' in sort_by:
+#                 sort_field_name = 'agreement_date'
+#             elif 'ipa_date' in sort_by:
+#                 sort_field_name = 'rn_maidstatus_ed__ipa_approval_date'
+        
+#             # Get ascending or descending user selection
+#             if sort_by.endswith('asc'):
+#                 self.ordering = [sort_field_name]
+#             elif sort_by.endswith('des'):
+#                 self.ordering = ['-' + sort_field_name]
+#         else:
+#             sort_field_name = self.ordering[0].replace('-', '')
+
+#         # Get queryset
+#         queryset = super().get_queryset().filter(
+#             rn_maidstatus_ed__is_deployed=self.is_deployed
+#         )
+
+#         # Filter results by user's search terms
+#         if search_terms:
+#             queryset = queryset.filter(
+#                 Q(case_ref_no__icontains=search_terms) |
+#                 Q(employer__employer_name__icontains=search_terms) |
+#                 Q(employer__employer_email__icontains=search_terms) |
+#                 Q(employer__employer_mobile_number__icontains=search_terms)
+#             )
+        
+#         # Further filter queryset to only show the employers that current user
+#         # has necessary permission to access
+#         if self.agency_user_group==AG_OWNERS:
+#             # If agency owner, return all employers belonging to agency
+#             queryset = queryset.filter(
+#                 employer__agency_employee__agency
+#                 = self.request.user.agency_owner.agency
+#             )
+#         elif self.agency_user_group==AG_ADMINS:
+#             # If agency administrator, return all employers belonging to agency
+#             queryset = queryset.filter(
+#                 employer__agency_employee__agency
+#                 = self.request.user.agency_employee.agency
+#             )
+#         elif self.agency_user_group==AG_MANAGERS:
+#             # If agency manager, return all employers belonging to branch
+#             queryset = queryset.filter(
+#                 employer__agency_employee__branch
+#                 = self.request.user.agency_employee.branch
+#             )
+#         elif self.agency_user_group==AG_SALES:
+#             # If agency owner, return all employers belonging to self
+#             queryset = queryset.filter(
+#                 employer__agency_employee = self.request.user.agency_employee
+#             )
+#         else:
+#             return self.handle_no_permission()
+
+#         # Filter by start and end dates from user input
+#         if start_date:
+#             start_date_kwargs = {sort_field_name+'__gte': start_date}
+#             queryset = queryset.filter(**start_date_kwargs)
+#         if end_date:
+#             end_date_kwargs = {sort_field_name+'__lte': end_date}
+#             queryset = queryset.filter(**end_date_kwargs)
+
+#         return queryset
+
 class EmployerDocListView(
     CheckAgencyEmployeePermissionsMixin,
     ListView
@@ -284,6 +286,7 @@ class EmployerDocListView(
             self.pk_url_kwarg))
 
     def get(self, request, *args, **kwargs):
+        self.object = self.get_object(*args, **kwargs)
         if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
             return super().get(request, *args, **kwargs)
         else:
@@ -293,6 +296,40 @@ class EmployerDocListView(
                     kwargs={'employer_pk': self.object.pk}
                 )
             )
+
+class EmployerPaymentTransactionListView(
+    CheckAgencyEmployeePermissionsMixin,
+    ListView
+):
+    model = EmployerPaymentTransaction
+    pk_url_kwarg = 'employerdoc_pk'
+    ordering = ['transaction_date']
+
+    def get_object(self, *args, **kwargs):
+        self.object = EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+        return self.object
+
+    def get_queryset(self):
+        return super().get_queryset().filter(employer_doc=self.kwargs.get(
+            self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.object
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
+    #         return super().get(request, *args, **kwargs)
+    #     else:
+    #         return HttpResponseRedirect(
+    #             reverse(
+    #                 'employerdoc_create_route',
+    #                 kwargs={'employer_pk': self.object.pk}
+    #             )
+    #         )
 
 # Detail Views
 class EmployerDetailView(
@@ -368,6 +405,18 @@ class EmployerDocCreateView(
         form.instance.employer = Employer.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
+        if form.instance.fdw_clean_window_exterior==False:
+            form.instance.window_exterior_location = None
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.window_exterior_location=='OTHER':
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.grilles_installed_require_cleaning:
+            form.instance.adult_supervision = None
+
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -440,6 +489,21 @@ class EmployerDocUpdateView(
             'employer_pk': self.object.employer.pk,
             'employerdoc_pk': self.object.pk,
         })
+    
+    def form_valid(self, form):
+        if form.instance.fdw_clean_window_exterior==False:
+            form.instance.window_exterior_location = None
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.window_exterior_location=='OTHER':
+            form.instance.grilles_installed_require_cleaning = None
+            form.instance.adult_supervision = None
+
+        elif not form.instance.grilles_installed_require_cleaning:
+            form.instance.adult_supervision = None
+
+        return super().form_valid(form)
 
 class EmployerDocSigSlugUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -526,6 +590,24 @@ class JobOrderUpdateView(
             'employer_pk': self.object.employer_doc.employer.pk,
             'employerdoc_pk': self.object.employer_doc.pk,
         })
+
+class EmployerPaymentTransactionUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerPaymentTransaction
+    form_class = EmployerPaymentTransactionForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+    success_url = reverse_lazy('sales_list_route')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
 
 # Delete Views
 class EmployerDeleteView(
@@ -675,6 +757,22 @@ class PdfGenericAgencyView(
 
         if self.use_repayment_table:
             context['repayment_table'] = self.calc_repayment_schedule()
+        
+        # # MoM Safety Agreements are available in different languages.
+        # # Relevant language template snippet is selected based on FDW's
+        # # preferred language.
+        # if self.template_name == 'employer_documentation/pdf/14-safety-agreement.html':
+        #     unavailable_languages = ['CHI', 'HIN', 'BEN',]
+        #     default_language = 'IDN'
+        #     try:
+        #         preferred_language = context['object'].fdw.personal_details.preferred_language.language
+        #     except:
+        #         preferred_language = default_language
+        #     else:
+        #         if preferred_language in unavailable_languages:
+        #             preferred_language = default_language
+        #     for i in range(1,4):
+        #         context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
         return self.generate_pdf_response(request, context)
 
@@ -752,7 +850,6 @@ class PdfFileTokenView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object().employer_doc.rn_joborder_ed
-        print(self.object.job_order_pdf)
         try:
             return FileResponse(
                 open(self.object.job_order_pdf.path, 'rb'),
@@ -772,10 +869,57 @@ class PdfArchiveSaveView(
     model = EmployerDoc
     pk_url_kwarg = 'employerdoc_pk'
 
+    def check_signatures(self, employer_doc):
+        if (
+            not employer_doc.rn_signatures_ed.employer_signature or
+            not employer_doc.rn_signatures_ed.fdw_signature or
+            not employer_doc.rn_signatures_ed.agency_staff_signature or
+            not employer_doc.rn_signatures_ed.employer_witness_signature or
+            not employer_doc.rn_signatures_ed.employer_witness_name or
+            not employer_doc.rn_signatures_ed.employer_witness_nric or
+            not employer_doc.rn_signatures_ed.fdw_witness_signature or
+            not employer_doc.rn_signatures_ed.fdw_witness_name or
+            not employer_doc.rn_signatures_ed.fdw_witness_nric or
+            not employer_doc.rn_signatures_ed.agency_staff_witness_signature or
+            not employer_doc.rn_signatures_ed.agency_staff_witness_name or
+            not employer_doc.rn_signatures_ed.agency_staff_witness_nric
+        ):
+            return 'Missing required signatures or witness details.'
+        
+        if (
+            employer_doc.spouse_required and (
+                not employer_doc.rn_signatures_ed.spouse_signature or
+                not employer_doc.rn_signatures_ed.spouse_name or
+                not employer_doc.rn_signatures_ed.spouse_nric
+            )
+        ):
+            return 'Missing spouse signature and/or details.'
+
+        if (
+            employer_doc.sponsor_required and (
+                not employer_doc.rn_signatures_ed.sponsor_signature or
+                not employer_doc.rn_signatures_ed.sponsor_name or
+                not employer_doc.rn_signatures_ed.sponsor_nric
+            )
+        ):
+            return 'Missing sponsor signature and/or details.'
+        
+        return False
+
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data()
         context['repayment_table'] = self.calc_repayment_schedule()
+
+        signatures_check = self.check_signatures(self.object)
+        if signatures_check:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                'Could not save documents. ' + signatures_check
+            )
+            return HttpResponseRedirect(reverse_lazy('sales_list_route'))
 
         instance = PdfArchive.objects.get(employer_doc=self.object)
         folder = 'employer_documentation/pdf/'
@@ -788,13 +932,14 @@ class PdfArchiveSaveView(
             'f08_handover_checklist':       folder + '08-handover-checklist.html',
             'f09_transfer_consent':         folder + '09-transfer-consent.html',
             'f10_work_pass_authorisation':  folder + '10-work-pass-authorisation.html',
-            'f11_security_bond':            folder + '11-security-bond.html',
-            'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
+            # 'f11_security_bond':            folder + '11-security-bond.html',
+            # 'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
             'f13_income_tax_declaration':   folder + '13-income-tax-declaration.html',
             'f14_safety_agreement':         folder + '14-safety-agreement.html',
         }
         for field_name, template_name in templates.items():
-            filename = template_name.split('/')[-1] + '.pdf'
+            # filename = template_name.split('/')[-1].split('.')[-2] + '.pdf'
+            filename = field_name + '.pdf'
             relative_path = f'{self.object.pk}:{filename}'
             pdf_file = self.generate_pdf_file(request, context, template_name)
             file_wrapper = SimpleUploadedFile(

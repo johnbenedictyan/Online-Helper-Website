@@ -6,9 +6,9 @@
 {% endblock css %}
 
 {% block main_content %}
-<div class="row">
+<div class="row mx-0 px-0">
     <!-- Side Nav -->
-    <div class="col-md-2">
+    <div class="col-md-2 px-0">
         <nav class="row">
             <div class="col d-flex flex-column justify-content-around">
                 {% with request.resolver_match.url_name as url_name %}
@@ -61,7 +61,7 @@
     </div>
 
     <!-- Employer Documentation Main Section -->
-    <section class="col-10 p-lg-3">
+    <section class="col-10">
         {% block ed_section %}{% endblock ed_section %}
     </section>
 </div>
