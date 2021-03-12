@@ -464,7 +464,7 @@ class EmployerDocForm(forms.ModelForm):
                 Column(
                     PrependedText(
                         'ca_deposit', '$',
-                        min='0', max='1000',
+                        min='0', max='10000',
                     ),
                     css_class='form-group col-md-6'
                 ),
