@@ -53,6 +53,9 @@ class CheckEmployerDocRelationshipsMixin(UserPassesTestMixin):
         else:
             return False
 
+    def handle_no_permission(self):
+        return HttpResponseRedirect(reverse_lazy('home'))
+
 class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
     '''
     This is a helper mixin that does not override any inherited methods or
