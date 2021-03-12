@@ -243,6 +243,9 @@ class AgencyOwner(models.Model):
         related_name='owners'
     )
 
+    def __str__(self):
+        return self.agency.name + ' Owner'
+
 class AgencyBranch(models.Model):
     MAIN_BRANCH_CHOICES = (
         (True, _('Yes')),
@@ -326,6 +329,9 @@ class AgencyBranch(models.Model):
         choices=MAIN_BRANCH_CHOICES,
         default=True
     )
+
+    def __str__(self):
+        return self.agency.name + ', ' + self.name
 
 class AgencyPlan(models.Model):
     class PlanTypeChoices(models.TextChoices):
@@ -427,6 +433,9 @@ class AgencyEmployee(models.Model):
         editable=False,
         default=False
     )
+
+    def __str__(self):
+        return self.ea_personnel_number + ' - ' + self.first_name + ' ' + self.last_name
 
 class PotentialAgency(models.Model):
     name = models.CharField(
