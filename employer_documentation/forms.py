@@ -902,7 +902,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             HTML('''
-                <h3>Document Status</h3>
+                <h3>FDW Status</h3>
                 '''
             ),
             Row(
