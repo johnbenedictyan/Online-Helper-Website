@@ -330,6 +330,9 @@ class AgencyBranch(models.Model):
         default=True
     )
 
+    def __str__(self):
+        return self.agency.name + ', ' + self.name
+
 class AgencyPlan(models.Model):
     class PlanTypeChoices(models.TextChoices):
         BIODATA_100 = 'B100', _('100 Biodata')
