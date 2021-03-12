@@ -434,6 +434,9 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
+    def __str__(self):
+        return self.ea_personnel_number + ' - ' + self.first_name + ' ' + self.last_name
+
 class PotentialAgency(models.Model):
     name = models.CharField(
         verbose_name=_('Company Name'),
