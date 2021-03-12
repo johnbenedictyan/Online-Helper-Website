@@ -243,6 +243,9 @@ class AgencyOwner(models.Model):
         related_name='owners'
     )
 
+    def __str__(self):
+        return self.agency.name + ' Owner'
+
 class AgencyBranch(models.Model):
     MAIN_BRANCH_CHOICES = (
         (True, _('Yes')),
