@@ -83,6 +83,9 @@ class EmployerForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
+                    # Note: Current position in layout helper object is self.helper.layout.fields[1][1].
+                    # If position is changed, MUST update 'del self.helper.layout.fields[1][1]' line
+                    # as this removes this object from the layout helper.
                     'agency_employee',
                     css_class='form-group col-md-6'
                 ),
@@ -153,6 +156,7 @@ class EmployerForm(forms.ModelForm):
                 )
             )
         else:
+            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
     
     def check_queryset(self, queryset, error_msg):
