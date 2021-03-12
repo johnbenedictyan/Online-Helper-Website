@@ -1,5 +1,9 @@
+# Python
+from datetime import timedelta
+
 # Imports from django
 from django import forms
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -82,7 +86,7 @@ class MaidFilter(django_filters.FilterSet):
     )
     age = django_filters.RangeFilter(
         label=_('Age'),
-        field_name='personal_details__age',
+        method='custom_age_filter',
         widget=CustomRangeWidget(
             attrs={
                 'hidden': True
@@ -101,3 +105,9 @@ class MaidFilter(django_filters.FilterSet):
             'languages',
             'responsibilities'
         ]
+
+    def custom_age_filter(self, queryset, name, value):
+        time_now = timezone.now()
+        start_date = time_now - timedelta(365*int(value.stop)+int(value.stop//4))
+        end_date = time_now - timedelta(365*int(value.start)+int(value.start//4))
+        return queryset.filter(personal_details__date_of_birth__range=(start_date, end_date))

@@ -1,21 +1,21 @@
 {% if is_paginated %}
 
     {% if page_obj.has_previous %}
-        <a class="btn btn-sm btn-outline-primary" href="?page=1">First</a>
-        <a class="btn btn-sm btn-outline-primary" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+        <a class="btn btn-sm btn-outline-primary" href="?page=1{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">First</a>
+        <a class="btn btn-sm btn-outline-primary" href="?page={{ page_obj.previous_page_number }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">Prev</a>
     {% endif %}
 
     {% for num in page_obj.paginator.page_range %}
         {% if page_obj.number == num %}
-            <a class="btn btn-sm btn-primary" href="?page={{ num }}">{{ num }}</a>
+            <a class="btn btn-sm btn-primary" href="?page={{ num }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">{{ num }}</a>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-            <a class="btn btn-sm btn-outline-primary" href="?page={{ num }}">{{ num }}</a>
+            <a class="btn btn-sm btn-outline-primary" href="?page={{ num }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">{{ num }}</a>
         {% endif %}
     {% endfor %}
 
     {% if page_obj.has_next %}
-        <a class="btn btn-sm btn-outline-primary" href="?page={{ page_obj.next_page_number }}">Next</a>
-        <a class="btn btn-sm btn-outline-primary" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        <a class="btn btn-sm btn-outline-primary" href="?page={{ page_obj.next_page_number }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">Next</a>
+        <a class="btn btn-sm btn-outline-primary" href="?page={{ page_obj.paginator.num_pages }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">Last</a>
     {% endif %}
 
 {% endif %}
