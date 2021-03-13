@@ -221,8 +221,7 @@ class EmployerCreationForm(forms.ModelForm):
     placeholders = {
         'email': 'johndoe@example.com',
         'password': 'topsecret',
-        'first_name': 'John',
-        'last_name': 'Doe',
+        'name': 'John Doe',
         'contact_number': '81234567'
     }
     
@@ -265,11 +264,7 @@ class EmployerCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'first_name',
-                    css_class='form-group col'
-                ),
-                Column(
-                    'last_name',
+                    'name',
                     css_class='form-group col'
                 ),
                 Column(
