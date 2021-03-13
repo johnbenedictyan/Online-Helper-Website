@@ -246,6 +246,7 @@
                             <h1>No Featured Maids</h1>
                         </div>
                     </div>`;
+                $('.featured-maids-wrapper').html(featuredMaidsContent);
             } else {
                 let featuredMaidsContent = `<div class="maid-carousel">`;
                 for (let index = 0; index < res.data.featured_maids.length; index++) {
@@ -263,13 +264,13 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{% url 'add_to_shortlist' ${maid.pk} %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                                <a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a>
                             </div>
                         </div>`
                 };
                 featuredMaidsContent += `</div>`;
+                $('.featured-maids-wrapper').html(featuredMaidsContent);
             }
-            $('.featured-maids-wrapper').html(featuredMaidsContent);
         })
 
         $('#nationalitySelect').on('change', function(){
@@ -281,12 +282,14 @@
                     'nationality': nationality
                 }
             }).then(function(res){
+                console.log(res.data.count);
                 if(res.data.count == 0){
-                let featuredMaidsContent = `<div class="row">
-                        <div class="col text-center">
-                            <h1>No Featured Maids</h1>
-                        </div>
-                    </div>`;
+                    let featuredMaidsContent = `<div class="row">
+                            <div class="col text-center">
+                                <h1>No Featured Maids</h1>
+                            </div>
+                        </div>`;
+                    $('.featured-maids-wrapper').html(featuredMaidsContent);
                 } else {
                     let featuredMaidsContent = `<div class="maid-carousel">`;
                     for (let index = 0; index < res.data.featured_maids.length; index++) {
@@ -304,13 +307,13 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{% url 'add_to_shortlist' ${maid.pk} %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                                    <a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a>
                                 </div>
                             </div>`
                     };
                     featuredMaidsContent += `</div>`;
+                    $('.featured-maids-wrapper').html(featuredMaidsContent);
                 }
-                $('.featured-maids-wrapper').html(featuredMaidsContent);
             })
         })
     });
