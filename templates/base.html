@@ -83,7 +83,7 @@
                         {% with request.resolver_match.url_name as url_name %}
                         <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'maid_list' %}">
-                                <h6 class="mb-0">Search Maid</h6>
+                                <p class="mb-0">Search Maid</p>
                                 {% if url_name == 'maid_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -91,7 +91,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'agency_list' %}">
-                                <h6 class="mb-0">Maid Agencies</h6>
+                                <p class="mb-0">Maid Agencies</p>
                                 {% if url_name == 'agency_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -99,7 +99,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'faq' %}">
-                                <h6 class="mb-0">FAQ</h6>
+                                <p class="mb-0">FAQ</p>
                                 {% if url_name == 'faq' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -107,7 +107,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'general_enquiry' %}">
-                                <h6 class="mb-0">Enquire</h6>
+                                <p class="mb-0">Enquire</p>
                                 {% if url_name == 'general_enquiry' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -115,7 +115,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'about_us' %}">
-                                <h6 class="mb-0">About Us</h6>
+                                <p class="mb-0">About Us</p>
                                 {% if url_name == 'about_us' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
