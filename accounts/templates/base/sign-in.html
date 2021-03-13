@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8 col-xl-6 offset-md-2 offset-xl-3">
+        <div class="col-md-8 offset-md-2">
             {% if show_disclaimer %}
             <div class="row">
                 <div class="col text-center mb-3">
@@ -27,26 +27,44 @@
                 </div>
             </div>
             {% endif %}
-            <form method="post" enctype="multipart/form-data">
-                {% crispy form %}
-            </form>
             <div class="row">
-                <div class="col text-center my-2 my-md-5">
+                <div class="col py-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% crispy form %}
+                    </form>
+                </div>
+                <div class="col-2">
+                    <div class="vertical-divider mx-auto">
+                    </div>
+                </div>
+                <div class="col pb-4 my-auto">
                     <div class="row">
-                        <div class="col">
-                            <p class="text-muted">OR SIGN IN WITH</p>
+                        <div class="col text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="text-muted">OR SIGN IN WITH</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-primary w-100">
+                                        <span>Google</span>
+                                        {% comment %}<i class="fab fa-google fa-2x"></i>{% endcomment %}
+                                    </a>
+                                </div>
+                                <div class="col-12">
+                                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary w-100">
+                                        <span>Facebook</span>
+                                        {% comment %}<i class="fab fa-facebook-square fa-2x"></i>{% endcomment %}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-outline-light">
-                                <i class="fab fa-google fa-2x"></i>
-                            </a>
-                            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-outline-light">
-                                <i class="fab fa-facebook-square fa-2x"></i>
-                            </a>
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center my-2 my-md-3">
                     <div class="row">
                         <div class="col my-2 mt-4">
                             <a href="{% url 'employer_create' %}" class="btn btn-outline-primary ">Create a free account</a>
