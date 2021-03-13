@@ -203,6 +203,12 @@ button.mini-faq-button i {
   height: 15px;
 }
 
+.vertical-divider {
+  width: .5px;
+  height: 100%;
+  background-color: #ced4da;
+}
+
 .noUi-target,
 .noUi-target * {
   -webkit-touch-callout: none;
