@@ -412,7 +412,8 @@ class AgencyEmployee(models.Model):
     email = models.EmailField(
         verbose_name=_('Employee\'s Email Address'),
         null=True,
-        blank=True
+        blank=True,
+        help_text=_('Optional')
     )
 
     agency = models.ForeignKey(
