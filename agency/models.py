@@ -409,6 +409,12 @@ class AgencyEmployee(models.Model):
         blank=False
     )
 
+    email = models.EmailField(
+        verbose_name=_('Employee\'s Email Address'),
+        null=True,
+        blank=True
+    )
+
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
