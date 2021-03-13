@@ -209,6 +209,14 @@ button.mini-faq-button i {
   background-color: #ced4da;
 }
 
+.how-it-works-card .card-text {
+  font-size: 1.1rem;
+}
+
+.footer-link {
+  font-size: 1.1rem;
+}
+
 .noUi-target,
 .noUi-target * {
   -webkit-touch-callout: none;
