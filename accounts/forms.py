@@ -1,6 +1,7 @@
 # Imports from django
 from django import forms
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
@@ -99,12 +100,20 @@ class AgencySignInForm(AuthenticationForm):
     agency_license_number = forms.CharField(
         label=_('Agency License Number'),
         required=True,
-        max_length=255,
+        max_length=255
     )
+
+    ea_personnel_number = forms.CharField(
+        label=_('Employment Agency Personnel Registration Number'),
+        required=True,
+        max_length=255
+    )
+
+    username = None
 
     placeholders = {
         'agency_license_number': 'abc123',
-        'username': 'johndoe123',
+        'ea_personnel_number': 'g3kja',
         'password': 'topsecret'
     }
     
@@ -127,7 +136,7 @@ class AgencySignInForm(AuthenticationForm):
             ),
             Row(
                 Column(
-                    'username',
+                    'ea_personnel_number',
                     css_class='form-group col-12'
                 ),
                 css_class='form-row'
@@ -152,7 +161,7 @@ class AgencySignInForm(AuthenticationForm):
                 Column(
                     Submit(
                         'submit',
-                        'Sign In',
+                        'Log In',
                         css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-12 text-center'
@@ -163,15 +172,16 @@ class AgencySignInForm(AuthenticationForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        user_email = ea_personnel_number + '@' + settings.AGENCY_EMPLOYEE_FEP
         user = get_user_model().objects.get(
-            email = cleaned_data.get('username')
+            email = user_email
         )
 
         if user.groups.filter(name=P_EMPLOYERS).exists():
             self.add_error(
-                'username',
+                'ea_personnel_number',
                 ValidationError(
-                    _('Invalid Agency Staff Email'),
+                    _('Invalid Agency Staff Registration Number'),
                     code='invalid-signin'
                 )
             )
