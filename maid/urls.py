@@ -36,7 +36,7 @@ from .views import (
 )
 
 ## Generic Views
-from .views import MaidProfileView
+from .views import MaidProfileView, FeaturedMaidListView
 
 # Start of Urls
 
@@ -128,6 +128,11 @@ urlpatterns = [
                 '',
                 MaidList.as_view(),
                 name='maid_list'
+            ),
+            path(
+                'featured/',
+                FeaturedMaidListView.as_view(),
+                name='featured_maid_list'
             ),
             path(
                 '<int:pk>/',

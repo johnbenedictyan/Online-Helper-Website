@@ -1,6 +1,3 @@
-# Imports from python
-from random import shuffle
-
 # Imports from django
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -27,13 +24,8 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        featured_maids = list(Maid.objects.filter(
-            featured=True
-        ))
-        shuffle(featured_maids)
         kwargs.update({
-            'filter': MiniMaidFilter(),
-            'featured_maids': featured_maids
+            'filter': MiniMaidFilter()
         })
         return kwargs
 

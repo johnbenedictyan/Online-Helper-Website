@@ -136,6 +136,7 @@
                     <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
                         <label for="nationalitySelect" class="ml-1">Nationality</label>
                         <select class="form-control" id="nationalitySelect">
+                            <option value="ANY">No Preference</option>
                             <option value="BGD">Bangladesh</option>
                             <option value="KHM">Cambodia</option>
                             <option value="IND">India</option>
@@ -154,6 +155,8 @@
             </div>
         </div>
         {% if request.user.is_authenticated %}
+        <div class="featured-maids-wrapper">
+        </div>
         <div class="maid-carousel">
             {% for maid in featured_maids %}
             <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
@@ -191,94 +194,6 @@
     </div>
 </section>
 {% include 'sections/cta-banner.html' %}
-<section id="enquiry-form-section" class="d-none">
-    <div class="jumbotron jumbotron-fluid mb-0">
-        <div class="container">
-            <div class="row mb-3">
-                <div class="col text-center">
-                    <h2>Enquiry Form</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2">
-                    <form action="">
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="nameInput">Name</label>
-                                <input type="text" class="form-control" id="nameInput" placeholder="Name">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="phoneNumberInput">Phone Number</label>
-                                <input type="text" class="form-control" id="phoneNumberInput" placeholder="Phone Number">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col mb-3">
-                                <label for="emailInput">Email Address</label>
-                                <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="maidNationalitySelect">Maid Nationality</label>
-                                <select class="form-control" id="maidNationalitySelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="maidResponsibilitySelect">Maid Responsibility</label>
-                                <select class="form-control" id="maidResponsibilitySelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="maidTypeSelect">Type of Maid</label>
-                                <select class="form-control" id="maidTypeSelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="maidAgeSelect">Age</label>
-                                <select class="form-control" id="maidAgeSelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col mb-4">
-                                <label for="messageTextarea">Message</label>
-                                <textarea class="form-control" id="messageTextarea" rows="5"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col mt-1 text-center">
-                                <button type="submit" class="btn btn-primary w-50">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 {% endblock main_content %}
 {% block js %}
 <script>
@@ -318,6 +233,86 @@
                 // instead of a settings object
             ]
         });
+        axios({
+            method: 'get',
+            url: '/maids/view/featured/',
+            params: {
+                'nationality': 'ANY'
+            }
+        }).then(function(res){
+            if(res.data.count == 0){
+                let featuredMaidsContent = `<div class="row">
+                        <div class="col text-center">
+                            <h1>No Featured Maids</h1>
+                        </div>
+                    </div>`;
+            } else {
+                let featuredMaidsContent = `<div class="maid-carousel">`;
+                for (let index = 0; index < res.data.featured_maids.length; index++) {
+                    let maid = res.data.featured_maids[index];
+                    featuredMaidsContent += `
+                        <div class="card maid-card" id='maid-${maid.pk}' data-maid='${maid.pk}'>
+                            <div onclick="maidProfileRedirect(${maid.pk})">
+                                <img src="${maid.photo_url}" class="card-img-top" alt="Maid Photo">
+                                <div class="card-body">
+                                    <h5 class="card-title">${maid.name}</h5>
+                                    <p class="card-text">${maid.country_of_origin}</p>
+                                    <p class="card-text">${maid.age} years old</p>
+                                    <p class="card-text">${maid.marital_status}</p>
+                                    <p class="card-text">${maid.type}</p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{% url 'add_to_shortlist' ${maid.pk} %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                            </div>
+                        </div>`
+                };
+                featuredMaidsContent += `</div>`;
+            }
+            $('.featured-maids-wrapper').html(featuredMaidsContent);
+        })
+
+        $('#nationalitySelect').on('change', function(){
+            let nationality = $(this).val();
+            axios({
+                method: 'get',
+                url: '/maids/view/featured/',
+                params: {
+                    'nationality': nationality
+                }
+            }).then(function(res){
+                if(res.data.count == 0){
+                let featuredMaidsContent = `<div class="row">
+                        <div class="col text-center">
+                            <h1>No Featured Maids</h1>
+                        </div>
+                    </div>`;
+                } else {
+                    let featuredMaidsContent = `<div class="maid-carousel">`;
+                    for (let index = 0; index < res.data.featured_maids.length; index++) {
+                        let maid = res.data.featured_maids[index];
+                        featuredMaidsContent += `
+                            <div class="card maid-card" id='maid-${maid.pk}' data-maid='${maid.pk}'>
+                                <div onclick="maidProfileRedirect(${maid.pk})">
+                                    <img src="${maid.photo_url}" class="card-img-top" alt="Maid Photo">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${maid.name}</h5>
+                                        <p class="card-text">${maid.country_of_origin}</p>
+                                        <p class="card-text">${maid.age} years old</p>
+                                        <p class="card-text">${maid.marital_status}</p>
+                                        <p class="card-text">${maid.type}</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'add_to_shortlist' ${maid.pk} %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                                </div>
+                            </div>`
+                    };
+                    featuredMaidsContent += `</div>`;
+                }
+                $('.featured-maids-wrapper').html(featuredMaidsContent);
+            })
+        })
     });
 </script>
 {% endblock js %}
