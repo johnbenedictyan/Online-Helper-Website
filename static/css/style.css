@@ -217,6 +217,11 @@ button.mini-faq-button i {
   font-size: 1.1rem;
 }
 
+.preferences-card {
+  -webkit-box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
+          box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
+}
+
 .noUi-target,
 .noUi-target * {
   -webkit-touch-callout: none;
