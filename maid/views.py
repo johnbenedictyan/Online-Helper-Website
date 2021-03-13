@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -825,6 +826,37 @@ class MaidProfileView(View):
                 ]
             }
             return JsonResponse(data, status=200)
+
+class FeaturedMaidListView(View):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        nationality = request.GET.get('nationality')
+        featured_maids = Maid.objects.all()
+        print(request)
+        if nationality != 'ANY':
+            featured_maids = featured_maids.filter(
+                personal_details__country_of_origin=nationality,
+                featured=True
+            )
+
+        featured_maids = [
+            {
+                'pk': maid.pk,
+                'photo_url': maid.photo.url,
+                'name': maid.name,
+                'country_of_origin': maid.personal_details.get_country_of_origin_display(),
+                'age': maid.personal_details.age,
+                'marital_status': maid.family_details.get_marital_status_display(),
+                'type': maid.get_maid_type_display()
+            } for maid in featured_maids
+        ]
+        data = {
+            'featured_maids': featured_maids,
+            'count': len(featured_maids),
+            'nationality': nationality
+        }
+        return JsonResponse(data, status=200)
 
 # PDF Views
 class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
