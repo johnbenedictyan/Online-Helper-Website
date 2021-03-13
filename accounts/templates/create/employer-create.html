@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block accounts_section %}
+{% include 'sections/title-banner.html' with page_name='User Sign Up' %}
 <div class="container">
     <div class="row">
         <div class="col">
@@ -17,36 +18,50 @@
         </div>
     </div>
     <div class="row">
-        <div class="col text-center my-md-4 my-lg-5">
-            <img src="{% static 'images/olmaid-logo.png' %}" alt="logo">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-xl-6 offset-md-2 offset-xl-3">
-            <form method="post" enctype="multipart/form-data">
-                {% crispy form %}
-            </form>
+        <div class="col-10 col-lg-8 col-xxxl-6 offset-1 offset-lg-2 offset-xxxl-3">
             <div class="row">
-                <div class="col text-center my-2 my-md-5">
+                <div class="col-md-5 py-md-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% crispy form %}
+                    </form>
+                </div>
+                <div class="col-md-2">
+                    <div class="vertical-divider mx-auto d-none d-md-block">
+                    </div>
+                    <hr class="d-md-none">
+                </div>
+                <div class="col-md-5 pb-md-4 my-auto">
                     <div class="row">
-                        <div class="col">
-                            <p class="text-muted">OR SIGN IN WITH</p>
+                        <div class="col text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="text-muted">OR SIGN IN WITH</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-primary w-100">
+                                        <span>Google</span>
+                                        {% comment %}<i class="fab fa-google fa-2x"></i>{% endcomment %}
+                                    </a>
+                                </div>
+                                <div class="col-12">
+                                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary w-100">
+                                        <span>Facebook</span>
+                                        {% comment %}<i class="fab fa-facebook-square fa-2x"></i>{% endcomment %}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center my-2 my-md-3">
                     <div class="row">
-                        <div class="col">
-                            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-outline-light">
-                                <i class="fab fa-google fa-2x"></i>
-                            </a>
-                            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-outline-light">
-                                <i class="fab fa-facebook-square fa-2x"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col my-2 mt-4">
+                        <div class="col-md-5 my-2 mt-4 mx-auto">
                             <p class="text-muted">Agencies</p>
-                            <a href="{% url 'sign_in' %}" class="btn btn-outline-primary">Sign In Here</a>
+                            <a href="{% url 'sign_in' %}" class="btn btn-outline-primary w-100">Log In Here</a>
                         </div>
                     </div>
                 </div>

@@ -7,12 +7,14 @@
   margin: 1.5cm;
   /* Set margin on each page */
 }
+
 @page {
   @bottom-right {
     content: "Page " counter(page) " of " counter(pages);
     font-size: 10px;
   }
 }
+
 body {
   font-family: Times;
   margin: 0;
@@ -185,12 +187,11 @@ th, td {
   width: 150px;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   height: 10px;
   width: 10px;
   display: inline-block;
   border: black 1px solid;
   margin: 0 5px;
 }
-
 /*# sourceMappingURL=pdf.css.map */

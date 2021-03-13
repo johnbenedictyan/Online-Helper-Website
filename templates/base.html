@@ -70,7 +70,7 @@
                 <a class="navbar-brand" href="{% url 'home' %}">
                     <div class="row">
                         <div class="col">
-                            <img class="img-fluid" src="{% static 'images/logo.png' %}" alt=""/>
+                            <img class="img-fluid w-75" src="{% static 'images/logo.png' %}" alt=""/>
                         </div>
                     </div>
                 </a>
@@ -83,7 +83,7 @@
                         {% with request.resolver_match.url_name as url_name %}
                         <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'maid_list' %}">
-                                Search Maid
+                                <p class="mb-0">Search Maid</p>
                                 {% if url_name == 'maid_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -91,7 +91,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'agency_list' %}">
-                                Maid Agencies
+                                <p class="mb-0">Maid Agencies</p>
                                 {% if url_name == 'agency_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -99,7 +99,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'faq' %}">
-                                FAQ
+                                <p class="mb-0">FAQ</p>
                                 {% if url_name == 'faq' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -107,7 +107,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'general_enquiry' %}">
-                                Enquire
+                                <p class="mb-0">Enquire</p>
                                 {% if url_name == 'general_enquiry' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -115,7 +115,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'about_us' %}">
-                                About Us
+                                <p class="mb-0">About Us</p>
                                 {% if url_name == 'about_us' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -183,24 +183,24 @@
         <footer>
             <div class="container-fluid bg-dark1 text-light">
                 <div class="row py-4 py-md-5 pl-2 pl-md-0">
-                    <div class="col-6 col-md-2 col-xl-1 offset-md-2 offset-xl-3 mb-4 mb-md-0">
-                        <a href="{% url 'home' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Home</p></a>
-                        <a href="{% url 'maid_list' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Maids</p></a>
-                        <a href="{% url 'agency_list' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Agencies</p></a>
-                        <a href="{% url 'faq' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">FAQ</p></a>
-                        <a href="" class="text-reset"><p class="lead mb-1 mb-xl-2">Enquire</p></a>
+                    <div class="col-6 col-md-2 col-xl-2 offset-md-2 offset-xl-2 mb-4 mb-md-0">
+                        <a href="{% url 'home' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Home</p></a>
+                        <a href="{% url 'maid_list' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Maids</p></a>
+                        <a href="{% url 'agency_list' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Agencies</p></a>
+                        <a href="{% url 'faq' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">FAQ</p></a>
+                        <a href="" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Enquire</p></a>
                     </div>
-                    <div class="col-6 col-md-2 col-xl-1 mb-4 mb-md-0 offset-xl-1">
-                        <a href="{% url 'about_us' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">About Us</p></a>
-                        <a href="{% url 'terms_of_service' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
-                        <a href="{% url 'privacy_policy' %}" class="text-reset"><p class="lead mb-1 mb-xl-2">Privacy</p></a>
+                    <div class="col-6 col-md-2 col-xl-2 mb-4 mb-md-0">
+                        <a href="{% url 'about_us' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">About Us</p></a>
+                        <a href="{% url 'terms_of_service' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Privacy</p></a>
                     </div>
-                    <div class="col-10 col-md-4 col-lg-3 col-xl-2 offset-md-1">
-                        <h5 class="mb-3">About the company</h5>
-                        <p class="mb-0">
-                            Online Maid is the leading platform to find Maids from local maid agencies. Use our platform to shortlist potential maids and let the maid agencies follow up with further details. 
+                    <div class="col-10 col-md-4 col-lg-3 offset-md-1">
+                        <h5 class="mb-3">About Online Maid</h5>
+                        <p class="mb-1">
+                            Online Maid is the leading platform to find foreign domestic workers(FDW) from local employment agencies.
                         </p>
-                        <p class="mb-4">
+                        <p>
                             All maid agencies are approved by MOM.
                         </p>
                         <div class="row d-none">
