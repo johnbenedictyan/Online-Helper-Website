@@ -746,6 +746,7 @@ class PotentialAgencyForm(forms.ModelForm):
         'license_number': 'abc123',
         'person_in_charge': 'John Doe',
         'contact_number': '98765432',
+        'office_number': '61234567',
         'email': 'john@testagency.com'
     }
     
@@ -785,13 +786,19 @@ class PotentialAgencyForm(forms.ModelForm):
                     css_class='form-group col-md'
                 ),
                 Column(
+                    'email',
+                    css_class='form-group col-md'
+                )
+            ),
+            Row(
+                Column(
                     'contact_number',
                     css_class='form-group col-md'
                 ),
                 Column(
-                    'email',
-                    css_class='form-group col-lg'
-                )
+                    'office_number',
+                    css_class='form-group col-md'
+                ),
             ),
             Row(
                 Column(
@@ -840,6 +847,7 @@ class PotentialAgencyForm(forms.ModelForm):
         pa_license_number = cleaned_data.get('license_number')
         pa_person_in_charge = cleaned_data.get('person_in_charge')
         pa_contact_number = cleaned_data.get('contact_number')
+        pa_office_number = cleaned_data.get('office_number')
         pa_email = cleaned_data.get('email')
 
         if pa_email:
@@ -851,6 +859,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     License Number: {pa_license_number}
                     Person In Charge: {pa_person_in_charge}
                     Contact Number: {pa_contact_number}
+                    Office Number: {pa_office_number}
                     Email Address: {pa_email}
                     """,
                     settings.EMAIL_HOST_USER,
