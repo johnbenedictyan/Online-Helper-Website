@@ -29,11 +29,8 @@ class SignInView(SuccessMessageMixin, LoginView):
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
         request = self.request
-        if(
-            request.META.get('QUERY_STRING') == 'next=' + reverse(
-                'maid_list'
-            )
-        ):
+        next_hop_maid_string = 'next=' + reverse('maid_list')
+        if next_hop_maid_string in request.META.get('QUERY_STRING'):
             kwargs.update({
                 'show_disclaimer': True
             })

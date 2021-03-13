@@ -243,6 +243,9 @@ class AgencyOwner(models.Model):
         related_name='owners'
     )
 
+    def __str__(self):
+        return self.agency.name + ' Owner'
+
 class AgencyBranch(models.Model):
     MAIN_BRANCH_CHOICES = (
         (True, _('Yes')),
@@ -327,6 +330,9 @@ class AgencyBranch(models.Model):
         default=True
     )
 
+    def __str__(self):
+        return self.agency.name + ', ' + self.name
+
 class AgencyPlan(models.Model):
     class PlanTypeChoices(models.TextChoices):
         BIODATA_100 = 'B100', _('100 Biodata')
@@ -403,6 +409,13 @@ class AgencyEmployee(models.Model):
         blank=False
     )
 
+    email = models.EmailField(
+        verbose_name=_('Employee\'s Email Address'),
+        null=True,
+        blank=True,
+        help_text=_('Optional')
+    )
+
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE,
@@ -428,9 +441,12 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
+    def __str__(self):
+        return self.ea_personnel_number + ' - ' + self.first_name + ' ' + self.last_name
+
 class PotentialAgency(models.Model):
     name = models.CharField(
-        verbose_name=_('Company Name'),
+        verbose_name=_('Agency Name'),
         max_length=100,
         blank=False
     )
@@ -449,7 +465,7 @@ class PotentialAgency(models.Model):
 
     contact_number = models.CharField(
         verbose_name=_('Contact Number'),
-        max_length=50,
+        max_length=8,
         blank=False,
         validators=[
             RegexValidator(
@@ -458,6 +474,20 @@ class PotentialAgency(models.Model):
             )
         ]
         # This regex validator checks if the contact number provided is all 
+        # numbers.
+    )
+
+    office_number = models.CharField(
+        verbose_name=_('Office Number'),
+        max_length=8,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid office number')
+            )
+        ]
+        # This regex validator checks if the office number provided is all 
         # numbers.
     )
 

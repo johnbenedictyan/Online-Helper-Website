@@ -186,11 +186,6 @@ class AgencyOwnerCreationForm(forms.ModelForm):
             return super().save(*args, **kwargs)
 
 class AgencyEmployeeCreationForm(forms.ModelForm):
-    email = forms.EmailField(
-        label=_('Email Address'),
-        required=True
-    )
-
     password = forms.CharField(
         label=_('Password'),
         required=True,
@@ -216,7 +211,7 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'email',
+                    'ea_personnel_number',
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -228,30 +223,33 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'first_name',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'last_name',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'contact_number',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'ea_personnel_number',
-                    css_class='form-group col-md-4'
+                    'email',
+                    css_class='form-group col-md-6'
                 ),
                 Column(
+                    'contact_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     'branch',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'role',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -270,13 +268,14 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        email = cleaned_data.get("email")
+        ea_personnel_number = cleaned_data.get("ea_personnel_number")
         password = cleaned_data.get("password")
         UserModel = get_user_model()
 
+        user_email = ea_personnel_number + '@' + settings.AGENCY_EMPLOYEE_FEP
         try:
             user = UserModel.objects.get(
-                email=email
+                email=user_email
             )
         except UserModel.DoesNotExist:
             pass
@@ -302,9 +301,11 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
             'AM': 'Agency Managers',
             'AS': 'Agency Sales Staff'
         }
+        ea_personnel_number = cleaned_data.get('ea_personnel_number')
+        user_email = ea_personnel_number + '@' + settings.AGENCY_EMPLOYEE_FEP
         try:
             new_user = get_user_model().objects.create_user(
-                email=cleaned_data.get('email'),
+                email=user_email,
                 password=cleaned_data.get('password')
             )
         except Exception as e:
@@ -326,6 +327,7 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
             self.instance.ea_personnel_number = cleaned_data.get(
                 'ea_personnel_number'
             )
+            self.instance.email = cleaned_data.get('email')
             self.instance.branch = cleaned_data.get('branch')
             self.instance.role = cleaned_data.get('role')
 
@@ -746,6 +748,7 @@ class PotentialAgencyForm(forms.ModelForm):
         'license_number': 'abc123',
         'person_in_charge': 'John Doe',
         'contact_number': '98765432',
+        'office_number': '61234567',
         'email': 'john@testagency.com'
     }
     
@@ -785,13 +788,19 @@ class PotentialAgencyForm(forms.ModelForm):
                     css_class='form-group col-md'
                 ),
                 Column(
+                    'email',
+                    css_class='form-group col-md'
+                )
+            ),
+            Row(
+                Column(
                     'contact_number',
                     css_class='form-group col-md'
                 ),
                 Column(
-                    'email',
-                    css_class='form-group col-lg'
-                )
+                    'office_number',
+                    css_class='form-group col-md'
+                ),
             ),
             Row(
                 Column(
@@ -840,6 +849,7 @@ class PotentialAgencyForm(forms.ModelForm):
         pa_license_number = cleaned_data.get('license_number')
         pa_person_in_charge = cleaned_data.get('person_in_charge')
         pa_contact_number = cleaned_data.get('contact_number')
+        pa_office_number = cleaned_data.get('office_number')
         pa_email = cleaned_data.get('email')
 
         if pa_email:
@@ -851,6 +861,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     License Number: {pa_license_number}
                     Person In Charge: {pa_person_in_charge}
                     Contact Number: {pa_contact_number}
+                    Office Number: {pa_office_number}
                     Email Address: {pa_email}
                     """,
                     settings.EMAIL_HOST_USER,

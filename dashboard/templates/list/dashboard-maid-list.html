@@ -1,101 +1,183 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
-<div class="limiter">
-    <div class="container-table100">
-        <div class="wrap-table100">
-            <div class="row table-header">
-                <div class="col">
-                    <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">FDW Biodata</h5>
-                    {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
-                    <a href="{% url 'maid_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Biodata</a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="table">
-                <div class="table-row fdw-table-row header">
-                    <div class="cell">
-                        S/N
-                    </div>
-                    <div class="cell">
-                        Name
-                    </div>
-                    <div class="cell">
-                        Nationality
-                    </div>
-                    <div class="cell">
-                        Type
-                    </div>
-                    <div class="cell">
-                        Age
-                    </div>
-                    <div class="cell">
-                        Job Preference
-                    </div>
-                    <div class="cell">
-                        Published
-                    </div>
-                    <div class="cell">
-                        Featured
-                    </div>
-                    <div class="cell">
-                        Date Created
-                    </div>
-                    <div class="cell">
-                        Actions
-                    </div>
-                </div>
-
-                {% for maid in maids %}
-                    <div class="table-row fdw-table-row">
-                        <div class="cell" data-title="S/N">
-                            {{maid.id}}
-                        </div>
-                        <div class="cell" data-title="Name">
-                            {{maid.name}}
-                        </div>
-                        <div class="cell" data-title="Nationality">
-                            {{maid.personal_details.get_country_of_origin_display}}
-                        </div>
-                        <div class="cell" data-title="Type">
-                            {{maid.get_maid_type_display}}
-                        </div>
-                        <div class="cell" data-title="Age">
-                            {{maid.personal_details.age}}
-                        </div>
-                        <div class="cell" data-title="Job Preference">
-                            None
-                        </div>
-                        <div class="cell" data-title="Published">
-                            {% if maid.published is True %}
-                            <i class="far fa-check-circle text-success"></i>
-                            {% else %}
-                            <i class="far fa-times-circle text-danger"></i>
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col my-3 px-md-2 px-lg-3 px-xl-5">
+                <div class="card custom-card card-wrapper">
+                    <div class="row">
+                        <div class="col mb-3 px-2 px-md-3 px-xxl-1">
+                            <h3 class="d-inline-block mt-1 mt-xxl-2">FDW Biodata</h3>
+                            {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
+                            <a href="{% url 'maid_create' %}" class="btn btn-primary float-right mt-xl-1">Add New Biodata</a>
                             {% endif %}
                         </div>
-                        <div class="cell" data-title="Featured">
-                            {% if maid.featured is True %}
-                            <i class="far fa-check-circle text-success"></i>
-                            {% else %}
-                            <i class="far fa-times-circle text-danger"></i>
-                            {% endif %}
-                        </div>
-                        <div class="cell" data-title="Date Created">
-                            {{maid.created_on}}
-                        </div>
-                        <div class="cell" data-title="Actions">
-                            <a href="{% url 'dashboard_maid_detail' pk=maid.pk %}" class="btn btn-primary">Modify</a>
+                    </div>
+                    <div class="row border rounded d-none d-xl-block">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col text-center bg-primary text-light rounded-top">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="my-3">S/N</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Name</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Nationality</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Type</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Age</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Date of Birth</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Published</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Featured</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Date Created</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Actions</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% for maid in maids %}
+                            <div class="row">
+                                <div class="col text-center py-3 border-bottom">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <p class="mb-0">{{maid.pk}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{maid.name}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{maid.get_maid_type_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{maid.personal_details.age}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">None</p>
+                                        </div>
+                                        <div class="col">
+                                            {% if maid.published is True %}
+                                            <i class="far fa-check-circle text-success"></i>
+                                            {% else %}
+                                            <i class="far fa-times-circle text-danger"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col">
+                                            {% if maid.featured is True %}
+                                            <i class="far fa-check-circle text-success"></i>
+                                            {% else %}
+                                            <i class="far fa-times-circle text-danger"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{maid.created_on}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0"><a href="{% url 'dashboard_maid_detail' maid.pk %}" class="btn btn-primary">Modify</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="row">
+                                <div class="col text-center py-5">
+                                    <h5 class="text-muted mb-3">No FDW Biodata</h5>
+                                    {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
+                                    <a href="{% url 'maid_create' %}" class="btn btn-outline-primary">Add New Biodata</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-            {% if not maids %}
-                <div class="row table-empty-footer">
-                    <div class="col text-center">
-                        <p class="mt-3">No biodata found!</p>
+                    <div class="row d-xl-none">
+                        <div class="col">
+                            {% for maid in maids %}
+                            <div class="card custom-card">
+                                <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <h6 class="text-muted">Name</h6>
+                                        <p>{{maid.name}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Nationality</h6>
+                                        <p>{{maid.personal_details.get_country_of_origin_display}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Type</h6>
+                                        <p>{{maid.get_maid_type_display}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Date of Birth</h6>
+                                        <p>{{maid.branch.name}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Age</h6>
+                                        <p>{{maid.personal_details.age}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Published</h6>
+                                        {% if maid.published is True %}
+                                        <i class="far fa-check-circle text-success"></i>
+                                        {% else %}
+                                        <i class="far fa-times-circle text-danger"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Featured</h6>
+                                        {% if maid.featured is True %}
+                                        <i class="far fa-check-circle text-success"></i>
+                                        {% else %}
+                                        <i class="far fa-times-circle text-danger"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col mt-2 pt-1">
+                                        <p class="mb-0 text-muted">Created on {{maid.created_on|date:"j M Y"}}</p>
+                                    </div>
+                                    <div class="col text-right">
+                                        <p class="mb-0"><a href="{% url 'dashboard_maid_detail' maid.pk %}" class="btn btn-primary">Modify</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="card custom-card">
+                                <div class="row">
+                                    <div class="col text-center py-5">
+                                        <h5 class="text-muted mb-3">No Employee Accounts</h5>
+                                        {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
+                                        <a href="{% url 'maid_create' %}" class="btn btn-outline-primary">Add New Biodata</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            {% endif %}
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock dashboard_section %}
