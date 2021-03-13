@@ -1,3 +1,6 @@
+# Imports from python
+from random import shuffle
+
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
@@ -832,14 +835,15 @@ class FeaturedMaidListView(View):
 
     def get(self, request, *args, **kwargs):
         nationality = request.GET.get('nationality')
-        featured_maids = Maid.objects.all()
-        print(request)
+        featured_maids = Maid.objects.filter(
+            featured=True
+        )
         if nationality != 'ANY':
             featured_maids = featured_maids.filter(
-                personal_details__country_of_origin=nationality,
-                featured=True
+                personal_details__country_of_origin=nationality
             )
 
+        shuffle(featured_maids)
         featured_maids = [
             {
                 'pk': maid.pk,
