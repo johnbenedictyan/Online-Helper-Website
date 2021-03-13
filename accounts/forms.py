@@ -1,6 +1,7 @@
 # Imports from django
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
@@ -103,17 +104,19 @@ class AgencySignInForm(AuthenticationForm):
         max_length=255
     )
 
-    ea_personnel_number = forms.CharField(
-        label=_('Employment Agency Personnel Registration Number'),
+    username = forms.CharField(
+        label=_('Username'),
         required=True,
-        max_length=255
+        max_length=255,
+        help_text=_('''
+            For Agency Owners use your email.
+            For Agency Employees use your EA personnel registration number.'''
+        )
     )
-
-    username = None
 
     placeholders = {
         'agency_license_number': 'abc123',
-        'ea_personnel_number': 'g3kja',
+        'username': 'john@agency.com / johndoe123',
         'password': 'topsecret'
     }
     
@@ -129,22 +132,19 @@ class AgencySignInForm(AuthenticationForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'agency_license_number',
-                    css_class='form-group col-12'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'ea_personnel_number',
-                    css_class='form-group col-12'
+                    'username',
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'password',
-                    css_class='form-group col-12'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'agency_license_number',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -172,43 +172,62 @@ class AgencySignInForm(AuthenticationForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        user_email = ea_personnel_number + '@' + settings.AGENCY_EMPLOYEE_FEP
-        user = get_user_model().objects.get(
-            email = user_email
-        )
-
-        if user.groups.filter(name=P_EMPLOYERS).exists():
-            self.add_error(
-                'ea_personnel_number',
-                ValidationError(
-                    _('Invalid Agency Staff Registration Number'),
-                    code='invalid-signin'
-                )
-            )
-
-        if user.groups.filter(name=AG_OWNERS).exists():
-            agency = user.agency_owner.agency
+        UserModel = get_user_model()
+        username = cleaned_data.get('username')
+        if validate_email(username):
+            email = username
         else:
-            agency = user.agency_employee.agency
+            email = username + '@' + settings.AGENCY_EMPLOYEE_FEP
 
-        if agency.license_number != cleaned_data.get('agency_license_number'):
+        try:
+            user = UserModel.objects.get(
+                email=email
+            )
+        except UserModel.DoesNotExist:
             self.add_error(
-                'agency_license_number',
+                'username',
                 ValidationError(
-                    _('Invalid Agency License Number'),
+                    _('Invalid Username'),
                     code='invalid-signin'
                 )
             )
-        if agency.active == False:
-            self.add_error(
-                'agency_license_number',
-                ValidationError(
-                    _(
-                        '''This agency has been deactivate. 
-                        Please contact Online Maid Pte Ltd.'''),
-                    code='invalid-signin'
+        else:
+            if user.groups.filter(name=P_EMPLOYERS).exists():
+                self.add_error(
+                    'username',
+                    ValidationError(
+                        _('Invalid Agency Staff Registration Number'),
+                        code='invalid-signin'
+                    )
                 )
-            )
+
+            if user.groups.filter(name=AG_OWNERS).exists():
+                agency = user.agency_owner.agency
+            else:
+                agency = user.agency_employee.agency
+
+            if (
+                agency.license_number != cleaned_data.get(
+                    'agency_license_number'
+                )
+            ):
+                self.add_error(
+                    'agency_license_number',
+                    ValidationError(
+                        _('Invalid Agency License Number'),
+                        code='invalid-signin'
+                    )
+                )
+            if agency.active == False:
+                self.add_error(
+                    'agency_license_number',
+                    ValidationError(
+                        _(
+                            '''This agency has been deactivate. 
+                            Please contact Online Maid Pte Ltd.'''),
+                        code='invalid-signin'
+                    )
+                )
         return cleaned_data
 
 # Model Forms
