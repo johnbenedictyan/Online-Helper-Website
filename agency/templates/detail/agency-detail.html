@@ -1,27 +1,12 @@
 {% extends 'agency-base.html' %}
+{% load static %}
 {% block agency_section %}
-<section>
-    <div class="jumbotron jumbotron-fluid bg-hero">
-        <div class="container">
-            <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
-                    <h1 class="display-4 pl-3 pl-md-2">Agency Details</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Agency Details</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% include 'sections/title-banner.html' with page_name='Agency Details' %}
 <section>
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-4">
-                <img src="..." alt="" class="img-fluid">
+                <img src="{{agency.logo.url}}" alt="" class="img-fluid">
             </div>
             <div class="col-12 col-md-7 mb-3">
                 <h2>{{agency.name}}</h2>
@@ -42,7 +27,7 @@
                                 <div class="col-md-4 col-lg-6 mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <h5 class="mb-0">{{branch.name}}</h5>
+                                            <h5 class="mb-0">{{branch.name|title}}</h5>
                                         </div>
                                     </div>
                                     <hr>
@@ -56,7 +41,7 @@
                                     <div class="row">
                                         <div class="col mb-3">
                                             <p class="mb-1">Postal Code</p>
-                                            <p class="font-weight-bold mb-0">{{branch.postal_code}}</p>
+                                            <p class="font-weight-bold mb-0">Singapore {{branch.postal_code}}</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -240,24 +225,93 @@
                 <h4>Avaliable Maids</h4>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5">
-            {% for maid in agency.maid.all %}
-                <div class="col mb-4">
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{maid.name}}</h5>
-                            <p class="card-text">{{maid.personal_details.country_of_origin}}</p>
-                            <p class="card-text">{{maid.personal_details.age}} | {{maid.family_details.marital_status}}</p>
-                            <p class="card-text">{{maid.maid_type}}</p>
+        <div class="row">
+            <div class="col">
+                {% if request.user.is_authenticated %}
+                <div class="maid-carousel">
+                    {% for maid in agency.maid.all %}
+                    <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
+                        <div onclick="maidProfileRedirect({{maid.pk}})">
+                            <div class="m-2 maid-thumbnail" style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{maid.name}}</h5>
+                                <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
+                                <p class="card-text">{{maid.personal_details.age}} years old</p>
+                                <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
+                                <p class="card-text">{{maid.get_maid_type_display}}</p>
+                            </div>
                         </div>
                         <div class="card-footer">
-                            <a href="{% url 'add_to_shortlist' %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                            <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col text-center">
+                        <img src="{% static 'images/featured-maids.png' %}" alt="" class="img-fluid blurred-image">
+                        <div class="featured-maids-overlay">
+                            <div class="jumbotron jumbotron-fluid bg-transparent">
+                                <div class="container text-center">
+                                <h3 class="display-4">Sign in to view biodata</h3>
+                                <a href="{% url 'sign_in' %}" class="btn btn-primary"><h5 class="mb-0">Sign in</h5></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>
 {% endblock agency_section %}
+{% block js %}
+<script>
+    $(document).ready(function(){
+        $('.maid-carousel').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
+            ]
+        });
+        width_map = {
+            '1': '20',
+            '2': '40',
+            '3': '60',
+            '4': '80',
+            '5': '100'
+        }
+    });
+</script>
+{% endblock js %}

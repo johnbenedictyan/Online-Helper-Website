@@ -217,7 +217,11 @@ urlpatterns = [
                                                 'agent-access/spouse/update/',
                                                 SignatureUpdateByAgentView.as_view(
                                                     model_field_name='spouse_signature',
-                                                    form_fields=['spouse_signature'],
+                                                    form_fields=[
+                                                        'spouse_signature',
+                                                        'spouse_name',
+                                                        'spouse_nric',
+                                                    ],
                                                 ),
                                                 name='signature_spouse_update_route'
                                             ),

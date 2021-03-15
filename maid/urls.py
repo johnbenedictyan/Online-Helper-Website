@@ -9,7 +9,7 @@ from django.urls import include, path
 from .views import MaidCreateFormView, MaidCareDetailsUpdate
 
 ## Redirect Views
-from .views import MaidTogglePublished
+from .views import MaidTogglePublished, MaidToggleFeatured
 
 ## List Views
 from .views import MaidList
@@ -36,7 +36,7 @@ from .views import (
 )
 
 ## Generic Views
-from .views import MaidProfileView
+from .views import MaidProfileView, FeaturedMaidListView
 
 # Start of Urls
 
@@ -130,6 +130,11 @@ urlpatterns = [
                 name='maid_list'
             ),
             path(
+                'featured/',
+                FeaturedMaidListView.as_view(),
+                name='featured_maid_list'
+            ),
+            path(
                 '<int:pk>/',
                 include([
                     path(
@@ -152,8 +157,18 @@ urlpatterns = [
         ])
     ),
     path(
-        'togglepublished/<int:pk>/',
-        MaidTogglePublished.as_view(),
-        name='maid_toggle_published'
+        'toggle/<int:pk>/',
+        include([
+            path(
+                'published',
+                MaidTogglePublished.as_view(),
+                name='maid_toggle_published'
+            ),
+            path(
+                'featured',
+                MaidToggleFeatured.as_view(),
+                name='maid_toggle_featured'
+            )
+        ])
     )
 ]

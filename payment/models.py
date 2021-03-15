@@ -12,6 +12,9 @@ from onlinemaid.storage_backends import PublicMediaStorage
 from agency.models import Agency
 
 # Imports from within the app
+from .constants import (
+    SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
+)
 
 # Utiliy Classes and Functions
 
@@ -134,17 +137,14 @@ class SubscriptionProductPrice(models.Model):
     )
     
 class Subscription(models.Model):
-    class SubscriptionStatusChoices(models.TextChoices):
-        INCOMPLETE = 'INCOMPLETE', _('Incomplete')
-        INCOMPLETE_EXPIRED = 'INCOMPLETE_EXPIRED', _('Incomplete (Expired)')
-        TRIALING = 'TRIALING', _('Trialing')
-        ACTIVE = 'ACTIVE', _('Active')
-        PAST_DUE = 'PAST_DUE', _('Past Due')
-        CANCELED = 'CANCELED', _('Canceled')
-        UNPAID = 'UNPAID', _('Unpaid')
-        
-    customer = models.ManyToManyField(
+    id = models.CharField(
+        primary_key=True,
+        max_length=255
+    )
+    
+    customer = models.ForeignKey(
         Customer,
+        on_delete=models.CASCADE,
         related_name='subscriptions'
     )
     
@@ -155,11 +155,13 @@ class Subscription(models.Model):
     )
     
     start_date = models.DateTimeField(
-        editable=False
+        editable=False,
+        null=True
     )
     
     end_date = models.DateTimeField(
-        editable=False
+        editable=False,
+        null=True
     )
     
     status = models.CharField(
@@ -167,5 +169,22 @@ class Subscription(models.Model):
         max_length=18,
         choices=SubscriptionStatusChoices.choices
     )
+    
+    subscription_type = models.CharField(
+        verbose_name=_('Subscription type'),
+        max_length=4,
+        blank=False,
+        choices=SubscriptionTypeChoices.choices,
+        default=SubscriptionTypeChoices.PLAN
+    )
+    
+    def save(self, *args, **kwargs):
+        if SubscriptionLimitMap[self.product.pk]['type'] == 'plan':
+            self.subscription_type = SubscriptionTypeChoices.PLAN
+            
+        elif SubscriptionLimitMap[self.product.pk]['type'] == 'advertisement':
+            self.subscription_type = SubscriptionTypeChoices.ADVERTISEMENT
+            
+        super().save(*args, **kwargs)
     
     

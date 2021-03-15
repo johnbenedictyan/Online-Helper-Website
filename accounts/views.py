@@ -1,9 +1,10 @@
 # Imports from django
+from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -23,12 +24,46 @@ class SignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
     success_message = 'Successful Login'
+    success_url = reverse_lazy('home')
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        request = self.request
+        next_hop_maid_string = 'next=' + reverse('maid_list')
+        if next_hop_maid_string in request.META.get('QUERY_STRING'):
+            kwargs.update({
+                'show_disclaimer': True
+            })
+        return kwargs
 
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        if url:
+            return url
+        else:
+            if not self.success_url:
+                raise ImproperlyConfigured(
+                    "No URL to redirect to. Provide a success_url."
+                )
+            return str(self.success_url)  # success_url may be lazy
+    
 class AgencySignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
     success_message = 'Successful Login'
+    success_url = reverse_lazy('dashboard_home')
     
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        if url:
+            return url
+        else:
+            if not self.success_url:
+                raise ImproperlyConfigured(
+                    "No URL to redirect to. Provide a success_url."
+                )
+            return str(self.success_url)  # success_url may be lazy
+        
 ## Template Views
 
 ## Redirect Views

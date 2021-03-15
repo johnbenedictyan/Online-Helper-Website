@@ -9,10 +9,12 @@
             <div class="modal-body">
                 {% if request.resolver_match.url_name == 'status_list_route' or request.resolver_match.url_name == 'employerdoc_list_route' %}
                     <p>Please confirm FDW has been deployed to employer.</p>
-                    <p>After deployment confirmation, case will be moved to sales summary.</p>
+                    <br>
+                    <p>After deployment confirmation, case #: <strong>{{ object.case_ref_no }}</strong> will be moved to sales summary.</p>
                 {% elif request.resolver_match.url_name == 'sales_list_route' %}
                     <p>Undo deployment?</p>
-                    <p>After confirmation, case will be moved back to status summary.</p>
+                    <br>
+                    <p>After confirmation, case #: <strong>{{ object.case_ref_no }}</strong> will be moved back to status summary.</p>
                 {% endif %}
             </div>
             <div class="modal-footer">

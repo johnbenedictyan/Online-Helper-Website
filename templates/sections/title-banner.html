@@ -1,0 +1,17 @@
+<section>
+    <div class="jumbotron jumbotron-small jumbotron-fluid bg-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1 text-light">
+                    <h1 class="pl-3 pl-md-2 mb-0">{{ page_name }}</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-light">Home</a></li>
+                            <li class="breadcrumb-item active text-light" aria-current="page">{{ page_name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

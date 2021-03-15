@@ -1,7 +1,11 @@
+# Imports from python
+from random import shuffle
+
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -73,17 +77,28 @@ class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         )
     
     def form_valid(self, form):
-        try:
-            self.object = form.save()
-        except Exception as e:
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        if agency.amount_of_biodata < agency.amount_of_biodata_allowed:
+            try:
+                self.object = form.save()
+            except Exception as e:
+                messages.warning(
+                    self.request,
+                    'Please try again',
+                    extra_tags='warning'
+                )
+                return super().form_invalid(form)
+            else:
+                return super().form_valid(form)
+        else:
             messages.warning(
                 self.request,
-                'Please try again',
+                'You have reached the limit of biodata',
                 extra_tags='warning'
             )
             return super().form_invalid(form)
-        else:
-            return super().form_valid(form)
 
 class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                  SuccessMessageMixin, FormView):
@@ -227,9 +242,45 @@ class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
             return reverse_lazy(
                 'dashboard_maid_list'
             )
-        
+
+class MaidToggleFeatured(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
+    pk_url_kwarg = 'pk'
+
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            maid = Maid.objects.get(
+                pk = self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        except Maid.DoesNotExist:
+            messages.error(
+                self.request,
+                'This maid does not exist'
+            )
+        else:
+            if maid.featured == False:
+                amt_of_featured = maid.agency.amount_of_featured_biodata
+                amt_allowed = maid.agency.amount_of_featured_biodata_allowed
+                if amt_of_featured < amt_allowed:
+                    maid.featured = not maid.featured
+                else:
+                    messages.warning(
+                        self.request,
+                        'You have reached the limit of featured biodata',
+                        extra_tags='error'
+                    )
+            else:
+                maid.featured = not maid.featured
+            maid.save()
+            kwargs.pop(self.pk_url_kwarg)
+        finally:
+            return reverse_lazy(
+                'dashboard_maid_list'
+            )
+            
 # List Views
-class MaidList(ListFilteredMixin, ListView):
+class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
@@ -778,6 +829,38 @@ class MaidProfileView(View):
                 ]
             }
             return JsonResponse(data, status=200)
+
+class FeaturedMaidListView(View):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        nationality = request.GET.get('nationality')
+        featured_maids = Maid.objects.filter(
+            featured=True
+        )
+        if nationality != 'ANY':
+            featured_maids = featured_maids.filter(
+                personal_details__country_of_origin=nationality
+            )
+
+        shuffle(list(featured_maids))
+        featured_maids = [
+            {
+                'pk': maid.pk,
+                'photo_url': maid.photo.url,
+                'name': maid.name,
+                'country_of_origin': maid.personal_details.get_country_of_origin_display(),
+                'age': maid.personal_details.age,
+                'marital_status': maid.family_details.get_marital_status_display(),
+                'type': maid.get_maid_type_display()
+            } for maid in featured_maids
+        ]
+        data = {
+            'featured_maids': featured_maids,
+            'count': len(featured_maids),
+            'nationality': nationality
+        }
+        return JsonResponse(data, status=200)
 
 # PDF Views
 class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):

@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block accounts_section %}
+{% include 'sections/title-banner.html' with page_name='Agency Log In' %}
 <div class="container">
     <div class="row">
         <div class="col">
@@ -14,11 +15,6 @@
                     {% endfor %}
                 {% endfor %}
             {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-center my-md-4 my-lg-5">
-            <img src="{% static 'images/olmaid-logo.png' %}" alt="logo">
         </div>
     </div>
     <div class="row">

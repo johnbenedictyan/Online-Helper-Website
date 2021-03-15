@@ -11,14 +11,17 @@ def create_employer(backend, user, response, *args, **kwargs):
         employer = Employer(user=user)
 
     if backend.name == "facebook":  
-        employer.first_name = response.get('first_name')
-        employer.last_name = response.get('middle_name') + ' ' + response.get('last_name')
+        first_name = response.get('first_name')
+        middle_name = response.get('middle_name')
+        last_name = response.get('last_name')
+        employer.name = f"{first_name} {middle_name} {last_name}"
         # Facebook does not expose phone numbers, set contact_number to all 0s.
         employer.contact_number = '0000000000'
     
     elif backend.name == "google-oauth2":
-        employer.first_name = response.get('given_name')
-        employer.last_name = response.get('family_name')
+        first_name = response.get('given_name')
+        last_name = response.get('family_name')
+        employer.name = f"{first_name} {family_name}"
         # Google OAuth does not expose phone numbers, set contact_number to all 0s.
         employer.contact_number = '0000000000'
     

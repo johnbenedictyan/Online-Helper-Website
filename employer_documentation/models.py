@@ -248,6 +248,9 @@ class EmployerDoc(models.Model):
             'Yes, sponsor required',
             'No, sponsor not required'
         ),
+        default=False,
+        blank=True,
+        null=True,
     )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
@@ -855,7 +858,7 @@ class EmployerDocSig(models.Model):
         null=True
     )
     agency_staff_witness_signature = models.TextField(
-        verbose_name=_('Signature of Witness for Agency Staff Memeber'),
+        verbose_name=_('Signature of Witness for Agency Staff Member'),
         blank=True,
         null=True
     )

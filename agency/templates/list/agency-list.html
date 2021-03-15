@@ -1,23 +1,7 @@
 {% extends 'agency-base.html' %}
 {% load crispy_forms_tags %}
 {% block agency_section %}
-<section>
-    <div class="jumbotron jumbotron-fluid bg-hero">
-        <div class="container">
-            <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
-                    <h1 class="display-4 pl-3 pl-md-2">Agencies</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Agencies</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% include 'sections/title-banner.html' with page_name='Agencies' %}
 <section>
     <div class="container">
         <div class="row">
@@ -41,30 +25,36 @@
                 </form>
             </div>
             <div class="col-xl-9">
-                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 row-cols-xl-4">
                     {% for agency in agencies %}
                         <div class="col mb-4">
-                            <div class="card">
-                                <img src="{{agency.logo.url}}" class="card-img-top" alt="...">
+                            <div class="card agency-card">
+                                <div class="m-2 agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
                                 <div class="card-body">
-                                    <h6 class="card-title">{{agency.name}}</h6>
+                                    <h5 class="card-title">{{agency.name}}</h5>
                                     <p class="card-text text-muted">{{agency.license_number}}</p>
                                     <hr>
+                                    <h6 class="card-text text-muted mb-1">Address</h6>
                                     <address>
-                                        {{ agency.get_main_office.address_1 }}
-                                        {{ agency.get_main_office.address_2 }}
-                                        {{ agency.get_main_office.postal_code }}
+                                        {{ agency.get_main_office.address_1 }}<br/>
+                                        {{ agency.get_main_office.address_2 }}<br/>
                                     </address>
-                                    <p class="card-text">Tel: {{agency.get_main_office_number}}</p>
-                                    <p class="card-text">Email: {{agency.sales_email}}</p>
-                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link">Learn More</a>
+                                    <h6 class="card-text text-muted mb-1">Postal Code</h6>
+                                    <p class="card-text">Singapore {{ agency.get_main_office.postal_code }}</p>
+                                    <h6 class="card-text text-muted mb-1">Tel</h6>
+                                    <p class="card-text">{{agency.get_main_office_number}}</p>
+                                    <h6 class="card-text text-muted mb-1">Email</h6>
+                                    <p class="card-text mb-0">{{agency.sales_email}}</p>
+                                    <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                <div class="row">
-                    <div class="col">
+                <div class="row mb-4">
+                    <div class="col text-center">
+                        {% include 'pagination.html' %}
+                        <!-- {% comment %}
                         <div class="pagination">
                             <span class="step-links">
                                 {% if page_obj.has_previous %}
@@ -82,6 +72,7 @@
                                 {% endif %}
                             </span>
                         </div>
+                        {% endcomment %} -->
                     </div>
                 </div>
             </div>

@@ -1,73 +1,131 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <section>
-    <div class="container">
-        <div class="limiter">
-            <div class="container-table100">
-                <div class="wrap-table100">
-                    <div class="row table-header">
-                        <div class="col">
-                            <h5 class="pt-3 pl-4 mt-2 ml-1 d-inline-block">Agency Employee Accounts</h5>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col my-3 px-md-2 px-lg-3 px-xl-5">
+                <div class="card custom-card card-wrapper">
+                    <div class="row">
+                        <div class="col mb-3 px-1">
+                            <h3 class="d-inline-block">Agency Employees</h3>
                             {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
-                            <a href="{% url 'agency_employee_create' %}" class="btn btn-warning mr-4 my-3 float-right">Add New Account</a>
+                            <a href="{% url 'agency_employee_create' %}" class="btn btn-primary float-right mt-xl-1">Add New Account</a>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="table">
-                        <div class="table-row account-table-row header">
-                            <div class="cell">
-                                S/N
+                    <div class="row border rounded d-none d-xl-block">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col text-center bg-primary text-light rounded-top">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="my-3">S/N</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Name</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Email</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">EA Personnel No</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Type</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Branch</h6>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="my-3">Actions</h6>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="cell">
-                                Name
+                            {% for account in accounts %}
+                            <div class="row">
+                                <div class="col text-center py-3 border-bottom">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <p class="mb-0">{{account.pk}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{account.name}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{account.user.email}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{account.ea_personnel_number}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{account.get_role_display}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0">{{account.branch.name}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="mb-0"><a href="{% url 'agency_employee_update' account.pk %}" class="btn btn-primary">Modify</a></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="cell">
-                                Email
+                            {% empty %}
+                            <div class="row">
+                                <div class="col text-center py-5">
+                                    <h5 class="text-muted mb-3">No Employee Accounts</h5>
+                                    {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
+                                    <a href="#" class="btn btn-outline-primary">Add New Account</a>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="cell">
-                                EA Personnel No
-                            </div>
-                            <div class="cell">
-                                Type
-                            </div>
-                            <div class="cell">
-                                Branch
-                            </div>
-                            <div class="cell">
-                                Actions
-                            </div>
+                            {% endfor %}
                         </div>
-                        {% for account in accounts %}
-                            <div class="table-row account-table-row">
-                                <div class="cell" data-title="S/N">
-                                    {{account.pk}}
+                    </div>
+                    <div class="row d-xl-none">
+                        <div class="col">
+                            {% for account in accounts %}
+                            <div class="card custom-card">
+                                <div class="row">
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Name</h6>
+                                        <p>{{account.name}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Email</h6>
+                                        <p>{{account.user.email}}</p>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <h6 class="text-muted">EA Personnel No</h6>
+                                        <p>{{account.ea_personnel_number}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Role</h6>
+                                        <p>{{account.get_role_display}}</p>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <h6 class="text-muted">Branch</h6>
+                                        <p>{{account.branch.name}}</p>
+                                    </div>
                                 </div>
-                                <div class="cell" data-title="Name">
-                                    {{account.first_name}} {{account.last_name}}
-                                </div>
-                                <div class="cell" data-title="Email">
-                                    {{account.user.email}}
-                                </div>
-                                <div class="cell" data-title="EA Personnel No">
-                                    {{account.ea_personnel_number}}
-                                </div>
-                                <div class="cell" data-title="Type">
-                                    {{account.get_role_display}}
-                                </div>
-                                <div class="cell" data-title="Branch">
-                                    {{account.branch.name}}
-                                </div>
-                                <div class="cell" data-title="Actions">
-                                    <a href="{% url 'agency_employee_update' account.pk %}" class="btn btn-primary">Modify</a>
+                                <div class="row">
+                                    <div class="col text-center mt-2">
+                                        <p class="mb-0"><a href="{% url 'agency_employee_update' account.pk %}" class="btn btn-primary w-50">Modify</a></p>
+                                    </div>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row table-empty-footer">
-                        <div class="col text-center">
-                            {% if not accounts %}
-                            <p class="mt-3">No employee accounts found!</p>
-                            {% endif %}
+                            {% empty %}
+                            <div class="card custom-card">
+                                <div class="row">
+                                    <div class="col text-center py-5">
+                                        <h5 class="text-muted mb-3">No Employee Accounts</h5>
+                                        {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
+                                        <a href="#" class="btn btn-outline-primary">Add New Account</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,9 @@
+# Python
+from datetime import timedelta
+
 # Imports from django
 from django import forms
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -15,18 +19,18 @@ from .widgets import CustomRangeWidget
 # Start of Filters
 class MiniMaidFilter(django_filters.FilterSet):
     personal_details__country_of_origin = django_filters.ChoiceFilter(
-        choices = MaidCountryOfOrigin.choices,
-        empty_label = _('Any'),
+        choices=MaidCountryOfOrigin.choices,
+        empty_label=_('No Preference'),
         label=''
     )
     maid_type = django_filters.ChoiceFilter(
-        choices = TypeOfMaidChoices.choices,
-        empty_label = _('Any'),
+        choices=TypeOfMaidChoices.choices,
+        empty_label=_('No Preference'),
         label=''
     )
     responsibilities = django_filters.ModelChoiceFilter(
         queryset=MaidResponsibility.objects.all(),
-        empty_label = _('Any'),
+        empty_label=_('No Preference'),
         label=''
     )
     
@@ -59,21 +63,21 @@ class MaidFilter(django_filters.FilterSet):
     country_of_origin = django_filters.ChoiceFilter(
         field_name='personal_details__country_of_origin',
         lookup_expr='exact',
-        label = _('Country of Origin'),
-        choices = MaidCountryOfOrigin.choices,
-        empty_label = _('Any')
+        label=_('Country of Origin'),
+        choices=MaidCountryOfOrigin.choices,
+        empty_label=_('No Preference')
     )
     maid_type = django_filters.ChoiceFilter(
-        label = _('Type of Maid'),
-        choices = TypeOfMaidChoices.choices,
-        empty_label = _('Any')
+        label=_('Type of Maid'),
+        choices=TypeOfMaidChoices.choices,
+        empty_label=_('No Preference')
     )
     marital_status = django_filters.ChoiceFilter(
         field_name='family_details__marital_status',
         lookup_expr='exact',
-        label = _('Marital Status'),
-        choices = MaritalStatusChoices.choices,
-        empty_label = _('Any')
+        label=_('Marital Status'),
+        choices=MaritalStatusChoices.choices,
+        empty_label=_('No Preference')
     )
     responsibilities = django_filters.ModelMultipleChoiceFilter(
         queryset=MaidResponsibility.objects.all(),
@@ -82,7 +86,7 @@ class MaidFilter(django_filters.FilterSet):
     )
     age = django_filters.RangeFilter(
         label=_('Age'),
-        field_name='personal_details__age',
+        method='custom_age_filter',
         widget=CustomRangeWidget(
             attrs={
                 'hidden': True
@@ -101,3 +105,18 @@ class MaidFilter(django_filters.FilterSet):
             'languages',
             'responsibilities'
         ]
+
+    def custom_age_filter(self, queryset, name, value):
+        time_now = timezone.now()
+        start_date = time_now - timedelta(
+            365*int(value.stop+1)+int(value.stop//4)
+        )
+        end_date = time_now - timedelta(
+            365*int(value.start)+int(value.start//4)
+        )
+        return queryset.filter(
+            personal_details__date_of_birth__range=(
+                start_date,
+                end_date
+            )
+        )

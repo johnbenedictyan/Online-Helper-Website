@@ -25,7 +25,7 @@
                     <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_mobile_number }}</a></td>
                 </tr>
                 <tr>
-                    <th scope="row">Case Reference Number</th>
+                    <th scope="row">Case #</th>
                     <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
                 </tr>
                 <tr>

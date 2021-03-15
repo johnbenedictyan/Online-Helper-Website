@@ -1,6 +1,8 @@
 # Imports from django
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
@@ -32,7 +34,7 @@ class SignInForm(AuthenticationForm):
 
     # We cannot have it to be a static redirect, the next url must take
     # precedence
-    redirect_named_url = 'home'
+    # redirect_named_url = 'home'
     placeholders = {
         'username': 'johndoe123',
         'password': 'topsecret'
@@ -62,15 +64,15 @@ class SignInForm(AuthenticationForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    Hidden(
-                        'next',
-                        f"{{% url '{self.redirect_named_url}' %}}"
-                    )
-                ),
-                css_class='form-row'
-            ),
+            # Row(
+            #     Column(
+            #         Hidden(
+            #             'next',
+            #             f"{{% url '{self.redirect_named_url}' %}}"
+            #         )
+            #     ),
+            #     css_class='form-row'
+            # ),
             Row(
                 Column(
                     Submit(
@@ -94,17 +96,27 @@ class AgencySignInForm(AuthenticationForm):
 
     # We cannot have it to be a static redirect, the next url must take
     # precedence
-    redirect_named_url = 'dashboard_home'
+    # redirect_named_url = 'dashboard_home'
 
     agency_license_number = forms.CharField(
         label=_('Agency License Number'),
         required=True,
+        max_length=255
+    )
+
+    username = forms.CharField(
+        label=_('Username'),
+        required=True,
         max_length=255,
+        help_text=_('''
+            For Agency Owners use your email.
+            For Agency Employees use your EA personnel registration number.'''
+        )
     )
 
     placeholders = {
         'agency_license_number': 'abc123',
-        'username': 'johndoe123',
+        'username': 'john@agency.com / johndoe123',
         'password': 'topsecret'
     }
     
@@ -120,39 +132,36 @@ class AgencySignInForm(AuthenticationForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'agency_license_number',
-                    css_class='form-group col-12'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
                     'username',
-                    css_class='form-group col-12'
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'password',
-                    css_class='form-group col-12'
+                    css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
-                    Hidden(
-                        'next',
-                        f"{{% url '{self.redirect_named_url}' %}}"
-                    )
+                    'agency_license_number',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
+            # Row(
+            #     Column(
+            #         Hidden(
+            #             'next',
+            #             f"{{% url '{self.redirect_named_url}' %}}"
+            #         )
+            #     ),
+            #     css_class='form-row'
+            # ),
             Row(
                 Column(
                     Submit(
                         'submit',
-                        'Sign In',
+                        'Log In',
                         css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-12 text-center'
@@ -163,32 +172,64 @@ class AgencySignInForm(AuthenticationForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        user = get_user_model().objects.get(
-            email = cleaned_data.get('username')
-        )
+        UserModel = get_user_model()
+        username = cleaned_data.get('username')
+        try:
+            validate_email(username)
+        except:
+            email = username + '@' + settings.AGENCY_EMPLOYEE_FEP
+        else:
+            email = username
 
-        if user.groups.filter(name=P_EMPLOYERS).exists():
+        try:
+            user = UserModel.objects.get(
+                email=email
+            )
+        except UserModel.DoesNotExist:
             self.add_error(
                 'username',
                 ValidationError(
-                    _('Invalid Agency Staff Email'),
+                    _('Invalid Username'),
                     code='invalid-signin'
                 )
             )
-
-        if user.groups.filter(name=AG_OWNERS).exists():
-            agency = user.agency_owner.agency
         else:
-            agency = user.agency_employee.agency
-
-        if agency.license_number != cleaned_data.get('agency_license_number'):
-            self.add_error(
-                'agency_license_number',
-                ValidationError(
-                    _('Invalid Agency License Number'),
-                    code='invalid-signin'
+            if user.groups.filter(name=P_EMPLOYERS).exists():
+                self.add_error(
+                    'username',
+                    ValidationError(
+                        _('Invalid Agency Staff Registration Number'),
+                        code='invalid-signin'
+                    )
                 )
-            )
+
+            if user.groups.filter(name=AG_OWNERS).exists():
+                agency = user.agency_owner.agency
+            else:
+                agency = user.agency_employee.agency
+
+            if (
+                agency.license_number != cleaned_data.get(
+                    'agency_license_number'
+                )
+            ):
+                self.add_error(
+                    'agency_license_number',
+                    ValidationError(
+                        _('Invalid Agency License Number'),
+                        code='invalid-signin'
+                    )
+                )
+            if agency.active == False:
+                self.add_error(
+                    'agency_license_number',
+                    ValidationError(
+                        _(
+                            '''This agency has been deactivate. 
+                            Please contact Online Maid Pte Ltd.'''),
+                        code='invalid-signin'
+                    )
+                )
         return cleaned_data
 
 # Model Forms
@@ -211,8 +252,7 @@ class EmployerCreationForm(forms.ModelForm):
     placeholders = {
         'email': 'johndoe@example.com',
         'password': 'topsecret',
-        'first_name': 'John',
-        'last_name': 'Doe',
+        'name': 'John Doe',
         'contact_number': '81234567'
     }
     
@@ -255,11 +295,7 @@ class EmployerCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'first_name',
-                    css_class='form-group col'
-                ),
-                Column(
-                    'last_name',
+                    'name',
                     css_class='form-group col'
                 ),
                 Column(
@@ -282,7 +318,7 @@ class EmployerCreationForm(forms.ModelForm):
                         'Create',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='col-12 text-center'
                 ),
                 css_class='form-row'
             )

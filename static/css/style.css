@@ -15,7 +15,7 @@
 }
 
 .bg-hero {
-  background-image: url("/static/images/home-page-bg.jpg");
+  background-image: url("/static/images/hero-image.png");
   background-size: cover;
   background-position: center;
 }
@@ -40,6 +40,14 @@
 .bg-enquiry-banner {
   background-size: cover;
   background-position: center;
+}
+
+.bg-home-hero {
+  background-image: url("/static/images/hero-image.png");
+}
+
+.bg-transparent {
+  background-color: transparent;
 }
 
 .faq-item.active {
@@ -141,6 +149,77 @@ button.mini-faq-button i {
 
 #maid-profile-card .custom-card__header {
   margin: 0 0 1rem 0;
+}
+
+.maid-card {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1920px) {
+  .maid-card .card-title {
+    height: 3rem;
+  }
+}
+
+.maid-thumbnail {
+  height: 20rem;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.agency-card {
+  height: 44rem;
+}
+
+.agency-thumbnail {
+  height: 15rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+@media screen and (min-width: 768px) {
+  .card-wrapper {
+    min-height: 60vh;
+  }
+}
+
+.blurred-image {
+  -webkit-filter: blur(4px);
+          filter: blur(4px);
+  opacity: 50%;
+}
+
+.featured-maids-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.progress-wrapper {
+  height: 15px;
+}
+
+.vertical-divider {
+  width: .5px;
+  height: 100%;
+  background-color: #ced4da;
+}
+
+.how-it-works-card .card-text {
+  font-size: 1.1rem;
+}
+
+.footer-link {
+  font-size: 1.1rem;
+}
+
+.preferences-card {
+  -webkit-box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
+          box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
 }
 
 .noUi-target,

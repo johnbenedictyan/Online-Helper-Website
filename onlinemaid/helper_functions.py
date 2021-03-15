@@ -94,7 +94,8 @@ def maid_seed_data():
     from maid.constants import (
         TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
         MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
-        MaidCareRemarksChoices, MaidPassportStatusChoices
+        MaidCareRemarksChoices, MaidPassportStatusChoices,
+        MaidGeneralHouseworkRemarksChoices
     )
 
     from maid.models import (
@@ -128,24 +129,21 @@ def maid_seed_data():
                     maid['passport_number'],
                     settings.ENCRYPTION_KEY
                 )
-                new_maid = Maid.objects.create(
+                new_maid = Maid(
                     agency = agency,
                     reference_number = maid['reference_number'],
                     name = maid['name'],
                     passport_number = encrption_thing[0],
                     nonce = encrption_thing[1],
                     tag = encrption_thing[2],
-                    photo = SimpleUploadedFile(
-                        'small.gif',
-                         small_gif, 
-                         content_type='image/gif'
-                    ),
                     maid_type = TypeOfMaidChoices.NEW,
                     days_off = maid['days_off'],
                     passport_status = MaidPassportStatusChoices.NOT_READY,
                     remarks = maid['remarks'],
                     published = True
                 )
+                new_maid.photo = 'maid.png'
+                new_maid.save()
                 selected_maid_personal_details = MaidPersonalDetails.objects.create(
                     maid=new_maid,
                     date_of_birth=datetime.strptime(
@@ -210,7 +208,7 @@ def maid_seed_data():
                     assessment=random.randint(1,5),
                     willingness=True,
                     experience=True,
-                    remarks=MaidCareRemarksChoices.OWN_COUNTRY,
+                    remarks=MaidGeneralHouseworkRemarksChoices.CAN_DO_ALL_HOUSEWORK,
                     other_remarks=''
                 )
                 MaidCooking.objects.create(
@@ -232,4 +230,27 @@ def maid_seed_data():
                     transaction_type='ADD',
                     description='this is a description',
                     transaction_date=date.today()
+                )
+
+def subscription_seed_data():
+    from payment.models import SubscriptionProduct, SubscriptionProductPrice
+    
+    import json
+    subscription_data = json.load(open('./subscriptions.json'))
+    
+    for subscription in subscription_data:
+        sub_product, created = SubscriptionProduct.objects.get_or_create(
+            id=subscription['subscription_product_id'],
+            name=subscription['subscription_product_name'],
+            description=subscription['subscription_product_description']
+        )
+        
+        if created == True:
+            for subscription_price in subscription['prices']:
+                sub_product_price, created = SubscriptionProductPrice.objects.get_or_create(
+                    id=subscription_price['subcription_price_id'],
+                    subscription_product=sub_product,
+                    interval=subscription_price['subcription_price_interval'],
+                    interval_count=subscription_price['subcription_price_interval_count'],
+                    unit_amount=subscription_price['subcription_price_unit_amount']
                 )

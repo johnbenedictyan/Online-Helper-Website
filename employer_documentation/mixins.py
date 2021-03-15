@@ -53,6 +53,9 @@ class CheckEmployerDocRelationshipsMixin(UserPassesTestMixin):
         else:
             return False
 
+    def handle_no_permission(self):
+        return HttpResponseRedirect(reverse_lazy('home'))
+
 class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
     '''
     This is a helper mixin that does not override any inherited methods or
@@ -95,22 +98,34 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             ):
                 self.agency_user_group = AG_SALES
             else:
-                return self.handle_no_permission()
+                return HttpResponseRedirect(reverse_lazy('home'))
             # If successfully assigned current user's agency group to
             # agency_user_group atribute, return True so this method can also
             # serve as a validation that current user has agency role.
             return True
             
         else:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
 
     # Gets current user's object. Call assign_agency_user_group() first to set
     # agency_user_group attribute
     def assign_agency_user_object(self):
-        if self.agency_user_group==AG_OWNERS:
-            self.agency_user_obj = self.request.user.agency_owner
+        if (
+            hasattr(
+                User.objects.get(pk=self.request.user.pk), 'agency_employee'
+            )
+            or
+            hasattr(
+                User.objects.get(pk=self.request.user.pk), 'agency_owner'
+            )
+        ):
+            if self.agency_user_group==AG_OWNERS:
+                self.agency_user_obj = self.request.user.agency_owner
+            else:
+                self.agency_user_obj = self.request.user.agency_employee
+
         else:
-            self.agency_user_obj = self.request.user.agency_employee
+            return HttpResponseRedirect(reverse_lazy('home'))
 
     # Method to get object Employer, EmployerDoc, EmployerDocMaidStatus,
     # EmployerDocSig from database and assign to attribute of View object.
@@ -119,7 +134,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
         try:
             if not hasattr(self, 'object'): self.object = self.get_object()
         except:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
         else:
             # Assign to respective attribute
             if isinstance(self.object, Employer):
@@ -137,35 +152,48 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
 
     # Method to check object's agency is same as current user's agency
     def check_object_belongs_to_agency(self):
-        if (
-            self.employer_obj and
-            not self.employer_obj.agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return self.handle_no_permission()
-        elif (
-            self.employer_doc_obj and
-            not self.employer_doc_obj.employer.agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return self.handle_no_permission()
-        elif (
-            self.employer_subdoc_obj and
-            not self.employer_subdoc_obj.employer_doc.employer
-            .agency_employee.agency
-            ==self.agency_user_obj.agency
-        ):
-            return self.handle_no_permission()
+        '''
+        return 1 if check FAILED
+        return 0 if check PASSES
+        '''
+        if self.agency_user_obj:
+            if (
+                self.employer_obj and
+                self.employer_obj.agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return 0
+            elif (
+                self.employer_doc_obj and
+                self.employer_doc_obj.employer.agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return 0
+            elif (
+                self.employer_subdoc_obj and
+                self.employer_subdoc_obj.employer_doc.employer
+                .agency_employee.agency
+                ==self.agency_user_obj.agency
+            ):
+                return 0
+            else:
+                return 1
+        else:
+            return 1
 
     def dispatch(self, request, *args, **kwargs):
         # First check if current user is logged in, if not immediately return
         if not self.request.user.is_authenticated:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
         
         # Get current user's agency_user_group and agency_user_obj
         if not self.agency_user_group:  self.assign_agency_user_group()
         if not self.agency_user_obj:    self.assign_agency_user_object()
-        return super().dispatch(request, *args, **kwargs)
+        
+        if self.agency_user_group and self.agency_user_obj:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse_lazy('home'))
 
 class CheckAgencyEmployeePermissionsMixin(
     LoginByAgencyUserGroupRequiredMixin
@@ -173,7 +201,7 @@ class CheckAgencyEmployeePermissionsMixin(
     def dispatch(self, request, *args, **kwargs):
         # First check if current user is logged in, if not immediately return
         if not self.request.user.is_authenticated:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
         
         # Get current user's agency_user_group and agency_user_obj
         if not self.agency_user_group:  self.assign_agency_user_group()
@@ -184,7 +212,8 @@ class CheckAgencyEmployeePermissionsMixin(
         self.assign_ed_object()
 
         # Check test object's agency is same as current user's agency
-        self.check_object_belongs_to_agency()
+        if self.check_object_belongs_to_agency():
+            return HttpResponseRedirect(reverse_lazy('home'))
 
         # Check user belongs to required group to access view
         if (
@@ -227,13 +256,13 @@ class CheckAgencyEmployeePermissionsMixin(
         ):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
 
 class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         # First check if current user is logged in, if not immediately return
         if not request.user.is_authenticated:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
 
         # Get current user's agency_user_group and agency_user_obj
         if not self.agency_user_group:  self.assign_agency_user_group()
@@ -244,13 +273,14 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
         self.assign_ed_object()
         
         # Check test object's agency is same as current user's agency
-        self.check_object_belongs_to_agency()
+        if self.check_object_belongs_to_agency():
+            return HttpResponseRedirect(reverse_lazy('home'))
 
         # Check if current user is agency owner
         if self.agency_user_group==AG_OWNERS:
             return super().dispatch(request, *args, **kwargs)
         else:
-            return self.handle_no_permission()
+            return HttpResponseRedirect(reverse_lazy('home'))
 
 # Signature Mixin
 class CheckSignatureSessionTokenMixin(UserPassesTestMixin):
@@ -487,13 +517,32 @@ class PdfHtmlViewMixin:
         return repayment_table
 
     def get_context_data(self, **kwargs):
-        version_explainer_text = 'This document version supersedes all previous versions with the same case ref, if any.'
+        version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
+
+        def get_preferred_language():
+            # MoM Safety Agreements are available in different languages.
+            # Relevant language template snippet is selected based on FDW's
+            # preferred language.
+
+            available_languages = ['BUR', 'ENG', 'IDN', 'KHM', 'SIN', 'TAG', 'TAM', 'THA']
+            default_language = 'IDN'
+            
+            try:
+                preferred_language = context['object'].fdw.personal_details.preferred_language.language
+            except:
+                return default_language
+            else:
+                return preferred_language if preferred_language in available_languages else default_language
 
         if isinstance(self.object, EmployerDoc):
             context = super().get_context_data(object=self.object)
 
             # Document version number formatting
             context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
+
+            preferred_language = get_preferred_language()
+            for i in range(1,4):
+                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
         elif isinstance(self.object, EmployerDocSig):
             '''
@@ -505,6 +554,10 @@ class PdfHtmlViewMixin:
             # Document version number formatting
             context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
         
+            preferred_language = get_preferred_language()
+            for i in range(1,4):
+                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
+
         else:
             context = super().get_context_data(object=self.object)
 

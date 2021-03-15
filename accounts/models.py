@@ -51,6 +51,9 @@ class User(AbstractUser):
         _('Email Address'), 
         unique=True
     )
+    is_online = models.BooleanField(
+        default=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -58,7 +61,11 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f'{self.email}'
+        return self.email
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
 class Employer(models.Model):
     user = models.OneToOneField(
@@ -67,15 +74,9 @@ class Employer(models.Model):
         primary_key=True
     )
 
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        max_length=50,
-        blank=False
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
-        max_length=50,
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
         blank=False
     )
 
@@ -92,3 +93,10 @@ class Employer(models.Model):
         # This regex validator checks if the contact number provided is all 
         # numbers.
     )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Potential Employer'
+        verbose_name_plural = 'Potential Employers'

@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from .constants import MaidResponsibilityChoices
 
 from .models import (
-    MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility, 
     MaidFinancialDetails, MaidOtherCare
@@ -101,6 +101,18 @@ def maid_completed(maid):
         maid.save()
 
 # Start of Signals
+@receiver(post_save, sender=Maid)
+def maid_counter(sender, instance, created, **kwargs):
+    agency = instance.agency
+    agency.amount_of_biodata = Maid.objects.filter(
+        agency=agency
+    ).count()
+    agency.amount_of_featured_biodata = Maid.objects.filter(
+        agency=agency,
+        featured=True
+    ).count()
+    agency.save()
+    
 @receiver(post_save, sender=MaidPersonalDetails)
 def maid_biodata_completed(sender, instance, created, **kwargs):
     if created == False:
@@ -125,8 +137,8 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
         for k,v in instance.__dict__.items():
             if not v:
                 family_details_valid = False
-                if k is 'number_of_children' or k is 'number_of_siblings':
-                    if v is 0:
+                if k == 'number_of_children' or k == 'number_of_siblings':
+                    if v == 0:
                         family_details_valid = True
 
         maid.family_details_complete = family_details_valid
@@ -175,7 +187,7 @@ def maid_care_completed(sender, instance, created, **kwargs):
             try:
                 for i in care_models:
                     for k,v in i.objects.get(maid=maid).__dict__.items():
-                        if k is not 'other_remarks':
+                        if k != 'other_remarks':
                             if not v:
                                 raise Exception
             except Exception as e:

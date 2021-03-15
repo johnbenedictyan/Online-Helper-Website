@@ -215,7 +215,7 @@
         <div style="background-color:#c6d9ec;" class="text-center">
             <h1 class="bold text-center" style="padding:5px 0; margin:0;">{{ object.agency.name }} ({{ object.agency.license_number }})</h1>
             <p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ object.agency.get_main_office.address_1 }}, {{ object.agency.get_main_office.address_2 }}, {{ object.agency.get_main_office.postal_code }} &nbsp; Tel: {{ object.agency.get_main_office_number }}</p>
-            {% if agency_employee %}<p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ agency_employee.first_name }} {{ agency_employee.last_name }}&nbsp; Mobile: {{ agency_employee.contact_number }}</p>{% endif %}
+            {% if agency_employee %}<p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ agency_employee.name }}&nbsp; Mobile: {{ agency_employee.contact_number }}</p>{% endif %}
         </div>
         <h1 class="text-center"><strong>BIO-DATA OF FOREIGN DOMESTIC WORKER (FDW)</strong></h1>
         <p class="text-center">*Please ensure that you run through the information within the Biodata as it is an important document to help you select a suitable FDW </p>

@@ -1,20 +1,23 @@
 # Imports from modules
 import json
+from datetime import date, datetime
 
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query_utils import subclasses
 from django.http.response import (
     HttpResponse, HttpResponseRedirect, JsonResponse
 )
-from django.shortcuts import get_list_or_404
+from django.shortcuts import get_list_or_404, redirect
 from django.urls.base import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,13 +32,17 @@ from agency.mixins import (
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
+from .constants import (
+    SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
+)
+
 from .forms import (
     SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
     SubscriptionProductPriceCreationForm
 )
 from .models import (
-    Invoice, Customer, SubscriptionProduct, SubscriptionProductPrice,
-    SubscriptionProductImage
+    Invoice, Customer, Subscription, SubscriptionProduct, 
+    SubscriptionProductPrice, SubscriptionProductImage 
 )
 
 # Stripe Settings
@@ -149,6 +156,31 @@ class AddToCart(RedirectView):
                 'This product does not exist'
             )
         else:
+            subscription_product = select_product_price.subscription_product
+            agency = self.request.user.agency_owner.agency
+            if SubscriptionLimitMap[subscription_product.pk]['type'] == 'plan':
+                if Subscription.objects.filter(
+                    customer=Customer.objects.get(
+                        agency=agency
+                    ),
+                    subscription_type=SubscriptionTypeChoices.PLAN,
+                    status=SubscriptionStatusChoices.ACTIVE,
+                    end_date__gt=timezone.now()
+                ).count() >= 1:
+                    messages.warning(
+                        self.request,
+                        f'''
+                        You already have an active subscription.
+                        If you would like to change that subscription,
+                        <a href="{reverse_lazy('stripe_customer_portal')}">
+                            Click Here
+                        </a> 
+                        ''',
+                        extra_tags='error'
+                    )
+                    kwargs.pop('pk')
+                    return reverse_lazy('dashboard_agency_plan_list')
+                
             current_cart.append(
                 select_product_price.pk
             )
@@ -448,12 +480,31 @@ class StripeWebhookView(View):
             # Invalid signature
             return HttpResponse(status=400)
         else:
-            if event.type=='invoice.payment_failed':
-                print(event)
-            if event.type=='checkout.session.completed':
-                print(event)
+            if event.type=='invoice.created':
+                Subscription.objects.get_or_create(
+                    id=event.data.object.subscription,
+                    customer=Customer.objects.get(
+                        pk=event.data.object.customer
+                    ),
+                    product=SubscriptionProduct.objects.get(
+                        pk=event.data.object.lines.data[0].price.product
+                    ),
+                    status=SubscriptionStatusChoices.UNPAID
+                )
             if event.type=='invoice.paid':
-                print(event)
+                subscription = Subscription.objects.get(
+                    id=event.data.object.subscription
+                )
+                subscription.start_date = datetime.utcfromtimestamp(
+                    event.data.object.lines.data[0].period.start
+                )
+                subscription.end_date = datetime.utcfromtimestamp(
+                    event.data.object.lines.data[0].period.end
+                )
+                subscription.status = SubscriptionStatusChoices.ACTIVE
+                subscription.save()
+                
             if event.type=='invoice.payment_failed':
                 print(event)
+                
             return HttpResponse(status=200)
