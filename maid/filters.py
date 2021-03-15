@@ -109,7 +109,7 @@ class MaidFilter(django_filters.FilterSet):
     def custom_age_filter(self, queryset, name, value):
         time_now = timezone.now()
         start_date = time_now - timedelta(
-            365*int(value.stop)+int(value.stop//4)
+            365*int(value.stop+1)+int(value.stop//4)
         )
         end_date = time_now - timedelta(
             365*int(value.start)+int(value.start//4)
