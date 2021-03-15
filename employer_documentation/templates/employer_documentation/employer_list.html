@@ -42,7 +42,7 @@
                             <div class="col"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></div>
                             <div class="col"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></div>
                             <div class="col">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
-                            <div class="col">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</div>
+                            <div class="col">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.name }}</div>
                             <div class="col">
                                 <a href="{% url 'employer_update_route' employer_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
                                 {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
@@ -70,7 +70,7 @@
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Staff</div>
-                            <div class="{{ class_col_right }}">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.first_name }} {{ object.agency_employee.last_name }}</div>
+                            <div class="{{ class_col_right }}">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.name }}</div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Action</div>
