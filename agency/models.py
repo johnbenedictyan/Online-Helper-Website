@@ -158,6 +158,10 @@ class Agency(models.Model):
     
     def get_enquiries(self):
         return self.enquiries.all()
+
+    class Meta:
+        verbose_name = 'Agency'
+        verbose_name_plural = 'Agencies'
         
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
@@ -228,6 +232,14 @@ class AgencyOperatingHours(models.Model):
         blank=True
     )
 
+
+    def __str__(self):
+        return f'Operating Hours for {self.agency.name}'
+
+    class Meta:
+        verbose_name = 'Agency Operating Hour'
+        verbose_name_plural = 'Agency Operating Hours'
+
 # Models which are many to one with Agency
 class AgencyOwner(models.Model):
     user = models.OneToOneField(
@@ -245,6 +257,10 @@ class AgencyOwner(models.Model):
 
     def __str__(self):
         return self.agency.name + ' Owner'
+
+    class Meta:
+        verbose_name = 'Agency Owner'
+        verbose_name_plural = 'Agency Owners'
 
 class AgencyBranch(models.Model):
     MAIN_BRANCH_CHOICES = (
@@ -332,6 +348,10 @@ class AgencyBranch(models.Model):
 
     def __str__(self):
         return self.agency.name + ', ' + self.name
+
+    class Meta:
+        verbose_name = 'Agency Branch'
+        verbose_name_plural = 'Agency Branches'
 
 class AgencyPlan(models.Model):
     class PlanTypeChoices(models.TextChoices):
@@ -443,6 +463,10 @@ class AgencyEmployee(models.Model):
 
     def __str__(self):
         return self.ea_personnel_number + ' - ' + self.first_name + ' ' + self.last_name
+
+    class Meta:
+        verbose_name = 'Agency Employee'
+        verbose_name_plural = 'Agency Employees'
 
 class PotentialAgency(models.Model):
     name = models.CharField(
