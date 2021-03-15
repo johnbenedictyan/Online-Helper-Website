@@ -30,7 +30,7 @@ class AgencyFilter(django_filters.FilterSet):
         }
     
     def custom_agency_filter(self, queryset, name, value):
-        return Agency.objects.filter(
+        return queryset.filter(
             Q(name__icontains=value) |
             Q(branches__address_1__icontains=value) |
             Q(branches__address_2__icontains=value) |
