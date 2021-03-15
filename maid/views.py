@@ -843,7 +843,7 @@ class FeaturedMaidListView(View):
                 personal_details__country_of_origin=nationality
             )
 
-        shuffle(featured_maids)
+        shuffle(list(featured_maids))
         featured_maids = [
             {
                 'pk': maid.pk,

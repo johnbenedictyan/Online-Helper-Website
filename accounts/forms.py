@@ -174,10 +174,12 @@ class AgencySignInForm(AuthenticationForm):
         cleaned_data = super().clean()
         UserModel = get_user_model()
         username = cleaned_data.get('username')
-        if validate_email(username):
-            email = username
-        else:
+        try:
+            validate_email(username)
+        except:
             email = username + '@' + settings.AGENCY_EMPLOYEE_FEP
+        else:
+            email = username
 
         try:
             user = UserModel.objects.get(
