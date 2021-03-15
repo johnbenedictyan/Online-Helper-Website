@@ -269,21 +269,7 @@
             <div class="col">
                 <div class="maid-carousel">
                     {% for maid in similar_maids %}
-                    <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
-                        <div onclick="maidProfileRedirect({{maid.pk}})">
-                            <div class="m-2 maid-thumbnail" style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
-                            <div class="card-body">
-                                <h5 class="card-title">{{maid.name}}</h5>
-                                <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
-                                <p class="card-text">{{maid.personal_details.age}} years old</p>
-                                <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                                <p class="card-text">{{maid.get_maid_type_display}}</p>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
-                        </div>
-                    </div>
+                        {% include 'components/maid-card.html' with maid=maid %}
                     {% endfor %}
                 </div>
             </div>
