@@ -397,15 +397,9 @@ class AgencyEmployee(models.Model):
         related_name='agency_employee'
     )
 
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        max_length=50,
-        blank=False
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
-        max_length=50,
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
         blank=False
     )
 
@@ -462,7 +456,7 @@ class AgencyEmployee(models.Model):
     )
 
     def __str__(self):
-        return self.ea_personnel_number + ' - ' + self.first_name + ' ' + self.last_name
+        return self.ea_personnel_number + ' - ' + self.name
 
     class Meta:
         verbose_name = 'Agency Employee'

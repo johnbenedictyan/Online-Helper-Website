@@ -211,22 +211,18 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'ea_personnel_number',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'password',
-                    css_class='form-group col-md-6'
+                    'name',
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'first_name',
+                    'ea_personnel_number',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'last_name',
+                    'password',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -319,8 +315,7 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
             )
 
             self.instance.user = new_user
-            self.instance.first_name = cleaned_data.get('first_name')
-            self.instance.last_name = cleaned_data.get('last_name')
+            self.instance.name = cleaned_data.get('name')
             self.instance.contact_number = cleaned_data.get(
                 'contact_number'
             )
@@ -386,16 +381,12 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'first_name',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'last_name',
-                    css_class='form-group col-md-4'
+                    'name',
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -487,8 +478,7 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
             new_agency_employee_group.user_set.add(employee.user)
 
         self.instance.user = employee.user
-        self.instance.first_name = cleaned_data.get('first_name')
-        self.instance.last_name = cleaned_data.get('last_name')
+        self.instance.name = cleaned_data.get('name')
         self.instance.contact_number = cleaned_data.get(
             'contact_number'
         )
