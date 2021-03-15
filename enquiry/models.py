@@ -29,16 +29,10 @@ class GeneralEnquiry(models.Model):
         null=True
     )
     
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        blank=False,
-        max_length=100
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
-        blank=False,
-        max_length=100
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
+        blank=False
     )
 
     contact_number = models.CharField(

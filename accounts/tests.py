@@ -69,8 +69,7 @@ def create_test_potential_employer():
     new_user = create_test_user()
     new_pe = Employer.objects.create(
         user=new_user['obj'],
-        first_name=r_string(5),
-        last_name=r_string(5),
+        name=r_string(10),
         contact_number=r_contact_number()
     )
     pe_group = Group.objects.get(
@@ -96,35 +95,30 @@ class PotentialEmployersTest(TestCase):
         new_user = create_test_user()
         new_pe = Employer.objects.create(
             user=new_user['obj'],
-            first_name=r_string(5),
-            last_name=r_string(5),
+            name=r_string(10),
             contact_number=r_contact_number()
         )
 
         pe_from_db=Employer.objects.get(
             user=new_user['obj']
         )
-        self.assertEquals(new_pe.first_name,pe_from_db.first_name)
-        self.assertEquals(new_pe.last_name,pe_from_db.last_name)
+        self.assertEquals(new_pe.name,pe_from_db.name)
         self.assertEquals(str(new_pe.contact_number),pe_from_db.contact_number)
 
 
     def testCanUpdate(self):
-        new_first_name = r_string(6)
-        new_last_name = r_string(6)
+        new_name = r_string(12)
         new_contact_number = r_contact_number()
 
         Employer.objects.filter(
             pk=self.pe['obj'].pk
         ).update(
-            first_name=new_first_name,
-            last_name=new_last_name,
+            name=new_name,
             contact_number=new_contact_number
         )
 
         self.pe['obj'].refresh_from_db()
-        self.assertEquals(self.pe['obj'].first_name, new_first_name)
-        self.assertEquals(self.pe['obj'].last_name, new_last_name)
+        self.assertEquals(self.pe['obj'].name, new_name)
         self.assertEquals(
             self.pe['obj'].contact_number, str(new_contact_number)
         )
@@ -238,8 +232,7 @@ class PotentialEmployerCreationFormTest(TestCase):
         test_form_data = {
             'email':'asd@asd.com',
             'password':'Password123!',
-            'first_name':'john',
-            'last_name':'doe',
+            'name':'john doe',
             'contact_number':'81234567'
         }
         
@@ -252,8 +245,7 @@ class PotentialEmployerCreationFormTest(TestCase):
     def testMissingEmailErrorMessage(self):
         test_form_data = {
             'password':'Password123!',
-            'first_name':'john',
-            'last_name':'doe',
+            'name':'john doe',
             'contact_number':'81234567'
         }
             
@@ -278,7 +270,6 @@ class PotentialEmployerCreationFormTest(TestCase):
         test_form_data = {
             'email':'asd@asd.com',
             'password':'Password123!',
-            'last_name':'doe',
             'contact_number':'81234567'
             }
             
@@ -295,7 +286,7 @@ class PotentialEmployerCreationFormTest(TestCase):
         self.assertFormError(
             response,
             'form',
-            'first_name',
+            'name',
             'This field is required.'
             )
             
@@ -303,7 +294,7 @@ class PotentialEmployerCreationFormTest(TestCase):
         test_form_data = {
             'email':'asd@asd.com',
             'password':'Password123!',
-            'first_name':'john',
+            'name':'john doe',
             'contact_number':'81234567'
         }
             
@@ -327,8 +318,7 @@ class PotentialEmployerCreationFormTest(TestCase):
     def testMissingPasswordErrorMessage(self):
         test_form_data = {
             'email':'asd@asd.com',
-            'first_name':'john',
-            'last_name':'doe',
+            'name':'john doe',
             'contact_number':'81234567'
         }
             
@@ -353,8 +343,7 @@ class PotentialEmployerCreationFormTest(TestCase):
         test_form_data = {
             'email':'asd@asd.com',
             'password':'Password123!',
-            'first_name':'john',
-            'last_name':'doe',
+            'name':'john doe',
         }
             
         test_form = EmployerCreationForm(

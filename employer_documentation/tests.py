@@ -45,8 +45,7 @@ class SetUp():
 
         self.potential_employer = accounts.models.Employer(
             user=self.user_potential_employer,
-            first_name='first_name',
-            last_name='last_name',
+            name='name',
             contact_number='91919191',
         )
         self.potential_employer.save()
@@ -121,8 +120,7 @@ class SetUp():
 
         self.agency_employee_admin = AgencyEmployee(
             user = self.user_admin,
-            first_name = 'admin',
-            last_name = 'admin',
+            name = 'admin',
             contact_number = '91919191',
             ea_personnel_number = 'EA#1',
             agency = self.agency,
@@ -142,7 +140,7 @@ class SetUp():
 
         self.agency_employee_manager_b1 = AgencyEmployee(
             user=self.user_manager_b1,
-            first_name = 'manager',
+            name = 'manager',
             last_name = '1',
             contact_number = '92929292',
             ea_personnel_number = 'EA#2',
@@ -163,7 +161,7 @@ class SetUp():
 
         self.agency_employee_manager_b2 = AgencyEmployee(
             user=self.user_manager_b2,
-            first_name = 'manager',
+            name = 'manager',
             last_name = '2',
             contact_number = '92929292',
             ea_personnel_number = 'EA#3',
@@ -184,7 +182,7 @@ class SetUp():
 
         self.agency_employee_sales_b1 = AgencyEmployee(
             user = self.user_sales_b1,
-            first_name = 'sales',
+            name = 'sales',
             last_name = '1',
             contact_number = '93939393',
             ea_personnel_number = 'EA#4',
@@ -205,7 +203,7 @@ class SetUp():
 
         self.agency_employee_sales_b2 = AgencyEmployee(
             user = self.user_sales_b2,
-            first_name = 'sales',
+            name = 'sales',
             last_name = '2',
             contact_number = '93939393',
             ea_personnel_number = 'EA#5',
@@ -317,7 +315,7 @@ class SetUp():
         const_int = 1
         employer_count = 1
         for employer in [self.employer_admin, self.employer_manager_b1, self.employer_sales_b1,]:
-            setattr(self, 'employerdoc_' + employer.agency_employee.first_name, EmployerDoc(
+            setattr(self, 'employerdoc_' + employer.agency_employee.name, EmployerDoc(
                 case_ref_no = 'DOC-0' + str(employer_count),
                 employer = employer,
                 fdw = self.maid,
@@ -377,7 +375,7 @@ class SetUp():
                 # received_sip_assessment_checklist = ,
                 # verifiy_employer_understands_window_cleaning = ,
             ))
-            getattr(self, 'employerdoc_' + employer.agency_employee.first_name).save()
+            getattr(self, 'employerdoc_' + employer.agency_employee.name).save()
             employer_count += 1
         # print(self.employerdoc_admin.pk, self.employerdoc_admin.employer.employer_name)
         # print(self.employerdoc_manager.pk, self.employerdoc_manager.employer.employer_name)
@@ -441,8 +439,7 @@ class SetUp():
 
         self.agency_employee_admin_other = AgencyEmployee(
             user = self.user_admin_other,
-            first_name = 'admin',
-            last_name = 'admin',
+            name = 'admin',
             contact_number = '91919191',
             ea_personnel_number = 'EA#1',
             agency = self.agency_other,
