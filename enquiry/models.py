@@ -31,8 +31,8 @@ class GeneralEnquiry(models.Model):
     
     name = models.CharField(
         verbose_name=_('Name'),
-        max_length=255,
-        blank=False
+        blank=False,
+        max_length=100
     )
 
     contact_number = models.CharField(
