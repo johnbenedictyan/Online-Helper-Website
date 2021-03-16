@@ -157,6 +157,12 @@ class Agency(models.Model):
     
     def get_enquiries(self):
         return self.enquiries.all()
+    
+    def get_biodata_limit_status(self):
+        return (
+            self.amount_of_biodata < self.amount_of_biodata_allowed and
+            self.amount_of_biodata_allowed != 0
+        )
         
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
