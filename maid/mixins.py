@@ -2,12 +2,15 @@
 
 # Imports from django
 from django.core.exceptions import ImproperlyConfigured
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 # Imports from other apps
 from onlinemaid.mixins import (
     AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
+from agency.models import Agency
 from agency.mixins import AgencyOwnerRequiredMixin
 
 # Imports from within the app
@@ -99,3 +102,17 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
             return self.handle_no_permission(request)
         else:
             return res
+
+class FDWLimitMixin():
+    def dispatch(self, request, *args, **kwargs):
+        agency = Agency.objects.get(pk=self.agency_id)
+        if agency.get_biodata_limit_status() == True:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            messages.warning(
+                self.request,
+                'You have reached the limit of FDW Biodata',
+                extra_tags='error'
+            )
+            return redirect('dashboard_maid_list')
+                
