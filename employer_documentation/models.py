@@ -17,7 +17,7 @@ from django.core.validators import (
 # Imports from other apps
 from onlinemaid.constants import TrueFalseChoices
 from onlinemaid.helper_functions import decrypt_string
-from onlinemaid.storage_backends import PrivateMediaStorage
+from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -941,7 +941,7 @@ class JobOrder(models.Model):
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
 
@@ -953,73 +953,73 @@ class PdfArchive(models.Model):
     )
     f01_service_fee_schedule = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f03_service_agreement = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f04_employment_contract = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f05_repayment_schedule = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f06_rest_day_agreement = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f08_handover_checklist = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f09_transfer_consent = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f10_work_pass_authorisation = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f11_security_bond = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f12_fdw_work_permit = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f13_income_tax_declaration = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
     f14_safety_agreement = models.FileField(
         upload_to=generate_archive_path,
-        storage=PrivateMediaStorage() if settings.USE_S3 else OverwriteStorage(),
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
         null=True,
     )
