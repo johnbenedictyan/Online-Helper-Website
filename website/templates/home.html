@@ -192,3 +192,28 @@
 </section>
 {% include 'sections/cta-banner.html' %}
 {% endblock main_content %}
+{% block js %}
+<script>
+    function populateFeaturedMaids(nationality='ANY') {
+        let csrftoken = Cookies.get('csrftoken');
+        axios({
+            method: 'post',
+            mode: 'same-origin',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            url: '/maids/view/featured/',
+            data: {
+                'nationality': nationality
+            }
+        }).then(function (res) {
+            if (res.data.count == 0) {
+                displayEmptyContent();
+            } else {
+                displayContent(res);
+            }
+        })
+    }
+</script>
+{% endblock js %}
