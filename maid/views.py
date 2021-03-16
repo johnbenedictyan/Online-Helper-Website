@@ -22,7 +22,8 @@ from employer_documentation.mixins import PdfHtmlViewMixin
 # Imports from local app
 from .filters import MaidFilter
 from .mixins import (
-    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
+    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
+    FDWLimitMixin
 )
 
 from .forms import (
@@ -49,7 +50,7 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 
 # Form Views
 class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                 SuccessMessageMixin, FormView):
+                         FDWLimitMixin, SuccessMessageMixin, FormView):
     form_class = MainMaidCreationForm
     http_method_names = ['get','post']
     success_url = reverse_lazy('dashboard_maid_detail')
