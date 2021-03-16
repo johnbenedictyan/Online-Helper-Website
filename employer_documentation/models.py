@@ -29,16 +29,9 @@ class OverwriteStorage(FileSystemStorage):
         return filename
 
 def generate_joborder_path(instance, filename):
-    ext = 'pdf'
-    
-    # Generate custom filename
-    if instance.slug:
-        filename = '{}.{}'.format(instance.slug, ext)
-    else:
-        # set filename as random string
-        filename = '{}.{}'.format(uuid4().hex, ext)
+    relative_path = 'ed/archive/' + str(instance.employer_doc.pk)
     # return the whole path to the file
-    return os.path.join('ed/job-orders/', filename)
+    return os.path.join(relative_path, 'f07_job_order.pdf')
 
 def generate_archive_path(instance, filename):
     # filename parameter is passed from view in format:
