@@ -29,7 +29,7 @@ class OverwriteStorage(FileSystemStorage):
         return filename
 
 def generate_joborder_path(instance, filename):
-    relative_path = 'ed/archive/' + str(instance.employer_doc.pk)
+    relative_path = 'archive/' + str(instance.employer_doc.pk)
     # return the whole path to the file
     return os.path.join(relative_path, 'f07_job_order.pdf')
 
@@ -38,7 +38,7 @@ def generate_archive_path(instance, filename):
     # 'employerdoc_pk:name_of_file.pdf'
     filename_split = filename.split(':')
     employerdoc_pk = filename_split[0]
-    relative_path = 'ed/archive/' + employerdoc_pk
+    relative_path = 'archive/' + employerdoc_pk
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 
