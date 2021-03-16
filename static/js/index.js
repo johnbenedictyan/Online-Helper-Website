@@ -240,7 +240,106 @@ function populateFeaturedMaids(nationality='ANY') {
     })
 }
 
+// Maid Carousel
+const maidCarousel = function(){
+    $('.maid-carousel').slick({
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
+    });
+}
+
+const maidApititudeWidthMap = {
+    '1': '20',
+    '2': '40',
+    '3': '60',
+    '4': '80',
+    '5': '100'
+}
+
+const assessmentProgressBarInitialisation = function(){
+    $('.assessment-progress-bar').each(function () {
+        let width_value = $(this).data('value');
+        $(this).css('width', maidApititudeWidthMap[width_value] + '%');
+    });
+}
+
+// Dashboard Agency Plans
+const dashboardAgencyPlanChangePlan = function() {
+    plan_name = document.getElementById("plansFormControlSelect").value;
+    $('.tab-pane').removeClass('active');
+    $(`#${plan_name}`).tab('show');
+}
+
+const dashboardAgencyPlanAddToCart = function(){
+    $('.cart-button').click(function () {
+        let priceId = document.querySelector(`input[name="${String($(this).attr('id')).split('btn')[0]}"]:checked`).value;
+        location.replace(location.origin.concat(`/payment/cart/add/${priceId}`))
+    })
+}
+
+// Maid Create Form
+
+const maidCreateFormFunc = function(){
+    $(`
+            #id_cfi_other_remarks, 
+            #id_cfe_other_remarks, 
+            #id_cfd_other_remarks,
+            #id_geh_other_remarks,
+            #id_cok_other_remarks
+        `).prop('disabled', true);
+    $(`
+            #id_cfi_remarks, 
+            #id_cfe_remarks, 
+            #id_cfd_remarks,
+            #id_geh_remarks,
+            #id_cok_remarks
+        `).on('change', function () {
+        let care_type = $(this).prop('id').split('_')[1];
+        let selector_text = '#id_' + care_type + '_other_remarks'
+        if ($(this).val() == 'OTH') {
+            $(selector_text).prop('disabled', false);
+        } else {
+            $(selector_text).val('')
+            $(selector_text).prop('disabled', true)
+        }
+    });
+}
+
 $(function () {
+    maidCarousel();
+    assessmentProgressBarInitialisation();
+    maidCreateFormFunc();
     rangeSliderInitialisation();
     tippy_initialisation();
     populateFeaturedMaids();
