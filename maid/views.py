@@ -865,7 +865,7 @@ class FeaturedMaidListView(View):
         return JsonResponse(data, status=200)
 
 # PDF Views
-class PdfMaidBiodataView(PdfHtmlViewMixin, DetailView):
+class PdfMaidBiodataView(LoginRequiredMixin, PdfHtmlViewMixin, DetailView):
     model = Maid
     template_name = 'detail/pdf-biodata-detail.html'
 
