@@ -18,3 +18,10 @@ class PrivateMediaStorage(S3Boto3Storage):
     default_acl = 'private'
     file_overwrite = False
     custom_domain = False
+
+
+class EmployerDocumentationStorage(S3Boto3Storage):
+    location = 'ed'
+    default_acl = 'private'
+    file_overwrite = True
+    custom_domain = False
