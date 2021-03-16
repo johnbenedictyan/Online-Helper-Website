@@ -1,4 +1,5 @@
 # Imports from python
+import json
 from random import shuffle
 
 # Imports from django
@@ -800,9 +801,9 @@ class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
 
 # Generic Views
 class MaidProfileView(View):
-    http_method_names = ['get']
+    http_method_names = ['post']
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
             selected_maid = Maid.objects.get(
                 pk = self.kwargs.get('pk')
@@ -831,10 +832,11 @@ class MaidProfileView(View):
             return JsonResponse(data, status=200)
 
 class FeaturedMaidListView(View):
-    http_method_names = ['get']
+    http_method_names = ['post']
 
-    def get(self, request, *args, **kwargs):
-        nationality = request.GET.get('nationality')
+    def post(self, request, *args, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+        nationality = request_data.get('nationality')
         featured_maids = Maid.objects.filter(
             featured=True
         )

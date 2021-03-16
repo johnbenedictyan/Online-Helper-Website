@@ -109,6 +109,7 @@ const tippy_initialisation = function () {
         return loaded_content
     }
     const loading_content = null;
+    let csrftoken = Cookies.get('csrftoken');
     tippy('.maid-card', {
         content: loading_content,
         placement: 'right',
@@ -128,7 +129,11 @@ const tippy_initialisation = function () {
             }
             instance._isFetching = true;
 
-            fetch(backend_uri)
+            fetch(backend_uri, {
+                method: 'POST',
+                mode: 'same-origin',
+                headers: { 'X-CSRFToken': csrftoken }
+            })
                 .then((response) => response.json())
                 .then((result) => {
                     instance._data = contentGenerator(result.salary, result.days_off, result.employment_history);
@@ -224,21 +229,25 @@ const displayContent = function(res) {
     });
 }
 
-function populateFeaturedMaids(nationality='ANY') {
-    axios({
-        method: 'get',
-        url: '/maids/view/featured/',
-        params: {
-            'nationality': nationality
-        }
-    }).then(function (res) {
-        if (res.data.count == 0) {
-            displayEmptyContent();
-        } else {
-            displayContent(res);
-        }
-    })
-}
+// function populateFeaturedMaids(nationality='ANY') {
+//     let csrftoken = Cookies.get('csrftoken');
+//     console.log(csrftoken);
+//     axios({
+//         method: 'post',
+//         mode: 'same-origin',
+//         headers: { 'X-CSRFToken': csrftoken },
+//         url: '/maids/view/featured/',
+//         data: {
+//             'nationality': nationality
+//         }
+//     }).then(function (res) {
+//         if (res.data.count == 0) {
+//             displayEmptyContent();
+//         } else {
+//             displayContent(res);
+//         }
+//     })
+// }
 
 // Maid Carousel
 const maidCarousel = function(){
