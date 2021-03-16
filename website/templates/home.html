@@ -155,7 +155,7 @@
             </div>
         </div>
         {% if request.user.is_authenticated %}
-        <div class="featured-maids-wrapper">
+        <div id="featured-maids-wrapper">
             <div class="row">
                 <div class="col my-5 text-center">
                     <div class="jumbotron jumbotron-fluid my-5">
@@ -194,95 +194,28 @@
 {% endblock main_content %}
 {% block js %}
 <script>
-    displayEmptyContent = function(){
-        let featuredMaidsContent = `<div class="row">
-                <div class="col text-center">
-                    <h1>No Featured Maids</h1>
-                </div>
-            </div>`;
-        $('.featured-maids-wrapper').html(featuredMaidsContent);
-    }
-    displayContent = function(res){
-        let featuredMaidsContent = `<div class="maid-carousel">`;
-        for (let index = 0; index < res.data.featured_maids.length; index++) {
-            let maid = res.data.featured_maids[index];
-            let url_mask = `{% url 'add_to_shortlist' 1 %}`.replace('1', maid.pk);
-            featuredMaidsContent += `
-                <div class="card maid-card" id='maid-${maid.pk}' data-maid='${maid.pk}'>
-                    <div onclick="maidProfileRedirect(${maid.pk})">
-                        <img src="${maid.photo_url}" class="card-img-top" alt="Maid Photo">
-                        <div class="card-body">
-                            <h5 class="card-title">${maid.name}</h5>
-                            <p class="card-text">${maid.country_of_origin}</p>
-                            <p class="card-text">${maid.age} years old</p>
-                            <p class="card-text">${maid.marital_status}</p>
-                            <p class="card-text">${maid.type}</p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a>
-                    </div>
-                </div>`
-        };
-        featuredMaidsContent += `</div>`;
-        $('.featured-maids-wrapper').html(featuredMaidsContent);
-        $('.maid-carousel').slick({
-            dots: true,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 5,
-            slidesToScroll: 5,
-            responsive: [
-                {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                    infinite: true,
-                    dots: true
-                }
-                },
-                {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-                },
-                {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-                }
-                // You can unslick at a given breakpoint now by adding:
-                // settings: "unslick"
-                // instead of a settings object
-            ]
-        });
-    }
-    populateFeaturedMaids = function(nationality='ANY'){
-        axios({
-            method: 'get',
-            url: '/maids/view/featured/',
-            params: {
-                'nationality': nationality
-            }
-        }).then(function(res){
-            if(res.data.count == 0){
-                displayEmptyContent();
-            } else {
-                displayContent(res);
-            }
-        })
-    }
-    $(function(){
-        populateFeaturedMaids();
-        $('#nationalitySelect').on('change', function(){
-            let nationality = $(this).val();
-            populateFeaturedMaids(nationality);
-        })
-    })
+</script>
+<script>
+    // $(function(){
+    //     MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+    //     var observer = new MutationObserver(function (mutations, observer) {
+    //         tippy_initialisation();
+    //     });
+
+    //     observer.observe(
+    //         document.getElementById('featured-maids-wrapper'), {
+    //         attributes: true,
+    //         childList: true,
+    //         subtree: false
+    //     });
+    // })
+    // $(function(){
+    //     populateFeaturedMaids();
+    //     $('#nationalitySelect').on('change', function(){
+    //         let nationality = $(this).val();
+    //         populateFeaturedMaids(nationality);
+    //     })
+    // })
 </script>
 {% endblock js %}
