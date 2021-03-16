@@ -2,23 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block maid_section %}
-<section>
-    <div class="jumbotron jumbotron-fluid bg-hero">
-        <div class="container">
-            <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
-                    <h1 class="display-4 pl-3 pl-md-2">Maids</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Maids</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% include 'sections/title-banner.html' with page_name='Maids' %}
 <section>
     <div class="container">
         <div class="row">
@@ -45,28 +29,16 @@
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
                     {% for maid in maids %}
                         <div class="col mb-4">
-                            <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
-                                <div onclick="maidProfileRedirect({{maid.pk}})">
-                                    <img src="{{maid.photo.url}}" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{maid.name}}</h5>
-                                        <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
-                                        <p class="card-text">{{maid.personal_details.age}} years old</p>
-                                        <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                                        <p class="card-text">{{maid.get_maid_type_display}}</p>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
-                                </div>
-                            </div>
+                            {% include 'components/maid-card.html' with maid=maid %}
                         </div>
                     {% empty %}
                     <h5>No Maids. Try a different search criteria.</h5>
                     {% endfor %}
                 </div>
-                <div class="row">
-                    <div class="col">
+                <div class="row mb-4">
+                    <div class="col text-center">
+                        {% include 'pagination.html' %}
+                        <!-- {% comment %}
                         <div class="pagination">
                             <span class="step-links">
                                 {% if page_obj.has_previous %}
@@ -84,6 +56,7 @@
                                 {% endif %}
                             </span>
                         </div>
+                        {% endcomment %} -->
                     </div>
                 </div>
             </div>
@@ -91,118 +64,3 @@
     </div>
 </section>
 {% endblock maid_section %}
-{% block js%}
-<script>
-    $(function(){
-        maidProfileRedirect = (pk) => {
-            location.replace(location.origin + location.pathname + pk)
-        }
-        contentGenerator = (salary, days_off, employment_history) => {
-            loaded_content = `<div id="maid-profile-card">
-            <div class="container">
-                <div class="row">
-                    <div class="col px-2 px-md-3 px-lg-4 mt-4">
-                        <div class="row">
-                            <div class="col">
-                                <h6 class="text-muted">Salary</h6>
-                                <p>$${salary}</p>
-                            </div>
-                            <div class="col">
-                                <h6 class="text-muted">Days off</h6>
-                                <p>${days_off}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h6 class="text-muted">Employment History</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col px-2 px-md-3">
-                        <div class="card custom-card">
-                            <p class="lead mb-1">01/02/12 - 01/02/14</p>
-                            <h6 class="text-muted mb-0">2 years</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`
-            contentString = `<div id='maid-profile-card'>`
-            if(salary){
-                contentString += `<p>Salary: $${salary}</p>`
-            }
-            if(days_off){
-                contentString += `<p>Number of days off: ${days_off}</p>`
-            }
-            if(employment_history){
-                contentString += '<h5>Employment History</h5><ul>'
-                for(eh in employment_history){
-                    contentString += `Start Date: ${eh.start_date} End Date:${eh.end_date} Country:${eh.country} Work_duration:${eh.work_duration}`
-                }
-                contentString += '</ul>'
-            }
-            return loaded_content
-        }
-        const loading_content = null;
-        // const loading_content = `
-        //     <div id="maid-profile-card">
-        //         <div class="container">
-        //             <div class="row">
-        //                 <div class="col text-center my-md-3 my-lg-4 my-xl-5">
-        //                     <div class="row">
-        //                         <div class="col">
-        //                             <div class="spinner-border" role="status">
-        //                                 <span class="sr-only">Loading...</span>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>`
-        
-        tippy('.maid-card', {
-            content: loading_content,
-            placement: 'right',
-            allowHTML: true,
-            theme: 'light',
-            onCreate(instance) {
-                // Setup our own custom state properties
-                instance._isFetching = false;
-                instance._data = null;
-                instance._error = null;
-            },
-            onShow(instance) {
-                let backend_uri = location.origin + location.pathname + (instance.reference.attributes.id.value).split('-')[1] + '/profile/';
-                if (instance._isFetching || instance._data || instance._error) {
-                    return;
-                }
-                instance._isFetching = true;
-
-                fetch(backend_uri)
-                .then((response) => response.json())
-                .then((result) => {
-                    instance._data = contentGenerator(result.salary,result.days_off,result.employment_history);
-                    instance.setContent(instance._data);
-                })
-                .catch((error) => {
-                    instance._error = error;
-                    console.log(error)
-                    instance.setContent(`Request failed. ${error}`);
-                })
-                .finally(() => {
-                    instance._isFetching = false;
-                });
-            },
-            onHidden(instance) {
-                instance.setContent(loading_content);
-                // Unset these properties so new network requests can be initiated
-                instance._data = null;
-                instance._error = null;
-            }
-        })
-    })
-</script>
-{% endblock js %}

@@ -1,10 +1,8 @@
-# Imports from python
-from random import shuffle
-
 # Imports from django
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 
 # Imports from project-wide files
 
@@ -26,13 +24,8 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        featured_maids = list(Maid.objects.filter(
-            featured=True
-        ))
-        shuffle(featured_maids)
         kwargs.update({
-            'filter': MiniMaidFilter(),
-            'featured_maids': featured_maids
+            'filter': MiniMaidFilter()
         })
         return kwargs
 
@@ -60,17 +53,20 @@ class FAQView(TemplateView):
     http_method_names = ['get']
     template_name = 'faq.html'
 
-class AdminPanelView(OnlineMaidStaffRequiredMixin, TemplateView):
+class AdminPanelView(OnlineMaidStaffRequiredMixin, ListView):
     http_method_names = ['get']
     template_name = 'admin-panel.html'
+    model = Agency
+    paginate_by = 50
+    context_object_name = 'agencies'
+    ordering = ['name']
 
     def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data()
-        kwargs.update({
-            'agencies': Agency.objects.all(),
+        context = super().get_context_data()
+        context.update({
             'subscription_products': SubscriptionProduct.objects.all() 
         })
-        return kwargs
+        return context
 
 class RobotsTxt(TemplateView):
     http_method_names = ['get']

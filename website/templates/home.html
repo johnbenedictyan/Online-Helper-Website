@@ -67,30 +67,30 @@
         <div class="row">
             <div class="col mb-md-4">
                 <div class="card-deck">
-                    <div class="card">
+                    <div class="card preferences-card">
                         <img src="{% static 'images/homepage_preference/partTime1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">General Housework</h5>
                             <a href="{% url 'maid_list' %}?responsibilities=1">
-                                <h6 class="card-subtitle">Learn More</h6>
+                                <h6 class="card-subtitle text-secondary">Find Out More</h6>
                             </a>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card preferences-card">
                         <img src="{% static 'images/homepage_preference/cooking1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Cooking</h5>
                             <a href="{% url 'maid_list' %}?responsibilities=2">
-                                <h6 class="card-subtitle">Learn More</h6>
+                                <h6 class="card-subtitle text-secondary">Find Out More</h6>
                             </a>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card preferences-card">
                         <img src="{% static 'images/homepage_preference/childrenCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Children</h5>
                             <a href="{% url 'maid_list' %}?responsibilities=3">
-                                <h6 class="card-subtitle">Learn More</h6>
+                                <h6 class="card-subtitle text-secondary">Find Out More</h6>
                             </a>
                         </div>
                     </div>
@@ -100,21 +100,21 @@
         <div class="row">
             <div class="col-md-8 offset-md-2 mb-md-5">
                 <div class="card-deck">
-                    <div class="card">
+                    <div class="card preferences-card">
                         <img src="{% static 'images/homepage_preference/elderly.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Elderly</h5>
                             <a href="{% url 'maid_list' %}?responsibilities=4">
-                                <h6 class="card-subtitle">Learn More</h6>
+                                <h6 class="card-subtitle text-secondary">Find Out More</h6>
                             </a>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card preferences-card">
                         <img src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Care for Disabled</h5>
                             <a href="{% url 'maid_list' %}?responsibilities=5">
-                                <h6 class="card-subtitle">Learn More</h6>
+                                <h6 class="card-subtitle text-secondary">Find Out More</h6>
                             </a>
                         </div>
                     </div>
@@ -136,6 +136,7 @@
                     <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
                         <label for="nationalitySelect" class="ml-1">Nationality</label>
                         <select class="form-control" id="nationalitySelect">
+                            <option value="ANY">No Preference</option>
                             <option value="BGD">Bangladesh</option>
                             <option value="KHM">Cambodia</option>
                             <option value="IND">India</option>
@@ -154,23 +155,22 @@
             </div>
         </div>
         {% if request.user.is_authenticated %}
-        <div class="maid-carousel">
-            {% for maid in featured_maids %}
-            <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
-                <div onclick="maidProfileRedirect({{maid.pk}})">
-                    <img src="{{maid.photo.url}}" class="card-img-top" alt="Maid Photo">
-                    <div class="card-body">
-                        <h5 class="card-title">{{maid.name}}</h5>
-                        <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
-                        <p class="card-text">{{maid.personal_details.age}} years old</p>
-                        <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                        <p class="card-text">{{maid.get_maid_type_display}}</p>
+        <div id="featured-maids-wrapper">
+            <div class="row">
+                <div class="col my-5 text-center">
+                    <div class="jumbotron jumbotron-fluid my-5">
+                        <div class="container my-5">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
-                </div>
             </div>
+        </div>
+        <div class="maid-carousel">
+            {% for maid in featured_maids %}
+                {% include 'components/maid-card.html' with maid=maid %}
             {% endfor %}
         </div>
         {% else %}
@@ -191,133 +191,29 @@
     </div>
 </section>
 {% include 'sections/cta-banner.html' %}
-<section id="enquiry-form-section" class="d-none">
-    <div class="jumbotron jumbotron-fluid mb-0">
-        <div class="container">
-            <div class="row mb-3">
-                <div class="col text-center">
-                    <h2>Enquiry Form</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2">
-                    <form action="">
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="nameInput">Name</label>
-                                <input type="text" class="form-control" id="nameInput" placeholder="Name">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="phoneNumberInput">Phone Number</label>
-                                <input type="text" class="form-control" id="phoneNumberInput" placeholder="Phone Number">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col mb-3">
-                                <label for="emailInput">Email Address</label>
-                                <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="maidNationalitySelect">Maid Nationality</label>
-                                <select class="form-control" id="maidNationalitySelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="maidResponsibilitySelect">Maid Responsibility</label>
-                                <select class="form-control" id="maidResponsibilitySelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="maidTypeSelect">Type of Maid</label>
-                                <select class="form-control" id="maidTypeSelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="maidAgeSelect">Age</label>
-                                <select class="form-control" id="maidAgeSelect">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col mb-4">
-                                <label for="messageTextarea">Message</label>
-                                <textarea class="form-control" id="messageTextarea" rows="5"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col mt-1 text-center">
-                                <button type="submit" class="btn btn-primary w-50">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 {% endblock main_content %}
 {% block js %}
 <script>
-    $(document).ready(function(){
-        $('.maid-carousel').slick({
-            dots: true,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 5,
-            slidesToScroll: 5,
-            responsive: [
-                {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                    infinite: true,
-                    dots: true
-                }
-                },
-                {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-                },
-                {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-                }
-                // You can unslick at a given breakpoint now by adding:
-                // settings: "unslick"
-                // instead of a settings object
-            ]
-        });
-    });
+    function populateFeaturedMaids(nationality='ANY') {
+        let csrftoken = Cookies.get('csrftoken');
+        axios({
+            method: 'post',
+            mode: 'same-origin',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            url: '/maids/view/featured/',
+            data: {
+                'nationality': nationality
+            }
+        }).then(function (res) {
+            if (res.data.count == 0) {
+                displayEmptyContent();
+            } else {
+                displayContent(res);
+            }
+        })
+    }
 </script>
 {% endblock js %}

@@ -269,21 +269,7 @@
             <div class="col">
                 <div class="maid-carousel">
                     {% for maid in similar_maids %}
-                    <div class="card maid-card" id='maid-{{maid.pk}}' data-maid='{{maid.pk}}'>
-                        <div onclick="maidProfileRedirect({{maid.pk}})">
-                            <img src="{{maid.photo.url}}" class="card-img-top" alt="Maid Photo">
-                            <div class="card-body">
-                                <h5 class="card-title">{{maid.name}}</h5>
-                                <p class="card-text">{{maid.personal_details.get_country_of_origin_display}}</p>
-                                <p class="card-text">{{maid.personal_details.age}} years old</p>
-                                <p class="card-text">{{maid.family_details.get_marital_status_display}}</p>
-                                <p class="card-text">{{maid.get_maid_type_display}}</p>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary w-100">Add to Shortlist</a>
-                        </div>
-                    </div>
+                        {% include 'components/maid-card.html' with maid=maid %}
                     {% endfor %}
                 </div>
             </div>
@@ -292,55 +278,3 @@
 </section>
 {% include 'sections/cta-banner.html' %}
 {% endblock maid_section %}
-{% block js %}
-<script>
-    $(document).ready(function(){
-        $('.maid-carousel').slick({
-            dots: true,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 4,
-            slidesToScroll: 4,
-            responsive: [
-                {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
-                }
-                },
-                {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-                },
-                {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-                }
-                // You can unslick at a given breakpoint now by adding:
-                // settings: "unslick"
-                // instead of a settings object
-            ]
-        });
-        width_map = {
-            '1': '20',
-            '2': '40',
-            '3': '60',
-            '4': '80',
-            '5': '100'
-        }
-        $('.assessment-progress-bar').each(function(){
-            let width_value = $(this).data('value');
-            $(this).css('width', width_map[width_value] + '%' );
-        });
-    });
-</script>
-{% endblock js %}

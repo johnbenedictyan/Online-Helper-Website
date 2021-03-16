@@ -5,17 +5,20 @@ html {
   scroll-behavior: smooth;
   position: relative;
   font-size: clamp(1rem, 1vw, 2rem);
-  font-family: "Roboto";
+  font-family: 'Roboto';
 }
 
 body {
   background-color: white;
   color: #4D4D4D;
   font-size: 0.8rem;
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas: "header" "main" "footer";
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  -ms-grid-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas: 'header' 'main' 'footer';
   height: 100vh;
 }
 
@@ -62,11 +65,17 @@ a:hover {
 .menu-icon {
   position: fixed;
   /* Needs to stay visible for all mobile scrolling */
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   top: 7px;
   left: 10px;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   background-color: #4082BF;
   color: white;
   border-radius: 50%;
@@ -77,10 +86,18 @@ a:hover {
 
 /* Give every child element its grid name */
 .header {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
   grid-area: header;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   padding: 0.5rem 1rem;
   background-color: #4082BF;
   font-size: 1.1rem;
@@ -119,21 +136,29 @@ a:hover {
 .sidebar {
   font-size: 0.85rem;
   grid-area: sidebar;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   height: 100%;
   width: 240px;
   position: fixed;
   overflow-y: auto;
-  transform: translateX(-245px);
-  transition: all 0.6s ease-in-out;
+  -webkit-transform: translateX(-245px);
+          transform: translateX(-245px);
+  -webkit-transition: all .6s ease-in-out;
+  transition: all .6s ease-in-out;
   z-index: 2;
   /* Needs to sit above the hamburger menu icon */
   background-color: #E6F3FF;
 }
 
 .sidebar.active {
-  transform: translateX(0);
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
 }
 
 .sidebar__close-icon {
@@ -172,9 +197,15 @@ a:hover {
 \*------------------------------------*/
 .footer {
   font-size: 0.85rem;
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
   grid-area: footer;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   text-align: center;
   padding: 0.5rem;
   background-color: #4082BF;
@@ -199,7 +230,8 @@ a:hover {
 .table__header th {
   background: #E6F3FF;
   border: 0;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   font-weight: 500;
   font-size: 0.85rem;
 }
@@ -211,7 +243,8 @@ a:hover {
 .table__entry td {
   font-size: 0.8rem;
   border: 0;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 tbody tr:nth-child(even) {
@@ -281,6 +314,8 @@ tbody tr:nth-child(odd) {
   #CONTENT LAYOUT
 \*------------------------------------*/
 .main {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
   grid-area: main;
   background-color: white;
   color: #4d4d4d;
@@ -291,6 +326,8 @@ tbody tr:nth-child(odd) {
   #MAIN DASHBOARD PAGE
 \*------------------------------------*/
 .main {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
   grid-area: main;
   background-color: white;
   color: #4d4d4d;
@@ -298,8 +335,10 @@ tbody tr:nth-child(odd) {
 }
 
 .dashboard {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 1fr);
+  -ms-grid-columns: (1fr)[auto-fit];
+      grid-template-columns: repeat(auto-fit, 1fr);
   grid-gap: 2vw;
 }
 
@@ -309,11 +348,17 @@ tbody tr:nth-child(odd) {
   color: white;
   background-color: #669BCC;
   overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   font-size: 0.85rem;
   position: relative;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .bg-alt {
@@ -336,7 +381,7 @@ tbody tr:nth-child(odd) {
 
 .dashboard-card__footer {
   margin-top: auto;
-  padding: 0.75rem 1.25rem;
+  padding: .75rem 1.25rem;
   background-color: rgba(0, 0, 0, 0.03);
   border-top: 1px solid rgba(0, 0, 0, 0.125);
   font-size: 80%;
@@ -576,7 +621,6 @@ table#employment_history td {
   table {
     border: 0;
   }
-
   table thead {
     border: none;
     clip: rect(0 0 0 0);
@@ -587,19 +631,16 @@ table#employment_history td {
     position: absolute;
     width: 1px;
   }
-
   table tr {
     border: 1px solid #ddd;
     display: block;
-    margin-bottom: 0.625em;
+    margin-bottom: .625em;
   }
-
   table td {
     border-bottom: 1px solid #ddd !important;
     display: block;
     text-align: right;
   }
-
   table td::before {
     /*
     * aria-label has no advantage, it won't be read inside a table
@@ -609,42 +650,40 @@ table#employment_history td {
     float: left;
     font-weight: 500;
   }
-
   table td:last-child {
     border-bottom: 0 !important;
   }
 }
+
 /* Non-mobile styles, 750px breakpoint */
 @media only screen and (min-width: 750px) {
   /* Show the sidebar */
   body {
-    grid-template-columns: 20% 1fr;
-    grid-template-areas: "header header" "sidebar main" "footer footer";
+    -ms-grid-columns: 20% 1fr;
+        grid-template-columns: 20% 1fr;
+        grid-template-areas: "header header" "sidebar main" "footer footer";
   }
-
   .header__agency-name {
     margin-left: 0;
   }
-
   .sidebar {
     width: 100%;
     position: relative;
-    transform: translateX(0);
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
   }
-
   .sidebar__close-icon {
     visibility: hidden;
   }
-
   .header {
     z-index: 2;
   }
-
   .dashboard {
+    display: -ms-grid;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    -ms-grid-columns: (minmax(30%, 1fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
     grid-gap: 2vw;
   }
 }
-
 /*# sourceMappingURL=dashboard.css.map */

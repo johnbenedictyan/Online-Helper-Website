@@ -272,18 +272,3 @@
     </div>
 </section>
 {% endblock dashboard_section %}
-{% block js %}
-<script>
-    function changePlan(){
-        plan_name = document.getElementById("plansFormControlSelect").value;
-        $('.tab-pane').removeClass('active');
-        $(`#${plan_name}`).tab('show');
-    }
-    $(function(){
-        $('.cart-button').click(function(){
-            let priceId = document.querySelector(`input[name="${String($(this).attr('id')).split('btn')[0]}"]:checked`).value;
-            location.replace(location.origin.concat(`/payment/cart/add/${priceId}`))
-        })
-    })
-</script>
-{% endblock js %}

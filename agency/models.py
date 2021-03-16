@@ -45,7 +45,8 @@ class Agency(models.Model):
     website_uri = models.CharField(
         verbose_name=_('Website URL'),
         max_length=100,
-        blank=False,
+        blank=True,
+        null=True,
         validators=[
             URLValidator(
                 message=_('Please enter a valid URL')
@@ -55,7 +56,7 @@ class Agency(models.Model):
 
     logo = models.FileField(
         verbose_name=_('Website Logo'),
-        blank=False,
+        blank=True,
         null=True,
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
@@ -68,7 +69,7 @@ class Agency(models.Model):
 
     qr_code = models.FileField(
         verbose_name=_('Website QR Code'),
-        blank=False,
+        blank=True,
         null=True,
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
@@ -163,6 +164,10 @@ class Agency(models.Model):
             self.amount_of_biodata < self.amount_of_biodata_allowed and
             self.amount_of_biodata_allowed != 0
         )
+
+    class Meta:
+        verbose_name = 'Agency'
+        verbose_name_plural = 'Agencies'
         
 # Models which are one to one with Agency
 class AgencyOperatingHours(models.Model):
@@ -233,6 +238,14 @@ class AgencyOperatingHours(models.Model):
         blank=True
     )
 
+
+    def __str__(self):
+        return f'Operating Hours for {self.agency.name}'
+
+    class Meta:
+        verbose_name = 'Agency Operating Hour'
+        verbose_name_plural = 'Agency Operating Hours'
+
 # Models which are many to one with Agency
 class AgencyOwner(models.Model):
     user = models.OneToOneField(
@@ -247,6 +260,13 @@ class AgencyOwner(models.Model):
         on_delete=models.CASCADE,
         related_name='owners'
     )
+
+    def __str__(self):
+        return self.agency.name + ' Owner'
+
+    class Meta:
+        verbose_name = 'Agency Owner'
+        verbose_name_plural = 'Agency Owners'
 
 class AgencyBranch(models.Model):
     MAIN_BRANCH_CHOICES = (
@@ -332,6 +352,13 @@ class AgencyBranch(models.Model):
         default=True
     )
 
+    def __str__(self):
+        return self.agency.name + ', ' + self.name
+
+    class Meta:
+        verbose_name = 'Agency Branch'
+        verbose_name_plural = 'Agency Branches'
+
 class AgencyPlan(models.Model):
     class PlanTypeChoices(models.TextChoices):
         BIODATA_100 = 'B100', _('100 Biodata')
@@ -376,15 +403,9 @@ class AgencyEmployee(models.Model):
         related_name='agency_employee'
     )
 
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        max_length=50,
-        blank=False
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
-        max_length=50,
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
         blank=False
     )
 
@@ -406,6 +427,13 @@ class AgencyEmployee(models.Model):
         verbose_name=_('EA personnel number'),
         max_length=50,
         blank=False
+    )
+
+    email = models.EmailField(
+        verbose_name=_('Employee\'s Email Address'),
+        null=True,
+        blank=True,
+        help_text=_('Optional')
     )
 
     agency = models.ForeignKey(
@@ -433,9 +461,16 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
+    def __str__(self):
+        return self.ea_personnel_number + ' - ' + self.name
+
+    class Meta:
+        verbose_name = 'Agency Employee'
+        verbose_name_plural = 'Agency Employees'
+
 class PotentialAgency(models.Model):
     name = models.CharField(
-        verbose_name=_('Company Name'),
+        verbose_name=_('Agency Name'),
         max_length=100,
         blank=False
     )
@@ -454,7 +489,7 @@ class PotentialAgency(models.Model):
 
     contact_number = models.CharField(
         verbose_name=_('Contact Number'),
-        max_length=50,
+        max_length=8,
         blank=False,
         validators=[
             RegexValidator(
@@ -463,6 +498,20 @@ class PotentialAgency(models.Model):
             )
         ]
         # This regex validator checks if the contact number provided is all 
+        # numbers.
+    )
+
+    office_number = models.CharField(
+        verbose_name=_('Office Number'),
+        max_length=8,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid office number')
+            )
+        ]
+        # This regex validator checks if the office number provided is all 
         # numbers.
     )
 

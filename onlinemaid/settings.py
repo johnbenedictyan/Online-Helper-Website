@@ -293,5 +293,15 @@ SITE_ID = 1
 # )
 
 # Pagination
-MAID_PAGINATE_BY = 10
-AGENCY_PAGINATE_BY = 10
+MAID_PAGINATE_BY = 12
+AGENCY_PAGINATE_BY = 12
+
+# Agency Employee Fake Email Provider
+# This variable is what will be appended to agency employee's user model's email
+# field. 
+# E.G. ea_personnel_number = 'abc123', the email in the user's model would be 
+# 'abc123@<AGENCY_EMPLOYEE_FEP>'. 
+# So during authentication, we just need to split the string by the @ symbol and
+# extract the ea personnel number for authentication.
+
+AGENCY_EMPLOYEE_FEP = 'example.com'

@@ -72,68 +72,92 @@ class EmployerForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-form'
 
-        ef_fieldset_all = Fieldset(
-            # Legend for form
-            'Employer Details',
-            # Form fields
-            'agency_employee',
-            'employer_name',
-            'employer_email',
-            'employer_mobile_number',
-            'employer_nric',
-            'employer_address_1',
-            'employer_address_2',
-            'employer_post_code',
-        )
-        ef_fieldset_exclude_agencyemployee = Fieldset(
-            # Legend for form
-            'Employer Details',
-            # Form fields
-            'employer_name',
-            'employer_email',
-            'employer_mobile_number',
-            'employer_nric',
-            'employer_address_1',
-            'employer_address_2',
-            'employer_post_code',
+        self.helper.layout = Layout(
+            HTML(
+                """
+                <h3 class="mb-3">Employer Details</h3>
+            """),
+            Row(
+                Column(
+                    'employer_name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    # Note: Current position in layout helper object is self.helper.layout.fields[1][1].
+                    # If position is changed, MUST update 'del self.helper.layout.fields[1][1]' line
+                    # as this removes this object from the layout helper.
+                    'agency_employee',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_email',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_mobile_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_nric',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_address_1',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_address_2',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_post_code',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
         )
 
         if self.agency_user_group==AG_OWNERS:
-            self.helper.layout = Layout(
-                ef_fieldset_all,
-                Submit('submit', 'Submit')
-            )
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_owner.agency
                 )
             )
         elif self.agency_user_group==AG_ADMINS:
-            self.helper.layout = Layout(
-                ef_fieldset_all,
-                Submit('submit', 'Submit')
-            )
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_employee.agency
                 )
             )
         elif self.agency_user_group==AG_MANAGERS:
-            self.helper.layout = Layout(
-                ef_fieldset_all,
-                Submit('submit', 'Submit')
-            )
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     branch=self.user_obj.agency_employee.branch
                 )
             )
         else:
+            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
-            self.helper.layout = Layout(
-                ef_fieldset_exclude_agencyemployee,
-                Submit('submit', 'Submit')
-            )
     
     def check_queryset(self, queryset, error_msg):
         for employer_obj in queryset:
@@ -444,7 +468,7 @@ class EmployerDocForm(forms.ModelForm):
                 Column(
                     PrependedText(
                         'ca_deposit', '$',
-                        min='0', max='1000',
+                        min='0', max='10000',
                     ),
                     css_class='form-group col-md-6'
                 ),
@@ -882,7 +906,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             HTML('''
-                <h3>Document Status</h3>
+                <h3>FDW Status</h3>
                 '''
             ),
             Row(

@@ -29,14 +29,8 @@ class GeneralEnquiry(models.Model):
         null=True
     )
     
-    first_name = models.CharField(
-        verbose_name=_('First Name'),
-        blank=False,
-        max_length=100
-    )
-
-    last_name = models.CharField(
-        verbose_name=_('Last Name'),
+    name = models.CharField(
+        verbose_name=_('Name'),
         blank=False,
         max_length=100
     )
@@ -113,9 +107,10 @@ class GeneralEnquiry(models.Model):
         blank=False
     )
 
-    remarks = models.TextField(
+    remarks = models.CharField(
         verbose_name=_('Remarks'),
-        blank=False
+        blank=False,
+        max_length=3000
     )
 
     active = models.BooleanField(
