@@ -62,8 +62,8 @@
                             <h3>Employer <br/>Summary</h3>
                             <i class="fas fa-users fa-5x my-3"></i>
                             <h3 class="card-title">{{employers.current}}</h3>
-                            <h5><a href="#" class="card-link">Add Employer</a></h5>
-                            <h5><a href="#" class="card-link">View Employers</a></h5>
+                            <h5><a href="{% url 'employer_create_route' %}" class="card-link">Add Employer</a></h5>
+                            <h5><a href="{% url 'employer_list_route' %}" class="card-link">View Employers</a></h5>
                         </div>
                     </div>
                 </div>
