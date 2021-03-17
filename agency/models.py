@@ -347,7 +347,7 @@ class AgencyBranch(models.Model):
     )
 
     def __str__(self):
-        return self.agency.name + ', ' + self.name
+        return self.agency.name + ', ' + self.name if self.name else self.agency + ' branch'
 
     class Meta:
         verbose_name = 'Agency Branch'
