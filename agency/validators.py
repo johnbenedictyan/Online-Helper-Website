@@ -19,3 +19,11 @@ def validate_postcode(value):
             err_msg,
             params={'value': value},
         )
+
+    # Numerical digits check has passed validation, so check sector is valid
+    # https://www.ura.gov.sg/realEstateIIWeb/resources/misc/list_of_postal_districts.htm
+    if int(value[:2])<1 or int(value[:2])>82:
+        raise ValidationError(
+            err_msg,
+            params={'value': value},
+        )
