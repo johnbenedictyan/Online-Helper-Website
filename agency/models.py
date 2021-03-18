@@ -10,6 +10,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
+from onlinemaid.helper_functions import get_sg_region
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from within the app
@@ -307,6 +308,7 @@ class AgencyBranch(models.Model):
     area = models.CharField(
         verbose_name=_('Area'),
         max_length=2,
+        editable=False,
         blank=False,
         choices=AreaChoices.choices,
         default=AreaChoices.CENTRAL
@@ -350,6 +352,13 @@ class AgencyBranch(models.Model):
 
     def __str__(self):
         return self.agency.name + ', ' + self.name if self.name else self.agency.name + ' branch'
+
+    def save(self, *args, **kwargs):
+        sg_region = get_sg_region(self.postal_code)
+        if not sg_region:
+            sg_region = AreaChoices.choices[0][0]
+        self.area = sg_region
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Agency Branch'
