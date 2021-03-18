@@ -7,10 +7,12 @@ const MO = (node_settings, callback_function) => {
         callback_function();
     });
 
-    observer.observe(
-        node_settings.nodeName,
-        node_settings.settings
-    );
+    if(node_settings.nodeName){
+        observer.observe(
+            node_settings.nodeName,
+            node_settings.settings
+        );
+    }
 }
 
 // Django Filters range slider
@@ -229,25 +231,25 @@ const displayContent = function(res) {
     });
 }
 
-// function populateFeaturedMaids(nationality='ANY') {
-//     let csrftoken = Cookies.get('csrftoken');
-//     console.log(csrftoken);
-//     axios({
-//         method: 'post',
-//         mode: 'same-origin',
-//         headers: { 'X-CSRFToken': csrftoken },
-//         url: '/maids/view/featured/',
-//         data: {
-//             'nationality': nationality
-//         }
-//     }).then(function (res) {
-//         if (res.data.count == 0) {
-//             displayEmptyContent();
-//         } else {
-//             displayContent(res);
-//         }
-//     })
-// }
+function populateFeaturedMaids(nationality='ANY') {
+    let csrftoken = Cookies.get('csrftoken');
+    console.log(csrftoken);
+    axios({
+        method: 'post',
+        mode: 'same-origin',
+        headers: { 'X-CSRFToken': csrftoken },
+        url: '/maids/view/featured/',
+        data: {
+            'nationality': nationality
+        }
+    }).then(function (res) {
+        if (res.data.count == 0) {
+            displayEmptyContent();
+        } else {
+            displayContent(res);
+        }
+    })
+}
 
 // Maid Carousel
 const maidCarousel = function(){
