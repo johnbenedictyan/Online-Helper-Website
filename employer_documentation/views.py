@@ -807,7 +807,7 @@ class PdfFileAgencyView(
         elif isinstance(self.object, EmployerDoc):
             try:
                 return FileResponse(
-                    open(getattr(self.object.rn_pdfarchive_ed, self.field_name).path, 'rb'),
+                    getattr(self.object.rn_pdfarchive_ed, self.field_name).open(),
                     as_attachment=self.as_attachment,
                     filename=self.filename,
                     content_type='application/pdf'
