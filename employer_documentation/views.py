@@ -47,8 +47,6 @@ from onlinemaid.constants import (
     AG_SALES,
 )
 
-from onlinemaid.storage_backends import EmployerDocumentationStorage
-
 # Start of Views
 
 # List Views
@@ -791,11 +789,10 @@ class PdfFileAgencyView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        storage = EmployerDocumentationStorage()
         if isinstance(self.object, JobOrder):
             try:
                 return FileResponse(
-                    storage.open(self.object.job_order_pdf.name),
+                    self.object.job_order_pdf.open(),
                     as_attachment=self.as_attachment,
                     filename=self.filename,
                     content_type='application/pdf'
@@ -810,7 +807,7 @@ class PdfFileAgencyView(
         elif isinstance(self.object, EmployerDoc):
             try:
                 return FileResponse(
-                    open(getattr(self.object.rn_pdfarchive_ed, self.field_name).path, 'rb'),
+                    getattr(self.object.rn_pdfarchive_ed, self.field_name).open(),
                     as_attachment=self.as_attachment,
                     filename=self.filename,
                     content_type='application/pdf'
