@@ -225,6 +225,12 @@ $black: #000 !default;
 .agency{
     &-card {
         height: 44rem;
+        cursor: pointer;
+        .card-title {
+            @media screen and (max-width:1920px) {
+                height: 5rem;
+            }
+        }
     }
 
     &-thumbnail {
