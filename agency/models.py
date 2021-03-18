@@ -14,6 +14,7 @@ from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from within the app
 from .constants import AreaChoices
+from .validators import validate_postcode
 
 # Utiliy Classes and Functions
 
@@ -299,7 +300,8 @@ class AgencyBranch(models.Model):
         verbose_name=_('Postal Code'),
         max_length=25,
         blank=False,
-        null=True
+        null=True,
+        validators=[validate_postcode],
     )
 
     area = models.CharField(
