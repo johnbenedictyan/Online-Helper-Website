@@ -513,9 +513,9 @@ class EmployerDocSigSlugUpdateView(
     form_class = EmployerDocSigSlugForm
     pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
-    model_field_name = None # Assign in urls.py
-    form_fields = None # Assign in urls.py
-    success_url_route_name = None # Assign in urls.py
+    model_field_name = None # Aslog in urls.py
+    form_fields = None # Aslog in urls.py
+    success_url_route_name = None # Aslog in urls.py
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

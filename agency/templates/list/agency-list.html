@@ -29,21 +29,17 @@
                     {% for agency in agencies %}
                         <div class="col mb-4">
                             <div class="card agency-card">
-                                <div class="m-2 agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
+                                <div class="agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
                                 <div class="card-body">
                                     <h5 class="card-title">{{agency.name}}</h5>
-                                    <p class="card-text text-muted">{{agency.license_number}}</p>
+                                    <p class="card-text text-muted mb-0">{{agency.license_number}}</p>
                                     <hr>
-                                    <h6 class="card-text text-muted mb-1">Address</h6>
                                     <address>
                                         {{ agency.get_main_office.address_1 }}<br/>
                                         {{ agency.get_main_office.address_2 }}<br/>
+                                        Singapore {{ agency.get_main_office.postal_code }}
                                     </address>
-                                    <h6 class="card-text text-muted mb-1">Postal Code</h6>
-                                    <p class="card-text">Singapore {{ agency.get_main_office.postal_code }}</p>
-                                    <h6 class="card-text text-muted mb-1">Tel</h6>
                                     <p class="card-text">{{agency.get_main_office_number}}</p>
-                                    <h6 class="card-text text-muted mb-1">Email</h6>
                                     <p class="card-text mb-0">{{agency.sales_email}}</p>
                                     <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
                                 </div>
