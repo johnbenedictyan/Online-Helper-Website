@@ -77,7 +77,7 @@ class SignInForm(AuthenticationForm):
                 Column(
                     Submit(
                         'submit',
-                        'Sign In',
+                        'Log in',
                         css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-12 text-center'
