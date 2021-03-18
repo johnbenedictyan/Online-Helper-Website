@@ -230,7 +230,7 @@ class EmployerDoc(models.Model):
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
-        editable=False,
+        # editable=False,
         choices=TrueFalseChoices(
             'Yes, spouse required',
             'No, spouse not required'
@@ -243,8 +243,8 @@ class EmployerDoc(models.Model):
             'No, sponsor not required'
         ),
         default=False,
-        blank=True,
-        null=True,
+        # blank=True,
+        # null=True,
     )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
@@ -680,7 +680,7 @@ class EmployerDoc(models.Model):
         self.version += 1
 
         # Spouse is required if monthly_combined_income < S$3,000 per month
-        self.spouse_required = True if self.monthly_combined_income<3 else False
+        # self.spouse_required = True if self.monthly_combined_income<3 else False
         super().save(*args, **kwargs)
 
     def calc_admin_cost(self):
