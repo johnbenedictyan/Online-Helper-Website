@@ -253,7 +253,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
-        exclude = ['employer','sponsor_required',]
+        exclude = ['employer',]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -314,17 +314,17 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            # Row(
-            #     Column(
-            #         'spouse_required',
-            #         css_class='form-group col-md-6'
-            #     ),
-            #     Column(
-            #         'sponsor_required',
-            #         css_class='form-group col-md-6'
-            #     ),
-            #     css_class='form-row'
-            # ),
+            Row(
+                Column(
+                    'spouse_required',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_required',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
             # Service Fee Schedule - Form A
             HTML(
                 """
