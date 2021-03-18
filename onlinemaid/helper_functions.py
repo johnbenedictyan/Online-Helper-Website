@@ -87,7 +87,18 @@ def populate_necessary_rows():
         Group.objects.get_or_create(
             name=AG
         )
-    
+
+def get_sg_region(post_code):
+    from onlinemaid.sg_regions import SG_REGIONS
+
+    if isinstance(post_code, str) and len(post_code)==6:
+        for k,v in SG_REGIONS.items():
+            if post_code[:2]==k:
+                return v.get('region_code')
+        return None
+    else:
+        return None
+
 def maid_seed_data():
     from agency.models import Agency
 
