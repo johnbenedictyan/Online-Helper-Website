@@ -36,7 +36,7 @@ from .forms import (
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
     MaidDietaryRestrictionForm, MaidEmploymentHistoryForm, MaidUpdateForm, 
     MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
-    MaidAgencyFeeTransactionForm
+    MaidAgencyFeeTransactionForm, MaidEmploymentHistoryFormSet
 )
 
 from .models import (
@@ -433,23 +433,23 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin,
+class MaidEmploymentHistoryCreate(#AgencyLoginRequiredMixin,
                                   SuccessMessageMixin, CreateView):
     context_object_name = 'maid_employment_history'
-    form_class = MaidEmploymentHistoryForm
+    form_class = MaidEmploymentHistoryFormSet
     http_method_names = ['get','post']
     model = MaidEmploymentHistory
     template_name = 'create/maid-employment-history-create.html'
     success_url = reverse_lazy('')
     success_message = 'Maid employment history created'
 
-    def form_valid(self, form):
-        form.instance.maid = Maid.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.maid = Maid.objects.get(
+    #         pk = self.kwargs.get(
+    #             self.pk_url_kwarg
+    #         )
+    #     )
+    #     return super().form_valid(form)
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
