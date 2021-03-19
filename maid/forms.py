@@ -3,6 +3,7 @@ import re
 
 # Imports from django
 from django import forms
+from django.forms import formset_factory, inlineformset_factory
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -813,6 +814,14 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+
+MaidEmploymentHistoryFormSet = inlineformset_factory(
+    model = MaidEmploymentHistory,
+    parent_model = Maid,
+    form = MaidEmploymentHistoryForm,
+    max_num = 10,
+    extra=10,
+)
 
 class MaidAgencyFeeTransactionForm(forms.ModelForm):
     class Meta:
