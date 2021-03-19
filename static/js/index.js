@@ -22,12 +22,14 @@ const rangeSliderInitialisation = function(){
     });
     var rangeSlider = document.getElementById('slider-range');
     if (rangeSlider != null) {
+        const rangeMin = 23;
+        const rangeMax = 60;
         const rangeSliderSetting = {
-            start: [20, 40],
+            start: [rangeMin, rangeMax],
             step: 1,
             range: {
-                'min': [20],
-                'max': [40]
+                'min': [rangeMin],
+                'max': [rangeMax]
             },
             format: wNumb({
                 decimals: 0
