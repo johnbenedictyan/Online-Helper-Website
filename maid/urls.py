@@ -19,7 +19,7 @@ from .views import MaidDetail, PdfMaidBiodataView
 
 ## Create Views
 from .views import (
-    MaidCreate
+    MaidCreate, MaidEmploymentHistoryCreate
 )
 
 ## Update Views
@@ -48,6 +48,11 @@ urlpatterns = [
                 '',
                 MaidCreateFormView.as_view(),
                 name='maid_create'
+            ),
+            path(
+                'employment/',
+                MaidEmploymentHistoryCreate.as_view(),
+                name='maid_employment_create'
             )
         ])
     ),
