@@ -363,6 +363,11 @@ class MaidSkillsEvaluationMethod(models.TextChoices):
     PERSON_OBS = 'PERO', _('''Interviewed in person and also made observation 
                            of FDW in the areas of work listed in table''')
     
+class MaidCreatedOnChoices(models.IntegerChoices):
+    THREE_DAYS = 3, _('Last 3 days')
+    SEVEN_DAYS = 7, _('Last 7 days')
+    FIFTEEN_DAYS = 15, _('Last 15 days')
+
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes
