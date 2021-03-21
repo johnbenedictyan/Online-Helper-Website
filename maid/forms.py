@@ -776,10 +776,19 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
         model = MaidEmploymentHistory
         exclude = ['maid']
 
+MaidEmploymentHistoryFormSet = inlineformset_factory(
+    parent_model = Maid,
+    model = MaidEmploymentHistory,
+    form = MaidEmploymentHistoryForm,
+    extra=10,
+    max_num = 10,
+)
+
+class MaidEmploymentHistoryFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
+        self.form_method = 'post'
+        self.layout = Layout(
             Row(
                 Column(
                     'country',
@@ -802,26 +811,20 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Purchase',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
+            # Row(
+            #     Column(
+            #         Submit(
+            #             'submit',
+            #             'Submit',
+            #             css_class="btn btn-primary w-50"
+            #         ),
+            #         css_class='form-group col-12 text-center'
+            #     ),
+            #     css_class='form-row'
+            # )
         )
+        self.render_required_fields = True
 
-MaidEmploymentHistoryFormSet = inlineformset_factory(
-    parent_model = Maid,
-    model = MaidEmploymentHistory,
-    form = MaidEmploymentHistoryForm,
-    extra=10,
-    max_num = 10,
-)
 
 class MaidAgencyFeeTransactionForm(forms.ModelForm):
     class Meta:

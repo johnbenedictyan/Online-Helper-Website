@@ -13,7 +13,12 @@
     <div class="container">
         <h1>Create employment history</h1>
         <form method="post" enctype="multipart/form-data">
-            {% crispy form %}
+
+            {% csrf_token %}
+            {{ history|crispy }}
+
+            <input type="submit" value="Submit">
+
         </form>
     </div>
 {% endblock maid_section %}
