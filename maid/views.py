@@ -433,7 +433,7 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(#AgencyLoginRequiredMixin,
+class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin,
                                   SuccessMessageMixin, CreateView):
     context_object_name = 'maid_employment_history'
     form_class = MaidEmploymentHistoryFormSet
@@ -443,13 +443,22 @@ class MaidEmploymentHistoryCreate(#AgencyLoginRequiredMixin,
     success_url = reverse_lazy('')
     success_message = 'Maid employment history created'
 
-    # def form_valid(self, form):
-    #     form.instance.maid = Maid.objects.get(
-    #         pk = self.kwargs.get(
-    #             self.pk_url_kwarg
-    #         )
-    #     )
-    #     return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['history'] = MaidEmploymentHistoryFormSet(self.request.POST)
+        else:
+            context['history'] = MaidEmploymentHistoryFormSet()
+        
+        return context
+
+    def form_valid(self, form):
+        form.instance.maid = Maid.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        return super().form_valid(form)
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
