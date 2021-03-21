@@ -270,7 +270,7 @@ class MaidDietaryRestriction(models.Model):
     )
 
 class MaidEmploymentHistory(models.Model):
-    class MaidEmploymentCounty(models.TextChoices):
+    class MaidEmploymentCountry(models.TextChoices):
         SINGAPORE = 'SG', _('SINGAPORE')
 
     maid = models.ForeignKey(
@@ -291,7 +291,7 @@ class MaidEmploymentHistory(models.Model):
         verbose_name=_("Country of employment"),
         max_length=3,
         blank=False,
-        choices=MaidEmploymentCounty.choices
+        choices=MaidEmploymentCountry.choices
     )
 
     work_duration = models.DurationField(
