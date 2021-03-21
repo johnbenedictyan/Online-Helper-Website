@@ -226,6 +226,9 @@ class MaidWorkDuty(models.Model):
         choices=WorkDutyChoices.choices
     )
 
+    def __str__(self):
+        return self.get_name_display()
+
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     class FoodPreferenceChoices(models.TextChoices):
