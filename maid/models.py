@@ -271,7 +271,10 @@ class MaidDietaryRestriction(models.Model):
 
 class MaidEmploymentHistory(models.Model):
     class MaidEmploymentCountry(models.TextChoices):
-        SINGAPORE = 'SG', _('SINGAPORE')
+        # https://en.wikipedia.org/wiki/ISO_3166-1
+        SINGAPORE = 'SGP', _('Singapore')
+        HONG_KONG = 'HKG', _('Hong Kong')
+        MALAYSIA = 'MYS', _('Malaysia')
 
     maid = models.ForeignKey(
         Maid,
