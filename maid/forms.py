@@ -816,11 +816,11 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
         )
 
 MaidEmploymentHistoryFormSet = inlineformset_factory(
-    model = MaidEmploymentHistory,
     parent_model = Maid,
+    model = MaidEmploymentHistory,
     form = MaidEmploymentHistoryForm,
-    max_num = 10,
     extra=10,
+    max_num = 10,
 )
 
 class MaidAgencyFeeTransactionForm(forms.ModelForm):
