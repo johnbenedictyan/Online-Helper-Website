@@ -1,6 +1,7 @@
 # Imports from django
 from django import forms
 from django.db.models import Q
+from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -15,6 +16,7 @@ class AgencyFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(
         label='Search',
         method='custom_agency_filter',
+        widget=TextInput(attrs={'placeholder': 'Agency, address, tel...'}),
     )
     branches__area = django_filters.ChoiceFilter(
         label = _('Location'),
