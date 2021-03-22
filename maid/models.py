@@ -300,19 +300,12 @@ class MaidEmploymentHistory(models.Model):
         choices=MaidEmploymentCountry.choices
     )
 
-    work_duration = models.DurationField(
-        verbose_name=_('Employment duration'),
-        blank=True,
-        editable=False
-    )
-
     work_duties = models.ManyToManyField(
         MaidWorkDuty
     )
 
-    def save(self, *args, **kwargs):
-        self.work_duration = self.end_date - self.start_date
-        super().save(self, *args, **kwargs)
+    def work_duration(self):
+        return self.end_date - self.start_date
 
 class MaidAgencyFeeTransaction(models.Model):
     TRANSCATION_CHOICES = (
