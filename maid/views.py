@@ -452,10 +452,10 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
 #         formset = MaidEmploymentHistoryFormSet(request.POST, instance=maid)
 #         if formset.is_valid():
 #             formset.save()
-#             return HttpResponseRedirect(reverse_lazy('maid_employment_create', kwargs={'pk':maid.pk}))
+#             return HttpResponseRedirect(reverse_lazy('maid_employment_formset', kwargs={'pk':maid.pk}))
 
 from django.views.generic.detail import SingleObjectMixin
-class MaidEmploymentHistoryCreate(SingleObjectMixin, FormView):
+class MaidEmploymentHistoryFormSetView(SingleObjectMixin, FormView):
     model = Maid
     template_name = 'create/maid-employment-history-create.html'
 
@@ -482,7 +482,7 @@ class MaidEmploymentHistoryCreate(SingleObjectMixin, FormView):
         return self.get_success_url()
 
     def get_success_url(self):
-        return HttpResponseRedirect(reverse_lazy('maid_employment_create', kwargs={'pk':self.object.pk}))
+        return HttpResponseRedirect(reverse_lazy('maid_employment_formset', kwargs={'pk':self.object.pk}))
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
