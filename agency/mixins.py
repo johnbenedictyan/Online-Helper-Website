@@ -154,6 +154,7 @@ class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
 
 class GetAuthorityMixin:
     def get_authority(self):
+        authority = agency_id = ''
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
