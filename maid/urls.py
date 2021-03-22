@@ -50,7 +50,7 @@ urlpatterns = [
                 name='maid_create'
             ),
             path(
-                'employment/',
+                '<int:pk>/employment/',
                 MaidEmploymentHistoryCreate.as_view(),
                 name='maid_employment_create'
             )
