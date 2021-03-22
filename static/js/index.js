@@ -22,10 +22,14 @@ const rangeSliderInitialisation = function(){
     });
     var rangeSlider = document.getElementById('slider-range');
     if (rangeSlider != null) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const ageMin = Number(urlParams.get('age_min'));
+        const ageMax = Number(urlParams.get('age_max'));
         const rangeMin = 23;
         const rangeMax = 60;
         const rangeSliderSetting = {
-            start: [rangeMin, rangeMax],
+            start: [ageMin ? ageMin : rangeMin, ageMax ? ageMax : rangeMax],
             step: 1,
             range: {
                 'min': [rangeMin],
