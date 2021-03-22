@@ -29,8 +29,7 @@
                 <hr>
                 <h5>
                     {% if employment_form.instance.id %}
-                        {{ employment_form.instance.work_duration }}
-                        Previous employment: {{ employment_form.instance.start_date|date:"d/m/Y" }}-{{ employment_form.instance.end_date|date:"d/m/Y" }}
+                        Previous employment:&emsp;{{ employment_form.instance.get_country_display }}, {{ employment_form.instance.work_duration }}
                     {% else %}
                         Add past employment
                     {% endif %}
