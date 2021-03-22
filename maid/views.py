@@ -34,7 +34,7 @@ from .forms import (
     MaidCreationForm, MaidPersonalDetailsForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
-    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm, MaidUpdateForm, 
+    MaidDietaryRestrictionForm, MaidUpdateForm, 
     MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
     MaidAgencyFeeTransactionForm, MaidEmploymentHistoryFormSet
 )
@@ -433,26 +433,56 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                                  SuccessMessageMixin, TemplateView):
-    pk_url_kwarg = 'pk'
+# class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
+#                                   SuccessMessageMixin, TemplateView):
+#     pk_url_kwarg = 'pk'
+#     template_name = 'create/maid-employment-history-create.html'
+#     success_url = reverse_lazy('')
+#     success_message = 'Maid employment history created'
+
+#     def get(self, request, *args, **kwargs):
+#         maid = Maid.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
+#         context = self.get_context_data(**kwargs)
+#         formset = MaidEmploymentHistoryFormSet(instance=maid)
+#         context['formset'] = formset
+#         return self.render_to_response(context)
+        
+#     def post(self, request, *args, **kwargs):
+#         maid = Maid.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
+#         formset = MaidEmploymentHistoryFormSet(request.POST, instance=maid)
+#         if formset.is_valid():
+#             formset.save()
+#             return HttpResponseRedirect(reverse_lazy('maid_employment_create', kwargs={'pk':maid.pk}))
+
+from django.views.generic.detail import SingleObjectMixin
+class MaidEmploymentHistoryCreate(SingleObjectMixin, FormView):
+    model = Maid
     template_name = 'create/maid-employment-history-create.html'
-    success_url = reverse_lazy('')
-    success_message = 'Maid employment history created'
 
     def get(self, request, *args, **kwargs):
-        maid = Maid.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
-        context = self.get_context_data(**kwargs)
-        formset = MaidEmploymentHistoryFormSet(instance=maid)
-        context['formset'] = formset
-        return self.render_to_response(context)
-        
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
-        maid = Maid.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
-        formset = MaidEmploymentHistoryFormSet(request.POST, instance=maid)
-        if formset.is_valid():
-            formset.save()
-            return HttpResponseRedirect(reverse_lazy('maid_employment_create', kwargs={'pk':maid.pk}))
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        return MaidEmploymentHistoryFormSet(**self.get_form_kwargs(), instance=self.object)
+
+    def form_valid(self, form):
+        form.save()
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Changes were saved.'
+        )
+
+        return self.get_success_url()
+
+    def get_success_url(self):
+        return HttpResponseRedirect(reverse_lazy('maid_employment_create', kwargs={'pk':self.object.pk}))
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
@@ -708,23 +738,23 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin,
             }
         )
 
-class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin,
-                                  SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_employment_history'
-    form_class = MaidEmploymentHistoryForm
-    http_method_names = ['get','post']
-    model = MaidEmploymentHistory
-    template_name = 'update/maid-employment-history-update.html'
-    success_url = reverse_lazy('')
-    success_message = 'Maid employment history updated'
+# class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin,
+#                                   SuccessMessageMixin, UpdateView):
+#     context_object_name = 'maid_employment_history'
+#     form_class = MaidEmploymentHistoryForm
+#     http_method_names = ['get','post']
+#     model = MaidEmploymentHistory
+#     template_name = 'update/maid-employment-history-update.html'
+#     success_url = reverse_lazy('')
+#     success_message = 'Maid employment history updated'
 
-    def get_object(self, queryset=None):
-        return MaidEmploymentHistory.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            ),
-            maid__agency = self.request.user.agency_owner.agency
-        )
+#     def get_object(self, queryset=None):
+#         return MaidEmploymentHistory.objects.get(
+#             pk = self.kwargs.get(
+#                 self.pk_url_kwarg
+#             ),
+#             maid__agency = self.request.user.agency_owner.agency
+#         )
 
 class MaidAgencyFeeTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
                                   SuccessMessageMixin, UpdateView):
