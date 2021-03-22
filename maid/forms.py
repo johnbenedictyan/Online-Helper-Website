@@ -771,59 +771,60 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
             )
         )
 
-class MaidEmploymentHistoryForm(forms.ModelForm):
-    class Meta:
-        model = MaidEmploymentHistory
-        exclude = ['maid']
+# class MaidEmploymentHistoryForm(forms.ModelForm):
+#     class Meta:
+#         model = MaidEmploymentHistory
+#         exclude = ['maid']
 
 MaidEmploymentHistoryFormSet = inlineformset_factory(
     parent_model = Maid,
     model = MaidEmploymentHistory,
-    form = MaidEmploymentHistoryForm,
-    extra=10,
-    max_num = 10,
+    fields=['country','start_date','end_date','work_duties',]
+    # form = MaidEmploymentHistoryForm,
+    # extra=10,
+    # max_num = 10,
 )
 
-class MaidEmploymentHistoryFormSetHelper(FormHelper):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.form_method = 'post'
-        self.layout = Layout(
-            Row(
-                Column(
-                    'country',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'work_duties',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'start_date',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'end_date',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            # Row(
-            #     Column(
-            #         Submit(
-            #             'submit',
-            #             'Submit',
-            #             css_class="btn btn-primary w-50"
-            #         ),
-            #         css_class='form-group col-12 text-center'
-            #     ),
-            #     css_class='form-row'
-            # )
-        )
-        self.render_required_fields = True
+# class MaidEmploymentHistoryFormSetHelper(FormHelper):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.form_method = 'post'
+#         self.layout = Layout(
+#             Row(
+#                 Column(
+#                     'country',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     'work_duties',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column(
+#                     'start_date',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     'end_date',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             # Row(
+#             #     Column(
+#             #         Submit(
+#             #             'submit',
+#             #             'Submit',
+#             #             css_class="btn btn-primary w-50"
+#             #         ),
+#             #         css_class='form-group col-12 text-center'
+#             #     ),
+#             #     css_class='form-row'
+#             # )
+#         )
+#         self.render_required_fields = True
 
 
 class MaidAgencyFeeTransactionForm(forms.ModelForm):
