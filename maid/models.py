@@ -12,7 +12,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import calculate_age, decrypt_string
+from onlinemaid.helper_functions import calculate_age, decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
@@ -305,7 +305,8 @@ class MaidEmploymentHistory(models.Model):
     )
 
     def work_duration(self):
-        return self.end_date - self.start_date
+        duration = self.end_date - self.start_date
+        return humanise_time_duration(duration)
 
 class MaidAgencyFeeTransaction(models.Model):
     TRANSCATION_CHOICES = (
