@@ -433,13 +433,23 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
+<<<<<<< HEAD
 class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
                                   SuccessMessageMixin, TemplateView):
     pk_url_kwarg = 'pk'
+=======
+class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin,
+                                  SuccessMessageMixin, CreateView):
+    context_object_name = 'maid_employment_history'
+    form_class = MaidEmploymentHistoryFormSet
+    http_method_names = ['get','post']
+    model = MaidEmploymentHistory
+>>>>>>> e5f097f696f383abcba3dc561d34833df26c59fd
     template_name = 'create/maid-employment-history-create.html'
     success_url = reverse_lazy('')
     success_message = 'Maid employment history created'
 
+<<<<<<< HEAD
     def get(self, request, *args, **kwargs):
         maid = Maid.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
         context = self.get_context_data(**kwargs)
@@ -453,6 +463,24 @@ class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
         if formset.is_valid():
             formset.save()
             return HttpResponseRedirect(reverse_lazy('maid_employment_create', kwargs={'pk':maid.pk}))
+=======
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['history'] = MaidEmploymentHistoryFormSet(self.request.POST)
+        else:
+            context['history'] = MaidEmploymentHistoryFormSet()
+        
+        return context
+
+    def form_valid(self, form):
+        form.instance.maid = Maid.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        return super().form_valid(form)
+>>>>>>> e5f097f696f383abcba3dc561d34833df26c59fd
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
