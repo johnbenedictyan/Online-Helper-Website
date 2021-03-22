@@ -285,12 +285,12 @@ class MaidEmploymentHistory(models.Model):
         related_name='employment_history'
     )
 
-    start_date = models.DateTimeField(
-        verbose_name="Maid employment's start date"
+    start_date = models.DateField(
+        verbose_name="Past employment's start date"
     )
 
-    end_date = models.DateTimeField(
-        verbose_name="Maid employment's end date"
+    end_date = models.DateField(
+        verbose_name="Past employment's end date"
     )
 
     country = models.CharField(
