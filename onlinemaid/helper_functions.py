@@ -121,7 +121,10 @@ def humanise_time_duration(duration):
 
     if duration.days >= 365:
         years = math.floor(duration.days/365)
-        return str(years) + " year" if years == 1 else str(years) + " years"
+        months = math.floor(duration.days%365/(365/12))
+        years_str = str(years) + " year" if years == 1 else str(years) + " years"
+        months_str = str(months) + " month" if months == 1 else str(months) + " months"
+        return years_str + " and " + months_str if months else years_str
 
 def maid_seed_data():
     from agency.models import Agency
