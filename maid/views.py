@@ -455,9 +455,12 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
 #             return HttpResponseRedirect(reverse_lazy('maid_employment_formset', kwargs={'pk':maid.pk}))
 
 from django.views.generic.detail import SingleObjectMixin
-class MaidEmploymentHistoryFormSetView(SingleObjectMixin, FormView):
+class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
+            SpecificAgencyMaidLoginRequiredMixin, SingleObjectMixin, FormView):
     model = Maid
     template_name = 'create/maid-employment-history-create.html'
+    authority = ''
+    agency_id = ''
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
