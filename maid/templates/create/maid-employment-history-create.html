@@ -15,7 +15,11 @@
         <form method="post" enctype="multipart/form-data">
 
             {% csrf_token %}
-            {{ history|crispy }}
+            {{ formset.management_form }}
+            {% for form in formset %}
+            <div>{{ form }}</div>
+            <hr>
+            {% endfor %}
 
             <input type="submit" value="Submit">
 
