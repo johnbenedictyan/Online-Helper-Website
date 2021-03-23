@@ -11,10 +11,13 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View, TemplateView
 from django.views.generic.base import RedirectView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import (
     CreateView, FormView, UpdateView, DeleteView
 )
+
+# 3rd party
+from crispy_forms.layout import Submit
 
 # Imports from project-wide files
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
@@ -36,7 +39,8 @@ from .forms import (
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
     MaidDietaryRestrictionForm, MaidUpdateForm, 
     MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
-    MaidAgencyFeeTransactionForm, MaidEmploymentHistoryFormSet
+    MaidAgencyFeeTransactionForm, MaidEmploymentHistoryFormSet,
+    MaidEmploymentHistoryFormSetHelper
 )
 
 from .models import (
@@ -433,9 +437,6 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
-from django.views.generic.detail import SingleObjectMixin
-from crispy_forms.layout import Submit
-from .forms import MaidEmploymentHistoryFormSetHelper
 class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
             SpecificAgencyMaidLoginRequiredMixin, SingleObjectMixin, FormView):
     model = Maid
