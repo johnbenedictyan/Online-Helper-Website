@@ -1,0 +1,15 @@
+{% extends 'employer_documentation/pdf/00-base.html' %}
+{% load static %}
+
+{% block title %}Test{% endblock %}
+
+{% block pdf_content %}
+<div>
+    <img class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}"/>
+    <img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"/>
+</div>
+<br>
+<div class="header-safety-ag--bg-bluegrey" style="margin-top: 48px;">
+    <h1> &nbsp; Test</h1>
+</div>
+{% endblock pdf_content %}
