@@ -455,12 +455,29 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
 #             return HttpResponseRedirect(reverse_lazy('maid_employment_formset', kwargs={'pk':maid.pk}))
 
 from django.views.generic.detail import SingleObjectMixin
+from crispy_forms.layout import Submit
+from .forms import MaidEmploymentHistoryFormSetHelper
 class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
             SpecificAgencyMaidLoginRequiredMixin, SingleObjectMixin, FormView):
     model = Maid
-    template_name = 'create/maid-employment-history-formset.html'
+    template_name = 'form/maid-employment-history-formset.html'
     authority = ''
     agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super().get_context_data(**kwargs)
+
+        helper = MaidEmploymentHistoryFormSetHelper()
+        helper.add_input(Submit("submit", "Save"))
+
+        if self.request.POST:
+            context['formset'] = MaidEmploymentHistoryFormSet(self.request.POST, instance=self.object)
+            context['helper'] = helper
+        else:
+            context['formset'] = MaidEmploymentHistoryFormSet(instance=self.object)
+            context['helper'] = helper
+        return context
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
