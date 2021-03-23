@@ -1,4 +1,5 @@
 # Imports from the system
+import math
 import random
 import string
 from datetime import date, datetime
@@ -98,6 +99,32 @@ def get_sg_region(post_code):
         return None
     else:
         return None
+
+def humanise_time_duration(duration):
+    if duration.days == 0 and duration.seconds >= 0 and duration.seconds < 60:
+        return str(duration.seconds) +  "second" if seconds == 1 else str(duration.seconds) + " seconds"
+
+    if duration.days == 0 and duration.seconds >= 60 and duration.seconds < 3600:
+        minutes = math.floor(duration.seconds/60)
+        return str(minutes) + " minute" if minutes == 1 else str(minutes) + " minutes"
+
+    if duration.days == 0 and duration.seconds >= 3600 and duration.seconds < 86400:
+        hours = math.floor(duration.seconds/3600)
+        return str(hours) + " hour" if hours == 1 else str(hours) + " hours"
+
+    if duration.days >= 1 and duration.days < 30:
+        return str(duration.days) + " day" if duration.days == 1 else str(duration.days) + " days"
+
+    if duration.days >= 30 and duration.days < 365:
+        months = math.floor(duration.days/(365/12))
+        return str(months) + " month" if months == 1 else str(months) + " months"
+
+    if duration.days >= 365:
+        years = math.floor(duration.days/365)
+        months = math.floor(duration.days%365/(365/12))
+        years_str = str(years) + " year" if years == 1 else str(years) + " years"
+        months_str = str(months) + " month" if months == 1 else str(months) + " months"
+        return years_str + " and " + months_str if months else years_str
 
 def maid_seed_data():
     from agency.models import Agency
