@@ -1,3 +1,8 @@
+// General Redirect Function
+const redirect = (url) => {
+    window.location.href = toString(url)
+}
+
 // Mutation Observer Function
 const MO = (node_settings, callback_function) => {
     MutationObserver = window.MutationObserver || window.WebKitMutationObserver;

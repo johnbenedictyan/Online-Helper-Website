@@ -1,5 +1,6 @@
 {% extends 'agency-base.html' %}
 {% load static %}
+{% load agency_tags %}
 {% block agency_section %}
 {% include 'sections/title-banner.html' with page_name='Agency Details' %}
 <section>
@@ -22,7 +23,7 @@
                                 <div class="col-md-4 col-lg-6 mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <h5 class="mb-0">{{branch.name|title}}</h5>
+                                            <h5 class="mb-0">{{branch.name|title|fbn}}</h5>
                                         </div>
                                     </div>
                                     <hr>

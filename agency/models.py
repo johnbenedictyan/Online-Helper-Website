@@ -499,13 +499,13 @@ class PotentialAgency(models.Model):
     )
 
     contact_number = models.CharField(
-        verbose_name=_('Contact Number'),
+        verbose_name=_('Mobile Number'),
         max_length=8,
         blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
+                message=_('Please enter a valid mobile number')
             )
         ]
         # This regex validator checks if the contact number provided is all 

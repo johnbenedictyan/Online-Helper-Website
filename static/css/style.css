@@ -162,17 +162,24 @@ button.mini-faq-button i {
 }
 
 .maid-thumbnail {
-  height: 20rem;
+  height: 17rem;
   background-size: cover;
   background-position-x: center;
 }
 
 .agency-card {
   height: 44rem;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1920px) {
+  .agency-card .card-title {
+    height: 5rem;
+  }
 }
 
 .agency-thumbnail {
-  height: 15rem;
+  height: 13rem;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -217,9 +224,58 @@ button.mini-faq-button i {
   font-size: 1.1rem;
 }
 
+.faq-navbar {
+  font-size: 1.1rem;
+}
+
 .preferences-card {
   -webkit-box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
           box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
+}
+
+.logo-image-wrapper {
+  background-image: url("/static/images/logo.png");
+  background-size: cover;
+  background-position: center;
+  height: 3rem;
+  width: 75%;
+  margin-top: .45rem;
+}
+
+@media screen and (min-width: 768px) {
+  .logo-image-wrapper {
+    width: 25%;
+    margin-top: .3rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .logo-image-wrapper {
+    width: 20%;
+    margin-top: 0;
+    margin-right: 1rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .logo-image-wrapper {
+    height: 4.5rem;
+  }
+}
+
+.slick-caorusel > .slick-list > .slick-track {
+  margin-left: 0;
+}
+
+/* This is to create a margin between slides */
+/* the slides */
+.slick-slide {
+  margin: 0 1rem;
+}
+
+/* the parent */
+.slick-list {
+  margin: 0 -1rem;
 }
 
 .noUi-target,
