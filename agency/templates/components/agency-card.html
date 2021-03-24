@@ -1,0 +1,17 @@
+{% load agency_tags %}
+<div class="card agency-card">
+    <div class="agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
+    <div class="card-body">
+        <h5 class="card-title">{{agency.name}}</h5>
+        <p class="card-text text-muted mb-0">{{agency.license_number}}</p>
+        <hr>
+        <address>
+            {{ agency.get_main_office.address_1 }}<br/>
+            {{ agency.get_main_office.address_2 }}<br/>
+            Singapore {{ agency.get_main_office.postal_code }}
+        </address>
+        <p class="card-text">{{agency.get_main_office_number|fcn}}</p>
+        <p class="card-text mb-0">{{agency.sales_email}}</p>
+        <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
+    </div>
+</div>
