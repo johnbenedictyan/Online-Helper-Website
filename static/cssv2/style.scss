@@ -285,6 +285,11 @@ $FONT_SIZE_LARGER: 1.1rem;
     box-shadow: $CUSTOM_CARD_BOX_SHADOW_SETTINGS $CUSTOM_CARD_SHADOW_COLOUR;
 }
 
+// Slick Carousel
+.slick-caorusel>.slick-list>.slick-track {
+    margin-left: 0;
+}
+
 // NoUiSlider
 .noUi-target,
 .noUi-target * {
