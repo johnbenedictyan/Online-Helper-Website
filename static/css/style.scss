@@ -313,6 +313,22 @@ $FONT_SIZE_LARGER: 1.1rem;
     }
 }
 
+$TITLE_BANNER_MARGIN_BOTTOM_MD : 2.5rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XL : 5rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XXL : 7.5rem;
+.title-banner {
+    @media screen and (min-width:768px) {
+        margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_MD;
+    }
+
+    @media screen and (min-width:992px) {
+        margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_XL;
+    }
+
+    @media screen and (min-width:1400px) {
+        margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_XXL;
+    }
+}
 // Slick Carousel
 .slick-caorusel>.slick-list>.slick-track {
     margin-left: 0;

@@ -263,6 +263,24 @@ button.mini-faq-button i {
   }
 }
 
+@media screen and (min-width: 768px) {
+  .title-banner {
+    margin-bottom: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .title-banner {
+    margin-bottom: 5rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .title-banner {
+    margin-bottom: 7.5rem;
+  }
+}
+
 .slick-caorusel > .slick-list > .slick-track {
   margin-left: 0;
 }
