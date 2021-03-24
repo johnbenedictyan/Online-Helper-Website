@@ -67,13 +67,9 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="{% url 'home' %}">
-                    <div class="row">
-                        <div class="col">
-                            <img class="img-fluid w-75" src="{% static 'images/logo.png' %}" alt=""/>
-                        </div>
-                    </div>
-                </a>
+                <div class="logo-image-wrapper" onClick="redirect({% url 'home' %})">
+                    &nbsp;
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
