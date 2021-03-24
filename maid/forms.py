@@ -3,6 +3,7 @@ import re
 
 # Imports from django
 from django import forms
+from django.forms import formset_factory, inlineformset_factory
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -13,7 +14,7 @@ from onlinemaid.constants import TrueFalseChoices
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
-from crispy_forms.bootstrap import PrependedText, AppendedText
+from crispy_forms.bootstrap import PrependedText, AppendedText, InlineCheckboxes
 from agency.models import Agency
 
 # Imports from local apps
@@ -770,49 +771,57 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
             )
         )
 
-class MaidEmploymentHistoryForm(forms.ModelForm):
-    class Meta:
-        model = MaidEmploymentHistory
-        exclude = ['maid']
+MaidEmploymentHistoryFormSet = inlineformset_factory(
+    parent_model = Maid,
+    model = MaidEmploymentHistory,
+    fields = ['country','start_date','end_date','work_duties',]
+)
 
+class MaidEmploymentHistoryFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
+        self.form_method = 'post'
+        self.layout = Layout(
+            HTML('''
+                <h5>Past employment {{ forloop.counter }}</h5>
+            '''),
             Row(
                 Column(
-                    'country',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'work_duties',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'start_date',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'end_date',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Purchase',
-                        css_class="btn btn-primary w-50"
+                    Row(
+                        Column(
+                            'country',
+                            css_class='form-group col-12'
+                        ),
+                        Column(
+                            Field(
+                                'start_date',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Past employment start date'
+                            ),
+                            css_class='form-group col-12'
+                        ),
+                        Column(
+                            Field(
+                                'end_date',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Past employment end date'
+                            ),
+                            css_class='form-group col-12'
+                        ),
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    InlineCheckboxes('work_duties'),
+                    css_class='form-group col-md-6 work-duties'
                 ),
                 css_class='form-row'
-            )
+            ),
+            HTML('<hr>'),
         )
+        self.render_required_fields = True
 
 class MaidAgencyFeeTransactionForm(forms.ModelForm):
     class Meta:
