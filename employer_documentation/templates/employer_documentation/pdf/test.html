@@ -3,6 +3,21 @@
 
 {% block title %}Test{% endblock %}
 
+{% block css %}
+<style>
+    h5 {
+        word-spacing: 0.1rem;
+        letter-spacing: 0.2px;
+        line-height: 1.2rem;
+        margin: 0;
+        padding: 0;
+    }
+    p {
+        font-size: 12px;
+    }
+</style>
+{% endblock css %}
+
 {% block pdf_content %}
 <section>
     <h6 style="padding: 0; margin: 0 0 0.2rem 0.2rem;">Work Permit application for a foreign domestic worker</h6>
@@ -20,8 +35,33 @@
     <span style="font-size: 0.9rem; font-weight: bold;">Complete both Parts A and B if you are applying under the Sponsorship scheme</span>
 </section>
 
-<section>
+<section style="margin: 1rem 0;">
     <h5 style="border: solid 0.3rem #DAE3EA; padding: 0.5rem;">You can apply based on the income of up to 2 Sponsors. The Sponsor(s) may be the Employer’s sibling, sibling’s spouse, child, child’s spouse, grandchild or grandchild’s spouse.</h5>
+</section>
+
+<section style="border: solid 2px black; padding: 0.5rem;">
+    <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">Income details of Sponsor(s)</h3>
+    <h5>If the Employer has:</h5>
+    <ul style="margin: 0.5rem 0;">
+        <li><h5 style="margin: 0.5rem 0;">&nbsp;1 Sponsor, answer question 1.</h5></li>
+        <li><h5 style="margin: 0.5rem 0;">&nbsp;2 Sponsors, answer question 2.</h5></li>
+    </ul>
+    <h5>Do not include the Employer's income.</h5>
+    <br>
+    <h5>1.&nbsp;Sponsor's monthly income (S$)</h5>
+    <p style="margin-top: 0.2rem; padding-left: 0.9rem; font-size: 10px;">(rounded to the nearest dollar)</p>
+    <br>
+    <br>
+    <h5>2.&nbsp;Sponsors' combined monthly income (S$)</h5>
+    <p style="margin-top: 0.2rem; padding-left: 0.9rem; font-size: 10px;">(rounded to the nearest dollar)</p>
+    <br>
+    <br>
+    <h5>Has either Sponsor 1 or Sponsor 2 (if applicable) worked in Singapore for the last 2 years?</h5>
+    <br>
+    <br>
+    <h5>If the Sponsor(s) are agreeable for us to verify their incomes directly with IRAS, please enter their tax reference numbers below. If not, please refer to Page 2 for the additional documents you need to <a href="#">upload</a>.</h5>
+    <h5 style="margin: 0.5rem 0;">Sponsor 1's Singapore tax reference number (e.g. NRIC no./FIN):</h5>
+    <h5>Sponsor 2's Singapore tax reference number (e.g. NRIC no./FIN):</h5>
 </section>
 
 {% endblock pdf_content %}
