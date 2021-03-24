@@ -114,6 +114,8 @@ env.py
 scss/
 **bootstrap**
 !style.scss
+style.css
+style.css.*
 
 # Ignore Django Migrations in Development if you are working on team
 
