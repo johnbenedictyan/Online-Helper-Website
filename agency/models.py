@@ -14,7 +14,7 @@ from onlinemaid.helper_functions import get_sg_region
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from within the app
-from .constants import AreaChoices
+from .constants import AreaChoices, AgencyEmployeeRoleChoices
 from .validators import validate_postcode
 
 # Utiliy Classes and Functions
@@ -402,11 +402,6 @@ class AgencyPlan(models.Model):
 
 # Agency Employee Models
 class AgencyEmployee(models.Model):
-    class AgencyEmployeeRoleChoices(models.TextChoices):
-        ADMINISTRATOR = 'AA', _('Administrator')
-        MANAGER = 'AM', _('Manager')
-        SALES_STAFF = 'AS', _('Sales Staff')
-
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,

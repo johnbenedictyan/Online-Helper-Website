@@ -18,3 +18,8 @@ class AreaChoices(models.TextChoices):
     NORTH_EAST = 'NE', _('North East')
     EAST = 'E', _('East')
     WEST = 'W', _('West')
+
+class AgencyEmployeeRoleChoices(models.TextChoices):
+        ADMINISTRATOR = 'AA', _('Administrator')
+        MANAGER = 'AM', _('Manager')
+        SALES_STAFF = 'AS', _('Sales Staff')
