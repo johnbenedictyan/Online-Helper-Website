@@ -93,6 +93,28 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     authority = ''
     agency_id = ''
 
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        kwargs.update({
+            'biodata': {
+                'current': Maid.objects.filter(
+                    agency=agency
+                ).count(),
+                'max': agency.amount_of_biodata_allowed
+            },
+            'featured_maids': {
+                'current': Maid.objects.filter(
+                    agency=agency,
+                    featured=True
+                ).count(),
+                'max': agency.amount_of_featured_biodata_allowed
+            }
+        })
+        return kwargs
+    
     def get_queryset(self):
         return Maid.objects.filter(
             agency__pk = self.agency_id
@@ -107,6 +129,21 @@ class DashboardAccountList(
     authority = ''
     agency_id = ''
 
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        kwargs.update({
+            'employee_accounts': {
+                'current': AgencyEmployee.objects.filter(
+                    agency=agency
+                ).count(),
+                'max': agency.amount_of_employees_allowed
+            }
+        })
+        return kwargs
+    
     def get_queryset(self):
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             return AgencyEmployee.objects.filter(
