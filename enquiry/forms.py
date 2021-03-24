@@ -93,48 +93,51 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'maid_nationality',
-                    css_class='form-group col-md-3'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-3'
+                    css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     'maid_age_group',
-                    css_class='form-group col-md-3'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'rest_days',
-                    css_class='form-group col-md-3'
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'property_type',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'no_of_family_members',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'no_of_below_12',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'no_of_babies',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'maid_responsibility',
-                    css_class='form-group col-md-4 mt-1'
-                ),
-                Column(
-                    Row(
-                        Column(
-                            'property_type',
-                            css_class='form-group col-6'
-                        ),
-                        Column(
-                            'no_of_family_members',
-                            css_class='form-group col-6'
-                        ),
-                        Column(
-                            'no_of_below_12',
-                            css_class='form-group col-6'
-                        ),
-                        Column(
-                            'no_of_babies',
-                            css_class='form-group col-6'
-                        ),
-                        css_class='form-row'
-                    ),
-                    css_class='form-group col-md-8'
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
