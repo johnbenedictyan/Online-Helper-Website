@@ -151,6 +151,10 @@ button.mini-faq-button i {
   margin: 0 0 1rem 0;
 }
 
+.text-smaller {
+  font-size: 0.75rem;
+}
+
 .maid-card {
   cursor: pointer;
 }

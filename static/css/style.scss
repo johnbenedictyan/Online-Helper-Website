@@ -23,6 +23,10 @@ $DARK_SEA_GREEN: #79b791 !default;
 $olympic-silver: #cecac8 !default;
 $mercury: #d7d4d3 !default;
 
+$BASE_FONT_SIZE: 1rem !default;
+$FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
+$FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
+
 .bg {
     &-primary1 {
         background-color: $TRUE_BLUE;
@@ -204,6 +208,10 @@ $black: #000 !default;
             margin: $CUSTOM_CARD_HEADER_MARGIN;
         }
     }
+}
+
+.text-smaller {
+    font-size: $FONT_SIZE_SMALLER;
 }
 
 .maid{
