@@ -26,6 +26,10 @@ class GeneralEnquiryForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple()
     )
 
+    choice_of_contact = forms.ChoiceField(
+        widget=forms.CheckboxSelect()
+    )
+
     class Meta:
         model = GeneralEnquiry
         exclude = ['employer']
@@ -62,7 +66,7 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             'remarks': forms.Textarea(
                 attrs={
-                    'rows': 15,
+                    'rows': 10,
                     'cols': 15
                 }
             )
@@ -75,17 +79,21 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'contact_number',
+                    'email',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'email',
+                    'choice_of_contact',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -137,7 +145,11 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'maid_responsibility',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'languages_spoken',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
