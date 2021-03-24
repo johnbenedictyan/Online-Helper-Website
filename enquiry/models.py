@@ -84,14 +84,6 @@ class GeneralEnquiry(models.Model):
         max_length=8
     )
 
-    rest_days = models.CharField(
-        verbose_name=_('Number of Rest Days'),
-        blank=False,
-        choices=MAID_REST_DAY_CHOICES,
-        default=MAID_REST_DAY_0,
-        max_length=3
-    )
-    
     no_of_family_members = models.IntegerField(
         verbose_name=_('Number of Family Members'),
         blank=False
@@ -153,6 +145,11 @@ class AgencyEnquiry(models.Model):
 
     maid_responsibility = models.ManyToManyField(
         MaidResponsibility,
+        related_name='agency_enquiries'
+    )
+
+    languages_spoken = models.ManyToManyField(
+        MaidLanguagem
         related_name='agency_enquiries'
     )
 
