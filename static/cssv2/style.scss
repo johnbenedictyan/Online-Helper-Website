@@ -285,6 +285,30 @@ $FONT_SIZE_LARGER: 1.1rem;
     box-shadow: $CUSTOM_CARD_BOX_SHADOW_SETTINGS $CUSTOM_CARD_SHADOW_COLOUR;
 }
 
+.logo-image-wrapper{
+    background-image:url('/static/images/logo.png');
+    background-size: cover;
+    background-position: center;
+    height: 3rem;
+    width: 75%;
+    margin-top: .45rem;
+    
+    @media screen and (min-width:768px) {
+        width: 25%;
+        margin-top: .3rem;
+    }
+
+    @media screen and (min-width:992px) {
+        width: 20%;
+        margin-top: 0;
+        margin-right: 1rem;
+    }
+
+    @media screen and (min-width:1400px) {
+        height: 4.5rem;
+    }
+}
+
 // Slick Carousel
 .slick-caorusel>.slick-list>.slick-track {
     margin-left: 0;
