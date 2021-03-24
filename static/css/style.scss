@@ -224,10 +224,15 @@ $black: #000 !default;
 
 .agency{
     &-card {
-        height: 44rem;
         cursor: pointer;
+        @media screen and (min-width:768px) {
+            height: 36rem;
+        }
+        @media screen and (min-width:1400px) {
+            height: 38rem;
+        }
         .card-title {
-            @media screen and (max-width:1920px) {
+            @media screen and (min-width:768px) and (max-width:1920px) {
                 height: 5rem;
             }
         }

@@ -168,11 +168,22 @@ button.mini-faq-button i {
 }
 
 .agency-card {
-  height: 44rem;
   cursor: pointer;
 }
 
-@media screen and (max-width: 1920px) {
+@media screen and (min-width: 768px) {
+  .agency-card {
+    height: 36rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .agency-card {
+    height: 38rem;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1920px) {
   .agency-card .card-title {
     height: 5rem;
   }
