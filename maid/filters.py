@@ -11,7 +11,8 @@ import django_filters
 
 # Imports from local apps
 from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, MaritalStatusChoices
+    TypeOfMaidChoices, MaidCountryOfOrigin, MaritalStatusChoices,
+    MaidCreatedOnChoices
 )
 from .models import Maid, MaidResponsibility, MaidLanguage
 from .widgets import CustomRangeWidget
@@ -93,6 +94,13 @@ class MaidFilter(django_filters.FilterSet):
             }
         )
     )
+    created_on = django_filters.ChoiceFilter(
+        field_name='created_on',
+        label=_('Created On'),
+        choices=MaidCreatedOnChoices.choices,
+        empty_label=_('No Preference'),
+        method='created_on_filter'
+    )
 
     class Meta:
         model = Maid
@@ -103,7 +111,8 @@ class MaidFilter(django_filters.FilterSet):
             'age',
             'marital_status',
             'languages',
-            'responsibilities'
+            'responsibilities',
+            'created_on'
         ]
 
     def custom_age_filter(self, queryset, name, value):
@@ -120,3 +129,12 @@ class MaidFilter(django_filters.FilterSet):
                 end_date
             )
         )
+
+    def created_on_filter(self, queryset, name, value):
+        if value:
+            time_now = timezone.now()
+            queryset = queryset.filter(
+                created_on__gt=time_now - timedelta(days=int(value))
+            )
+        return queryset
+        

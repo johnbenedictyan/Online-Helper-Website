@@ -12,7 +12,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import calculate_age, decrypt_string
+from onlinemaid.helper_functions import calculate_age, decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 # Imports from other apps
@@ -226,6 +226,9 @@ class MaidWorkDuty(models.Model):
         choices=WorkDutyChoices.choices
     )
 
+    def __str__(self):
+        return self.get_name_display()
+
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     class FoodPreferenceChoices(models.TextChoices):
@@ -270,8 +273,11 @@ class MaidDietaryRestriction(models.Model):
     )
 
 class MaidEmploymentHistory(models.Model):
-    class MaidEmploymentCounty(models.TextChoices):
-        SINGAPORE = 'SG', _('SINGAPORE')
+    class MaidEmploymentCountry(models.TextChoices):
+        # https://en.wikipedia.org/wiki/ISO_3166-1
+        SINGAPORE = 'SGP', _('Singapore')
+        HONG_KONG = 'HKG', _('Hong Kong')
+        MALAYSIA = 'MYS', _('Malaysia')
 
     maid = models.ForeignKey(
         Maid,
@@ -279,34 +285,28 @@ class MaidEmploymentHistory(models.Model):
         related_name='employment_history'
     )
 
-    start_date = models.DateTimeField(
-        verbose_name="Maid employment's start date"
+    start_date = models.DateField(
+        verbose_name="Past employment's start date"
     )
 
-    end_date = models.DateTimeField(
-        verbose_name="Maid employment's end date"
+    end_date = models.DateField(
+        verbose_name="Past employment's end date"
     )
 
     country = models.CharField(
         verbose_name=_("Country of employment"),
         max_length=3,
         blank=False,
-        choices=MaidEmploymentCounty.choices
-    )
-
-    work_duration = models.DurationField(
-        verbose_name=_('Employment duration'),
-        blank=True,
-        editable=False
+        choices=MaidEmploymentCountry.choices
     )
 
     work_duties = models.ManyToManyField(
         MaidWorkDuty
     )
 
-    def save(self, *args, **kwargs):
-        self.work_duration = self.end_date - self.start_date
-        super().save(self, *args, **kwargs)
+    def work_duration(self):
+        duration = self.end_date - self.start_date
+        return humanise_time_duration(duration)
 
 class MaidAgencyFeeTransaction(models.Model):
     TRANSCATION_CHOICES = (

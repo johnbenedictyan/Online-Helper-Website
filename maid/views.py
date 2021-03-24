@@ -9,12 +9,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, View
+from django.views.generic import ListView, View, TemplateView
 from django.views.generic.base import RedirectView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import (
     CreateView, FormView, UpdateView, DeleteView
 )
+
+# 3rd party
+from crispy_forms.layout import Submit
 
 # Imports from project-wide files
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
@@ -27,16 +30,18 @@ from employer_documentation.mixins import PdfHtmlViewMixin
 # Imports from local app
 from .filters import MaidFilter
 from .mixins import (
-    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
+    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
+    FDWLimitMixin
 )
 
 from .forms import (
     MaidCreationForm, MaidPersonalDetailsForm, MaidFamilyDetailsForm, 
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
-    MaidDietaryRestrictionForm, MaidEmploymentHistoryForm, MaidUpdateForm, 
+    MaidDietaryRestrictionForm, MaidUpdateForm, 
     MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
-    MaidAgencyFeeTransactionForm
+    MaidAgencyFeeTransactionForm, MaidEmploymentHistoryFormSet,
+    MaidEmploymentHistoryFormSetHelper
 )
 
 from .models import (
@@ -54,7 +59,7 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 
 # Form Views
 class MaidCreateFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                 SuccessMessageMixin, FormView):
+                         FDWLimitMixin, SuccessMessageMixin, FormView):
     form_class = MainMaidCreationForm
     http_method_names = ['get','post']
     success_url = reverse_lazy('dashboard_maid_detail')
@@ -433,23 +438,52 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryCreate(AgencyLoginRequiredMixin,
-                                  SuccessMessageMixin, CreateView):
-    context_object_name = 'maid_employment_history'
-    form_class = MaidEmploymentHistoryForm
-    http_method_names = ['get','post']
-    model = MaidEmploymentHistory
-    template_name = 'create/maid-employment-history-create.html'
-    success_url = reverse_lazy('')
-    success_message = 'Maid employment history created'
+class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
+            SpecificAgencyMaidLoginRequiredMixin, SingleObjectMixin, FormView):
+    model = Maid
+    template_name = 'form/maid-employment-history-formset.html'
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super().get_context_data(**kwargs)
+
+        helper = MaidEmploymentHistoryFormSetHelper()
+        helper.add_input(Submit("submit", "Save"))
+
+        if self.request.POST:
+            context['formset'] = MaidEmploymentHistoryFormSet(self.request.POST, instance=self.object)
+            context['helper'] = helper
+        else:
+            context['formset'] = MaidEmploymentHistoryFormSet(instance=self.object)
+            context['helper'] = helper
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        return MaidEmploymentHistoryFormSet(**self.get_form_kwargs(), instance=self.object)
 
     def form_valid(self, form):
-        form.instance.maid = Maid.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
+        form.save()
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Changes were saved.'
         )
-        return super().form_valid(form)
+
+        return self.get_success_url()
+
+    def get_success_url(self):
+        return HttpResponseRedirect(reverse_lazy('maid_employment_formset', kwargs={'pk':self.object.pk}))
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
@@ -705,23 +739,23 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin,
             }
         )
 
-class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin,
-                                  SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_employment_history'
-    form_class = MaidEmploymentHistoryForm
-    http_method_names = ['get','post']
-    model = MaidEmploymentHistory
-    template_name = 'update/maid-employment-history-update.html'
-    success_url = reverse_lazy('')
-    success_message = 'Maid employment history updated'
+# class MaidEmploymentHistoryUpdate(SpecificAgencyMaidLoginRequiredMixin,
+#                                   SuccessMessageMixin, UpdateView):
+#     context_object_name = 'maid_employment_history'
+#     form_class = MaidEmploymentHistoryForm
+#     http_method_names = ['get','post']
+#     model = MaidEmploymentHistory
+#     template_name = 'update/maid-employment-history-update.html'
+#     success_url = reverse_lazy('')
+#     success_message = 'Maid employment history updated'
 
-    def get_object(self, queryset=None):
-        return MaidEmploymentHistory.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            ),
-            maid__agency = self.request.user.agency_owner.agency
-        )
+#     def get_object(self, queryset=None):
+#         return MaidEmploymentHistory.objects.get(
+#             pk = self.kwargs.get(
+#                 self.pk_url_kwarg
+#             ),
+#             maid__agency = self.request.user.agency_owner.agency
+#         )
 
 class MaidAgencyFeeTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
                                   SuccessMessageMixin, UpdateView):

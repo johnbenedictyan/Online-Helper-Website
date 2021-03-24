@@ -1,5 +1,6 @@
 {% extends 'agency-base.html' %}
 {% load static %}
+{% load agency_tags %}
 {% block agency_section %}
 {% include 'sections/title-banner.html' with page_name='Agency Details' %}
 <section>
@@ -18,45 +19,52 @@
                 <div class="row">
                     <div class="col mb-4">
                         <div class="row">
-                            <div class="col mb-3">
-                                <h3>Offices</h3>
-                            </div>
-                        </div>
-                        <div class="row">
                             {% for branch in agency.branches.all %}
                                 <div class="col-md-4 col-lg-6 mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <h5 class="mb-0">{{branch.name|title}}</h5>
+                                            <h5 class="mb-0">{{branch.name|title|fbn}}</h5>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="col mb-3">
-                                            <p class="mb-1">Address</p>
-                                            <p class="font-weight-bold mb-0">{{branch.address_1}}</p>
-                                            <p class="font-weight-bold mb-0">{{branch.address_2}}</p>
+                                            <p class="mb-0">{{branch.address_1}}</p>
+                                            <p class="mb-0">{{branch.address_2}}</p>
+                                            <p class="mb-0">Singapore {{branch.postal_code}}</p>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col mb-3">
-                                            <p class="mb-1">Postal Code</p>
-                                            <p class="font-weight-bold mb-0">Singapore {{branch.postal_code}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col mb-3">
                                             <p class="mb-1">Area</p>
                                             <p class="font-weight-bold mb-0">{{branch.get_area_display}}</p>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row">
-                                        <div class="col mb-3">
-                                            <p class="mb-1">Telephone Number</p>
-                                            <a href="tel:+{{branch.office_number}}" class="mb-0">{{branch.office_number}}</a>
+                                        <div class="col-3">
+                                            <p class="mb-1">Tel:</p>
+                                        </div>
+                                        <div class="col-9">
+                                            <a href="tel:+65{{branch.office_number}}" class="mb-0">{{branch.office_number}}</a> / <a href="tel:+65{{branch.mobile_number}}" class="mb-0">{{branch.mobile_number}}</a>
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-3">
+                                            <p class="mb-1">Email:</p>
+                                        </div>
+                                        <div class="col-9">
+                                            <a href="mailto:{{agency.company_email}}">{{agency.company_email}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <p class="mb-1">Website:</p>
+                                        </div>
+                                        <div class="col-9">
+                                            <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
                                         <div class="col mb-3">
                                             <p class="mb-1">Mobile Number</p>
                                             <a href="tel:+{{branch.mobile_number}}" class="mb-0">{{branch.mobile_number}}</a>
@@ -67,7 +75,7 @@
                                             <p class="mb-1">Point of contact</p>
                                             <p class="font-weight-bold mb-0">Jane Doe</p>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             {% endfor %}
                         </div>
@@ -77,7 +85,7 @@
                     <div class="col mb-4">
                         <div class="row">
                             <div class="col mb-3">
-                                <h3>Opening Hours</h3>
+                                <h5>Opening Hours</h5>
                             </div>
                         </div>
                         {% if agency.operating_type == 'AO' %}
@@ -155,7 +163,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col col-md-10 col-lg-6 col-xl-5 offset-md-1 offset-lg-0 mb-4">
+            <!-- <div class="col col-md-10 col-lg-6 col-xl-5 offset-md-1 offset-lg-0 mb-4">
                 <div class="card mt-lg-4 p-2 p-md-4">
                     <div class="card-body">
                         <div class="row">
@@ -218,7 +226,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col mb-4">

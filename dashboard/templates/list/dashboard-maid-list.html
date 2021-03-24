@@ -6,11 +6,17 @@
             <div class="col my-3 px-md-2 px-lg-3 px-xl-5">
                 <div class="card custom-card card-wrapper">
                     <div class="row">
-                        <div class="col mb-3 px-2 px-md-3 px-xxl-1">
+                        <div class="col mb-1 px-2 px-md-3 px-xxl-1">
                             <h3 class="d-inline-block mt-1 mt-xxl-2">FDW Biodata</h3>
                             {% if authority == 'Agency Owners' or authority == 'Agency Administrators' %}
                             <a href="{% url 'maid_create' %}" class="btn btn-primary float-right mt-xl-1">Add New Biodata</a>
                             {% endif %}
+                        </div>
+                    </div>
+                    <div class="row text-right">
+                        <div class="col px-2 px-md-3 px-xxl-1">
+                            <h6 class="text-muted">Biodata Limit: {{biodata.current}}/{{biodata.max}}</h6>
+                            <h6 class="text-muted">Featured Maid Limit: {{featured_maids.current}}/{{featured_maids.max}}</h6>
                         </div>
                     </div>
                     <div class="row border rounded d-none d-xl-block">

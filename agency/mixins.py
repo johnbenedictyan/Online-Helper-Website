@@ -173,7 +173,7 @@ class GetAuthorityMixin:
             'agency_id': agency_id
         }
 
-    def get(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not self.authority and self.authority != '':
             raise ImproperlyConfigured(
                 '{0} is missing the authority attribute'
@@ -186,22 +186,7 @@ class GetAuthorityMixin:
             )
         self.authority = self.get_authority()['authority']
         self.agency_id = self.get_authority()['agency_id']
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        if not self.authority and self.authority != '':
-            raise ImproperlyConfigured(
-                '{0} is missing the authority attribute'
-                .format(self.__class__.__name__)
-            )
-        if not self.agency_id and self.agency_id != '':
-            raise ImproperlyConfigured(
-                '{0} is missing the agency_id attribute'
-                .format(self.__class__.__name__)
-            )
-        self.authority = self.get_authority()['authority']
-        self.agency_id = self.get_authority()['agency_id']
-        return super().post(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 class PermissionsMixin:
     MAID = 'Maid'
