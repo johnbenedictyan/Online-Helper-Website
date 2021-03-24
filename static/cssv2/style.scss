@@ -290,6 +290,17 @@ $FONT_SIZE_LARGER: 1.1rem;
     margin-left: 0;
 }
 
+/* This is to create a margin between slides */
+/* the slides */
+.slick-slide {
+    margin: 0 1rem;
+}
+
+/* the parent */
+.slick-list {
+    margin: 0 -1rem;
+}
+
 // NoUiSlider
 .noUi-target,
 .noUi-target * {
