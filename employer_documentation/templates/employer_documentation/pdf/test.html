@@ -23,6 +23,10 @@
         font-size: 1.1rem;
         font-weight: bold;
     }
+    .box-black-border {
+        border: solid 2px black;
+        padding: 0.5rem;
+    }
 </style>
 {% endblock css %}
 
@@ -38,7 +42,7 @@
     <h5 style="border: solid 0.3rem #DAE3EA; padding: 0.5rem;">You can apply based on the income of up to 2 Sponsors. The Sponsor(s) may be the Employer’s sibling, sibling’s spouse, child, child’s spouse, grandchild or grandchild’s spouse.</h5>
 </section>
 
-<section style="border: solid 2px black; padding: 0.5rem;">
+<section class="box-black-border">
     <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">Income details of Sponsor(s)</h3>
     <h5>If the Employer has:</h5>
     <ul style="margin: 0.5rem 0;">
@@ -66,5 +70,9 @@
 <div class="page-break">
     {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
 </div>
+
+<section>
+    <span class="part-b">PART B</span>
+</section>
 
 {% endblock pdf_content %}
