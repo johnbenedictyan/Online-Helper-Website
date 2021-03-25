@@ -512,6 +512,14 @@ urlpatterns = [
                                         ),
                                         name='pdf_sponsor_details'
                                     ),
+                                    path(
+                                        'pdf/joint-applicants/',
+                                        PdfGenericAgencyView.as_view(
+                                            template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicants.html',
+                                            content_disposition = 'inline; filename="joint-applicants-details.pdf"',
+                                        ),
+                                        name='pdf_joint-applicants'
+                                    ),
                                 ]),
                             ),
                         ]),

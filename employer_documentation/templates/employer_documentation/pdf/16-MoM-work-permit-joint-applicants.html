@@ -1,0 +1,36 @@
+{% extends 'employer_documentation/pdf/00-base.html' %}
+{% load static %}
+
+{% block title %}Test{% endblock %}
+
+{% block css %}
+<style>
+    h5 {
+        word-spacing: 0.1rem;
+        letter-spacing: 0.2px;
+        line-height: 1.2rem;
+        margin: 0;
+        padding: 0;
+    }
+    p {
+        font-size: 12px;
+    }
+    .part-c {
+        background-color: green;
+        color: white;
+        margin: 0.5rem 0.3rem 0 0;
+        padding: 0.4rem 0.6rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .box-black-border {
+        border: solid 2px black;
+        padding: 0.5rem;
+    }
+</style>
+{% endblock css %}
+
+{% block pdf_content %}
+{% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
+
+{% endblock pdf_content %}
