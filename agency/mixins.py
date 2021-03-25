@@ -5,14 +5,19 @@ from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
 
 # Imports from other apps
-from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
+from onlinemaid.constants import (
+    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
+)
 from onlinemaid.mixins import (
     AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
 from maid.models import Maid
 
 # Imports from within the app
-from .models import Agency, AgencyEmployee, AgencyBranch, AgencyPlan
+from .constants import AgencyEmployeeRoleChoices
+from .models import (
+    Agency, AgencyEmployee, AgencyBranch, AgencyPlan, AgencyOwner
+)
 
 # Utiliy Classes and Functions
 
@@ -160,7 +165,7 @@ class GetAuthorityMixin:
                 authority = auth_name
                 if authority == AG_OWNERS:
                     agency_id = self.request.user.agency_owner.agency.pk
-                else:
+                elif authority != P_EMPLOYERS:
                     agency_id = self.request.user.agency_employee.agency.pk
 
         return {
@@ -181,4 +186,65 @@ class GetAuthorityMixin:
             )
         self.authority = self.get_authority()['authority']
         self.agency_id = self.get_authority()['agency_id']
+        return super().dispatch(request, *args, **kwargs)
+
+class PermissionsMixin:
+    MAID = 'Maid'
+    checkee_models_dict = {
+        MAID: Maid,
+    }
+    use_strict_hierachy = True 
+    # This means that agency owners can view a route whose checker is below it
+    # i.e. Admins, managers, sales staff
+
+    def get_models(self):
+        checker_model = self.checker_model
+        checkee_model = self.checkee_model
+
+        if not checker_model:
+            raise ImproperlyConfigured(
+                '{0} is missing the checker_model attribute'
+                .format(self.__class__.__name__)
+            )
+
+        if not checkee_model:
+            raise ImproperlyConfigured(
+                '{0} is missing the checkee_model attribute'
+                .format(self.__class__.__name__)
+            )
+        
+        return {
+            'checker': checker_model,
+            'checkee': checkee_model
+        }
+
+    def pre_check(self, agency_id):
+        hierachy = [P_EMPLOYERS, SALES_STAFF, AG_MANAGERS, AG_ADMINS, AG_OWNERS]
+        if not (self.authority and self.agency_id):
+            raise ImproperlyConfigured(
+                '{0} must come after the GetAuthorityMixin'
+                .format(self.__class__.__name__)
+            )
+        authority = self.authority
+        checker_model = self.checker_model
+
+        if self.use_strict_hierachy:
+            use_strict_hierachy = self.use_strict_hierachy
+        
+        if agency_id:
+            if self.agency_id != agency_id:
+                raise PermissionDenied
+
+        if use_strict_hierachy == True:
+            if hierachy.index(authority) < hierachy.index(checker_model):
+                raise PermissionDenied
+        else:
+            if authority != checker_model:
+                raise PermissionDenied
+
+    def check(self):
+        self.pre_check()
+
+    def dispatch(self, request, *args, **kwargs):
+        self.check()
         return super().dispatch(request, *args, **kwargs)

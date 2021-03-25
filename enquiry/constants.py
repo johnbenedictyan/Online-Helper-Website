@@ -57,6 +57,10 @@ PROPERTY_SEMI_DETACHED            = 'SEMI-D'
 PROPERTY_BUNGALOW                 = 'BUNGLO'
 PROPERTY_OTHERS                   = 'OTH'
 
+## Mode of Contact
+MOBILE_MODE = 'MOBILE'
+EMAIL_MODE  = 'EMAIL'
+
 MAID_NATIONALITY_CHOICES = (
     (NO_PREFERENCE, _('No preference')),
     (MAID_NATIONALITY_CAMBODIAN, _('Cambodian')),
@@ -102,4 +106,8 @@ MAID_REST_DAY_CHOICES = (
     (MAID_REST_DAY_2, _('2 Rest Days Per Month')),
     (MAID_REST_DAY_3, _('3 Rest Days Per Month')),
     (MAID_REST_DAY_4, _('4 Rest Days Per Month'))
+)
+MODE_OF_CONTACT_CHOICES = (
+    (MOBILE_MODE, _('Via Mobile')),
+    (EMAIL_MODE, _('Via Email'))
 )

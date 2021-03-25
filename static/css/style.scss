@@ -23,6 +23,10 @@ $DARK_SEA_GREEN: #79b791 !default;
 $olympic-silver: #cecac8 !default;
 $mercury: #d7d4d3 !default;
 
+$BASE_FONT_SIZE: 1rem !default;
+$FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
+$FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
+
 .bg {
     &-primary1 {
         background-color: $TRUE_BLUE;
@@ -206,6 +210,10 @@ $black: #000 !default;
     }
 }
 
+.text-smaller {
+    font-size: $FONT_SIZE_SMALLER;
+}
+
 .maid{
     &-card{
         cursor: pointer;
@@ -224,10 +232,15 @@ $black: #000 !default;
 
 .agency{
     &-card {
-        height: 44rem;
         cursor: pointer;
+        @media screen and (min-width:768px) {
+            height: 36rem;
+        }
+        @media screen and (min-width:1400px) {
+            height: 38rem;
+        }
         .card-title {
-            @media screen and (max-width:1920px) {
+            @media screen and (min-width:768px) and (max-width:1920px) {
                 height: 5rem;
             }
         }
@@ -281,8 +294,68 @@ $FONT_SIZE_LARGER: 1.1rem;
     font-size: $FONT_SIZE_LARGER;
 }
 
+.faq-navbar {
+    font-size: $FONT_SIZE_LARGER;
+}
+
 .preferences-card{
     box-shadow: $CUSTOM_CARD_BOX_SHADOW_SETTINGS $CUSTOM_CARD_SHADOW_COLOUR;
+}
+
+.logo-image-wrapper{
+    background-image:url('/static/images/logo.png');
+    background-size: cover;
+    background-position: center;
+    height: 3rem;
+    width: 75%;
+    margin-top: .45rem;
+    
+    @media screen and (min-width:768px) {
+        width: 25%;
+        margin-top: .3rem;
+    }
+
+    @media screen and (min-width:992px) {
+        width: 20%;
+        margin-top: 0;
+        margin-right: 1rem;
+    }
+
+    @media screen and (min-width:1400px) {
+        height: 4.5rem;
+    }
+}
+
+$TITLE_BANNER_MARGIN_BOTTOM_MD : 2.5rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XL : 5rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XXL : 7.5rem;
+.title-banner {
+    @media screen and (min-width:768px) {
+        margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_MD;
+    }
+
+    @media screen and (min-width:992px) {
+        margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_XL;
+    }
+
+    @media screen and (min-width:1400px) {
+        margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_XXL;
+    }
+}
+// Slick Carousel
+.slick-caorusel>.slick-list>.slick-track {
+    margin-left: 0;
+}
+
+/* This is to create a margin between slides */
+/* the slides */
+.slick-slide {
+    margin: 0 1rem;
+}
+
+/* the parent */
+.slick-list {
+    margin: 0 -1rem;
 }
 
 // NoUiSlider

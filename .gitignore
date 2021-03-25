@@ -111,9 +111,11 @@ mediafiles/
 
 env.py
 *.scss
-scss/
-**bootstrap**
 !style.scss
+style.css
+style.css.*
+**/bootstrap/*
+!**/bootstrap/_variables.scss
 
 # Ignore Django Migrations in Development if you are working on team
 

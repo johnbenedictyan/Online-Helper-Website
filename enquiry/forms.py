@@ -6,9 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, Field
 from crispy_forms.bootstrap import InlineCheckboxes
-from maid.models import MaidResponsibility
+from maid.models import MaidResponsibility, MaidLanguage
 
 # Imports from local apps
 from .fields import MaidResponsibilityChoiceField
@@ -26,6 +26,11 @@ class GeneralEnquiryForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple()
     )
 
+    languages_spoken = forms.ModelMultipleChoiceField(
+        queryset=MaidLanguage.objects.all(),
+        widget=forms.CheckboxSelectMultiple()
+    )
+
     class Meta:
         model = GeneralEnquiry
         exclude = ['employer']
@@ -37,7 +42,7 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             'contact_number': forms.TextInput(
                 attrs={
-                    'placeholder': 'Contact Number'
+                    'placeholder': 'Mobile Number'
                 }
             ),
             'email': forms.TextInput(
@@ -62,7 +67,7 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             'remarks': forms.Textarea(
                 attrs={
-                    'rows': 15,
+                    'rows': 8,
                     'cols': 15
                 }
             )
@@ -75,17 +80,21 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'contact_number',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'contact_number',
+                    'email',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'email',
+                    'mode_of_contact',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -104,10 +113,6 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'maid_age_group',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'rest_days',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -136,8 +141,21 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'maid_responsibility',
-                    css_class='form-group col'
+                    Field(
+                        'maid_responsibility',
+                        template='widgets/custom_multi_choice_field.html'
+                    ),
+                    css_class='form-group'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'languages_spoken',
+                        template='widgets/custom_multi_choice_field.html'
+                    ),
+                    css_class='form-group'
                 ),
                 css_class='form-row'
             ),

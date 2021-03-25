@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from other apps
 from accounts.models import Employer
 from agency.models import Agency
-from maid.models import Maid, MaidResponsibility
+from maid.models import Maid, MaidResponsibility, MaidLanguage
 
 # Imports from within the app
 from .constants import *
@@ -47,6 +47,14 @@ class GeneralEnquiry(models.Model):
         max_length=255
     )
 
+    mode_of_contact = models.CharField(
+        verbose_name=_('Mode of Contact'),
+        blank=False,
+        choices=MODE_OF_CONTACT_CHOICES,
+        default=MOBILE_MODE,
+        max_length=6
+    )
+
     property_type = models.CharField(
         verbose_name=_('Type of Property'),
         blank=False,
@@ -68,6 +76,11 @@ class GeneralEnquiry(models.Model):
         related_name='general_enquiries'
     )
 
+    languages_spoken = models.ManyToManyField(
+        MaidLanguage,
+        related_name='general_enquiries'
+    )
+
     maid_type = models.CharField(
         verbose_name=_('Type of maid'),
         blank=False,
@@ -84,14 +97,6 @@ class GeneralEnquiry(models.Model):
         max_length=8
     )
 
-    rest_days = models.CharField(
-        verbose_name=_('Number of Rest Days'),
-        blank=False,
-        choices=MAID_REST_DAY_CHOICES,
-        default=MAID_REST_DAY_0,
-        max_length=3
-    )
-    
     no_of_family_members = models.IntegerField(
         verbose_name=_('Number of Family Members'),
         blank=False
