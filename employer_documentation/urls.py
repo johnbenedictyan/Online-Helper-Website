@@ -505,12 +505,12 @@ urlpatterns = [
                                         name='pdf_agency_safety_agreement'
                                     ),
                                     path(
-                                        'pdf/test/',
+                                        'pdf/sponsor-details/',
                                         PdfGenericAgencyView.as_view(
-                                            template_name='employer_documentation/pdf/test.html',
-                                            content_disposition = 'inline; filename="test.pdf"',
+                                            template_name='employer_documentation/pdf/15-MoM-work-permit-sponsors.html',
+                                            content_disposition = 'inline; filename="sponsor-details.pdf"',
                                         ),
-                                        name='pdf_test'
+                                        name='pdf_sponsor_details'
                                     ),
                                 ]),
                             ),
