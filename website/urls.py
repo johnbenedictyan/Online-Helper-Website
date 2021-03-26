@@ -64,18 +64,18 @@ urlpatterns = [
     ),
     path(
         'admin-panel/',
-        include(
+        include([
             path(
                 '',
                 AdminPanelView.as_view(),
                 name='admin_panel'
             ),
             path(
-                'enquiries/'.
+                'enquiries/',
                 AdminPanelEnquiryListView,
                 name='admin_panel_enquiry_list'
             )
-        )
+        ])
     ),
     path(
         'robots.txt',
