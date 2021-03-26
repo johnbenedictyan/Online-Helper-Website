@@ -757,7 +757,7 @@ class PdfGenericAgencyView(
         if self.use_repayment_table:
             context['repayment_table'] = self.calc_repayment_schedule()
         
-
+        context['url_name'] = request.resolver_match.url_name
         return self.generate_pdf_response(request, context)
 
 class PdfFileAgencyView(
