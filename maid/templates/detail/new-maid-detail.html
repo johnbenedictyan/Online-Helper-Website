@@ -4,6 +4,291 @@
 {% block maid_section %}
 <section>
     <div class="container">
+        <div class="row">
+            <div class="col my-xxl-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row d-md-none">
+                            <div class="col text-center">
+                                <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-1 btn-primary">Add to Shortlist</a>
+                                <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-1 btn-outline-primary">Download Bio-data</a>
+                            </div>
+                        </div>
+                        <div class="mx-md-5 my-2" style="background-image:url({{maid.photo.url}});background-position-x: center;background-size: cover; height:20rem"></div>
+                        <div class="row d-none d-md-flex">
+                            <div class="col-xl-8 mt-2 text-center offset-xl-2">
+                                <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-2 btn-primary">Add to Shortlist</a>
+                                <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-2 btn-outline-primary">Download Bio-data</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Name</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">
+                                            Reference Number
+                                        </p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Nationality</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Type</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Date of Birth</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Age</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Height</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Weight</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Marital Status</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Religion</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Number of Children</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Age of Children</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Number of Siblings</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Education</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Expected Salary</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1 bg-secondary text-light">
+                                    <div class="col-5">
+                                        <p class="mb-0">Number of off days</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                                <div class="row border py-1">
+                                    <div class="col-5">
+                                        <p class="mb-0">Spoken Languages</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="mb-0">asd</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-10 my-2">
+                <div class="row">
+                    <div class="col">
+                        <h3>Experience</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mx-2">
+                        <div class="row py-3 bg-primary text-light">
+                            <div class="col">
+                                <h5 class="mb-0">Experience</h5>
+                            </div>
+                            <div class="col">
+                                <h5 class="mb-0">Assessment</h5>
+                            </div>
+                            <div class="col">
+                                <h5 class="mb-0">Remarks</h5>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-top border-bottom">
+                            <div class="col">
+                                <p class="mb-0">Infant Child Care</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.infant_child_care.assessment}}</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.infant_child_care.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-top border-bottom">
+                            <div class="col">
+                                <p class="mb-0">Elderly Care</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.elderly_care.assessment}}</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.elderly_care.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-top border-bottom">
+                            <div class="col">
+                                <p class="mb-0">Disabled Care</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.disabled_care.assessment}}</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.disabled_care.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-top border-bottom">
+                            <div class="col">
+                                <p class="mb-0">General Housework</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.general_housework.assessment}}</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.general_housework.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-top border-bottom">
+                            <div class="col">
+                                <p class="mb-0">Cooking</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.cooking.assessment}}</h5>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{maid.cooking.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-2">
+                <div class="row">
+                    <div class="col">
+                        <h3>Agency Contact Details</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <h6>Phone</h6>
+                                <p>{{maid.agency.get_main_office_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>Email</h6>
+                                <p>{{maid.agency.company_email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>Website</h6>
+                                <p>{{maid.agency.website_uri}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>Address</h6>
+                                <p>{{maid.agency.get_main_office.address_1}} <br/> {{maid.agency.get_main_office.address_2}} <br/> Singapore {{maid.agency.get_main_office.postal_code}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
         <div class="row my-3">
             <div class="col my-3">
                 <div class="row">
