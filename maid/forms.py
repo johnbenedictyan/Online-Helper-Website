@@ -1248,6 +1248,12 @@ class MainMaidCreationForm(forms.Form):
         input_formats=['%d %b %Y']
     )
 
+    # Override Field for the checking of duplicate fdws
+    override = forms.BooleanField(
+        widget=forms.HiddenInput(),
+        initial=False
+    )
+
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
@@ -1802,6 +1808,38 @@ class MainMaidCreationForm(forms.Form):
                 'cok_other_remarks',
                 _('Please specify the remarks')
             )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        raw_passport_number = cleaned_data.get('passport_number')
+        date_of_birth = cleaned_data.get('date_of_birth')
+        country_of_origin = cleaned_data.get('country_of_origin')
+        place_of_birth = cleaned_data.get('place_of_birth')
+        encrypted_passport_number, nonce, tag = encrypt_string(
+            raw_passport_number,
+            settings.ENCRYPTION_KEY
+        )
+        override = cleaned_data.get('override')
+        possible_duplicate_maids = Maid.objects.filter(
+            agency__pk=self.agency_id,
+            name__trigram_similar = name,
+            date_of_birth = date_of_birth,
+            country_of_origin = country_of_origin,
+            place_of_birth__trigram_similar = place_of_birth
+        )
+        # This value 3 should be a threshold settings
+        if possible_duplicate_maids.count() < 3 and override != True:
+            msg = "This FDW looks similar to these other fdws: "
+            for i in possible_duplicate_maids:
+                msg += f"""
+                    <a href="{reverse_lazy('maid_update', pk=i.pk)}" 
+                    target="_blank">
+                    {i.name}
+                    </a>
+                """
+            self.data['override'] = True
+            self.add_error(None, msg)
 
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
