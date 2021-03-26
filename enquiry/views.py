@@ -9,6 +9,7 @@ from django.views.generic.edit import CreateView
 # Imports from foreign installed apps
 from accounts.models import Employer
 from accounts.mixins import PotentialEmployerRequiredMixin
+from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
 from maid.models import Maid
 from onlinemaid.mixins import SuccessMessageMixin
@@ -108,6 +109,31 @@ class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
                     self.request,
                     'This enquiry does not exist'
                 )
+        kwargs.pop('pk')
+        return super().get_redirect_url(*args, **kwargs)
+
+class ToggleApproveEnquiryView(OnlineMaidStaffRequiredMixin, RedirectView):
+    http_method_names = ['get']
+    pattern_name = 'admin_panel_enquiry_list'
+    pk_url_kwarg = 'pk'	
+
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            selected_enquiry = GeneralEnquiry.objects.get(
+                pk = kwargs.get(
+                    self.pk_url_kwarg
+                ),
+                active = True
+            )
+        except GeneralEnquiry.DoesNotExist:
+            messages.error(
+                self.request,
+                'This enquiry does not exist'
+            )
+        else:
+            selected_enquiry.approved = not selected_enquiry.approved
+            selected_enquiry.last_modified = request.user
+            selected_enquiry.save()
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
