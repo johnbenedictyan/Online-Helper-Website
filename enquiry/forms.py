@@ -5,6 +5,8 @@ from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Field
 from crispy_forms.bootstrap import InlineCheckboxes
@@ -29,6 +31,10 @@ class GeneralEnquiryForm(forms.ModelForm):
     languages_spoken = forms.ModelMultipleChoiceField(
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple()
+    )
+
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV3
     )
 
     class Meta:
@@ -162,6 +168,16 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'remarks',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'captcha',
+                        type='hidden'
+                    ),
                     css_class='form-group col'
                 ),
                 css_class='form-row'

@@ -11,12 +11,13 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from project
 
 # Imports from other apps
-from accounts.models import Employer
+from accounts.models import Employer, User
 from agency.models import Agency
 from maid.models import Maid, MaidResponsibility, MaidLanguage
 
 # Imports from within the app
 from .constants import *
+from .validators import validate_links, validate_obscene_language
 
 # Utiliy Classes and Functions
 
@@ -115,12 +116,28 @@ class GeneralEnquiry(models.Model):
     remarks = models.CharField(
         verbose_name=_('Remarks'),
         blank=False,
-        max_length=3000
+        max_length=3000,
+        validators=[
+            validate_links, 
+            validate_obscene_language
+        ]
     )
 
     active = models.BooleanField(
         editable=False,
         default=True
+    )
+
+    approved = models.BooleanField(
+        editable=False,
+        default=False
+    )
+
+    last_modified = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='last_modified_general_enquiries',
+        null=True
     )
  
 class AgencyEnquiry(models.Model):
