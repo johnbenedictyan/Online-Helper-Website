@@ -38,7 +38,11 @@
 <br>
 <p class="text-bold--600">Please complete this form only if you do not wish to submit your Income Tax Notice of Assessment when applying for a Work Permit (WP) for a foreign domestic worker.</p>
 <br>
-<p class="text-bold--600">Part I – Monthly Combined Income of Employer and Spouse</p>
+{% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
+    <p class="text-bold--600">Part I – Monthly Combined Income of Employer and Spouse</p>
+{% else %}
+    <p class="text-bold--600">Monthly Combined Income</p>
+{% endif %}
 <br>
 <p class="text-bold--600">Please tick the appropriate box.</p>
 <table>
