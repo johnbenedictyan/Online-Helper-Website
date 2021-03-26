@@ -174,7 +174,10 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'captcha',
+                    Field(
+                        'captcha',
+                        type='hidden'
+                    ),
                     css_class='form-group col'
                 ),
                 css_class='form-row'
