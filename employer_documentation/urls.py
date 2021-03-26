@@ -510,7 +510,7 @@ urlpatterns = [
                                             template_name='employer_documentation/pdf/15-MoM-work-permit-sponsors.html',
                                             content_disposition = 'inline; filename="sponsor-details.pdf"',
                                         ),
-                                        name='pdf_sponsor_details'
+                                        name='pdf_agency_sponsor_details'
                                     ),
                                     path(
                                         'pdf/joint-applicants/',
