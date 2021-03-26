@@ -17,6 +17,7 @@ from maid.models import Maid, MaidResponsibility, MaidLanguage
 
 # Imports from within the app
 from .constants import *
+from .validators import validate_links, validate_obscene_language
 
 # Utiliy Classes and Functions
 
@@ -115,12 +116,21 @@ class GeneralEnquiry(models.Model):
     remarks = models.CharField(
         verbose_name=_('Remarks'),
         blank=False,
-        max_length=3000
+        max_length=3000,
+        validators=[
+            validate_links, 
+            validate_obscene_language
+        ]
     )
 
     active = models.BooleanField(
         editable=False,
         default=True
+    )
+
+    approved = models.BooleanField(
+        editable=False,
+        default=False
     )
  
 class AgencyEnquiry(models.Model):
