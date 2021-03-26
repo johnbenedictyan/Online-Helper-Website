@@ -15,7 +15,11 @@
 <br>
 <div class="text-align-center">
     <h1>Annex A</h1>
-    <h1>Employer and Spouse Income Tax Declaration</h1>
+    {% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
+        <h1>Employer and Spouse Income Tax Declaration</h1>
+    {% else %}
+        <h1>Income Tax Declaration</h1>
+    {% endif %}
 </div>
 <br>
 <table class="border--all">
