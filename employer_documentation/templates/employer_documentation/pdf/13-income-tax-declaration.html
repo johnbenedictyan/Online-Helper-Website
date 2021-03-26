@@ -1,7 +1,13 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
 
-{% block title %}Employer and Spouse Income Tax Declaration{% endblock %}
+{% block title %}
+    {% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
+        Employer and Spouse Income Tax Declaration
+    {% else %}
+        Income Tax Declaration
+    {% endif %}
+{% endblock %}
 
 {% block pdf_content %}
 <div>
@@ -15,7 +21,11 @@
 <br>
 <div class="text-align-center">
     <h1>Annex A</h1>
-    <h1>Employer and Spouse Income Tax Declaration</h1>
+    {% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
+        <h1>Employer and Spouse Income Tax Declaration</h1>
+    {% else %}
+        <h1>Income Tax Declaration</h1>
+    {% endif %}
 </div>
 <br>
 <table class="border--all">
@@ -28,7 +38,11 @@
 <br>
 <p class="text-bold--600">Please complete this form only if you do not wish to submit your Income Tax Notice of Assessment when applying for a Work Permit (WP) for a foreign domestic worker.</p>
 <br>
-<p class="text-bold--600">Part I – Monthly Combined Income of Employer and Spouse</p>
+{% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
+    <p class="text-bold--600">Part I – Monthly Combined Income of Employer and Spouse</p>
+{% else %}
+    <p class="text-bold--600">Monthly Combined Income</p>
+{% endif %}
 <br>
 <p class="text-bold--600">Please tick the appropriate box.</p>
 <table>
@@ -58,54 +72,59 @@
     </tr>
 </table>
 <br>
-<p class="text-bold--600">Part II – Authorisation by Employer and His/Her Spouse</p>
-<br>
-<p>
-    If either you and/or your spouse do not wish to submit a copy of your Income Tax Notice of Assessment, please 
-    complete Part II and authorise the Controller of Income Tax to verify your income range stated in Part I above 
-    and communicate the results of the verification to the Controller of Work Passes.
-</p>
-<br>
-<p>
-    I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: 
-    <u>&nbsp;{{ object.employer.get_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}
-    <u>&nbsp;{{ object.rn_signatures_ed.spouse_name }}&nbsp;</u>{% else %}________________{% endif %}, 
-    NRIC/ WP No/FIN: {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>
-    {% else %}________________{% endif %},
-</p>
-<br>
-{% if object.spouse_required %}
-    {% with my_or_our='<span style="text-decoration: line-through;">my</span>/our' i_or_we='<span style="text-decoration: line-through;">I</span>/we' %}
+
+{% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
+    <p class="text-bold--600">Part II – Authorisation by Employer and His/Her Spouse</p>
+    <br>
     <p>
-        authorise the Controller of Income Tax to verify 
-        *{{ my_or_our }} income tax range stated in Part I above, based on 
-        *{{ my_or_our }} assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. 
-        *{{ i_or_we }} also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
+        If either you and/or your spouse do not wish to submit a copy of your Income Tax Notice of Assessment, please 
+        complete Part II and authorise the Controller of Income Tax to verify your income range stated in Part I above 
+        and communicate the results of the verification to the Controller of Work Passes.
     </p>
     <br>
     <p>
-        In the event that *{{ my_or_our }} assessment record(s) for the current Year of Assessment 
-        *<span style="text-decoration: line-through;">is</span>/are not available or finalised at the point of verification, 
-        *{{ i_or_we }} understand that the Controller of Income Tax will verify 
-        *{{ my_or_our }} income range stated in Part I against *{{ my_or_our }} assessment record(s) for the two previous Years of Assessment.
+        I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: 
+        <u>&nbsp;{{ object.employer.get_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}
+        <u>&nbsp;{{ object.rn_signatures_ed.spouse_name }}&nbsp;</u>{% else %}________________{% endif %}, 
+        NRIC/ WP No/FIN: {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>
+        {% else %}________________{% endif %},
     </p>
-    {% endwith my_or_our %}
+    <br>
+    {% if object.spouse_required %}
+        {% with my_or_our='<span style="text-decoration: line-through;">my</span>/our' i_or_we='<span style="text-decoration: line-through;">I</span>/we' %}
+        <p>
+            authorise the Controller of Income Tax to verify 
+            *{{ my_or_our }} income tax range stated in Part I above, based on 
+            *{{ my_or_our }} assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. 
+            *{{ i_or_we }} also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
+        </p>
+        <br>
+        <p>
+            In the event that *{{ my_or_our }} assessment record(s) for the current Year of Assessment 
+            *<span style="text-decoration: line-through;">is</span>/are not available or finalised at the point of verification, 
+            *{{ i_or_we }} understand that the Controller of Income Tax will verify 
+            *{{ my_or_our }} income range stated in Part I against *{{ my_or_our }} assessment record(s) for the two previous Years of Assessment.
+        </p>
+        {% endwith my_or_our %}
+    {% else %}
+        {% with my_or_our='my/<span style="text-decoration: line-through;">our</span>' i_or_we='I/<span style="text-decoration: line-through;">we</span>' %}
+        <p>
+            authorise the Controller of Income Tax to verify 
+            *{{ my_or_our }} income tax range stated in Part I above, based on 
+            *{{ my_or_our }} assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. 
+            *{{ i_or_we }} also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
+        </p>
+        <br>
+        <p>
+            In the event that *{{ my_or_our }} assessment record(s) for the current Year of Assessment 
+            *is/<span style="text-decoration: line-through;">are</span> not available or finalised at the point of verification, 
+            *{{ i_or_we }} understand that the Controller of Income Tax will verify 
+            *{{ my_or_our }} income range stated in Part I against *{{ my_or_our }} assessment record(s) for the two previous Years of Assessment.
+        </p>
+        {% endwith my_or_our %}
+    {% endif %}
 {% else %}
-    {% with my_or_our='my/<span style="text-decoration: line-through;">our</span>' i_or_we='I/<span style="text-decoration: line-through;">we</span>' %}
-    <p>
-        authorise the Controller of Income Tax to verify 
-        *{{ my_or_our }} income tax range stated in Part I above, based on 
-        *{{ my_or_our }} assessment record(s) for the current Year of Assessment and the two previous Years of Assessment, for the Controller of Work Passes. 
-        *{{ i_or_we }} also authorise the Controller of Income Tax to thereafter communicate the results of the verification to the Controller of Work Passes.
-    </p>
-    <br>
-    <p>
-        In the event that *{{ my_or_our }} assessment record(s) for the current Year of Assessment 
-        *is/<span style="text-decoration: line-through;">are</span> not available or finalised at the point of verification, 
-        *{{ i_or_we }} understand that the Controller of Income Tax will verify 
-        *{{ my_or_our }} income range stated in Part I against *{{ my_or_our }} assessment record(s) for the two previous Years of Assessment.
-    </p>
-    {% endwith my_or_our %}
+    <!-- To be added -->
 {% endif %}
 <br>
 <table>

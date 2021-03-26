@@ -504,6 +504,22 @@ urlpatterns = [
                                         ),
                                         name='pdf_agency_safety_agreement'
                                     ),
+                                    path(
+                                        'pdf/sponsor-details/',
+                                        PdfGenericAgencyView.as_view(
+                                            template_name='employer_documentation/pdf/15-MoM-work-permit-sponsors.html',
+                                            content_disposition = 'inline; filename="sponsor-details.pdf"',
+                                        ),
+                                        name='pdf_agency_sponsor_details'
+                                    ),
+                                    path(
+                                        'pdf/joint-applicants/',
+                                        PdfGenericAgencyView.as_view(
+                                            template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicants.html',
+                                            content_disposition = 'inline; filename="joint-applicants-details.pdf"',
+                                        ),
+                                        name='pdf_agency_joint_applicants'
+                                    ),
                                 ]),
                             ),
                         ]),

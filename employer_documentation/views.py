@@ -757,22 +757,7 @@ class PdfGenericAgencyView(
         if self.use_repayment_table:
             context['repayment_table'] = self.calc_repayment_schedule()
         
-        # # MoM Safety Agreements are available in different languages.
-        # # Relevant language template snippet is selected based on FDW's
-        # # preferred language.
-        # if self.template_name == 'employer_documentation/pdf/14-safety-agreement.html':
-        #     unavailable_languages = ['CHI', 'HIN', 'BEN',]
-        #     default_language = 'IDN'
-        #     try:
-        #         preferred_language = context['object'].fdw.personal_details.preferred_language.language
-        #     except:
-        #         preferred_language = default_language
-        #     else:
-        #         if preferred_language in unavailable_languages:
-        #             preferred_language = default_language
-        #     for i in range(1,4):
-        #         context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
-
+        context['url_name'] = request.resolver_match.url_name
         return self.generate_pdf_response(request, context)
 
 class PdfFileAgencyView(
