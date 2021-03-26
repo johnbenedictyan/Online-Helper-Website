@@ -10,7 +10,8 @@ from django.urls import include, path
 ## Template Views 
 from .views import (
     HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
-    HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView
+    HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
+    AdminPanelEnquiryListView
 )
 
 ## List Views
@@ -63,8 +64,18 @@ urlpatterns = [
     ),
     path(
         'admin-panel/',
-        AdminPanelView.as_view(),
-        name='admin_panel'
+        include(
+            path(
+                '',
+                AdminPanelView.as_view(),
+                name='admin_panel'
+            ),
+            path(
+                'enquiries/'.
+                AdminPanelEnquiryListView,
+                name='admin_panel_enquiry_list'
+            )
+        )
     ),
     path(
         'robots.txt',
