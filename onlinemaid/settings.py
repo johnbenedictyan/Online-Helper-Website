@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # 3rd party packages
+    'captcha',
     'crispy_forms',
     'django_filters',
     'django_otp',
@@ -305,3 +306,9 @@ AGENCY_PAGINATE_BY = 12
 # extract the ea personnel number for authentication.
 
 AGENCY_EMPLOYEE_FEP = 'example.com'
+
+# Django Recaptcha Settings
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_REQUIRED_SCORE = os.environ.get('RECAPTCHA_REQUIRED_SCORE')
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
