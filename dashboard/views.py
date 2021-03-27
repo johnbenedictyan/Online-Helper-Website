@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -225,3 +225,15 @@ class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
 # Update Views
 
 # Delete Views
+
+# Generic Views
+class DashboardDataProviderView(View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        request_data = json.loads(request.body.decode('utf-8'))
+        model = request_data.get('model')
+        fields = request_data.get('fields')
+        data = {
+        }
+        return JsonResponse(data, status=200)
