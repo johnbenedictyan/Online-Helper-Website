@@ -1,19 +1,15 @@
 # Imports from python
-from itertools import chain
+import json
 
 # Imports from django
-from django.core.exceptions import PermissionDenied
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, View
-from django.views.generic.base import RedirectView, TemplateView
+from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
-from accounts.models import Employer
 from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
@@ -229,11 +225,230 @@ class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
 # Generic Views
 class DashboardDataProviderView(View):
     http_method_names = ['post']
-
+    fake_data = [4568,1017,3950,3898,4364,4872,3052,4346,3884,3895,4316,1998,
+                 4595,4887,4199,4518,2053,2862,3032,3752,1404,2432,3479,1108,
+                 4673,2794,2890,4220,3562,3150,4128,1209,4668,2115,3094,4405,
+                 3655,4254,3945,4958,3691,3850,3803,2049,2030,1851,4236,2602,
+                 3161,2543,2292,3335,3732,2326,2074,1004,1258,2248,4442,4074,
+                 4088,1440,2308,3257,3929,4497,3170,1454,2997,3198,4179,1393,
+                 1340,1136,2356,2625,4167,3263,4235,3678,3805,4934,4806,4884,
+                 1880,3598,4785,4945,1247,1463,4703,3296,1458,2785,3157,2845,
+                 4158,2084,3649,3295,3246,3123,4413,4646,1278,2531,2218,3978,
+                 2770,3458,3095,1289,4799,4390,2788,3549,3155,2940,2163,3355,
+                 4158,3598]
+    fake_sales_data = [1928.13,1654.01,1872.78,1912.47,1920.25,1223.21,1282.1,
+                       1271.75,1696.94,1924.69,1261.49,1319.17,1807.36,1365.63,
+                       1727.43,1055.6,1348.16,1568.3,1792.91,1294.07,1690.68,
+                       1142.61,1853.0,1645.32,1341.31,1154.14,1798.84,1729.81,
+                       1942.27,1202.71,1035.82,1017.09,1235.47,1190.02,1536.62,
+                       1692.85,1335.03,1647.84,1867.06,1634.16,1718.82,1120.49,
+                       1533.14,1355.13,1294.28,1397.56,1107.7,1736.71,1742.2,
+                       1827.31,1141.72,1091.86,1359.71,1584.98,1700.06,1177.02,
+                       1946.78,1732.02,1953.49,1260.4,1778.15,1561.59,1798.72,
+                       1726.44,1290.43,1073.86,1132.2,1828.6,1045.69,1120.69,
+                       1001.71,1377.45,1842.9,1371.19,1045.64,1810.85,1843.43,
+                       1911.8,1604.64,1165.26,1148.73,1755.65,1409.31,1854.43,
+                       1811.62,1212.29,1211.54,1640.7,1189.74,1107.42,1426.02,
+                       1664.72,1917.44,1342.77,1019.53,1747.43,1369.28,1328.59,
+                       1375.66,1186.99,1950.93,1446.33,1948.52,1120.59,1554.5,
+                       1356.33,1725.75,1408.0,1674.73,1026.94,1518.31,1840.69,
+                       1619.91,1855.73,1426.11,1964.36,1760.13,1126.69,1766.17,
+                       1705.75]
+    fake_cases_data = [16,12,8,6,11,5,6,9,3,1,3,13,8,5,6,12,2,17,2,10,4,12,5,
+                       11,10,6,13,19,8,16,2,1,9,9,12,7,13,9,5,14,5,19,5,2,6,5,
+                       9,5,17,4,16,17,12,6,18,19,6,12,2,13,2,7,9,5,2,10,6,11,
+                       12,2,10,4,14,14,11,5,2,9,7,16,11,12,7,1,5,12,4,8,6,10,
+                       11,12,5,13,4,18,13,13,5,9,9,18,7,9,15,7,20,11,9,12,4,13,
+                       13,11,20,16,15,20,2,10]
+    
     def post(self, request, *args, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
-        model = request_data.get('model')
-        fields = request_data.get('fields')
+        chart = request_data.get('chart')
+        authority = request_data.get('authority')
+        if chart['name'] == 'salesChart' and authority == 'Agency Managers':
+            if chart['year'] == '2010':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[0:12]
+                }]
+            elif chart['year'] == '2011':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[12:24]
+                }]
+            elif chart['year'] == '2012':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[24:36]
+                }]
+            elif chart['year'] == '2013':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[36:48]
+                }]
+            elif chart['year'] == '2014':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[48:60]
+                }]
+            elif chart['year'] == '2015':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[60:72]
+                }]
+            elif chart['year'] == '2016':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[72:84]
+                }]
+            elif chart['year'] == '2017':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[84:96]
+                }]
+            elif chart['year'] == '2018':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[96:108]
+                }]
+            elif chart['year'] == '2019':
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[108:120]
+                }]
+            else:
+                chart_data = [{
+                    'name': 'Sales',
+                    'data': self.fake_data[120:]
+                }]
+                
+        if chart['name'] == 'salesStaffPerformanceSales' and authority == 'Agency Managers':
+            if chart['year'] == '2010':
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_sales_data[0:36:3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_sales_data[1:37:3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_sales_data[2:38:3]
+                    }
+                ]
+            elif chart['year'] == '2011':
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_sales_data[36:72:3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_sales_data[37:73:3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_sales_data[38:74:3]
+                    }
+                ]
+            elif chart['year'] == '2012':
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_sales_data[72:108:3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_sales_data[73:109:3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_sales_data[74:110:3]
+                    }
+                ]
+            else:
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_sales_data[108::3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_sales_data[109::3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_sales_data[110::3]
+                    }
+                ]
+                
+        if chart['name'] == 'salesStaffPerformanceCases' and authority == 'Agency Managers':
+            if chart['year'] == '2010':
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_cases_data[0:36:3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_cases_data[1:37:3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_cases_data[2:38:3]
+                    }
+                ]
+            elif chart['year'] == '2011':
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_cases_data[36:72:3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_cases_data[37:73:3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_cases_data[38:74:3]
+                    }
+                ]
+            elif chart['year'] == '2012':
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_cases_data[72:108:3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_cases_data[73:109:3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_cases_data[74:110:3]
+                    }
+                ]
+            else:
+                chart_data = [
+                    {
+                        'name': 'john',
+                        'data': self.fake_cases_data[108::3]
+                    },
+                    {
+                        'name': 'jane',
+                        'data': self.fake_cases_data[109::3]
+                    },
+                    {
+                        'name': 'dave',
+                        'data': self.fake_cases_data[110::3]
+                    }
+                ]
+                
         data = {
+            'name': 'Sales',
+            'data': chart_data
         }
+        print(data)
         return JsonResponse(data, status=200)
