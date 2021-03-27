@@ -170,29 +170,25 @@ class AgencySignInForm(AuthenticationForm):
             ),
         )
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        try:
+            validate_email(username)
+        except:
+            username = username + '@' + settings.AGENCY_EMPLOYEE_FEP
+
+        return username
+
     def clean(self):
         cleaned_data = super().clean()
         UserModel = get_user_model()
         username = cleaned_data.get('username')
         try:
-            validate_email(username)
-        except:
-            email = username + '@' + settings.AGENCY_EMPLOYEE_FEP
-        else:
-            email = username
-
-        try:
             user = UserModel.objects.get(
-                email=email
+                email=username
             )
         except UserModel.DoesNotExist:
-            self.add_error(
-                'username',
-                ValidationError(
-                    _('Invalid Username'),
-                    code='invalid-signin'
-                )
-            )
+            pass
         else:
             if user.groups.filter(name=P_EMPLOYERS).exists():
                 self.add_error(
