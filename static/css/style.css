@@ -274,7 +274,7 @@ button.mini-faq-button i {
 
 @media screen and (min-width: 1400px) {
   .logo-image-wrapper {
-    height: 4.5rem;
+    width: 15%;
   }
 }
 

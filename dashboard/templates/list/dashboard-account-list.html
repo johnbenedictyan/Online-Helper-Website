@@ -1,4 +1,5 @@
 {% extends 'dashboard-base.html' %}
+{% load dashboard_tags %}
 {% block dashboard_section %}
 <section>
     <div class="container-fluid">
@@ -98,7 +99,7 @@
                                     </div>
                                     <div class="col-6 col-md-4">
                                         <h6 class="text-muted">Email</h6>
-                                        <p>{{account.user.email}}</p>
+                                        <p>{{account.user.email|faee}}</p>
                                     </div>
                                     <div class="col-12 col-md-4">
                                         <h6 class="text-muted">EA Personnel No</h6>
