@@ -25,9 +25,17 @@ from .views import DashboardHomePage
 
 ## Delete Views
 
+## Generic Views
+from .views import DashboardDataProviderView
+
 # Start of Urls
 
 urlpatterns = [
+    path(
+        'data/',
+        DashboardDataProviderView.as_view(),
+        name='dashboard_data_provider'
+    ),
     path(
         'view/',
         include([
