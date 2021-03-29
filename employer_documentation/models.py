@@ -1082,3 +1082,14 @@ class EmployerDocSponsor(models.Model):
             (2, "2 sponsors"),
         ]
     )
+    single_sponsor_monthly_income = models.DecimalField(
+        verbose_name=_("Sponsor's monthly income"),
+        max_digits=9,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(9_999_999),
+        ],
+        blank=True,
+        null=True,
+    )
