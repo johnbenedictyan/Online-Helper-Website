@@ -1103,7 +1103,8 @@ class EmployerDocSponsor(models.Model):
         choices=[
             (1, "1 sponsor"),
             (2, "2 sponsors"),
-        ]
+        ],
+        default=1,
     )
     single_sponsor_monthly_income = models.DecimalField(
         verbose_name=_("Sponsor's monthly income"),
