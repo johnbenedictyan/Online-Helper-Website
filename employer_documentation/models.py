@@ -1168,3 +1168,13 @@ class EmployerDocSponsor(models.Model):
         choices=RESIDENTIAL_STATUS_CHOICES,
         default=RESIDENTIAL_STATUS_CHOICES[0][0],
     )
+    sponsor_1_mobile_number = models.CharField(
+        verbose_name=_('Sponsor 1 mobile number'),
+        max_length=10,
+        validators=[
+            RegexValidator(
+                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
