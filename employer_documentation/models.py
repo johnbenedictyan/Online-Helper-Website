@@ -1245,3 +1245,19 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_fin_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 1 spouse FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nonce_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_tag_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
