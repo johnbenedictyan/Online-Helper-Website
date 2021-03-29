@@ -1151,6 +1151,50 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            Row(
+                Column(
+                    'sponsor_1_nationality',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_1_residential_status',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_mobile_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_1_email',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_address_1',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_1_address_2',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_post_code',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_1_marital_status',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
             Submit('submit', 'Submit')
         )
 
