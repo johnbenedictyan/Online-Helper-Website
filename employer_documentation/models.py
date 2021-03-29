@@ -1191,3 +1191,9 @@ class EmployerDocSponsor(models.Model):
         verbose_name=_('Post Code'),
         max_length=25,
     )
+    sponsor_1_marital_status = models.CharField(
+        verbose_name=_("Sponsor 1 marital status"),
+        max_length=10,
+        choices=MARITAL_STATUS_CHOICES,
+        default=MARITAL_STATUS_CHOICES[0][0],
+    )
