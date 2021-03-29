@@ -1166,6 +1166,7 @@ class EmployerDocSponsor(models.Model):
         null=True,
     )
     
+    # Sponsor 1 details
     sponsor_1_relationship = models.CharField(
         verbose_name=_("Sponsor 1 relationship with Employer"),
         max_length=30,
@@ -1239,6 +1240,8 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+
+    # Sponsor 1 spouse details
     sponsor_1_name_spouse = models.CharField(
         verbose_name=_('Sponsor 1 spouse name'),
         max_length=40,
