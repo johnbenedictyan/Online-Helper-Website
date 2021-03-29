@@ -1282,3 +1282,11 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_nationality_spouse = models.CharField(
+        verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
