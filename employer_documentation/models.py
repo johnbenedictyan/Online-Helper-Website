@@ -1405,3 +1405,93 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+
+    # Sponsor 2 spouse details
+    sponsor_2_name_spouse = models.CharField(
+        verbose_name=_('Sponsor 2 spouse name'),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_gender_spouse = models.CharField(
+        verbose_name=_("Sponsor 2 spouse gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_date_of_birth_spouse = models.DateField(
+        verbose_name=_('Sponsor 2 spouse date of birth'),
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nric_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 2 spouse NRIC'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nonce_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_tag_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_fin_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 2 spouse FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nonce_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_tag_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_passport = models.BinaryField(
+        verbose_name=_('Sponsor 2 spouse passport'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nonce_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_tag_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_passport_date = models.DateField(
+        verbose_name=_('Sponsor 2 spouse passport expiry date'),
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nationality_spouse = models.CharField(
+        verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_residential_status_spouse = models.CharField(
+        verbose_name=_("Sponsor 2 spouse residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
