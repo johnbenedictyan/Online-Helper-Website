@@ -1224,3 +1224,8 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_date_of_birth_spouse = models.DateField(
+        verbose_name=_('Sponsor 1 spouse date of birth'),
+        blank=True,
+        null=True,
+    )
