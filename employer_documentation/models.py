@@ -1197,3 +1197,16 @@ class EmployerDocSponsor(models.Model):
         choices=MARITAL_STATUS_CHOICES,
         default=MARITAL_STATUS_CHOICES[0][0],
     )
+    marriage_sg_registered = models.BooleanField(
+        verbose_name=_('Sponsor 1 marriage registered in SG?'),
+        default=True,
+        choices=TrueFalseChoices(
+            'Yes',
+            'No'
+        ),
+        help_text=_('''
+            Was Sponsor 1's marriage registered in Singapore?
+        '''),
+        blank=True,
+        null=True,
+    )
