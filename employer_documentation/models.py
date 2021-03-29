@@ -1337,31 +1337,43 @@ class EmployerDocSponsor(models.Model):
         max_length=30,
         choices=RELATIONSHIP_CHOICES,
         default=RELATIONSHIP_CHOICES[0][0],
+        blank=True,
+        null=True,
     )
     sponsor_2_name = models.CharField(
         verbose_name=_('Sponsor 2 Name'),
-        max_length=40
+        max_length=40,
+        blank=True,
+        null=True,
     )
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
         max_length=1,
         choices=GENDER_CHOICES,
         default=GENDER_CHOICES[0][0],
+        blank=True,
+        null=True,
     )
     sponsor_2_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 2 date of birth'),
+        blank=True,
+        null=True,
     )
     sponsor_2_nationality = models.CharField(
         verbose_name=_("Sponsor 2 nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
     )
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
         choices=RESIDENTIAL_STATUS_CHOICES,
         default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
     )
     sponsor_2_mobile_number = models.CharField(
         verbose_name=_('Sponsor 2 mobile number'),
@@ -1371,26 +1383,40 @@ class EmployerDocSponsor(models.Model):
                 regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
-        ]
+        ],
+        blank=True,
+        null=True,
     )
-    sponsor_2_email = models.EmailField(verbose_name=_('Sponsor 2 email address'))
+    sponsor_2_email = models.EmailField(
+        verbose_name=_('Sponsor 2 email address'),
+        blank=True,
+        null=True,
+    )
     sponsor_2_address_1 = models.CharField(
         verbose_name=_('Sponsor 2 street address'),
         max_length=100,
+        blank=True,
+        null=True,
     )
     sponsor_2_address_2 = models.CharField(
         verbose_name=_('Unit Number'),
         max_length=50,
+        blank=True,
+        null=True,
     )
     sponsor_2_post_code = models.CharField(
         verbose_name=_('Post Code'),
         max_length=25,
+        blank=True,
+        null=True,
     )
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
         choices=MARITAL_STATUS_CHOICES,
         default=MARITAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
     )
     sponsor_2_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
