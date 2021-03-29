@@ -1162,3 +1162,9 @@ class EmployerDocSponsor(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
     )
+    sponsor_1_residential_status = models.CharField(
+        verbose_name=_("Sponsor 1 residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+    )
