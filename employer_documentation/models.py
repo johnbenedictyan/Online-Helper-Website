@@ -1156,3 +1156,9 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
     )
+    sponsor_1_nationality = models.CharField(
+        verbose_name=_("Sponsor 1 nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+    )
