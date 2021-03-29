@@ -1075,3 +1075,10 @@ class EmployerDocSponsor(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_sponsor_ed'
     )
+    number_of_sponsors = models.PositiveSmallIntegerField(
+        verbose_name=_("Number of sponsors"),
+        choices=[
+            (1, "1 sponsor"),
+            (2, "2 sponsors"),
+        ]
+    )
