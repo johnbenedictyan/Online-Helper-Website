@@ -1178,3 +1178,4 @@ class EmployerDocSponsor(models.Model):
             )
         ]
     )
+    sponsor_1_email = models.EmailField(verbose_name=_('Sponsor 1 email address'))
