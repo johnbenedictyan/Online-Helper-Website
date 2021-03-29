@@ -1229,3 +1229,19 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_nric_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 1 spouse NRIC'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nonce_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_tag_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
