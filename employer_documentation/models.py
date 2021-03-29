@@ -1093,3 +1093,14 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    combined_sponsor_monthly_income = models.DecimalField(
+        verbose_name=_("Sponsors' combined monthly income"),
+        max_digits=6,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(2000),
+        ],
+        blank=True,
+        null=True,
+    )
