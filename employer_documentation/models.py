@@ -1216,3 +1216,11 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_gender_spouse = models.CharField(
+        verbose_name=_("Sponsor 1 spouse gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
