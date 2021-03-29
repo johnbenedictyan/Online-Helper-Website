@@ -1290,3 +1290,11 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_residential_status_spouse = models.CharField(
+        verbose_name=_("Sponsor 1 spouse residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
