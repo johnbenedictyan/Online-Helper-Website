@@ -1153,3 +1153,6 @@ class EmployerDocSponsor(models.Model):
         choices=GENDER_CHOICES,
         default=GENDER_CHOICES[0][0],
     )
+    sponsor_1_date_of_birth = models.DateField(
+        verbose_name=_('Sponsor 1 date of birth'),
+    )
