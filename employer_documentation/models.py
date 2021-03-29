@@ -1166,6 +1166,12 @@ class EmployerDocSponsor(models.Model):
         null=True,
     )
     
+    sponsor_1_relationship = models.CharField(
+        verbose_name=_("Sponsor 1 relationship with Employer"),
+        max_length=30,
+        choices=RELATIONSHIP_CHOICES,
+        default=RELATIONSHIP_CHOICES[0][0],
+    )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
         max_length=40
