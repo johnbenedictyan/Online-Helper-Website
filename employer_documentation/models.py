@@ -20,6 +20,7 @@ from onlinemaid.helper_functions import decrypt_string
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
+from maid.constants import FullNationsChoices
 
 # Utiliy Classes and Functions
 class OverwriteStorage(FileSystemStorage):
@@ -1051,3 +1052,26 @@ class EmployerPaymentTransaction(models.Model):
         default=TRANSCATION_CHOICES[0][0]
     )
     transaction_date = models.DateField()
+
+class EmployerDocSponsor(models.Model):
+    GENDER_CHOICES = (
+        ('M', _('Male')),
+        ('F', _('Female')),
+    )
+    RESIDENTIAL_STATUS_CHOICES = (
+        ('SC', _('Singapore citizen')),
+        ('PR', _('Singapore permanent resident')),
+    )
+    MARITAL_STATUS_CHOICES = (
+        ('SINGLE', _('Single')),
+        ('MARRIED', _('Married')),
+        ('DIVORCED', _('Divorced')),
+        ('WIDOWED', _('Widowed')),
+        ('SEPARATED', _('Separated')),
+    )
+
+    employer_doc = models.ForeignKey(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_sponsor_ed'
+    )
