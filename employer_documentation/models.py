@@ -1129,7 +1129,7 @@ class EmployerDocSponsor(models.Model):
     )
     sponsor_worked_in_sg = models.BooleanField(
         verbose_name=_('Sponsor(s) worked in SG for last 2 years?'),
-        default=False,
+        default=True,
         choices=TrueFalseChoices(
             'Yes',
             'No'
