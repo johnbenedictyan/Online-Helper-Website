@@ -1054,6 +1054,29 @@ class EmployerPaymentTransaction(models.Model):
     transaction_date = models.DateField()
 
 class EmployerDocSponsor(models.Model):
+    RELATIONSHIP_CHOICES = (
+        ('SON', _('Son')),
+        ('DAUGHTER', _('Daughter')),
+        ('FATHER', _('Father')),
+        ('MOTHER', _('Mother')),
+        ('GRANDFATHER', _('Grandfather')),
+        ('GRANDMOTHER', _('Grandmother')),
+        ('BROTHER', _('Brother')),
+        ('SISTER', _('Sister')),
+        ('FATHER_IN_LAW', _('Father-in-law')),
+        ('MOTHER_IN_LAW', _('Mother-in-law')),
+        ('SON_IN_LAW', _('Son-in-law')),
+        ('DAUGHTER_IN_LAW', _('Daughter-in-law')),
+        ('GRANDDAUGHTER', _('Granddaughter')),
+        ('GRANDSON', _('Grandson')),
+        ('BROTHER_IN_LAW', _('Brother-in-law')),
+        ('SISTER_IN_LAW', _('Sister-in-law')),
+        ('GRANDFATHER_IN_LAW', _('Grandfather-in-law')),
+        ('GRANDMOTHER_IN_LAW', _('Grandmother-in-law')),
+        ('YOUNG_CHILD_LEGAL_WARD', _('Young child legal ward')),
+        ('AGED_PERSON_LEGAL-WARD', _('Aged person legal ward')),
+        ('OTHER', _('Other')),
+    )
     GENDER_CHOICES = (
         ('M', _('Male')),
         ('F', _('Female')),
