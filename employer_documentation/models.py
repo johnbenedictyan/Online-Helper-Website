@@ -1147,3 +1147,9 @@ class EmployerDocSponsor(models.Model):
         verbose_name=_('Sponsor 1 Name'),
         max_length=40
     )
+    sponsor_1_gender = models.CharField(
+        verbose_name=_("Sponsor 1 gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+    )
