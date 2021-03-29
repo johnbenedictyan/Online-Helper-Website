@@ -1116,3 +1116,10 @@ class EmployerDocSponsor(models.Model):
             Singapore for the last 2 years?
         '''),
     )
+    # Sponsor 1 NRIC
+    sponsor_1_nric = models.BinaryField(
+        verbose_name=_('Sponsor 1 NRIC / FIN'),
+        editable=True,
+    )
+    sponsor_1_nonce = models.BinaryField(editable=True)
+    sponsor_1_tag = models.BinaryField(editable=True)
