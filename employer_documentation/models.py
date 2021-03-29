@@ -1143,3 +1143,7 @@ class EmployerDocSponsor(models.Model):
         null=True,
     )
     
+    sponsor_1_name = models.CharField(
+        verbose_name=_('Sponsor 1 Name'),
+        max_length=40
+    )
