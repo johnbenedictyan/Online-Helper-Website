@@ -1092,6 +1092,65 @@ class EmployerDocSponsorForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
+            Row(
+                Column(
+                    'number_of_sponsors',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedText(
+                        'single_sponsor_monthly_income', '$',
+                        min='0', max='9999999',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedText(
+                        'combined_sponsor_monthly_income', '$',
+                        min='0', max='2000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_worked_in_sg',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_1_nric',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_relationship',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'sponsor_1_name',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_gender',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    Field(
+                        'sponsor_1_date_of_birth',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Sponsor 1 date of birth'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
             Submit('submit', 'Submit')
         )
 
