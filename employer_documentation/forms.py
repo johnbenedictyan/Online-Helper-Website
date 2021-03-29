@@ -1195,6 +1195,17 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            Row(
+                Column(
+                    'sponsor_1_marriage_sg_registered',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                Column(
+                    'sponsor_1_name_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                css_class='form-row'
+            ),
             Submit('submit', 'Submit')
         )
 
