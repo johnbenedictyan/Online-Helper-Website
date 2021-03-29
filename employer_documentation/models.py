@@ -1122,8 +1122,8 @@ class EmployerDocSponsor(models.Model):
         verbose_name=_('Sponsor 1 NRIC / FIN'),
         editable=True,
     )
-    sponsor_1_nonce = models.BinaryField(editable=True)
-    sponsor_1_tag = models.BinaryField(editable=True)
+    sponsor_1_nric_nonce = models.BinaryField(editable=True)
+    sponsor_1_nric_tag = models.BinaryField(editable=True)
     
     # Sponsor 2 NRIC
     sponsor_2_nric = models.BinaryField(
@@ -1132,12 +1132,12 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_2_nonce = models.BinaryField(
+    sponsor_2_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_tag = models.BinaryField(
+    sponsor_2_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
