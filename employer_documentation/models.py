@@ -1261,3 +1261,24 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
+    sponsor_1_passport = models.BinaryField(
+        verbose_name=_('Sponsor 1 spouse passport'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nonce_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_tag_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_passport_date = models.DateField(
+        verbose_name=_('Sponsor 1 spouse passport expiry date'),
+        blank=True,
+        null=True,
+    )
