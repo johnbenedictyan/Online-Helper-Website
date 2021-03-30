@@ -1123,7 +1123,7 @@ class EmployerDocSponsor(models.Model):
         decimal_places=2,
         validators=[
             MinValueValidator(0),
-            MaxValueValidator(2000),
+            MaxValueValidator(9_999_999),
         ],
         blank=True,
         null=True,
