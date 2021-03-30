@@ -20,6 +20,7 @@ from onlinemaid.helper_functions import decrypt_string
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
+from maid.constants import FullNationsChoices
 
 # Utiliy Classes and Functions
 class OverwriteStorage(FileSystemStorage):
@@ -1051,3 +1052,545 @@ class EmployerPaymentTransaction(models.Model):
         default=TRANSCATION_CHOICES[0][0]
     )
     transaction_date = models.DateField()
+
+class EmployerDocSponsor(models.Model):
+    RELATIONSHIP_CHOICES = (
+        ('SON', _('Son')),
+        ('DAUGHTER', _('Daughter')),
+        ('FATHER', _('Father')),
+        ('MOTHER', _('Mother')),
+        ('GRANDFATHER', _('Grandfather')),
+        ('GRANDMOTHER', _('Grandmother')),
+        ('BROTHER', _('Brother')),
+        ('SISTER', _('Sister')),
+        ('FATHER_IN_LAW', _('Father-in-law')),
+        ('MOTHER_IN_LAW', _('Mother-in-law')),
+        ('SON_IN_LAW', _('Son-in-law')),
+        ('DAUGHTER_IN_LAW', _('Daughter-in-law')),
+        ('GRANDDAUGHTER', _('Granddaughter')),
+        ('GRANDSON', _('Grandson')),
+        ('BROTHER_IN_LAW', _('Brother-in-law')),
+        ('SISTER_IN_LAW', _('Sister-in-law')),
+        ('GRANDFATHER_IN_LAW', _('Grandfather-in-law')),
+        ('GRANDMOTHER_IN_LAW', _('Grandmother-in-law')),
+        ('YOUNG_CHILD_LEGAL_WARD', _('Young child legal ward')),
+        ('AGED_PERSON_LEGAL-WARD', _('Aged person legal ward')),
+        ('OTHER', _('Other')),
+    )
+    GENDER_CHOICES = (
+        ('M', _('Male')),
+        ('F', _('Female')),
+    )
+    RESIDENTIAL_STATUS_CHOICES = (
+        ('SC', _('Singapore citizen')),
+        ('PR', _('Singapore permanent resident')),
+    )
+    MARITAL_STATUS_CHOICES = (
+        ('SINGLE', _('Single')),
+        ('MARRIED', _('Married')),
+        ('DIVORCED', _('Divorced')),
+        ('WIDOWED', _('Widowed')),
+        ('SEPARATED', _('Separated')),
+    )
+
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_sponsor_ed'
+    )
+    number_of_sponsors = models.PositiveSmallIntegerField(
+        verbose_name=_("Number of sponsors"),
+        choices=[
+            (1, "1 sponsor"),
+            (2, "2 sponsors"),
+        ],
+        default=1,
+    )
+    single_sponsor_monthly_income = models.DecimalField(
+        verbose_name=_("Sponsor's monthly income"),
+        max_digits=9,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(9_999_999),
+        ],
+        blank=True,
+        null=True,
+    )
+    combined_sponsor_monthly_income = models.DecimalField(
+        verbose_name=_("Sponsors' combined monthly income"),
+        max_digits=9,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(9_999_999),
+        ],
+        blank=True,
+        null=True,
+    )
+    sponsor_worked_in_sg = models.BooleanField(
+        verbose_name=_('Sponsor(s) worked in SG for last 2 years?'),
+        default=True,
+        choices=TrueFalseChoices(
+            'Yes',
+            'No'
+        ),
+        help_text=_('''
+            Has either Sponsor 1 or Sponsor 2 (if applicable) worked in 
+            Singapore for the last 2 years?
+        '''),
+    )
+
+    # Sponsor 1 NRIC
+    sponsor_1_nric = models.BinaryField(
+        verbose_name=_('Sponsor 1 NRIC / FIN'),
+        editable=True,
+    )
+    sponsor_1_nric_nonce = models.BinaryField(editable=True)
+    sponsor_1_nric_tag = models.BinaryField(editable=True)
+    
+    # Sponsor 2 NRIC
+    sponsor_2_nric = models.BinaryField(
+        verbose_name=_('Sponsor 2 NRIC / FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nric_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nric_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    
+    # Sponsor 1 details
+    sponsor_1_relationship = models.CharField(
+        verbose_name=_("Sponsor 1 relationship with Employer"),
+        max_length=30,
+        choices=RELATIONSHIP_CHOICES,
+        default=RELATIONSHIP_CHOICES[0][0],
+    )
+    sponsor_1_name = models.CharField(
+        verbose_name=_('Sponsor 1 Name'),
+        max_length=40
+    )
+    sponsor_1_gender = models.CharField(
+        verbose_name=_("Sponsor 1 gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+    )
+    sponsor_1_date_of_birth = models.DateField(
+        verbose_name=_('Sponsor 1 date of birth'),
+    )
+    sponsor_1_nationality = models.CharField(
+        verbose_name=_("Sponsor 1 nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+    )
+    sponsor_1_residential_status = models.CharField(
+        verbose_name=_("Sponsor 1 residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+    )
+    sponsor_1_mobile_number = models.CharField(
+        verbose_name=_('Sponsor 1 mobile number'),
+        max_length=10,
+        validators=[
+            RegexValidator(
+                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
+    sponsor_1_email = models.EmailField(verbose_name=_('Sponsor 1 email address'))
+    sponsor_1_address_1 = models.CharField(
+        verbose_name=_('Sponsor 1 Street Address'),
+        max_length=100,
+    )
+    sponsor_1_address_2 = models.CharField(
+        verbose_name=_('Sponsor 1 Unit Number'),
+        max_length=50,
+    )
+    sponsor_1_post_code = models.CharField(
+        verbose_name=_('Sponsor 1 Post Code'),
+        max_length=25,
+    )
+    sponsor_1_marital_status = models.CharField(
+        verbose_name=_("Sponsor 1 marital status"),
+        max_length=10,
+        choices=MARITAL_STATUS_CHOICES,
+        default=MARITAL_STATUS_CHOICES[0][0],
+    )
+    sponsor_1_marriage_sg_registered = models.BooleanField(
+        verbose_name=_('Sponsor 1 marriage registered in SG?'),
+        default=True,
+        choices=TrueFalseChoices(
+            'Yes',
+            'No'
+        ),
+        help_text=_('''
+            Was Sponsor 1's marriage registered in Singapore?
+        '''),
+        blank=True,
+        null=True,
+    )
+
+    # Sponsor 1 spouse details
+    sponsor_1_name_spouse = models.CharField(
+        verbose_name=_('Sponsor 1 spouse name'),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_gender_spouse = models.CharField(
+        verbose_name=_("Sponsor 1 spouse gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_1_date_of_birth_spouse = models.DateField(
+        verbose_name=_('Sponsor 1 spouse date of birth'),
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nric_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 1 spouse NRIC'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nonce_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_tag_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_fin_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 1 spouse FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nonce_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_tag_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_passport_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 1 spouse passport'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nonce_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_tag_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_passport_date_spouse = models.DateField(
+        verbose_name=_('Sponsor 1 spouse passport expiry date'),
+        blank=True,
+        null=True,
+    )
+    sponsor_1_nationality_spouse = models.CharField(
+        verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    sponsor_1_residential_status_spouse = models.CharField(
+        verbose_name=_("Sponsor 1 spouse residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+
+    # Sponsor 2 details
+    sponsor_2_relationship = models.CharField(
+        verbose_name=_("Sponsor 2 relationship with Employer"),
+        max_length=30,
+        choices=RELATIONSHIP_CHOICES,
+        default=RELATIONSHIP_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_name = models.CharField(
+        verbose_name=_('Sponsor 2 Name'),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_gender = models.CharField(
+        verbose_name=_("Sponsor 2 gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_date_of_birth = models.DateField(
+        verbose_name=_('Sponsor 2 date of birth'),
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nationality = models.CharField(
+        verbose_name=_("Sponsor 2 nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_residential_status = models.CharField(
+        verbose_name=_("Sponsor 2 residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_mobile_number = models.CharField(
+        verbose_name=_('Sponsor 2 mobile number'),
+        max_length=10,
+        validators=[
+            RegexValidator(
+                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                message=_('Please enter a valid contact number')
+            )
+        ],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_email = models.EmailField(
+        verbose_name=_('Sponsor 2 email address'),
+        blank=True,
+        null=True,
+    )
+    sponsor_2_address_1 = models.CharField(
+        verbose_name=_('Sponsor 2 Street Address'),
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_address_2 = models.CharField(
+        verbose_name=_('Sponsor 2 Unit Number'),
+        max_length=50,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_post_code = models.CharField(
+        verbose_name=_('Sponsor 2 Post Code'),
+        max_length=25,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_marital_status = models.CharField(
+        verbose_name=_("Sponsor 2 marital status"),
+        max_length=10,
+        choices=MARITAL_STATUS_CHOICES,
+        default=MARITAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_marriage_sg_registered = models.BooleanField(
+        verbose_name=_('Sponsor 2 marriage registered in SG?'),
+        default=True,
+        choices=TrueFalseChoices(
+            'Yes',
+            'No'
+        ),
+        help_text=_('''
+            Was Sponsor 2's marriage registered in Singapore?
+        '''),
+        blank=True,
+        null=True,
+    )
+
+    # Sponsor 2 spouse details
+    sponsor_2_name_spouse = models.CharField(
+        verbose_name=_('Sponsor 2 spouse name'),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_gender_spouse = models.CharField(
+        verbose_name=_("Sponsor 2 spouse gender"),
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default=GENDER_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+    sponsor_2_date_of_birth_spouse = models.DateField(
+        verbose_name=_('Sponsor 2 spouse date of birth'),
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nric_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 2 spouse NRIC'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nonce_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_tag_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_fin_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 2 spouse FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nonce_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_tag_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_passport_spouse = models.BinaryField(
+        verbose_name=_('Sponsor 2 spouse passport'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nonce_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_tag_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_passport_date_spouse = models.DateField(
+        verbose_name=_('Sponsor 2 spouse passport expiry date'),
+        blank=True,
+        null=True,
+    )
+    sponsor_2_nationality_spouse = models.CharField(
+        verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_residential_status_spouse = models.CharField(
+        verbose_name=_("Sponsor 2 spouse residential status"),
+        max_length=2,
+        choices=RESIDENTIAL_STATUS_CHOICES,
+        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        blank=True,
+        null=True,
+    )
+
+    def get_sponsor_1_nric_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_1_nric,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nric_nonce,
+            self.sponsor_1_nric_tag
+        )
+        return plaintext
+    
+    def get_sponsor_2_nric_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_2_nric,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nric_nonce,
+            self.sponsor_2_nric_tag
+        )
+        return plaintext
+
+    def get_sponsor_1_nric_spouse_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_1_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_nric_spouse,
+            self.sponsor_1_tag_nric_spouse
+        )
+        return plaintext
+
+    def get_sponsor_1_fin_spouse_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_1_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_fin_spouse,
+            self.sponsor_1_tag_fin_spouse
+        )
+        return plaintext
+
+    def get_sponsor_1_passport_spouse_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_1_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_passport_spouse,
+            self.sponsor_1_tag_passport_spouse
+        )
+        return plaintext
+
+    def get_sponsor_2_nric_spouse_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_2_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_nric_spouse,
+            self.sponsor_2_tag_nric_spouse
+        )
+        return plaintext
+
+    def get_sponsor_2_fin_spouse_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_2_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_fin_spouse,
+            self.sponsor_2_tag_fin_spouse
+        )
+        return plaintext
+
+    def get_sponsor_2_passport_spouse_full(self):
+        plaintext = decrypt_string(
+            self.sponsor_2_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_passport_spouse,
+            self.sponsor_2_tag_passport_spouse
+        )
+        return plaintext

@@ -19,6 +19,7 @@ from .models import (
     JobOrder,
     PdfArchive,
     EmployerPaymentTransaction,
+    EmployerDocSponsor,
 )
 from .forms import (
     EmployerForm,
@@ -28,6 +29,7 @@ from .forms import (
     EmployerDocMaidDeploymentForm,
     JobOrderForm,
     EmployerPaymentTransactionForm,
+    EmployerDocSponsorForm,
     SignatureForm,
     VerifyUserTokenForm,
 )
@@ -450,6 +452,37 @@ class EmployerPaymentTransactionCreateView(
         )
         return super().form_valid(form)
 
+class EmployerDocSponsorCreateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    CreateView
+):
+    model = EmployerDocSponsor
+    form_class = EmployerDocSponsorForm
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self, *args, **kwargs):
+        return EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
+
 # Update Views
 class EmployerUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -606,6 +639,28 @@ class EmployerPaymentTransactionUpdateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
+
+class EmployerDocSponsorUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDocSponsor
+    form_class = EmployerDocSponsorForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
 
 
 # Delete Views

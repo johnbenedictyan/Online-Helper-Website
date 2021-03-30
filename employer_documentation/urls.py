@@ -24,6 +24,7 @@ from .views import (
     EmployerCreateView,
     EmployerDocCreateView,
     EmployerPaymentTransactionCreateView,
+    EmployerDocSponsorCreateView,
 )
 
 ## Update Views
@@ -35,6 +36,7 @@ from .views import (
     EmployerDocMaidDeploymentUpdateView,
     JobOrderUpdateView,
     EmployerPaymentTransactionUpdateView,
+    EmployerDocSponsorUpdateView,
 )
 
 ## Delete Views
@@ -153,6 +155,16 @@ urlpatterns = [
                                         'job-order/<int:employersubdoc_pk>/update/',
                                         JobOrderUpdateView.as_view(),
                                         name='joborder_update_route'
+                                    ),
+                                    path(
+                                        'sponsor/create/',
+                                        EmployerDocSponsorCreateView.as_view(),
+                                        name='employerdoc_sponsor_create_route'
+                                    ),
+                                    path(
+                                        'sponsor/<int:employersubdoc_pk>/update/',
+                                        EmployerDocSponsorUpdateView.as_view(),
+                                        name='employerdoc_sponsor_update_route'
                                     ),
                                     path(
                                         'payment/list/',

@@ -6,6 +6,8 @@ from .models import (
     EmployerDocMaidStatus,
     JobOrder,
     PdfArchive,
+    EmployerPaymentTransaction,
+    EmployerDocSponsor,
 )
 
 # Register your models here.
@@ -14,4 +16,6 @@ admin.site.register(EmployerDoc)
 admin.site.register(EmployerDocSig)
 admin.site.register(EmployerDocMaidStatus)
 admin.site.register(JobOrder)
+admin.site.register(EmployerPaymentTransaction)
+admin.site.register(EmployerDocSponsor)
 admin.site.register(PdfArchive)
