@@ -1108,6 +1108,89 @@ class EmployerDocSponsorForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
+        '''
+        Decryption
+        '''
+        if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_1_nric_full()
+                self.initial.update({'sponsor_1_nric': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_1_nric': ''})
+        else:
+            self.initial.update({'sponsor_1_nric': ''})
+
+        if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_2_nric_full()
+                self.initial.update({'sponsor_2_nric': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_2_nric': ''})
+        else:
+            self.initial.update({'sponsor_2_nric': ''})
+
+        if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_1_nric_spouse_full()
+                self.initial.update({'sponsor_1_nric_spouse': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_1_nric_spouse': ''})
+        else:
+            self.initial.update({'sponsor_1_nric_spouse': ''})
+
+        if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_1_fin_spouse_full()
+                self.initial.update({'sponsor_1_fin_spouse': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_1_fin_spouse': ''})
+        else:
+            self.initial.update({'sponsor_1_fin_spouse': ''})
+
+        if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_1_passport_spouse_full()
+                self.initial.update({'sponsor_1_passport_spouse': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_1_passport_spouse': ''})
+        else:
+            self.initial.update({'sponsor_1_passport_spouse': ''})
+
+        if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_2_nric_spouse_full()
+                self.initial.update({'sponsor_2_nric_spouse': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_2_nric_spouse': ''})
+        else:
+            self.initial.update({'sponsor_2_nric_spouse': ''})
+
+        if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_2_fin_spouse_full()
+                self.initial.update({'sponsor_2_fin_spouse': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_2_fin_spouse': ''})
+        else:
+            self.initial.update({'sponsor_2_fin_spouse': ''})
+
+        if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
+            try:
+                plaintext = self.instance.get_sponsor_2_passport_spouse_full()
+                self.initial.update({'sponsor_2_passport_spouse': plaintext})
+            except (ValueError, KeyError):
+                print("Incorrect decryption")
+                self.initial.update({'sponsor_2_passport_spouse': ''})
+        else:
+            self.initial.update({'sponsor_2_passport_spouse': ''})
+
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
