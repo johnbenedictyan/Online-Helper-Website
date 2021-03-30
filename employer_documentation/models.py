@@ -1294,7 +1294,7 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_1_passport = models.BinaryField(
+    sponsor_1_passport_spouse = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse passport'),
         editable=True,
         blank=True,
@@ -1310,7 +1310,7 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_1_passport_date = models.DateField(
+    sponsor_1_passport_date_spouse = models.DateField(
         verbose_name=_('Sponsor 1 spouse passport expiry date'),
         blank=True,
         null=True,
@@ -1485,7 +1485,7 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_2_passport = models.BinaryField(
+    sponsor_2_passport_spouse = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse passport'),
         editable=True,
         blank=True,
@@ -1501,7 +1501,7 @@ class EmployerDocSponsor(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_2_passport_date = models.DateField(
+    sponsor_2_passport_date_spouse = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
         blank=True,
         null=True,
