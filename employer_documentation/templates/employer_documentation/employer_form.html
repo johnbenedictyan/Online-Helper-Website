@@ -98,6 +98,43 @@
             let spouseTwoElements = document.querySelectorAll('.spouse-2');
             let sponsorTwoElements = document.querySelectorAll('.sponsor-2');
 
+            // On load
+            if (numberOfSponsors.value==='1') {
+                singleIncome.hidden = false;
+                combinedIncome.hidden = true;
+                for (let sp of sponsorTwoElements) {
+                    sp.hidden = true;
+                }
+                for (let sp of spouseTwoElements) {
+                    sp.hidden = true;
+                }
+            } else if (numberOfSponsors.value==='2') {
+                singleIncome.hidden = true;
+                combinedIncome.hidden = false;
+                for (let sp of sponsorTwoElements) {
+                    sp.hidden = false;
+                }
+                if (sponsorTwoMaritalStatus.value==='MARRIED') {
+                    for (let sp of spouseTwoElements) {
+                        sp.hidden = false;
+                    }
+                } else {
+                    for (let sp of spouseTwoElements) {
+                        sp.hidden = true;
+                    }
+                }
+            }
+            if (sponsorOneMaritalStatus.value==='MARRIED') {
+                for (let sp of spouseOneElements) {
+                    sp.hidden = false;
+                }
+            } else {
+                for (let sp of spouseOneElements) {
+                    sp.hidden = true;
+                }
+            }
+
+            // On change based on user input
             numberOfSponsors.addEventListener('change', function() {
                 if (this.value==='1') {
                     singleIncome.hidden = false;
@@ -125,7 +162,6 @@
                     }
                 }
             })
-
             sponsorOneMaritalStatus.addEventListener('change', function() {
                 if (this.value==='MARRIED') {
                     for (let sp of spouseOneElements) {
@@ -137,7 +173,6 @@
                     }
                 }
             })
-
             sponsorTwoMaritalStatus.addEventListener('change', function() {
                 if (this.value==='MARRIED') {
                     for (let sp of spouseTwoElements) {
