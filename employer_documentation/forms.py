@@ -1103,14 +1103,15 @@ class EmployerDocSponsorForm(forms.ModelForm):
                         min='0', max='9999999',
                     ),
                     css_class='form-group col-md-6',
-                    id='single_sponsor'
+                    id='single_sponsor_income'
                 ),
                 Column(
                     PrependedText(
                         'combined_sponsor_monthly_income', '$',
                         min='0', max='2000',
                     ),
-                    css_class='form-group col-md-6 sponsor_2'
+                    css_class='form-group col-md-6 sponsor_2',
+                    id='combined_sponsor_income'
                 ),
                 css_class='form-row'
             ),
