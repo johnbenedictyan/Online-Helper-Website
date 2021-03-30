@@ -1196,6 +1196,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            # Sponsor 1 spouse
             Row(
                 Column(
                     'sponsor_1_marriage_sg_registered',
@@ -1241,7 +1242,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Sponsor 1 spouse passport expiry date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 sponsor_1_spouse'
                 ),
                 css_class='form-row'
             ),
@@ -1256,6 +1257,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            # Sponsor 2
             Row(
                 Column(
                     'sponsor_2_nric',
@@ -1331,6 +1333,72 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 Column(
                     'sponsor_2_marital_status',
                     css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            # Sponsor 2 spouse
+            Row(
+                Column(
+                    'sponsor_2_marriage_sg_registered',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                Column(
+                    'sponsor_2_name_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_gender_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                Column(
+                    Field(
+                        'sponsor_2_date_of_birth_spouse',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Sponsor 2 date of birth'
+                    ),
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_nric_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                Column(
+                    'sponsor_2_fin_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_passport_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                Column(
+                    Field(
+                        'sponsor_2_passport_date_spouse',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Sponsor 2 spouse passport expiry date'
+                    ),
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_nationality_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
+                ),
+                Column(
+                    'sponsor_2_residential_status_spouse',
+                    css_class='form-group col-md-6 sponsor_2_spouse'
                 ),
                 css_class='form-row'
             ),
