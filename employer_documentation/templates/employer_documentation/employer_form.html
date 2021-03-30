@@ -105,11 +105,23 @@
                     for (let sp of sponsorTwoElements) {
                         sp.hidden = true;
                     }
+                    for (let sp of spouseTwoElements) {
+                        sp.hidden = true;
+                    }
                 } else if (this.value==='2') {
                     singleIncome.hidden = true;
                     combinedIncome.hidden = false;
                     for (let sp of sponsorTwoElements) {
                         sp.hidden = false;
+                    }
+                    if (sponsorTwoMaritalStatus.value==='MARRIED') {
+                        for (let sp of spouseTwoElements) {
+                            sp.hidden = false;
+                        }
+                    } else {
+                        for (let sp of spouseTwoElements) {
+                            sp.hidden = true;
+                        }
                     }
                 }
             })
