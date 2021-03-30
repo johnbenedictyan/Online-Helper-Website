@@ -36,6 +36,7 @@ from .views import (
     EmployerDocMaidDeploymentUpdateView,
     JobOrderUpdateView,
     EmployerPaymentTransactionUpdateView,
+    EmployerDocSponsorUpdateView,
 )
 
 ## Delete Views
@@ -159,6 +160,11 @@ urlpatterns = [
                                         'sponsor/create/',
                                         EmployerDocSponsorCreateView.as_view(),
                                         name='employerdoc_sponsor_create_route'
+                                    ),
+                                    path(
+                                        'sponsor/<int:employersubdoc_pk>/update/',
+                                        EmployerDocSponsorUpdateView.as_view(),
+                                        name='employerdoc_sponsor_update_route'
                                     ),
                                     path(
                                         'payment/list/',
