@@ -1321,7 +1321,12 @@ class EmployerDocSponsorForm(forms.ModelForm):
                     hidden='true',
                 ),
                 Column(
-                    'sponsor_1_date_of_birth_spouse',
+                    Field(
+                        'sponsor_1_date_of_birth_spouse',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Sponsor 1 spouse date of birth'
+                    ),
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
