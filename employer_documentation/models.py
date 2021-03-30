@@ -1093,7 +1093,7 @@ class EmployerDocSponsor(models.Model):
         ('SEPARATED', _('Separated')),
     )
 
-    employer_doc = models.ForeignKey(
+    employer_doc = models.OneToOneField(
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_sponsor_ed'
