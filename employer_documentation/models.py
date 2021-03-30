@@ -1211,15 +1211,15 @@ class EmployerDocSponsor(models.Model):
     )
     sponsor_1_email = models.EmailField(verbose_name=_('Sponsor 1 email address'))
     sponsor_1_address_1 = models.CharField(
-        verbose_name=_('Sponsor 1 street address'),
+        verbose_name=_('Sponsor 1 Street Address'),
         max_length=100,
     )
     sponsor_1_address_2 = models.CharField(
-        verbose_name=_('Unit Number'),
+        verbose_name=_('Sponsor 1 Unit Number'),
         max_length=50,
     )
     sponsor_1_post_code = models.CharField(
-        verbose_name=_('Post Code'),
+        verbose_name=_('Sponsor 1 Post Code'),
         max_length=25,
     )
     sponsor_1_marital_status = models.CharField(
@@ -1394,19 +1394,19 @@ class EmployerDocSponsor(models.Model):
         null=True,
     )
     sponsor_2_address_1 = models.CharField(
-        verbose_name=_('Sponsor 2 street address'),
+        verbose_name=_('Sponsor 2 Street Address'),
         max_length=100,
         blank=True,
         null=True,
     )
     sponsor_2_address_2 = models.CharField(
-        verbose_name=_('Unit Number'),
+        verbose_name=_('Sponsor 2 Unit Number'),
         max_length=50,
         blank=True,
         null=True,
     )
     sponsor_2_post_code = models.CharField(
-        verbose_name=_('Post Code'),
+        verbose_name=_('Sponsor 2 Post Code'),
         max_length=25,
         blank=True,
         null=True,
