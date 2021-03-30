@@ -1206,6 +1206,55 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            Row(
+                Column(
+                    'sponsor_1_gender_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                Column(
+                    'sponsor_1_date_of_birth_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_nric_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                Column(
+                    'sponsor_1_fin_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_passport_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                Column(
+                    Field(
+                        'sponsor_1_passport_date_spouse',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Sponsor 1 spouse passport expiry date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_1_nationality_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                Column(
+                    'sponsor_1_residential_status_spouse',
+                    css_class='form-group col-md-6 sponsor_1_spouse'
+                ),
+                css_class='form-row'
+            ),
             Submit('submit', 'Submit')
         )
 
