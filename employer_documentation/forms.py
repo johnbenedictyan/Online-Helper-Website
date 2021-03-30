@@ -1255,6 +1255,84 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            Row(
+                Column(
+                    'sponsor_2_nric',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_relationship',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                Column(
+                    'sponsor_2_name',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_gender',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                Column(
+                    Field(
+                        'sponsor_2_date_of_birth',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Sponsor 2 date of birth'
+                    ),
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_nationality',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                Column(
+                    'sponsor_2_residential_status',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_mobile_number',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                Column(
+                    'sponsor_2_email',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_address_1',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                Column(
+                    'sponsor_2_address_2',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'sponsor_2_post_code',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                Column(
+                    'sponsor_2_marital_status',
+                    css_class='form-group col-md-6 sponsor_2'
+                ),
+                css_class='form-row'
+            ),
             Submit('submit', 'Submit')
         )
 
