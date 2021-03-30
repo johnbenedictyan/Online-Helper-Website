@@ -1599,7 +1599,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_1_nric_nonce_spouse, self.instance.sponsor_1_nric_tag_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -1618,7 +1618,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_1_fin_nonce_spouse, self.instance.sponsor_1_fin_tag_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -1637,7 +1637,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_1_passport_nonce_spouse, self.instance.sponsor_1_passport_tag_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -1656,7 +1656,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_2_nric_nonce_spouse, self.instance.sponsor_2_nric_tag_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -1675,7 +1675,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_2_fin_nonce_spouse, self.instance.sponsor_2_fin_tag_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -1694,7 +1694,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_2_passport_nonce_spouse, self.instance.sponsor_2_passport_tag_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )

@@ -1545,8 +1545,8 @@ class EmployerDocSponsor(models.Model):
         plaintext = decrypt_string(
             self.sponsor_1_nric_spouse,
             settings.ENCRYPTION_KEY,
-            self.sponsor_1_nric_nonce_spouse,
-            self.sponsor_1_nric_tag_spouse
+            self.sponsor_1_nonce_nric_spouse,
+            self.sponsor_1_tag_nric_spouse
         )
         return plaintext
 
@@ -1554,8 +1554,8 @@ class EmployerDocSponsor(models.Model):
         plaintext = decrypt_string(
             self.sponsor_1_fin_spouse,
             settings.ENCRYPTION_KEY,
-            self.sponsor_1_fin_nonce_spouse,
-            self.sponsor_1_fin_tag_spouse
+            self.sponsor_1_nonce_fin_spouse,
+            self.sponsor_1_tag_fin_spouse
         )
         return plaintext
 
@@ -1563,8 +1563,8 @@ class EmployerDocSponsor(models.Model):
         plaintext = decrypt_string(
             self.sponsor_1_passport_spouse,
             settings.ENCRYPTION_KEY,
-            self.sponsor_1_passport_nonce_spouse,
-            self.sponsor_1_passport_tag_spouse
+            self.sponsor_1_nonce_passport_spouse,
+            self.sponsor_1_tag_passport_spouse
         )
         return plaintext
 
@@ -1572,8 +1572,8 @@ class EmployerDocSponsor(models.Model):
         plaintext = decrypt_string(
             self.sponsor_2_nric_spouse,
             settings.ENCRYPTION_KEY,
-            self.sponsor_2_nric_nonce_spouse,
-            self.sponsor_2_nric_tag_spouse
+            self.sponsor_2_nonce_nric_spouse,
+            self.sponsor_2_tag_nric_spouse
         )
         return plaintext
 
@@ -1581,8 +1581,8 @@ class EmployerDocSponsor(models.Model):
         plaintext = decrypt_string(
             self.sponsor_2_fin_spouse,
             settings.ENCRYPTION_KEY,
-            self.sponsor_2_fin_nonce_spouse,
-            self.sponsor_2_fin_tag_spouse
+            self.sponsor_2_nonce_fin_spouse,
+            self.sponsor_2_tag_fin_spouse
         )
         return plaintext
 
@@ -1590,7 +1590,7 @@ class EmployerDocSponsor(models.Model):
         plaintext = decrypt_string(
             self.sponsor_2_passport_spouse,
             settings.ENCRYPTION_KEY,
-            self.sponsor_2_passport_nonce_spouse,
-            self.sponsor_2_passport_tag_spouse
+            self.sponsor_2_nonce_passport_spouse,
+            self.sponsor_2_tag_passport_spouse
         )
         return plaintext
