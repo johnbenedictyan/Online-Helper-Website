@@ -1082,12 +1082,31 @@ class JobOrderForm(forms.ModelForm):
 class EmployerDocSponsorForm(forms.ModelForm):
     class Meta:
         model = EmployerDocSponsor
-        exclude = ['employer_doc']
+        exclude = ['employer_doc',
+            'sponsor_1_nric_nonce',
+            'sponsor_1_nric_tag',
+            'sponsor_2_nric_nonce',
+            'sponsor_2_nric_tag',
+            'sponsor_1_nric_nonce_spouse',
+            'sponsor_1_nric_tag_spouse',
+            'sponsor_1_fin_nonce_spouse',
+            'sponsor_1_fin_tag_spouse',
+            'sponsor_1_passport_nonce_spouse',
+            'sponsor_1_passport_tag_spouse',
+            'sponsor_2_nric_nonce_spouse',
+            'sponsor_2_nric_tag_spouse',
+            'sponsor_2_fin_nonce_spouse',
+            'sponsor_2_fin_tag_spouse',
+            'sponsor_2_passport_nonce_spouse',
+            'sponsor_2_passport_tag_spouse',
+        ]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
 
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
@@ -1441,6 +1460,157 @@ class EmployerDocSponsorForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
+    def clean_sponsor_1_nric(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_nric(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_nric_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nric_nonce_spouse, self.instance.sponsor_1_nric_tag_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_fin_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_fin_nonce_spouse, self.instance.sponsor_1_fin_tag_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_passport_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_passport_nonce_spouse, self.instance.sponsor_1_passport_tag_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_nric_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nric_nonce_spouse, self.instance.sponsor_2_nric_tag_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_fin_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_fin_nonce_spouse, self.instance.sponsor_2_fin_tag_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_passport_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_passport_nonce_spouse, self.instance.sponsor_2_passport_tag_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
 
 # Signature Forms
 class SignatureForm(forms.ModelForm):
