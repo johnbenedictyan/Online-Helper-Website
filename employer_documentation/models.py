@@ -184,6 +184,11 @@ class EmployerDoc(models.Model):
         (23, "23 months"),
         (24, "24 months"),
     ]
+    SCHEME_CHOICES = [
+        ('STAND', "Standard"),
+        ('JOINT', "Joint Income"),
+        ('SPONS', "Sponsorship"),
+    ]
 
     id = models.UUIDField(
         primary_key=True,
@@ -1594,3 +1599,10 @@ class EmployerDocSponsor(models.Model):
             self.sponsor_2_tag_passport_spouse
         )
         return plaintext
+
+class EmployerDocJointApplicant(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_jointapplicant_ed'
+    )    
