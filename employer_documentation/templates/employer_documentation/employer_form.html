@@ -186,6 +186,36 @@
             })
         }
 
+        // Joint Applicants Form
+        let jointApplicantMaritalStatus = document.querySelector('#id_joint_applicant_marital_status');
+        if (jointApplicantMaritalStatus) {
+            let spouseOneElements = document.querySelectorAll('.spouse-1');
+
+            // On load
+            if (jointApplicantMaritalStatus.value==='MARRIED') {
+                for (let sp of spouseOneElements) {
+                    sp.hidden = false;
+                }
+            } else {
+                for (let sp of spouseOneElements) {
+                    sp.hidden = true;
+                }
+            }
+
+            // On change based on user input
+            jointApplicantMaritalStatus.addEventListener('change', function() {
+                if (this.value==='MARRIED') {
+                    for (let sp of spouseOneElements) {
+                        sp.hidden = false;
+                    }
+                } else {
+                    for (let sp of spouseOneElements) {
+                        sp.hidden = true;
+                    }
+                }
+            })
+        }
+        
         // Token URL copy
         let copyBtn = document.querySelector('#copy-button');
         if (copyBtn) {
