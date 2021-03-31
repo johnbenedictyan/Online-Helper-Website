@@ -1628,4 +1628,11 @@ class EmployerDocJointApplicant(models.Model):
             Have both Employer and Joint applicant worked in Singapore for the last 2 years?
         '''),
     )
+
+    joint_applicant_nric = models.BinaryField(
+        verbose_name=_('Joint applicant NRIC / FIN'),
+        editable=True,
+    )
+    joint_applicant_nonce_nric = models.BinaryField(editable=True)
+    joint_applicant_tag_nric = models.BinaryField(editable=True)
     
