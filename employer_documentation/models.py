@@ -1759,8 +1759,8 @@ class EmployerDocJointApplicant(models.Model):
         plaintext = decrypt_string(
             self.joint_applicant_nric,
             settings.ENCRYPTION_KEY,
-            self.joint_applicant_nric_nonce,
-            self.joint_applicant_nric_tag
+            self.joint_applicant_nonce_nric,
+            self.joint_applicant_tag_nric
         )
         return plaintext
     
