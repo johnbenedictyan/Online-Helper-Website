@@ -1605,4 +1605,15 @@ class EmployerDocJointApplicant(models.Model):
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_jointapplicant_ed'
+    )
+    combined_monthly_income = models.DecimalField(
+        verbose_name=_("Combined monthly income of Employer and Joint applicant"),
+        max_digits=9,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(9_999_999),
+        ],
+        blank=True,
+        null=True,
     )    
