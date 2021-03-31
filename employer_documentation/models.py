@@ -1793,3 +1793,39 @@ class EmployerDocJointApplicant(models.Model):
         blank=True,
         null=True,
     )
+
+    def get_joint_applicant_nric_full(self):
+        plaintext = decrypt_string(
+            self.joint_applicant_nric,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nric_nonce,
+            self.joint_applicant_nric_tag
+        )
+        return plaintext
+    
+    def get_joint_applicant_nric_spouse_full(self):
+        plaintext = decrypt_string(
+            self.joint_applicant_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_nric_spouse,
+            self.joint_applicant_tag_nric_spouse
+        )
+        return plaintext
+
+    def get_joint_applicant_fin_spouse_full(self):
+        plaintext = decrypt_string(
+            self.joint_applicant_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_fin_spouse,
+            self.joint_applicant_tag_fin_spouse
+        )
+        return plaintext
+
+    def get_joint_applicant_passport_spouse_full(self):
+        plaintext = decrypt_string(
+            self.joint_applicant_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_passport_spouse,
+            self.joint_applicant_tag_passport_spouse
+        )
+        return plaintext
