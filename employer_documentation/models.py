@@ -1604,3 +1604,192 @@ class EmployerDocJointApplicant(models.Model):
     )
     joint_applicant_nonce_nric = models.BinaryField(editable=True)
     joint_applicant_tag_nric = models.BinaryField(editable=True)
+    joint_applicant_relationship = models.CharField(
+        verbose_name=_("Joint applicant's relationship with Employer"),
+        max_length=30,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_name = models.CharField(
+        verbose_name=_("Joint applicant's Name"),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_gender = models.CharField(
+        verbose_name=_("Joint applicant's gender"),
+        max_length=1,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_date_of_birth = models.DateField(
+        verbose_name=_("Joint applicant's date of birth"),
+        blank=True,
+        null=True,
+    )
+    joint_applicant_nationality = models.CharField(
+        verbose_name=_("Joint applicant's nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_residential_status = models.CharField(
+        verbose_name=_("Joint applicant's residential status"),
+        max_length=2,
+        choices=ResidentialStatusChoices.choices,
+        default=ResidentialStatusChoices.SC,
+        blank=True,
+        null=True,
+    )
+    # joint_applicant_mobile_number = models.CharField(
+    #     verbose_name=_("Joint applicant's mobile number"),
+    #     max_length=10,
+    #     validators=[
+    #         RegexValidator(
+    #             regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+    #             message=_('Please enter a valid contact number')
+    #         )
+    #     ],
+    #     blank=True,
+    #     null=True,
+    # )
+    # joint_applicant_email = models.EmailField(
+    #     verbose_name=_("Joint applicant's email address"),
+    #     blank=True,
+    #     null=True,
+    # )
+    joint_applicant_address_1 = models.CharField(
+        verbose_name=_("Joint applicant's Street Address"),
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_address_2 = models.CharField(
+        verbose_name=_("Joint applicant's Unit Number"),
+        max_length=50,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_post_code = models.CharField(
+        verbose_name=_("Joint applicant's Post Code"),
+        max_length=25,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_marital_status = models.CharField(
+        verbose_name=_("Joint applicant's marital status"),
+        max_length=10,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_marriage_sg_registered = models.BooleanField(
+        verbose_name=_("Joint applicant's marriage registered in SG?"),
+        default=True,
+        choices=TrueFalseChoices(
+            'Yes',
+            'No'
+        ),
+        help_text=_('''
+            Was Joint applicant's marriage registered in Singapore?
+        '''),
+        blank=True,
+        null=True,
+    )
+
+    # Joint applicant's spouse details
+    joint_applicant_name_spouse = models.CharField(
+        verbose_name=_("Joint applicant's spouse name"),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_gender_spouse = models.CharField(
+        verbose_name=_("Joint applicant's spouse gender"),
+        max_length=1,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_date_of_birth_spouse = models.DateField(
+        verbose_name=_("Joint applicant's spouse date of birth"),
+        blank=True,
+        null=True,
+    )
+    joint_applicant_nric_spouse = models.BinaryField(
+        verbose_name=_("Joint applicant's spouse NRIC"),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_nonce_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_tag_nric_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_fin_spouse = models.BinaryField(
+        verbose_name=_("Joint applicant's spouse FIN"),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_nonce_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_tag_fin_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_passport_spouse = models.BinaryField(
+        verbose_name=_("Joint applicant's spouse passport"),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_nonce_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_tag_passport_spouse = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_passport_date_spouse = models.DateField(
+        verbose_name=_("Joint applicant's spouse passport expiry date"),
+        blank=True,
+        null=True,
+    )
+    joint_applicant_nationality_spouse = models.CharField(
+        verbose_name=_("Joint applicant's spouse nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    joint_applicant_residential_status_spouse = models.CharField(
+        verbose_name=_("Joint applicant's spouse residential status"),
+        max_length=2,
+        choices=ResidentialStatusChoices.choices,
+        default=ResidentialStatusChoices.SC,
+        blank=True,
+        null=True,
+    )
