@@ -1706,8 +1706,8 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
         model = EmployerDocJointApplicant
         exclude = [
             'employer_doc',
-            'joint_applicant_nric_nonce',
-            'joint_applicant_nric_tag',
+            'joint_applicant_nonce_nric',
+            'joint_applicant_tag_nric',
             'joint_applicant_nonce_nric_spouse',
             'joint_applicant_tag_nric_spouse',
             'joint_applicant_nonce_fin_spouse',
@@ -1939,7 +1939,7 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.joint_applicant_nric_nonce, self.instance.joint_applicant_nric_tag = encrypt_string(
+        ciphertext, self.instance.joint_applicant_nonce_nric, self.instance.joint_applicant_tag_nric = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
