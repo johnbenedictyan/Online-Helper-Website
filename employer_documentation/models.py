@@ -1616,4 +1616,16 @@ class EmployerDocJointApplicant(models.Model):
         ],
         blank=True,
         null=True,
-    )    
+    )
+    worked_in_sg = models.BooleanField(
+        verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
+        default=True,
+        choices=TrueFalseChoices(
+            'Yes',
+            'No'
+        ),
+        help_text=_('''
+            Have both Employer and Joint applicant worked in Singapore for the last 2 years?
+        '''),
+    )
+    
