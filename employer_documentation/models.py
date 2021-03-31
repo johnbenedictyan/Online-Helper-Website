@@ -1583,8 +1583,6 @@ class EmployerDocJointApplicant(models.Model):
             MinValueValidator(0),
             MaxValueValidator(9_999_999),
         ],
-        blank=True,
-        null=True,
     )
     worked_in_sg = models.BooleanField(
         verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
@@ -1609,86 +1607,49 @@ class EmployerDocJointApplicant(models.Model):
         max_length=30,
         choices=RelationshipChoices.choices,
         default=RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True,
     )
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
         max_length=40,
-        blank=True,
-        null=True,
     )
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
         choices=GenderChoices.choices,
         default=GenderChoices.F,
-        blank=True,
-        null=True,
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
-        blank=True,
-        null=True,
     )
     joint_applicant_nationality = models.CharField(
         verbose_name=_("Joint applicant's nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True,
     )
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
         choices=ResidentialStatusChoices.choices,
         default=ResidentialStatusChoices.SC,
-        blank=True,
-        null=True,
     )
-    # joint_applicant_mobile_number = models.CharField(
-    #     verbose_name=_("Joint applicant's mobile number"),
-    #     max_length=10,
-    #     validators=[
-    #         RegexValidator(
-    #             regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
-    #             message=_('Please enter a valid contact number')
-    #         )
-    #     ],
-    #     blank=True,
-    #     null=True,
-    # )
-    # joint_applicant_email = models.EmailField(
-    #     verbose_name=_("Joint applicant's email address"),
-    #     blank=True,
-    #     null=True,
-    # )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Street Address"),
         max_length=100,
-        blank=True,
-        null=True,
     )
     joint_applicant_address_2 = models.CharField(
         verbose_name=_("Joint applicant's Unit Number"),
         max_length=50,
-        blank=True,
-        null=True,
     )
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Post Code"),
         max_length=25,
-        blank=True,
-        null=True,
     )
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
