@@ -22,6 +22,7 @@ from .models import (
     PdfArchive,
     EmployerPaymentTransaction,
     EmployerDocSponsor,
+    EmployerDocJointApplicant,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -149,6 +150,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 or isinstance(self.object, PdfArchive)
                 or isinstance(self.object, EmployerPaymentTransaction)
                 or isinstance(self.object, EmployerDocSponsor)
+                or isinstance(self.object, EmployerDocJointApplicant)
             ):
                 self.employer_subdoc_obj = self.object
 
