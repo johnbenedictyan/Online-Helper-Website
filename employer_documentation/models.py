@@ -22,6 +22,14 @@ from agency.models import AgencyEmployee
 from maid.models import Maid
 from maid.constants import FullNationsChoices
 
+# Same app
+from .constants import (
+    RelationshipChoices,
+    GenderChoices,
+    ResidentialStatusChoices,
+    MaritalStatusChoices,
+)
+
 # Utiliy Classes and Functions
 class OverwriteStorage(FileSystemStorage):
     def get_available_name(self, filename, max_length=100):
@@ -1031,7 +1039,7 @@ class PdfArchive(models.Model):
     )
 
 class EmployerPaymentTransaction(models.Model):
-    TRANSCATION_CHOICES = (
+    TRANSACTION_CHOICES = (
         ('SUB', _('Repayment')),
         ('ADD', _('New charge')),
     )
@@ -1053,51 +1061,12 @@ class EmployerPaymentTransaction(models.Model):
         verbose_name=_("Type of transaction"),
         max_length=3,
         blank=False,
-        choices=TRANSCATION_CHOICES,
-        default=TRANSCATION_CHOICES[0][0]
+        choices=TRANSACTION_CHOICES,
+        default=TRANSACTION_CHOICES[0][0]
     )
     transaction_date = models.DateField()
 
 class EmployerDocSponsor(models.Model):
-    RELATIONSHIP_CHOICES = (
-        ('SON', _('Son')),
-        ('DAUGHTER', _('Daughter')),
-        ('FATHER', _('Father')),
-        ('MOTHER', _('Mother')),
-        ('GRANDFATHER', _('Grandfather')),
-        ('GRANDMOTHER', _('Grandmother')),
-        ('BROTHER', _('Brother')),
-        ('SISTER', _('Sister')),
-        ('FATHER_IN_LAW', _('Father-in-law')),
-        ('MOTHER_IN_LAW', _('Mother-in-law')),
-        ('SON_IN_LAW', _('Son-in-law')),
-        ('DAUGHTER_IN_LAW', _('Daughter-in-law')),
-        ('GRANDDAUGHTER', _('Granddaughter')),
-        ('GRANDSON', _('Grandson')),
-        ('BROTHER_IN_LAW', _('Brother-in-law')),
-        ('SISTER_IN_LAW', _('Sister-in-law')),
-        ('GRANDFATHER_IN_LAW', _('Grandfather-in-law')),
-        ('GRANDMOTHER_IN_LAW', _('Grandmother-in-law')),
-        ('YOUNG_CHILD_LEGAL_WARD', _('Young child legal ward')),
-        ('AGED_PERSON_LEGAL-WARD', _('Aged person legal ward')),
-        ('OTHER', _('Other')),
-    )
-    GENDER_CHOICES = (
-        ('M', _('Male')),
-        ('F', _('Female')),
-    )
-    RESIDENTIAL_STATUS_CHOICES = (
-        ('SC', _('Singapore citizen')),
-        ('PR', _('Singapore permanent resident')),
-    )
-    MARITAL_STATUS_CHOICES = (
-        ('SINGLE', _('Single')),
-        ('MARRIED', _('Married')),
-        ('DIVORCED', _('Divorced')),
-        ('WIDOWED', _('Widowed')),
-        ('SEPARATED', _('Separated')),
-    )
-
     employer_doc = models.OneToOneField(
         EmployerDoc,
         on_delete=models.CASCADE,
@@ -1176,8 +1145,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_relationship = models.CharField(
         verbose_name=_("Sponsor 1 relationship with Employer"),
         max_length=30,
-        choices=RELATIONSHIP_CHOICES,
-        default=RELATIONSHIP_CHOICES[0][0],
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
     )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
@@ -1186,8 +1155,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
-        choices=GENDER_CHOICES,
-        default=GENDER_CHOICES[0][0],
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
@@ -1201,8 +1170,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
-        choices=RESIDENTIAL_STATUS_CHOICES,
-        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        choices=ResidentialStatusChoices.choices,
+        default=ResidentialStatusChoices.SC,
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -1230,8 +1199,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
-        choices=MARITAL_STATUS_CHOICES,
-        default=MARITAL_STATUS_CHOICES[0][0],
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
     sponsor_1_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Sponsor 1 marriage registered in SG?'),
@@ -1257,8 +1226,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_gender_spouse = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
         max_length=1,
-        choices=GENDER_CHOICES,
-        default=GENDER_CHOICES[0][0],
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -1331,8 +1300,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_residential_status_spouse = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
         max_length=2,
-        choices=RESIDENTIAL_STATUS_CHOICES,
-        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        choices=ResidentialStatusChoices.choices,
+        default=ResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1341,8 +1310,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_2_relationship = models.CharField(
         verbose_name=_("Sponsor 2 relationship with Employer"),
         max_length=30,
-        choices=RELATIONSHIP_CHOICES,
-        default=RELATIONSHIP_CHOICES[0][0],
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
         blank=True,
         null=True,
     )
@@ -1355,8 +1324,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
         max_length=1,
-        choices=GENDER_CHOICES,
-        default=GENDER_CHOICES[0][0],
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -1376,8 +1345,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
-        choices=RESIDENTIAL_STATUS_CHOICES,
-        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        choices=ResidentialStatusChoices.choices,
+        default=ResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1419,8 +1388,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
-        choices=MARITAL_STATUS_CHOICES,
-        default=MARITAL_STATUS_CHOICES[0][0],
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -1448,8 +1417,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_2_gender_spouse = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
         max_length=1,
-        choices=GENDER_CHOICES,
-        default=GENDER_CHOICES[0][0],
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -1522,8 +1491,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_2_residential_status_spouse = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
         max_length=2,
-        choices=RESIDENTIAL_STATUS_CHOICES,
-        default=RESIDENTIAL_STATUS_CHOICES[0][0],
+        choices=ResidentialStatusChoices.choices,
+        default=ResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1635,4 +1604,3 @@ class EmployerDocJointApplicant(models.Model):
     )
     joint_applicant_nonce_nric = models.BinaryField(editable=True)
     joint_applicant_tag_nric = models.BinaryField(editable=True)
-    
