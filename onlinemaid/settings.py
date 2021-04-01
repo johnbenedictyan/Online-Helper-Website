@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # 3rd party packages
-    'captcha',
+    # 'captcha',
     'crispy_forms',
     'django_filters',
     'django_otp',
