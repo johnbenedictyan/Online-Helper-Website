@@ -20,6 +20,7 @@ from .models import (
     PdfArchive,
     EmployerPaymentTransaction,
     EmployerDocSponsor,
+    EmployerDocJointApplicant,
 )
 from .forms import (
     EmployerForm,
@@ -30,6 +31,7 @@ from .forms import (
     JobOrderForm,
     EmployerPaymentTransactionForm,
     EmployerDocSponsorForm,
+    EmployerDocJointApplicantForm,
     SignatureForm,
     VerifyUserTokenForm,
 )
@@ -483,6 +485,37 @@ class EmployerDocSponsorCreateView(
             'employerdoc_pk': self.object.employer_doc.pk,
         })
 
+class EmployerDocJointApplicantCreateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    CreateView
+):
+    model = EmployerDocJointApplicant
+    form_class = EmployerDocJointApplicantForm
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self, *args, **kwargs):
+        return EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
+
 # Update Views
 class EmployerUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -647,6 +680,28 @@ class EmployerDocSponsorUpdateView(
 ):
     model = EmployerDocSponsor
     form_class = EmployerDocSponsorForm
+    pk_url_kwarg = 'employersubdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_detail_route', kwargs={
+            'employer_pk': self.object.employer_doc.employer.pk,
+            'employerdoc_pk': self.object.employer_doc.pk,
+        })
+
+class EmployerDocJointApplicantUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = EmployerDocJointApplicant
+    form_class = EmployerDocJointApplicantForm
     pk_url_kwarg = 'employersubdoc_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
