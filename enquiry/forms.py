@@ -5,8 +5,8 @@ from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV3
+# from captcha.fields import ReCaptchaField
+# from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Field
 from crispy_forms.bootstrap import InlineCheckboxes
@@ -33,9 +33,9 @@ class GeneralEnquiryForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple()
     )
 
-    captcha = ReCaptchaField(
-        widget=ReCaptchaV3
-    )
+    # captcha = ReCaptchaField(
+    #     widget=ReCaptchaV3
+    # )
 
     class Meta:
         model = GeneralEnquiry
