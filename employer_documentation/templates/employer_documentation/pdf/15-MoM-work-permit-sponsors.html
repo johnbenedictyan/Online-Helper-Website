@@ -83,40 +83,40 @@
 <section class="box-black-border">
     <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">About Sponsor 1</h3>
     <h5>Relationship with Employer:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_relationship_display }}</p>
     <br>
     <h5>Name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_name }}</p>
     <br>
     <h5>Gender:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_gender }}</p>
     <br>
     <h5>Date of birth:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_date_of_birth|date:"d M Y" }}</p>
     <br>
     <h5>NRIC number:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}</p>
     <br>
     <h5>Nationality/Citizenship:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_nationality_display }}</p>
     <br>
     <h5>Residential status:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_residential_status_display }}</p>
     <br>
     <h5>Singapore mobile number:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_mobile }}</p>
     <br>
     <h5>Email address:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_email }}</p>
     <br>
     <h5>Residential address:</h5>
-    <br>
-    <br>
-    <h5 style="padding-left: 400px;">Postal code:</h5>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_address_1 }}</p>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_address_2 }}</p>
+    <h5 style="padding-left: 400px;">Postal code:<span class="answer">{{ object.rn_sponsor_ed.sponsor_1_post_code }}</span></h5>
     <br>
     <br>
     <h5>Marital status:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_marital_status_display }}</p>
     <br>
 </section>
 
