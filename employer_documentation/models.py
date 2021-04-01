@@ -1576,7 +1576,7 @@ class EmployerDocSponsor(models.Model):
         return get_mobile_format_sg(self.sponsor_1_mobile_number)
 
     def get_sponsor_2_mobile(self):
-        return get_mobile_format_sg(self.sponsor_2_mobile_number)
+        return get_mobile_format_sg(self.sponsor_2_mobile_number) if self.sponsor_2_mobile_number else None
 
 class EmployerDocJointApplicant(models.Model):
     employer_doc = models.OneToOneField(
