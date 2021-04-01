@@ -285,7 +285,6 @@ class DashboardDataProviderView(View):
         request_data = json.loads(request.body.decode('utf-8'))
         chart = request_data.get('chart')
         authority = request_data.get('authority')
-        print(chart)
         if chart['name'] == 'salesChart' and authority == 'Agency Managers':
             if chart['year'] == '2010':
                 chart_data = [{
@@ -515,7 +514,6 @@ class DashboardDataProviderView(View):
                     }
                 ]
                 
-                
         if chart['name'] == 'branchPerformanceCases':
             if chart['group_by'] == 'Month':
                 if chart['year'] == '2010':
@@ -563,6 +561,23 @@ class DashboardDataProviderView(View):
                         'data': self.fake_branch_cases_data_year[2::3]
                     }
                 ]
+        
+        if chart['name'] == 'agencyTimelinePerformance':
+            chart_data = [
+                {
+                    'name': 'Deposit',
+                    'data': [3]
+                },
+                {
+                    'name': 'IPA Approval',
+                    'data': [24]
+                },
+                {
+                    'name': 'Date of Approved Entry Application',
+                    'data': [1]
+                }
+            ]
+            
         data = {
             'name': 'Sales',
             'data': chart_data

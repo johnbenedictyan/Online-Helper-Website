@@ -276,6 +276,20 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-6">
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="pl-md-1 pl-lg-3">Agency Performance</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="agencyTimelinePerformanceChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -654,6 +668,66 @@
     }
     const branchPerformanceChart2Manager = new ChartManager('#branchPerformanceChartOption2', branchPerformanceChartOption2Options, 'any');
 
+    var agencyTimelinePerformanceChartOptions = {
+        series: [],
+        chart: {
+            height: 'auto',
+            type: 'bar',
+            toolbar: {
+                show: false
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '50%'
+            },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+            width: 1,
+            colors: ['#fff']
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return `${val}`;
+                }
+            }
+        },
+        xaxis: {
+            categories: [],
+            position: 'top',
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            crosshairs: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        colorFrom: '#D8E3F0',
+                        colorTo: '#BED1E6',
+                        stops: [0, 100],
+                        opacityFrom: 0.4,
+                        opacityTo: 0.5,
+                    }
+                }
+            },
+            tooltip: {
+                enabled: true,
+            }
+        },
+        noData: {
+            text: 'Loading...'
+        }
+    }
+    const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart', agencyTimelinePerformanceChartOptions, 'any');
+
     const csrftoken = Cookies.get('csrftoken');
     const authority = '{{authority}}'
     
@@ -767,6 +841,12 @@
         }
         branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
 
+        let agencyTimelinePerformanceDataSelectors = {
+            'name': 'agencyTimelinePerformance',
+            'year': null,
+            'group_by': null
+        }
+        agencyTimelinePerformanceChartManager.update(agencyTimelinePerformanceDataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
     })
 
     $('#year-select-chart').on('change', function(event){
