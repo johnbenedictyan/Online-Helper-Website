@@ -83,7 +83,7 @@
                     <ul class="navbar-nav mr-auto">
                         {% with request.resolver_match.url_name as url_name %}
                         <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'maid_list' %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'maid_list' %}">
                                 <p class="mb-0">Search Maid</p>
                                 {% if url_name == 'maid_list' %} 
                                     <span class="sr-only">(current)</span>
@@ -91,7 +91,7 @@
                             </a>
                         </li>
                         <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'agency_list' %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'agency_list' %}">
                                 <p class="mb-0">Maid Agencies</p>
                                 {% if url_name == 'agency_list' %} 
                                     <span class="sr-only">(current)</span>
@@ -99,7 +99,7 @@
                             </a>
                         </li>
                         <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'faq' %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'faq' %}">
                                 <p class="mb-0">FAQ</p>
                                 {% if url_name == 'faq' %} 
                                     <span class="sr-only">(current)</span>
@@ -107,7 +107,7 @@
                             </a>
                         </li>
                         <li class="nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'general_enquiry' %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'general_enquiry' %}">
                                 <p class="mb-0">Enquire</p>
                                 {% if url_name == 'general_enquiry' %} 
                                     <span class="sr-only">(current)</span>
@@ -115,7 +115,7 @@
                             </a>
                         </li>
                         <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'about_us' %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'about_us' %}">
                                 <p class="mb-0">About Us</p>
                                 {% if url_name == 'about_us' %} 
                                     <span class="sr-only">(current)</span>
@@ -128,7 +128,7 @@
                         {% if user.is_authenticated %}
                         {% if authority == 'Agency Owners' %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'view_cart' %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'view_cart' %}">
                                 <i class="fas fa-shopping-cart"></i> 
                                 &#40;{{cart_count}}&#41;
                             </a>
