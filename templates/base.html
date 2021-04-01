@@ -70,9 +70,11 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="logo-image-wrapper" onClick="redirect({% url 'home' %})">
-                    &nbsp;
-                </div>
+                <a class="logo-image-wrapper" href="{% url 'home' %}">
+                    <div>
+                        &nbsp;
+                    </div>
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -82,7 +84,7 @@
                         {% with request.resolver_match.url_name as url_name %}
                         <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'maid_list' %}">
-                                <p class="mb-0 font-weight-bolder">Search Maid</p>
+                                <p class="mb-0">Search Maid</p>
                                 {% if url_name == 'maid_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -90,7 +92,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'agency_list' %}">
-                                <p class="mb-0 font-weight-bolder">Maid Agencies</p>
+                                <p class="mb-0">Maid Agencies</p>
                                 {% if url_name == 'agency_list' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -98,7 +100,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'faq' %}">
-                                <p class="mb-0 font-weight-bolder">FAQ</p>
+                                <p class="mb-0">FAQ</p>
                                 {% if url_name == 'faq' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -106,7 +108,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'general_enquiry' %}">
-                                <p class="mb-0 font-weight-bolder">Enquire</p>
+                                <p class="mb-0">Enquire</p>
                                 {% if url_name == 'general_enquiry' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
@@ -114,7 +116,7 @@
                         </li>
                         <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
                             <a class="nav-link" href="{% url 'about_us' %}">
-                                <p class="mb-0 font-weight-bolder">About Us</p>
+                                <p class="mb-0">About Us</p>
                                 {% if url_name == 'about_us' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}

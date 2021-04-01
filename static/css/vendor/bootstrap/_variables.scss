@@ -45,6 +45,7 @@ $dark-cyan: #2c687d !default;
 $cyan-blue: #0571bb !default;
 $dark-blue: #3d5d9b !default;
 $fire-opal: #de6449 !default;
+$custom-blue: #5B7FB5 !default;
 
 $colors: () !default;
 $colors: map-merge(("blue": $blue,
@@ -69,7 +70,8 @@ $colors: map-merge(("blue": $blue,
     $colors);
 
 $primary: $cyan-blue !default;
-$secondary: $fire-opal !default;
+$secondary: $custom-blue !default;
+$tertiary: $fire-opal !default;
 $success: $green !default;
 $info: $light-cyan !default;
 $warning: $yellow !default;
@@ -85,7 +87,9 @@ $theme-colors: map-merge(("primary": $primary,
         "warning": $warning,
         "danger": $danger,
         "light": $light,
-        "dark": $dark),
+        "dark": $dark,
+        "tertiary": $tertiary
+        ),
     $theme-colors);
 
 // Set a specific jump point for requesting color jumps
