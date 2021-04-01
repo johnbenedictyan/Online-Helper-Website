@@ -1442,7 +1442,6 @@ class EmployerDocSponsorForm(forms.ModelForm):
                     hidden='true',
                 ),
                 css_class='form-row',
-                    hidden='true',
             ),
             Row(
                 Column(
