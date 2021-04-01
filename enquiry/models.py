@@ -17,7 +17,8 @@ from maid.models import Maid, MaidResponsibility, MaidLanguage
 
 # Imports from within the app
 from .constants import *
-from .validators import validate_links, validate_obscene_language
+from .validators import validate_links
+# from .validators import validate_links, validate_obscene_language
 
 # Utiliy Classes and Functions
 
@@ -119,7 +120,7 @@ class GeneralEnquiry(models.Model):
         max_length=3000,
         validators=[
             validate_links, 
-            validate_obscene_language
+            # validate_obscene_language
         ]
     )
 
