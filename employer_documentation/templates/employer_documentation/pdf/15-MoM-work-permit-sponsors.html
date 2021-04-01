@@ -207,43 +207,42 @@
 <section class="box-black-border">
     <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">About Sponsor 2 (if any)</h3>
     <h5>Date of birth:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_date_of_birth|date:"d M Y" }}</p>
     <br>
     <h5>NRIC number:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_nric_full }}</p>
     <br>
     <h5>Nationality/Citizenship:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_nationality_display }}</p>
     <br>
     <h5>Residential status:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_residential_status_display }}</p>
     <br>
     <h5>Singapore mobile number:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_mobile }}</p>
     <br>
     <h5>Email address:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_email }}</p>
     <br>
     <h5>Residential address:</h5>
-    <br>
-    <br>
-    <h5 style="padding-left: 400px;">Postal code:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_address_1 }}</p>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_address_2 }}</p>
+    <h5 style="padding-left: 400px;">Postal code:<span class="answer">{{ object.rn_sponsor_ed.sponsor_2_post_code }}</span></h5>
     <br>
     <h5>Marital status:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_gender_display }}</p>
     <br>
     <h5>If Sponsor 2 is married, please enter the marriage and Spouse's details below:</h5>
-    <h5>Was the marriage registered in Singapore?</h5>
+    <h5>Was the marriage registered in Singapore?<span class="answer">{{ object.rn_sponsor_ed.get_sponsor_2_marriage_sg_registered_display }}</span></h5>
     <br>
     <h5>Spouse's name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_name_spouse }}</p>
     <br>
     <h5>Spouse's gender:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_gender_spouse_display }}</p>
     <br>
     <h5>Spouse's date of birth:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_date_of_birth_spouse|date:"d M Y" }}</p>
     <br>
     <table width=100%>
         <col style="width:50%">
@@ -253,8 +252,8 @@
             <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_2_nric_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_2_fin_spouse_full }}</td>
         </tr>
     </table>
 </section>
