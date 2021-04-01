@@ -51,6 +51,9 @@ def generate_archive_path(instance, filename):
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 
+def get_mobile_format_sg(mobile):
+    return '+65 ' + mobile[:4] + ' ' + mobile[4:]
+
 
 # Start of Models
 
@@ -1568,6 +1571,12 @@ class EmployerDocSponsor(models.Model):
             self.sponsor_2_tag_passport_spouse
         )
         return plaintext
+
+    def get_sponsor_1_mobile(self):
+        return get_mobile_format_sg(self.sponsor_1_mobile_number)
+
+    def get_sponsor_2_mobile(self):
+        return get_mobile_format_sg(self.sponsor_2_mobile_number)
 
 class EmployerDocJointApplicant(models.Model):
     employer_doc = models.OneToOneField(
