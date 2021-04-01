@@ -260,6 +260,26 @@ class DashboardDataProviderView(View):
                        12,2,10,4,14,14,11,5,2,9,7,16,11,12,7,1,5,12,4,8,6,10,
                        11,12,5,13,4,18,13,13,5,9,9,18,7,9,15,7,20,11,9,12,4,13,
                        13,11,20,16,15,20,2,10]
+    fake_branch_sales_data = [7203.69,8419.7,8230.95,9840.45,5877.32,7614.21,
+                              7919.48,5403.54,6325.09,8116.59,6517.71,9828.19,
+                              8632.35,5702.67,7274.22,8146.06,8446.57,9163.38,
+                              5757.1,6281.02,6301.7,7759.16,7224.4,5220.92,
+                              6322.76,6643.53,7529.99,6551.53,5120.07,8878.12,
+                              9294.73,5194.74,8749.17,6188.3,8964.15,9950.87,
+                              5056.55,7089.83,6415.79,7859.23,8783.14,9470.29,
+                              8756.18,5328.67,7297.28,7814.36,5942.56,8052.46,
+                              9640.71,9771.37,6753.69,7946.88,9562.48,9145.13,
+                              5941.54,9267.76,9320.44,7578.25,9922.31,9648.36,
+                              9222.82,5534.83,8289.89,8785.74,6196.33,7951.15,
+                              5494.57,8937.8,9834.39,5595.87,8702.58,7737.33]
+    fake_branch_sales_data_year = [11134.64,86113.64,81633.42,88957.0,77072.09,
+                                   72969.25]
+    fake_branch_cases_data = [78,72,78,79,93,52,51,100,67,65,70,88,78,76,71,50,
+                              80,56,70,52,59,77,68,91,82,95,53,81,92,82,99,93,
+                              76,84,67,52,79,66,76,88,75,95,99,84,51,92,81,71,
+                              61,96,95,91,85,51,72,93,73,74,76,59,66,92,55,77,
+                              60,85,65,64,62,85,70,75]
+    fake_branch_cases_data_year = [127,49,13,81,110,113]
     
     def post(self, request, *args, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
@@ -446,9 +466,120 @@ class DashboardDataProviderView(View):
                     }
                 ]
                 
+        if chart['name'] == 'branchPerformanceSales':
+            if chart['group_by'] == 'Month':
+                if chart['year'] == '2010':
+                    chart_data = [
+                        {
+                            'name': 'branch 1',
+                            'data': self.fake_branch_sales_data[0:36:3]
+                        },
+                        {
+                            'name': 'branch 2',
+                            'data': self.fake_branch_sales_data[1:37:3]
+                        },
+                        {
+                            'name': 'branch 3',
+                            'data': self.fake_branch_sales_data[2:38:3]
+                        }
+                    ]
+                elif chart['year'] == '2011':
+                    chart_data = [
+                        {
+                            'name': 'branch 1',
+                            'data': self.fake_branch_sales_data[36:72:3]
+                        },
+                        {
+                            'name': 'branch 2',
+                            'data': self.fake_branch_sales_data[37:73:3]
+                        },
+                        {
+                            'name': 'branch 3',
+                            'data': self.fake_branch_sales_data[38:74:3]
+                        }
+                    ]
+            else:
+                chart_data = [
+                    {
+                        'name': 'branch 1',
+                        'data': self.fake_branch_sales_data_year[0::3]
+                    },
+                    {
+                        'name': 'branch 2',
+                        'data': self.fake_branch_sales_data_year[1::3]
+                    },
+                    {
+                        'name': 'branch 3',
+                        'data': self.fake_branch_sales_data_year[2::3]
+                    }
+                ]
+                
+        if chart['name'] == 'branchPerformanceCases':
+            if chart['group_by'] == 'Month':
+                if chart['year'] == '2010':
+                    chart_data = [
+                        {
+                            'name': 'branch 1',
+                            'data': self.fake_branch_cases_data[0:36:3]
+                        },
+                        {
+                            'name': 'branch 2',
+                            'data': self.fake_branch_cases_data[1:37:3]
+                        },
+                        {
+                            'name': 'branch 3',
+                            'data': self.fake_branch_cases_data[2:38:3]
+                        }
+                    ]
+                elif chart['year'] == '2011':
+                    chart_data = [
+                        {
+                            'name': 'branch 1',
+                            'data': self.fake_branch_cases_data[36:72:3]
+                        },
+                        {
+                            'name': 'branch 2',
+                            'data': self.fake_branch_cases_data[37:73:3]
+                        },
+                        {
+                            'name': 'branch 3',
+                            'data': self.fake_branch_cases_data[38:74:3]
+                        }
+                    ]
+            else:
+                chart_data = [
+                    {
+                        'name': 'branch 1',
+                        'data': self.fake_branch_cases_data_year[0::3]
+                    },
+                    {
+                        'name': 'branch 2',
+                        'data': self.fake_branch_cases_data_year[1::3]
+                    },
+                    {
+                        'name': 'branch 3',
+                        'data': self.fake_branch_cases_data_year[2::3]
+                    }
+                ]
+        
+        if chart['name'] == 'agencyTimelinePerformance':
+            chart_data = [
+                {
+                    'name': 'Deposit',
+                    'data': [3]
+                },
+                {
+                    'name': 'IPA Approval',
+                    'data': [24]
+                },
+                {
+                    'name': 'Date of Approved Entry Application',
+                    'data': [1]
+                }
+            ]
+            
         data = {
             'name': 'Sales',
             'data': chart_data
         }
-        print(data)
         return JsonResponse(data, status=200)
