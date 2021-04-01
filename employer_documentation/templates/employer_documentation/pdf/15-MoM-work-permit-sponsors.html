@@ -89,7 +89,7 @@
     <p>{{ object.rn_sponsor_ed.sponsor_1_name }}</p>
     <br>
     <h5>Gender:</h5>
-    <p>{{ object.rn_sponsor_ed.sponsor_1_gender }}</p>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_gender_display }}</p>
     <br>
     <h5>Date of birth:</h5>
     <p>{{ object.rn_sponsor_ed.sponsor_1_date_of_birth|date:"d M Y" }}</p>
@@ -120,6 +120,7 @@
     <br>
 </section>
 
+{% if object.rn_sponsor_ed.sponsor_1_marital_status == 'MARRIED' or object.rn_sponsor_ed.number_of_sponsors == 2 %}
 <div class="page-break">
     {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
 </div>
@@ -133,16 +134,16 @@
     <h5>If Sponsor 1 is married, please enter the marriage and Spouse's details below:</h5>
     <br>
     <h5>Was the marriage registered in Singapore?</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_marriage_sg_registered_display }}</p>
     <br>
     <h5>Spouse's name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_name_spouse }}</p>
     <br>
     <h5>Spouse's gender:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_gender_spouse_display }}</p>
     <br>
     <h5>Spouse's date of birth:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_1_date_of_birth_spouse|date:"d M Y" }}</p>
     <br>
     <table width=100%>
         <col style="width:50%">
@@ -152,8 +153,8 @@
             <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_nric_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_fin_spouse_full }}</td>
         </tr>
     </table>
     <br>
@@ -166,33 +167,35 @@
             <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's passport expiry date:</th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_passport_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.sponsor_1_passport_date_spouse|date:"d M Y" }}</td>
         </tr>
     </table>
     <br>
     <br>
     <h5>Spouse's nationality/citizenship:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_nationality_spouse_display }}</p>
     <br>
     <h5>Spouse's residential status:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_1_residential_status_spouse_display }}</p>
     <br>
 </section>
 <br>
 <section class="box-black-border">
     <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">About Sponsor 2 (if any)</h3>
     <h5>Relationship with Employer:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_relationship_display }}</p>
     <br>
     <h5>Name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.sponsor_2_name }}</p>
     <br>
     <h5>Gender:</h5>
-    <br>
+    <p>{{ object.rn_sponsor_ed.get_sponsor_2_gender_display }}</p>
     <br>
 </section>
+{% endif %}
 
+{% if object.rn_sponsor_ed.number_of_sponsors == 2 %}
 <div class="page-break">
     {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
 </div>
@@ -279,5 +282,6 @@
     <br>
     <br>
 </section>
+{% endif %}
 
 {% endblock pdf_content %}
