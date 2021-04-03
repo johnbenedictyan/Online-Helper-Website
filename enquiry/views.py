@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 
 # Imports from project-wide files
@@ -54,7 +55,6 @@ class AgencyEnquiryView(SuccessMessageMixin, CreateView):
                 )
             )
         return super().form_valid(form)
-
 
 class MaidEnquiryView(SuccessMessageMixin, CreateView):
     context_object_name = 'general_enquiry'
@@ -157,3 +157,8 @@ class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
 # Update Views
 
 # Delete Views
+
+# Template Views
+class SuccessfulEnquiryView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'successful-enquiry.html'
