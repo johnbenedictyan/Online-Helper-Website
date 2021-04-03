@@ -7,14 +7,14 @@
         <div class="row">
             <div class="col my-xxl-5">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="display: flex;flex-direction: column;">
                         <div class="row d-md-none">
                             <div class="col text-center">
                                 <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-1 btn-primary">Add to Shortlist</a>
                                 <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-1 btn-outline-primary">Download Bio-data</a>
                             </div>
                         </div>
-                        <div class="mx-md-5 my-2" style="background-image:url({{maid.photo.url}});background-position-x: center;background-size: cover; height:20rem"></div>
+                        <div style="background-image:url({{maid.photo.url}});background-position-x: center;background-size: cover; flex: 1;"></div>
                         <div class="row d-none d-md-flex">
                             <div class="col-xl-8 mt-2 text-center offset-xl-2">
                                 <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-2 btn-primary">Add to Shortlist</a>
@@ -22,144 +22,144 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6 offset-md-2">
                         <div class="row">
                             <div class="col">
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Name</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">
                                             Reference Number
                                         </p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Nationality</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Type</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Date of Birth</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Age</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Height</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Weight</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Marital Status</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Religion</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Number of Children</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Age of Children</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Number of Siblings</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Education</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Expected Salary</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-secondary text-light">
-                                    <div class="col-5">
+                                <div class="row border py-1 bg-white">
+                                    <div class="col-6">
                                         <p class="mb-0">Number of off days</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
                                 <div class="row border py-1">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <p class="mb-0">Spoken Languages</p>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <p class="mb-0">asd</p>
                                     </div>
                                 </div>
@@ -170,26 +170,26 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xxl-10 my-2">
+            <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
                     <div class="col">
-                        <h3>Experience</h3>
+                        <h5>Experience</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col mx-2">
-                        <div class="row py-3 bg-primary text-light">
+                        <div class="row py-3">
                             <div class="col">
-                                <h5 class="mb-0">Experience</h5>
+                                <h class="mb-0">Type</h>
                             </div>
                             <div class="col">
-                                <h5 class="mb-0">Assessment</h5>
+                                <h class="mb-0">Assessment</h>
                             </div>
                             <div class="col">
-                                <h5 class="mb-0">Remarks</h5>
+                                <h class="mb-0">Remarks</h>
                             </div>
                         </div>
-                        <div class="row py-3 border-top border-bottom">
+                        <div class="row py-3 border-top border-bottom bg-white">
                             <div class="col">
                                 <p class="mb-0">Infant Child Care</h5>
                             </div>
@@ -211,7 +211,7 @@
                                 <p class="mb-0">{{maid.elderly_care.get_remarks_display}}</h5>
                             </div>
                         </div>
-                        <div class="row py-3 border-top border-bottom">
+                        <div class="row py-3 border-top border-bottom bg-white">
                             <div class="col">
                                 <p class="mb-0">Disabled Care</h5>
                             </div>
@@ -233,7 +233,7 @@
                                 <p class="mb-0">{{maid.general_housework.get_remarks_display}}</h5>
                             </div>
                         </div>
-                        <div class="row py-3 border-top border-bottom">
+                        <div class="row py-3 border-top border-bottom bg-white">
                             <div class="col">
                                 <p class="mb-0">Cooking</h5>
                             </div>
@@ -249,14 +249,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col my-2">
+            <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
-                    <div class="col">
-                        <h3>Agency Contact Details</h3>
+                    <div class="col mb-2">
+                        <h5>Agency Contact Details</h5>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-6 card custom-card">
                         <div class="row">
                             <div class="col">
                                 <h6>Phone</h6>
@@ -279,268 +279,6 @@
                             <div class="col">
                                 <h6>Address</h6>
                                 <p>{{maid.agency.get_main_office.address_1}} <br/> {{maid.agency.get_main_office.address_2}} <br/> Singapore {{maid.agency.get_main_office.postal_code}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section>
-    <div class="container">
-        <div class="row my-3">
-            <div class="col my-3">
-                <div class="row">
-                    <div class="col mt-3">
-                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary">Add to Shortlist</a>
-                        <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn btn-outline-primary ml-3">Download Bio-data</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h3>{{maid.name}}</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-2">
-                        <small class="text-muted">Reference Number</small>
-                        <p>{{maid.reference_number}}</p>
-                    </div>
-                    <div class="col-xl-2">
-                        <small class="text-muted">Nationality</small>
-                        <p>{{maid.personal_details.get_country_of_origin_display}}</p>
-                    </div>
-                    <div class="col-xl-2">
-                        <small class="text-muted">Type of Maid</small>
-                        <p>{{maid.get_maid_type_display}}</p>
-                    </div>
-                    <div class="col-xl-2">
-                        <small class="text-muted">Agency</small>
-                        <p>{{maid.agency.name}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mt-3">
-                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-primary">Add to Shortlist</a>
-                        <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn btn-outline-primary ml-3">Download Bio-data</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5">
-                <div class="row">
-                    <div class="col mb-xl-3">
-                        <div class="row">
-                            <div class="col">
-                                <h5>Profile</h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <small class="text-muted">Age</small>
-                                        <p>{{maid.personal_details.age}} years old</p>
-                                    </div>
-                                    <div class="col">
-                                        <small class="text-muted">Salary</small>
-                                        <p>${{maid.financial_details.salary}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <small class="text-muted">Number of days off</small>
-                                        <p>{{maid.days_off}}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <small class="text-muted">Marital Status</small>
-                                        <p>{{maid.family_details.get_marital_status_display}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <small class="text-muted">Number of Children</small>
-                                        <p>{{maid.family_details.number_of_children}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <small class="text-muted">Religion</small>
-                                        <p>{{maid.personal_details.get_religion_display}}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <small class="text-muted">Education</small>
-                                        <p>{{maid.personal_details.education_level}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <small class="text-muted">Preferred Language</small>
-                                        <p>{{maid.personal_details.preferred_language}}</p>
-                                    </div>
-                                    <div class="col">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mb-xl-3">
-                        <h5>Experience</h5>
-                        <div class="row">
-                            <div class="col mb-2">
-                                <h6>Infant Child Care</h6>
-                                <div class="progress progress-wrapper">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.infant_child_care.assessment}}" aria-valuenow="{{maid.infant_child_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <small class="text-muted ml-1">Poor</small>
-                                    </div>
-                                    <div class="col text-right">
-                                        <small class="text-muted mr-1">Excellent</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-2">
-                                <h6>Elderly Care</h6>
-                                <div class="progress progress-wrapper">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.elderly_care.assessment}}" aria-valuenow="{{maid.elderly_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <small class="text-muted ml-1">Poor</small>
-                                    </div>
-                                    <div class="col text-right">
-                                        <small class="text-muted mr-1">Excellent</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-2">
-                                <h6>Disabled Care</h6>
-                                <div class="progress progress-wrapper">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.disabled_care.assessment}}" aria-valuenow="{{maid.disabled_care.assessment}}" aria-valuemin="0" aria-valuemax="5">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <small class="text-muted ml-1">Poor</small>
-                                    </div>
-                                    <div class="col text-right">
-                                        <small class="text-muted mr-1">Excellent</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-2">
-                                <h6>General Housework</h6>
-                                <div class="progress progress-wrapper">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.general_housework.assessment}}" aria-valuenow="{{maid.general_housework.assessment}}" aria-valuemin="0" aria-valuemax="5">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <small class="text-muted ml-1">Poor</small>
-                                    </div>
-                                    <div class="col text-right">
-                                        <small class="text-muted mr-1">Excellent</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-2">
-                                <h6>Cooking</h6>
-                                <div class="progress progress-wrapper">
-                                    <div class="progress-bar assessment-progress-bar" role="progressbar" data-value="{{maid.cooking.assessment}}" aria-valuenow="{{maid.cooking.assessment}}" aria-valuemin="0" aria-valuemax="5">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <small class="text-muted ml-1">Poor</small>
-                                    </div>
-                                    <div class="col text-right">
-                                        <small class="text-muted mr-1">Excellent</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5 offset-md-2">
-                <div class="row">
-                    <div class="col mb-md-2 mb-xl-4">
-                        <img src="{% static 'images/olmaid-logo.png'%}" alt="" class="img-thumbnail img-fluid">
-                        <img src="{{maid.photo.url}}" alt="Maid Photo" class="rounded d-none">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="row">
-                            <div class="col mb-md-2 mb-xl-3">
-                                <h5>Top Skills</h5>
-                                {% for responsibility in maid.responsibilities.all %}
-                                <p class="mb-0 badge badge-secondary px-3 py-2 mr-1">{{responsibility}}</p>
-                                {% endfor%}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col mb-md-2">
-                                <h5>Language Spoken</h5>
-                                {% for language in maid.personal_details.languages.all %}
-                                <p class="mb-0 badge badge-secondary px-3 py-2 mr-1">{{language}}</p>
-                                {% endfor%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 mb-3">
-                <div class="row">
-                    <div class="col">
-                        <h5>Employment History</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body p-3">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col-8 offset-2 text-center">
-                                                <small class="text-muted mb-0">2 Years</small>
-                                            </div>
-                                        </div>
-                                        <div class="row align-items-center text-center">
-                                            <div class="col-2">
-                                                <small>13/04/2021</small>
-                                            </div>
-                                            <div class="col-8 px-0">
-                                                <div class="progress" style="height: 2px;">
-                                                    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <small>13/04/2021</small>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <p class="mb-0 badge badge-primary px-3 py-2 mr-1">Chinese Employer</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
