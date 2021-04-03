@@ -320,5 +320,5 @@ handler404 = 'website.views.Error404View'
 handler500 = 'website.views.Error500View'
 
 # Django Security
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
