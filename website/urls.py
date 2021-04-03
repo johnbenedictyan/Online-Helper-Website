@@ -11,7 +11,7 @@ from django.urls import include, path
 from .views import (
     HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
     HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
-    AdminPanelEnquiryListView, Error404View, Error500View
+    AdminPanelEnquiryListView, Error403View, Error404View, Error500View
 )
 
 ## List Views
@@ -80,6 +80,11 @@ urlpatterns = [
     path(
         'error/',
         include([
+            path(
+                '403/',
+                Error403View.as_view(),
+                name='error_403'
+            ),
             path(
                 '404/',
                 Error404View.as_view(),
