@@ -1,5 +1,6 @@
 # Imports from python
 import json
+from datetime import datetime, timedelta
 
 # Imports from django
 from django.contrib import messages
@@ -280,6 +281,118 @@ class DashboardDataProviderView(View):
                               61,96,95,91,85,51,72,93,73,74,76,59,66,92,55,77,
                               60,85,65,64,62,85,70,75]
     fake_branch_cases_data_year = [127,49,13,81,110,113]
+    fake_fdw_timline_data = [
+        {
+            "name":"Penny Truwert",
+            "data": {
+                "deposit_date":"07/04/2021",
+                "apply_for_entry_approval_date":"11/04/2021",
+                "arrival_date":"14/04/2021",
+                "medical_checkup":"27/04/2021",
+                "deployment_date":"04/05/2021",
+                "thumbprint_date":"13/05/2021"
+            }
+        },
+        {
+            "name":"Alphard Hurry",
+            "data": {
+                "deposit_date":"07/04/2021",
+                "apply_for_entry_approval_date":"14/04/2021",
+                "arrival_date":"22/04/2021",
+                "medical_checkup":"28/04/2021",
+                "deployment_date":"04/05/2021",
+                "thumbprint_date":"13/05/2021"
+            }
+        },
+        {
+            "name":"Goober Glascott",
+            "data": {
+                "deposit_date":"07/04/2021",
+                "apply_for_entry_approval_date":"14/04/2021",
+                "arrival_date":"22/04/2021",
+                "medical_checkup":"27/04/2021",
+                "deployment_date":"05/05/2021",
+                "thumbprint_date":"11/05/2021"
+            }
+        },
+        {
+            "name":"Sanford Mum",
+            "data": {
+                "deposit_date":"06/04/2021",
+                "apply_for_entry_approval_date":"14/04/2021",
+                "arrival_date":"21/04/2021",
+                "medical_checkup":"29/04/2021",
+                "deployment_date":"04/05/2021",
+                "thumbprint_date":"12/05/2021"
+            }
+        },
+        {
+            "name":"Adolph Slesser",
+            "data": {
+                "deposit_date":"06/04/2021",
+                "apply_for_entry_approval_date":"13/04/2021",
+                "arrival_date":"22/04/2021",
+                "medical_checkup":"27/04/2021",
+                "deployment_date":"06/05/2021",
+                "thumbprint_date":"11/05/2021"
+            }
+        },
+        {
+            "name":"Donall Causley",
+            "data": {
+                "deposit_date":"07/04/2021",
+                "apply_for_entry_approval_date":"15/04/2021",
+                "arrival_date":"20/04/2021",
+                "medical_checkup":"27/04/2021",
+                "deployment_date":"04/05/2021",
+                "thumbprint_date":"13/05/2021"
+            }
+        },
+        {
+            "name":"Marika Salmon",
+            "data": {
+                "deposit_date":"08/04/2021",
+                "apply_for_entry_approval_date":"15/04/2021",
+                "arrival_date":"21/04/2021",
+                "medical_checkup":"27/04/2021",
+                "deployment_date":"05/05/2021",
+                "thumbprint_date":"11/05/2021"
+            }
+        },
+        {
+            "name":"Catha Pendrill",
+            "data": {
+                "deposit_date":"08/04/2021",
+                "apply_for_entry_approval_date":"13/04/2021",
+                "arrival_date":"21/04/2021",
+                "medical_checkup":"29/04/2021",
+                "deployment_date":"04/05/2021",
+                "thumbprint_date":"12/05/2021"
+            }
+        },
+        {
+            "name":"Waring Ohrtmann",
+            "data": {
+                "deposit_date":"06/04/2021",
+                "apply_for_entry_approval_date":"15/04/2021",
+                "arrival_date":"20/04/2021",
+                "medical_checkup":"27/04/2021",
+                "deployment_date":"05/05/2021",
+                "thumbprint_date":"13/05/2021"
+            }
+        },
+        {
+            "name":"Mallorie Kigelman",
+            "data": {
+                "deposit_date":"07/04/2021",
+                "apply_for_entry_approval_date":"14/04/2021",
+                "arrival_date":"21/04/2021",
+                "medical_checkup":"29/04/2021",
+                "deployment_date":"05/05/2021",
+                "thumbprint_date":"13/05/2021"
+            }
+        }
+    ]
     
     def post(self, request, *args, **kwargs):
         request_data = json.loads(request.body.decode('utf-8'))
@@ -577,6 +690,44 @@ class DashboardDataProviderView(View):
                     'data': [1]
                 }
             ]
+        
+        if chart['name'] == 'fdwTimeline':
+            if chart['group_by'] == 'Week':
+                chart_data = [
+                    {
+                        'name': i['name'],
+                        'data': [
+                            {
+                                'x': k.replace('_',' ').title(),
+                                'y': [
+                                    datetime.strptime(v, '%d/%m/%Y'),
+                                    datetime.strptime(v, '%d/%m/%Y') + 
+                                    timedelta(days=1)
+                                ]
+                            } for k,v in i['data'].items() if (
+                                datetime.now().isocalendar()[1] + 1 == datetime.strptime(v, '%d/%m/%Y').isocalendar()[1]
+                            )
+                        ]
+                    } for i in self.fake_fdw_timline_data
+                ]
+            elif chart['group_by'] == 'Month':
+                chart_data = [
+                    {
+                        'name': i['name'],
+                        'data': [
+                            {
+                                'x': k.replace('_',' ').title(),
+                                'y': [
+                                    datetime.strptime(v, '%d/%m/%Y'),
+                                    datetime.strptime(v, '%d/%m/%Y') + 
+                                    timedelta(days=1)
+                                ]
+                            } for k,v in i['data'].items() if (
+                                datetime.strptime(v, '%d/%m/%Y').isocalendar()[1] - datetime.now().isocalendar()[1] < 5
+                            )
+                        ]
+                    } for i in self.fake_fdw_timline_data
+                ]
             
         data = {
             'name': 'Sales',

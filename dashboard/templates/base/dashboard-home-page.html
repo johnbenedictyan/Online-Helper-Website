@@ -144,8 +144,8 @@
                             <h3 class="pl-md-1 pl-lg-3">Sales</h3>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3 col-lg-2 offset-md-9 offset-lg-10 pr-4">
+                    <div class="row justify-content-end">
+                        <div class="col-md-3 offset-md-9 pr-4">
                             <label for="year-select-chart">Year</label>
                             <select name="year" id="year-select-chart" class="form-control">
                                 <option value="2010">2010</option>
@@ -177,15 +177,15 @@
                             <h3 class="pl-md-1 pl-lg-3">Staff Performance</h3>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3 col-lg-2 offset-md-6 offset-lg-8 mb-2">
+                    <div class="row justify-content-end">
+                        <div class="col-md-3 mb-2">
                             <label for="sales-staff-performance-chart-type">Type</label>
                             <select name="type" id="sales-staff-performance-chart-type" class="form-control sales-staff-performance-chart-controls">
                                 <option value="Sales">Sales</option>
                                 <option value="Cases">Cases</option>
                             </select>
                         </div>
-                        <div class="col-md-3 col-lg-2 pr-4 mb-2">
+                        <div class="col-md-3 pr-4 mb-2">
                             <label for="sales-staff-performance-chart-year">Year</label>
                             <select name="year" id="sales-staff-performance-chart-year" class="form-control sales-staff-performance-chart-controls">
                                 <option value="2010">2010</option>
@@ -210,21 +210,21 @@
                         </div>
                     </div>
                     <div class="row justify-content-end">
-                        <div class="col-md-3 col-lg-2 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="branch-performance-chart-type-option-1">Type</label>
                             <select name="type" id="branch-performance-chart-type-option-1" class="form-control branch-performance-chart-option-1-controls">
                                 <option value="sales">Sales</option>
                                 <option value="cases">Cases</option>
                             </select>
                         </div>
-                        <div class="col-md-3 col-lg-2 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="branch-performance-group-by-option-1">Group By</label>
                             <select name="year" id="branch-performance-group-by-option-1" class="form-control branch-performance-chart-option-1-controls">
                                 <option value="month">Month</option>
                                 <option value="year">Year</option>
                             </select>
                         </div>
-                        <div class="col-md-3 col-lg-2 pr-4 mb-2">
+                        <div class="col-md-3 pr-4 mb-2">
                             <label for="branch-performance-chart-year-option-1">Year</label>
                             <select name="year" id="branch-performance-chart-year-option-1" class="form-control branch-performance-chart-option-1-controls">
                                 <option value="2010">2010</option>
@@ -247,21 +247,21 @@
                         </div>
                     </div>
                     <div class="row justify-content-end">
-                        <div class="col-md-3 col-lg-2 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="branch-performance-chart-type-option-2">Type</label>
                             <select name="type" id="branch-performance-chart-type-option-2" class="form-control branch-performance-chart-option-2-controls">
                                 <option value="sales">Sales</option>
                                 <option value="cases">Cases</option>
                             </select>
                         </div>
-                        <div class="col-md-3 col-lg-2 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="branch-performance-group-by-option-2">Group By</label>
                             <select name="year" id="branch-performance-group-by-option-2" class="form-control branch-performance-chart-option-2-controls">
                                 <option value="month">Month</option>
                                 <option value="year">Year</option>
                             </select>
                         </div>
-                        <div class="col-md-3 col-lg-2 pr-4 mb-2">
+                        <div class="col-md-3 pr-4 mb-2">
                             <label for="branch-performance-chart-year-option-2">Year</label>
                             <select name="year" id="branch-performance-chart-year-option-2" class="form-control branch-performance-chart-option-2-controls">
                                 <option value="2010">2010</option>
@@ -290,6 +290,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-12">
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="pl-md-1 pl-lg-3">FDW Timeline</h3>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-md-3 pr-4 mb-2">
+                            <label for="fdw-timeline-chart-group-by">Year</label>
+                            <select id="fdw-timeline-chart-group-by" class="form-control fdw-timeline-chart-controls">
+                                <option value="week">Week</option>
+                                <option value="month">Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="fdwTimelineChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -297,10 +320,11 @@
 {% block js %}
 <script>
     class ChartManager{
-        constructor(chartNode,chartProperties,chartAuthority) {
+        constructor(chartNode,chartProperties,chartAuthority, chartType) {
             this.chartNode = chartNode;
             this.chartProperties = chartProperties;
             this.chartAuthority = chartAuthority;
+            this.chartType = chartType;
             this.chart = new ApexCharts(document.querySelector(chartNode),chartProperties);
             this.chart.render();
         }
@@ -329,7 +353,7 @@
         }
 
         chartPropertiesManager(categoriesType, categories, chartProperties){
-            if (categoriesType='xaxis') {
+            if (categoriesType=='xaxis') {
                 chartProperties = {
                     ...chartProperties,
                     ...{
@@ -356,6 +380,15 @@
                     'chart': newDataSelectors
                 }
             }).then((res)=>{
+                if(this.chartType == 'timeline'){
+                    res.data.data.forEach((el)=>{
+                        el.data.forEach((x)=>{
+                            x.y.forEach((o, i, a)=>{
+                                a[i] = new Date(o).getTime();
+                            })
+                        });
+                    });
+                }
                 this.chart.updateSeries(res.data.data);
                 this.chart.updateOptions(
                     this.chartPropertiesManager(
@@ -728,6 +761,51 @@
     }
     const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart', agencyTimelinePerformanceChartOptions, 'any');
 
+    var fdwTimelineChartOptions = {
+        series: [],
+        height: 'auto',
+        chart: {
+            type: 'rangeBar'
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true
+            }
+        },
+        dataLabels: {
+            enabled: false,
+            formatter: function(val) {
+                var a = moment(val[0])
+                var b = moment(val[1])
+                var diff = b.diff(a, 'days')
+                return diff + (diff > 1 ? ' days' : ' day')
+            }
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: 'vertical',
+                shadeIntensity: 0.25,
+                gradientToColors: undefined,
+                inverseColors: true,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [50, 0, 100, 100]
+            }
+        },
+        xaxis: {
+            type: 'datetime'
+        },
+        legend: {
+            position: 'top'
+        },
+        noData: {
+            text: 'Loading...'
+        }
+    };
+    const fdwTimelineChartManager = new ChartManager('#fdwTimelineChart', fdwTimelineChartOptions, 'any', 'timeline');
+
     const csrftoken = Cookies.get('csrftoken');
     const authority = '{{authority}}'
     
@@ -742,6 +820,8 @@
         let branchPerformanceOption2Type = $('#branch-performance-chart-type-option-2').find(':selected').text();
         let branchPerformanceOption2GroupBy = $('#branch-performance-group-by-option-2').find(':selected').text();
         let branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected').text();
+
+        let fdwTimelineChartGroupBy = $('#fdw-timeline-chart-group-by').find(':selected').text();
 
         let salesChartProperties = {
             responsive: [
@@ -847,6 +927,13 @@
             'group_by': null
         }
         agencyTimelinePerformanceChartManager.update(agencyTimelinePerformanceDataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
+        
+        let fdwTimelineDataSelectors = {
+            'name': 'fdwTimeline',
+            'year': null,
+            'group_by': fdwTimelineChartGroupBy
+        }
+        fdwTimelineChartManager.update(fdwTimelineDataSelectors, null, csrftoken, 'Agency Managers', null);
     })
 
     $('#year-select-chart').on('change', function(event){
@@ -1047,5 +1134,15 @@
         branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors, branchPerformanceChartOption2UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
     });
 
+    $('.fdw-timeline-chart-controls').on('change', function(event){
+        fdwTimelineChartGroupBy = $('#fdw-timeline-chart-group-by').find(':selected').text();
+
+        fdwTimelineDataSelectors = {
+            'name': 'fdwTimeline',
+            'year': null,
+            'group_by': fdwTimelineChartGroupBy
+        }
+        fdwTimelineChartManager.update(fdwTimelineDataSelectors, null, csrftoken, 'Agency Managers', null)
+    })
 </script>
 {% endblock js%}
