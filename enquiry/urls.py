@@ -9,6 +9,7 @@ from django.urls import include, path
 from .views import DeactivateGeneralEnquiryView, ToggleApproveEnquiryView
 
 ## Template Views 
+from .views import SuccessfulEnquiryView
 
 ## List Views
 from .views import EnquiryListView
@@ -54,5 +55,10 @@ urlpatterns = [
         'toggle-approve/<int:pk>/',
         ToggleApproveEnquiryView.as_view(),
         name='toggle_approve_enquiry'
+    ),
+    path(
+        'success/',
+        SuccessfulEnquiryView.as_view(),
+        name='successful_enquiry'
     )
 ]

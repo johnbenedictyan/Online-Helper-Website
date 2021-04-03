@@ -11,7 +11,7 @@ from django.urls import include, path
 from .views import (
     HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
     HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
-    AdminPanelEnquiryListView
+    AdminPanelEnquiryListView, Error404View, Error500View
 )
 
 ## List Views
@@ -74,6 +74,21 @@ urlpatterns = [
                 'enquiries/',
                 AdminPanelEnquiryListView,
                 name='admin_panel_enquiry_list'
+            )
+        ])
+    ),
+    path(
+        'error/',
+        include([
+            path(
+                '404/',
+                Error404View.as_view(),
+                name='error_404'
+            ),
+            path(
+                '500/',
+                Error500View.as_view(),
+                name='error_500'
             )
         ])
     ),
