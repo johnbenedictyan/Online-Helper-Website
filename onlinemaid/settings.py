@@ -318,3 +318,7 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 handler403 = 'website.views.Error403View'
 handler404 = 'website.views.Error404View'
 handler500 = 'website.views.Error500View'
+
+# Django Security
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
