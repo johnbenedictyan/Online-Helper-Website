@@ -76,6 +76,18 @@ class AdminPanelEnquiryListView(OnlineMaidStaffRequiredMixin, ListView):
     paginate_by = 50
     context_object_name = 'enquiries'
 
+class Error403View(TemplateView):
+    http_method_names = ['get']
+    template_name = '403.html'
+    
+class Error404View(TemplateView):
+    http_method_names = ['get']
+    template_name = '404.html'
+    
+class Error500View(TemplateView):
+    http_method_names = ['get']
+    template_name = '500.html'
+    
 class RobotsTxt(TemplateView):
     http_method_names = ['get']
     template_name = 'robots.txt'
