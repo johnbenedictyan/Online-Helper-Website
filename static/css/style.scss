@@ -328,7 +328,7 @@ $FONT_SIZE_LARGER: 1.1rem;
 
 $TITLE_BANNER_MARGIN_BOTTOM_MD : 2.5rem;
 $TITLE_BANNER_MARGIN_BOTTOM_XL : 5rem;
-$TITLE_BANNER_MARGIN_BOTTOM_XXL : 7.5rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XXL : 6.5rem;
 .title-banner {
     @media screen and (min-width:768px) {
         margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_MD;
@@ -346,6 +346,10 @@ $TITLE_BANNER_MARGIN_BOTTOM_XXL : 7.5rem;
 .custom-nav-link {
     font-weight: 500;
     font-size: 1.2rem;
+}
+
+.fill {
+    height: 80vh;
 }
 
 // Slick Carousel
