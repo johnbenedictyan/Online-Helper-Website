@@ -114,10 +114,10 @@
     <p>{{ object.rn_jointapplicant_ed.joint_applicant_name_spouse }}</p>
     <br>
     <h5>Spouse's gender:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_gender_spouse_display }}</p>
     <br>
     <h5>Spouse's date of birth:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_date_of_birth_spouse|date:"d M Y" }}</p>
     <br>
     <table width=100%>
         <col style="width:50%">
@@ -127,8 +127,8 @@
             <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_jointapplicant_ed.get_joint_applicant_nric_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_jointapplicant_ed.get_joint_applicant_fin_spouse_full }}</td>
         </tr>
     </table>
     <br>
@@ -141,17 +141,17 @@
             <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's passport expiry date:</th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">[placeholder]</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_jointapplicant_ed.get_joint_applicant_passport_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_jointapplicant_ed.joint_applicant_passport_date_spouse|date:"d M Y" }}</td>
         </tr>
     </table>
     <br>
     <br>
     <h5>Spouse's nationality/citizenship:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_nationality_spouse_display }}</p>
     <br>
     <h5>Spouse's residential status:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_residential_status_spouse_display }}</p>
     <br>
     {% endif %}
 </section>
