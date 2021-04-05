@@ -1,10 +1,13 @@
 # Imports from django
 from django.contrib import messages
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from django.views.generic.base import RedirectView, TemplateView
 
 # Imports from foreign installed apps
 from enquiry.forms import MaidEnquiryForm
+from enquiry.models import MaidEnquiry
 from maid.models import Maid
 
 # Imports from local apps
@@ -74,17 +77,29 @@ class RemoveFrom(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ## Template Views
-class ViewShortlist(FormView):
+class ViewShortlist(CreateView):
+    form_class = MaidEnquiryForm
+    http_method_names = ['get', 'post']
+    model = MaidEnquiry
+    success_url = reverse_lazy('home')
     template_name = "shortlist.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        current_shortlist = self.request.session.get('shortlist', [])
-        self.request.session['shortlist'] = current_shortlist
+        self.current_shortlist = self.request.session.get('shortlist', [])
+        self.request.session['shortlist'] = self.current_shortlist
         context.update({
             'shortlist': Maid.objects.filter(
-                pk__in=current_shortlist
-            ),
-            'enquiry_form': MaidEnquiryForm()
+                pk__in=self.current_shortlist
+            )
         })
         return context
+
+    def form_valid(self, form):
+        form.instance.employer = request.user
+        res = super().form_valid(form)
+        for maid_pk in self.current_shortlist:
+            self.object.maids.add(Maid.objects.get(
+                pk=maid_pk
+            ))
+        return res
