@@ -207,13 +207,29 @@ class MaidEnquiry(models.Model):
         related_name='maid_enquiries'
     )
     
-    maid = models.ForeignKey(
+    maids = models.ManyToManyField(
         Maid,
-        on_delete=models.CASCADE,
         related_name='enquiries'
     )
     
     remarks = models.TextField(
         verbose_name=_('Remarks'),
         blank=False
+    )
+
+    active = models.BooleanField(
+        editable=False,
+        default=True
+    )
+
+    approved = models.BooleanField(
+        editable=False,
+        default=False
+    )
+
+    last_modified = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='last_modified_maid_enquiries',
+        null=True
     )
