@@ -1,6 +1,7 @@
 # Imports from django
 from django.contrib import messages
 from django.shortcuts import render
+from django.views.generic import FormView
 from django.views.generic.base import RedirectView, TemplateView
 
 # Imports from foreign installed apps
