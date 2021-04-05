@@ -232,6 +232,7 @@
     <h5>Marital status:</h5>
     <p>{{ object.rn_sponsor_ed.get_sponsor_2_gender_display }}</p>
     <br>
+    {% if object.rn_sponsor_ed.sponsor_2_marital_status == 'MARRIED' %}
     <h5>If Sponsor 2 is married, please enter the marriage and Spouse's details below:</h5>
     <h5>Was the marriage registered in Singapore?<span class="answer">{{ object.rn_sponsor_ed.get_sponsor_2_marriage_sg_registered_display }}</span></h5>
     <br>
@@ -280,6 +281,7 @@
     <h5>Spouse's residential status:</h5>
     <p>{{ object.rn_sponsor_ed.get_sponsor_2_residential_status_spouse_display }}</p>
     <br>
+    {% endif %}
 </section>
 {% endif %}
 
