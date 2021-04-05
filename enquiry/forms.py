@@ -297,7 +297,7 @@ class MaidEnquiryForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-100"
+                        css_class="btn btn-primary w-25"
                     ),
                     css_class='form-group col text-center'
                 ),
