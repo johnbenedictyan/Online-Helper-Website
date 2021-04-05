@@ -274,7 +274,7 @@ button.mini-faq-button i {
 
 @media screen and (min-width: 1400px) {
   .logo-image-wrapper {
-    width: 15%;
+    width: 12.5%;
   }
 }
 
@@ -294,6 +294,11 @@ button.mini-faq-button i {
   .title-banner {
     margin-bottom: 7.5rem;
   }
+}
+
+.custom-nav-link {
+  font-weight: 500;
+  font-size: 1.2rem;
 }
 
 .slick-caorusel > .slick-list > .slick-track {

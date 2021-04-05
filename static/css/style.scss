@@ -322,7 +322,7 @@ $FONT_SIZE_LARGER: 1.1rem;
     }
 
     @media screen and (min-width:1400px) {
-        width: 15%;
+        width: 12.5%;
     }
 }
 
@@ -342,6 +342,12 @@ $TITLE_BANNER_MARGIN_BOTTOM_XXL : 7.5rem;
         margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_XXL;
     }
 }
+
+.custom-nav-link {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
 // Slick Carousel
 .slick-caorusel>.slick-list>.slick-track {
     margin-left: 0;
