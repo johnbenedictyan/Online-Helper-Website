@@ -129,76 +129,76 @@ class Employer(models.Model):
 
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
-        (0, "0 days"),
-        (1, "1 day"),
-        (2, "2 days"),
-        (3, "3 days"),
-        (4, "4 days"),
-        (5, "5 days"),
-        (6, "6 days"),
-        (7, "7 days"),
-        (8, "8 days"),
-        (9, "9 days"),
-        (10, "10 days"),
-        (11, "11 days"),
-        (12, "12 days"),
-        (13, "13 days"),
-        (14, "14 days"),
-        (15, "15 days"),
-        (16, "16 days"),
-        (17, "17 days"),
-        (18, "18 days"),
-        (19, "19 days"),
-        (20, "20 days"),
-        (21, "21 days"),
-        (22, "22 days"),
-        (23, "23 days"),
-        (24, "24 days"),
-        (25, "25 days"),
-        (26, "26 days"),
-        (27, "27 days"),
-        (28, "28 days"),
+        (0, _("0 days")),
+        (1, _("1 day")),
+        (2, _("2 days")),
+        (3, _("3 days")),
+        (4, _("4 days")),
+        (5, _("5 days")),
+        (6, _("6 days")),
+        (7, _("7 days")),
+        (8, _("8 days")),
+        (9, _("9 days")),
+        (10, _("10 days")),
+        (11, _("11 days")),
+        (12, _("12 days")),
+        (13, _("13 days")),
+        (14, _("14 days")),
+        (15, _("15 days")),
+        (16, _("16 days")),
+        (17, _("17 days")),
+        (18, _("18 days")),
+        (19, _("19 days")),
+        (20, _("20 days")),
+        (21, _("21 days")),
+        (22, _("22 days")),
+        (23, _("23 days")),
+        (24, _("24 days")),
+        (25, _("25 days")),
+        (26, _("26 days")),
+        (27, _("27 days")),
+        (28, _("28 days")),
     ]
 
     WEEK_CHOICES = [
-        (0, "0 weeks"),
-        (1, "1 week"),
-        (2, "2 weeks"),
-        (3, "3 weeks"),
-        (4, "4 weeks"),
+        (0, _("0 weeks")),
+        (1, _("1 week")),
+        (2, _("2 weeks")),
+        (3, _("3 weeks")),
+        (4, _("4 weeks")),
     ]
 
     MONTH_CHOICES = [
-        (0, "0 months"),
-        (1, "1 month"),
-        (2, "2 months"),
-        (3, "3 months"),
-        (4, "4 months"),
-        (5, "5 months"),
-        (6, "6 months"),
-        (7, "7 months"),
-        (8, "8 months"),
-        (9, "9 months"),
-        (10, "10 months"),
-        (11, "11 months"),
-        (12, "12 months"),
-        (13, "13 months"),
-        (14, "14 months"),
-        (15, "15 months"),
-        (16, "16 months"),
-        (17, "17 months"),
-        (18, "18 months"),
-        (19, "19 months"),
-        (20, "20 months"),
-        (21, "21 months"),
-        (22, "22 months"),
-        (23, "23 months"),
-        (24, "24 months"),
+        (0, _("0 months")),
+        (1, _("1 month")),
+        (2, _("2 months")),
+        (3, _("3 months")),
+        (4, _("4 months")),
+        (5, _("5 months")),
+        (6, _("6 months")),
+        (7, _("7 months")),
+        (8, _("8 months")),
+        (9, _("9 months")),
+        (10, _("10 months")),
+        (11, _("11 months")),
+        (12, _("12 months")),
+        (13, _("13 months")),
+        (14, _("14 months")),
+        (15, _("15 months")),
+        (16, _("16 months")),
+        (17, _("17 months")),
+        (18, _("18 months")),
+        (19, _("19 months")),
+        (20, _("20 months")),
+        (21, _("21 months")),
+        (22, _("22 months")),
+        (23, _("23 months")),
+        (24, _("24 months")),
     ]
     SCHEME_CHOICES = [
-        ('STAND', "Standard"),
-        ('JOINT', "Joint Income"),
-        ('SPONS', "Sponsorship"),
+        ('STAND', _("Standard")),
+        ('JOINT', _("Joint Income")),
+        ('SPONS', _("Sponsorship")),
     ]
 
     id = models.UUIDField(
@@ -218,7 +218,7 @@ class EmployerDoc(models.Model):
     )
     employer = models.ForeignKey(
         Employer,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         related_name='rn_ed_employer'
     )
     fdw = models.ForeignKey(
@@ -229,35 +229,35 @@ class EmployerDoc(models.Model):
     monthly_combined_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly combined income of employer and spouse"),
         choices=[
-            (0, "Below $2,000"),
-            (1, "$2,000 to $2,499"),
-            (2, "$2,500 to $2,999"),
-            (3, "$3,000 to $3,499"),
-            (4, "$3,500 to $3,999"),
-            (5, "$4,000 to $4,999"),
-            (6, "$5,000 to $5,999"),
-            (7, "$6,000 to $7,999"),
-            (8, "$8,000 to $9,999"),
-            (9, "$10,000 to $12,499"),
-            (10, "$12,500 to $14,999"),
-            (11, "$15,000 to $19,999"),
-            (12, "$20,000 to $24,999"),
-            (13, "$25,000 and above"),
+            (0, _("Below $2,000")),
+            (1, _("$2,000 to $2,499")),
+            (2, _("$2,500 to $2,999")),
+            (3, _("$3,000 to $3,499")),
+            (4, _("$3,500 to $3,999")),
+            (5, _("$4,000 to $4,999")),
+            (6, _("$5,000 to $5,999")),
+            (7, _("$6,000 to $7,999")),
+            (8, _("$8,000 to $9,999")),
+            (9, _("$10,000 to $12,499")),
+            (10, _("$12,500 to $14,999")),
+            (11, _("$15,000 to $19,999")),
+            (12, _("$20,000 to $24,999")),
+            (13, _("$25,000 and above")),
         ]
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
         # editable=False,
         choices=TrueFalseChoices(
-            'Yes, spouse required',
-            'No, spouse not required'
+            _('Yes, spouse required'),
+            _('No, spouse not required'),
         ),
     )
     sponsor_required = models.BooleanField(
         verbose_name=_("Is sponsor requried?"),
         choices=TrueFalseChoices(
-            'Yes, sponsor required',
-            'No, sponsor not required'
+            _('Yes, sponsor required'),
+            _('No, sponsor not required'),
         ),
         default=False,
         # blank=True,
@@ -428,8 +428,8 @@ class EmployerDoc(models.Model):
     fdw_is_replacement = models.BooleanField(
         verbose_name=_("Is this FDW a replacement? (Form A / Form B)"),
         choices=TrueFalseChoices(
-            'Yes, replacement (Form B)',
-            'No, not replacement (Form A)'
+            _('Yes, replacement (Form B)'),
+            _('No, not replacement (Form A)'),
         ),
         default=False,
     )
@@ -488,17 +488,17 @@ class EmployerDoc(models.Model):
         verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
             to"),
         choices=[
-            (0, "0 replacements"),
-            (1, "1 replacement"),
-            (2, "2 replacements"),
-            (3, "3 replacements"),
-            (4, "4 replacements"),
-            (5, "5 replacements"),
-            (6, "6 replacements"),
-            (7, "7 replacements"),
-            (8, "8 replacements"),
-            (9, "9 replacements"),
-            (10, "10 replacements"),
+            (0, _("0 replacements")),
+            (1, _("1 replacement")),
+            (2, _("2 replacements")),
+            (3, _("3 replacements")),
+            (4, _("4 replacements")),
+            (5, _("5 replacements")),
+            (6, _("6 replacements")),
+            (7, _("7 replacements")),
+            (8, _("8 replacements")),
+            (9, _("9 replacements")),
+            (10, _("10 replacements")),
         ]
     )
     c4_1_replacement_period = models.PositiveSmallIntegerField(
@@ -632,8 +632,8 @@ class EmployerDoc(models.Model):
     fdw_clean_window_exterior = models.BooleanField(
         verbose_name=_('Does Employer require FDW to clean window exterior?'),
         choices=TrueFalseChoices(
-            'Yes, clean window exterior',
-            'No, not required'
+            _('Yes, clean window exterior'),
+            _('No, not required'),
         ),
         default=True,
         help_text=_('If yes, must complete field (i).'),
@@ -653,8 +653,8 @@ class EmployerDoc(models.Model):
     grilles_installed_require_cleaning = models.BooleanField(
         verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
         choices=TrueFalseChoices(
-            'Yes, grilles installed require cleaning',
-            'No, not required'
+            _('Yes, grilles installed require cleaning'),
+            _('No, not required'),
         ),
         blank=True,
         null=True,
@@ -663,8 +663,8 @@ class EmployerDoc(models.Model):
     adult_supervision = models.BooleanField(
         verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
         choices=TrueFalseChoices(
-            'Yes, adult supervision',
-            'No supervision'
+            _('Yes, adult supervision'),
+            _('No supervision'),
         ),
         blank=True,
         null=True,
@@ -672,8 +672,8 @@ class EmployerDoc(models.Model):
     received_sip_assessment_checklist = models.BooleanField(
         verbose_name=_('Employer has received advisory letter and assessment checklist from SIP?'),
         choices=TrueFalseChoices(
-            'Yes, received',
-            'Not received'
+            _('Yes, received'),
+            _('Not received'),
         ),
         default=True,
         blank=True,
@@ -932,8 +932,8 @@ class EmployerDocMaidStatus(models.Model):
         verbose_name=_('deployed status'),
         default=False,
         choices=TrueFalseChoices(
-            'Yes, deployed',
-            'No, not yet deployed'
+            _('Yes, deployed'),
+            _('No, not yet deployed'),
         ),
         help_text=_('''
             Marking FDW status as deployed will move case from status summary
@@ -1078,8 +1078,8 @@ class EmployerDocSponsor(models.Model):
     number_of_sponsors = models.PositiveSmallIntegerField(
         verbose_name=_("Number of sponsors"),
         choices=[
-            (1, "1 sponsor"),
-            (2, "2 sponsors"),
+            (1, _("1 sponsor")),
+            (2, _("2 sponsors")),
         ],
         default=1,
     )
@@ -1109,8 +1109,8 @@ class EmployerDocSponsor(models.Model):
         verbose_name=_('Sponsor(s) worked in SG for last 2 years?'),
         default=True,
         choices=TrueFalseChoices(
-            'Yes',
-            'No'
+            _('Yes'),
+            _('No'),
         ),
         help_text=_('''
             Has either Sponsor 1 or Sponsor 2 (if applicable) worked in 
@@ -1209,8 +1209,8 @@ class EmployerDocSponsor(models.Model):
         verbose_name=_('Sponsor 1 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
-            'Yes',
-            'No'
+            _('Yes'),
+            _('No'),
         ),
         help_text=_('''
             Was Sponsor 1's marriage registered in Singapore?
@@ -1400,8 +1400,8 @@ class EmployerDocSponsor(models.Model):
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
-            'Yes',
-            'No'
+            _('Yes'),
+            _('No'),
         ),
         help_text=_('''
             Was Sponsor 2's marriage registered in Singapore?
@@ -1597,8 +1597,8 @@ class EmployerDocJointApplicant(models.Model):
         verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
         default=True,
         choices=TrueFalseChoices(
-            'Yes',
-            'No'
+            _('Yes'),
+            _('No'),
         ),
         help_text=_('''
             Have both Employer and Joint applicant worked in Singapore for the last 2 years?
@@ -1664,8 +1664,8 @@ class EmployerDocJointApplicant(models.Model):
         verbose_name=_("Joint applicant's marriage registered in SG?"),
         default=True,
         choices=TrueFalseChoices(
-            'Yes',
-            'No'
+            _('Yes'),
+            _('No'),
         ),
         help_text=_('''
             Was Joint applicant's marriage registered in Singapore?
