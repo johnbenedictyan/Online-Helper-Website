@@ -1,39 +1,35 @@
 {% extends 'shortlist-base.html' %}
 {% block shortlist_section %}
+{% if shortlist %}
+{% include 'sections/title-banner.html' with page_name='Shortlist' %}
+{% else %}
+{% include 'sections/title-banner.html' with page_name='Shortlist' empty_page=True %}
+{% endif %}
 <section>
-    <div class="jumbotron jumbotron-fluid bg-hero">
-        <div class="container">
-            <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
-                    <h1 class="display-4 pl-3 pl-md-2">Shortlist</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Shortlist</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section>
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
+    <div class="container fill">
+        <div class="row h-100">
             {% for maid in shortlist %}
-                <div class="col mb-4">
+                <div class="col col-md-4 col-lg-3 mb-4">
                     <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
+                        <div class="maid-thumbnail" style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
                         <div class="card-body">
-                            <h5 class="card-title">{{maid.biodata.name}}</h5>
-                            <p class="card-text">{{maid.biodata.country_of_origin}}</p>
-                            <p class="card-text">{{maaid.biodata.age}} | {{maid.family_details.marital_status}}</p>
-                            <p class="card-text">{{maid.maid_type}}</p>
+                            <h6 class="card-title mb-0">{{maid.name}}</h6>
+                            <p class="card-text mb-1">{{maid.personal_details.get_country_of_origin_display}}</p>
+                            <p class="card-text mb-1">{{maid.personal_details.age}} years old</p>
+                            <p class="card-text mb-1">{{maid.family_details.get_marital_status_display}}</p>
+                            <p class="card-text mb-1">{{maid.get_maid_type_display}}</p>
                         </div>
                     </div>
                 </div>
+            {% empty %}
+            <div class="col text-center my-auto">
+                <h1>No Maids Shortlisted Yet</h1>
+                <a href="{% url 'maid_list' %}" class="btn btn-primary">Search Maids</a>
+            </div>
             {% endfor %}
         </div>
+        {% if shortlist %}
+        {% endif %}
     </div>
 </section>
 {% endblock shortlist_section %}

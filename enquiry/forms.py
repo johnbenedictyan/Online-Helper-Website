@@ -1,15 +1,12 @@
 # Imports from django
 from django import forms
-from django.contrib.postgres.forms import SimpleArrayField
-from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Field
-from crispy_forms.bootstrap import InlineCheckboxes
+from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
 from maid.models import MaidResponsibility, MaidLanguage
 
 # Imports from local apps
@@ -274,36 +271,21 @@ class AgencyEnquiryForm(forms.ModelForm):
 
 class MaidEnquiryForm(forms.ModelForm):
     class Meta:
-        model = AgencyEnquiry
-        fields = '__all__'
-        widgets = {
-            'employer': forms.HiddenInput(),
-            'maid': forms.HiddenInput(),
-            'remarks': forms.Textarea(
-                attrs={
-                    'rows': 20,
-                    'cols': 15
-                }
-            )
-        }
+        model = MaidEnquiry
+        exclude = ['employer', 'maid']
     
     def __init__(self, *args, **kwargs):
-        employer = kwargs.pop('employer')
-        maid = kwargs.pop('maid')
         super().__init__(*args, **kwargs)
-        self.fields['employer'].initial = employer
-        self.fields['maid'].initial = maid
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'employer',
-                    css_class='form-group'
-                ),
-                Column(
-                    'maid',
-                    css_class='form-group'
-                ),
+                    HTML(
+                        '<h1>Enquiry Form</h1>'
+                    )
+                )
+            ),
+            Row(
                 Column(
                     'remarks',
                     css_class='form-group'

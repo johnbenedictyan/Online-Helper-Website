@@ -292,13 +292,17 @@ button.mini-faq-button i {
 
 @media screen and (min-width: 1400px) {
   .title-banner {
-    margin-bottom: 7.5rem;
+    margin-bottom: 6.5rem;
   }
 }
 
 .custom-nav-link {
   font-weight: 500;
   font-size: 1.2rem;
+}
+
+.fill {
+  height: 80vh;
 }
 
 .slick-caorusel > .slick-list > .slick-track {
