@@ -77,6 +77,7 @@ class RemoveFrom(RedirectView):
 ## Template Views
 class ViewShortlist(FormView):
     template_name = "shortlist.html"
+    form_class = MaidEnquiryForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
