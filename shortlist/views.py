@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views.generic.base import RedirectView, TemplateView
 
 # Imports from foreign installed apps
+from enquiry.forms import MaidEnquiryForm
 from maid.models import Maid
 
 # Imports from local apps
@@ -73,15 +74,17 @@ class RemoveFrom(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ## Template Views
-class ViewShortlist(TemplateView):
+class ViewShortlist(FormView):
     template_name = "shortlist.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_shortlist = self.request.session.get('shortlist', [])
         self.request.session['shortlist'] = current_shortlist
-
-        context['shortlist'] = Maid.objects.filter(
-            pk__in=current_shortlist
-        )
+        context.update({
+            'shortlist': Maid.objects.filter(
+                pk__in=current_shortlist
+            ),
+            'enquiry_form': MaidEnquiryForm()
+        })
         return context
