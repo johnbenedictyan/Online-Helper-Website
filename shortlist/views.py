@@ -102,4 +102,5 @@ class ViewShortlist(CreateView):
             self.object.maids.add(Maid.objects.get(
                 pk=maid_pk
             ))
+        self.request.session['shortlist'] = []
         return res
