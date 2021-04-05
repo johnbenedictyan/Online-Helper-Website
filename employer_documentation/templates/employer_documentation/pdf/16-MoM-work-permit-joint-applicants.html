@@ -69,16 +69,16 @@
     <p>{{ object.rn_jointapplicant_ed.joint_applicant_name }}</p>
     <br>
     <h5>Gender:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_gender_display }}</p>
     <br>
     <h5>Date of birth:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_date_of_birth|date:"d M Y" }}</p>
     <br>
     <h5>NRIC number:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_nric_full }}</p>
     <br>
     <h5>Nationality/Citizenship:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_nationality_display }}</p>
     <br>
 </section>
 
