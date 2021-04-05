@@ -218,7 +218,7 @@ class EmployerDoc(models.Model):
     )
     employer = models.ForeignKey(
         Employer,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         related_name='rn_ed_employer'
     )
     fdw = models.ForeignKey(
