@@ -94,24 +94,24 @@
 <section class="box-black-border">
     <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">About the Joint applicant</h3>
     <h5>Residential status:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_residential_status_display }}</p>
     <br>
     <h5>Residential address:</h5>
-    <br>
-    <br>
-    <h5 style="padding-left: 400px;">Postal code:</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_address_1 }}</p>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_address_2 }}</p>
+    <h5 style="padding-left: 400px;">Postal code:<span class="answer">{{ object.rn_jointapplicant_ed.joint_applicant_post_code }}</span></h5>
     <br>
     <h5>Marital status:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_marital_status_display }}</p>
     <br>
-    <br>
+    {% if object.rn_jointapplicant_ed.joint_applicant_marital_status == 'MARRIED' %}
     <h5>If the Joint applicant is married, please enter the marriage and Spouse's details below:</h5>
     <br>
     <h5>Was the marriage registered in Singapore?</h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_marriage_sg_registered_display }}</p>
     <br>
     <h5>Spouse's name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
-    <br>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_name_spouse }}</p>
     <br>
     <h5>Spouse's gender:</h5>
     <br>
@@ -153,6 +153,7 @@
     <h5>Spouse's residential status:</h5>
     <br>
     <br>
+    {% endif %}
 </section>
 
 {% endblock pdf_content %}
