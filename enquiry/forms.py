@@ -36,7 +36,7 @@ class GeneralEnquiryForm(forms.ModelForm):
 
     class Meta:
         model = GeneralEnquiry
-        exclude = ['employer']
+        exclude = ['potential_employer']
         widgets = {
             'name': forms.TextInput(
                 attrs={
@@ -272,7 +272,7 @@ class AgencyEnquiryForm(forms.ModelForm):
 class MaidEnquiryForm(forms.ModelForm):
     class Meta:
         model = MaidEnquiry
-        exclude = ['employer', 'maid']
+        exclude = ['potential_employer', 'maids', 'last_modified']
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -297,7 +297,7 @@ class MaidEnquiryForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-100"
+                        css_class="btn btn-primary w-25"
                     ),
                     css_class='form-group col text-center'
                 ),

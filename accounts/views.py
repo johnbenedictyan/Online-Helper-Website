@@ -14,7 +14,7 @@ from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
-from .models import Employer
+from .models import PotentialEmployer
 from .mixins import VerifiedEmployerMixin, PotentialEmployerRequiredMixin
 
 # Start of Views
@@ -80,19 +80,19 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ## Detail Views
-class EmployerDetail(PotentialEmployerRequiredMixin, VerifiedEmployerMixin,
+class PotentialEmployerDetail(PotentialEmployerRequiredMixin, VerifiedEmployerMixin,
                      DetailView):
     context_object_name = 'employer'
     http_method_names = ['get']
-    model = Employer
+    model = PotentialEmployer
     template_name = 'detail/employer-detail.html'
 
 ## Create Views
-class EmployerCreate(SuccessMessageMixin, CreateView):
+class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
-    model = Employer
+    model = PotentialEmployer
     template_name = 'create/employer-create.html'
     success_url = reverse_lazy('home')
     form_type = 'CREATE'
@@ -106,12 +106,12 @@ class EmployerCreate(SuccessMessageMixin, CreateView):
         return kwargs
 
 ## Update Views
-class EmployerUpdate(SuccessMessageMixin, PotentialEmployerRequiredMixin,
+class PotentialEmployerUpdate(SuccessMessageMixin, PotentialEmployerRequiredMixin,
                      VerifiedEmployerMixin, UpdateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get','post']
-    model = Employer
+    model = PotentialEmployer
     template_name = 'update/employer-update.html'
     success_url = reverse_lazy('employer_detail')
     form_type = 'UPDATE'
@@ -126,10 +126,10 @@ class EmployerUpdate(SuccessMessageMixin, PotentialEmployerRequiredMixin,
         return kwargs
 
 ## Delete Views
-class EmployerDelete(SuccessMessageMixin, PotentialEmployerRequiredMixin,
+class PotentialEmployerDelete(SuccessMessageMixin, PotentialEmployerRequiredMixin,
                      VerifiedEmployerMixin, DeleteView):
     context_object_name = 'employer'
     http_method_names = ['post']
-    model = Employer
+    model = PotentialEmployer
     success_url = reverse_lazy('home')
     success_message = 'Account deleted'

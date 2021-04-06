@@ -67,7 +67,7 @@ class User(AbstractUser):
         verbose_name = 'User'
         verbose_name_plural = 'Users'
 
-class Employer(models.Model):
+class PotentialEmployer(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
