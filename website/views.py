@@ -36,7 +36,7 @@ class ContactUsView(TemplateView):
     http_method_names = ['get']
     template_name = 'contact-us.html'
 
-class TermsOfSerivceView(TemplateView):
+class TermsAndConditionsView(TemplateView):
     http_method_names = ['get']
     template_name = 'terms-of-service.html'
 

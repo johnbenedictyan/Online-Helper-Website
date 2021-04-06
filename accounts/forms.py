@@ -242,7 +242,7 @@ class EmployerCreationForm(forms.ModelForm):
         widget=forms.PasswordInput()
     )
     
-    terms_of_service = forms.BooleanField()
+    terms_and_conditions = forms.BooleanField()
 
     placeholders = {
         'email': 'johndoe@example.com',
@@ -265,9 +265,9 @@ class EmployerCreationForm(forms.ModelForm):
         else:
             for k, v in self.placeholders.items():
                 self.fields[k].widget.attrs['placeholder'] = v
-        self.fields['terms_of_service'].label = f'''
+        self.fields['terms_and_conditions'].label = f'''
             I agree to the 
-            <a href="{reverse_lazy('terms_of_service')}" target="_blank">
+            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
                 terms of service
             </a> 
             as well as the 
@@ -301,7 +301,7 @@ class EmployerCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'terms_of_service',
+                    'terms_and_conditions',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
@@ -319,13 +319,13 @@ class EmployerCreationForm(forms.ModelForm):
             )
         )
 
-    def clean_terms_of_service(self):
-        terms_of_service = self.cleaned_data.get('terms_of_service')
-        if terms_of_service == False:
+    def clean_terms_and_conditions(self):
+        terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
+        if terms_and_conditions == False:
             msg = -('You must agree to sign up for our services')
-            self.add_error('terms_of_service', msg)
+            self.add_error('terms_and_conditions', msg)
             
-        return terms_of_service
+        return terms_and_conditions
     
     def clean(self):
         cleaned_data = super().clean()
