@@ -12,14 +12,13 @@ from django.urls import reverse_lazy
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Hidden
+from crispy_forms.layout import Layout, Submit, Row, Column
 from onlinemaid.constants import (
-    AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
+    AG_OWNERS, P_EMPLOYERS
 )
 
 # Imports from local apps
-from .managers import CustomUserManager
-from .models import PotentialEmployer, User
+from .models import PotentialEmployer
 
 # Start of Forms
 

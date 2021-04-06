@@ -4,16 +4,16 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import calculate_age, decrypt_string, humanise_time_duration
-from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
+from onlinemaid.helper_functions import (
+    calculate_age, decrypt_string, humanise_time_duration
+)
+from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from other apps
 from agency.models import Agency

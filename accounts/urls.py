@@ -5,7 +5,6 @@ from django.contrib.auth import views as auth_views
 # Imports from foreign installed apps
 
 # Imports from local app
-from .forms import SignInForm
 
 ## Views that extend inbuilt django views
 from .views import SignInView, AgencySignInView

@@ -1,6 +1,5 @@
 # Imports from django
 from django.contrib import messages
-from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
@@ -11,7 +10,6 @@ from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
 from enquiry.models import GeneralEnquiry
 from payment.models import SubscriptionProduct
-from maid.models import Maid
 from maid.filters import MiniMaidFilter
 
 # Imports from local app

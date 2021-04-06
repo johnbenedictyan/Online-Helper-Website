@@ -6,10 +6,9 @@ from random import shuffle
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core import serializers
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, View, TemplateView
+from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import (
@@ -453,10 +452,15 @@ class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
         helper.add_input(Submit("submit", "Save"))
 
         if self.request.POST:
-            context['formset'] = MaidEmploymentHistoryFormSet(self.request.POST, instance=self.object)
+            context['formset'] = MaidEmploymentHistoryFormSet(
+                self.request.POST,
+                instance=self.object
+            )
             context['helper'] = helper
         else:
-            context['formset'] = MaidEmploymentHistoryFormSet(instance=self.object)
+            context['formset'] = MaidEmploymentHistoryFormSet(
+                instance=self.object
+            )
             context['helper'] = helper
         return context
 
@@ -469,7 +473,10 @@ class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
         return super().post(request, *args, **kwargs)
 
     def get_form(self, form_class=None):
-        return MaidEmploymentHistoryFormSet(**self.get_form_kwargs(), instance=self.object)
+        return MaidEmploymentHistoryFormSet(
+            **self.get_form_kwargs(), 
+            instance=self.object
+        )
 
     def form_valid(self, form):
         form.save()
@@ -483,7 +490,12 @@ class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
         return self.get_success_url()
 
     def get_success_url(self):
-        return HttpResponseRedirect(reverse_lazy('maid_employment_formset', kwargs={'pk':self.object.pk}))
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'maid_employment_formset', 
+                kwargs={'pk':self.object.pk}
+            )
+        )
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,

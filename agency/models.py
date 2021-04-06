@@ -5,13 +5,11 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator, URLValidator
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
 from onlinemaid.helper_functions import get_sg_region
-from onlinemaid.storage_backends import PublicMediaStorage, PrivateMediaStorage
+from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
 from .constants import AreaChoices, AgencyEmployeeRoleChoices
