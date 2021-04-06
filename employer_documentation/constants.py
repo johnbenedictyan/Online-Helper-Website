@@ -54,3 +54,12 @@ class MaritalStatusChoices(models.TextChoices):
     DIVORCED = 'DIVORCED', _('Divorced')
     WIDOWED = 'WIDOWED', _('Widowed')
     SEPARATED = 'SEPARATED', _('Separated')
+
+class SpouseResidentialStatusChoices(models.TextChoices):
+    SC = 'SC', _('Singapore citizen')
+    PR = 'PR', _('Singapore permanent resident')
+    LTVP = 'LTVP', _('Long-Term Visit Pass')
+    EP_SP = 'EP', _('Employment Pass or S Pass')
+    DEPEN = 'DEPEN', _("Dependant's Pass")
+    DIPLO = 'DIPLO', _('Diplomat')
+    OTHER = 'OTHER', _('Others')
