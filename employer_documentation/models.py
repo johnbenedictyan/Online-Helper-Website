@@ -196,7 +196,8 @@ class EmployerDoc(models.Model):
         (24, _("24 months")),
     ]
     SCHEME_CHOICES = [
-        ('STAND', _("Employer / Employer & Spouse")),
+        ('SINGL', _("Employer Only")),
+        ('SPOUS', _("Employer and Spouse")),
         ('JOINT', _("Joint Income")),
         ('SPONS', _("Sponsorship")),
     ]
@@ -247,7 +248,7 @@ class EmployerDoc(models.Model):
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
-        # editable=False,
+        editable=False,
         choices=TrueFalseChoices(
             _('Yes, spouse required'),
             _('No, spouse not required'),
@@ -693,8 +694,9 @@ class EmployerDoc(models.Model):
         # Auto-increment document version number on every save
         self.version += 1
 
-        # Spouse is required if monthly_combined_income < S$3,000 per month
-        # self.spouse_required = True if self.monthly_combined_income<3 else False
+        # Spouse is required if application_scheme is 'SPOUS'
+        self.spouse_required = True if self.application_scheme=='SPOUS' else False
+
         super().save(*args, **kwargs)
 
     def calc_admin_cost(self):
