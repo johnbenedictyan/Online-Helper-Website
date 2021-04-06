@@ -318,11 +318,11 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'spouse_required',
+                    'application_scheme',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'sponsor_required',
+                    'spouse_required',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
