@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from project
 
 # Imports from other apps
-from accounts.models import Employer, User
+from accounts.models import PotentialEmployer, User
 from agency.models import Agency
 from maid.models import Maid, MaidResponsibility, MaidLanguage
 
@@ -24,8 +24,8 @@ from .validators import validate_links
 
 # Start of Models
 class GeneralEnquiry(models.Model):
-    employer = models.ForeignKey(
-        Employer,
+    potential_employer = models.ForeignKey(
+        PotentialEmployer,
         on_delete=models.CASCADE,
         related_name='general_enquiries',
         null=True
@@ -201,8 +201,8 @@ class AgencyEnquiry(models.Model):
     )
     
 class MaidEnquiry(models.Model):
-    employer = models.ForeignKey(
-        Employer,
+    potential_employer = models.ForeignKey(
+        PotentialEmployer,
         on_delete=models.CASCADE,
         related_name='maid_enquiries'
     )

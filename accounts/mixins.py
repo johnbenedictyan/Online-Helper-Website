@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from onlinemaid.mixins import GroupRequiredMixin
 
 # Imports from within the app
-from .models import Employer
+from .models import PotentialEmployer
 
 # Utiliy Classes and Functions
 
@@ -15,7 +15,7 @@ from .models import Employer
 
 class VerifiedEmployerMixin:
     def check_employer(self):
-        return Employer.objects.get(
+        return PotentialEmployer.objects.get(
             pk = self.request.user.pk
         )
 

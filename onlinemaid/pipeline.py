@@ -1,14 +1,14 @@
 from django.contrib.auth import get_user_model
-from accounts.models import Employer
+from accounts.models import PotentialEmployer
 
 def create_employer(backend, user, response, *args, **kwargs):
     """
     Pipeline for social-django to create Employer object for user
     who registers with Google/Facebook
     """
-    employer = Employer.objects.filter(user=user).first()
+    employer = PotentialEmployer.objects.filter(user=user).first()
     if employer is None:
-        employer = Employer(user=user)
+        employer = PotentialEmployer(user=user)
 
     if backend.name == "facebook":  
         first_name = response.get('first_name')

@@ -14,16 +14,16 @@ from .views import SignInView, AgencySignInView
 from .views import SignOutView
 
 ## Detail Views
-from .views import EmployerDetail
+from .views import PotentialEmployerDetail
 
 ## Create Views
-from .views import EmployerCreate
+from .views import PotentialEmployerCreate
 
 ## Update Views
-from .views import EmployerUpdate
+from .views import PotentialEmployerUpdate
 
 ## Delete Views
-from .views import EmployerDelete
+from .views import PotentialEmployerDelete
 
 # Start of Urls
 
@@ -33,8 +33,8 @@ urlpatterns = [
         include([
             path(
                 '',
-                EmployerCreate.as_view(),
-                name='employer_create'
+                PotentialEmployerCreate.as_view(),
+                name='potential_employer_create'
             )
         ])
     ),
@@ -43,8 +43,8 @@ urlpatterns = [
         include([
             path(
                 '',
-                EmployerDelete.as_view(),
-                name='employer_delete'
+                PotentialEmployerDelete.as_view(),
+                name='potential_employer_delete'
             )
         ])
     ),
@@ -53,15 +53,15 @@ urlpatterns = [
         include([
             path(
                 '',
-                EmployerUpdate.as_view(),
-                name='employer_update'
+                PotentialEmployerUpdate.as_view(),
+                name='potential_employer_update'
             )
         ])
     ),
     path(
         'profile/',
-        EmployerDetail.as_view(),
-        name='employer_detail'
+        PotentialEmployerDetail.as_view(),
+        name='potential_employer_detail'
     ),
     path(
         'sign-in/',
