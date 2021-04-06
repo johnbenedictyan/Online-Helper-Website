@@ -36,12 +36,10 @@
                     <th scope="row">Is spouse required?</th>
                     <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_spouse_required_display }}</a></td>
                 </tr>
-                {% comment %}
                 <tr>
-                    <th scope="row">Is sponsor required?</th>
-                    <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_sponsor_required_display }}</a></td>
+                    <th scope="row">Application scheme</th>
+                    <td><a href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.get_application_scheme_display }}</a></td>
                 </tr>
-                {% endcomment %}
                 <tr>
                     <th scope="row" colspan="2"></th>
                 </tr>
