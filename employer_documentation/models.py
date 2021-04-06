@@ -632,7 +632,7 @@ class EmployerDoc(models.Model):
             _('Yes, clean window exterior'),
             _('No, not required'),
         ),
-        default=True,
+        default=False,
         help_text=_('If yes, must complete field (i).'),
     )
     window_exterior_location = models.CharField(
