@@ -321,10 +321,10 @@ class EmployerDocForm(forms.ModelForm):
                     'application_scheme',
                     css_class='form-group col-md-6'
                 ),
-                Column(
-                    'spouse_required',
-                    css_class='form-group col-md-6'
-                ),
+                # Column(
+                #     'spouse_required',
+                #     css_class='form-group col-md-6'
+                # ),
                 css_class='form-row'
             ),
             # Service Fee Schedule - Form A
