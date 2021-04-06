@@ -29,6 +29,7 @@ from .constants import (
     GenderChoices,
     ResidentialStatusChoices,
     MaritalStatusChoices,
+    SpouseResidentialStatusChoices,
 )
 
 # Utiliy Classes and Functions
@@ -1280,9 +1281,9 @@ class EmployerDocSponsor(models.Model):
     )
     sponsor_1_residential_status_spouse = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
-        max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        max_length=5,
+        choices=SpouseResidentialStatusChoices.choices,
+        default=SpouseResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1471,9 +1472,9 @@ class EmployerDocSponsor(models.Model):
     )
     sponsor_2_residential_status_spouse = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
-        max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        max_length=5,
+        choices=SpouseResidentialStatusChoices.choices,
+        default=SpouseResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1731,9 +1732,9 @@ class EmployerDocJointApplicant(models.Model):
     )
     joint_applicant_residential_status_spouse = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
-        max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        max_length=5,
+        choices=SpouseResidentialStatusChoices.choices,
+        default=SpouseResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
