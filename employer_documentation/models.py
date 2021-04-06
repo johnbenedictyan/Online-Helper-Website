@@ -196,7 +196,7 @@ class EmployerDoc(models.Model):
         (24, _("24 months")),
     ]
     SCHEME_CHOICES = [
-        ('STAND', _("Standard")),
+        ('STAND', _("Employer / Employer & Spouse")),
         ('JOINT', _("Joint Income")),
         ('SPONS', _("Sponsorship")),
     ]
@@ -253,15 +253,11 @@ class EmployerDoc(models.Model):
             _('No, spouse not required'),
         ),
     )
-    sponsor_required = models.BooleanField(
-        verbose_name=_("Is sponsor requried?"),
-        choices=TrueFalseChoices(
-            _('Yes, sponsor required'),
-            _('No, sponsor not required'),
-        ),
-        default=False,
-        # blank=True,
-        # null=True,
+    application_scheme = models.CharField(
+        verbose_name=_("Application scheme"),
+        max_length=5,
+        choices=SCHEME_CHOICES,
+        default=SCHEME_CHOICES[0][0],
     )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
