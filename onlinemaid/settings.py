@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DJANGO_DEBUG', '0'))
+DEBUG = int(os.environ.get('DJANGO_DEBUG', '0')) == 1
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 ADMIN_IP_WHITELIST = os.environ.get('ADMIN_IP_WHITELIST', '127.0.0.1').split(',')
@@ -313,3 +313,12 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 RECAPTCHA_REQUIRED_SCORE = os.environ.get('RECAPTCHA_REQUIRED_SCORE')
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+# Custom Django Pages
+handler403 = 'website.views.Error403View'
+handler404 = 'website.views.Error404View'
+handler500 = 'website.views.Error500View'
+
+# Django Security
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False

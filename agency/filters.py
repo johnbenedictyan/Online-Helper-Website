@@ -1,5 +1,4 @@
 # Imports from django
-from django import forms
 from django.db.models import Q
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _

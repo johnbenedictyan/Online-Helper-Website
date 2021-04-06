@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 # Imports from other apps
 from onlinemaid.mixins import (
-    AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
+    LoginRequiredMixin
 )
 from agency.models import Agency
 from agency.mixins import AgencyOwnerRequiredMixin

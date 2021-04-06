@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block pdf_content %}
+{% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}
 <div>
     <span><img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"></span>
     <h3 style="margin: 0;">Work Pass Division</h3>
@@ -19,6 +20,7 @@
     <p>mom_wpd@mom.gov.sg</p>
 </div>
 <br>
+{% endif %}
 <div class="text-align-center">
     <h1>Annex A</h1>
     {% if url_name == 'pdf_agency_income_tax_declaration' or url_name == 'pdf_token_employer_income_tax_declaration' %}

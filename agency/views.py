@@ -1,19 +1,15 @@
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
 import stripe
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
-from payment.models import Customer
 
 # Imports from local app
 from .filters import AgencyFilter
@@ -31,10 +27,8 @@ from .models import (
 
 from .mixins import (
     OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin, 
-    AgencyAdministratorRequiredMixin, AgencyManagerRequiredMixin,
-    AgencyAdminTeamRequiredMixin, AgencySalesTeamRequiredMixin,
-    AgencyLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin,
-    SpecificAgencyEmployeeLoginRequiredMixin, GetAuthorityMixin
+    SpecificAgencyOwnerRequiredMixin, SpecificAgencyEmployeeLoginRequiredMixin,
+    GetAuthorityMixin
 )
 
 # Start of Views

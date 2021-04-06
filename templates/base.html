@@ -134,13 +134,13 @@
                             </a>
                         </li>
                         {% endif %}
-                        <li class="nav-item dropdown custom-nav-link">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="userActionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{user.email}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
                                 {% if authority == 'Potential Employers' %}
-                                <a class="dropdown-item" href="{% url 'employer_detail' %}">Profile</a>
+                                <a class="dropdown-item" href="{% url 'potential_employer_detail' %}">Profile</a>
                                 <a class="dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
                                 <a class="dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
                                 {% elif request.user.is_superuser %}
@@ -158,7 +158,7 @@
                                 Sign Up
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signUpDropdown">
-                                <a class="dropdown-item" href="{% url 'employer_create' %}">Users</a>
+                                <a class="dropdown-item" href="{% url 'potential_employer_create' %}">Users</a>
                                 <a class="dropdown-item" href="{% url 'agency_sign_up' %}">Agencies</a>
                             </div>
                         </li>

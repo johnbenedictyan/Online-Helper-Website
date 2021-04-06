@@ -2,12 +2,13 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 
 # Imports from project-wide files
 
 # Imports from foreign installed apps
-from accounts.models import Employer
+from accounts.models import PotentialEmployer
 from accounts.mixins import PotentialEmployerRequiredMixin
 from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
@@ -15,8 +16,8 @@ from maid.models import Maid
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import GeneralEnquiryForm, AgencyEnquiryForm, MaidEnquiryForm
-from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
+from .forms import GeneralEnquiryForm, AgencyEnquiryForm
+from .models import GeneralEnquiry, AgencyEnquiry
 
 # Start of Views
 
@@ -32,7 +33,7 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         if self.request.user:
-            form.instance.employer = Employer.objects.get(
+            form.instance.potential_employer = PotentialEmployer.objects.get(
                 user = self.request.user
             )
         return super().form_valid(form)
@@ -55,7 +56,6 @@ class AgencyEnquiryView(SuccessMessageMixin, CreateView):
             )
         return super().form_valid(form)
 
-
 class MaidEnquiryView(SuccessMessageMixin, CreateView):
     context_object_name = 'general_enquiry'
     form_class = GeneralEnquiryForm
@@ -67,7 +67,7 @@ class MaidEnquiryView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         if self.request.user:
-            form.instance.employer = Employer.objects.get(
+            form.instance.potential_employer = PotentialEmployer.objects.get(
                 user = self.request.user
             )
             form.instance.maid = Maid.objects.get(
@@ -99,7 +99,7 @@ class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
                 'This enquiry does not exist'
             )
         else:
-            if selected_enquiry.employer == Employer.objects.get(
+            if selected_enquiry.potential_employer == PotentialEmployer.objects.get(
                 user = self.request.user
             ):
                 selected_enquiry.active = False
@@ -157,3 +157,8 @@ class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
 # Update Views
 
 # Delete Views
+
+# Template Views
+class SuccessfulEnquiryView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'successful-enquiry.html'

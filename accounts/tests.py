@@ -1,9 +1,6 @@
 # Imports from the system
-import random
-import string
 
 # Imports from django
-from django.contrib import auth
 from django.contrib.auth.models import Group, Permission
 from django.test import TestCase
 from django.urls import reverse_lazy
@@ -14,9 +11,8 @@ from onlinemaid.helper_functions import (
 )
 
 # Imports from local app
-from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
+from .forms import EmployerCreationForm
 from .models import Employer
-from .mixins import VerifiedEmployerMixin
 
 # Start of Tests
 

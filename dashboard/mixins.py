@@ -3,7 +3,7 @@
 # Imports from django
 
 # Imports from other apps
-from agency.models import Agency, AgencyEmployee
+from agency.models import Agency
 
 # Imports from within the app
 

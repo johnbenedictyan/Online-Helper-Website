@@ -2,7 +2,6 @@
 
 # Imports from django
 from django.db import models
-from django.db.models.enums import IntegerChoices
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project

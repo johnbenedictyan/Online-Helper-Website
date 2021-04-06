@@ -318,13 +318,13 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'spouse_required',
+                    'application_scheme',
                     css_class='form-group col-md-6'
                 ),
-                Column(
-                    'sponsor_required',
-                    css_class='form-group col-md-6'
-                ),
+                # Column(
+                #     'spouse_required',
+                #     css_class='form-group col-md-6'
+                # ),
                 css_class='form-row'
             ),
             # Service Fee Schedule - Form A
@@ -1202,7 +1202,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 Column(
                     PrependedText(
-                        'single_sponsor_monthly_income', '$',
+                        'single_monthly_income', '$',
                         min='0', max='9999999',
                     ),
                     css_class='form-group col-md-6',
@@ -1210,7 +1210,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
                 ),
                 Column(
                     PrependedText(
-                        'combined_sponsor_monthly_income', '$',
+                        'combined_monthly_income', '$',
                         min='0', max='9999999',
                     ),
                     css_class='form-group col-md-6 sponsor_2',

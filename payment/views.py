@@ -1,22 +1,18 @@
 # Imports from modules
-import json
-from datetime import date, datetime
+from datetime import datetime
 
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models.query_utils import subclasses
-from django.http.response import (
-    HttpResponse, HttpResponseRedirect, JsonResponse
-)
-from django.shortcuts import get_list_or_404, redirect
+from django.http.response import HttpResponse, JsonResponse
+from django.shortcuts import get_list_or_404
 from django.urls.base import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, FormView
+from django.views.generic.edit import CreateView, DeleteView
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
@@ -25,7 +21,6 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 import stripe
-from stripe.api_resources import line_item, payment_method, subscription
 from agency.mixins import (
     AgencyOwnerRequiredMixin, GetAuthorityMixin, OnlineMaidStaffRequiredMixin
 )

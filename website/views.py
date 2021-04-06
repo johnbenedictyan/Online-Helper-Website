@@ -1,6 +1,5 @@
 # Imports from django
 from django.contrib import messages
-from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
@@ -11,7 +10,6 @@ from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
 from enquiry.models import GeneralEnquiry
 from payment.models import SubscriptionProduct
-from maid.models import Maid
 from maid.filters import MiniMaidFilter
 
 # Imports from local app
@@ -76,6 +74,18 @@ class AdminPanelEnquiryListView(OnlineMaidStaffRequiredMixin, ListView):
     paginate_by = 50
     context_object_name = 'enquiries'
 
+class Error403View(TemplateView):
+    http_method_names = ['get']
+    template_name = '403.html'
+    
+class Error404View(TemplateView):
+    http_method_names = ['get']
+    template_name = '404.html'
+    
+class Error500View(TemplateView):
+    http_method_names = ['get']
+    template_name = '500.html'
+    
 class RobotsTxt(TemplateView):
     http_method_names = ['get']
     template_name = 'robots.txt'

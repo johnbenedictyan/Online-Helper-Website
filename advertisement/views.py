@@ -12,7 +12,7 @@ from agency.models import Agency
 # Imports from local app
 from .forms import AdvertisementCreationForm
 
-from .models import Advertisement, AdvertisementLocation
+from .models import Advertisement
 
 # Start of Views
 

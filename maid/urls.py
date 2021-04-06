@@ -18,9 +18,7 @@ from .views import MaidList
 from .views import MaidDetail, PdfMaidBiodataView
 
 ## Create Views
-from .views import (
-    MaidCreate, MaidEmploymentHistoryFormSetView
-)
+from .views import MaidEmploymentHistoryFormSetView
 
 ## Update Views
 from .views import (

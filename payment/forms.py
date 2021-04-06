@@ -1,9 +1,6 @@
 # Imports from django
 from django import forms
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
