@@ -116,6 +116,7 @@ style.css
 style.css.*
 **/bootstrap/*
 !**/bootstrap/_variables.scss
+!**/bootstrap/_jumbotron.scss
 
 # Ignore Django Migrations in Development if you are working on team
 

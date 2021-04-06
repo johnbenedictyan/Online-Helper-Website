@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 # from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
+from maid.constants import MaidReligionChoices
 from maid.models import MaidResponsibility, MaidLanguage
 
 # Imports from local apps
@@ -29,6 +30,23 @@ class GeneralEnquiryForm(forms.ModelForm):
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple()
     )
+    
+    religion = forms.ChoiceField(
+        label=_('Religion'),
+        choices=MaidReligionChoices.choices,
+        initial=MaidReligionChoices.NONE,
+        required=True
+    )
+    
+    consent = forms.BooleanField(
+        label="""
+            I acknowledge that I have read and understood the Personal Data 
+            Protection Notice. By submitting this enquiry form, I consent to 
+            the collection, use and disclosure of my personal data by 
+            Online Maid Pte Ltd to employment agencies that are listed in the 
+            platform
+        """
+    )
 
     # captcha = ReCaptchaField(
     #     widget=ReCaptchaV3
@@ -43,7 +61,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     'placeholder': 'Name'
                 }
             ),
-            'contact_number': forms.TextInput(
+            'mobile_number': forms.TextInput(
                 attrs={
                     'placeholder': 'Mobile Number'
                 }
@@ -86,7 +104,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'contact_number',
+                    'mobile_number',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -98,24 +116,6 @@ class GeneralEnquiryForm(forms.ModelForm):
                 ),
                 Column(
                     'mode_of_contact',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'maid_nationality',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'maid_type',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'maid_age_group',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -138,6 +138,36 @@ class GeneralEnquiryForm(forms.ModelForm):
                 ),
                 Column(
                     'no_of_babies',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5>Employer Requirments</h5>'
+                    )
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'maid_nationality',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'maid_type',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'maid_age_group',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'religion',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -175,6 +205,13 @@ class GeneralEnquiryForm(forms.ModelForm):
                         'captcha',
                         type='hidden'
                     ),
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'consent',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
@@ -227,7 +264,7 @@ class AgencyEnquiryForm(forms.ModelForm):
                     css_class='form-group'
                 ),
                 Column(
-                    'contact_number',
+                    'mobile_number',
                     css_class='form-group'
                 ),
                 Column(
