@@ -24,6 +24,7 @@ from maid.constants import FullNationsChoices
 
 # Same app
 from .constants import (
+    IncomeChoices,
     RelationshipChoices,
     GenderChoices,
     ResidentialStatusChoices,
@@ -229,22 +230,7 @@ class EmployerDoc(models.Model):
     )
     monthly_combined_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly combined income of employer and spouse"),
-        choices=[
-            (0, _("Below $2,000")),
-            (1, _("$2,000 to $2,499")),
-            (2, _("$2,500 to $2,999")),
-            (3, _("$3,000 to $3,499")),
-            (4, _("$3,500 to $3,999")),
-            (5, _("$4,000 to $4,999")),
-            (6, _("$5,000 to $5,999")),
-            (7, _("$6,000 to $7,999")),
-            (8, _("$8,000 to $9,999")),
-            (9, _("$10,000 to $12,499")),
-            (10, _("$12,500 to $14,999")),
-            (11, _("$15,000 to $19,999")),
-            (12, _("$20,000 to $24,999")),
-            (13, _("$25,000 and above")),
-        ]
+        choices=IncomeChoices.choices,
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
