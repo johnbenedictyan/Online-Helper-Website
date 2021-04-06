@@ -17,7 +17,6 @@ try:
 except ImportError:
     from django.utils.encoding import force_text as force_string
 from django.utils.timezone import now
-from django.views.generic import ListView
 
 class SuccessMessageMixin:
     def get_success_url(self):

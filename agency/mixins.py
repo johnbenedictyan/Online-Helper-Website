@@ -6,17 +6,16 @@ from django.urls import reverse_lazy
 
 # Imports from other apps
 from onlinemaid.constants import (
-    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
+    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, P_EMPLOYERS
 )
 from onlinemaid.mixins import (
-    AccessMixin, LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
+    LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
 from maid.models import Maid
 
 # Imports from within the app
-from .constants import AgencyEmployeeRoleChoices
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyPlan, AgencyOwner
+    AgencyEmployee, AgencyBranch, AgencyPlan
 )
 
 # Utiliy Classes and Functions

@@ -12,11 +12,7 @@ from .constants import (
     SubscriptionStatusChoices, SubscriptionLimitMap
 )
 
-from .models import (
-    Customer, SubscriptionProduct, SubscriptionProductImage, 
-    SubscriptionProductPrice, Subscription
-)
-
+from .models import Subscription
 
 
 # Start of Signals

@@ -16,8 +16,8 @@ from maid.models import Maid
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import GeneralEnquiryForm, AgencyEnquiryForm, MaidEnquiryForm
-from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
+from .forms import GeneralEnquiryForm, AgencyEnquiryForm
+from .models import GeneralEnquiry, AgencyEnquiry
 
 # Start of Views
 
