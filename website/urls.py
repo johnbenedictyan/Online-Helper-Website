@@ -9,7 +9,7 @@ from django.urls import include, path
 
 ## Template Views 
 from .views import (
-    HomeView, AboutUsView, ContactUsView, TermsOfSerivceView, RobotsTxt,
+    HomeView, AboutUsView, ContactUsView, TermsAndConditionsView, RobotsTxt,
     HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
     AdminPanelEnquiryListView, Error403View, Error404View, Error500View
 )
@@ -43,9 +43,9 @@ urlpatterns = [
         name='contact_us'
     ),
     path(
-        'terms-of-service/',
-        TermsOfSerivceView.as_view(),
-        name='terms_of_service'
+        'terms-and-conditions/',
+        TermsAndConditionsView.as_view(),
+        name='terms_and_conditions'
     ),
     path(
         'privacy-policy/',

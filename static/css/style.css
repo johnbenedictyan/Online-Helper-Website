@@ -155,6 +155,10 @@ button.mini-faq-button i {
   font-size: 0.75rem;
 }
 
+.text-larger-slight {
+  font-size: 1.05rem;
+}
+
 .maid-card {
   cursor: pointer;
 }
@@ -280,29 +284,34 @@ button.mini-faq-button i {
 
 @media screen and (min-width: 768px) {
   .title-banner {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.875rem;
   }
 }
 
 @media screen and (min-width: 992px) {
   .title-banner {
-    margin-bottom: 5rem;
+    margin-bottom: 3.75rem;
   }
 }
 
 @media screen and (min-width: 1400px) {
   .title-banner {
-    margin-bottom: 6.5rem;
+    margin-bottom: 4.875rem;
   }
 }
 
 .custom-nav-link {
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
+  color: #3d5d9b;
 }
 
 .fill {
   height: 80vh;
+}
+
+hr.text-light {
+  border-top: 1px solid rgba(248, 249, 250, 0.5) !important;
 }
 
 .slick-caorusel > .slick-list > .slick-track {

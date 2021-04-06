@@ -26,6 +26,7 @@ $mercury: #d7d4d3 !default;
 $BASE_FONT_SIZE: 1rem !default;
 $FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
 $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
+$FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
 .bg {
     &-primary1 {
@@ -214,6 +215,10 @@ $black: #000 !default;
     font-size: $FONT_SIZE_SMALLER;
 }
 
+.text-larger-slight {
+    font-size: $FONT_SIZE_LARGER_SLIGHT;
+}
+
 .maid{
     &-card{
         cursor: pointer;
@@ -326,9 +331,9 @@ $FONT_SIZE_LARGER: 1.1rem;
     }
 }
 
-$TITLE_BANNER_MARGIN_BOTTOM_MD : 2.5rem;
-$TITLE_BANNER_MARGIN_BOTTOM_XL : 5rem;
-$TITLE_BANNER_MARGIN_BOTTOM_XXL : 6.5rem;
+$TITLE_BANNER_MARGIN_BOTTOM_MD : 1.875rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XL : 3.75rem;
+$TITLE_BANNER_MARGIN_BOTTOM_XXL : 4.875rem;
 .title-banner {
     @media screen and (min-width:768px) {
         margin-bottom: $TITLE_BANNER_MARGIN_BOTTOM_MD;
@@ -343,13 +348,19 @@ $TITLE_BANNER_MARGIN_BOTTOM_XXL : 6.5rem;
     }
 }
 
+$CUSTOM_NAV_LINK_COLOR: #3d5d9b;
 .custom-nav-link {
     font-weight: 500;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
+    color: $CUSTOM_NAV_LINK_COLOR;
 }
 
 .fill {
     height: 80vh;
+}
+
+hr.text-light{
+    border-top: 1px solid rgba($color: #f8f9fa, $alpha: 0.5) !important;
 }
 
 // Slick Carousel
