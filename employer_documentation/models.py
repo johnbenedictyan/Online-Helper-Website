@@ -24,10 +24,12 @@ from maid.constants import FullNationsChoices
 
 # Same app
 from .constants import (
+    IncomeChoices,
     RelationshipChoices,
     GenderChoices,
     ResidentialStatusChoices,
     MaritalStatusChoices,
+    SpouseResidentialStatusChoices,
 )
 
 # Utiliy Classes and Functions
@@ -196,7 +198,8 @@ class EmployerDoc(models.Model):
         (24, _("24 months")),
     ]
     SCHEME_CHOICES = [
-        ('STAND', _("Standard")),
+        ('SINGL', _("Employer Only")),
+        ('SPOUS', _("Employer and Spouse")),
         ('JOINT', _("Joint Income")),
         ('SPONS', _("Sponsorship")),
     ]
@@ -228,40 +231,23 @@ class EmployerDoc(models.Model):
     )
     monthly_combined_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly combined income of employer and spouse"),
-        choices=[
-            (0, _("Below $2,000")),
-            (1, _("$2,000 to $2,499")),
-            (2, _("$2,500 to $2,999")),
-            (3, _("$3,000 to $3,499")),
-            (4, _("$3,500 to $3,999")),
-            (5, _("$4,000 to $4,999")),
-            (6, _("$5,000 to $5,999")),
-            (7, _("$6,000 to $7,999")),
-            (8, _("$8,000 to $9,999")),
-            (9, _("$10,000 to $12,499")),
-            (10, _("$12,500 to $14,999")),
-            (11, _("$15,000 to $19,999")),
-            (12, _("$20,000 to $24,999")),
-            (13, _("$25,000 and above")),
-        ]
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
-        # editable=False,
+        editable=False,
         choices=TrueFalseChoices(
             _('Yes, spouse required'),
             _('No, spouse not required'),
         ),
-    )
-    sponsor_required = models.BooleanField(
-        verbose_name=_("Is sponsor requried?"),
-        choices=TrueFalseChoices(
-            _('Yes, sponsor required'),
-            _('No, sponsor not required'),
-        ),
         default=False,
-        # blank=True,
-        # null=True,
+    )
+    application_scheme = models.CharField(
+        verbose_name=_("Application scheme"),
+        max_length=5,
+        choices=SCHEME_CHOICES,
+        default=SCHEME_CHOICES[0][0],
     )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
@@ -635,7 +621,7 @@ class EmployerDoc(models.Model):
             _('Yes, clean window exterior'),
             _('No, not required'),
         ),
-        default=True,
+        default=False,
         help_text=_('If yes, must complete field (i).'),
     )
     window_exterior_location = models.CharField(
@@ -689,15 +675,16 @@ class EmployerDoc(models.Model):
             ("common_corridor_windows_only","FDW to clean only window exterior along common corridor"),
             ("require_window_exterior_cleaning","Ensure grilles are locked and only cleaned under adult supervision"),
         ],
-        default='require_window_exterior_cleaning',
+        default='not_required_to_clean_window_exterior',
     )
 
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         self.version += 1
 
-        # Spouse is required if monthly_combined_income < S$3,000 per month
-        # self.spouse_required = True if self.monthly_combined_income<3 else False
+        # Spouse is required if application_scheme is 'SPOUS'
+        self.spouse_required = True if self.application_scheme=='SPOUS' else False
+
         super().save(*args, **kwargs)
 
     def calc_admin_cost(self):
@@ -1083,25 +1070,17 @@ class EmployerDocSponsor(models.Model):
         ],
         default=1,
     )
-    single_sponsor_monthly_income = models.DecimalField(
+    single_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Sponsor's monthly income"),
-        max_digits=9,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(9_999_999),
-        ],
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
-    combined_sponsor_monthly_income = models.DecimalField(
+    combined_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Sponsors' combined monthly income"),
-        max_digits=9,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(9_999_999),
-        ],
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
@@ -1302,9 +1281,9 @@ class EmployerDocSponsor(models.Model):
     )
     sponsor_1_residential_status_spouse = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
-        max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        max_length=5,
+        choices=SpouseResidentialStatusChoices.choices,
+        default=SpouseResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1493,9 +1472,9 @@ class EmployerDocSponsor(models.Model):
     )
     sponsor_2_residential_status_spouse = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
-        max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        max_length=5,
+        choices=SpouseResidentialStatusChoices.choices,
+        default=SpouseResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
@@ -1584,14 +1563,10 @@ class EmployerDocJointApplicant(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_jointapplicant_ed'
     )
-    combined_monthly_income = models.DecimalField(
+    combined_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Combined monthly income of Employer and Joint applicant"),
-        max_digits=9,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(9_999_999),
-        ],
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
     )
     worked_in_sg = models.BooleanField(
         verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
@@ -1757,9 +1732,9 @@ class EmployerDocJointApplicant(models.Model):
     )
     joint_applicant_residential_status_spouse = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
-        max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        max_length=5,
+        choices=SpouseResidentialStatusChoices.choices,
+        default=SpouseResidentialStatusChoices.SC,
         blank=True,
         null=True,
     )
