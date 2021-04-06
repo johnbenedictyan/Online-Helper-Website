@@ -252,6 +252,7 @@ class EmployerDoc(models.Model):
             _('Yes, spouse required'),
             _('No, spouse not required'),
         ),
+        default=False,
     )
     application_scheme = models.CharField(
         verbose_name=_("Application scheme"),
