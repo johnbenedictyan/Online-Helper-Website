@@ -231,6 +231,7 @@ class EmployerDoc(models.Model):
     monthly_combined_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly combined income of employer and spouse"),
         choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
@@ -1068,25 +1069,17 @@ class EmployerDocSponsor(models.Model):
         ],
         default=1,
     )
-    single_sponsor_monthly_income = models.DecimalField(
+    single_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Sponsor's monthly income"),
-        max_digits=9,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(9_999_999),
-        ],
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
-    combined_sponsor_monthly_income = models.DecimalField(
+    combined_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Sponsors' combined monthly income"),
-        max_digits=9,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(9_999_999),
-        ],
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
@@ -1569,14 +1562,10 @@ class EmployerDocJointApplicant(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_jointapplicant_ed'
     )
-    combined_monthly_income = models.DecimalField(
+    combined_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Combined monthly income of Employer and Joint applicant"),
-        max_digits=9,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(9_999_999),
-        ],
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
     )
     worked_in_sg = models.BooleanField(
         verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
