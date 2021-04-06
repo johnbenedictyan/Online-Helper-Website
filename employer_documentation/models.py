@@ -686,7 +686,7 @@ class EmployerDoc(models.Model):
             ("common_corridor_windows_only","FDW to clean only window exterior along common corridor"),
             ("require_window_exterior_cleaning","Ensure grilles are locked and only cleaned under adult supervision"),
         ],
-        default='require_window_exterior_cleaning',
+        default='not_required_to_clean_window_exterior',
     )
 
     def save(self, *args, **kwargs):
