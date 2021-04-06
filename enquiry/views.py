@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView
 # Imports from project-wide files
 
 # Imports from foreign installed apps
-from accounts.models import Employer
+from accounts.models import PotentialEmployer
 from accounts.mixins import PotentialEmployerRequiredMixin
 from agency.mixins import OnlineMaidStaffRequiredMixin
 from agency.models import Agency
@@ -33,7 +33,7 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         if self.request.user:
-            form.instance.employer = Employer.objects.get(
+            form.instance.potential_employer = PotentialEmployer.objects.get(
                 user = self.request.user
             )
         return super().form_valid(form)
@@ -67,7 +67,7 @@ class MaidEnquiryView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         if self.request.user:
-            form.instance.employer = Employer.objects.get(
+            form.instance.potential_employer = PotentialEmployer.objects.get(
                 user = self.request.user
             )
             form.instance.maid = Maid.objects.get(
@@ -99,7 +99,7 @@ class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
                 'This enquiry does not exist'
             )
         else:
-            if selected_enquiry.employer == Employer.objects.get(
+            if selected_enquiry.potential_employer == PotentialEmployer.objects.get(
                 user = self.request.user
             ):
                 selected_enquiry.active = False

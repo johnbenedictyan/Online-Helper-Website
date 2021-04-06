@@ -19,7 +19,7 @@ from onlinemaid.constants import (
 
 # Imports from local apps
 from .managers import CustomUserManager
-from .models import Employer, User
+from .models import PotentialEmployer, User
 
 # Start of Forms
 
@@ -253,7 +253,7 @@ class EmployerCreationForm(forms.ModelForm):
     }
     
     class Meta:
-        model = Employer
+        model = PotentialEmployer
         exclude = ['user']
 
     def __init__(self, *args, **kwargs):
