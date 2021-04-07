@@ -311,33 +311,35 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'monthly_combined_income',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
                     'application_scheme',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    id='application-scheme',
                 ),
-                # Column(
-                #     'spouse_required',
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'spouse_name',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-md-6 employer-spouse',
                     hidden='true',
                 ),
                 Column(
                     'spouse_nric',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-md-6 employer-spouse',
                     hidden='true',
                 ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'monthly_combined_income',
+                    css_class='form-group col-md-6 employer-spouse',
+                    hidden='true',
+                ),
+                # Column(
+                #     'spouse_required',
+                #     css_class='form-group col-md-6'
+                # ),
                 css_class='form-row'
             ),
             # Service Fee Schedule - Form A
