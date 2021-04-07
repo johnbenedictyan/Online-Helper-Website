@@ -236,6 +236,8 @@ class EmployerDoc(models.Model):
         verbose_name=_("Monthly combined income of employer and spouse"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
+        blank=True,
+        null=True,
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
