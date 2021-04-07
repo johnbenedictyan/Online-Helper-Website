@@ -229,6 +229,9 @@ class EmployerDoc(models.Model):
         verbose_name=_("Foreign Domestic Worker (FDW)"),
         on_delete=models.RESTRICT
     )
+    agreement_date = models.DateField(
+        verbose_name=_('Agreement Date for Signed Documents'),
+    )
     monthly_combined_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly combined income of employer and spouse"),
         choices=IncomeChoices.choices,
@@ -260,9 +263,6 @@ class EmployerDoc(models.Model):
         max_length=20,
         blank=True,
         null=True
-    )
-    agreement_date = models.DateField(
-        verbose_name=_('Agreement Date for Signed Documents'),
     )
 
     # Service Fee Schedule
