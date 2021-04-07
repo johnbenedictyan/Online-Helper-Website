@@ -256,13 +256,15 @@ class EmployerDoc(models.Model):
         verbose_name=_('Spouse Name'),
         max_length=40,
         blank=True,
-        null=True
+        null=True,
+        default=None,
     )
     spouse_nric = models.CharField(
         verbose_name=_('Spouse NRIC/FIN'),
         max_length=20,
         blank=True,
-        null=True
+        null=True,
+        default=None,
     )
 
     # Service Fee Schedule
