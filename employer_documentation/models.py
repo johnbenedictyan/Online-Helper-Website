@@ -249,6 +249,18 @@ class EmployerDoc(models.Model):
         choices=SCHEME_CHOICES,
         default=SCHEME_CHOICES[0][0],
     )
+    spouse_name = models.CharField(
+        verbose_name=_('Spouse Name'),
+        max_length=40,
+        blank=True,
+        null=True
+    )
+    spouse_nric = models.CharField(
+        verbose_name=_('Spouse NRIC/FIN'),
+        max_length=20,
+        blank=True,
+        null=True
+    )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
     )
