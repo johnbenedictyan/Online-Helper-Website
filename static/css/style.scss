@@ -81,27 +81,14 @@ $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
     }
 }
 
-.faq-item {
-    &.active {
-        color: $IRIS;
-        background-color: #fff;
-        border-bottom-color: $IRIS;
-        border-width: 0 0 1px 0;
-    }
-
-    +.faq-item {
-        &.active {
-            border-top-color: #dee2e6;
-        }
+.list-group-item{
+    &.faq-item{
+        border-radius: inherit !important;
     }
 }
 
-.list-group-flush {
-    >.faq-item {
-        &:last-child {
-            border-bottom-width: 1px;
-        }
-    }
+.faq-question{
+    font-weight: 500;
 }
 
 ol {

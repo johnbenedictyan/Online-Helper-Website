@@ -50,19 +50,12 @@
   background-color: transparent;
 }
 
-.faq-item.active {
-  color: #3D52D5;
-  background-color: #fff;
-  border-bottom-color: #3D52D5;
-  border-width: 0 0 1px 0;
+.list-group-item.faq-item {
+  border-radius: inherit !important;
 }
 
-.faq-item + .faq-item.active {
-  border-top-color: #dee2e6;
-}
-
-.list-group-flush > .faq-item:last-child {
-  border-bottom-width: 1px;
+.faq-question {
+  font-weight: 500;
 }
 
 ol.breadcrumb {
