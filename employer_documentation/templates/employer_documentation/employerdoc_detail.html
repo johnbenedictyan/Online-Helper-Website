@@ -187,13 +187,13 @@
                         {% if object.application_scheme == 'SPONS' %}
                         <tr>
                             <th scope="row">Sponsor(s) Details</th>
-                            <td>{% if object.rn_sponsor_ed.count %}<a href="{% url 'pdf_agency_sponsor_details' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_sponsor_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'employerdoc_sponsor_create_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
+                            <td>{% if object.rn_sponsor_ed %}<a href="{% url 'pdf_agency_sponsor_details' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_sponsor_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'employerdoc_sponsor_create_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
                         </tr>
                         {% endif %}
                         {% if object.application_scheme == 'JOINT' %}
                         <tr>
                             <th scope="row">Joint Applicant Details</th>
-                            <td>{% if object.rn_jointapplicant_ed.count %}<a href="{% url 'pdf_agency_joint_applicants' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_joint_applicants_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_jointapplicant_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'employerdoc_joint_applicants_create_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
+                            <td>{% if object.rn_jointapplicant_ed %}<a href="{% url 'pdf_agency_joint_applicants' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_joint_applicants_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_jointapplicant_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'employerdoc_joint_applicants_create_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
                         </tr>
                         {% endif %}
                         <tr>
