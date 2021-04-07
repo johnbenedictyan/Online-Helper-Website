@@ -327,6 +327,19 @@ class EmployerDocForm(forms.ModelForm):
                 # ),
                 css_class='form-row'
             ),
+            Row(
+                Column(
+                    'spouse_name',
+                    css_class='form-group col-md-6',
+                    hidden='true',
+                ),
+                Column(
+                    'spouse_nric',
+                    css_class='form-group col-md-6',
+                    hidden='true',
+                ),
+                css_class='form-row'
+            ),
             # Service Fee Schedule - Form A
             HTML(
                 """
