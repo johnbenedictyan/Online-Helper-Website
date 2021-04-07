@@ -83,7 +83,9 @@ $dark: $gray-800 !default;
 $custom-dark: $custom-black !default;
 
 $theme-colors: () !default;
-$theme-colors: map-merge(("primary": $primary,
+$theme-colors: map-merge(
+    (
+        "primary": $primary,
         "secondary": $secondary,
         "success": $success,
         "info": $info,
@@ -93,7 +95,7 @@ $theme-colors: map-merge(("primary": $primary,
         "dark": $dark,
         "tertiary": $tertiary,
         "custom-dark": $custom-dark 
-        ),
+    ),
     $theme-colors);
 
 // Set a specific jump point for requesting color jumps
@@ -206,8 +208,7 @@ $grid-breakpoints: (
     sm: 576px,
     md: 768px,
     lg: 992px,
-    xl: 1200px,
-    xxl: 1400px
+    xl: 1200px
 ) !default;
 
 @include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
@@ -231,8 +232,7 @@ $container-max-widths: (
     sm: 540px,
     md: 720px,
     lg: 960px,
-    xl: 1140px,
-    xxl: 1320px,
+    xl: 1140px
 ) !default;
 
 @include _assert-ascending($container-max-widths, "$container-max-widths");
