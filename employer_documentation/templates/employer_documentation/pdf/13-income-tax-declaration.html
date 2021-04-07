@@ -242,9 +242,7 @@
     </tr>
     <tr>
         <td class="border--bottom border--right">Income Tax Notice of Assessment No:<br>
-            {% if object.application_scheme == 'JOINT' %}
-                Employer (Joint Applicant 1) NRIC
-            {% elif object.application_scheme == 'SPONS' %}
+            {% if object.application_scheme == 'SPONS' %}
                 Sponsor 1 NRIC
             {% else %}
                 {{ object.employer.get_nric_full }}
@@ -262,9 +260,7 @@
     </tr>
     <tr>
         <td class="border--bottom border--right">Signature: 
-            {% if object.application_scheme == 'JOINT' %}
-                <img class="signature__img" src="">
-            {% elif object.application_scheme == 'SPONS' %}
+            {% if object.application_scheme == 'SPONS' %}
                 <img class="signature__img" src="">
             {% else %}
                 <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
