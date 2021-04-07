@@ -67,6 +67,35 @@
 {% block js %}
     <script>
         // Employer Document Form
+        let applicationSchemeSelector = document.querySelector('#id_application_scheme');
+        if (applicationSchemeSelector) {
+            let employerSpouseElements = document.querySelectorAll('.employer-spouse');
+
+            // On load
+            if (applicationSchemeSelector.value==='SPOUS') {
+                for (let el of employerSpouseElements) {
+                    el.hidden = false;
+                }
+            } else {
+                for (let el of employerSpouseElements) {
+                    el.hidden = true;
+                }
+            }
+
+            // On change
+            applicationSchemeSelector.addEventListener('change', function() {
+                if (applicationSchemeSelector.value==='SPOUS') {
+                    for (let el of employerSpouseElements) {
+                        el.hidden = false;
+                    }
+                } else {
+                    for (let el of employerSpouseElements) {
+                        el.hidden = true;
+                    }
+                }
+            })
+        }
+
         let replacementFdwSelector = document.querySelector('#id_fdw_is_replacement');
         if (replacementFdwSelector) {
             let fdwReplacedField = document.querySelector('#div_id_fdw_replaced');
