@@ -227,23 +227,6 @@ class EmployerForm(forms.ModelForm):
         
         return ciphertext
 
-        ########################################################### Do we need to check NRIC is unique?
-        # try:
-        #     # Check if employer_nric exists in database
-        #     employer_queryset = Employer.objects.filter(
-        #         employer_nric=cleaned_field
-        #     )
-        # except Employer.DoesNotExist:
-        #     # If no entries for employer_nric, then no further checks
-        #     return cleaned_field
-        # else:
-        #     self.check_queryset(
-        #         employer_queryset,
-        #         'An employer with this NRIC/FIN already exists in your \
-        #             agency'
-        #     )
-        # return cleaned_field
-
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
@@ -328,10 +311,6 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6 employer-spouse',
                     hidden='true',
                 ),
-                # Column(
-                #     'spouse_required',
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             # Service Fee Schedule - Form A
