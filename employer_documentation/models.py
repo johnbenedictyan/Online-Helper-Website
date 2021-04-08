@@ -775,18 +775,18 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-    spouse_name = models.CharField(
-        verbose_name=_('Spouse Name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    spouse_nric = models.CharField(
-        verbose_name=_('Spouse NRIC/FIN'),
-        max_length=20,
-        blank=True,
-        null=True
-    )
+    # spouse_name = models.CharField(
+    #     verbose_name=_('Spouse Name'),
+    #     max_length=40,
+    #     blank=True,
+    #     null=True
+    # )
+    # spouse_nric = models.CharField(
+    #     verbose_name=_('Spouse NRIC/FIN'),
+    #     max_length=20,
+    #     blank=True,
+    #     null=True
+    # )
     sponsor_signature = models.TextField(
         verbose_name=_('Employer Sponsor Signature'),
         blank=True,
