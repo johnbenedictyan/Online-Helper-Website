@@ -788,17 +788,17 @@ class EmployerDocSig(models.Model):
     #     null=True
     # )
     sponsor_1_signature = models.TextField(
-        verbose_name=_('Employer Sponsor Signature'),
+        verbose_name=_('Sponsor 1 Signature'),
         blank=True,
         null=True
     )
     sponsor_2_signature = models.TextField(
-        verbose_name=_('Employer Sponsor Signature'),
+        verbose_name=_('Sponsor 2 Signature'),
         blank=True,
         null=True
     )
     joint_applicant_signature = models.TextField(
-        verbose_name=_('Employer Sponsor Signature'),
+        verbose_name=_('Joint Applicant Signature'),
         blank=True,
         null=True
     )
