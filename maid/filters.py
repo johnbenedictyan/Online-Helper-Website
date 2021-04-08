@@ -52,7 +52,7 @@ class MaidFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(
         field_name='name',
         lookup_expr='icontains',
-        label=_('Name')
+        label=_('Search by Maid Name')
     )
     languages = django_filters.ModelMultipleChoiceFilter(
         field_name='personal_details__languages',
