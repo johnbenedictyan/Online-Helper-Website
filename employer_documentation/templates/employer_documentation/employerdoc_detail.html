@@ -21,6 +21,10 @@
                     <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_email }}</a></td>
                 </tr>
                 <tr>
+                    <th scope="row">NRIC</th>
+                    <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.get_nric_partial }}</a></td>
+                </tr>
+                <tr>
                     <th scope="row">Mobile</th>
                     <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_mobile_number }}</a></td>
                 </tr>
