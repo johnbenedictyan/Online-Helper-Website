@@ -63,7 +63,7 @@ class EmployerForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_nric_full()
                 self.initial.update({'employer_nric': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'employer_nric': ''})
         ###################################################################################################### TO BE REMOVED
@@ -1131,7 +1131,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_1_nric_full()
                 self.initial.update({'sponsor_1_nric': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_1_nric': ''})
         else:
@@ -1141,7 +1141,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_2_nric_full()
                 self.initial.update({'sponsor_2_nric': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_2_nric': ''})
         else:
@@ -1151,7 +1151,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_1_nric_spouse_full()
                 self.initial.update({'sponsor_1_nric_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_1_nric_spouse': ''})
         else:
@@ -1161,7 +1161,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_1_fin_spouse_full()
                 self.initial.update({'sponsor_1_fin_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_1_fin_spouse': ''})
         else:
@@ -1171,7 +1171,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_1_passport_spouse_full()
                 self.initial.update({'sponsor_1_passport_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_1_passport_spouse': ''})
         else:
@@ -1181,7 +1181,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_2_nric_spouse_full()
                 self.initial.update({'sponsor_2_nric_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_2_nric_spouse': ''})
         else:
@@ -1191,7 +1191,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_2_fin_spouse_full()
                 self.initial.update({'sponsor_2_fin_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_2_fin_spouse': ''})
         else:
@@ -1201,7 +1201,7 @@ class EmployerDocSponsorForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_sponsor_2_passport_spouse_full()
                 self.initial.update({'sponsor_2_passport_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'sponsor_2_passport_spouse': ''})
         else:
@@ -1744,7 +1744,7 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_joint_applicant_nric_full()
                 self.initial.update({'joint_applicant_nric': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'joint_applicant_nric': ''})
         else:
@@ -1754,7 +1754,7 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_joint_applicant_nric_spouse_full()
                 self.initial.update({'joint_applicant_nric_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'joint_applicant_nric_spouse': ''})
         else:
@@ -1764,7 +1764,7 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_joint_applicant_fin_spouse_full()
                 self.initial.update({'joint_applicant_fin_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'joint_applicant_fin_spouse': ''})
         else:
@@ -1774,7 +1774,7 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
             try:
                 plaintext = self.instance.get_joint_applicant_passport_spouse_full()
                 self.initial.update({'joint_applicant_passport_spouse': plaintext})
-            except (ValueError, KeyError):
+            except Exception:
                 print("Incorrect decryption")
                 self.initial.update({'joint_applicant_passport_spouse': ''})
         else:
@@ -2218,7 +2218,7 @@ class VerifyUserTokenForm(forms.ModelForm):
         input_nric = self.cleaned_data.get('nric', '')
         try:
             plaintext = self.object.employer_doc.employer.get_nric_full()
-        except (ValueError, KeyError):
+        except Exception:
             plaintext = ''
             print("Incorrect decryption")
         if (

@@ -135,7 +135,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
         # Try to get object from database
         try:
             if not hasattr(self, 'object'): self.object = self.get_object()
-        except:
+        except Exception:
             return HttpResponseRedirect(reverse_lazy('home'))
         else:
             # Assign to respective attribute
@@ -533,7 +533,7 @@ class PdfHtmlViewMixin:
             
             try:
                 preferred_language = context['object'].fdw.personal_details.preferred_language.language
-            except:
+            except Exception:
                 return default_language
             else:
                 return preferred_language if preferred_language in available_languages else default_language
