@@ -556,7 +556,7 @@ class PdfHtmlViewMixin:
             context = super().get_context_data(object=self.object.employer_doc)
 
             # Document version number formatting
-            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
+            context['object'].version = f'[{self.object.employer_doc.get_version()}] - {version_explainer_text}'
         
             preferred_language = get_preferred_language()
             for i in range(1,4):
