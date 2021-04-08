@@ -154,6 +154,19 @@ button.mini-faq-button {
     }
 }
 
+.new-side-nav-link{
+    color: black !important;
+
+    &.active {
+        background-color: $WHITE;
+    }
+
+    &:hover:not(.active) {
+        background-color: $WHITE;
+        transition: background-color .5s ease-in-out;
+    }
+}
+
 $CUSTOM_CARD_BOX_SHADOW_SETTINGS: 0px 16px 40px;
 $CUSTOM_CARD_SHADOW_COLOUR: rgba(59, 123, 196, 0.2);
 $CUSTOM_CARD_PADDING: 1.75rem;
@@ -173,6 +186,11 @@ $gray-700: #495057 !default;
 $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
 $black: #000 !default;
+
+body.dashboard-body{
+    background-color: $white !important;
+}
+
 .custom-card{
     padding: $CUSTOM_CARD_PADDING;
     margin: $CUSTOM_CARD_MARGIN;
@@ -283,7 +301,7 @@ $FONT_SIZE_LARGER: 1.1rem;
 }
 
 .footer-link {
-    font-size: $FONT_SIZE_LARGER;
+    // font-size: $FONT_SIZE_LARGER;
 }
 
 .faq-navbar {

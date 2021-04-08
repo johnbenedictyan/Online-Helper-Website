@@ -27,7 +27,7 @@ from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 # Template Views
 class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
                         TemplateView):
-    template_name = 'base/dashboard-home-page.html'
+    template_name = 'base/new-dashboard-home-page.html'
     authority = ''
     agency_id = ''
 
