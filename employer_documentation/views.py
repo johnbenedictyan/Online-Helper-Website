@@ -342,15 +342,6 @@ class EmployerDetailView(
     model = Employer
     pk_url_kwarg = 'employer_pk'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        try:
-            context['object'].employer_nric = self.object.get_nric_partial()
-        except (ValueError, KeyError):
-            print("Incorrect decryption")
-            context['object'].employer_nric = ''
-        return context
-
 class EmployerDocDetailView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -892,7 +883,7 @@ class PdfFileAgencyView(
                     filename=self.filename,
                     content_type='application/pdf'
                 )
-            except:
+            except Exception:
                 return HttpResponseRedirect(
                     reverse('joborder_update_route', kwargs={
                         'employer_pk': self.object.employer_doc.employer.pk,
@@ -907,7 +898,7 @@ class PdfFileAgencyView(
                     filename=self.filename,
                     content_type='application/pdf'
                 )
-            except:
+            except Exception:
                 return HttpResponseRedirect(
                     reverse('pdf_archive_detail', kwargs={
                         'employer_pk': self.object.employer.pk,
@@ -951,7 +942,7 @@ class PdfFileTokenView(
                 filename=self.filename,
                 content_type='application/pdf'
             )
-        except:
+        except Exception:
             return HttpResponseRedirect(reverse('home'))
 
 class PdfArchiveSaveView(
