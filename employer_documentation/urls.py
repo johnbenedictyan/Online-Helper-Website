@@ -250,12 +250,28 @@ urlpatterns = [
                                                 name='signature_spouse_update_route'
                                             ),
                                             path(
-                                                'agent-access/sponsor/update/',
+                                                'agent-access/sponsor-1/update/',
                                                 SignatureUpdateByAgentView.as_view(
-                                                    model_field_name='sponsor_signature',
-                                                    form_fields=['sponsor_signature'],
+                                                    model_field_name='sponsor_1_signature',
+                                                    form_fields=['sponsor_1_signature'],
                                                 ),
-                                                name='signature_sponsor_update_route'
+                                                name='signature_sponsor_1_update_route'
+                                            ),
+                                            path(
+                                                'agent-access/sponsor-2/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='sponsor_2_signature',
+                                                    form_fields=['sponsor_2_signature'],
+                                                ),
+                                                name='signature_sponsor_2_update_route'
+                                            ),
+                                            path(
+                                                'agent-access/joint-applicant/update/',
+                                                SignatureUpdateByAgentView.as_view(
+                                                    model_field_name='joint_applicant_signature',
+                                                    form_fields=['joint_applicant_signature'],
+                                                ),
+                                                name='signature_joint_applicant_update_route'
                                             ),
                                             path(
                                                 'agent-access/fdw/update/',
