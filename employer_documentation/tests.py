@@ -43,7 +43,7 @@ class SetUp():
         self.user_potential_employer.save()
         self.user_potential_employer.groups.set([self.PE])
 
-        self.potential_employer = accounts.models.Employer(
+        self.potential_employer = accounts.models.PotentialEmployer(
             user=self.user_potential_employer,
             name='name',
             contact_number='91919191',
@@ -141,7 +141,7 @@ class SetUp():
         self.agency_employee_manager_b1 = AgencyEmployee(
             user=self.user_manager_b1,
             name = 'manager',
-            last_name = '1',
+            # last_name = '1',
             contact_number = '92929292',
             ea_personnel_number = 'EA#2',
             agency = self.agency,
@@ -162,7 +162,7 @@ class SetUp():
         self.agency_employee_manager_b2 = AgencyEmployee(
             user=self.user_manager_b2,
             name = 'manager',
-            last_name = '2',
+            # last_name = '2',
             contact_number = '92929292',
             ea_personnel_number = 'EA#3',
             agency = self.agency,
@@ -183,7 +183,7 @@ class SetUp():
         self.agency_employee_sales_b1 = AgencyEmployee(
             user = self.user_sales_b1,
             name = 'sales',
-            last_name = '1',
+            # last_name = '1',
             contact_number = '93939393',
             ea_personnel_number = 'EA#4',
             agency = self.agency,
@@ -204,7 +204,7 @@ class SetUp():
         self.agency_employee_sales_b2 = AgencyEmployee(
             user = self.user_sales_b2,
             name = 'sales',
-            last_name = '2',
+            # last_name = '2',
             contact_number = '93939393',
             ea_personnel_number = 'EA#5',
             agency = self.agency,
@@ -233,7 +233,7 @@ class SetUp():
             published=True,
             featured=False,
         )
-        with open('static/favicon-16x16.png', 'rb') as fp:
+        with open('static/favicon.ico', 'rb') as fp:
             self.maid.photo = ImageFile(fp, 'photo.png')
             self.maid.save()
     
@@ -464,7 +464,7 @@ class SetUp():
         #     published=True,
         #     featured=False,
         # )
-        # with open('static/favicon-16x16.png', 'rb') as fp:
+        # with open('static/favicon.ico', 'rb') as fp:
         #     self.maid_other.photo = ImageFile(fp, 'photo.png')
         #     self.maid_other.save()
     
