@@ -243,7 +243,7 @@
     <tr>
         <td class="border--bottom border--right">Income Tax Notice of Assessment No:<br>
             {% if object.application_scheme == 'SPONS' %}
-                Sponsor 1 NRIC
+                {{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}
             {% else %}
                 {{ object.employer.get_nric_full }}
             {% endif %}
