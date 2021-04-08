@@ -605,8 +605,8 @@ urlpatterns = [
                                     token_field_name='employer_token',
                                     form_fields=[
                                         'spouse_signature',
-                                        'spouse_name',
-                                        'spouse_nric',
+                                        # 'spouse_name',
+                                        # 'spouse_nric',
                                     ],
                                     success_message = 'Thank you.',
                                 ),
