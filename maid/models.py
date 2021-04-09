@@ -368,7 +368,7 @@ class MaidPersonalDetails(models.Model):
     )
 
     country_of_origin = models.CharField(
-        verbose_name=_('Country of Origin'),
+        verbose_name=_('Nationality'),
         max_length=3,
         blank=False,
         null=True,
