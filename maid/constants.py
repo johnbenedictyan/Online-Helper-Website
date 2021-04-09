@@ -296,11 +296,11 @@ class MaidReligionChoices(models.TextChoices):
         NONE = 'NONE', _('None')
 
 class MaidAssessmentChoices(models.IntegerChoices):
-    POOR = 1, _('Poor')
-    FAIR = 2, _('Fair')
-    AVERAGE = 3, _('Average')
-    GOOD = 4, _('Good')
-    EXCELLENT = 5, _('Excellent')
+    POOR = 1, _('1 - Poor')
+    FAIR = 2, _('2 - Fair')
+    AVERAGE = 3, _('3 - Average')
+    GOOD = 4, _('4 - Good')
+    EXCELLENT = 5, _('5 - Excellent')
 
 class MaritalStatusChoices(models.TextChoices):
         SINGLE = 'S', _('Single')
