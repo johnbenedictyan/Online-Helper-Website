@@ -435,7 +435,8 @@ class MaidPersonalDetails(models.Model):
     contact_number = models.CharField(
         verbose_name=_('Contact number in home country'),
         max_length=30,
-        blank=False,
+        blank=True,
+        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
