@@ -634,14 +634,14 @@ class MaidInfantChildCare(models.Model):
     willingness = models.BooleanField(
         verbose_name=_('Willingness for infant child care'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
     experience = models.BooleanField(
         verbose_name=_('Experience with infant child care'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -692,14 +692,14 @@ class MaidElderlyCare(models.Model):
     willingness = models.BooleanField(
         verbose_name=_('Willingness for elderly care'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
     experience = models.BooleanField(
         verbose_name=_('Experience with elderly care'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -751,14 +751,14 @@ class MaidDisabledCare(models.Model):
     willingness = models.BooleanField(
         verbose_name=_('Willingness for disabled care'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
     experience = models.BooleanField(
         verbose_name=_('Experience with disabled care'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -796,14 +796,14 @@ class MaidGeneralHousework(models.Model):
     willingness = models.BooleanField(
         verbose_name=_('Willingness for general housework'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
     experience = models.BooleanField(
         verbose_name=_('Experience with general housework'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -877,14 +877,14 @@ class MaidCooking(models.Model):
     willingness = models.BooleanField(
         verbose_name=_('Willingness for cooking'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
     experience = models.BooleanField(
         verbose_name=_('Experience with cooking'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
