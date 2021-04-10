@@ -229,10 +229,15 @@ class EmployerDoc(models.Model):
         verbose_name=_("Foreign Domestic Worker (FDW)"),
         on_delete=models.RESTRICT
     )
+    agreement_date = models.DateField(
+        verbose_name=_('Agreement Date for Signed Documents'),
+    )
     monthly_combined_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly combined income of employer and spouse"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
+        blank=True,
+        null=True,
     )
     spouse_required = models.BooleanField(
         verbose_name=_("Is spouse requried?"),
@@ -249,8 +254,19 @@ class EmployerDoc(models.Model):
         choices=SCHEME_CHOICES,
         default=SCHEME_CHOICES[0][0],
     )
-    agreement_date = models.DateField(
-        verbose_name=_('Agreement Date for Signed Documents'),
+    spouse_name = models.CharField(
+        verbose_name=_('Spouse Name'),
+        max_length=40,
+        blank=True,
+        null=True,
+        default=None,
+    )
+    spouse_nric = models.CharField(
+        verbose_name=_('Spouse NRIC/FIN'),
+        max_length=20,
+        blank=True,
+        null=True,
+        default=None,
     )
 
     # Service Fee Schedule
