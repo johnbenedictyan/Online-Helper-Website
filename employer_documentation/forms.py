@@ -55,19 +55,11 @@ class EmployerForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        ###################################################################################################### TO BE REMOVED
         '''
         Decryption
         '''
-        if self.instance.employer_nric and self.instance.employer_nric!=b'':
-            try:
-                plaintext = self.instance.get_nric_full()
-                self.initial.update({'employer_nric': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'employer_nric': ''})
-        ###################################################################################################### TO BE REMOVED
-
+        plaintext = self.instance.get_nric_full()
+        self.initial.update({'employer_nric': plaintext})
         #  Remove employer_nric number from initial form display
         # self.initial.update({'employer_nric':''})
         
@@ -235,23 +227,6 @@ class EmployerForm(forms.ModelForm):
         
         return ciphertext
 
-        ########################################################### Do we need to check NRIC is unique?
-        # try:
-        #     # Check if employer_nric exists in database
-        #     employer_queryset = Employer.objects.filter(
-        #         employer_nric=cleaned_field
-        #     )
-        # except Employer.DoesNotExist:
-        #     # If no entries for employer_nric, then no further checks
-        #     return cleaned_field
-        # else:
-        #     self.check_queryset(
-        #         employer_queryset,
-        #         'An employer with this NRIC/FIN already exists in your \
-        #             agency'
-        #     )
-        # return cleaned_field
-
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
@@ -336,10 +311,6 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6 employer-spouse',
                     hidden='true',
                 ),
-                # Column(
-                #     'spouse_required',
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             # Service Fee Schedule - Form A
@@ -1128,82 +1099,50 @@ class EmployerDocSponsorForm(forms.ModelForm):
         Decryption
         '''
         if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_1_nric_full()
-                self.initial.update({'sponsor_1_nric': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_1_nric': ''})
+            plaintext = self.instance.get_sponsor_1_nric_full()
+            self.initial.update({'sponsor_1_nric': plaintext})
         else:
             self.initial.update({'sponsor_1_nric': ''})
 
         if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_2_nric_full()
-                self.initial.update({'sponsor_2_nric': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_2_nric': ''})
+            plaintext = self.instance.get_sponsor_2_nric_full()
+            self.initial.update({'sponsor_2_nric': plaintext})
         else:
             self.initial.update({'sponsor_2_nric': ''})
 
         if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_1_nric_spouse_full()
-                self.initial.update({'sponsor_1_nric_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_1_nric_spouse': ''})
+            plaintext = self.instance.get_sponsor_1_nric_spouse_full()
+            self.initial.update({'sponsor_1_nric_spouse': plaintext})
         else:
             self.initial.update({'sponsor_1_nric_spouse': ''})
 
         if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_1_fin_spouse_full()
-                self.initial.update({'sponsor_1_fin_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_1_fin_spouse': ''})
+            plaintext = self.instance.get_sponsor_1_fin_spouse_full()
+            self.initial.update({'sponsor_1_fin_spouse': plaintext})
         else:
             self.initial.update({'sponsor_1_fin_spouse': ''})
 
         if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_1_passport_spouse_full()
-                self.initial.update({'sponsor_1_passport_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_1_passport_spouse': ''})
+            plaintext = self.instance.get_sponsor_1_passport_spouse_full()
+            self.initial.update({'sponsor_1_passport_spouse': plaintext})
         else:
             self.initial.update({'sponsor_1_passport_spouse': ''})
 
         if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_2_nric_spouse_full()
-                self.initial.update({'sponsor_2_nric_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_2_nric_spouse': ''})
+            plaintext = self.instance.get_sponsor_2_nric_spouse_full()
+            self.initial.update({'sponsor_2_nric_spouse': plaintext})
         else:
             self.initial.update({'sponsor_2_nric_spouse': ''})
 
         if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_2_fin_spouse_full()
-                self.initial.update({'sponsor_2_fin_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_2_fin_spouse': ''})
+            plaintext = self.instance.get_sponsor_2_fin_spouse_full()
+            self.initial.update({'sponsor_2_fin_spouse': plaintext})
         else:
             self.initial.update({'sponsor_2_fin_spouse': ''})
 
         if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
-            try:
-                plaintext = self.instance.get_sponsor_2_passport_spouse_full()
-                self.initial.update({'sponsor_2_passport_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'sponsor_2_passport_spouse': ''})
+            plaintext = self.instance.get_sponsor_2_passport_spouse_full()
+            self.initial.update({'sponsor_2_passport_spouse': plaintext})
         else:
             self.initial.update({'sponsor_2_passport_spouse': ''})
 
@@ -1741,42 +1680,26 @@ class EmployerDocJointApplicantForm(forms.ModelForm):
         Decryption
         '''
         if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
-            try:
-                plaintext = self.instance.get_joint_applicant_nric_full()
-                self.initial.update({'joint_applicant_nric': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'joint_applicant_nric': ''})
+            plaintext = self.instance.get_joint_applicant_nric_full()
+            self.initial.update({'joint_applicant_nric': plaintext})
         else:
             self.initial.update({'joint_applicant_nric': ''})
 
         if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
-            try:
-                plaintext = self.instance.get_joint_applicant_nric_spouse_full()
-                self.initial.update({'joint_applicant_nric_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'joint_applicant_nric_spouse': ''})
+            plaintext = self.instance.get_joint_applicant_nric_spouse_full()
+            self.initial.update({'joint_applicant_nric_spouse': plaintext})
         else:
             self.initial.update({'joint_applicant_nric_spouse': ''})
 
         if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
-            try:
-                plaintext = self.instance.get_joint_applicant_fin_spouse_full()
-                self.initial.update({'joint_applicant_fin_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'joint_applicant_fin_spouse': ''})
+            plaintext = self.instance.get_joint_applicant_fin_spouse_full()
+            self.initial.update({'joint_applicant_fin_spouse': plaintext})
         else:
             self.initial.update({'joint_applicant_fin_spouse': ''})
 
         if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
-            try:
-                plaintext = self.instance.get_joint_applicant_passport_spouse_full()
-                self.initial.update({'joint_applicant_passport_spouse': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'joint_applicant_passport_spouse': ''})
+            plaintext = self.instance.get_joint_applicant_passport_spouse_full()
+            self.initial.update({'joint_applicant_passport_spouse': plaintext})
         else:
             self.initial.update({'joint_applicant_passport_spouse': ''})
 
@@ -2216,11 +2139,7 @@ class VerifyUserTokenForm(forms.ModelForm):
 
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
-        try:
-            plaintext = self.object.employer_doc.employer.get_nric_full()
-        except (ValueError, KeyError):
-            plaintext = ''
-            print("Incorrect decryption")
+        plaintext = self.object.employer_doc.employer.get_nric_full()
         if (
             self.is_employer
                 and (

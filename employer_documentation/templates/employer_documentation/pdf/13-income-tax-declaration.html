@@ -243,16 +243,16 @@
     <tr>
         <td class="border--bottom border--right">Income Tax Notice of Assessment No:<br>
             {% if object.application_scheme == 'SPONS' %}
-                Sponsor 1 NRIC
+                {{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}
             {% else %}
                 {{ object.employer.get_nric_full }}
             {% endif %}
             </td>
         <td class="border--bottom">Income Tax Notice of Assessment No:<br>
             {% if object.application_scheme == 'JOINT' %}
-                Joint Applicant 2 NRIC
+                {{ object.rn_jointapplicant_ed.get_joint_applicant_nric_full }}
             {% elif object.application_scheme == 'SPONS' %}
-                Sponsor 2 NRIC
+                {{ object.rn_sponsor_ed.get_sponsor_2_nric_full }}
             {% elif object.application_scheme == 'SPOUS' %}
                 {{ object.rn_signatures_ed.spouse_nric }}
             {% endif %}

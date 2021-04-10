@@ -21,10 +21,10 @@
 
             <dd class="col-sm-8 text-truncate">Work Pass Authorisation</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_work_pass_authorisation' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-            
+            <!-- {% comment %}
             <dd class="col-sm-8 text-truncate">Security Bond</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_security_bond' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
+            {% endcomment %} -->
             <dd class="col-sm-8 text-truncate">Income Tax Declaration</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_income_tax_declaration' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
         {% endif %}
@@ -45,10 +45,10 @@
 
             <dd class="col-sm-8 text-truncate">Handover Checklist</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_handover_checklist' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
+            <!-- {% comment %}
             <dd class="col-sm-8 text-truncate">Work Permit Application - Form 12B</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_fdw_work_permit_12b' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
+            {% endcomment %} -->
             <dd class="col-sm-8 text-truncate">Safety Agreement</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_safety_agreement' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
         {% elif request.resolver_match.url_name == 'token_signature_fdw_route' %}
@@ -66,10 +66,10 @@
 
             <dd class="col-sm-8 text-truncate">Handover Checklist</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_handover_checklist' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-
+            <!-- {% comment %}
             <dd class="col-sm-8 text-truncate">Work Permit Application - Form 12B</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_fdw_work_permit_12b' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-
+            {% endcomment %} -->
             <dd class="col-sm-8 text-truncate">Safety Agreement</dd>
             <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_safety_agreement' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
         {% endif %}

@@ -21,8 +21,12 @@
                     <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_email }}</a></td>
                 </tr>
                 <tr>
+                    <th scope="row">NRIC</th>
+                    <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.get_nric_partial }}</a></td>
+                </tr>
+                <tr>
                     <th scope="row">Mobile</th>
-                    <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.employer_mobile_number }}</a></td>
+                    <td><a href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">{{ object.employer.mobile_format_sg }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">Case #</th>
@@ -71,11 +75,17 @@
                         <td><a href="{% url 'signature_spouse_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.spouse_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
                     </tr>
                 {% endif %}
-                {% if object.sponsor_required %}
+                {% if object.application_scheme == 'SPONS' and object.rn_sponsor_ed %}
                 <tr>
-                    <th scope="row">Signature: Sponsor</th>
-                    <td><a href="{% url 'signature_sponsor_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
+                    <th scope="row">Signature: Sponsor 1</th>
+                    <td><a href="{% url 'signature_sponsor_1_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_1_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
                 </tr>
+                {% if object.rn_sponsor_ed and object.rn_sponsor_ed.number_of_sponsors == 2 %}
+                <tr>
+                    <th scope="row">Signature: Sponsor 2</th>
+                    <td><a href="{% url 'signature_sponsor_2_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_signatures_ed.pk %}">{% if object.rn_signatures_ed.sponsor_2_signature %}<i class="fas fa-edit"></i></a>{% else %}<i class="fas fa-pen-nib"></i>{% endif %}</a></td>
+                </tr>
+                {% endif %}
                 {% endif %}
                 <tr>
                     <th scope="row">FDW Signature URL</th>

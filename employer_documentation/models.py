@@ -109,22 +109,22 @@ class Employer(models.Model):
     )
 
     def get_nric_full(self):
-        plaintext = decrypt_string(
-            self.employer_nric,
-            settings.ENCRYPTION_KEY,
-            self.nonce,
-            self.tag
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.employer_nric,
+                settings.ENCRYPTION_KEY,
+                self.nonce,
+                self.tag
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
     
     def get_nric_partial(self):
-        plaintext = decrypt_string(
-            self.employer_nric,
-            settings.ENCRYPTION_KEY,
-            self.nonce,
-            self.tag
-        )
-        return '●'*5 + plaintext[-4:]
+        plaintext = self.get_nric_full()
+        return '●'*5 + plaintext[-4:] if plaintext else ''
 
     def mobile_format_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
@@ -775,20 +775,30 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-    spouse_name = models.CharField(
-        verbose_name=_('Spouse Name'),
-        max_length=40,
+    # spouse_name = models.CharField(
+    #     verbose_name=_('Spouse Name'),
+    #     max_length=40,
+    #     blank=True,
+    #     null=True
+    # )
+    # spouse_nric = models.CharField(
+    #     verbose_name=_('Spouse NRIC/FIN'),
+    #     max_length=20,
+    #     blank=True,
+    #     null=True
+    # )
+    sponsor_1_signature = models.TextField(
+        verbose_name=_('Sponsor 1 Signature'),
         blank=True,
         null=True
     )
-    spouse_nric = models.CharField(
-        verbose_name=_('Spouse NRIC/FIN'),
-        max_length=20,
+    sponsor_2_signature = models.TextField(
+        verbose_name=_('Sponsor 2 Signature'),
         blank=True,
         null=True
     )
-    sponsor_signature = models.TextField(
-        verbose_name=_('Employer Sponsor Signature'),
+    joint_applicant_signature = models.TextField(
+        verbose_name=_('Joint Applicant Signature'),
         blank=True,
         null=True
     )
@@ -1496,76 +1506,116 @@ class EmployerDocSponsor(models.Model):
     )
 
     def get_sponsor_1_nric_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_1_nric,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_nric_nonce,
-            self.sponsor_1_nric_tag
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_1_nric,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_1_nric_nonce,
+                self.sponsor_1_nric_tag
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
     
     def get_sponsor_2_nric_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_2_nric,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nric_nonce,
-            self.sponsor_2_nric_tag
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_2_nric,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_2_nric_nonce,
+                self.sponsor_2_nric_tag
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_1_nric_spouse_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_1_nric_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_nonce_nric_spouse,
-            self.sponsor_1_tag_nric_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_1_nric_spouse,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_1_nonce_nric_spouse,
+                self.sponsor_1_tag_nric_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_1_fin_spouse_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_1_fin_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_nonce_fin_spouse,
-            self.sponsor_1_tag_fin_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_1_fin_spouse,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_1_nonce_fin_spouse,
+                self.sponsor_1_tag_fin_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_1_passport_spouse_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_1_passport_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_nonce_passport_spouse,
-            self.sponsor_1_tag_passport_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_1_passport_spouse,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_1_nonce_passport_spouse,
+                self.sponsor_1_tag_passport_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_2_nric_spouse_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_2_nric_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nonce_nric_spouse,
-            self.sponsor_2_tag_nric_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_2_nric_spouse,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_2_nonce_nric_spouse,
+                self.sponsor_2_tag_nric_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_2_fin_spouse_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_2_fin_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nonce_fin_spouse,
-            self.sponsor_2_tag_fin_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_2_fin_spouse,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_2_nonce_fin_spouse,
+                self.sponsor_2_tag_fin_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_2_passport_spouse_full(self):
-        plaintext = decrypt_string(
-            self.sponsor_2_passport_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nonce_passport_spouse,
-            self.sponsor_2_tag_passport_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.sponsor_2_passport_spouse,
+                settings.ENCRYPTION_KEY,
+                self.sponsor_2_nonce_passport_spouse,
+                self.sponsor_2_tag_passport_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_sponsor_1_mobile(self):
         return get_mobile_format_sg(self.sponsor_1_mobile_number)
@@ -1756,37 +1806,57 @@ class EmployerDocJointApplicant(models.Model):
     )
 
     def get_joint_applicant_nric_full(self):
-        plaintext = decrypt_string(
-            self.joint_applicant_nric,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_nric,
-            self.joint_applicant_tag_nric
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.joint_applicant_nric,
+                settings.ENCRYPTION_KEY,
+                self.joint_applicant_nonce_nric,
+                self.joint_applicant_tag_nric
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
     
     def get_joint_applicant_nric_spouse_full(self):
-        plaintext = decrypt_string(
-            self.joint_applicant_nric_spouse,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_nric_spouse,
-            self.joint_applicant_tag_nric_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.joint_applicant_nric_spouse,
+                settings.ENCRYPTION_KEY,
+                self.joint_applicant_nonce_nric_spouse,
+                self.joint_applicant_tag_nric_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_joint_applicant_fin_spouse_full(self):
-        plaintext = decrypt_string(
-            self.joint_applicant_fin_spouse,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_fin_spouse,
-            self.joint_applicant_tag_fin_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.joint_applicant_fin_spouse,
+                settings.ENCRYPTION_KEY,
+                self.joint_applicant_nonce_fin_spouse,
+                self.joint_applicant_tag_fin_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
 
     def get_joint_applicant_passport_spouse_full(self):
-        plaintext = decrypt_string(
-            self.joint_applicant_passport_spouse,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_passport_spouse,
-            self.joint_applicant_tag_passport_spouse
-        )
-        return plaintext
+        try:
+            plaintext = decrypt_string(
+                self.joint_applicant_passport_spouse,
+                settings.ENCRYPTION_KEY,
+                self.joint_applicant_nonce_passport_spouse,
+                self.joint_applicant_tag_passport_spouse
+            )
+        except Exception:
+            plaintext = ''
+            print("Incorrect decryption")
+        finally:
+            return plaintext
