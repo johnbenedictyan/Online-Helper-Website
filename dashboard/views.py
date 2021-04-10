@@ -86,33 +86,35 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
-    template_name = 'list/dashboard-maid-list.html'
+    template_name = 'list/new-dashboard-maid-list.html'
     authority = ''
     agency_id = ''
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        agency = Agency.objects.get(
-            pk=self.agency_id
-        )
-        kwargs.update({
-            'biodata': {
-                'current': Maid.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': agency.amount_of_biodata_allowed
-            },
-            'featured_maids': {
-                'current': Maid.objects.filter(
-                    agency=agency,
-                    featured=True
-                ).count(),
-                'max': agency.amount_of_featured_biodata_allowed
-            }
-        })
+        # agency = Agency.objects.get(
+        #     pk=self.agency_id
+        # )
+        # kwargs.update({
+        #     'biodata': {
+        #         'current': Maid.objects.filter(
+        #             agency=agency
+        #         ).count(),
+        #         'max': agency.amount_of_biodata_allowed
+        #     },
+        #     'featured_maids': {
+        #         'current': Maid.objects.filter(
+        #             agency=agency,
+        #             featured=True
+        #         ).count(),
+        #         'max': agency.amount_of_featured_biodata_allowed
+        #     }
+        # })
         return kwargs
     
     def get_queryset(self):
+        print(self.agency_id)
+        print(list(Maid.objects.filter(agency__pk=self.agency_id)))
         return Maid.objects.filter(
             agency__pk = self.agency_id
         ).order_by('id')
@@ -122,7 +124,7 @@ class DashboardAccountList(
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
-    template_name = 'list/dashboard-account-list.html'
+    template_name = 'list/new-dashboard-account-list.html'
     authority = ''
     agency_id = ''
 
@@ -192,7 +194,7 @@ class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
     context_object_name = 'agency'
     http_method_names = ['get']
     model = Agency
-    template_name = 'detail/dashboard-agency-detail.html'
+    template_name = 'detail/new-dashboard-agency-detail.html'
     authority = ''
     agency_id = ''
 
