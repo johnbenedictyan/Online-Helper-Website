@@ -1,0 +1,108 @@
+{% extends 'dashboard-base.html' %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid" style="min-height: 75vh;">
+        <div class="row">
+            <div class="col text-dark mb-3">
+                <h4>FDW Biodata</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3 offset-2">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right pb-3">
+                <a href="{% url 'maid_create' %}" class="btn btn-lg btn-success mr-5 py-3">Add Biodata</a>
+            </div>
+        </div>
+        <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
+            <div class="col">
+                <h6 class="mb-0">S/N</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Name</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Nationality</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Type of Maid</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Age</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Date Created</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Published</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Featured</h6>
+            </div>
+            <div class="col-1">
+                <h6 class="mb-0">Actions</h6>
+            </div>
+        </div>
+        {% for maid in maids %}
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
+            <div class="col">
+                <p class="mb-0">{{maid.pk}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.name}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.personal_details.get_country_of_origin_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.get_maid_type_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.personal_details.get_age}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
+            </div>
+            <div class="col">
+                {% if maid.published is True %}
+                <i class="far fa-check-circle text-success"></i>
+                {% else %}
+                <i class="far fa-times-circle text-danger"></i>
+                {% endif %}
+            </div>
+            <div class="col">
+                {% if maid.featured is True %}
+                <i class="far fa-check-circle text-success"></i>
+                {% else %}
+                <i class="far fa-times-circle text-danger"></i>
+                {% endif %}
+            </div>
+            <div class="col-1">
+                <div class="row" style="justify-content: space-around;">
+                    <a href="#"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
+                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock dashboard_section %}

@@ -1,0 +1,105 @@
+{% extends 'dashboard-base.html' %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid" style="min-height: 75vh;">
+        <div class="row">
+            <div class="col text-dark mb-3">
+                <h4>Branch Management</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3 offset-2">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right mb-3">
+                <a href="{% url 'agency_branch_create' %}" class="btn btn-lg btn-success mr-5 py-3">Add Branch</a>
+            </div>
+        </div>
+        <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
+            <div class="col">
+                <h6 class="mb-0">S/N</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Name</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Address</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Postal Code</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Area</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Office Number</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Mobile Number</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Branch Type</h6>
+            </div>
+            <div class="col-1">
+                <h6 class="mb-0">Actions</h6>
+            </div>
+        </div>
+        {% for branch in branches %}
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
+            <div class="col">
+                <p class="mb-0">{{branch.pk}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.name}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.address_1}} {{branch.address_2}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.postal_code}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.get_area_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.office_number}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.mobile_number}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">
+                    {% if branch.main_branch == True %}
+                    Main Branch
+                    {% else %}
+                    Side Branch
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-1">
+                <div class="row" style="justify-content: space-around;">
+                    <a href="{% url 'agency_branch_update' branch.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock dashboard_section %}
