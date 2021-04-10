@@ -276,11 +276,8 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
         except UserModel.DoesNotExist:
             pass
         else:
-            if hasattr(user, 'agency'):
-                msg = _('This user is already part of an agency')
-            else:
-                msg = _('This email is taken by an employer')
-            self.add_error('email', msg)
+            msg = _('This ea personnel number is in use')
+            self.add_error('ea_personnel_number', msg)
 
         if validate_password(password):
             msg = _('This password does not meet our requirements')
