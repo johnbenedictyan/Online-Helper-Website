@@ -524,19 +524,12 @@ class PdfHtmlViewMixin:
         version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
 
         def get_preferred_language():
+            from maid.constants import country_language
             # MoM Safety Agreements are available in different languages.
             # Relevant language template snippet is selected based on FDW's
-            # preferred language.
+            # country of origin.
 
-            available_languages = ['BUR', 'ENG', 'IDN', 'KHM', 'SIN', 'TAG', 'TAM', 'THA']
-            default_language = 'IDN'
-            
-            try:
-                preferred_language = context['object'].fdw.personal_details.preferred_language.language
-            except Exception:
-                return default_language
-            else:
-                return preferred_language if preferred_language in available_languages else default_language
+            return country_language.get(context['object'].fdw.personal_details.country_of_origin, 'ENG')
 
         if isinstance(self.object, EmployerDoc):
             context = super().get_context_data(object=self.object)
