@@ -56,7 +56,7 @@
             <div class="col">
                 <h6 class="mb-0">Featured</h6>
             </div>
-            <div class="col">
+            <div class="col-1">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
@@ -78,7 +78,7 @@
                 <p class="mb-0">{{maid.personal_details.get_age}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{maid.created_on}}</p>
+                <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
             </div>
             <div class="col">
                 {% if maid.published is True %}
@@ -94,8 +94,12 @@
                 <i class="far fa-times-circle text-danger"></i>
                 {% endif %}
             </div>
-            <div class="col">
-                <p class="mb-0"></p>
+            <div class="col-1">
+                <div class="row" style="justify-content: space-around;">
+                    <a href="#"><i class="far fa-edit"></i></a>
+                    <a href="#"><i class="far fa-file-image"></i></a>
+                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                </div>
             </div>
         </div>
         {% endfor %}
