@@ -731,7 +731,6 @@ class MaidDisabledCare(models.Model):
             'Experience in own country, overseas and Singapore'
         )
         NO_EXP = 'NE', _('No experience, but willing to learn')
-        NOT_WILLING = 'NW', _('Not willing to care for disabled')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
 
 
