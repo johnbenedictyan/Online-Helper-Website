@@ -116,6 +116,24 @@ button.mini-faq-button i {
   transition: background-color .5s ease-in-out;
 }
 
+.new-side-nav-link {
+  color: black !important;
+}
+
+.new-side-nav-link.active {
+  background-color: #fff;
+}
+
+.new-side-nav-link:hover:not(.active) {
+  background-color: #fff;
+  -webkit-transition: background-color .5s ease-in-out;
+  transition: background-color .5s ease-in-out;
+}
+
+body.dashboard-body {
+  background-color: #fff !important;
+}
+
 .custom-card {
   padding: 1.75rem;
   margin: 0 0 1.5rem 0;
@@ -229,10 +247,6 @@ button.mini-faq-button i {
 }
 
 .how-it-works-card .card-text {
-  font-size: 1.1rem;
-}
-
-.footer-link {
   font-size: 1.1rem;
 }
 
