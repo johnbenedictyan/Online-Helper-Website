@@ -77,7 +77,7 @@ class Maid(models.Model):
     passport_number = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     
     nonce = models.BinaryField(
