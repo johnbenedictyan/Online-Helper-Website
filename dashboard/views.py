@@ -179,7 +179,7 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
     context_object_name = 'branches'
     http_method_names = ['get']
     model = AgencyBranch
-    template_name = 'list/dashboard-agency-branch-list.html'
+    template_name = 'list/new-dashboard-agency-branch-list.html'
     authority = ''
     agency_id = ''
 
