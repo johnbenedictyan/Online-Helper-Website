@@ -58,8 +58,12 @@ class EmployerForm(forms.ModelForm):
         '''
         Decryption
         '''
-        plaintext = self.instance.get_nric_full() if self.instance.employer_nric and self.instance.employer_nric!=b'' else ''
-        self.initial.update({'employer_nric': plaintext})
+        if self.instance.employer_nric and self.instance.employer_nric!=b'':
+            plaintext = self.instance.get_nric_full()
+            self.initial.update({'employer_nric': plaintext})
+        else:
+            self.initial.update({'employer_nric': ''})
+
         #  Remove employer_nric number from initial form display
         # self.initial.update({'employer_nric':''})
         
