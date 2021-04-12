@@ -124,7 +124,7 @@ class Employer(models.Model):
     
     def get_nric_partial(self):
         plaintext = self.get_nric_full()
-        return '●'*5 + plaintext[-4:] if plaintext else ''
+        return 'x'*5 + plaintext[-4:] if plaintext else ''
 
     def mobile_format_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
