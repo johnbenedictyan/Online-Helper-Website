@@ -63,7 +63,8 @@ def encrypt_string(plaintext, encryption_key):
 
 def decrypt_string(ciphertext, encryption_key, nonce, tag):
     cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
-    return cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
+    plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
+    return plaintext if isinstance(plaintext, str) else ''
 
 def calculate_age(born):
     today = date.today()
