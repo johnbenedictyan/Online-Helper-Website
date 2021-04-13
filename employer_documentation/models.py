@@ -109,18 +109,12 @@ class Employer(models.Model):
     )
 
     def get_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.employer_nric,
-                settings.ENCRYPTION_KEY,
-                self.nonce,
-                self.tag
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.employer_nric,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
     
     def get_nric_partial(self):
         plaintext = self.get_nric_full()
