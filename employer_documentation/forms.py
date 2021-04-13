@@ -666,6 +666,16 @@ class EmployerDocForm(forms.ModelForm):
             """),
             Row(
                 Column(
+                    PrependedText(
+                        'c3_1_fdw_salary', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     'c3_5_fdw_sleeping_arrangement',
                     css_class='form-group col-md-6'
                 ),
