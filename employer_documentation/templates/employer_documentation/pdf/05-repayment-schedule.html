@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td>Placement Fee</td>
-        <td>: {{ object.fdw.financial_details.agency_fee_amount|add:object.fdw.financial_details.personal_loan_amount }} </td>
+        <td>: {{ object.b3_agency_fee|add:object.b3_fdw_loan }} </td>
     </tr>
     <tr>
         <td>Work Commencement Date</td>

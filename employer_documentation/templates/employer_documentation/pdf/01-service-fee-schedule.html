@@ -5,7 +5,7 @@
 
 {% block pdf_content %}
 
-{% with total_placement_fee=object.fdw.financial_details.agency_fee_amount|add:object.fdw.financial_details.personal_loan_amount %}
+{% with total_placement_fee=object.b3_agency_fee|add:object.b3_fdw_loan %}
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT FDW{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
@@ -176,14 +176,14 @@
             <td>a.</td>
             <td colspan="2">Agency fee charged on the FDW by the Agency</td>
             <td></td>
-            <td class="text-align-right">{{ object.fdw.financial_details.agency_fee_amount }}</td>
+            <td class="text-align-right">{{ object.b3_agency_fee }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td colspan="2">Personal loan incurred by FDW in overseas</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.fdw.financial_details.personal_loan_amount }}</td>
+            <td class="text-align-right border--bottom">{{ object.b3_fdw_loan }}</td>
         </tr>
         <tr>
             <td colspan="4">Total Placement Fee</td>
