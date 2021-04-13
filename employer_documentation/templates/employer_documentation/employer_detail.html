@@ -43,10 +43,10 @@
             </tr>
             <tr>
                 <th scope="row">Employer Mobile</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_mobile_number }}</a></td>
+                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.mobile_format_sg }}</a></td>
             </tr>
             <tr>
-                <th scope="row">Employer NRIC</th>
+                <th scope="row">mobile_format_sg NRIC</th>
                 <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.get_nric_full }}</a></td>
             </tr>
             <tr>
