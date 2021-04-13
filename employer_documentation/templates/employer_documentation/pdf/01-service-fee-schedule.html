@@ -5,7 +5,6 @@
 
 {% block pdf_content %}
 
-{% with total_placement_fee=object.b3_agency_fee|add:object.b3_fdw_loan %}
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT FDW{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
@@ -188,7 +187,7 @@
         <tr>
             <td colspan="4">Total Placement Fee</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ total_placement_fee }}</td>
+            <td class="text-align-right border--bottom">{{ object.calc_placement_fee }}</td>
         </tr>
         {% if object.fdw_is_replacement %}
             <tr>
@@ -215,7 +214,7 @@
         </tr>
         <tr>
             <td colspan="3" width="85%">Total Amount</td>
-            <td class="text-align-right">{{ total_placement_fee|add:object.calc_admin_cost }}</td>
+            <td class="text-align-right">{{ object.calc_placement_fee|add:object.calc_admin_cost }}</td>
         </tr>
         <tr>
             <td></td>
@@ -227,7 +226,7 @@
             <td></td>
             <td>b.</td>
             <td>Balance payment</td>
-            <td class="text-align-right">{{ total_placement_fee|add:object.calc_admin_cost|sub:object.ca_deposit }}</td>
+            <td class="text-align-right">{{ object.calc_placement_fee|add:object.calc_admin_cost|sub:object.ca_deposit }}</td>
         </tr>
     </table>
     <br>
@@ -254,6 +253,5 @@
         </tr>
     </table>
 </div>
-{% endwith %} {% comment %}<!-- endwith: total_placement_fee -->{% endcomment %}
 
 {% endblock pdf_content %}
