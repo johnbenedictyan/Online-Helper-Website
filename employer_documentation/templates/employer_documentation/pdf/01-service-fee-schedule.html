@@ -214,7 +214,7 @@
         </tr>
         <tr>
             <td colspan="3" width="85%">Total Amount</td>
-            <td class="text-align-right">{{ object.calc_placement_fee|add:object.calc_admin_cost }}</td>
+            <td class="text-align-right">{{ object.calc_total_fee }}</td>
         </tr>
         <tr>
             <td></td>
@@ -226,7 +226,7 @@
             <td></td>
             <td>b.</td>
             <td>Balance payment</td>
-            <td class="text-align-right">{{ object.calc_placement_fee|add:object.calc_admin_cost|sub:object.ca_deposit }}</td>
+            <td class="text-align-right">{{ object.calc_total_fee|sub:object.ca_deposit }}</td>
         </tr>
     </table>
     <br>

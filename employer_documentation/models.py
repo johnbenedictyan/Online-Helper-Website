@@ -749,6 +749,10 @@ class EmployerDoc(models.Model):
             + self.b3_fdw_loan
         )
 
+    def calc_total_fee(self):
+        # Method to calculate total fee
+        return self.calc_admin_cost() + self.calc_placement_fee()
+
     def calc_bal(self):
         # Method to calculate outstanding balance owed by employer
         balance = (
