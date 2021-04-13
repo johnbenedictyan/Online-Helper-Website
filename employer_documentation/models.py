@@ -126,6 +126,9 @@ class Employer(models.Model):
     def mobile_partial_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
 
+    def get_email_partial(self):
+        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
+
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
         (0, _("0 days")),
