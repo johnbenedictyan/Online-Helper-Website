@@ -1506,116 +1506,68 @@ class EmployerDocSponsor(models.Model):
     )
 
     def get_sponsor_1_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_nric,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nric_nonce,
-                self.sponsor_1_nric_tag
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_nric,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nric_nonce,
+            self.sponsor_1_nric_tag
+        )
     
     def get_sponsor_2_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_nric,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nric_nonce,
-                self.sponsor_2_nric_tag
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_nric,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nric_nonce,
+            self.sponsor_2_nric_tag
+        )
 
     def get_sponsor_1_nric_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_nric_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nonce_nric_spouse,
-                self.sponsor_1_tag_nric_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_nric_spouse,
+            self.sponsor_1_tag_nric_spouse
+        )
 
     def get_sponsor_1_fin_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_fin_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nonce_fin_spouse,
-                self.sponsor_1_tag_fin_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_fin_spouse,
+            self.sponsor_1_tag_fin_spouse
+        )
 
     def get_sponsor_1_passport_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_passport_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nonce_passport_spouse,
-                self.sponsor_1_tag_passport_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_passport_spouse,
+            self.sponsor_1_tag_passport_spouse
+        )
 
     def get_sponsor_2_nric_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_nric_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nonce_nric_spouse,
-                self.sponsor_2_tag_nric_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_nric_spouse,
+            self.sponsor_2_tag_nric_spouse
+        )
 
     def get_sponsor_2_fin_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_fin_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nonce_fin_spouse,
-                self.sponsor_2_tag_fin_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_fin_spouse,
+            self.sponsor_2_tag_fin_spouse
+        )
 
     def get_sponsor_2_passport_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_passport_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nonce_passport_spouse,
-                self.sponsor_2_tag_passport_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_passport_spouse,
+            self.sponsor_2_tag_passport_spouse
+        )
 
     def get_sponsor_1_mobile(self):
         return get_mobile_format_sg(self.sponsor_1_mobile_number)
@@ -1807,32 +1759,32 @@ class EmployerDocJointApplicant(models.Model):
 
     def get_joint_applicant_nric_full(self):
         return decrypt_string(
-                self.joint_applicant_nric,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_nric,
-                self.joint_applicant_tag_nric
-            )
+            self.joint_applicant_nric,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_nric,
+            self.joint_applicant_tag_nric
+        )
     
     def get_joint_applicant_nric_spouse_full(self):
         return decrypt_string(
-                self.joint_applicant_nric_spouse,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_nric_spouse,
-                self.joint_applicant_tag_nric_spouse
-            )
+            self.joint_applicant_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_nric_spouse,
+            self.joint_applicant_tag_nric_spouse
+        )
 
     def get_joint_applicant_fin_spouse_full(self):
         return decrypt_string(
-                self.joint_applicant_fin_spouse,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_fin_spouse,
-                self.joint_applicant_tag_fin_spouse
-            )
+            self.joint_applicant_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_fin_spouse,
+            self.joint_applicant_tag_fin_spouse
+        )
 
     def get_joint_applicant_passport_spouse_full(self):
         return decrypt_string(
-                self.joint_applicant_passport_spouse,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_passport_spouse,
-                self.joint_applicant_tag_passport_spouse
-            )
+            self.joint_applicant_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_passport_spouse,
+            self.joint_applicant_tag_passport_spouse
+        )
