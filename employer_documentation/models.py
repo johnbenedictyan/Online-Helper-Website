@@ -627,14 +627,25 @@ class EmployerDoc(models.Model):
     )
 
     # Employment Contract
+    c3_1_fdw_salary = models.DecimalField(
+        verbose_name=_("3.1 FDW monthly salary"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_('FDW monthly salary in employment contract'),
+    )
     c3_5_fdw_sleeping_arrangement = models.CharField(
         verbose_name=_("3.5 FDW sleeping arrangement"),
-        max_length=40,
+        max_length=6,
         choices=[
-            ("Have own room","Have own room"),
-            ("Sharing room with someone","Sharing room with someone"),
-            ("Sleeping in common area","Sleeping in common area"),
-        ]
+            ("OWN", _("have her own room")),
+            ("SHARE", _("sharing room with someone")),
+            ("COMMON", _("sleeping in common area")),
+        ],
+        default='OWN',
     )
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
@@ -644,11 +655,11 @@ class EmployerDoc(models.Model):
 
     # Safety Agreement
     residential_dwelling_type = models.CharField(
-        max_length=30,
+        max_length=6,
         choices=[
-            ("HDB","HDB Apartment"),
-            ("CONDO","Private Apartment/Condominium"),
-            ("LANDED","Landed Property"),
+            ("HDB", _("HDB Apartment")),
+            ("CONDO", _("Private Apartment/Condominium")),
+            ("LANDED", _("Landed Property")),
         ],
         default='HDB',
     )
@@ -663,11 +674,11 @@ class EmployerDoc(models.Model):
     )
     window_exterior_location = models.CharField(
         verbose_name=_("(i) Location of window exterior"),
-        max_length=40,
+        max_length=20,
         choices=[
-            ("GROUND_FLOOR","On the ground floor"),
-            ("COMMON_CORRIDOR","Facing common corridor"),
-            ("OTHER","Other"),
+            ("GROUND_FLOOR", _("On the ground floor")),
+            ("COMMON_CORRIDOR", _("Facing common corridor")),
+            ("OTHER", _("Other")),
         ],
         blank=True,
         null=True,
@@ -707,10 +718,10 @@ class EmployerDoc(models.Model):
         verbose_name=_("Verifiy employer understands window cleaning conditions"),
         max_length=40,
         choices=[
-            ("not_required_to_clean_window_exterior","FDW not required to clean window exterior"),
-            ("ground_floor_windows_only","FDW to clean only window exterior on ground floor"),
-            ("common_corridor_windows_only","FDW to clean only window exterior along common corridor"),
-            ("require_window_exterior_cleaning","Ensure grilles are locked and only cleaned under adult supervision"),
+            ("not_required_to_clean_window_exterior", _("FDW not required to clean window exterior")),
+            ("ground_floor_windows_only", _("FDW to clean only window exterior on ground floor")),
+            ("common_corridor_windows_only", _("FDW to clean only window exterior along common corridor")),
+            ("require_window_exterior_cleaning", _("Ensure grilles are locked and only cleaned under adult supervision")),
         ],
         default='not_required_to_clean_window_exterior',
     )
