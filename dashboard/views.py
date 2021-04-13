@@ -207,7 +207,7 @@ class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
-    template_name = 'detail/dashboard-maid-detail.html'
+    template_name = 'detail/new-dashboard-maid-detail.html'
     authority = ''
     agency_id = ''
 
