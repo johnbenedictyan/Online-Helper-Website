@@ -26,6 +26,7 @@ $mercury: #d7d4d3 !default;
 $BASE_FONT_SIZE: 1rem !default;
 $FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
 $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
+$FONT_SIZE_SMALLER_SLIGHT: .9rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
 .bg {
@@ -154,16 +155,25 @@ button.mini-faq-button {
     }
 }
 
+$PRIMARY_COLOUR: #0571bb;
+
 .new-side-nav-link{
     color: black !important;
 
     &.active {
-        background-color: $WHITE;
+        background-color: $PRIMARY_COLOUR;
+        p {
+            color: $WHITE
+        }
     }
 
     &:hover:not(.active) {
-        background-color: $WHITE;
+        background-color: $PRIMARY_COLOUR;
+        p {
+            color: $WHITE
+        }
         transition: background-color .5s ease-in-out;
+        transition: color .5s ease-in-out;
     }
 }
 
@@ -218,6 +228,10 @@ body.dashboard-body{
 
 .text-smaller {
     font-size: $FONT_SIZE_SMALLER;
+
+    &-slight{
+        font-size: $FONT_SIZE_SMALLER_SLIGHT;
+    }
 }
 
 .text-larger-slight {

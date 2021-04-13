@@ -1,19 +1,107 @@
-<nav>
-    <div class="col d-flex flex-column justify-content-around px-md-0">
+<nav class="row">
+    <div class="collapse show col" id="mainSideNavbar">
+        <div class="row">
+            <div class="col" style="height: 2.5rem;">
+                &nbsp;
+            </div>
+        </div>
         {% with request.resolver_match.url_name as url_name %}
         <div class="row">
             <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
-                <p class="m-1 pl-3">Dashboard</p>
-                </a>
+                <div class="row">
+                    <div class="col-11">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
+                            <p class="m-1 pl-3">Dashboard</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col px-0">
+                <div class="row">
+                    <div class="col-11">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}" class="">
+                            <p class="m-1 pl-3">FDW Biodata</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="text-reset" data-toggle="collapse" href="#fdwManagementDropdownNav" role="button" aria-expanded="true" aria-controls="fdwManagementDropdownNav">
+                            <i class="fas fa-angle-double-down"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse row" id="fdwManagementDropdownNav">
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Maid</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Maid</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Maid</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Maid</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Maid</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         {% if authority == 'Agency Owners' %}
         <div class="row">
             <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}" class="">
-                <p class="m-1 pl-3">Account Management</p>
-                </a>
+                <div class="row">
+                    <div class="col-11">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}" class="">
+                            <p class="m-1 pl-3">Account Management</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="text-reset" data-toggle="collapse" href="#accountManagementDropdownNav" role="button" aria-expanded="true" aria-controls="accountManagementDropdownNav">
+                            <i class="fas fa-angle-double-down"></i>
+                        </a>
+                    </div>  
+                </div>
+                <div class="collapse row" id="accountManagementDropdownNav">
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Employee</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Employee</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Employee</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Employee</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Employee</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -38,13 +126,6 @@
             </div>
         </div>
         {% endif %}
-        <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}" class="">
-                <p class="m-1 pl-3">FDW Biodata</p>
-                </a>
-            </div>
-        </div>
         <div class="row">
             <div class="col px-0">
                 <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}" class="">
@@ -75,4 +156,9 @@
         </div>
         {% endwith %}
     </div>
+    {% if name == 'Maid Create' %}
+        <div class="col">   
+        {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
+        </div>
+    {% endif %}
 </nav>

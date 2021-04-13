@@ -121,13 +121,23 @@ button.mini-faq-button i {
 }
 
 .new-side-nav-link.active {
-  background-color: #fff;
+  background-color: #0571bb;
+}
+
+.new-side-nav-link.active p {
+  color: #fff;
 }
 
 .new-side-nav-link:hover:not(.active) {
-  background-color: #fff;
+  background-color: #0571bb;
   -webkit-transition: background-color .5s ease-in-out;
   transition: background-color .5s ease-in-out;
+  -webkit-transition: color .5s ease-in-out;
+  transition: color .5s ease-in-out;
+}
+
+.new-side-nav-link:hover:not(.active) p {
+  color: #fff;
 }
 
 body.dashboard-body {
@@ -164,6 +174,10 @@ body.dashboard-body {
 
 .text-smaller {
   font-size: 0.75rem;
+}
+
+.text-smaller-slight {
+  font-size: 0.9rem;
 }
 
 .text-larger-slight {
