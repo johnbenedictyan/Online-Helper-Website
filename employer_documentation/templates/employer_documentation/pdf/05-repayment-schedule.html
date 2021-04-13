@@ -1,5 +1,4 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
-{% load mathfilters %}
 
 {% block title %}Repayment Schedule{% endblock %}
 
@@ -8,48 +7,39 @@
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
-<br>
 <div class="border--bottom"></div>
 <br>
-
 <table>
     <tr>
-        <th class="text-bold--600" style="width:35%">Employment Agency Ref No</th>
-        <th class="text-bold--600">: {{ object.case_ref_no }}</th>
-    </tr>
-    <tr>
+        <th class="text-bold--600">Employment Agency Case #</th>
+        <th class="text-bold--600">{{ object.case_ref_no }}</th>
+        <td></td>
         <td>Date</td>
-        <td>: {{ object.agreement_date|date:"d M Y" }}</td>
-    </tr>
-    <tr>
-        <td colspan="2"></td>
+        <td>{{ object.agreement_date|date:"d M Y" }}</td>
     </tr>
     <tr>
         <td>Name of Employer</td>
-        <td>: {{ object.employer.employer_name }} </td>
-    </tr>
-    <tr>
+        <td>{{ object.employer.employer_name }} </td>
+        <td></td>
         <td>Name of FDW</td>
-        <td>: {{ object.fdw.name }}</td>
+        <td>{{ object.fdw.name }}</td>
     </tr>
     <tr>
         <td>Placement Fee</td>
-        <td>: {{ object.calc_placement_fee }}</td>
-    </tr>
-    <tr>
+        <td>{{ object.calc_placement_fee }}</td>
+        <td></td>
         <td>Work Commencement Date</td>
-        <td>: {{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
+        <td>{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
     </tr>
     <tr>
         <td>Monthly Basic Salary</td>
-        <td>: {{ object.fdw.financial_details.salary }}</td>
-    </tr>
-    <tr>
+        <td>{{ object.fdw.financial_details.salary }}</td>
+        <td></td>
         <td>Balance Off Day Compensation</td>
-        <td>: {{ object.fdw }}</td>
+        <td>{{ object.fdw }}</td>
     </tr>
 </table>
-<br><br>
+<br>
 <table class="border--all">
     <tr class="text-align-center">
         <td width="5%"></td>
