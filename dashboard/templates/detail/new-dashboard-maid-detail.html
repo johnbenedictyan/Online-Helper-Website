@@ -160,6 +160,61 @@
             <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
                     <div class="col">
+                        <h5>Food Handling Preference and Dietary Restriction</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mx-2">
+                        <div class="row">
+                            <div class="col-5 py-3 border">
+                                <p class="mb-0">Can you handle pork?</p>
+                            </div>
+                            <div class="col py-3 border text-center">
+                                <p class="mb-0">Yes</p>
+                            </div>
+                            <div class="col-5 py-3 border">
+                                <p class="mb-0">Can you eat pork?</p>
+                            </div>
+                            <div class="col py-3 border text-center">
+                                <p class="mb-0">Yes</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 py-3 border">
+                                <p class="mb-0">Can you handle beef?</p>
+                            </div>
+                            <div class="col py-3 border text-center">
+                                <p class="mb-0">Yes</p>
+                            </div>
+                            <div class="col-5 py-3 border">
+                                <p class="mb-0">Can you eat beef?</p>
+                            </div>
+                            <div class="col py-3 border text-center">
+                                <p class="mb-0">Yes</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 py-3 border">
+                                <p class="mb-0">Are you vegetarian?</p>
+                            </div>
+                            <div class="col py-3 border text-center">
+                                <p class="mb-0">Yes</p>
+                            </div>
+                            <div class="col-5 py-3 border">
+                                <p class="mb-0">Are you willing to work in a vegetarian family?</p>
+                            </div>
+                            <div class="col py-3 border text-center">
+                                <p class="mb-0">Yes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-2 my-md-3 my-lg-4">
+                <div class="row">
+                    <div class="col">
                         <h5>Emplyoment History</h5>
                     </div>
                 </div>
@@ -222,23 +277,29 @@
                     <div class="col mx-2">
                         <div class="row">
                             <div class="col py-3 border">
-                                <h class="mb-0">Type</h>
+                                <p class="mb-0">Type</p>
                             </div>
-                            <div class="col py-3 border">
-                                <h class="mb-0">Assessment</h>
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">Willingness</p>
                             </div>
-                            <div class="col py-3 border">
-                                <h class="mb-0">Remarks</h>
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">Assessment</p>
+                            </div>
+                            <div class="col-3 py-3 border">
+                                <p class="mb-0">Remarks</p>
                             </div>
                         </div>
                         <div class="row bg-white">
                             <div class="col py-3 border">
                                 <p class="mb-0">Infant Child Care</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">{{maid.infant_child_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3 border">
                                 <p class="mb-0">{{maid.infant_child_care.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3 border">
                                 <p class="mb-0">{{maid.infant_child_care.get_remarks_display}}</h5>
                             </div>
                         </div>
@@ -246,10 +307,13 @@
                             <div class="col py-3 border">
                                 <p class="mb-0">Elderly Care</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">{{maid.elderly_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3 border">
                                 <p class="mb-0">{{maid.elderly_care.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3 border">
                                 <p class="mb-0">{{maid.elderly_care.get_remarks_display}}</h5>
                             </div>
                         </div>
@@ -257,10 +321,13 @@
                             <div class="col py-3 border">
                                 <p class="mb-0">Disabled Care</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">{{maid.disabled_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3 border">
                                 <p class="mb-0">{{maid.disabled_care.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3 border">
                                 <p class="mb-0">{{maid.disabled_care.get_remarks_display}}</h5>
                             </div>
                         </div>
@@ -268,10 +335,13 @@
                             <div class="col py-3 border">
                                 <p class="mb-0">General Housework</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">{{maid.general_housework.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3 border">
                                 <p class="mb-0">{{maid.general_housework.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3 border">
                                 <p class="mb-0">{{maid.general_housework.get_remarks_display}}</h5>
                             </div>
                         </div>
@@ -279,10 +349,13 @@
                             <div class="col py-3 border">
                                 <p class="mb-0">Cooking</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3 border">
+                                <p class="mb-0">{{maid.cooking.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3 border">
                                 <p class="mb-0">{{maid.cooking.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3 border">
                                 <p class="mb-0">{{maid.cooking.get_remarks_display}}</h5>
                             </div>
                         </div>
