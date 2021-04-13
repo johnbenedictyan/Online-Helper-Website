@@ -459,6 +459,23 @@ class EmployerDocForm(forms.ModelForm):
             Row(
                 Column(
                     PrependedText(
+                        'b3_agency_fee', '$',
+                        min='0', max='10000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedText(
+                        'b3_fdw_loan', '$',
+                        min='0', max='10000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedText(
                         'ca_deposit', '$',
                         min='0', max='10000',
                     ),

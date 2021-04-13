@@ -416,6 +416,26 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True,
     )
+    b3_agency_fee = models.DecimalField(
+        verbose_name=_("3a. Agency fee"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_('Agency fee charged on the FDW by the Agency'),
+    )
+    b3_fdw_loan = models.DecimalField(
+        verbose_name=_("3b. FDW personal loan"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_('Personal loan incurred by FDW in overseas'),
+    )
     ca_deposit = models.DecimalField(
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
         max_digits=7,
@@ -424,6 +444,7 @@ class EmployerDoc(models.Model):
             MinValueValidator(0),
             MaxValueValidator(10000),
         ],
+        help_text=_('Deposit paid by Employer'),
     )
 
     # If FDW is replacement, then additional fields
