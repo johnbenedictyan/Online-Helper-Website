@@ -123,6 +123,9 @@ class Employer(models.Model):
     def mobile_format_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
 
+    def mobile_partial_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
+
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
         (0, _("0 days")),
