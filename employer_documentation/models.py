@@ -674,10 +674,10 @@ class EmployerDoc(models.Model):
     )
     window_exterior_location = models.CharField(
         verbose_name=_("(i) Location of window exterior"),
-        max_length=20,
+        max_length=6,
         choices=[
-            ("GROUND_FLOOR", _("On the ground floor")),
-            ("COMMON_CORRIDOR", _("Facing common corridor")),
+            ("GROUND", _("On the ground floor")),
+            ("COMMON", _("Facing common corridor")),
             ("OTHER", _("Other")),
         ],
         blank=True,
@@ -714,14 +714,13 @@ class EmployerDoc(models.Model):
         null=True,
         help_text=_('For employers of first-time FDWs only')
     )
-    verifiy_employer_understands_window_cleaning = models.CharField(
+    verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_("Verifiy employer understands window cleaning conditions"),
-        max_length=40,
         choices=[
-            ("not_required_to_clean_window_exterior", _("FDW not required to clean window exterior")),
-            ("ground_floor_windows_only", _("FDW to clean only window exterior on ground floor")),
-            ("common_corridor_windows_only", _("FDW to clean only window exterior along common corridor")),
-            ("require_window_exterior_cleaning", _("Ensure grilles are locked and only cleaned under adult supervision")),
+            (1, _("FDW not required to clean window exterior")),
+            (2, _("FDW to clean only window exterior on ground floor")),
+            (3, _("FDW to clean only window exterior along common corridor")),
+            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
         ],
         default='not_required_to_clean_window_exterior',
     )
