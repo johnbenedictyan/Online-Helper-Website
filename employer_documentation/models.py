@@ -1806,57 +1806,33 @@ class EmployerDocJointApplicant(models.Model):
     )
 
     def get_joint_applicant_nric_full(self):
-        try:
-            plaintext = decrypt_string(
+        return decrypt_string(
                 self.joint_applicant_nric,
                 settings.ENCRYPTION_KEY,
                 self.joint_applicant_nonce_nric,
                 self.joint_applicant_tag_nric
             )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
     
     def get_joint_applicant_nric_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
+        return decrypt_string(
                 self.joint_applicant_nric_spouse,
                 settings.ENCRYPTION_KEY,
                 self.joint_applicant_nonce_nric_spouse,
                 self.joint_applicant_tag_nric_spouse
             )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
 
     def get_joint_applicant_fin_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
+        return decrypt_string(
                 self.joint_applicant_fin_spouse,
                 settings.ENCRYPTION_KEY,
                 self.joint_applicant_nonce_fin_spouse,
                 self.joint_applicant_tag_fin_spouse
             )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
 
     def get_joint_applicant_passport_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
+        return decrypt_string(
                 self.joint_applicant_passport_spouse,
                 settings.ENCRYPTION_KEY,
                 self.joint_applicant_nonce_passport_spouse,
                 self.joint_applicant_tag_passport_spouse
             )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
