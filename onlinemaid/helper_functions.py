@@ -2,6 +2,7 @@
 import math
 import random
 import string
+import traceback
 from datetime import date, datetime
 
 # Imports from django
@@ -66,6 +67,7 @@ def decrypt_string(ciphertext, encryption_key, nonce, tag):
         cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
         plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
     except Exception:
+        traceback.print_exc()
         return ''
     else:
         return plaintext if isinstance(plaintext, str) else ''
