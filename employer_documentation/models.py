@@ -233,7 +233,7 @@ class EmployerDoc(models.Model):
         verbose_name=_('Agreement Date for Signed Documents'),
     )
     monthly_combined_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Monthly combined income of employer and spouse"),
+        verbose_name=_("Employer monthly income / combined income with spouse"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
         blank=True,
