@@ -1369,14 +1369,6 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-md-6'
                 ),
                 Column(
-                    'passport_status',
-                    css_class='col-md-6'
-                ),
-                Column(
-                    'passport_number',
-                    css_class='col-md-6'
-                ),
-                Column(
                     'contact_number',
                     css_class='col-md-6'
                 ),

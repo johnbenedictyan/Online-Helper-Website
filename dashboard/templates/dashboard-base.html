@@ -139,7 +139,19 @@
                         }
                     },
                     (mutations)=>{
-                        console.log(mutations);
+                        if(mutations[0].target.id == "dashboardMainSideNavbar") {
+                            if($("#dashboardMainSideNavbar").hasClass("show")){
+                                if(!$("#dashboardSideNavWrapper").hasClass("col-lg-3")){
+                                    $("#dashboardSideNavWrapper").addClass("col-lg-3");
+                                    $("#dashboardSideNavWrapper").removeClass("col-lg-2");
+                                }
+                            } else {
+                                if(!$("#dashboardSideNavWrapper").hasClass("col-lg-2")){
+                                    $("#dashboardSideNavWrapper").addClass("col-lg-2");
+                                    $("#dashboardSideNavWrapper").removeClass("col-lg-3");
+                                }
+                            }
+                        }
                     },
                     true
                 );
