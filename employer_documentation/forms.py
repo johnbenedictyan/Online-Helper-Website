@@ -299,19 +299,19 @@ class EmployerDocForm(forms.ModelForm):
             Row(
                 Column(
                     'monthly_combined_income',
-                    css_class='form-group col-md-6 employer-spouse',
+                    css_class='form-group col-md-6 employer-spouse employer-only',
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'spouse_name',
-                    css_class='form-group col-md-6 employer-spouse',
+                    css_class='form-group col-md-6 employer-spouse spouse-only',
                     hidden='true',
                 ),
                 Column(
                     'spouse_nric',
-                    css_class='form-group col-md-6 employer-spouse',
+                    css_class='form-group col-md-6 employer-spouse spouse-only',
                     hidden='true',
                 ),
                 css_class='form-row'

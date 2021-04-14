@@ -70,11 +70,21 @@
         let applicationSchemeSelector = document.querySelector('#id_application_scheme');
         if (applicationSchemeSelector) {
             let employerSpouseElements = document.querySelectorAll('.employer-spouse');
+            let employerOnlyElements = document.querySelectorAll('.employer-only');
+            let spouseOnlyElements = document.querySelectorAll('.spouse-only');
 
             // On load
             if (applicationSchemeSelector.value==='SPOUS') {
                 for (let el of employerSpouseElements) {
                     el.hidden = false;
+                }
+            }
+            else if (applicationSchemeSelector.value==='SINGL') {
+                for (let el of employerOnlyElements) {
+                    el.hidden = false;
+                }
+                for (let el of spouseOnlyElements) {
+                    el.hidden = true;
                 }
             } else {
                 for (let el of employerSpouseElements) {
@@ -87,6 +97,13 @@
                 if (applicationSchemeSelector.value==='SPOUS') {
                     for (let el of employerSpouseElements) {
                         el.hidden = false;
+                    }
+                } else if (applicationSchemeSelector.value==='SINGL') {
+                    for (let el of employerOnlyElements) {
+                        el.hidden = false;
+                    }
+                    for (let el of spouseOnlyElements) {
+                        el.hidden = true;
                     }
                 } else {
                     for (let el of employerSpouseElements) {
