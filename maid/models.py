@@ -310,7 +310,9 @@ class MaidEmploymentHistory(models.Model):
 
 class MaidAgencyFeeTransaction(models.Model):
     TRANSCATION_CHOICES = (
-        ('ADD', _('Loan Increase')),
+        ('ADD', _('Initial Maid Loan')),
+        ('ADD', _('Add Transfer Fee')),
+        ('ADD', _('Add Other Cost')),
         ('SUB', _('Loan Repayment'))
     )
 
@@ -332,14 +334,14 @@ class MaidAgencyFeeTransaction(models.Model):
     )
 
     transaction_type = models.CharField(
-        verbose_name=_("Type of transaction"),
+        verbose_name=_('Type of transaction'),
         max_length=3,
         blank=False,
         choices=TRANSCATION_CHOICES
     )
 
-    description = models.TextField(
-        verbose_name=_('Description of transaction'),
+    remarks = models.TextField(
+        verbose_name=_('Transaction Remarks'),
         blank=False
     )
 
@@ -537,19 +539,8 @@ class MaidFinancialDetails(models.Model):
         default=0
     )
 
-    agency_fee_amount = models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        editable=False,
-        default=0
-    )
-
-    personal_loan_amount = models.DecimalField(
-        verbose_name=_('Personal loan amount'),
+    maid_loan = models.DecimalField(
+        verbose_name=_('Maid loan'),
         max_digits=7,
         decimal_places=2,
         validators=[

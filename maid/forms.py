@@ -22,7 +22,8 @@ from .constants import (
     TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
     MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
     MaidCareRemarksChoices, MaidPassportStatusChoices, 
-    MaidEducationLevelChoices, MaidSkillsEvaluationMethod
+    MaidEducationLevelChoices, MaidSkillsEvaluationMethod, 
+    MaidLoanDescriptionChoices
 )
 
 from .models import (
@@ -916,6 +917,8 @@ class MainMaidCreationForm(forms.Form):
     remarks = forms.CharField(
         label=_('Remarks'),
         widget=forms.Textarea(attrs={
+            'rows': '10',
+            'cols': '100',
             'maxlength': '300'    
         }),
         required=True
@@ -1254,33 +1257,8 @@ class MainMaidCreationForm(forms.Form):
     )
 
     # Financial
-    initial_agency_fee_amount = forms.DecimalField(
-        label=_('Initial agency fee amount'),
-        max_digits=7,
-        decimal_places=2,
-        max_value=10000,
-        min_value=0,
-        required=True,
-        initial=0
-    )
-
-    initial_agency_fee_description = forms.CharField(
-        required=True,
-        widget=forms.Textarea()
-    )
-
     salary = forms.DecimalField(
-        label=_('Base Salary'),
-        max_digits=7,
-        decimal_places=2,
-        max_value=10000,
-        min_value=0,
-        required=True,
-        initial=0
-    )
-
-    personal_loan_amount = forms.DecimalField(
-        label=_('Personal loan amount'),
+        label=_('Expected Salary'),
         max_digits=7,
         decimal_places=2,
         max_value=10000,
@@ -1291,11 +1269,34 @@ class MainMaidCreationForm(forms.Form):
 
     transaction_date = forms.DateField(
         label=_('Date'),
-        required=True,
+        required=False,
         widget=CustomDateInput(),
         input_formats=['%d %b %Y']
     )
 
+    transaction_type = forms.ChoiceField(
+        label=_('Description'),
+        required=False,
+        choices=MaidLoanDescriptionChoices.choices,
+        initial=MaidLoanDescriptionChoices.INITIAL_LOAN
+    )
+    
+    transaction_amount = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=True,
+        initial=0
+    )
+    
+    transaction_remarks = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
     # Override Field for the checking of duplicate fdws
     override = forms.BooleanField(
         widget=forms.HiddenInput(),
@@ -1307,13 +1308,16 @@ class MainMaidCreationForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Maid Photo</h4>'
-                    ),
-                    css_class='col-12'
+                    )
                 ),
+                css_class='row',
+                css_id='maidPhotoGroup'
+            ),
+            Row(
                 Column(
                     HTML(
                         "<img src='{{ MEDIA_URL }}{% if form.photo.value%}{{form.photo.value}}{% else %}/thumbnails/default{% endif %}' alt='' class='img-fluid thumbnail' >"
@@ -1322,14 +1326,14 @@ class MainMaidCreationForm(forms.Form):
                     css_class='form-group col-md-6'
                 )
             ),
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Maid Information</h4>'
-                    ),
-                    css_class=''
+                    )
                 ),
-                css_class=''
+                css_class='row',
+                css_id='maidInformationGroup'
             ),
             Div(
                 Column(
@@ -1349,7 +1353,7 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-md-6'
                 ),
                 Column(
-                    '',
+                    'salary',
                     css_class='col-md-6'
                 ),
                 Column(
@@ -1376,24 +1380,20 @@ class MainMaidCreationForm(forms.Form):
                     'contact_number',
                     css_class='col-md-6'
                 ),
-                css_class='row form-group'
+                css_class='row form-group mb-xl-3'
             ),
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Personal Details</h4>'
-                    ),
-                    css_class='col'
+                    )
                 ),
-                css_class='row'
+                css_class='row',
+                css_id='maidPersonalDetailsGroup'
             ),
             Div(
                 Column(
                     'date_of_birth',
-                    css_class='col-md-6'
-                ),
-                Column(
-                    'age',
                     css_class='col-md-6'
                 ),
                 Column(
@@ -1429,6 +1429,10 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-md-6'
                 ),
                 Column(
+                    'education_level',
+                    css_class='col-md-6'
+                ),
+                Column(
                     'address_1',
                     css_class='col-md-6'
                 ),
@@ -1440,16 +1444,16 @@ class MainMaidCreationForm(forms.Form):
                     'repatriation_airport',
                     css_class='col-md-6'
                 ),
-                css_class='row form-group'
+                css_class='row form-group mb-xl-3'
             ),
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Language Spoken</h4>'
                     ),
-                    css_class='col'
                 ),
-                css_class='row'
+                css_class='row',
+                css_id='maidLanguageSpokenGroup'
             ),
             Row(
                 Column(
@@ -1457,18 +1461,18 @@ class MainMaidCreationForm(forms.Form):
                         'language_spoken',
                         template='widgets/custom-inline-checkbox.html'
                     ),
-                    css_class='form-row'
+                    css_class='form-group'
                 ),
-                css_class='form-group'
+                css_class='mb-xl-3'
             ),
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Food Handling and Dietary Restriction</h4>'
                     ),
-                    css_class='col'
                 ),
-                css_class='row'
+                css_class='row',
+                css_id='maidFoodHandlingAndDietaryRestrictionGroup'
             ),
             Row(
                 Column(
@@ -1495,16 +1499,22 @@ class MainMaidCreationForm(forms.Form):
                     'food_handling_veg',
                     css_class='col-md-6'
                 ),
-                css_class='form-group'
+                css_class='form-group mb-xl-3'
             ),
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Experience</h4>'
                     ),
-                    css_class='col'
                 ),
-                css_class='row'
+                css_class='row',
+                css_id='maidExperienceGroup'
+            ),
+            Row(
+                Column(
+                    'skills_evaluation_method',
+                    css_class='form-group col-12'
+                )
             ),
             Row(
                 Column(
@@ -1514,30 +1524,22 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-12'
                 ),
                 Column(
-                    Row(
-                        Column(
-                            'cfi_willingness',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cfi_assessment',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
-                    Row(
-                        Column(
-                            'cfi_remarks',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cfi_other_remarks',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
+                    'cfi_willingness',
+                    css_class='col-md-6'
                 ),
-                css_class='row'
+                Column(
+                    'cfi_assessment',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cfi_remarks',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cfi_other_remarks',
+                    css_class='col-md-6'
+                ),
+                css_class='form-group'
             ),
             Row(
                 Column(
@@ -1547,30 +1549,22 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-12'
                 ),
                 Column(
-                    Row(
-                        Column(
-                            'cfe_willingness',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cfe_assessment',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
-                    Row(
-                        Column(
-                            'cfe_remarks',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cfe_other_remarks',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
+                    'cfe_willingness',
+                    css_class='col-md-6'
                 ),
-                css_class='row'
+                Column(
+                    'cfe_assessment',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cfe_remarks',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cfe_other_remarks',
+                    css_class='col-md-6'
+                ),
+                css_class='form-group'
             ),
             Row(
                 Column(
@@ -1580,30 +1574,22 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-12'
                 ),
                 Column(
-                    Row(
-                        Column(
-                            'cfd_willingness',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cfd_assessment',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
-                    Row(
-                        Column(
-                            'cfd_remarks',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cfd_other_remarks',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
+                    'cfd_willingness',
+                    css_class='col-md-6'
                 ),
-                css_class='row'
+                Column(
+                    'cfd_assessment',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cfd_remarks',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cfd_other_remarks',
+                    css_class='col-md-6'
+                ),
+                css_class='form-group'
             ),
             Row(
                 Column(
@@ -1613,30 +1599,22 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-12'
                 ),
                 Column(
-                    Row(
-                        Column(
-                            'geh_willingness',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'geh_assessment',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
-                    Row(
-                        Column(
-                            'geh_remarks',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'geh_other_remarks',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
+                    'geh_willingness',
+                    css_class='col-md-6'
                 ),
-                css_class='row'
+                Column(
+                    'geh_assessment',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'geh_remarks',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'geh_other_remarks',
+                    css_class='col-md-6'
+                ),
+                css_class='form-group'
             ),
             Row(
                 Column(
@@ -1646,77 +1624,65 @@ class MainMaidCreationForm(forms.Form):
                     css_class='col-12'
                 ),
                 Column(
-                    Row(
-                        Column(
-                            'cok_willingness',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cok_assessment',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
-                    Row(
-                        Column(
-                            'cok_remarks',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'cok_other_remarks',
-                            css_class='col-md-6'
-                        ),
-                        css_class='form-group'
-                    ),
+                    'cok_willingness',
+                    css_class='col-md-6'
                 ),
-                css_class='row'
+                Column(
+                    'cok_assessment',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cok_remarks',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'cok_other_remarks',
+                    css_class='col-md-6'
+                ),
+                css_class='form-group'
             ),
-            Row(
+            Div(
                 Column(
                     HTML(
                         '<h4>Maid Loan</h4>'
                     ),
-                    css_class='col'
                 ),
-                css_class='row'
+                css_class='row',
+                css_id='maidLoanGroup'
             ),
             Row(
-                Column(
-                    'salary',
-                    css_class='col-md-6'
-                ),
-                Column(
-                    'personal_loan_amount',
-                    css_class='col-md-6'
-                )
-            ),
-            Row(
-                Column(
-                    'initial_agency_fee_amount',
-                    css_class='col-md-6'
-                ),
                 Column(
                     'transaction_date',
                     css_class='col-md-6'
                 ),
                 Column(
-                    'initial_agency_fee_description',
-                    css_class='form-group col-12'
+                    'transaction_type',
+                    css_class='col-md-6'
                 )
             ),
             Row(
                 Column(
+                    'transaction_amount',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'transaction_remarks',
+                    css_class='col-md-6'
+                )
+            ),
+            Div(
+                Column(
                     HTML(
                         '<h4>Other Remarks</h4>'
                     ),
-                    css_class='col'
                 ),
-                css_class='row'
+                css_class='row',
+                css_id='maidOtherRemarksGroup'
             ),
             Row(
                 Column(
                     'remarks',
-                    css_class='col-12 form-row'
+                    css_class='col-12'
                 ),
                 css_class='form-group'
             ),

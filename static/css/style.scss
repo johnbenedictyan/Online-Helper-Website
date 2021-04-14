@@ -29,6 +29,10 @@ $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
 $FONT_SIZE_SMALLER_SLIGHT: .9rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
+html {
+    scroll-behavior: smooth;
+}
+
 .bg {
     &-primary1 {
         background-color: $TRUE_BLUE;
@@ -174,6 +178,16 @@ $PRIMARY_COLOUR: #0571bb;
         }
         transition: background-color .5s ease-in-out;
         transition: color .5s ease-in-out;
+    }
+}
+
+.mini-side-nav-link{
+    &.active {
+        font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+        font-weight: 600;
     }
 }
 

@@ -4,12 +4,15 @@ const redirect = (url) => {
 }
 
 // Mutation Observer Function
-const MO = (node_settings, callback_function) => {
+const MO = (node_settings, callback_function, needMutations) => {
     MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
     var observer = new MutationObserver(function (mutations, observer) {
-        console.log(mutations, observer);
-        callback_function();
+        if (needMutations) {
+            callback_function(mutations);
+        } else {
+            callback_function();
+        }
     });
 
     if(node_settings.nodeName){
@@ -136,7 +139,6 @@ const tippy_initialisation = function () {
         },
         onShow(instance) {
             let backend_uri = maidProfileUrlGen(instance.reference.attributes['data-maid'].value);
-            console.log(backend_uri)
             if (instance._isFetching || instance._data || instance._error) {
                 return;
             }
@@ -154,7 +156,6 @@ const tippy_initialisation = function () {
                 })
                 .catch((error) => {
                     instance._error = error;
-                    console.log(error)
                     instance.setContent(`Request failed. ${error}`);
                 })
                 .finally(() => {
@@ -244,7 +245,6 @@ const displayContent = function(res) {
 
 function populateFeaturedMaids(nationality='ANY') {
     let csrftoken = Cookies.get('csrftoken');
-    console.log(csrftoken);
     axios({
         method: 'post',
         mode: 'same-origin',
@@ -374,7 +374,7 @@ $(function () {
                 subtree: false
             }
         },
-        tippy_initialisation
+        tippy_initialisation()
     );
     // $('#nationalitySelect').on('change', function () {
     //     let nationality = $(this).val();

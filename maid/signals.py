@@ -234,5 +234,5 @@ def update_agency_fee(sender, instance, **kwargs):
     financial_details = MaidFinancialDetails.objects.get(
         maid=maid
     )
-    financial_details.agency_fee_amount = amount
+    financial_details.main_loan = amount
     financial_details.save()

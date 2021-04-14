@@ -84,13 +84,15 @@
             <section>
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 bg-light text-dark">
+                        {% with request.resolver_match.url_name as url_name %}
+                        <div id="dashboardSideNavWrapper" class="col-md-3 {% if url_name == 'dashboard_maid_creation' %}col-lg-3{% else %}col-lg-2{% endif %} bg-light text-dark">
                             {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority name="Maid Create" %}
                         </div>
-                        <div class="col-md-9 col-lg-9 p-6">
+                        <div id="dashboardMainContentWrapper" class="col-md-9 col-lg-9 p-6">
                             {% block dashboard_section %}
                             {% endblock dashboard_section %}
                         </div>
+                        {% endwith %}
                     </div>
                 </div>
             </section>
@@ -126,6 +128,23 @@
         <script src="{% static 'js/vendor/slick/slick.min.js' %}"></script>
         <script src="{% static 'js/vendor/apexcharts/apexcharts.min.js' %}"></script>
         <script src="{% static 'js/index.js' %}"></script>
+        <script>
+            $(function(){
+                MO(
+                    {
+                        "nodeName": document.getElementById('dashboardMainSideNavbar'),
+                        "settings": {
+                            attributes: true,
+                            attributeFilter : ['style', 'className']
+                        }
+                    },
+                    (mutations)=>{
+                        console.log(mutations);
+                    },
+                    true
+                );
+            });
+        </script>
         {% block js %}
         {% endblock js %}
     </body>

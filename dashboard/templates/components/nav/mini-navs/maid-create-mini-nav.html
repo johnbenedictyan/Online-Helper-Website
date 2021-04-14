@@ -1,16 +1,80 @@
-<div class="col d-flex flex-column">
+<div class="col px-0 d-flex flex-column">
     <div class="row">
         <div class="col d-flex flex-column justify-content-center" style="height: 2.5rem;">
-            <a class="text-reset" data-toggle="collapse" href="#mainSideNavbar" role="button" aria-expanded="true" aria-controls="mainSideNavbar">
+            <a class="text-reset" data-toggle="collapse" href="#dashboardMainSideNavbar" role="button" aria-expanded="true" aria-controls="dashboardMainSideNavbar">
                 <i class="fas fa-angle-double-left fa-lg"></i>
             </a>
         </div>
     </div>
     <div class="row">
-        <div class="col px-0">
-            <a href="" class="nav-link">
-                <p class="m-1 pl-3">Dashboard</p>
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidPhotoGroup">
+                <p class="m-1 pl-2">Maid Photo</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidInformationGroup">
+                <p class="m-1 pl-2">Maid Information</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidPersonalDetailsGroup">
+                <p class="m-1 pl-2">Personal Details</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidLanguageSpokenGroup">
+                <p class="m-1 pl-2">Language Spoken</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidFoodHandlingAndDietaryRestrictionGroup">
+                <p class="m-1 pl-2">Food Handling and Dietary Restriction</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidExperienceGroup">
+                <p class="m-1 pl-2">Experience</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidEmploymentHistoryGroup">
+                <p class="m-1 pl-2">Employment History</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidLoanGroup">
+                <p class="m-1 pl-2">Maid Loan</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#maidOtherRemarksGroup">
+                <p class="m-1 pl-2">Other Remarks</p>
             </a>
         </div>
     </div>
 </div>
+<script>
+    $(function(){
+        $(".mini-side-nav-link").on("click", (event)=>{
+            $(".mini-side-nav-link").find(".active").removeClass("active");
+            $(this).parent().addClass("active");
+        })
+    })
+</script>

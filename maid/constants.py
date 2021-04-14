@@ -367,7 +367,13 @@ class MaidCreatedOnChoices(models.IntegerChoices):
     THREE_DAYS = 3, _('Last 3 days')
     SEVEN_DAYS = 7, _('Last 7 days')
     FIFTEEN_DAYS = 15, _('Last 15 days')
-
+    
+class MaidLoanDescriptionChoices(models.TextChoices):
+    INITIAL_LOAN = 'IML', _('Initial Maid Loan')
+    TRANSFER_FEE = 'ATF', _('Add Transfer Fee')
+    OTHER_COST = 'AOC', _('Add Other Cost')
+    LOAN_REPAYMENT = 'LR', _('Loan Repayment')
+    
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes

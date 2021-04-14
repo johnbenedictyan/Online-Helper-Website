@@ -16,6 +16,9 @@ from .views import (
 ## Detail Views
 from .views import DashboardAgencyDetail, DashboardMaidDetail
 
+## Form Views
+from .views import DashboardMaidCreation
+
 ## Create Views
 
 ## Template Views
@@ -79,6 +82,16 @@ urlpatterns = [
                 DashboardAgencyBranchList.as_view(),
                 name='dashboard_branches_list'
             )
+        ])
+    ),
+    path(
+        'create/',
+        include([
+            path(
+                'maid',
+                DashboardMaidCreation.as_view(),
+                name='dashboard_maid_creation'
+            ),
         ])
     ),
     path(

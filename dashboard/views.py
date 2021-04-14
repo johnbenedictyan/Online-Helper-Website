@@ -6,9 +6,11 @@ from datetime import datetime, timedelta
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import FormView
 
 # Imports from foreign installed apps
 from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
@@ -16,9 +18,12 @@ from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
 from enquiry.models import GeneralEnquiry
+from maid.forms import MainMaidCreationForm
+from maid.mixins import FDWLimitMixin
 from maid.models import Maid
 from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
+from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 
@@ -154,7 +159,6 @@ class DashboardAccountList(
                 branch = self.request.user.agency_employee.branch
             )
 
-
 class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     context_object_name = 'plans'
     http_method_names = ['get']
@@ -219,8 +223,46 @@ class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
             agency__pk = self.agency_id
         )
 
-# Create Views
+# Form Views
+class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                          FDWLimitMixin, SuccessMessageMixin, FormView):
+    form_class = MainMaidCreationForm
+    http_method_names = ['get','post']
+    success_url = reverse_lazy('dashboard_maid_detail')
+    template_name = 'form/maid-create-form.html'
+    authority = ''
+    agency_id = ''
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id
+        })
+        return kwargs
 
+    def get_success_url(self):
+        return reverse_lazy(
+            super().get_success_url(),
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
+    
+    def form_valid(self, form):
+        try:
+            self.object = form.save()
+        except Exception as e:
+            messages.warning(
+                self.request,
+                'Please try again',
+                extra_tags='warning'
+            )
+            return super().form_invalid(form)
+        else:
+            return super().form_valid(form)
+        
+# Create Views
+        
 # Update Views
 
 # Delete Views

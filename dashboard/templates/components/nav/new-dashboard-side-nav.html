@@ -1,28 +1,28 @@
-<nav class="row">
-    <div class="collapse show col" id="mainSideNavbar">
+<nav class="row sticky-top">
+    {% with request.resolver_match.url_name as url_name %}
+    <div class="collapse show col px-0" id="dashboardMainSideNavbar">
         <div class="row">
             <div class="col" style="height: 2.5rem;">
                 &nbsp;
             </div>
         </div>
-        {% with request.resolver_match.url_name as url_name %}
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <div class="row">
                     <div class="col-11">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
-                            <p class="m-1 pl-3">Dashboard</p>
+                            <p class="m-1 pl-2">Dashboard</p>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <div class="row">
-                    <div class="col-11">
-                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}" class="">
-                            <p class="m-1 pl-3">FDW Biodata</p>
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link">
+                            <p class="m-1 pl-2">FDW Biodata</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
@@ -31,30 +31,15 @@
                         </a>
                     </div>
                 </div>
-                <div class="collapse row" id="fdwManagementDropdownNav">
+                <div class="collapse row {% if url_name == 'dashboard_maid_list' or url_name == 'dashboard_maid_creation' %}show{% endif %}" id="fdwManagementDropdownNav">
                     <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Maid</p>
+                        <a href="{% url 'dashboard_maid_creation' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_creation' %}active{% endif %}">
+                            <p class="m-1 pl-4">Add Maid</p>
                         </a>
                     </div>
                     <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Maid</p>
-                        </a>
-                    </div>
-                    <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Maid</p>
-                        </a>
-                    </div>
-                    <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Maid</p>
-                        </a>
-                    </div>
-                    <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Maid</p>
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% endif %}">
+                            <p class="m-1 pl-4">Maid List</p>
                         </a>
                     </div>
                 </div>
@@ -62,11 +47,11 @@
         </div>
         {% if authority == 'Agency Owners' %}
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <div class="row">
-                    <div class="col-11">
+                    <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}" class="">
-                            <p class="m-1 pl-3">Account Management</p>
+                            <p class="m-1 pl-2">Account Management</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
@@ -105,60 +90,60 @@
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}" href="{% url 'dashboard_agency_detail' %}" class="">
-                <p class="m-1 pl-3">Agency Management</p>
+                <p class="m-1 pl-2">Agency Management</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}" href="{% url 'dashboard_agency_plan_list' %}" class="">
-                <p class="m-1 pl-3">Subscriptions</p>
+                <p class="m-1 pl-2">Subscriptions</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link" href="{% url 'stripe_customer_portal' %}" class="">
-                <p class="m-1 pl-3">Billing History</p>
+                <p class="m-1 pl-2">Billing History</p>
                 </a>
             </div>
         </div>
         {% endif %}
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}" class="">
-                <p class="m-1 pl-3">Employer Summary</p>
+                <p class="m-1 pl-2">Employer Summary</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'sales_list_route' %}active{% endif %}" href="{% url 'sales_list_route' %}" class="">
-                <p class="m-1 pl-3">Sales Summary</p>
+                <p class="m-1 pl-2">Sales Summary</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'status_list_route' %}active{% endif %}" href="{% url 'status_list_route' %}" class="">
-                <p class="m-1 pl-3">Status Summary</p>
+                <p class="m-1 pl-2">Status Summary</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}" href="{% url 'dashboard_enquiries_list' %}" class="">
-                <p class="m-1 pl-3">Enquiries</p>
+                <p class="m-1 pl-2">Enquiries</p>
                 </a>
             </div>
         </div>
-        {% endwith %}
     </div>
-    {% if name == 'Maid Create' %}
+    {% if url_name == 'dashboard_maid_creation' %}
         <div class="col">   
         {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
         </div>
     {% endif %}
+    {% endwith %}
 </nav>
