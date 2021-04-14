@@ -270,7 +270,19 @@ class MaidCountryOfOrigin(models.TextChoices):
     MYANMAR	    = 'MMR', _('Myanmar')
     PHILIPPINES = 'PHL', _('Philippines (the)')
     SRI_LANKA   = 'LKA', _('Sri Lanka')
+    THAILAND    = 'THA', _('Thailand')
     OTHERS      = 'OTH', _('Others')
+
+country_language = {
+    MaidCountryOfOrigin.BANGLADESH: 'TAM',
+    MaidCountryOfOrigin.CAMBODIA: 'KHM',
+    MaidCountryOfOrigin.INDIA: 'TAM',
+    MaidCountryOfOrigin.INDONESIA: 'IDN',
+    MaidCountryOfOrigin.MYANMAR: 'BUR',
+    MaidCountryOfOrigin.PHILIPPINES: 'TAG',
+    MaidCountryOfOrigin.SRI_LANKA: 'SIN',
+    MaidCountryOfOrigin.OTHERS: 'ENG',
+}
 
 class MaidLanguageChoices(models.TextChoices):
     ENGLISH     = 'ENG', _('English')

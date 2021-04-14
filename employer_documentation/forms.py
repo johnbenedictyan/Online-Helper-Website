@@ -58,8 +58,12 @@ class EmployerForm(forms.ModelForm):
         '''
         Decryption
         '''
-        plaintext = self.instance.get_nric_full()
-        self.initial.update({'employer_nric': plaintext})
+        if self.instance.employer_nric and self.instance.employer_nric!=b'':
+            plaintext = self.instance.get_nric_full()
+            self.initial.update({'employer_nric': plaintext})
+        else:
+            self.initial.update({'employer_nric': ''})
+
         #  Remove employer_nric number from initial form display
         # self.initial.update({'employer_nric':''})
         
@@ -455,6 +459,23 @@ class EmployerDocForm(forms.ModelForm):
             Row(
                 Column(
                     PrependedText(
+                        'b3_agency_fee', '$',
+                        min='0', max='10000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    PrependedText(
+                        'b3_fdw_loan', '$',
+                        min='0', max='10000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    PrependedText(
                         'ca_deposit', '$',
                         min='0', max='10000',
                     ),
@@ -645,6 +666,16 @@ class EmployerDocForm(forms.ModelForm):
             """),
             Row(
                 Column(
+                    PrependedText(
+                        'c3_1_fdw_salary', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     'c3_5_fdw_sleeping_arrangement',
                     css_class='form-group col-md-6'
                 ),
@@ -778,23 +809,23 @@ class EmployerDocForm(forms.ModelForm):
         verifiy_employer_understands_verbose_name = EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
         verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
         if (
-            (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior')
+            (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1)
             or
-            (self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only')
+            (self.cleaned_data.get('window_exterior_location')=='GROUND' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==2)
             or
-            (self.cleaned_data.get('window_exterior_location')=='COMMON_CORRIDOR' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='common_corridor_windows_only')
+            (self.cleaned_data.get('window_exterior_location')=='COMMON' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==3)
             or
-            (self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning')
+            (self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==4)
             or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='not_required_to_clean_window_exterior' and self.cleaned_data.get('fdw_clean_window_exterior'))
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1 and self.cleaned_data.get('fdw_clean_window_exterior'))
             or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='ground_floor_windows_only' and not self.cleaned_data.get('window_exterior_location')=='GROUND_FLOOR')
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==2 and not self.cleaned_data.get('window_exterior_location')=='GROUND')
             or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='common_corridor_windows_only' and not self.cleaned_data.get('window_exterior_location')=='COMMON_CORRIDOR')
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==3 and not self.cleaned_data.get('window_exterior_location')=='COMMON')
             or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning' and not self.cleaned_data.get('window_exterior_location')=='OTHER')
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==4 and not self.cleaned_data.get('window_exterior_location')=='OTHER')
             or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')=='require_window_exterior_cleaning' and self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('grilles_installed_require_cleaning'))
+            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==4 and self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('grilles_installed_require_cleaning'))
         ):
             self.add_error(
                 'verifiy_employer_understands_window_cleaning',

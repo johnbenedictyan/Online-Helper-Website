@@ -347,8 +347,8 @@ class PdfHtmlViewMixin:
             payment_month = work_commencement_date.month
             payment_year = work_commencement_date.year
             placement_fee = (
-                self.object.fdw.financial_details.agency_fee_amount +
-                self.object.fdw.financial_details.personal_loan_amount
+                self.object.b3_agency_fee +
+                self.object.b3_fdw_loan
             )
             placement_fee_per_month = round(placement_fee/6, 0)
             work_days_in_month = 26
@@ -524,19 +524,12 @@ class PdfHtmlViewMixin:
         version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
 
         def get_preferred_language():
+            from maid.constants import country_language
             # MoM Safety Agreements are available in different languages.
             # Relevant language template snippet is selected based on FDW's
-            # preferred language.
+            # country of origin.
 
-            available_languages = ['BUR', 'ENG', 'IDN', 'KHM', 'SIN', 'TAG', 'TAM', 'THA']
-            default_language = 'IDN'
-            
-            try:
-                preferred_language = context['object'].fdw.personal_details.preferred_language.language
-            except Exception:
-                return default_language
-            else:
-                return preferred_language if preferred_language in available_languages else default_language
+            return country_language.get(context['object'].fdw.personal_details.country_of_origin, 'ENG')
 
         if isinstance(self.object, EmployerDoc):
             context = super().get_context_data(object=self.object)

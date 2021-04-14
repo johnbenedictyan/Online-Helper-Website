@@ -109,25 +109,25 @@ class Employer(models.Model):
     )
 
     def get_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.employer_nric,
-                settings.ENCRYPTION_KEY,
-                self.nonce,
-                self.tag
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.employer_nric,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
     
     def get_nric_partial(self):
         plaintext = self.get_nric_full()
-        return '●'*5 + plaintext[-4:] if plaintext else ''
+        return 'x'*5 + plaintext[-4:] if plaintext else ''
 
     def mobile_format_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
+
+    def mobile_partial_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
+
+    def get_email_partial(self):
+        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
 
 class EmployerDoc(models.Model):
     DAY_CHOICES = [
@@ -416,6 +416,26 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True,
     )
+    b3_agency_fee = models.DecimalField(
+        verbose_name=_("3a. Agency fee"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_('Agency fee charged on the FDW by the Agency'),
+    )
+    b3_fdw_loan = models.DecimalField(
+        verbose_name=_("3b. FDW personal loan"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_('Personal loan incurred by FDW in overseas'),
+    )
     ca_deposit = models.DecimalField(
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
         max_digits=7,
@@ -424,6 +444,7 @@ class EmployerDoc(models.Model):
             MinValueValidator(0),
             MaxValueValidator(10000),
         ],
+        help_text=_('Deposit paid by Employer'),
     )
 
     # If FDW is replacement, then additional fields
@@ -606,14 +627,25 @@ class EmployerDoc(models.Model):
     )
 
     # Employment Contract
+    c3_1_fdw_salary = models.DecimalField(
+        verbose_name=_("3.1 FDW monthly salary"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_('FDW monthly salary in employment contract'),
+    )
     c3_5_fdw_sleeping_arrangement = models.CharField(
         verbose_name=_("3.5 FDW sleeping arrangement"),
-        max_length=40,
+        max_length=6,
         choices=[
-            ("Have own room","Have own room"),
-            ("Sharing room with someone","Sharing room with someone"),
-            ("Sleeping in common area","Sleeping in common area"),
-        ]
+            ("OWN", _("have her own room")),
+            ("SHARE", _("sharing room with someone")),
+            ("COMMON", _("sleeping in common area")),
+        ],
+        default='OWN',
     )
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
@@ -623,11 +655,11 @@ class EmployerDoc(models.Model):
 
     # Safety Agreement
     residential_dwelling_type = models.CharField(
-        max_length=30,
+        max_length=6,
         choices=[
-            ("HDB","HDB Apartment"),
-            ("CONDO","Private Apartment/Condominium"),
-            ("LANDED","Landed Property"),
+            ("HDB", _("HDB Apartment")),
+            ("CONDO", _("Private Apartment/Condominium")),
+            ("LANDED", _("Landed Property")),
         ],
         default='HDB',
     )
@@ -642,11 +674,11 @@ class EmployerDoc(models.Model):
     )
     window_exterior_location = models.CharField(
         verbose_name=_("(i) Location of window exterior"),
-        max_length=40,
+        max_length=6,
         choices=[
-            ("GROUND_FLOOR","On the ground floor"),
-            ("COMMON_CORRIDOR","Facing common corridor"),
-            ("OTHER","Other"),
+            ("GROUND", _("On the ground floor")),
+            ("COMMON", _("Facing common corridor")),
+            ("OTHER", _("Other")),
         ],
         blank=True,
         null=True,
@@ -682,14 +714,13 @@ class EmployerDoc(models.Model):
         null=True,
         help_text=_('For employers of first-time FDWs only')
     )
-    verifiy_employer_understands_window_cleaning = models.CharField(
+    verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_("Verifiy employer understands window cleaning conditions"),
-        max_length=40,
         choices=[
-            ("not_required_to_clean_window_exterior","FDW not required to clean window exterior"),
-            ("ground_floor_windows_only","FDW to clean only window exterior on ground floor"),
-            ("common_corridor_windows_only","FDW to clean only window exterior along common corridor"),
-            ("require_window_exterior_cleaning","Ensure grilles are locked and only cleaned under adult supervision"),
+            (1, _("FDW not required to clean window exterior")),
+            (2, _("FDW to clean only window exterior on ground floor")),
+            (3, _("FDW to clean only window exterior along common corridor")),
+            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
         ],
         default='not_required_to_clean_window_exterior',
     )
@@ -721,12 +752,22 @@ class EmployerDoc(models.Model):
             + self.b2j3_other_services_fee
         )
 
+    def calc_placement_fee(self):
+        # Method to calculate placement fee
+        return (
+            + self.b3_agency_fee
+            + self.b3_fdw_loan
+        )
+
+    def calc_total_fee(self):
+        # Method to calculate total fee
+        return self.calc_admin_cost() + self.calc_placement_fee()
+
     def calc_bal(self):
         # Method to calculate outstanding balance owed by employer
         balance = (
             self.calc_admin_cost()
-            + self.fdw.financial_details.agency_fee_amount
-            + self.fdw.financial_details.personal_loan_amount
+            + self.calc_placement_fee()
             - self.ca_deposit
         )
 
@@ -1506,116 +1547,68 @@ class EmployerDocSponsor(models.Model):
     )
 
     def get_sponsor_1_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_nric,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nric_nonce,
-                self.sponsor_1_nric_tag
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_nric,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nric_nonce,
+            self.sponsor_1_nric_tag
+        )
     
     def get_sponsor_2_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_nric,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nric_nonce,
-                self.sponsor_2_nric_tag
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_nric,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nric_nonce,
+            self.sponsor_2_nric_tag
+        )
 
     def get_sponsor_1_nric_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_nric_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nonce_nric_spouse,
-                self.sponsor_1_tag_nric_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_nric_spouse,
+            self.sponsor_1_tag_nric_spouse
+        )
 
     def get_sponsor_1_fin_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_fin_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nonce_fin_spouse,
-                self.sponsor_1_tag_fin_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_fin_spouse,
+            self.sponsor_1_tag_fin_spouse
+        )
 
     def get_sponsor_1_passport_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_1_passport_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_1_nonce_passport_spouse,
-                self.sponsor_1_tag_passport_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_1_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_nonce_passport_spouse,
+            self.sponsor_1_tag_passport_spouse
+        )
 
     def get_sponsor_2_nric_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_nric_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nonce_nric_spouse,
-                self.sponsor_2_tag_nric_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_nric_spouse,
+            self.sponsor_2_tag_nric_spouse
+        )
 
     def get_sponsor_2_fin_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_fin_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nonce_fin_spouse,
-                self.sponsor_2_tag_fin_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_fin_spouse,
+            self.sponsor_2_tag_fin_spouse
+        )
 
     def get_sponsor_2_passport_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.sponsor_2_passport_spouse,
-                settings.ENCRYPTION_KEY,
-                self.sponsor_2_nonce_passport_spouse,
-                self.sponsor_2_tag_passport_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.sponsor_2_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_2_nonce_passport_spouse,
+            self.sponsor_2_tag_passport_spouse
+        )
 
     def get_sponsor_1_mobile(self):
         return get_mobile_format_sg(self.sponsor_1_mobile_number)
@@ -1806,57 +1799,33 @@ class EmployerDocJointApplicant(models.Model):
     )
 
     def get_joint_applicant_nric_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.joint_applicant_nric,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_nric,
-                self.joint_applicant_tag_nric
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.joint_applicant_nric,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_nric,
+            self.joint_applicant_tag_nric
+        )
     
     def get_joint_applicant_nric_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.joint_applicant_nric_spouse,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_nric_spouse,
-                self.joint_applicant_tag_nric_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.joint_applicant_nric_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_nric_spouse,
+            self.joint_applicant_tag_nric_spouse
+        )
 
     def get_joint_applicant_fin_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.joint_applicant_fin_spouse,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_fin_spouse,
-                self.joint_applicant_tag_fin_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.joint_applicant_fin_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_fin_spouse,
+            self.joint_applicant_tag_fin_spouse
+        )
 
     def get_joint_applicant_passport_spouse_full(self):
-        try:
-            plaintext = decrypt_string(
-                self.joint_applicant_passport_spouse,
-                settings.ENCRYPTION_KEY,
-                self.joint_applicant_nonce_passport_spouse,
-                self.joint_applicant_tag_passport_spouse
-            )
-        except Exception:
-            plaintext = ''
-            print("Incorrect decryption")
-        finally:
-            return plaintext
+        return decrypt_string(
+            self.joint_applicant_passport_spouse,
+            settings.ENCRYPTION_KEY,
+            self.joint_applicant_nonce_passport_spouse,
+            self.joint_applicant_tag_passport_spouse
+        )
