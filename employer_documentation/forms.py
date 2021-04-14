@@ -313,7 +313,6 @@ class EmployerDocForm(forms.ModelForm):
                 Column(
                     'monthly_combined_income',
                     css_class='form-group col-md-6 employer-spouse',
-                    hidden='true',
                 ),
                 css_class='form-row'
             ),
