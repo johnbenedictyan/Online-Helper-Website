@@ -234,12 +234,14 @@ class EmployerForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = EmployerDoc
-        exclude = ['employer',]
+        exclude = ['employer', 'spouse_nric_nonce', 'spouse_nric_tag']
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
 
         if self.agency_user_group==AG_OWNERS:
             self.fields['fdw'].queryset = (
@@ -735,6 +737,25 @@ class EmployerDocForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+
+    def clean_spouse_nric(self):
+        cleaned_field = self.cleaned_data.get('spouse_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
 
     def clean_fdw_replaced(self):
         is_replacement = self.cleaned_data.get('fdw_is_replacement')
