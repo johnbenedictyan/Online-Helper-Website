@@ -263,13 +263,23 @@ class EmployerDoc(models.Model):
         null=True,
         default=None,
     )
-    spouse_nric = models.CharField(
+    spouse_nric = models.BinaryField(
         verbose_name=_('Spouse NRIC/FIN'),
-        max_length=20,
+        editable=True,
         blank=True,
         null=True,
-        default=None,
     )
+    spouse_nric_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_nric_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    
 
     # Service Fee Schedule
     b1_service_fee = models.DecimalField(
