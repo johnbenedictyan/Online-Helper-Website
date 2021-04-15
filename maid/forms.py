@@ -2429,15 +2429,6 @@ class MainMaidCreationForm(forms.Form):
         self.agency_id = kwargs.pop('agency_id')
         self.update = kwargs.pop('update')
         super().__init__(*args, **kwargs)
-        if self.update == True:
-            print("this is an update")
-        else:
-            for i in range(2,10):
-                self.fields[f'employment_history_start_date_{i}'].widget = CustomDateInput(
-                    attrs={
-                        "hidden": "True"
-                    }
-                )
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
