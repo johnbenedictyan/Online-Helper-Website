@@ -1242,6 +1242,8 @@ class EmployerDocSponsor(models.Model):
     sponsor_1_address_2 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 2'),
         max_length=50,
+        blank=True,
+        null=True,
     )
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
@@ -1685,6 +1687,8 @@ class EmployerDocJointApplicant(models.Model):
     joint_applicant_address_2 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 2"),
         max_length=50,
+        blank=True,
+        null=True,
     )
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
