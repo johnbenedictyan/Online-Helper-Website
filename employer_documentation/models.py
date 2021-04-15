@@ -798,6 +798,14 @@ class EmployerDoc(models.Model):
     def get_version(self):
         return str(self.version).zfill(4)
 
+    def get_spouse_nric_full(self):
+        return decrypt_string(
+            self.spouse_nric,
+            settings.ENCRYPTION_KEY,
+            self.spouse_nric_nonce,
+            self.spouse_nric_tag
+        )
+   
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
