@@ -915,13 +915,13 @@ class MainMaidCreationForm(forms.Form):
     )
 
     remarks = forms.CharField(
-        label=_('Remarks'),
+        label=_(''),
         widget=forms.Textarea(attrs={
             'rows': '10',
             'cols': '100',
             'maxlength': '300'    
         }),
-        required=True
+        required=False
     )
 
     # Maid Personal Details
@@ -1256,6 +1256,1128 @@ class MainMaidCreationForm(forms.Form):
         choices=TrueFalseChoices('Able', 'Unable')
     )
 
+    # Employment History
+    employment_history_start_date_1 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_2 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_3 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_4 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_5 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_6 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_7 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_8 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_9 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_start_date_10 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_1 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_2 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_3 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_4 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_5 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_6 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_7 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_8 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_9 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_10 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_1 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_2 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_3 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_4 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_5 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_6 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_7 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_8 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_9 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_employer_10 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_1 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_2 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_3 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_4 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_5 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_6 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_7 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_8 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_9 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_country_10 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+    
+    employment_history_work_duties_1 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_2 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_3 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_4 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_5 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_6 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_7 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_8 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_9 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_work_duties_10 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_1 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_2 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_3 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_4 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_5 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_6 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_7 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_8 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_9 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    employment_history_reason_for_leaving_10 = forms.CharField(
+        label=_('Reason for Leaving'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '100'    
+        })
+    )
+    
+    # Maid Loan
+    maid_loan_hash_1 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+    
+    maid_loan_date_1 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_1 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_1 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_1 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_2 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+    
+    maid_loan_date_2 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_2 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_2 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_2 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_3 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_3 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_3 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_3 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_3 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_4 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_4 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_4 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_4 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_4 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_5 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_5 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_5 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_5 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_5 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_6 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_6 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_6 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_6 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_6 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_7 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_7 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_7 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_7 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_7 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_8 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_8 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_8 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_8 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_8 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_9 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_9 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_9 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_9 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_9 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_10 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_10 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_10 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_10 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_10 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_11 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_11 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_11 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_11 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_11 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_12 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_12 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_12 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_12 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_12 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_13 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_13 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_13 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_13 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_13 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_14 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_14 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_14 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_14 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_14 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_15 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_15 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_15 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_15 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_15 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_16 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_16 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_16 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_16 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_16 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_17 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_17 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_17 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_17 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_17 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_18 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_18 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_18 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_18 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_18 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_19 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_19 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_19 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_19 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_19 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
+    maid_loan_hash_20 = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    maid_loan_date_20 = forms.DateField(
+        label=_('Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    maid_loan_description_20 = forms.ChoiceField(
+        choices=MaidLoanDescriptionChoices.choices,
+        label=_('Description'),
+        required=False
+    )
+    
+    maid_loan_amount_20 = forms.DecimalField(
+        label=_('Amount'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=False,
+        initial=0
+    )
+    
+    maid_loan_remarks_20 = forms.CharField(
+        label=_('Remarks'),
+        max_length=80,
+        required=False
+    )
+    
     # Financial
     salary = forms.DecimalField(
         label=_('Expected Salary'),
@@ -1305,7 +2427,17 @@ class MainMaidCreationForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
+        self.update = kwargs.pop('update')
         super().__init__(*args, **kwargs)
+        if self.update == True:
+            print("this is an update")
+        else:
+            for i in range(2,10):
+                self.fields[f'employment_history_start_date_{i}'].widget = CustomDateInput(
+                    attrs={
+                        "hidden": "True"
+                    }
+                )
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -1630,6 +2762,525 @@ class MainMaidCreationForm(forms.Form):
                 Column(
                     'cok_other_remarks',
                     css_class='col-md-6'
+                ),
+                css_class='form-group'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '<h4>Employment History</h4>'
+                    ),
+                ),
+                css_class='row',
+                css_id='maidEmploymentHistoryGroup'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_1'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_1'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_1'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_1'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_1'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_1'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_2'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_2'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_2'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_2'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_2'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_2'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_3'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_3'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_3'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_3'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_3'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_3'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_4'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_4'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_4'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_4'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_4'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_4'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_5'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_5'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_5'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_5'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_5'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_5'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_6'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_6'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_6'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_6'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_6'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_6'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_7'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_7'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_7'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_7'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_7'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_7'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_8'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_8'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_8'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_8'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_8'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_8'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_9'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_9'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_9'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_9'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_9'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_9'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_start_date_10'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_end_date_10'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_work_duties_10'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_employer_10'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'employment_history_country_10'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'employment_history_reason_for_leaving_10'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
                 ),
                 css_class='form-group'
             ),

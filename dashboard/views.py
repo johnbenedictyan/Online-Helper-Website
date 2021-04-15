@@ -236,7 +236,8 @@ class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.agency_id
+            'agency_id': self.agency_id,
+            'update': False
         })
         return kwargs
 
