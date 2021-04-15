@@ -94,17 +94,19 @@ class Employer(models.Model):
     nonce = models.BinaryField(editable=True)
     tag = models.BinaryField(editable=True)
     employer_address_1 = models.CharField(
-        verbose_name=_('Street Address'),
+        verbose_name=_('Address Line 1'),
         max_length=100,
     )
 
     employer_address_2 = models.CharField(
-        verbose_name=_('Unit Number'),
+        verbose_name=_('Address Line 2'),
         max_length=50,
+        blank=True,
+        null=True,
     )
 
     employer_post_code = models.CharField(
-        verbose_name=_('Post Code'),
+        verbose_name=_('Postal Code'),
         max_length=25,
     )
 
@@ -899,7 +901,7 @@ class EmployerDocSig(models.Model):
     )
 
     employer_witness_post_code = models.CharField(
-        verbose_name=_('Employer Witness Post Code'),
+        verbose_name=_('Employer Witness Postal Code'),
         max_length=25,
         blank=True,
         null=True
@@ -1242,7 +1244,7 @@ class EmployerDocSponsor(models.Model):
         max_length=50,
     )
     sponsor_1_post_code = models.CharField(
-        verbose_name=_('Sponsor 1 Post Code'),
+        verbose_name=_('Sponsor 1 Postal Code'),
         max_length=25,
     )
     sponsor_1_marital_status = models.CharField(
@@ -1429,7 +1431,7 @@ class EmployerDocSponsor(models.Model):
         null=True,
     )
     sponsor_2_post_code = models.CharField(
-        verbose_name=_('Sponsor 2 Post Code'),
+        verbose_name=_('Sponsor 2 Postal Code'),
         max_length=25,
         blank=True,
         null=True,
@@ -1685,7 +1687,7 @@ class EmployerDocJointApplicant(models.Model):
         max_length=50,
     )
     joint_applicant_post_code = models.CharField(
-        verbose_name=_("Joint applicant's Post Code"),
+        verbose_name=_("Joint applicant's Postal Code"),
         max_length=25,
     )
     joint_applicant_marital_status = models.CharField(
