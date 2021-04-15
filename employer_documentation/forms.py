@@ -262,6 +262,8 @@ class EmployerDocForm(forms.ModelForm):
                     pk=self.user_pk).agency_employee.agency)
             )
         
+        self.initial.update({'spouse_nric': self.instance.get_spouse_nric_full()})
+
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
