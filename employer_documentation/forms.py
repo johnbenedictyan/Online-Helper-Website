@@ -341,7 +341,7 @@ class EmployerDocForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                <h3 class="mb-3">Documentation Details</h3>
+                <h3 class="mb-3">Documentation Form</h3>
                 <h5 class="doc-section-header" id="id-doc-general">General</h5>
             """),
             # General
