@@ -3,7 +3,7 @@ import re
 
 # Imports from django
 from django import forms
-from django.forms import formset_factory, inlineformset_factory
+from django.forms import formset_factory, inlineformset_factory, HiddenInput
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -2389,36 +2389,6 @@ class MainMaidCreationForm(forms.Form):
         initial=0
     )
 
-    transaction_date = forms.DateField(
-        label=_('Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-
-    transaction_type = forms.ChoiceField(
-        label=_('Description'),
-        required=False,
-        choices=MaidLoanDescriptionChoices.choices,
-        initial=MaidLoanDescriptionChoices.INITIAL_LOAN
-    )
-    
-    transaction_amount = forms.DecimalField(
-        label=_('Amount'),
-        max_digits=7,
-        decimal_places=2,
-        max_value=10000,
-        min_value=0,
-        required=True,
-        initial=0
-    )
-    
-    transaction_remarks = forms.CharField(
-        label=_('Remarks'),
-        max_length=80,
-        required=False
-    )
-    
     # Override Field for the checking of duplicate fdws
     override = forms.BooleanField(
         widget=forms.HiddenInput(),
@@ -2429,6 +2399,41 @@ class MainMaidCreationForm(forms.Form):
         self.agency_id = kwargs.pop('agency_id')
         self.update = kwargs.pop('update')
         super().__init__(*args, **kwargs)
+        eh_display_map = {
+            'eh_1_display': '',
+            'eh_2_display': 'd-none',
+            'eh_3_display': 'd-none',
+            'eh_4_display': 'd-none',
+            'eh_5_display': 'd-none',
+            'eh_6_display': 'd-none',
+            'eh_7_display': 'd-none',
+            'eh_8_display': 'd-none',
+            'eh_9_display': 'd-none',
+            'eh_10_display': 'd-none',
+        }
+        ml_display_map = {
+            'ml_1_display': '',
+            'ml_2_display': 'd-none',
+            'ml_3_display': 'd-none',
+            'ml_4_display': 'd-none',
+            'ml_5_display': 'd-none',
+            'ml_6_display': 'd-none',
+            'ml_7_display': 'd-none',
+            'ml_8_display': 'd-none',
+            'ml_9_display': 'd-none',
+            'ml_10_display': 'd-none',
+            'ml_11_display': 'd-none',
+            'ml_12_display': 'd-none',
+            'ml_13_display': 'd-none',
+            'ml_14_display': 'd-none',
+            'ml_15_display': 'd-none',
+            'ml_16_display': 'd-none',
+            'ml_17_display': 'd-none',
+            'ml_18_display': 'd-none',
+            'ml_19_display': 'd-none',
+            'ml_20_display': 'd-none',
+        }
+        maidLoanRowNumber = maidEmploymentHistoryRowNumber = 1
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -2769,6 +2774,20 @@ class MainMaidCreationForm(forms.Form):
                 Column(
                     Row(
                         Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="1"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
                             Row(
                                 Column(
                                     'employment_history_start_date_1'
@@ -2814,10 +2833,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_1_display"]} form-group',
+                css_id='eh_entry_section_1'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="2"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -2865,10 +2899,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_2_display"]} form-group',
+                css_id='eh_entry_section_2'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="3"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -2916,10 +2965,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_3_display"]} form-group',
+                css_id='eh_entry_section_3'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="4"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -2967,10 +3031,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_4_display"]} form-group',
+                css_id='eh_entry_section_4'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="5"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -3018,10 +3097,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_5_display"]} form-group',
+                css_id='eh_entry_section_5'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="6"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -3069,10 +3163,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_6_display"]} form-group',
+                css_id='eh_entry_section_6'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="7"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -3120,10 +3229,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_7_display"]} form-group',
+                css_id='eh_entry_section_7'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="8"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -3171,10 +3295,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_8_display"]} form-group',
+                css_id='eh_entry_section_8'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="9"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -3222,10 +3361,25 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_9_display"]} form-group',
+                css_id='eh_entry_section_9'
             ),
             Row(
                 Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="10"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
                     Row(
                         Column(
                             Row(
@@ -3273,7 +3427,21 @@ class MainMaidCreationForm(forms.Form):
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class=f'{eh_display_map["eh_10_display"]} form-group',
+                css_id='eh_entry_section_10'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        f'''
+                        <button class="btn btn-primary" 
+                        data-rowNumber="{maidEmploymentHistoryRowNumber}">
+                        Add new entry
+                        </button>'''
+                    ),
+                    css_class='col-12 text-right mb-xl-3',
+                    css_id='maidEmploymentHistoryAdditionButton'
+                )
             ),
             Div(
                 Column(
@@ -3284,24 +3452,677 @@ class MainMaidCreationForm(forms.Form):
                 css_class='row',
                 css_id='maidLoanGroup'
             ),
-            Row(
+            Div(
                 Column(
-                    'transaction_date',
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="1"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_1',
+                Column(
+                    'maid_loan_date_1',
                     css_class='col-md-6'
                 ),
                 Column(
-                    'transaction_type',
+                    'maid_loan_description_1',
                     css_class='col-md-6'
-                )
+                ),
+                Column(
+                    'maid_loan_amount_1',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_1',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_1_display"]} row form-group',
+                css_id='ml_entry_section_1'
             ),
-            Row(
+            Div(
                 Column(
-                    'transaction_amount',
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="2"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_2',
+                Column(
+                    'maid_loan_date_2',
                     css_class='col-md-6'
                 ),
                 Column(
-                    'transaction_remarks',
+                    'maid_loan_description_2',
                     css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_2',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_2',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_2_display"]} row form-group',
+                css_id='ml_entry_section_2'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="3"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_3',
+                Column(
+                    'maid_loan_date_3',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_3',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_3',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_3',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_3_display"]} row form-group',
+                css_id='ml_entry_section_3'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="4"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_4',
+                Column(
+                    'maid_loan_date_4',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_4',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_4',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_4',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_4_display"]} row form-group',
+                css_id='ml_entry_section_4'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="5"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_5',
+                Column(
+                    'maid_loan_date_5',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_5',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_5',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_5',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_5_display"]} row form-group',
+                css_id='ml_entry_section_5'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="6"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_6',
+                Column(
+                    'maid_loan_date_6',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_6',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_6',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_6',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_6_display"]} row form-group',
+                css_id='ml_entry_section_6'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="7"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_7',
+                Column(
+                    'maid_loan_date_7',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_7',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_7',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_7',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_7_display"]} row form-group',
+                css_id='ml_entry_section_7'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="8"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_8',
+                Column(
+                    'maid_loan_date_8',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_8',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_8',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_8',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_8_display"]} row form-group',
+                css_id='ml_entry_section_8'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="9"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_9',
+                Column(
+                    'maid_loan_date_9',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_9',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_9',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_9',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_9_display"]} row form-group',
+                css_id='ml_entry_section_9'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="10"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_10',
+                Column(
+                    'maid_loan_date_10',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_10',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_10',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_10',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_10_display"]} row form-group',
+                css_id='ml_entry_section_10'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="11"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_11',
+                Column(
+                    'maid_loan_date_11',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_11',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_11',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_11',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_11_display"]} row form-group',
+                css_id='ml_entry_section_11'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="12"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_12',
+                Column(
+                    'maid_loan_date_12',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_12',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_12',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_12',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_12_display"]} row form-group',
+                css_id='ml_entry_section_12'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="13"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_13',
+                Column(
+                    'maid_loan_date_13',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_13',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_13',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_13',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_13_display"]} row form-group',
+                css_id='ml_entry_section_13'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="14"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_14',
+                Column(
+                    'maid_loan_date_14',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_14',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_14',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_14',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_14_display"]} row form-group',
+                css_id='ml_entry_section_14'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="15"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_15',
+                Column(
+                    'maid_loan_date_15',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_15',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_15',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_15',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_15_display"]} row form-group',
+                css_id='ml_entry_section_15'
+            ),
+            Div(
+                Column(
+                        HTML(
+                            '''
+                            <button class="btn btn-outline-primary 
+                                            ml-delete-button"
+                                    data-rowNumber="16"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>'''
+                        ),
+                        css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_16',
+                Column(
+                    'maid_loan_date_16',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_16',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_16',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_16',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_16_display"]} row form-group',
+                css_id='ml_entry_section_16'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '''
+                        <button class="btn btn-outline-primary 
+                                        ml-delete-button"
+                                data-rowNumber="17"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>'''
+                    ),
+                    css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_17',
+                Column(
+                    'maid_loan_date_17',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_17',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_17',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_17',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_17_display"]} row form-group',
+                css_id='ml_entry_section_17'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '''
+                        <button class="btn btn-outline-primary 
+                                        ml-delete-button"
+                                data-rowNumber="18"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>'''
+                    ),
+                    css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_18',
+                Column(
+                    'maid_loan_date_18',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_18',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_18',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_18',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_18_display"]} row form-group',
+                css_id='ml_entry_section_18'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '''
+                        <button class="btn btn-outline-primary 
+                                        ml-delete-button"
+                                data-rowNumber="19"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>'''
+                    ),
+                    css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_19',
+                Column(
+                    'maid_loan_date_19',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_19',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_19',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_19',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_19_display"]} row form-group',
+                css_id='ml_entry_section_19'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '''
+                        <button class="btn btn-outline-primary 
+                                        ml-delete-button"
+                                data-rowNumber="20"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>'''
+                    ),
+                    css_class='col-12 text-right'
+                ),
+                'maid_loan_hash_20',
+                Column(
+                    'maid_loan_date_20',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_description_20',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_amount_20',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'maid_loan_remarks_20',
+                    css_class='col-md-6'
+                ),
+                css_class=f'{ml_display_map["ml_20_display"]} row form-group',
+                css_id='ml_entry_section_20'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        f'''
+                        <button class="btn btn-primary" 
+                        data-rowNumber="{maidLoanRowNumber}">
+                        Add new entry
+                        </button>'''
+                    ),
+                    css_class='col-12 text-right mb-xl-3',
+                    css_id='maidLoanAdditionButton'
                 )
             ),
             Div(
