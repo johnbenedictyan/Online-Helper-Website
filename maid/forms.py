@@ -3434,13 +3434,13 @@ class MainMaidCreationForm(forms.Form):
                 Column(
                     HTML(
                         f'''
-                        <button class="btn btn-primary" 
+                        <a class="btn btn-primary"
+                        id="maidEmploymentHistoryAdditionButton" 
                         data-rowNumber="{maidEmploymentHistoryRowNumber}">
                         Add new entry
-                        </button>'''
+                        </a>'''
                     ),
-                    css_class='col-12 text-right mb-xl-3',
-                    css_id='maidEmploymentHistoryAdditionButton'
+                    css_class='col-12 text-right mb-xl-3'
                 )
             ),
             Div(
@@ -4116,13 +4116,13 @@ class MainMaidCreationForm(forms.Form):
                 Column(
                     HTML(
                         f'''
-                        <button class="btn btn-primary" 
+                        <a class="btn btn-primary"
+                        id="maidLoanAdditionButton" 
                         data-rowNumber="{maidLoanRowNumber}">
                         Add new entry
-                        </button>'''
+                        </a>'''
                     ),
-                    css_class='col-12 text-right mb-xl-3',
-                    css_id='maidLoanAdditionButton'
+                    css_class='col-12 text-right mb-xl-3'
                 )
             ),
             Div(
