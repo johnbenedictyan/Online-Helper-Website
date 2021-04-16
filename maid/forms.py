@@ -30,8 +30,8 @@ from .models import (
     Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, 
     MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
-    MaidDietaryRestriction, MaidEmploymentHistory, MaidAgencyFeeTransaction,
-    MaidOtherCare, MaidFinancialDetails
+    MaidDietaryRestriction, MaidEmploymentHistory, MaidLoanTransaction,
+    MaidFinancialDetails,
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -772,11 +772,11 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
             )
         )
 
-MaidEmploymentHistoryFormSet = inlineformset_factory(
-    parent_model = Maid,
-    model = MaidEmploymentHistory,
-    fields = ['country','start_date','end_date','work_duties',]
-)
+# MaidEmploymentHistoryFormSet = inlineformset_factory(
+#     parent_model = Maid,
+#     model = MaidEmploymentHistory,
+#     fields = ['country','start_date','end_date','work_duties',]
+# )
 
 class MaidEmploymentHistoryFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
@@ -824,9 +824,9 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
         )
         self.render_required_fields = True
 
-class MaidAgencyFeeTransactionForm(forms.ModelForm):
+class MaidLoanTransactionForm(forms.ModelForm):
     class Meta:
-        model = MaidAgencyFeeTransaction
+        model = MaidLoanTransaction
         exclude = ['maid']
 
     def __init__(self, *args, **kwargs):
@@ -4319,8 +4319,7 @@ class MainMaidCreationForm(forms.Form):
             )
             MaidFinancialDetails.objects.create(
                 maid=new_maid,
-                salary=cleaned_data.get('salary'),
-                personal_loan_amount=cleaned_data.get('personal_loan_amount')
+                expected_salary=cleaned_data.get('salary'),
             )
             MaidInfantChildCare.objects.create(
                 maid=new_maid,
@@ -4362,12 +4361,7 @@ class MainMaidCreationForm(forms.Form):
                 remarks=cleaned_data.get('cok_remarks'),
                 other_remarks=cleaned_data.get('cok_other_remarks')
             )
-            MaidOtherCare.objects.create(
-                maid=new_maid,
-                care_for_pets=cleaned_data.get('care_for_pets'),
-                gardening=cleaned_data.get('gardening')
-            )
-            MaidAgencyFeeTransaction.objects.create(
+            MaidLoanTransaction.objects.create(
                 maid=new_maid,
                 amount=cleaned_data.get('initial_agency_fee_amount'),
                 transaction_type='ADD',

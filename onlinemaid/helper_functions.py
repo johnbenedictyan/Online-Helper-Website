@@ -140,7 +140,7 @@ def maid_seed_data():
         Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, 
         MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare, 
         MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-        MaidAgencyFeeTransaction, MaidOtherCare, MaidFinancialDetails
+        MaidLoanTransaction, MaidFinancialDetails, 
     )
 
     import json
@@ -257,12 +257,7 @@ def maid_seed_data():
                     remarks=MaidCareRemarksChoices.OWN_COUNTRY,
                     other_remarks=''
                 )
-                MaidOtherCare.objects.create(
-                    maid=new_maid,
-                    care_for_pets=True,
-                    gardening=True
-                )
-                MaidAgencyFeeTransaction.objects.create(
+                MaidLoanTransaction.objects.create(
                     maid=new_maid,
                     amount=100,
                     transaction_type='ADD',

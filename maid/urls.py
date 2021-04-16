@@ -18,14 +18,14 @@ from .views import MaidList
 from .views import MaidDetail, PdfMaidBiodataView
 
 ## Create Views
-from .views import MaidEmploymentHistoryFormSetView
+# from .views import MaidEmploymentHistoryFormSetView
 
 ## Update Views
 from .views import (
     MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
     MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate,
-    MaidAgencyFeeTransactionUpdate
+    MaidLoanTransactionUpdate
 )
 
 ## Delete Views
@@ -87,15 +87,15 @@ urlpatterns = [
                 MaidCareDetailsUpdate.as_view(),
                 name='maid_care_details_update'
             ),
+            # path(
+            #     'employment/',
+            #     MaidEmploymentHistoryFormSetView.as_view(),
+            #     name='maid_employment_formset'
+            # ),
             path(
-                'employment/',
-                MaidEmploymentHistoryFormSetView.as_view(),
-                name='maid_employment_formset'
-            ),
-            path(
-                'aft/<int:agency_fee_transaction_pk>/',
-                MaidAgencyFeeTransactionUpdate.as_view(),
-                name='maid_agency_fee_transaction_update'
+                'aft/<int:loan_transaction_pk>/',
+                MaidLoanTransactionUpdate.as_view(),
+                name='maid_loan_transaction_update'
             ),
             path(
                 'icc/',

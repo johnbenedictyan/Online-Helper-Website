@@ -39,15 +39,18 @@ from .forms import (
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
     MaidDietaryRestrictionForm, MaidUpdateForm, 
     MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
-    MaidAgencyFeeTransactionForm, MaidEmploymentHistoryFormSet,
-    MaidEmploymentHistoryFormSetHelper
+    MaidLoanTransactionForm
 )
+# from .forms import (
+#     MaidEmploymentHistoryFormSet,
+#     MaidEmploymentHistoryFormSetHelper
+# )
 
 from .models import (
     Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory,
-    MaidAgencyFeeTransaction, MaidFinancialDetails, MaidOtherCare
+    MaidLoanTransaction, MaidFinancialDetails, 
 )
 
 from .mixins import SpecificAgencyMaidLoginRequiredMixin
@@ -206,12 +209,6 @@ class MaidCareDetailsUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
             experience=cleaned_data.get('cok_experience'),
             remarks=cleaned_data.get('cok_remarks'),
             other_remarks=cleaned_data.get('cok_other_remarks')
-        )
-        MaidOtherCare.objects.filter(
-            maid__pk=self.maid_id
-        ).update(
-            care_for_pets=cleaned_data.get('care_for_pets'),
-            gardening=cleaned_data.get('gardening')
         )
         return super().form_valid(form)
 
@@ -377,7 +374,7 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
         MaidCooking.objects.create(
             maid=self.object
         )
-        MaidAgencyFeeTransaction.objects.create(
+        MaidLoanTransaction.objects.create(
             maid=self.object,
             amount=initial_agency_fee_amount,
             transaction_type='ADD',
@@ -437,65 +434,65 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
         )
         return super().form_valid(form)
 
-class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
-            SpecificAgencyMaidLoginRequiredMixin, SingleObjectMixin, FormView):
-    model = Maid
-    template_name = 'form/maid-employment-history-formset.html'
-    authority = ''
-    agency_id = ''
+# class MaidEmploymentHistoryFormSetView(GetAuthorityMixin,
+#             SpecificAgencyMaidLoginRequiredMixin, SingleObjectMixin, FormView):
+#     model = Maid
+#     template_name = 'form/maid-employment-history-formset.html'
+#     authority = ''
+#     agency_id = ''
 
-    def get_context_data(self, **kwargs):
-        self.object = self.get_object()
-        context = super().get_context_data(**kwargs)
+#     def get_context_data(self, **kwargs):
+#         self.object = self.get_object()
+#         context = super().get_context_data(**kwargs)
 
-        helper = MaidEmploymentHistoryFormSetHelper()
-        helper.add_input(Submit("submit", "Save"))
+#         helper = MaidEmploymentHistoryFormSetHelper()
+#         helper.add_input(Submit("submit", "Save"))
 
-        if self.request.POST:
-            context['formset'] = MaidEmploymentHistoryFormSet(
-                self.request.POST,
-                instance=self.object
-            )
-            context['helper'] = helper
-        else:
-            context['formset'] = MaidEmploymentHistoryFormSet(
-                instance=self.object
-            )
-            context['helper'] = helper
-        return context
+#         if self.request.POST:
+#             context['formset'] = MaidEmploymentHistoryFormSet(
+#                 self.request.POST,
+#                 instance=self.object
+#             )
+#             context['helper'] = helper
+#         else:
+#             context['formset'] = MaidEmploymentHistoryFormSet(
+#                 instance=self.object
+#             )
+#             context['helper'] = helper
+#         return context
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         return super().get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().post(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         return super().post(request, *args, **kwargs)
 
-    def get_form(self, form_class=None):
-        return MaidEmploymentHistoryFormSet(
-            **self.get_form_kwargs(), 
-            instance=self.object
-        )
+#     def get_form(self, form_class=None):
+#         return MaidEmploymentHistoryFormSet(
+#             **self.get_form_kwargs(), 
+#             instance=self.object
+#         )
 
-    def form_valid(self, form):
-        form.save()
+#     def form_valid(self, form):
+#         form.save()
 
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            'Changes were saved.'
-        )
+#         messages.add_message(
+#             self.request,
+#             messages.SUCCESS,
+#             'Changes were saved.'
+#         )
 
-        return self.get_success_url()
+#         return self.get_success_url()
 
-    def get_success_url(self):
-        return HttpResponseRedirect(
-            reverse_lazy(
-                'maid_employment_formset', 
-                kwargs={'pk':self.object.pk}
-            )
-        )
+#     def get_success_url(self):
+#         return HttpResponseRedirect(
+#             reverse_lazy(
+#                 'maid_employment_formset', 
+#                 kwargs={'pk':self.object.pk}
+#             )
+#         )
 
 # Update Views
 class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
@@ -769,18 +766,18 @@ class MaidCookingUpdate(SpecificAgencyMaidLoginRequiredMixin,
 #             maid__agency = self.request.user.agency_owner.agency
 #         )
 
-class MaidAgencyFeeTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
+class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
                                   SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_agency_fee_transaction'
-    form_class = MaidAgencyFeeTransactionForm
+    context_object_name = 'maid_loan_transaction'
+    form_class = MaidLoanTransactionForm
     http_method_names = ['get','post']
-    model = MaidAgencyFeeTransaction
+    model = MaidLoanTransaction
     template_name = 'update/maid-agency-fee-transaction-update.html'
     success_message = 'Maid agency fee transaction updated'
 
     def get_object(self, queryset=None):
-        return MaidAgencyFeeTransaction.objects.get(
-            pk = self.kwargs.get('agency_fee_transaction_pk'),
+        return MaidLoanTransaction.objects.get(
+            pk = self.kwargs.get('loan_transaction_pk'),
             maid = self.kwargs.get('pk'),
             maid__agency = self.request.user.agency_owner.agency
         )

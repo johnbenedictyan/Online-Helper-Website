@@ -13,8 +13,8 @@ from .constants import MaidResponsibilityChoices
 from .models import (
     Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidStatus, MaidAgencyFeeTransaction, MaidResponsibility, 
-    MaidFinancialDetails, MaidOtherCare
+    MaidStatus, MaidLoanTransaction, MaidResponsibility, 
+    MaidFinancialDetails, 
 )
 
 # Utiliy Classes and Functions
@@ -151,7 +151,6 @@ def maid_family_details_completed(sender, instance, created, **kwargs):
 @receiver(post_save, sender=MaidDisabledCare)
 @receiver(post_save, sender=MaidGeneralHousework)
 @receiver(post_save, sender=MaidCooking)
-@receiver(post_save, sender=MaidOtherCare)
 def maid_care_completed(sender, instance, created, **kwargs):
     care_models = [
         MaidInfantChildCare,
@@ -159,7 +158,6 @@ def maid_care_completed(sender, instance, created, **kwargs):
         MaidDisabledCare,
         MaidGeneralHousework,
         MaidCooking,
-        MaidOtherCare
     ]
 
     related_names = {
@@ -168,7 +166,6 @@ def maid_care_completed(sender, instance, created, **kwargs):
         'MaidDisabledCare': 'disabled_care',
         'MaidGeneralHousework': 'general_housework',
         'MaidCooking': 'cooking',
-        'MaidOtherCare': 'other_care'
     }
     
     maid = instance.maid
@@ -216,11 +213,11 @@ def maid_status_completed(sender, instance, created, **kwargs):
         if status_valid == True:
             maid_completed(maid)
 
-@receiver(post_save, sender=MaidAgencyFeeTransaction)
+@receiver(post_save, sender=MaidLoanTransaction)
 def update_agency_fee(sender, instance, **kwargs):
     maid = instance.maid
     
-    transactions = MaidAgencyFeeTransaction.objects.filter(
+    transactions = MaidLoanTransaction.objects.filter(
         maid=maid
     )
 

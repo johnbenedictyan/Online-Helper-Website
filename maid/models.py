@@ -23,7 +23,7 @@ from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
-    MaidSkillsEvaluationMethod
+    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices
 )
 
 # Utiliy Classes and Functions
@@ -272,54 +272,47 @@ class MaidDietaryRestriction(models.Model):
         default=DietaryRestrictionChoices.PORK
     )
 
-class MaidEmploymentHistory(models.Model):
-    class MaidEmploymentCountry(models.TextChoices):
-        # https://en.wikipedia.org/wiki/ISO_3166-1
-        SINGAPORE = 'SGP', _('Singapore')
-        HONG_KONG = 'HKG', _('Hong Kong')
-        MALAYSIA = 'MYS', _('Malaysia')
+# class MaidEmploymentHistory(models.Model):
+#     class MaidEmploymentCountry(models.TextChoices):
+#         # https://en.wikipedia.org/wiki/ISO_3166-1
+#         SINGAPORE = 'SGP', _('Singapore')
+#         HONG_KONG = 'HKG', _('Hong Kong')
+#         MALAYSIA = 'MYS', _('Malaysia')
 
+#     maid = models.ForeignKey(
+#         Maid,
+#         on_delete=models.CASCADE,
+#         related_name='employment_history'
+#     )
+
+#     start_date = models.DateField(
+#         verbose_name="Past employment's start date"
+#     )
+
+#     end_date = models.DateField(
+#         verbose_name="Past employment's end date"
+#     )
+
+#     country = models.CharField(
+#         verbose_name=_("Country of employment"),
+#         max_length=3,
+#         blank=False,
+#         choices=MaidEmploymentCountry.choices
+#     )
+
+#     work_duties = models.ManyToManyField(
+#         MaidWorkDuty
+#     )
+
+#     def work_duration(self):
+        # duration = self.end_date - self.start_date
+        # return humanise_time_duration(duration)
+
+class MaidLoanTransaction(models.Model):
     maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
-        related_name='employment_history'
-    )
-
-    start_date = models.DateField(
-        verbose_name="Past employment's start date"
-    )
-
-    end_date = models.DateField(
-        verbose_name="Past employment's end date"
-    )
-
-    country = models.CharField(
-        verbose_name=_("Country of employment"),
-        max_length=3,
-        blank=False,
-        choices=MaidEmploymentCountry.choices
-    )
-
-    work_duties = models.ManyToManyField(
-        MaidWorkDuty
-    )
-
-    def work_duration(self):
-        duration = self.end_date - self.start_date
-        return humanise_time_duration(duration)
-
-class MaidAgencyFeeTransaction(models.Model):
-    TRANSCATION_CHOICES = (
-        ('ADD', _('Initial Maid Loan')),
-        ('ADD', _('Add Transfer Fee')),
-        ('ADD', _('Add Other Cost')),
-        ('SUB', _('Loan Repayment'))
-    )
-
-    maid = models.ForeignKey(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='agency_fee_transactions'
+        related_name='loan_transactions'
     )
 
     amount = models.DecimalField(
@@ -333,11 +326,11 @@ class MaidAgencyFeeTransaction(models.Model):
         blank=False
     )
 
-    transaction_type = models.CharField(
+    description = models.CharField(
         verbose_name=_('Type of transaction'),
         max_length=3,
         blank=False,
-        choices=TRANSCATION_CHOICES
+        choices=MaidLoanDescriptionChoices.choices
     )
 
     remarks = models.TextField(
@@ -345,7 +338,7 @@ class MaidAgencyFeeTransaction(models.Model):
         blank=False
     )
 
-    transaction_date = models.DateField(
+    date = models.DateField(
         blank=False
     )
 
@@ -527,7 +520,7 @@ class MaidFinancialDetails(models.Model):
         related_name='financial_details'
     )
 
-    salary = models.DecimalField(
+    expected_salary = models.DecimalField(
         verbose_name=_('Salary'),
         max_digits=7,
         decimal_places=2,
@@ -722,7 +715,6 @@ class MaidDisabledCare(models.Model):
         NOT_WILLING = 'NW', _('Not willing to care for disabled')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
 
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -889,23 +881,441 @@ class MaidCooking(models.Model):
         blank=True
     )
 
-class MaidOtherCare(models.Model):
+class MaidEmploymentHistory(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
-        related_name='other_care'
+        related_name='employment_history'
+    )
+    
+    start_date_1 = models.DateField(
+        verbose_name=_('Entry 1 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_1 = models.DateField(
+        verbose_name=_('Entry 1 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_1 = models.CharField(
+        verbose_name=_('Entry 1 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_1 = models.CharField(
+        verbose_name=_('Entry 1 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
     )
 
-    care_for_pets = models.BooleanField(
-        verbose_name=_('Care for pets'),
-        blank=False,
-        choices=TrueFalseChoices('Able', 'Unable'),
-        default=False
+    work_duties_1 = models.CharField(
+        verbose_name=_('Entry 1 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_1 = models.CharField(
+        verbose_name=_('Entry 1 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_2 = models.DateField(
+        verbose_name=_('Entry 2 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_2 = models.DateField(
+        verbose_name=_('Entry 2 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_2 = models.CharField(
+        verbose_name=_('Entry 2 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_2 = models.CharField(
+        verbose_name=_('Entry 2 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
     )
 
-    gardening = models.BooleanField(
-        verbose_name=_('Gardening'),
-        blank=False,
-        choices=TrueFalseChoices('Able', 'Unable'),
-        default=False
+    work_duties_2 = models.CharField(
+        verbose_name=_('Entry 2 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
     )
+    
+    reason_for_leaving_2 = models.CharField(
+        verbose_name=_('Entry 2 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_3 = models.DateField(
+        verbose_name=_('Entry 3 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_3 = models.DateField(
+        verbose_name=_('Entry 3 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_3 = models.CharField(
+        verbose_name=_('Entry 3 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_3 = models.CharField(
+        verbose_name=_('Entry 3 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_3 = models.CharField(
+        verbose_name=_('Entry 3 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_3 = models.CharField(
+        verbose_name=_('Entry 3 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_4 = models.DateField(
+        verbose_name=_('Entry 4 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_4 = models.DateField(
+        verbose_name=_('Entry 4 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_4 = models.CharField(
+        verbose_name=_('Entry 4 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_4 = models.CharField(
+        verbose_name=_('Entry 4 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_4 = models.CharField(
+        verbose_name=_('Entry 4 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_4 = models.CharField(
+        verbose_name=_('Entry 4 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_5 = models.DateField(
+        verbose_name=_('Entry 5 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_5 = models.DateField(
+        verbose_name=_('Entry 5 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_5 = models.CharField(
+        verbose_name=_('Entry 5 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_5 = models.CharField(
+        verbose_name=_('Entry 5 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_5 = models.CharField(
+        verbose_name=_('Entry 5 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_5 = models.CharField(
+        verbose_name=_('Entry 5 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_6 = models.DateField(
+        verbose_name=_('Entry 6 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_6 = models.DateField(
+        verbose_name=_('Entry 6 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_6 = models.CharField(
+        verbose_name=_('Entry 6 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_6 = models.CharField(
+        verbose_name=_('Entry 6 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_6 = models.CharField(
+        verbose_name=_('Entry 6 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_6 = models.CharField(
+        verbose_name=_('Entry 6 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_7 = models.DateField(
+        verbose_name=_('Entry 7 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_7 = models.DateField(
+        verbose_name=_('Entry 7 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_7 = models.CharField(
+        verbose_name=_('Entry 7 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_7 = models.CharField(
+        verbose_name=_('Entry 7 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_7 = models.CharField(
+        verbose_name=_('Entry 7 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_7 = models.CharField(
+        verbose_name=_('Entry 7 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_8 = models.DateField(
+        verbose_name=_('Entry 8 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_8 = models.DateField(
+        verbose_name=_('Entry 8 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_8 = models.CharField(
+        verbose_name=_('Entry 8 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_8 = models.CharField(
+        verbose_name=_('Entry 8 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_8 = models.CharField(
+        verbose_name=_('Entry 8 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_8 = models.CharField(
+        verbose_name=_('Entry 8 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_9 = models.DateField(
+        verbose_name=_('Entry 9 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_9 = models.DateField(
+        verbose_name=_('Entry 9 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_9 = models.CharField(
+        verbose_name=_('Entry 9 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_9 = models.CharField(
+        verbose_name=_('Entry 9 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_9 = models.CharField(
+        verbose_name=_('Entry 9 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_9 = models.CharField(
+        verbose_name=_('Entry 9 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    start_date_10 = models.DateField(
+        verbose_name=_('Entry 10 - Start Date'),
+        blank=True, 
+        null=True
+    )
+    
+    end_date_10 = models.DateField(
+        verbose_name=_('Entry 10 - End Date'),
+        blank=True, 
+        null=True
+    )
+    
+    employer_10 = models.CharField(
+        verbose_name=_('Entry 10 - Country or Race of Employer'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    country_10 = models.CharField(
+        verbose_name=_('Entry 10 - Country'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+
+    work_duties_10 = models.CharField(
+        verbose_name=_('Entry 10 - Work Duties'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    reason_for_leaving_10 = models.CharField(
+        verbose_name=_('Entry 10 - Reason for Leaving'),
+        max_length=255,
+        blank=True, 
+        null=True
+    )
+    
+    def work_duration(self, entry_number):
+        duration = (
+            self[
+                f'end_date_{entry_number}'
+            ] - self[
+                f'start_date_{entry_number}'
+            ]
+        )
+        return humanise_time_duration(duration)
+    
+# class MaidOtherCare(models.Model):
+#     maid = models.OneToOneField(
+#         Maid,
+#         on_delete=models.CASCADE,
+#         related_name='other_care'
+#     )
+
+#     care_for_pets = models.BooleanField(
+#         verbose_name=_('Care for pets'),
+#         blank=False,
+#         choices=TrueFalseChoices('Able', 'Unable'),
+#         default=False
+#     )
+
+#     gardening = models.BooleanField(
+#         verbose_name=_('Gardening'),
+#         blank=False,
+#         choices=TrueFalseChoices('Able', 'Unable'),
+#         default=False
+#     )
+    
