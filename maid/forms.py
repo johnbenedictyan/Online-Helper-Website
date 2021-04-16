@@ -887,12 +887,28 @@ class MainMaidCreationForm(forms.Form):
         max_length=255,
         required=True
     )
+    
+    country_of_origin = forms.ChoiceField(
+        label=_('Country of Origin'),
+        choices=MaidCountryOfOrigin.choices,
+        required=True
+    )
 
     maid_type = forms.ChoiceField(
         label='Type of Maid',
         choices=TypeOfMaidChoices.choices,
         initial=TypeOfMaidChoices.NEW,
         required=True
+    )
+    
+    salary = forms.DecimalField(
+        label=_('Expected Salary'),
+        max_digits=7,
+        decimal_places=2,
+        max_value=10000,
+        min_value=0,
+        required=True,
+        initial=0
     )
 
     days_off = forms.IntegerField(
@@ -902,29 +918,32 @@ class MainMaidCreationForm(forms.Form):
         required=True
     )
     
+    passport_status = forms.ChoiceField(
+        label='Passport Status',
+        choices=MaidPassportStatusChoices.choices,
+        initial=MaidPassportStatusChoices.NOT_READY
+    )
+    
     passport_number = forms.CharField(
         label='Passport Number',
         max_length=20,
         required=True
     )
     
-    passport_status = forms.ChoiceField(
-        label='Passport Status',
-        choices=MaidPassportStatusChoices.choices,
-        initial=MaidPassportStatusChoices.NOT_READY
+    contact_number = forms.CharField(
+        label=_('Contact Number'),
+        max_length=30,
+        required=True
     )
-
-    remarks = forms.CharField(
-        label=_(''),
-        widget=forms.Textarea(attrs={
-            'rows': '10',
-            'cols': '100',
-            'maxlength': '300'    
-        }),
-        required=False
-    )
-
+    
     # Maid Personal Details
+    date_of_birth = forms.DateField(
+        label=_('Date of Birth'),
+        required=True,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
     height = forms.DecimalField(
         max_value=200,
         min_value=0,
@@ -941,84 +960,21 @@ class MainMaidCreationForm(forms.Form):
         required=True
     )
 
-    religion = forms.ChoiceField(
-        label=_('Religion'),
-        choices=MaidReligionChoices.choices,
-        initial=MaidReligionChoices.NONE,
-        required=True
-    )
-
-    language_spoken = forms.MultipleChoiceField(
-        label=_('Language Spoken'),
-        choices=MaidLanguageChoices.choices,
-        widget=forms.CheckboxSelectMultiple(),
-        required=True
-    )
-
-    preferred_language = forms.ChoiceField(
-        label=_('Preferred Language'),
-        choices=MaidLanguageChoices.choices,
-        required=True
-    )
-
-    date_of_birth = forms.DateField(
-        label=_('Date of Birth'),
-        required=True,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-
-    country_of_origin = forms.ChoiceField(
-        label=_('Country of Origin'),
-        choices=MaidCountryOfOrigin.choices,
-        required=True
-    )
-
-    address_1 = forms.CharField(
-        label='Address Line 1',
-        max_length=255,
-        required=True
-    )
-
-    address_2 = forms.CharField(
-        label='Address Line 2',
-        max_length=255,
-        required=True
-    )
-
-    repatriation_airport = forms.CharField(
-        label='Repatriation Airport',
-        max_length=100,
-        required=True
-    )
-
-    place_of_birth = forms.CharField(
-        label='Place of Birth',
-        max_length=25,
-        required=True
-    )
-    
-    contact_number = forms.CharField(
-        label=_('Contact Number'),
-        max_length=30,
-        required=True
-    )
-
-    education_level = forms.ChoiceField(
-        label=_('Education Level'),
-        required=True,
-        choices=MaidEducationLevelChoices.choices,
-        initial=MaidEducationLevelChoices.HIGH_SCHOOL
-    )
-    
-    # Maid Family Details
     marital_status = forms.ChoiceField(
         label='Marital Status',
         required=True,
         choices=MaritalStatusChoices.choices,
         initial=MaritalStatusChoices.SINGLE
     )
-
+    
+    number_of_siblings = forms.IntegerField(
+        label='Number of Siblings',
+        required=True,
+        initial=0,
+        max_value=20,
+        min_value=0
+    )
+    
     number_of_children = forms.IntegerField(
         label='Number of Children',
         required=True,
@@ -1033,15 +989,53 @@ class MainMaidCreationForm(forms.Form):
         required=True,
         initial='N.A'
     )
-
-    number_of_siblings = forms.IntegerField(
-        label='Number of Siblings',
-        required=True,
-        initial=0,
-        max_value=20,
-        min_value=0
+    
+    religion = forms.ChoiceField(
+        label=_('Religion'),
+        choices=MaidReligionChoices.choices,
+        initial=MaidReligionChoices.NONE,
+        required=True
+    )
+    
+    place_of_birth = forms.CharField(
+        label='Place of Birth',
+        max_length=25,
+        required=True
+    )
+    
+    address_1 = forms.CharField(
+        label='Address Line 1',
+        max_length=255,
+        required=True
     )
 
+    address_2 = forms.CharField(
+        label='Address Line 2',
+        max_length=255,
+        required=True
+    )
+
+    education_level = forms.ChoiceField(
+        label=_('Education Level'),
+        required=True,
+        choices=MaidEducationLevelChoices.choices,
+        initial=MaidEducationLevelChoices.HIGH_SCHOOL
+    )
+    
+    repatriation_airport = forms.CharField(
+        label='Repatriation Airport',
+        max_length=100,
+        required=True
+    )
+
+    # Language Spoken
+    language_spoken = forms.MultipleChoiceField(
+        label=_('Language Spoken'),
+        choices=MaidLanguageChoices.choices,
+        widget=forms.CheckboxSelectMultiple(),
+        required=True
+    )
+    
     # Food Handling Preferences and Dietary Restrictions
     food_handling_pork = forms.ChoiceField(
         label=_('Can you handle pork'),
@@ -1244,83 +1238,8 @@ class MainMaidCreationForm(forms.Form):
         required=False
     )
     
-    care_for_pets = forms.ChoiceField(
-        label=_('Care for pets'),
-        required=True,
-        choices=TrueFalseChoices('Able', 'Unable')
-    )
-    
-    gardening = forms.ChoiceField(
-        label=_('Gardening'),
-        required=True,
-        choices=TrueFalseChoices('Able', 'Unable')
-    )
-
     # Employment History
     employment_history_start_date_1 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_2 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_3 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_4 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_5 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_6 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_7 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_8 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_9 = forms.DateField(
-        label=_('Start Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_start_date_10 = forms.DateField(
         label=_('Start Date'),
         required=False,
         widget=CustomDateInput(),
@@ -1334,115 +1253,7 @@ class MainMaidCreationForm(forms.Form):
         input_formats=['%d %b %Y']
     )
     
-    employment_history_end_date_2 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_3 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_4 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_5 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_6 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_7 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_8 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_9 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
-    employment_history_end_date_10 = forms.DateField(
-        label=_('End Date'),
-        required=False,
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
-    
     employment_history_employer_1 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_2 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_3 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_4 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_5 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_6 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_7 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_8 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_9 = forms.CharField(
-        label=_('Country or Race of Employer'),
-        required=False
-    )
-    
-    employment_history_employer_10 = forms.CharField(
         label=_('Country or Race of Employer'),
         required=False
     )
@@ -1451,143 +1262,8 @@ class MainMaidCreationForm(forms.Form):
         label=_('Country'),
         required=False
     )
-    
-    employment_history_country_2 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_3 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_4 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_5 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_6 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_7 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_8 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_9 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
-    employment_history_country_10 = forms.CharField(
-        label=_('Country'),
-        required=False
-    )
-    
+
     employment_history_work_duties_1 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_2 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_3 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_4 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_5 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_6 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_7 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_8 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_9 = forms.CharField(
-        label=_('Work Duties'),
-        required=False,
-        widget=forms.Textarea(attrs={
-            'rows': '4',
-            'cols': '100',
-            'maxlength': '150'    
-        })
-    )
-    
-    employment_history_work_duties_10 = forms.CharField(
         label=_('Work Duties'),
         required=False,
         widget=forms.Textarea(attrs={
@@ -1606,6 +1282,40 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
+    employment_history_start_date_2 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_2 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_2 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_2 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_2 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
     
     employment_history_reason_for_leaving_2 = forms.CharField(
         label=_('Reason for Leaving'),
@@ -1614,6 +1324,40 @@ class MainMaidCreationForm(forms.Form):
             'rows': '4',
             'cols': '100',
             'maxlength': '100'    
+        })
+    )
+
+    employment_history_start_date_3 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_3 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_3 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_3 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_3 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
         })
     )
     
@@ -1626,6 +1370,40 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
+    employment_history_start_date_4 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_4 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_4 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_4 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_4 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
     
     employment_history_reason_for_leaving_4 = forms.CharField(
         label=_('Reason for Leaving'),
@@ -1636,7 +1414,41 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
+    employment_history_start_date_5 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
     
+    employment_history_end_date_5 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_5 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_5 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_5 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+
     employment_history_reason_for_leaving_5 = forms.CharField(
         label=_('Reason for Leaving'),
         required=False,
@@ -1644,6 +1456,40 @@ class MainMaidCreationForm(forms.Form):
             'rows': '4',
             'cols': '100',
             'maxlength': '100'    
+        })
+    )
+
+    employment_history_start_date_6 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_6 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_6 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_6 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_6 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
         })
     )
     
@@ -1656,7 +1502,41 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
+    employment_history_start_date_7 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
     
+    employment_history_end_date_7 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_7 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_7 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_7 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+
     employment_history_reason_for_leaving_7 = forms.CharField(
         label=_('Reason for Leaving'),
         required=False,
@@ -1664,6 +1544,40 @@ class MainMaidCreationForm(forms.Form):
             'rows': '4',
             'cols': '100',
             'maxlength': '100'    
+        })
+    )
+
+    employment_history_start_date_8 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_8 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_8 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_8 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_8 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
         })
     )
     
@@ -1676,6 +1590,40 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
+    employment_history_start_date_9 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_end_date_9 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_9 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_9 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_9 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
     
     employment_history_reason_for_leaving_9 = forms.CharField(
         label=_('Reason for Leaving'),
@@ -1686,7 +1634,41 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
+    employment_history_start_date_10 = forms.DateField(
+        label=_('Start Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
     
+    employment_history_end_date_10 = forms.DateField(
+        label=_('End Date'),
+        required=False,
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    employment_history_employer_10 = forms.CharField(
+        label=_('Country or Race of Employer'),
+        required=False
+    )
+    
+    employment_history_country_10 = forms.CharField(
+        label=_('Country'),
+        required=False
+    )
+
+    employment_history_work_duties_10 = forms.CharField(
+        label=_('Work Duties'),
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': '4',
+            'cols': '100',
+            'maxlength': '150'    
+        })
+    )
+
     employment_history_reason_for_leaving_10 = forms.CharField(
         label=_('Reason for Leaving'),
         required=False,
@@ -1696,6 +1678,7 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
+
     
     # Maid Loan
     maid_loan_hash_1 = forms.CharField(
@@ -2378,17 +2361,17 @@ class MainMaidCreationForm(forms.Form):
         required=False
     )
     
-    # Financial
-    salary = forms.DecimalField(
-        label=_('Expected Salary'),
-        max_digits=7,
-        decimal_places=2,
-        max_value=10000,
-        min_value=0,
-        required=True,
-        initial=0
+    # Remarks
+    remarks = forms.CharField(
+        label=_(''),
+        widget=forms.Textarea(attrs={
+            'rows': '10',
+            'cols': '100',
+            'maxlength': '300'    
+        }),
+        required=False
     )
-
+    
     # Override Field for the checking of duplicate fdws
     override = forms.BooleanField(
         widget=forms.HiddenInput(),
