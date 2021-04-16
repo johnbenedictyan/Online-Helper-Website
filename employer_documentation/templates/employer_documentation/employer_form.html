@@ -72,12 +72,14 @@
             let employerSpouseElements = document.querySelectorAll('.employer-spouse');
             let employerOnlyElements = document.querySelectorAll('.employer-only');
             let spouseOnlyElements = document.querySelectorAll('.spouse-only');
+            let sponsorWrapper = document.querySelector('#sponsors');
 
             // On load
             if (applicationSchemeSelector.value==='SPOUS') {
                 for (let el of employerSpouseElements) {
                     el.hidden = false;
                 }
+                sponsorWrapper.hidden = true;
             }
             else if (applicationSchemeSelector.value==='SINGL') {
                 for (let el of employerOnlyElements) {
@@ -86,10 +88,21 @@
                 for (let el of spouseOnlyElements) {
                     el.hidden = true;
                 }
+                sponsorWrapper.hidden = true;
+            }
+            else if (applicationSchemeSelector.value==='SPONS') {
+                for (let el of employerOnlyElements) {
+                    el.hidden = true;
+                }
+                for (let el of spouseOnlyElements) {
+                    el.hidden = true;
+                }
+                sponsorWrapper.hidden = false;
             } else {
                 for (let el of employerSpouseElements) {
                     el.hidden = true;
                 }
+                sponsorWrapper.hidden = true;
             }
 
             // On change
@@ -98,6 +111,7 @@
                     for (let el of employerSpouseElements) {
                         el.hidden = false;
                     }
+                    sponsorWrapper.hidden = true;
                 } else if (applicationSchemeSelector.value==='SINGL') {
                     for (let el of employerOnlyElements) {
                         el.hidden = false;
@@ -105,10 +119,21 @@
                     for (let el of spouseOnlyElements) {
                         el.hidden = true;
                     }
+                    sponsorWrapper.hidden = true;
+                }
+                else if (applicationSchemeSelector.value==='SPONS') {
+                    for (let el of employerOnlyElements) {
+                        el.hidden = true;
+                    }
+                    for (let el of spouseOnlyElements) {
+                        el.hidden = true;
+                    }
+                    sponsorWrapper.hidden = false;
                 } else {
                     for (let el of employerSpouseElements) {
                         el.hidden = true;
                     }
+                    sponsorWrapper.hidden = true;
                 }
             })
         }
