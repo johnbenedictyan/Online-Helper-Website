@@ -358,7 +358,6 @@ class EmployerCreateView(
     model = Employer
     form_class = EmployerForm
     template_name = 'employer_documentation/crispy_form.html'
-    success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -370,6 +369,11 @@ class EmployerCreateView(
         if self.agency_user_group==AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('employerdoc_create_route', kwargs={
+            'employer_pk': self.object.pk,
+        })
 
 class EmployerDocCreateView(
     CheckAgencyEmployeePermissionsMixin,
