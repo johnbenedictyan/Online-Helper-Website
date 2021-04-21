@@ -778,51 +778,51 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
 #     fields = ['country','start_date','end_date','work_duties',]
 # )
 
-class MaidEmploymentHistoryFormSetHelper(FormHelper):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.form_method = 'post'
-        self.layout = Layout(
-            HTML('''
-                <h5>Past employment {{ forloop.counter }}</h5>
-            '''),
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            'country',
-                            css_class='form-group col-12'
-                        ),
-                        Column(
-                            Field(
-                                'start_date',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Past employment start date'
-                            ),
-                            css_class='form-group col-12'
-                        ),
-                        Column(
-                            Field(
-                                'end_date',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Past employment end date'
-                            ),
-                            css_class='form-group col-12'
-                        ),
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    InlineCheckboxes('work_duties'),
-                    css_class='form-group col-md-6 work-duties'
-                ),
-                css_class='form-row'
-            ),
-            HTML('<hr>'),
-        )
-        self.render_required_fields = True
+# class MaidEmploymentHistoryFormSetHelper(FormHelper):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.form_method = 'post'
+#         self.layout = Layout(
+#             HTML('''
+#                 <h5>Past employment {{ forloop.counter }}</h5>
+#             '''),
+#             Row(
+#                 Column(
+#                     Row(
+#                         Column(
+#                             'country',
+#                             css_class='form-group col-12'
+#                         ),
+#                         Column(
+#                             Field(
+#                                 'start_date',
+#                                 type='text',
+#                                 onfocus="(this.type='date')",
+#                                 placeholder='Past employment start date'
+#                             ),
+#                             css_class='form-group col-12'
+#                         ),
+#                         Column(
+#                             Field(
+#                                 'end_date',
+#                                 type='text',
+#                                 onfocus="(this.type='date')",
+#                                 placeholder='Past employment end date'
+#                             ),
+#                             css_class='form-group col-12'
+#                         ),
+#                     ),
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     InlineCheckboxes('work_duties'),
+#                     css_class='form-group col-md-6 work-duties'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             HTML('<hr>'),
+#         )
+#         self.render_required_fields = True
 
 class MaidLoanTransactionForm(forms.ModelForm):
     class Meta:
