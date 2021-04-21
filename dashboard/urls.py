@@ -17,7 +17,7 @@ from .views import (
 from .views import DashboardAgencyDetail, DashboardMaidDetail
 
 ## Form Views
-from .views import DashboardMaidCreation
+from .views import DashboardMaidCreation, DashboardAgencyUpdate
 
 ## Create Views
 
@@ -91,6 +91,16 @@ urlpatterns = [
                 'maid',
                 DashboardMaidCreation.as_view(),
                 name='dashboard_maid_creation'
+            ),
+        ])
+    ),
+    path(
+        'update/',
+        include([
+            path(
+                'agency',
+                DashboardAgencyUpdate.as_view(),
+                name='dashboard_agency_update'
             ),
         ])
     ),

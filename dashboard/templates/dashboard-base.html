@@ -90,7 +90,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         {% with request.resolver_match.url_name as url_name %}
-                        <div id="dashboardSideNavWrapper" class="col-md-3 {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' %}col-lg-3{% else %}col-lg-2{% endif %} bg-light text-dark">
+                        <div id="dashboardSideNavWrapper" class="col-md-3 {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' %}col-lg-3{% else %}col-lg-2{% endif %} bg-light text-dark">
                             {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority name="Maid Create" %}
                         </div>
                         <div id="dashboardMainContentWrapper" class="col-md-9 col-lg-9 p-6">

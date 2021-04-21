@@ -15,7 +15,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 from .filters import AgencyFilter
 
 from .forms import (
-    AgencyCreationForm, AgencyBranchForm, AgencyEmployeeCreationForm,
+    AgencyForm, AgencyBranchForm, AgencyEmployeeCreationForm,
     AgencyOperatingHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
     AgencyEmployeeUpdateForm, PotentialAgencyForm
 )
@@ -66,7 +66,7 @@ class AgencyDetail(DetailView):
 class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
                    CreateView):
     context_object_name = 'agency'
-    form_class = AgencyCreationForm
+    form_class = AgencyForm
     http_method_names = ['get','post']
     model = Agency
     template_name = 'create/agency-create.html'
@@ -202,7 +202,7 @@ class AgencySignUp(SuccessMessageMixin, CreateView):
 class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, 
                    SuccessMessageMixin, UpdateView):
     context_object_name = 'agency'
-    form_class = AgencyCreationForm
+    form_class = AgencyForm
     http_method_names = ['get','post']
     model = Agency
     template_name = 'update/agency-update.html'

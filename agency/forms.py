@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
 from .models import (
@@ -23,15 +23,25 @@ from .models import (
 # Forms that inherit from inbuilt Django forms
 
 # Model Forms
-class AgencyCreationForm(forms.ModelForm):
+class AgencyForm(forms.ModelForm):
     class Meta:
         model = Agency
-        fields = ['name', 'license_number', 'company_email', 'sales_email', 'uen', 'website_uri', 'logo', 'qr_code', 'mission']
+        fields = ['name', 'license_number', 'company_email', 'sales_email', 
+                  'uen', 'website_uri', 'logo', 'qr_code', 'mission']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Agency Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='maidPhotoGroup'
+            ),
             Row(
                 Column(
                     'name',
@@ -859,4 +869,5 @@ class PotentialAgencyForm(forms.ModelForm):
                 self.add_error('email', msg)
 
         return super().save(*args, **kwargs)    
+
 # Generic Forms (forms.Form)

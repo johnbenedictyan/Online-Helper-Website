@@ -13,6 +13,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 
 # Imports from foreign installed apps
+from agency.forms import AgencyForm
 from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
@@ -261,7 +262,16 @@ class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
             return super().form_invalid(form)
         else:
             return super().form_valid(form)
-        
+
+class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                           SuccessMessageMixin, FormView):
+    form_class = AgencyForm
+    http_method_names = ['get','post']
+    success_url = reverse_lazy('dashboard_maid_detail')
+    template_name = 'form/agency-details-form.html'
+    authority = ''
+    agency_id = ''
+    
 # Create Views
         
 # Update Views
