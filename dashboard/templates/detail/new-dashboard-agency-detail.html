@@ -6,10 +6,10 @@
             <a href="{% url 'agency_update' %}" class="btn btn-primary">Update</a>
         </div>
     </div>
-    <div class="row mx-2 mb-5">
+    <div class="row mx-2 mb-5" id="agencyProfileGroup">
         <div class="col-4 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
-        <div class="col-4 offset-1 text-dark pt-4 pl-5">
+        <div class="col-4 offset-1 text-dark pt-4 pl-5" id="agencyInformationGroup">
             <h4>{{agency.name}}</h4>
             <p>License Number: {{agency.license_number}}</p>
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
@@ -17,7 +17,7 @@
     </div>
     <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" id="outletDetailsGroup">
             <div class="row">
                 <div class="col mb-lg-3 mb-xl-4">
                     <div class="row">
@@ -145,7 +145,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="openingHoursGroup">
             <h5>Opening Hours</h5>
             <p>Monday: </p>
             <p>Tuesday: </p>
@@ -156,11 +156,11 @@
             <p>Sunday: </p>
             <p>Public Holidays: </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" id="profileGroup">
             <h5>Profile</h5>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sit neque ducimus nemo ratione iste nesciunt magnam, nostrum excepturi ullam ipsa recusandae dolor iure non deserunt quos culpa velit veniam beatae debitis impedit suscipit itaque quo illum. Necessitatibus libero, iusto eos magnam, cumque corporis nobis veniam officia inventore doloremque ipsum.</p>
         </div>
-        <div class="col-md-4 offset-md-2">
+        <div class="col-md-4 offset-md-2" id="ourServicesGroup">
             <h5>Our Services</h5>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sit neque ducimus nemo ratione iste nesciunt magnam, nostrum excepturi ullam ipsa recusandae dolor iure non deserunt quos culpa velit veniam beatae debitis impedit suscipit itaque quo illum. Necessitatibus libero, iusto eos magnam, cumque corporis nobis veniam officia inventore doloremque ipsum.</p>
         </div>
