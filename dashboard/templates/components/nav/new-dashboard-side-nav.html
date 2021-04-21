@@ -210,5 +210,10 @@
         {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
         </div>
     {% endif %}
+    {% if url_name == 'dashboard_agency_detail' %}
+        <div class="col">   
+        {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
+        </div>
+    {% endif %}
     {% endwith %}
 </nav>
