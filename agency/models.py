@@ -465,9 +465,17 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
+    published = models.BooleanField(
+        editable=False,
+        default=False
+    )
+    
     def __str__(self):
         return self.ea_personnel_number + ' - ' + self.name
 
+    def get_ea_personnel_no(self):
+        return self.ea_personnel_number
+    
     class Meta:
         verbose_name = 'Agency Employee'
         verbose_name_plural = 'Agency Employees'

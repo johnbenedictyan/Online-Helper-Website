@@ -31,48 +31,70 @@
                 <a href="{% url 'agency_employee_create' %}" class="btn btn-lg btn-success mr-5 py-3">Add Sub Account</a>
             </div>
         </div>
-        <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
+        <div class="row bg-custom-light-blue text-dark mx-half py-3 border text-center">
             <div class="col-1">
                 <h6 class="mb-0">S/N</h6>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <h6 class="mb-0">Name</h6>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <h6 class="mb-0">Email</h6>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <h6 class="mb-0">EA Personnel No</h6>
             </div>
-            <div class="col-2">
-                <h6 class="mb-0">Account Type</h6>
+            <div class="col">
+                <h6 class="mb-0">Type</h6>
             </div>
-            <div class="col-1">
+            <div class="col">
+                <h6 class="mb-0">Branch</h6>
+            </div>
+            <div class="col">
                 <h6 class="mb-0">Last Login</h6>
             </div>
-            <div class="col-1 text-center">
+            <div class="col-1">
+                <h6 class="mb-0">Published</h6>
+            </div>
+            <div class="col-1">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
         {% for account in accounts %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
             <div class="col-1">
                 <p class="mb-0">{{account.pk}}</p>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <p class="mb-0">{{account.name}}</p>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <p class="mb-0">{{account.user.email}}</p>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <p class="mb-0">{{account.ea_personnel_number}}</p>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <p class="mb-0">{{account.get_role_display}}</p>
             </div>
-            <div class="col-1">
+            <div class="col">
                 <p class="mb-0">{{account.branch.name}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">Last Login</p>
+            </div>
+            <div class="col-1">
+                <p class="mb-0">
+                    {% if account.get_ea_personnel_no %}
+                        {% if account.published == True %}
+                        <i class="far fa-check-circle"></i>
+                        {% else %}
+                        <i class="far fa-times-circle"></i>
+                        {% endif %}
+                    {% else %}
+                    N.A.
+                    {% endif %}
+                </p>
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">

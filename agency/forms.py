@@ -27,7 +27,7 @@ class AgencyForm(forms.ModelForm):
     class Meta:
         model = Agency
         fields = ['name', 'license_number', 'company_email', 'sales_email', 
-                  'uen', 'website_uri', 'logo', 'qr_code', 'mission']
+                  'uen', 'website_uri', 'logo']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

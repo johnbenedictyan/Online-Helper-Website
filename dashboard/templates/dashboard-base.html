@@ -93,7 +93,7 @@
                         <div id="dashboardSideNavWrapper" class="col-md-3 {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' %}col-lg-3{% else %}col-lg-2{% endif %} bg-light text-dark">
                             {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority name="Maid Create" %}
                         </div>
-                        <div id="dashboardMainContentWrapper" class="col-md-9 col-lg-9 p-6">
+                        <div id="dashboardMainContentWrapper" class="col-md-9 {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' %}col-lg-9{% else %}col-lg-10{% endif %} p-6">
                             {% block dashboard_section %}
                             {% endblock dashboard_section %}
                         </div>
