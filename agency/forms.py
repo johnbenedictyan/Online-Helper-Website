@@ -330,6 +330,26 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
+    profile = forms.CharField(
+        label=_(''),
+        widget=forms.Textarea(attrs={
+            'rows': '10',
+            'cols': '100',
+            'maxlength': '300'    
+        }),
+        required=False
+    )
+    
+    services = forms.CharField(
+        label=_(''),
+        widget=forms.Textarea(attrs={
+            'rows': '10',
+            'cols': '100',
+            'maxlength': '300'    
+        }),
+        required=False
+    )
+
     class Meta:
         model = Agency
         fields = ['name', 'license_number', 'company_email', 'sales_email', 
@@ -678,22 +698,93 @@ class AgencyForm(forms.ModelForm):
             ),
             Div(
                 Column(
-                    HTML(
-                        '<h5>Profile</h5>'
-                    )
+                    'opening_hours_type',
+                    css_class='form-group col-md-6'
                 ),
-                css_class='row',
-                css_id='agencyProfileGroup'
+                Column(
+                    'opening_hours_monday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_tuesday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_wednesday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_thursday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_friday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_saturday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_sunday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_public_holiday',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='row form-group mb-xl-3'
             ),
             Div(
-                Column(
-                    HTML(
-                        '<h5>Our Services</h5>'
-                    )
+                Div(
+                    Div(
+                        Column(
+                            HTML(
+                                '<h5>Profile</h5>'
+                            )
+                        ),
+                        css_class='row',
+                        css_id='agencyProfileGroup'
+                    ),
+                    Div(
+                        Column(
+                            'profile'
+                        ),
+                        css_class='row form-group mb-xl-3'
+                    ),
+                    css_class='col'
                 ),
-                css_class='row',
-                css_id='agencyServicesGroup'
+                Div(
+                    Div(
+                        Column(
+                            HTML(
+                                '<h5>Our Services</h5>'
+                            )
+                        ),
+                        css_class='row',
+                        css_id='agencyServicesGroup'
+                    ),
+                    Div(
+                        Column(
+                            'services'
+                        ),
+                        css_class='row form-group mb-xl-3'
+                    ),
+                    css_class='col'
+                ),
+                css_class='row'
             ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
         )
 
 class AgencyOwnerCreationForm(forms.ModelForm):
