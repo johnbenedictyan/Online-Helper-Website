@@ -1678,7 +1678,6 @@ class MainMaidCreationForm(forms.Form):
             'maxlength': '100'    
         })
     )
-
     
     # Maid Loan
     maid_loan_hash_1 = forms.CharField(
@@ -4421,14 +4420,12 @@ class MaidCareForm(forms.Form):
         label=_('Willingness'),
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
-        
     )
 
     cfe_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
-        
     )
 
     cfe_remarks = forms.ChoiceField(
