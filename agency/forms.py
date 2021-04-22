@@ -330,30 +330,10 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
-    profile = forms.CharField(
-        label=_(''),
-        widget=forms.Textarea(attrs={
-            'rows': '10',
-            'cols': '100',
-            'maxlength': '300'    
-        }),
-        required=False
-    )
-    
-    services = forms.CharField(
-        label=_(''),
-        widget=forms.Textarea(attrs={
-            'rows': '10',
-            'cols': '100',
-            'maxlength': '300'    
-        }),
-        required=False
-    )
-
     class Meta:
         model = Agency
-        fields = ['name', 'license_number', 'company_email', 'sales_email', 
-                  'uen', 'website_uri', 'logo']
+        fields = ['name', 'license_number', 'email', 'website_uri', 'logo',
+                  'profile', 'services']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -391,6 +371,10 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'website_uri',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'email',
                     css_class='form-group col-md-6'
                 ),
                 css_class='row form-group mb-xl-3'
@@ -787,6 +771,86 @@ class AgencyForm(forms.ModelForm):
             )
         )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        branch_2_list = [
+            cleaned_data.get('branch_2_name'),
+            cleaned_data.get('branch_2_address_line_1'),
+            cleaned_data.get('branch_2_postal_code'),
+            cleaned_data.get('branch_2_email'),
+            cleaned_data.get('branch_2_office_number'),
+            cleaned_data.get('branch_2_mobile_number')
+        ]
+        
+        branch_3_list = [
+            cleaned_data.get('branch_3_name'),
+            cleaned_data.get('branch_3_address_line_1'),
+            cleaned_data.get('branch_3_postal_code'),
+            cleaned_data.get('branch_3_email'),
+            cleaned_data.get('branch_3_office_number'),
+            cleaned_data.get('branch_3_mobile_number')
+        ]
+        
+        branch_4_list = [
+            cleaned_data.get('branch_4_name'),
+            cleaned_data.get('branch_4_address_line_1'),
+            cleaned_data.get('branch_4_postal_code'),
+            cleaned_data.get('branch_4_email'),
+            cleaned_data.get('branch_4_office_number'),
+            cleaned_data.get('branch_4_mobile_number')
+        ]
+        
+        branch_5_list = [
+            cleaned_data.get('branch_5_name'),
+            cleaned_data.get('branch_5_address_line_1'),
+            cleaned_data.get('branch_5_postal_code'),
+            cleaned_data.get('branch_5_email'),
+            cleaned_data.get('branch_5_office_number'),
+            cleaned_data.get('branch_5_mobile_number')
+        ]
+        
+        if len(branch_2_list) > 0 and len(branch_2_list) < 6:
+            msg = 'Information for Branch 2 is incomplete'
+            self.add_error('branch_2_name', msg)
+            self.add_error('branch_2_address_line_1', msg)
+            self.add_error('branch_2_postal_code', msg)
+            self.add_error('branch_2_email', msg)
+            self.add_error('branch_2_office_number', msg)
+            self.add_error('branch_2_mobile_number', msg)       
+        
+        if len(branch_3_list) > 0 and len(branch_3_list) < 6:
+            msg = 'Information for Branch 3 is incomplete'
+            self.add_error('branch_3_name', msg)
+            self.add_error('branch_3_address_line_1', msg)
+            self.add_error('branch_3_postal_code', msg)
+            self.add_error('branch_3_email', msg)
+            self.add_error('branch_3_office_number', msg)
+            self.add_error('branch_3_mobile_number', msg)     
+        
+        if len(branch_4_list) > 0 and len(branch_4_list) < 6:
+            msg = 'Information for Branch 4 is incomplete'
+            self.add_error('branch_4_name', msg)
+            self.add_error('branch_4_address_line_1', msg)
+            self.add_error('branch_4_postal_code', msg)
+            self.add_error('branch_4_email', msg)
+            self.add_error('branch_4_office_number', msg)
+            self.add_error('branch_4_mobile_number', msg)
+        
+        if len(branch_5_list) > 0 and len(branch_5_list) < 6:
+            msg = 'Information for Branch 5 is incomplete'
+            self.add_error('branch_5_name', msg)
+            self.add_error('branch_5_address_line_1', msg)
+            self.add_error('branch_5_postal_code', msg)
+            self.add_error('branch_5_email', msg)
+            self.add_error('branch_5_office_number', msg)
+            self.add_error('branch_5_mobile_number', msg)   
+        
+        return cleaned_data
+    
+    def save(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
+        new_agency = super().save()
+        
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),

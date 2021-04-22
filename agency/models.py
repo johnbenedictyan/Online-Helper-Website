@@ -22,13 +22,8 @@ from .validators import validate_postcode
 # Start of Models
 
 class Agency(models.Model):
-    company_email = models.EmailField(
+    email = models.EmailField(
         verbose_name=_('Company Email Address'),
-        blank=False
-    )
-
-    sales_email = models.EmailField(
-        verbose_name=_('Company Sales Email Address'),
         blank=False
     )
 
@@ -63,21 +58,14 @@ class Agency(models.Model):
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
 
-    uen = models.CharField(
-        verbose_name=_('Company\'s UEN code'),
-        max_length=10,
+
+    profile = models.TextField(
+        verbose_name=_('Profile'),
         blank=False
     )
-
-    qr_code = models.FileField(
-        verbose_name=_('Website QR Code'),
-        blank=True,
-        null=True,
-        storage=PublicMediaStorage() if settings.USE_S3 else None
-    )
-
-    mission = models.TextField(
-        verbose_name=_('Mission Statement'),
+    
+    services = models.TextField(
+        verbose_name=_('Services'),
         blank=False
     )
     
