@@ -32,13 +32,13 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
-    branch_1_address_line_1 = forms.CharField(
+    branch_1_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
         required=True
     )
     
-    branch_1_address_line_2 = forms.CharField(
+    branch_1_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
         required=True
@@ -68,7 +68,7 @@ class AgencyForm(forms.ModelForm):
         required=True
     )
     
-    branch_1_main = forms.ChoiceField(
+    branch_1_main_branch = forms.ChoiceField(
         label=_('Branch Type'),
         choices=TrueFalseChoices(
             _('Main Branch'),
@@ -82,13 +82,13 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
-    branch_2_address_line_1 = forms.CharField(
+    branch_2_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
         required=True
     )
     
-    branch_2_address_line_2 = forms.CharField(
+    branch_2_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
         required=True
@@ -118,7 +118,7 @@ class AgencyForm(forms.ModelForm):
         required=True
     )
     
-    branch_2_main = forms.ChoiceField(
+    branch_2_main_branch = forms.ChoiceField(
         label=_('Branch Type'),
         choices=TrueFalseChoices(
             _('Main Branch'),
@@ -132,13 +132,13 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
-    branch_3_address_line_1 = forms.CharField(
+    branch_3_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
         required=True
     )
     
-    branch_3_address_line_2 = forms.CharField(
+    branch_3_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
         required=True
@@ -168,7 +168,7 @@ class AgencyForm(forms.ModelForm):
         required=True
     )
     
-    branch_3_main = forms.ChoiceField(
+    branch_3_main_branch = forms.ChoiceField(
         label=_('Branch Type'),
         choices=TrueFalseChoices(
             _('Main Branch'),
@@ -182,13 +182,13 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
-    branch_4_address_line_1 = forms.CharField(
+    branch_4_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
         required=True
     )
     
-    branch_4_address_line_2 = forms.CharField(
+    branch_4_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
         required=True
@@ -218,7 +218,7 @@ class AgencyForm(forms.ModelForm):
         required=True
     )
     
-    branch_4_main = forms.ChoiceField(
+    branch_4_main_branch = forms.ChoiceField(
         label=_('Branch Type'),
         choices=TrueFalseChoices(
             _('Main Branch'),
@@ -232,13 +232,13 @@ class AgencyForm(forms.ModelForm):
         required=False
     )
     
-    branch_5_address_line_1 = forms.CharField(
+    branch_5_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
         required=True
     )
     
-    branch_5_address_line_2 = forms.CharField(
+    branch_5_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
         required=True
@@ -268,7 +268,7 @@ class AgencyForm(forms.ModelForm):
         required=True
     )
     
-    branch_5_main = forms.ChoiceField(
+    branch_5_main_branch = forms.ChoiceField(
         label=_('Branch Type'),
         choices=TrueFalseChoices(
             _('Main Branch'),
@@ -410,11 +410,11 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_1_address_line_1',
+                            'branch_1_address_1',
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_1_address_line_2',
+                            'branch_1_address_2',
                             css_class='col-md-6'
                         ),
                         Column(
@@ -434,7 +434,7 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_1_main',
+                            'branch_1_main_branch',
                             css_class='col-md-6'
                         ),
                     )
@@ -464,11 +464,11 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_2_address_line_1',
+                            'branch_2_address_1',
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_2_address_line_2',
+                            'branch_2_address_2',
                             css_class='col-md-6'
                         ),
                         Column(
@@ -488,7 +488,7 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_2_main',
+                            'branch_2_main_branch',
                             css_class='col-md-6'
                         ),
                     )
@@ -518,11 +518,11 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_3_address_line_1',
+                            'branch_3_address_1',
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_3_address_line_2',
+                            'branch_3_address_2',
                             css_class='col-md-6'
                         ),
                         Column(
@@ -542,7 +542,7 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_3_main',
+                            'branch_3_main_branch',
                             css_class='col-md-6'
                         ),
                     )
@@ -572,11 +572,11 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_4_address_line_1',
+                            'branch_4_address_1',
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_4_address_line_2',
+                            'branch_4_address_2',
                             css_class='col-md-6'
                         ),
                         Column(
@@ -596,7 +596,7 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_4_main',
+                            'branch_4_main_branch',
                             css_class='col-md-6'
                         ),
                     )
@@ -626,11 +626,11 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_5_address_line_1',
+                            'branch_5_address_1',
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_5_address_line_2',
+                            'branch_5_address_2',
                             css_class='col-md-6'
                         ),
                         Column(
@@ -650,7 +650,7 @@ class AgencyForm(forms.ModelForm):
                             css_class='col-md-6'
                         ),
                         Column(
-                            'branch_5_main',
+                            'branch_5_main_branch',
                             css_class='col-md-6'
                         ),
                     )
@@ -775,7 +775,7 @@ class AgencyForm(forms.ModelForm):
         cleaned_data = super().clean()
         branch_2_list = [
             cleaned_data.get('branch_2_name'),
-            cleaned_data.get('branch_2_address_line_1'),
+            cleaned_data.get('branch_2_address_1'),
             cleaned_data.get('branch_2_postal_code'),
             cleaned_data.get('branch_2_email'),
             cleaned_data.get('branch_2_office_number'),
@@ -784,7 +784,7 @@ class AgencyForm(forms.ModelForm):
         
         branch_3_list = [
             cleaned_data.get('branch_3_name'),
-            cleaned_data.get('branch_3_address_line_1'),
+            cleaned_data.get('branch_3_address_1'),
             cleaned_data.get('branch_3_postal_code'),
             cleaned_data.get('branch_3_email'),
             cleaned_data.get('branch_3_office_number'),
@@ -793,7 +793,7 @@ class AgencyForm(forms.ModelForm):
         
         branch_4_list = [
             cleaned_data.get('branch_4_name'),
-            cleaned_data.get('branch_4_address_line_1'),
+            cleaned_data.get('branch_4_address_1'),
             cleaned_data.get('branch_4_postal_code'),
             cleaned_data.get('branch_4_email'),
             cleaned_data.get('branch_4_office_number'),
@@ -802,17 +802,25 @@ class AgencyForm(forms.ModelForm):
         
         branch_5_list = [
             cleaned_data.get('branch_5_name'),
-            cleaned_data.get('branch_5_address_line_1'),
+            cleaned_data.get('branch_5_address_1'),
             cleaned_data.get('branch_5_postal_code'),
             cleaned_data.get('branch_5_email'),
             cleaned_data.get('branch_5_office_number'),
             cleaned_data.get('branch_5_mobile_number')
         ]
         
+        branch_main_list = [
+            cleaned_data.get('branch_1_main_branch'),
+            cleaned_data.get('branch_2_main_branch'),
+            cleaned_data.get('branch_3_main_branch'),
+            cleaned_data.get('branch_4_main_branch'),
+            cleaned_data.get('branch_5_main_branch')
+        ]
+        
         if len(branch_2_list) > 0 and len(branch_2_list) < 6:
             msg = 'Information for Branch 2 is incomplete'
             self.add_error('branch_2_name', msg)
-            self.add_error('branch_2_address_line_1', msg)
+            self.add_error('branch_2_address_1', msg)
             self.add_error('branch_2_postal_code', msg)
             self.add_error('branch_2_email', msg)
             self.add_error('branch_2_office_number', msg)
@@ -821,7 +829,7 @@ class AgencyForm(forms.ModelForm):
         if len(branch_3_list) > 0 and len(branch_3_list) < 6:
             msg = 'Information for Branch 3 is incomplete'
             self.add_error('branch_3_name', msg)
-            self.add_error('branch_3_address_line_1', msg)
+            self.add_error('branch_3_address_1', msg)
             self.add_error('branch_3_postal_code', msg)
             self.add_error('branch_3_email', msg)
             self.add_error('branch_3_office_number', msg)
@@ -830,7 +838,7 @@ class AgencyForm(forms.ModelForm):
         if len(branch_4_list) > 0 and len(branch_4_list) < 6:
             msg = 'Information for Branch 4 is incomplete'
             self.add_error('branch_4_name', msg)
-            self.add_error('branch_4_address_line_1', msg)
+            self.add_error('branch_4_address_1', msg)
             self.add_error('branch_4_postal_code', msg)
             self.add_error('branch_4_email', msg)
             self.add_error('branch_4_office_number', msg)
@@ -839,18 +847,101 @@ class AgencyForm(forms.ModelForm):
         if len(branch_5_list) > 0 and len(branch_5_list) < 6:
             msg = 'Information for Branch 5 is incomplete'
             self.add_error('branch_5_name', msg)
-            self.add_error('branch_5_address_line_1', msg)
+            self.add_error('branch_5_address_1', msg)
             self.add_error('branch_5_postal_code', msg)
             self.add_error('branch_5_email', msg)
             self.add_error('branch_5_office_number', msg)
             self.add_error('branch_5_mobile_number', msg)   
         
+        if branch_main_list.count(True) > 1:
+            msg = 'There can only be one main branch'
+            no_of_branches = len(branch_main_list)
+            for i in range(1,no_of_branches+1):
+                self.add_error(f'branch_{i}_main_branch', msg)
+            
+        if branch_main_list.count(True) == 0:
+            msg = 'There must be one main branch'
+            for i in range(1,6):
+                self.add_error(f'branch_{i}_main_branch', msg)
+            
         return cleaned_data
     
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         new_agency = super().save()
+        if cleaned_data.get('branch_1_name'):
+            obj, created = AgencyBranch.objects.update_or_create(
+                agency=new_agency,
+                name=cleaned_data.get('branch_1_name'),
+                address_1=cleaned_data.get('branch_1_address_1'),
+                address_2=cleaned_data.get('branch_1_address_2'),
+                postal_code=cleaned_data.get('branch_1_postal_code'),
+                office_number=cleaned_data.get('branch_1_office_number'),
+                mobile_number=cleaned_data.get('branch_1_mobile_number'),
+                main_branch=cleaned_data.get('branch_1_main_branch')
+            )
+            
+        if cleaned_data.get('branch_2_name'):
+            obj, created = AgencyBranch.objects.update_or_create(
+                agency=new_agency,
+                name=cleaned_data.get('branch_2_name'),
+                address_1=cleaned_data.get('branch_2_address_1'),
+                address_2=cleaned_data.get('branch_2_address_2'),
+                postal_code=cleaned_data.get('branch_2_postal_code'),
+                office_number=cleaned_data.get('branch_2_office_number'),
+                mobile_number=cleaned_data.get('branch_2_mobile_number'),
+                main_branch=cleaned_data.get('branch_2_main_branch')
+            )
+            
+        if cleaned_data.get('branch_3_name'):
+            obj, created = AgencyBranch.objects.update_or_create(
+                agency=new_agency,
+                name=cleaned_data.get('branch_3_name'),
+                address_1=cleaned_data.get('branch_3_address_1'),
+                address_2=cleaned_data.get('branch_3_address_2'),
+                postal_code=cleaned_data.get('branch_3_postal_code'),
+                office_number=cleaned_data.get('branch_3_office_number'),
+                mobile_number=cleaned_data.get('branch_3_mobile_number'),
+                main_branch=cleaned_data.get('branch_3_main_branch')
+            )
+            
+        if cleaned_data.get('branch_4_name'):
+            obj, created = AgencyBranch.objects.update_or_create(
+                agency=new_agency,
+                name=cleaned_data.get('branch_4_name'),
+                address_1=cleaned_data.get('branch_4_address_1'),
+                address_2=cleaned_data.get('branch_4_address_2'),
+                postal_code=cleaned_data.get('branch_4_postal_code'),
+                office_number=cleaned_data.get('branch_4_office_number'),
+                mobile_number=cleaned_data.get('branch_4_mobile_number'),
+                main_branch=cleaned_data.get('branch_4_main_branch')
+            )
+            
+        if cleaned_data.get('branch_5_name'):
+            obj, created = AgencyBranch.objects.update_or_create(
+                agency=new_agency,
+                name=cleaned_data.get('branch_5_name'),
+                address_1=cleaned_data.get('branch_5_address_1'),
+                address_2=cleaned_data.get('branch_5_address_2'),
+                postal_code=cleaned_data.get('branch_5_postal_code'),
+                office_number=cleaned_data.get('branch_5_office_number'),
+                mobile_number=cleaned_data.get('branch_5_mobile_number'),
+                main_branch=cleaned_data.get('branch_5_main_branch')
+            )
         
+        obj, created = AgencyOpeningHours.objects.update_or_create(
+                agency=new_agency,
+                type=cleaned_data.get('opening_hours_type'),
+                monday=cleaned_data.get('opening_hours_monday'),
+                tuesday=cleaned_data.get('opening_hours_tuesday'),
+                wednesday=cleaned_data.get('opening_hours_wednesday'),
+                thursday=cleaned_data.get('opening_hours_thursday'),
+                friday=cleaned_data.get('opening_hours_friday'),
+                saturday=cleaned_data.get('opening_hours_saturday'),
+                sunday=cleaned_data.get('opening_hours_sunday'),
+                public_holiday=cleaned_data.get('opening_hours_public_holiday')
+            )
+            
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),
