@@ -12,7 +12,9 @@ from onlinemaid.helper_functions import get_sg_region
 from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
-from .constants import AreaChoices, AgencyEmployeeRoleChoices
+from .constants import (
+    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursChoices
+)
 from .validators import validate_postcode
 
 # Utiliy Classes and Functions
@@ -142,7 +144,7 @@ class Agency(models.Model):
         editable=False
     )
 
-    operating_hours_complete = models.BooleanField(
+    opening_hours_complete = models.BooleanField(
         default=False,
         editable=False
     )
@@ -170,24 +172,20 @@ class Agency(models.Model):
         verbose_name_plural = 'Agencies'
         
 # Models which are one to one with Agency
-class AgencyOperatingHours(models.Model):
-    class OperatingHoursChoices(models.TextChoices):
-        OPENING_HOURS = 'OH', _('Opening Hours')
-        APPOINTMENT_ONLY = 'AO', _('Appointment Only')
-
+class AgencyOpeningHours(models.Model):
     agency = models.OneToOneField(
         Agency,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name='operating_hours'
+        related_name='opening_hours'
     )
 
-    operating_type = models.CharField(
+    type = models.CharField(
         verbose_name=_('Agency\'s operating hours type'),
         max_length=2,
         blank=False,
-        choices=OperatingHoursChoices.choices,
-        default=OperatingHoursChoices.OPENING_HOURS
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.OPENING_HOURS
     )
 
     monday = models.CharField(

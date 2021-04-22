@@ -13,8 +13,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
+from onlinemaid.constants import TrueFalseChoices
+from .constants import OpeningHoursChoices
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
     AgencyOwner, PotentialAgency
 )
 
@@ -24,6 +26,310 @@ from .models import (
 
 # Model Forms
 class AgencyForm(forms.ModelForm):
+    branch_1_name = forms.CharField(
+        label=_('Branch Name'),
+        max_length=100,
+        required=False
+    )
+    
+    branch_1_address_line_1 = forms.CharField(
+        label=_('Address Line 1'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_1_address_line_2 = forms.CharField(
+        label=_('Address Line 2'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_1_postal_code = forms.CharField(
+        label=_('Postal Code'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_1_email = forms.CharField(
+        label=_('Email'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_1_office_number = forms.CharField(
+        label=_('Office No'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_1_mobile_number = forms.CharField(
+        label=_('Mobile Number'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_1_main = forms.ChoiceField(
+        label=_('Branch Type'),
+        choices=TrueFalseChoices(
+            _('Main Branch'),
+            _('Normal Branch'),
+        )
+    )
+    
+    branch_2_name = forms.CharField(
+        label=_('Branch Name'),
+        max_length=100,
+        required=False
+    )
+    
+    branch_2_address_line_1 = forms.CharField(
+        label=_('Address Line 1'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_2_address_line_2 = forms.CharField(
+        label=_('Address Line 2'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_2_postal_code = forms.CharField(
+        label=_('Postal Code'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_2_email = forms.CharField(
+        label=_('Email'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_2_office_number = forms.CharField(
+        label=_('Office No'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_2_mobile_number = forms.CharField(
+        label=_('Mobile Number'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_2_main = forms.ChoiceField(
+        label=_('Branch Type'),
+        choices=TrueFalseChoices(
+            _('Main Branch'),
+            _('Normal Branch'),
+        )
+    )
+    
+    branch_3_name = forms.CharField(
+        label=_('Branch Name'),
+        max_length=100,
+        required=False
+    )
+    
+    branch_3_address_line_1 = forms.CharField(
+        label=_('Address Line 1'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_3_address_line_2 = forms.CharField(
+        label=_('Address Line 2'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_3_postal_code = forms.CharField(
+        label=_('Postal Code'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_3_email = forms.CharField(
+        label=_('Email'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_3_office_number = forms.CharField(
+        label=_('Office No'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_3_mobile_number = forms.CharField(
+        label=_('Mobile Number'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_3_main = forms.ChoiceField(
+        label=_('Branch Type'),
+        choices=TrueFalseChoices(
+            _('Main Branch'),
+            _('Normal Branch'),
+        )
+    )
+    
+    branch_4_name = forms.CharField(
+        label=_('Branch Name'),
+        max_length=100,
+        required=False
+    )
+    
+    branch_4_address_line_1 = forms.CharField(
+        label=_('Address Line 1'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_4_address_line_2 = forms.CharField(
+        label=_('Address Line 2'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_4_postal_code = forms.CharField(
+        label=_('Postal Code'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_4_email = forms.CharField(
+        label=_('Email'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_4_office_number = forms.CharField(
+        label=_('Office No'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_4_mobile_number = forms.CharField(
+        label=_('Mobile Number'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_4_main = forms.ChoiceField(
+        label=_('Branch Type'),
+        choices=TrueFalseChoices(
+            _('Main Branch'),
+            _('Normal Branch'),
+        )
+    )
+    
+    branch_5_name = forms.CharField(
+        label=_('Branch Name'),
+        max_length=100,
+        required=False
+    )
+    
+    branch_5_address_line_1 = forms.CharField(
+        label=_('Address Line 1'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_5_address_line_2 = forms.CharField(
+        label=_('Address Line 2'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_5_postal_code = forms.CharField(
+        label=_('Postal Code'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_5_email = forms.CharField(
+        label=_('Email'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_5_office_number = forms.CharField(
+        label=_('Office No'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_5_mobile_number = forms.CharField(
+        label=_('Mobile Number'),
+        max_length=100,
+        required=True
+    )
+    
+    branch_5_main = forms.ChoiceField(
+        label=_('Branch Type'),
+        choices=TrueFalseChoices(
+            _('Main Branch'),
+            _('Normal Branch')
+        )
+    )
+    
+    opening_hours_type = forms.ChoiceField(
+        label=_('Agency\'s operating hours type'),
+        required=True,
+        choices=OpeningHoursChoices.choices,
+    )
+
+    opening_hours_monday = forms.CharField(
+        label=_('Monday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_tuesday = forms.CharField(
+        label=_('Tuesday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_wednesday = forms.CharField(
+        label=_('Wednesday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_thursday = forms.CharField(
+        label=_('Thursday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_friday = forms.CharField(
+        label=_('Friday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_saturday = forms.CharField(
+        label=_('Saturday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_sunday = forms.CharField(
+        label=_('Sunday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_public_holiday = forms.CharField(
+        label=_('Public holiday opening hours'),
+        max_length=30,
+        required=False
+    )
+    
     class Meta:
         model = Agency
         fields = ['name', 'license_number', 'company_email', 'sales_email', 
@@ -31,6 +337,14 @@ class AgencyForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        branch_display_map = {
+            'branch_1_display': '',
+            'branch_2_display': 'd-none',
+            'branch_3_display': 'd-none',
+            'branch_4_display': 'd-none',
+            'branch_5_display': 'd-none'
+        }
+        agencyBranchRowNumber = 1
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -40,9 +354,13 @@ class AgencyForm(forms.ModelForm):
                     )
                 ),
                 css_class='row',
-                css_id='maidPhotoGroup'
+                css_id='agencyInformationGroup'
             ),
-            Row(
+            Div(
+                Column(
+                    'logo',
+                    css_class='form-group col-md-6'
+                ),
                 Column(
                     'name',
                     css_class='form-group col-md-6'
@@ -51,59 +369,331 @@ class AgencyForm(forms.ModelForm):
                     'license_number',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'company_email',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'sales_email',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'uen',
-                    css_class='form-group col-md-6'
-                ),
                 Column(
                     'website_uri',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                css_class='row form-group mb-xl-3'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Outlet Details</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyOutletDetailsGroup'
             ),
             Row(
                 Column(
-                    'logo',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'qr_code',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'mission',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="1"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
                     ),
-                    css_class='form-group col-12 text-center'
+                    Row(
+                        Column(
+                            'branch_1_name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_address_line_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_address_line_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_1_main',
+                            css_class='col-md-6'
+                        ),
+                    )
                 ),
-                css_class='form-row'
-            )
+                css_class=f'{branch_display_map["branch_1_display"]} form-group',
+                css_id='branch_section_1'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="2"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            'branch_2_name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_address_line_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_address_line_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_2_main',
+                            css_class='col-md-6'
+                        ),
+                    )
+                ),
+                css_class=f'{branch_display_map["branch_2_display"]} form-group',
+                css_id='branch_section_2'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="3"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            'branch_3_name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_address_line_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_address_line_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_3_main',
+                            css_class='col-md-6'
+                        ),
+                    )
+                ),
+                css_class=f'{branch_display_map["branch_3_display"]} form-group',
+                css_id='branch_section_3'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="4"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            'branch_4_name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_address_line_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_address_line_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_4_main',
+                            css_class='col-md-6'
+                        ),
+                    )
+                ),
+                css_class=f'{branch_display_map["branch_4_display"]} form-group',
+                css_id='branch_section_4'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="5"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            'branch_5_name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_address_line_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_address_line_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'branch_5_main',
+                            css_class='col-md-6'
+                        ),
+                    )
+                ),
+                css_class=f'{branch_display_map["branch_5_display"]} form-group',
+                css_id='branch_section_5'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        f'''
+                        <a class="btn btn-primary"
+                        id="agencyBranchAdditionButton" 
+                        data-rowNumber="{agencyBranchRowNumber}">
+                        Add new branch
+                        </a>'''
+                    ),
+                    css_class='col-12 text-right mb-xl-3'
+                )
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Opening Hours</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyOpeningHoursGroup'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Profile</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyProfileGroup'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Our Services</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyServicesGroup'
+            ),
         )
 
 class AgencyOwnerCreationForm(forms.ModelForm):
@@ -635,9 +1225,9 @@ class AgencyBranchForm(forms.ModelForm):
             )
         )
 
-class AgencyOperatingHoursForm(forms.ModelForm):
+class AgencyOpeningHoursForm(forms.ModelForm):
     class Meta:
-        model = AgencyOperatingHours
+        model = AgencyOpeningHours
         exclude = ['agency']
 
     def __init__(self, *args, **kwargs):
@@ -646,7 +1236,7 @@ class AgencyOperatingHoursForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'operating_type',
+                    'type',
                     css_class='form-group col'
                 ),
                 css_class='form-row'

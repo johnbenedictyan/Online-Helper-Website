@@ -13,13 +13,13 @@ from payment.models import Customer
 
 # Imports from within the app
 from .models import (
-    Agency, AgencyBranch, AgencyOperatingHours, PotentialAgency, AgencyEmployee
+    Agency, AgencyBranch, AgencyOpeningHours, PotentialAgency, AgencyEmployee
 )
 
 # Utiliy Classes and Functions
 def agency_completed(agency):
     """ This function will check if the branch_complete and
-        operating_hours_complete booleans are True.
+        opening_hours_complete booleans are True.
         If they are both true then the function will set the agency complete
         field to True.
 
@@ -28,7 +28,7 @@ def agency_completed(agency):
     """
     if(
         agency.branch_complete == True and 
-        agency.operating_hours_complete == True
+        agency.opening_hours_complete == True
     ):
         agency.complete = True
         agency.save()
@@ -62,30 +62,30 @@ def agency_location_completed(sender, instance, created, **kwargs):
         
             if(
                 agency.branch_complete == True and 
-                agency.operating_hours_complete == True
+                agency.opening_hours_complete == True
             ):
                 agency.complete = True
                 agency.save()
             else:
                 agency.save()
 
-@receiver(post_save, sender=AgencyOperatingHours)
-def agency_operating_hours_completed(sender, instance, created, **kwargs):
+@receiver(post_save, sender=AgencyOpeningHours)
+def agency_opening_hours_completed(sender, instance, created, **kwargs):
     if created == False:
         agency = instance.agency
-        operating_hours_values = list(instance.__dict__.values())
+        opening_hours_values = list(instance.__dict__.values())
         
-        if '' in operating_hours_values:
-            operating_hours_valid = False
+        if '' in opening_hours_values:
+            opening_hours_valid = False
         else:
-            operating_hours_valid = True
+            opening_hours_valid = True
         
-        if operating_hours_valid == True:
-            agency.operating_hours_complete = operating_hours_valid
+        if opening_hours_valid == True:
+            agency.opening_hours_complete = opening_hours_valid
         
             if(
                 agency.branch_complete == True and 
-                agency.operating_hours_complete == True
+                agency.opening_hours_complete == True
             ):
                 agency.complete = True
                 agency.save()

@@ -180,46 +180,46 @@
                                 <h3 class="custom-card__header">Operating Hours</h3>
                             </div>
                             <div class="col d-none d-md-block">
-                                <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-primary float-right mr-1">Modify Operating Hours</a>
+                                <a href="{% url 'agency_opening_hours_update' %}" class="btn btn-primary float-right mr-1">Modify Operating Hours</a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <h6 class="text-muted">Monday</h6>
-                                <p>{{agency.operating_hours.monday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.monday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Tuesday</h6>
-                                <p>{{agency.operating_hours.tuesday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.tuesday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Wednesday</h6>
-                                <p>{{agency.operating_hours.wednesday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.wednesday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Thursday</h6>
-                                <p>{{agency.operating_hours.thursday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.thursday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Friday</h6>
-                                <p>{{agency.operating_hours.friday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.friday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Saturday</h6>
-                                <p>{{agency.operating_hours.saturday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.saturday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Sunday</h6>
-                                <p>{{agency.operating_hours.sunday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.sunday|default:"Not Completed"}}</p>
                             </div>
                             <div class="col-md-3">
                                 <h6 class="text-muted">Public Holidays</h6>
-                                <p>{{agency.operating_hours.public_holiday|default:"Not Completed"}}</p>
+                                <p>{{agency.opening_hours.public_holiday|default:"Not Completed"}}</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col d-md-none">
-                                <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-primary w-100">Modify Operating Hours</a>
+                                <a href="{% url 'agency_opening_hours_update' %}" class="btn btn-primary w-100">Modify Operating Hours</a>
                             </div>
                         </div>
                     </div>

@@ -16,12 +16,12 @@ from .filters import AgencyFilter
 
 from .forms import (
     AgencyForm, AgencyBranchForm, AgencyEmployeeCreationForm,
-    AgencyOperatingHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
+    AgencyOpeningHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
     AgencyEmployeeUpdateForm, PotentialAgencyForm
 )
 
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
     AgencyOwner, PotentialAgency
 )
 
@@ -79,7 +79,7 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
             agency=self.object,
             main_branch=True
         )
-        AgencyOperatingHours.objects.create(
+        AgencyOpeningHours.objects.create(
             agency=self.object
         )
         
@@ -238,12 +238,12 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
         })
         return kwargs
 
-class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
+class AgencyOpeningHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
                                  SuccessMessageMixin, UpdateView):
-    context_object_name = 'agency_operating_hours'
-    form_class = AgencyOperatingHoursForm
+    context_object_name = 'agency_opening_hours'
+    form_class = AgencyOpeningHoursForm
     http_method_names = ['get','post']
-    model = AgencyOperatingHours
+    model = AgencyOpeningHours
     template_name = 'update/agency-operating-hours-update.html'
     success_url = reverse_lazy('dashboard_agency_detail')
     authority = ''
@@ -251,7 +251,7 @@ class AgencyOperatingHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
     success_message = 'Agency operating hours updated'
 
     def get_object(self, queryset=None):
-        return AgencyOperatingHours.objects.get(
+        return AgencyOpeningHours.objects.get(
             agency__pk = self.agency_id
         )
 
