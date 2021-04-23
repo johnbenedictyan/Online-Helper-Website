@@ -109,6 +109,29 @@ class Employer(models.Model):
         verbose_name=_('Postal Code'),
         max_length=25,
     )
+    spouse_name = models.CharField(
+        verbose_name=_('Spouse Name'),
+        max_length=40,
+        blank=True,
+        null=True,
+        default=None,
+    )
+    spouse_nric = models.BinaryField(
+        verbose_name=_('Spouse NRIC/FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_nric_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_nric_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
 
     def get_nric_full(self):
         return decrypt_string(
@@ -130,6 +153,14 @@ class Employer(models.Model):
 
     def get_email_partial(self):
         return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
+
+    def get_spouse_nric_full(self):
+        return decrypt_string(
+            self.spouse_nric,
+            settings.ENCRYPTION_KEY,
+            self.spouse_nric_nonce,
+            self.spouse_nric_tag
+        )
 
 class EmployerSponsor(models.Model):
     employer = models.OneToOneField(
@@ -952,45 +983,12 @@ class EmployerDoc(models.Model):
         blank=True,
         null=True,
     )
-    spouse_required = models.BooleanField(
-        verbose_name=_("Is spouse requried?"),
-        editable=False,
-        choices=TrueFalseChoices(
-            _('Yes, spouse required'),
-            _('No, spouse not required'),
-        ),
-        default=False,
-    )
     application_scheme = models.CharField(
         verbose_name=_("Application scheme"),
         max_length=5,
         choices=SCHEME_CHOICES,
         default=SCHEME_CHOICES[0][0],
     )
-    spouse_name = models.CharField(
-        verbose_name=_('Spouse Name'),
-        max_length=40,
-        blank=True,
-        null=True,
-        default=None,
-    )
-    spouse_nric = models.BinaryField(
-        verbose_name=_('Spouse NRIC/FIN'),
-        editable=True,
-        blank=True,
-        null=True,
-    )
-    spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True,
-    )
-    spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True,
-    )
-    
 
     # Service Fee Schedule
     b1_service_fee = models.DecimalField(
@@ -1508,14 +1506,6 @@ class EmployerDoc(models.Model):
 
     def get_version(self):
         return str(self.version).zfill(4)
-
-    def get_spouse_nric_full(self):
-        return decrypt_string(
-            self.spouse_nric,
-            settings.ENCRYPTION_KEY,
-            self.spouse_nric_nonce,
-            self.spouse_nric_tag
-        )
 
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
