@@ -85,37 +85,37 @@ class AgencyForm(forms.ModelForm):
     branch_2_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_2_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_2_postal_code = forms.CharField(
         label=_('Postal Code'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_2_email = forms.CharField(
         label=_('Email'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_2_office_number = forms.CharField(
         label=_('Office No'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_2_mobile_number = forms.CharField(
         label=_('Mobile Number'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_2_main_branch = forms.ChoiceField(
@@ -123,7 +123,8 @@ class AgencyForm(forms.ModelForm):
         choices=TrueFalseChoices(
             _('Main Branch'),
             _('Normal Branch'),
-        )
+        ),
+        initial=False
     )
     
     branch_3_name = forms.CharField(
@@ -135,37 +136,37 @@ class AgencyForm(forms.ModelForm):
     branch_3_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_3_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_3_postal_code = forms.CharField(
         label=_('Postal Code'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_3_email = forms.CharField(
         label=_('Email'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_3_office_number = forms.CharField(
         label=_('Office No'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_3_mobile_number = forms.CharField(
         label=_('Mobile Number'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_3_main_branch = forms.ChoiceField(
@@ -173,7 +174,8 @@ class AgencyForm(forms.ModelForm):
         choices=TrueFalseChoices(
             _('Main Branch'),
             _('Normal Branch'),
-        )
+        ),
+        initial=False
     )
     
     branch_4_name = forms.CharField(
@@ -185,37 +187,37 @@ class AgencyForm(forms.ModelForm):
     branch_4_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_4_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_4_postal_code = forms.CharField(
         label=_('Postal Code'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_4_email = forms.CharField(
         label=_('Email'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_4_office_number = forms.CharField(
         label=_('Office No'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_4_mobile_number = forms.CharField(
         label=_('Mobile Number'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_4_main_branch = forms.ChoiceField(
@@ -223,7 +225,8 @@ class AgencyForm(forms.ModelForm):
         choices=TrueFalseChoices(
             _('Main Branch'),
             _('Normal Branch'),
-        )
+        ),
+        initial=False
     )
     
     branch_5_name = forms.CharField(
@@ -235,37 +238,37 @@ class AgencyForm(forms.ModelForm):
     branch_5_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_5_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_5_postal_code = forms.CharField(
         label=_('Postal Code'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_5_email = forms.CharField(
         label=_('Email'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_5_office_number = forms.CharField(
         label=_('Office No'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_5_mobile_number = forms.CharField(
         label=_('Mobile Number'),
         max_length=100,
-        required=True
+        required=False
     )
     
     branch_5_main_branch = forms.ChoiceField(
@@ -273,7 +276,8 @@ class AgencyForm(forms.ModelForm):
         choices=TrueFalseChoices(
             _('Main Branch'),
             _('Normal Branch')
-        )
+        ),
+        initial=False
     )
     
     opening_hours_type = forms.ChoiceField(
@@ -345,6 +349,10 @@ class AgencyForm(forms.ModelForm):
             'branch_5_display': 'd-none'
         }
         agencyBranchRowNumber = 1
+        # self.initial['branch_2_main_branch'] = False
+        # self.initial['branch_3_main_branch'] = False
+        # self.initial['branch_4_main_branch'] = False
+        # self.initial['branch__main_branch'] = False
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -816,8 +824,18 @@ class AgencyForm(forms.ModelForm):
             cleaned_data.get('branch_4_main_branch'),
             cleaned_data.get('branch_5_main_branch')
         ]
+        print(len(branch_2_list))
+        print(len(branch_3_list))
+        print(len(branch_4_list))
+        print(len(branch_5_list))
+        print(branch_2_list)
+        print(branch_3_list)
+        print(branch_4_list)
+        print(branch_5_list)
+        print(branch_main_list)
+
         
-        if len(branch_2_list) > 0 and len(branch_2_list) < 6:
+        if branch_2_list.count('') < 6:
             msg = 'Information for Branch 2 is incomplete'
             self.add_error('branch_2_name', msg)
             self.add_error('branch_2_address_1', msg)
@@ -826,7 +844,7 @@ class AgencyForm(forms.ModelForm):
             self.add_error('branch_2_office_number', msg)
             self.add_error('branch_2_mobile_number', msg)       
         
-        if len(branch_3_list) > 0 and len(branch_3_list) < 6:
+        if branch_3_list.count('') < 6:
             msg = 'Information for Branch 3 is incomplete'
             self.add_error('branch_3_name', msg)
             self.add_error('branch_3_address_1', msg)
@@ -835,7 +853,7 @@ class AgencyForm(forms.ModelForm):
             self.add_error('branch_3_office_number', msg)
             self.add_error('branch_3_mobile_number', msg)     
         
-        if len(branch_4_list) > 0 and len(branch_4_list) < 6:
+        if branch_4_list.count('') < 6:
             msg = 'Information for Branch 4 is incomplete'
             self.add_error('branch_4_name', msg)
             self.add_error('branch_4_address_1', msg)
@@ -844,7 +862,7 @@ class AgencyForm(forms.ModelForm):
             self.add_error('branch_4_office_number', msg)
             self.add_error('branch_4_mobile_number', msg)
         
-        if len(branch_5_list) > 0 and len(branch_5_list) < 6:
+        if branch_5_list.count('') < 6:
             msg = 'Information for Branch 5 is incomplete'
             self.add_error('branch_5_name', msg)
             self.add_error('branch_5_address_1', msg)
@@ -853,13 +871,13 @@ class AgencyForm(forms.ModelForm):
             self.add_error('branch_5_office_number', msg)
             self.add_error('branch_5_mobile_number', msg)   
         
-        if branch_main_list.count(True) > 1:
+        if branch_main_list.count('True') > 1:
             msg = 'There can only be one main branch'
             no_of_branches = len(branch_main_list)
             for i in range(1,no_of_branches+1):
                 self.add_error(f'branch_{i}_main_branch', msg)
             
-        if branch_main_list.count(True) == 0:
+        if branch_main_list.count('True') == 0:
             msg = 'There must be one main branch'
             for i in range(1,6):
                 self.add_error(f'branch_{i}_main_branch', msg)

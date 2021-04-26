@@ -43,7 +43,7 @@ class AgencyList(ListFilteredMixin, ListView):
     http_method_names = ['get']
     model = Agency
     template_name = 'list/agency-list.html'
-    queryset = Agency.objects.filter(complete=True)
+    queryset = Agency.objects.filter(active=True)
     filter_set = AgencyFilter
     paginate_by = settings.AGENCY_PAGINATE_BY
     ordering = ['name']
@@ -72,18 +72,6 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
     template_name = 'create/agency-create.html'
     success_url = reverse_lazy('admin_panel')
     success_message = 'Agency created'
-
-    def form_valid(self, form):
-        super().form_valid(form)
-        AgencyBranch.objects.create(
-            agency=self.object,
-            main_branch=True
-        )
-        AgencyOpeningHours.objects.create(
-            agency=self.object
-        )
-        
-        return HttpResponseRedirect(self.get_success_url())
 
 class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
                          SuccessMessageMixin, CreateView):
