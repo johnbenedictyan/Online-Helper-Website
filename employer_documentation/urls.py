@@ -24,8 +24,8 @@ from .views import (
     EmployerCreateView,
     EmployerDocCreateView,
     EmployerPaymentTransactionCreateView,
-    EmployerDocSponsorCreateView,
-    EmployerDocJointApplicantCreateView,
+    # EmployerDocSponsorCreateView,
+    # EmployerDocJointApplicantCreateView,
 )
 
 ## Update Views
@@ -37,8 +37,8 @@ from .views import (
     EmployerDocMaidDeploymentUpdateView,
     JobOrderUpdateView,
     EmployerPaymentTransactionUpdateView,
-    EmployerDocSponsorUpdateView,
-    EmployerDocJointApplicantUpdateView,
+    # EmployerDocSponsorUpdateView,
+    # EmployerDocJointApplicantUpdateView,
 )
 
 ## Delete Views
@@ -158,26 +158,26 @@ urlpatterns = [
                                         JobOrderUpdateView.as_view(),
                                         name='joborder_update_route'
                                     ),
-                                    path(
-                                        'sponsor/create/',
-                                        EmployerDocSponsorCreateView.as_view(),
-                                        name='employerdoc_sponsor_create_route'
-                                    ),
-                                    path(
-                                        'sponsor/<int:employersubdoc_pk>/update/',
-                                        EmployerDocSponsorUpdateView.as_view(),
-                                        name='employerdoc_sponsor_update_route'
-                                    ),
-                                    path(
-                                        'joint-applicants/create/',
-                                        EmployerDocJointApplicantCreateView.as_view(),
-                                        name='employerdoc_joint_applicants_create_route'
-                                    ),
-                                    path(
-                                        'joint-applicants/<int:employersubdoc_pk>/update/',
-                                        EmployerDocJointApplicantUpdateView.as_view(),
-                                        name='employerdoc_joint_applicants_update_route'
-                                    ),
+                                    # path(
+                                    #     'sponsor/create/',
+                                    #     EmployerDocSponsorCreateView.as_view(),
+                                    #     name='employerdoc_sponsor_create_route'
+                                    # ),
+                                    # path(
+                                    #     'sponsor/<int:employersubdoc_pk>/update/',
+                                    #     EmployerDocSponsorUpdateView.as_view(),
+                                    #     name='employerdoc_sponsor_update_route'
+                                    # ),
+                                    # path(
+                                    #     'joint-applicants/create/',
+                                    #     EmployerDocJointApplicantCreateView.as_view(),
+                                    #     name='employerdoc_joint_applicants_create_route'
+                                    # ),
+                                    # path(
+                                    #     'joint-applicants/<int:employersubdoc_pk>/update/',
+                                    #     EmployerDocJointApplicantUpdateView.as_view(),
+                                    #     name='employerdoc_joint_applicants_update_route'
+                                    # ),
                                     path(
                                         'payment/list/',
                                         EmployerPaymentTransactionListView.as_view(),

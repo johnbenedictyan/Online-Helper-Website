@@ -27,8 +27,8 @@ from .models import (
     EmployerDocSig,
     JobOrder,
     EmployerPaymentTransaction,
-    EmployerDocSponsor,
-    EmployerDocJointApplicant,
+    EmployerSponsor,
+    EmployerJointApplicant,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -1706,9 +1706,9 @@ class JobOrderForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
-class EmployerDocSponsorForm(forms.ModelForm):
+class EmployerSponsorForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocSponsor
+        model = EmployerSponsor
         exclude = ['employer_doc',
             'sponsor_1_nric_nonce',
             'sponsor_1_nric_tag',
@@ -2294,9 +2294,9 @@ class EmployerDocSponsorForm(forms.ModelForm):
         )
         return ciphertext
 
-class EmployerDocJointApplicantForm(forms.ModelForm):
+class EmployerJointApplicantForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocJointApplicant
+        model = EmployerJointApplicant
         exclude = [
             'employer_doc',
             'joint_applicant_nonce_nric',
