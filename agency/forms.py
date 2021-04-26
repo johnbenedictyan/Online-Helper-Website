@@ -824,16 +824,6 @@ class AgencyForm(forms.ModelForm):
             cleaned_data.get('branch_4_main_branch'),
             cleaned_data.get('branch_5_main_branch')
         ]
-        print(len(branch_2_list))
-        print(len(branch_3_list))
-        print(len(branch_4_list))
-        print(len(branch_5_list))
-        print(branch_2_list)
-        print(branch_3_list)
-        print(branch_4_list)
-        print(branch_5_list)
-        print(branch_main_list)
-
         
         if branch_2_list.count('') < 6:
             msg = 'Information for Branch 2 is incomplete'
@@ -959,6 +949,7 @@ class AgencyForm(forms.ModelForm):
                 sunday=cleaned_data.get('opening_hours_sunday'),
                 public_holiday=cleaned_data.get('opening_hours_public_holiday')
             )
+        return new_agency
             
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
