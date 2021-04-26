@@ -145,30 +145,6 @@ class Maid(models.Model):
         editable=False
     )
 
-    complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    biodata_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    family_details_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
     published = models.BooleanField(
         default=False,
         blank=False
