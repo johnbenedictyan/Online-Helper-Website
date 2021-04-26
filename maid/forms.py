@@ -4155,6 +4155,9 @@ class MainMaidCreationForm(forms.Form):
 
     def clean_passport_number(self):
         passport_number = self.cleaned_data.get('passport_number')
+        print(self.cleaned_data.get('passport_status'))
+        self.add_error('passport_number', 'asd')
+        # if self.cleaned_data.get('passport_status') == ''
         validate_passport_number(passport_number)
         return passport_number
 
@@ -4225,21 +4228,16 @@ class MainMaidCreationForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         name = cleaned_data.get('name')
-        raw_passport_number = cleaned_data.get('passport_number')
         date_of_birth = cleaned_data.get('date_of_birth')
         country_of_origin = cleaned_data.get('country_of_origin')
         place_of_birth = cleaned_data.get('place_of_birth')
-        encrypted_passport_number, nonce, tag = encrypt_string(
-            raw_passport_number,
-            settings.ENCRYPTION_KEY
-        )
         override = cleaned_data.get('override')
         possible_duplicate_maids = Maid.objects.filter(
             agency__pk=self.agency_id,
             name__trigram_similar = name,
-            date_of_birth = date_of_birth,
-            country_of_origin = country_of_origin,
-            place_of_birth__trigram_similar = place_of_birth
+            personal_details__date_of_birth = date_of_birth,
+            personal_details__country_of_origin = country_of_origin,
+            personal_details__place_of_birth__trigram_similar = place_of_birth
         )
         # This value 3 should be a threshold settings
         if possible_duplicate_maids.count() < 3 and override != True:
@@ -4251,9 +4249,12 @@ class MainMaidCreationForm(forms.Form):
                     {i.name}
                     </a>
                 """
+            self.data = self.data.copy()
             self.data['override'] = True
             self.add_error(None, msg)
 
+        return cleaned_data
+    
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         
