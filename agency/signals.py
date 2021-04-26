@@ -108,7 +108,7 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
                     'state': None,
                 },
                 description = f'Customer account for {agency.name}',
-                email=agency.company_email,
+                email=agency.email,
                 name=agency.name,
                 invoice_settings={
                     'custom_fields': None,
