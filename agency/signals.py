@@ -17,80 +17,80 @@ from .models import (
 )
 
 # Utiliy Classes and Functions
-def agency_completed(agency):
-    """ This function will check if the branch_complete and
-        opening_hours_complete booleans are True.
-        If they are both true then the function will set the agency complete
-        field to True.
+# def agency_completed(agency):
+#     """ This function will check if the branch_complete and
+#         opening_hours_complete booleans are True.
+#         If they are both true then the function will set the agency complete
+#         field to True.
 
-    Args:
-        agency ([obj]): [The agency model object]
-    """
-    if(
-        agency.branch_complete == True and 
-        agency.opening_hours_complete == True
-    ):
-        agency.complete = True
-        agency.save()
+#     Args:
+#         agency ([obj]): [The agency model object]
+#     """
+#     if(
+#         agency.branch_complete == True and 
+#         agency.opening_hours_complete == True
+#     ):
+#         agency.complete = True
+#         agency.save()
 
 
 # Start of Signals
-@receiver(post_save, sender=Agency)
-def agency_created(sender, instance, created, **kwargs):
-    if created == True:
-        try:
-            pa = PotentialAgency.objects.get(
-                license_number = instance.license_number
-            )
-        except PotentialAgency.DoesNotExist as e:
-            print(e)
-        else:
-            pa.delete()
+# @receiver(post_save, sender=Agency)
+# def agency_created(sender, instance, created, **kwargs):
+#     if created == True:
+#         try:
+#             pa = PotentialAgency.objects.get(
+#                 license_number = instance.license_number
+#             )
+#         except PotentialAgency.DoesNotExist as e:
+#             print(e)
+#         else:
+#             pa.delete()
 
-@receiver(post_save, sender=AgencyBranch)
-def agency_location_completed(sender, instance, created, **kwargs):
-    if created == False:
-        agency = instance.agency
-        branch_values = list(instance.__dict__.values())
-        if '' in branch_values:
-            branch_valid = False
-        else:
-            branch_valid = True
+# @receiver(post_save, sender=AgencyBranch)
+# def agency_location_completed(sender, instance, created, **kwargs):
+#     if created == False:
+#         agency = instance.agency
+#         branch_values = list(instance.__dict__.values())
+#         if '' in branch_values:
+#             branch_valid = False
+#         else:
+#             branch_valid = True
         
-        if branch_valid == True:
-            agency.branch_complete = branch_valid
+#         if branch_valid == True:
+#             agency.branch_complete = branch_valid
         
-            if(
-                agency.branch_complete == True and 
-                agency.opening_hours_complete == True
-            ):
-                agency.complete = True
-                agency.save()
-            else:
-                agency.save()
+#             if(
+#                 agency.branch_complete == True and 
+#                 agency.opening_hours_complete == True
+#             ):
+#                 agency.complete = True
+#                 agency.save()
+#             else:
+#                 agency.save()
 
-@receiver(post_save, sender=AgencyOpeningHours)
-def agency_opening_hours_completed(sender, instance, created, **kwargs):
-    if created == False:
-        agency = instance.agency
-        opening_hours_values = list(instance.__dict__.values())
+# @receiver(post_save, sender=AgencyOpeningHours)
+# def agency_opening_hours_completed(sender, instance, created, **kwargs):
+#     if created == False:
+#         agency = instance.agency
+#         opening_hours_values = list(instance.__dict__.values())
         
-        if '' in opening_hours_values:
-            opening_hours_valid = False
-        else:
-            opening_hours_valid = True
+#         if '' in opening_hours_values:
+#             opening_hours_valid = False
+#         else:
+#             opening_hours_valid = True
         
-        if opening_hours_valid == True:
-            agency.opening_hours_complete = opening_hours_valid
+#         if opening_hours_valid == True:
+#             agency.opening_hours_complete = opening_hours_valid
         
-            if(
-                agency.branch_complete == True and 
-                agency.opening_hours_complete == True
-            ):
-                agency.complete = True
-                agency.save()
-            else:
-                agency.save()
+#             if(
+#                 agency.branch_complete == True and 
+#                 agency.opening_hours_complete == True
+#             ):
+#                 agency.complete = True
+#                 agency.save()
+#             else:
+#                 agency.save()
 
 @receiver(post_save, sender=Agency)
 def stripe_customer_created_or_update(sender, instance, created, **kwargs):

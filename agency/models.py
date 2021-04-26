@@ -122,21 +122,6 @@ class Agency(models.Model):
         editable=False
     )
 
-    complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
-    branch_complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
-    opening_hours_complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
     def __str__(self):
         return self.name
 
