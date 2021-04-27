@@ -3,10 +3,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-10 text-right">
-            <a href="{% url 'agency_update' %}" class="btn btn-primary">Update</a>
+            <a href="{% url 'dashboard_agency_update' %}" class="btn btn-primary">Update</a>
         </div>
     </div>
-    <div class="row mx-2 mb-5" id="agencyProfileGroup">
+    <div class="row mx-2 mb-5">
         <div class="col-4 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
         <div class="col-4 offset-1 text-dark pt-4 pl-5" id="agencyInformationGroup">
@@ -17,7 +17,7 @@
     </div>
     <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
     <div class="row">
-        <div class="col-md-6" id="outletDetailsGroup">
+        <div class="col-md-6" id="agencyOutletDetailsGroup">
             <div class="row">
                 <div class="col mb-lg-3 mb-xl-4">
                     <div class="row">
@@ -33,107 +33,23 @@
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col">
+                                <div class="col-2">
                                     Office No:
                                 </div>
                                 <div class="col">
-        
+                                    {{agency.get_main_office.office_number}}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
+                                <div class="col-2">
                                     Mobile No:
                                 </div>
                                 <div class="col">
-                                    
+                                    {{agency.get_main_office.mobile_number}}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
-                                    EA Personnel:
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col mb-lg-3 mb-xl-4">
-                    <div class="row">
-                        <div class="col">
-                            <h5>Main Branch</h5>
-                            <p>
-                                {{agency.get_main_office.address_1}} <br>
-                                {{agency.get_main_office.address_2}} <br>
-                                Singapore {{agency.get_main_office.postal_code}}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    Office No:
-                                </div>
-                                <div class="col">
-        
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    Mobile No:
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    EA Personnel:
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col mb-lg-3 mb-xl-4">
-                    <div class="row">
-                        <div class="col">
-                            <h5>Main Branch</h5>
-                            <p>
-                                {{agency.get_main_office.address_1}} <br>
-                                {{agency.get_main_office.address_2}} <br>
-                                Singapore {{agency.get_main_office.postal_code}}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    Office No:
-                                </div>
-                                <div class="col">
-        
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    Mobile No:
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
+                                <div class="col-2">
                                     EA Personnel:
                                 </div>
                                 <div class="col">
@@ -145,24 +61,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6" id="openingHoursGroup">
+        <div class="col-md-6" id="agencyOpeningHoursGroup">
             <h5>Opening Hours</h5>
-            <p>Monday: </p>
-            <p>Tuesday: </p>
-            <p>Wednesday: </p>
-            <p>Thursday: </p>
-            <p>Friday: </p>
-            <p>Saturday: </p>
-            <p>Sunday: </p>
-            <p>Public Holidays: </p>
+            <p>Monday: {{agency.opening_hours.monday}}</p>
+            <p>Tuesday: {{agency.opening_hours.tuesday}}</p>
+            <p>Wednesday: {{agency.opening_hours.wednesday}}</p>
+            <p>Thursday: {{agency.opening_hours.thursday}}</p>
+            <p>Friday: {{agency.opening_hours.friday}}</p>
+            <p>Saturday: {{agency.opening_hours.saturday}}</p>
+            <p>Sunday: {{agency.opening_hours.sunday}}</p>
+            <p>Public Holidays: {{agency.opening_hours.public_holiday}}</p>
         </div>
-        <div class="col-md-4" id="profileGroup">
+        <div class="col-md-4" id="agencyProfileGroup">
             <h5>Profile</h5>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sit neque ducimus nemo ratione iste nesciunt magnam, nostrum excepturi ullam ipsa recusandae dolor iure non deserunt quos culpa velit veniam beatae debitis impedit suscipit itaque quo illum. Necessitatibus libero, iusto eos magnam, cumque corporis nobis veniam officia inventore doloremque ipsum.</p>
+            <p>{{agency.profile}}</p>
         </div>
-        <div class="col-md-4 offset-md-2" id="ourServicesGroup">
+        <div class="col-md-4 offset-md-2" id="agencyServicesGroup">
             <h5>Our Services</h5>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sit neque ducimus nemo ratione iste nesciunt magnam, nostrum excepturi ullam ipsa recusandae dolor iure non deserunt quos culpa velit veniam beatae debitis impedit suscipit itaque quo illum. Necessitatibus libero, iusto eos magnam, cumque corporis nobis veniam officia inventore doloremque ipsum.</p>
+            <p>{{agency.services}}</p>
         </div>
     </div>
 </div>

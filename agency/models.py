@@ -58,7 +58,6 @@ class Agency(models.Model):
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
 
-
     profile = models.TextField(
         verbose_name=_('Profile'),
         blank=False
@@ -323,6 +322,11 @@ class AgencyBranch(models.Model):
         verbose_name=_('Main Branch'),
         choices=MAIN_BRANCH_CHOICES,
         default=True
+    )
+    
+    email = models.EmailField(
+        verbose_name=_('Branch Email Address'),
+        blank=False
     )
 
     def __str__(self):

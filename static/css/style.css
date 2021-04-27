@@ -124,24 +124,30 @@ button.mini-faq-button i {
   color: black !important;
 }
 
-.new-side-nav-link.active {
-  background-color: #0571bb;
+.new-side-nav-link a {
+  color: black !important;
 }
 
-.new-side-nav-link.active p {
-  color: #fff;
+.new-side-nav-link.active {
+  background-color: #0571bb;
+  color: #fff !important;
+}
+
+.new-side-nav-link.active a {
+  color: #fff !important;
 }
 
 .new-side-nav-link:hover:not(.active) {
   background-color: #0571bb;
+  color: #fff !important;
   -webkit-transition: background-color .5s ease-in-out;
   transition: background-color .5s ease-in-out;
   -webkit-transition: color .5s ease-in-out;
   transition: color .5s ease-in-out;
 }
 
-.new-side-nav-link:hover:not(.active) p {
-  color: #fff;
+.new-side-nav-link:hover:not(.active) a {
+  color: #fff !important;
 }
 
 .mini-side-nav-link.active {

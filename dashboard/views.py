@@ -10,11 +10,13 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, UpdateView
 
 # Imports from foreign installed apps
 from agency.forms import AgencyForm
-from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
+from agency.models import (
+    Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
+)
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
@@ -261,15 +263,101 @@ class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
         else:
             return super().form_valid(form)
 
-class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                           SuccessMessageMixin, FormView):
+class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                            SuccessMessageMixin, UpdateView):
+    context_object_name = 'agency'
     form_class = AgencyForm
     http_method_names = ['get','post']
-    success_url = reverse_lazy('dashboard_maid_detail')
-    template_name = 'form/agency-details-form.html'
+    model = Agency
+    template_name = 'update/agency-details-form.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
     authority = ''
     agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.agency_id
+    )
     
+    def get_form_kwargs(self):
+        kwargs =  super().get_form_kwargs()
+        branch_count = AgencyBranch.objects.filter(
+            agency__pk=self.agency_id
+        ).count()
+        
+        branch_1_display = 'd-none'
+        branch_2_display = 'd-none'
+        branch_3_display = 'd-none'
+        branch_4_display = 'd-none'
+        branch_5_display = 'd-none'
+        
+        if branch_count == 1:
+            branch_1_display = ''
+        elif branch_count == 2:
+            branch_1_display = ''
+            branch_2_display = ''
+        elif branch_count == 3:
+            branch_1_display = ''
+            branch_2_display = ''
+            branch_3_display = ''
+        elif branch_count == 4:
+            branch_1_display = ''
+            branch_2_display = ''
+            branch_3_display = ''
+            branch_4_display = ''
+        elif branch_count == 5:
+            branch_1_display = ''
+            branch_2_display = ''
+            branch_3_display = ''
+            branch_4_display = ''
+            branch_5_display = ''
+            
+        branch_display_map = {
+                'branch_1_display': branch_1_display,
+                'branch_2_display': branch_2_display,
+                'branch_3_display': branch_3_display,
+                'branch_4_display': branch_4_display,
+                'branch_5_display': branch_5_display
+            }
+        kwargs.update({
+            'branch_display_map': branch_display_map,
+            'agency_branch_row_number': branch_count
+        })
+        return kwargs
+    
+    def get_initial(self):
+        initial =  super().get_initial()
+        branch_list = AgencyBranch.objects.filter(
+            agency__pk=self.agency_id
+        )
+        branch_count = branch_list.count()
+        for index, element in enumerate(list(branch_list),1):
+            initial[f'branch_{index}_name'] = element.name
+            initial[f'branch_{index}_address_1'] = element.address_1
+            initial[f'branch_{index}_address_2'] = element.address_2
+            initial[f'branch_{index}_postal_code'] = element.postal_code
+            initial[f'branch_{index}_email'] = element.email
+            initial[f'branch_{index}_office_number'] = element.office_number
+            initial[f'branch_{index}_mobile_number'] = element.mobile_number
+            initial[f'branch_{index}_main'] = element.main_branch
+            initial[f'branch_{index}_id'] = element.id
+        
+        opening_hours = AgencyOpeningHours.objects.get(
+            agency__pk=self.agency_id
+        )
+        initial['opening_hours_type'] = opening_hours.type
+        initial['opening_hours_monday'] = opening_hours.monday
+        initial['opening_hours_tuesday'] = opening_hours.tuesday
+        initial['opening_hours_wednesday'] = opening_hours.wednesday
+        initial['opening_hours_thursday'] = opening_hours.thursday
+        initial['opening_hours_friday'] = opening_hours.friday
+        initial['opening_hours_saturday'] = opening_hours.saturday
+        initial['opening_hours_sunday'] = opening_hours.sunday
+        initial['opening_hours_public_holiday'] = opening_hours.public_holiday
+
+        return initial
+
 # Create Views
         
 # Update Views

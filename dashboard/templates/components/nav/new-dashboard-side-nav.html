@@ -1,6 +1,6 @@
 <nav class="row sticky-top">
     {% with request.resolver_match.url_name as url_name %}
-    <div class="collapse show col px-0" id="dashboardMainSideNavbar">
+    <div class="collapse show col" id="dashboardMainSideNavbar">
         <div class="row">
             <div class="col" style="height: 2.5rem;">
                 &nbsp;
@@ -8,7 +8,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}">
                     <div class="col-11">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
                             <p class="m-1 pl-2">Dashboard</p>
@@ -19,31 +19,31 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}">
                             <p class="m-1 pl-2">FDW Biodata</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
-                        <a class="text-reset" data-toggle="collapse" href="#fdwManagementDropdownNav" role="button" aria-expanded="true" aria-controls="fdwManagementDropdownNav">
-                            <i class="fas fa-angle-double-down"></i>
+                        <a class="navToggler" data-toggle="collapse" href="#fdwManagementDropdownNav" role="button" aria-expanded="true" aria-controls="fdwManagementDropdownNav">
+                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_maid_detail' %}down{% else %}right{% endif %}"></i>
                         </a>
                     </div>
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_maid_list' or url_name == 'dashboard_maid_creation' %}show{% endif %}" id="fdwManagementDropdownNav">
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_creation' %}active{% endif %}">
                         <a href="{% url 'dashboard_maid_creation' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_creation' %}active{% endif %}">
                             <p class="m-1 pl-4">Add FDW</p>
                         </a>
                     </div>
-                    <div class="col-12">
-                        <a href="{% url 'dashboard_maid_list' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_detail' %}active{% endif %}">
+                        <a class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">FDW Profile</p>
                         </a>
                     </div>
-                    <div class="col-12">
-                        <a href="{% url 'dashboard_maid_list' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}">
+                        <a class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Update FDW</p>
                         </a>
                     </div>
@@ -53,15 +53,15 @@
         {% if authority == 'Agency Owners' %}
         <div class="row">
             <div class="col">
-                <div class="row">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}">
                             <p class="m-1 pl-2">Employee Accounts</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
-                        <a class="text-reset" data-toggle="collapse" href="#accountManagementDropdownNav" role="button" aria-expanded="true" aria-controls="accountManagementDropdownNav">
-                            <i class="fas fa-angle-double-down"></i>
+                        <a class="navToggler" data-toggle="collapse" href="#accountManagementDropdownNav" role="button" aria-expanded="true" aria-controls="accountManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
                         </a>
                     </div>  
                 </div>
@@ -71,7 +71,7 @@
                             <p class="m-1 pl-5">Add Employee</p>
                         </a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}">
                         <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-5">Update Employees</p>
                         </a>
@@ -81,15 +81,15 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}" href="{% url 'dashboard_agency_detail' %}">
                             <p class="m-1 pl-2">Agency Profile</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
-                        <a class="text-reset" data-toggle="collapse" href="#agencyProfileManagementDropdownNav" role="button" aria-expanded="true" aria-controls="agencyProfileManagementDropdownNav">
-                            <i class="fas fa-angle-double-down"></i>
+                        <a class="navToggler" data-toggle="collapse" href="#agencyProfileManagementDropdownNav" role="button" aria-expanded="true" aria-controls="agencyProfileManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
                         </a>
                     </div>  
                 </div>
@@ -105,15 +105,15 @@
         {% endif %}
         <div class="row">
             <div class="col">
-                <div class="row">
+                <div class="row new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}">
                             <p class="m-1 pl-2">Employers</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
-                        <a class="text-reset" data-toggle="collapse" href="#employersManagementDropdownNav" role="button" aria-expanded="true" aria-controls="employersManagementDropdownNav">
-                            <i class="fas fa-angle-double-down"></i>
+                        <a class="navToggler" data-toggle="collapse" href="#employersManagementDropdownNav" role="button" aria-expanded="true" aria-controls="employersManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
                         </a>
                     </div>  
                 </div>
@@ -138,15 +138,15 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row">
+                <div class="row new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}">
                             <p class="m-1 pl-2">Case</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
-                        <a class="text-reset" data-toggle="collapse" href="#caseManagementDropdownNav" role="button" aria-expanded="true" aria-controls="caseManagementDropdownNav">
-                            <i class="fas fa-angle-double-down"></i>
+                        <a class="navToggler" data-toggle="collapse" href="#caseManagementDropdownNav" role="button" aria-expanded="true" aria-controls="caseManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
                         </a>
                     </div>  
                 </div>

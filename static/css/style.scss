@@ -163,21 +163,26 @@ $PRIMARY_COLOUR: #0571bb;
 
 .new-side-nav-link{
     color: black !important;
+    a {
+        color: black !important;
+    }
 
     &.active {
         background-color: $PRIMARY_COLOUR;
-        p {
-            color: $WHITE
-        }
+        color: $WHITE !important;
+        a {
+            color: $WHITE !important;
+        } 
     }
 
     &:hover:not(.active) {
         background-color: $PRIMARY_COLOUR;
-        p {
-            color: $WHITE
-        }
+        color: $WHITE !important;
         transition: background-color .5s ease-in-out;
-        transition: color .5s ease-in-out;
+        transition: color .5s ease-in-out; 
+        a {
+            color: $WHITE !important;
+        }
     }
 }
 
