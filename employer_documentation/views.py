@@ -19,8 +19,8 @@ from .models import (
     JobOrder,
     PdfArchive,
     EmployerPaymentTransaction,
-    EmployerSponsor,
-    EmployerJointApplicant,
+    # EmployerSponsor,
+    # EmployerJointApplicant,
 )
 from .forms import (
     EmployerForm,
@@ -30,8 +30,8 @@ from .forms import (
     EmployerDocMaidDeploymentForm,
     JobOrderForm,
     EmployerPaymentTransactionForm,
-    EmployerSponsorForm,
-    EmployerJointApplicantForm,
+    # EmployerSponsorForm,
+    # EmployerJointApplicantForm,
     SignatureForm,
     VerifyUserTokenForm,
 )

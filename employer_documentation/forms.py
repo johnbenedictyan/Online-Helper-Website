@@ -27,8 +27,8 @@ from .models import (
     EmployerDocSig,
     JobOrder,
     EmployerPaymentTransaction,
-    EmployerSponsor,
-    EmployerJointApplicant,
+    # EmployerSponsor,
+    # EmployerJointApplicant,
 )
 from onlinemaid.constants import (
     AG_OWNERS,
@@ -45,7 +45,36 @@ from maid.models import Maid
 class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
-        exclude = ['nonce', 'tag',]
+        exclude = [
+            'nonce',
+            'tag',
+            'spouse_nric_nonce',
+            'spouse_nric_tag',
+            'sponsor_1_nric_nonce',
+            'sponsor_1_nric_tag',
+            'sponsor_2_nric_nonce',
+            'sponsor_2_nric_tag',
+            'sponsor_1_nonce_nric_spouse',
+            'sponsor_1_tag_nric_spouse',
+            'sponsor_1_nonce_fin_spouse',
+            'sponsor_1_tag_fin_spouse',
+            'sponsor_1_nonce_passport_spouse',
+            'sponsor_1_tag_passport_spouse',
+            'sponsor_2_nonce_nric_spouse',
+            'sponsor_2_tag_nric_spouse',
+            'sponsor_2_nonce_fin_spouse',
+            'sponsor_2_tag_fin_spouse',
+            'sponsor_2_nonce_passport_spouse',
+            'sponsor_2_tag_passport_spouse',
+            'joint_applicant_nonce_nric',
+            'joint_applicant_tag_nric',
+            'joint_applicant_nonce_nric_spouse',
+            'joint_applicant_tag_nric_spouse',
+            'joint_applicant_nonce_fin_spouse',
+            'joint_applicant_tag_fin_spouse',
+            'joint_applicant_nonce_passport_spouse',
+            'joint_applicant_tag_passport_spouse',
+        ]
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -63,6 +92,83 @@ class EmployerForm(forms.ModelForm):
             self.initial.update({'employer_nric': plaintext})
         else:
             self.initial.update({'employer_nric': ''})
+
+        self.initial.update({'spouse_nric': self.instance.get_spouse_nric_full()})
+        
+        # Sponsors
+        if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
+            plaintext = self.instance.get_sponsor_1_nric_full()
+            self.initial.update({'sponsor_1_nric': plaintext})
+        else:
+            self.initial.update({'sponsor_1_nric': ''})
+
+        if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
+            plaintext = self.instance.get_sponsor_2_nric_full()
+            self.initial.update({'sponsor_2_nric': plaintext})
+        else:
+            self.initial.update({'sponsor_2_nric': ''})
+
+        if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
+            plaintext = self.instance.get_sponsor_1_nric_spouse_full()
+            self.initial.update({'sponsor_1_nric_spouse': plaintext})
+        else:
+            self.initial.update({'sponsor_1_nric_spouse': ''})
+
+        if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
+            plaintext = self.instance.get_sponsor_1_fin_spouse_full()
+            self.initial.update({'sponsor_1_fin_spouse': plaintext})
+        else:
+            self.initial.update({'sponsor_1_fin_spouse': ''})
+
+        if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
+            plaintext = self.instance.get_sponsor_1_passport_spouse_full()
+            self.initial.update({'sponsor_1_passport_spouse': plaintext})
+        else:
+            self.initial.update({'sponsor_1_passport_spouse': ''})
+
+        if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
+            plaintext = self.instance.get_sponsor_2_nric_spouse_full()
+            self.initial.update({'sponsor_2_nric_spouse': plaintext})
+        else:
+            self.initial.update({'sponsor_2_nric_spouse': ''})
+
+        if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
+            plaintext = self.instance.get_sponsor_2_fin_spouse_full()
+            self.initial.update({'sponsor_2_fin_spouse': plaintext})
+        else:
+            self.initial.update({'sponsor_2_fin_spouse': ''})
+
+        if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
+            plaintext = self.instance.get_sponsor_2_passport_spouse_full()
+            self.initial.update({'sponsor_2_passport_spouse': plaintext})
+        else:
+            self.initial.update({'sponsor_2_passport_spouse': ''})
+        
+        # Joint Applicants
+        if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
+            plaintext = self.instance.get_joint_applicant_nric_full()
+            self.initial.update({'joint_applicant_nric': plaintext})
+        else:
+            self.initial.update({'joint_applicant_nric': ''})
+
+        if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
+            plaintext = self.instance.get_joint_applicant_nric_spouse_full()
+            self.initial.update({'joint_applicant_nric_spouse': plaintext})
+        else:
+            self.initial.update({'joint_applicant_nric_spouse': ''})
+
+        if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
+            plaintext = self.instance.get_joint_applicant_fin_spouse_full()
+            self.initial.update({'joint_applicant_fin_spouse': plaintext})
+        else:
+            self.initial.update({'joint_applicant_fin_spouse': ''})
+
+        if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
+            plaintext = self.instance.get_joint_applicant_passport_spouse_full()
+            self.initial.update({'joint_applicant_passport_spouse': plaintext})
+        else:
+            self.initial.update({'joint_applicant_passport_spouse': ''})
+
 
         #  Remove employer_nric number from initial form display
         # self.initial.update({'employer_nric':''})
@@ -122,264 +228,7 @@ class EmployerForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
 
-        if self.agency_user_group==AG_OWNERS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_owner.agency
-                )
-            )
-        elif self.agency_user_group==AG_ADMINS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_employee.agency
-                )
-            )
-        elif self.agency_user_group==AG_MANAGERS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    branch=self.user_obj.agency_employee.branch
-                )
-            )
-        else:
-            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
-            del self.fields['agency_employee']
-    
-    def check_queryset(self, queryset, error_msg):
-        for employer_obj in queryset:
-            if not employer_obj==self.instance:
-                # Check if it belongs to current user's agency
-                if self.agency_user_group==AG_OWNERS:
-                    if (
-                        employer_obj.agency_employee.agency
-                        == self.user_obj.agency_owner.agency
-                    ):
-                        raise ValidationError(error_msg)
-                elif (
-                    employer_obj.agency_employee.agency
-                    == self.user_obj.agency_employee.agency
-                ):
-                    raise ValidationError(error_msg)
-    
-    def clean_employer_email(self):
-        cleaned_field = self.cleaned_data.get('employer_email')
-
-        try:
-            # Check if employer_email exists in database
-            employer_queryset = Employer.objects.filter(
-                employer_email=cleaned_field
-            )
-        except Employer.DoesNotExist:
-            # If no entries for employer_email, then no further checks
-            return cleaned_field
-        else:
-            self.check_queryset(
-                employer_queryset,
-                'An employer with this email address already exists in your \
-                    agency'
-            )
-        return cleaned_field
-
-    def clean_employer_mobile_number(self):
-        cleaned_field = self.cleaned_data.get('employer_mobile_number')
-
-        try:
-            # Check if employer_mobile_number exists in database
-            employer_queryset = Employer.objects.filter(
-                employer_mobile_number=cleaned_field
-            )
-        except Employer.DoesNotExist:
-            # If no entries for employer_mobile_number, then no further checks
-            return cleaned_field
-        else:
-            self.check_queryset(
-                employer_queryset,
-                'An employer with this mobile number already exists in your \
-                    agency'
-            )
-        return cleaned_field
-
-    def clean_employer_nric(self):
-        cleaned_field = self.cleaned_data.get('employer_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        
-        return ciphertext
-
-class EmployerDocForm(forms.ModelForm):
-    class Meta:
-        model = EmployerDoc
-        exclude = [
-            'employer',
-            'spouse_nric_nonce',
-            'spouse_nric_tag',
-            'sponsor_1_nric_nonce',
-            'sponsor_1_nric_tag',
-            'sponsor_2_nric_nonce',
-            'sponsor_2_nric_tag',
-            'sponsor_1_nonce_nric_spouse',
-            'sponsor_1_tag_nric_spouse',
-            'sponsor_1_nonce_fin_spouse',
-            'sponsor_1_tag_fin_spouse',
-            'sponsor_1_nonce_passport_spouse',
-            'sponsor_1_tag_passport_spouse',
-            'sponsor_2_nonce_nric_spouse',
-            'sponsor_2_tag_nric_spouse',
-            'sponsor_2_nonce_fin_spouse',
-            'sponsor_2_tag_fin_spouse',
-            'sponsor_2_nonce_passport_spouse',
-            'sponsor_2_tag_passport_spouse',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
-        super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
-
-        if self.agency_user_group==AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
-            self.fields['fdw_replaced'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
-        else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
-            self.fields['fdw_replaced'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
-        
-        '''
-        Decryption
-        '''
-        self.initial.update({'spouse_nric': self.instance.get_spouse_nric_full()})
-        
-        if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
-            plaintext = self.instance.get_sponsor_1_nric_full()
-            self.initial.update({'sponsor_1_nric': plaintext})
-        else:
-            self.initial.update({'sponsor_1_nric': ''})
-
-        if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
-            plaintext = self.instance.get_sponsor_2_nric_full()
-            self.initial.update({'sponsor_2_nric': plaintext})
-        else:
-            self.initial.update({'sponsor_2_nric': ''})
-
-        if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_nric_spouse_full()
-            self.initial.update({'sponsor_1_nric_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_nric_spouse': ''})
-
-        if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_fin_spouse_full()
-            self.initial.update({'sponsor_1_fin_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_fin_spouse': ''})
-
-        if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_passport_spouse_full()
-            self.initial.update({'sponsor_1_passport_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_passport_spouse': ''})
-
-        if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_nric_spouse_full()
-            self.initial.update({'sponsor_2_nric_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_nric_spouse': ''})
-
-        if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_fin_spouse_full()
-            self.initial.update({'sponsor_2_fin_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_fin_spouse': ''})
-
-        if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_passport_spouse_full()
-            self.initial.update({'sponsor_2_passport_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_passport_spouse': ''})
-
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            HTML(
-                """
-                <h3 class="mb-3">Documentation Form</h3>
-                <h5 class="doc-section-header" id="id-doc-general">General</h5>
-            """),
-            # General
-            Row(
-                Column(
-                    'case_ref_no',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'fdw',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Field(
-                        'agreement_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Agreement date'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'application_scheme',
-                    css_class='form-group col-md-6',
-                    id='application-scheme',
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'monthly_combined_income',
-                    css_class='form-group col-md-6 employer-spouse employer-only',
-                ),
-                css_class='form-row'
-            ),
             Row(
                 Column(
                     'spouse_name',
@@ -393,7 +242,7 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-
+            
             # Sponsors
             Row(
                 Column(
@@ -416,7 +265,7 @@ class EmployerDocForm(forms.ModelForm):
                         ),
                         Column(
                             PrependedText(
-                                'combined_monthly_income', '$',
+                                'combined_monthly_income_sponsors', '$',
                                 min='0', max='9999999',
                             ),
                             css_class='form-group col-md-6 sponsor_2',
@@ -753,6 +602,597 @@ class EmployerDocForm(forms.ModelForm):
                     ),
                     id='sponsors',
                 )
+            ),
+
+            # Joint Applicants
+            Row(
+                Column(
+                    PrependedText(
+                        'combined_monthly_income_joint_applicants', '$',
+                        min='0', max='9999999',
+                    ),
+                    css_class='form-group col-md-6',
+                ),
+                Column(
+                    'worked_in_sg',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_relationship',
+                    css_class='form-group col-md-6',
+                ),
+                Column(
+                    'joint_applicant_name',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_nric',
+                    css_class='form-group col-md-4',
+                ),
+                Column(
+                    'joint_applicant_gender',
+                    css_class='form-group col-md-4',
+                ),
+                Column(
+                    Field(
+                        'joint_applicant_date_of_birth',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Joint applicant date of birth'
+                    ),
+                    css_class='form-group col-md-4',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_nationality',
+                    css_class='form-group col-md-6',
+                ),
+                Column(
+                    'joint_applicant_residential_status',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_address_1',
+                    css_class='form-group col-md-6',
+                ),
+                Column(
+                    'joint_applicant_address_2',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_post_code',
+                    css_class='form-group col-md-6',
+                ),
+                Column(
+                    'joint_applicant_marital_status',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row',
+            ),
+            # Joint applicant spouse
+            Row(
+                Column(
+                    'joint_applicant_marriage_sg_registered',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                Column(
+                    'joint_applicant_name_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_gender_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                Column(
+                    Field(
+                        'joint_applicant_date_of_birth_spouse',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Joint applicant spouse date of birth'
+                    ),
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_nric_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                Column(
+                    'joint_applicant_fin_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_passport_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                Column(
+                    Field(
+                        'joint_applicant_passport_date_spouse',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Joint applicant spouse passport expiry date',
+                    ),
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    'joint_applicant_nationality_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                Column(
+                    'joint_applicant_residential_status_spouse',
+                    css_class='form-group col-md-6 spouse-1',
+                    hidden='true',
+                ),
+                css_class='form-row',
+            ),
+
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(
+                    agency=self.user_obj.agency_owner.agency
+                )
+            )
+        elif self.agency_user_group==AG_ADMINS:
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(
+                    agency=self.user_obj.agency_employee.agency
+                )
+            )
+        elif self.agency_user_group==AG_MANAGERS:
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(
+                    branch=self.user_obj.agency_employee.branch
+                )
+            )
+        else:
+            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            del self.fields['agency_employee']
+    
+    def check_queryset(self, queryset, error_msg):
+        for employer_obj in queryset:
+            if not employer_obj==self.instance:
+                # Check if it belongs to current user's agency
+                if self.agency_user_group==AG_OWNERS:
+                    if (
+                        employer_obj.agency_employee.agency
+                        == self.user_obj.agency_owner.agency
+                    ):
+                        raise ValidationError(error_msg)
+                elif (
+                    employer_obj.agency_employee.agency
+                    == self.user_obj.agency_employee.agency
+                ):
+                    raise ValidationError(error_msg)
+    
+    def clean_employer_email(self):
+        cleaned_field = self.cleaned_data.get('employer_email')
+
+        try:
+            # Check if employer_email exists in database
+            employer_queryset = Employer.objects.filter(
+                employer_email=cleaned_field
+            )
+        except Employer.DoesNotExist:
+            # If no entries for employer_email, then no further checks
+            return cleaned_field
+        else:
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this email address already exists in your \
+                    agency'
+            )
+        return cleaned_field
+
+    def clean_employer_mobile_number(self):
+        cleaned_field = self.cleaned_data.get('employer_mobile_number')
+
+        try:
+            # Check if employer_mobile_number exists in database
+            employer_queryset = Employer.objects.filter(
+                employer_mobile_number=cleaned_field
+            )
+        except Employer.DoesNotExist:
+            # If no entries for employer_mobile_number, then no further checks
+            return cleaned_field
+        else:
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this mobile number already exists in your \
+                    agency'
+            )
+        return cleaned_field
+
+    def clean_employer_nric(self):
+        cleaned_field = self.cleaned_data.get('employer_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        
+        return ciphertext
+
+    # Employer Spouse
+    def clean_spouse_nric(self):
+        cleaned_field = self.cleaned_data.get('spouse_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    # Sponsors
+    def clean_sponsor_1_nric(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_nric(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_nric_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_fin_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_passport_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_nric_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_fin_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_passport_spouse(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    # Joint Applicants
+    def clean_joint_applicant_nric(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_nric')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.joint_applicant_nonce_nric, self.instance.joint_applicant_tag_nric = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_joint_applicant_nric_spouse(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_nric_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.joint_applicant_nonce_nric_spouse, self.instance.joint_applicant_tag_nric_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_joint_applicant_fin_spouse(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_fin_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.joint_applicant_nonce_fin_spouse, self.instance.joint_applicant_tag_fin_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_joint_applicant_passport_spouse(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_passport_spouse')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.joint_applicant_nonce_passport_spouse, self.instance.joint_applicant_tag_passport_spouse = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+class EmployerDocForm(forms.ModelForm):
+    class Meta:
+        model = EmployerDoc
+        exclude = ['employer']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+            self.fields['fdw_replaced'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+            self.fields['fdw_replaced'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
+            HTML(
+                """
+                <h3 class="mb-3">Documentation Form</h3>
+                <h5 class="doc-section-header" id="id-doc-general">General</h5>
+            """),
+            # General
+            Row(
+                Column(
+                    'case_ref_no',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'fdw',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Field(
+                        'agreement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Agreement date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'application_scheme',
+                    css_class='form-group col-md-6',
+                    id='application-scheme',
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'monthly_combined_income',
+                    css_class='form-group col-md-6 employer-spouse employer-only',
+                ),
+                css_class='form-row'
             ),
 
             # Service Fee Schedule - Form A
@@ -1175,177 +1615,6 @@ class EmployerDocForm(forms.ModelForm):
             )
         )
 
-    def clean_spouse_nric(self):
-        cleaned_field = self.cleaned_data.get('spouse_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_nric(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_nric(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
     def clean_fdw_replaced(self):
         is_replacement = self.cleaned_data.get('fdw_is_replacement')
         cleaned_field = self.cleaned_data.get('fdw_replaced')
@@ -1706,878 +1975,878 @@ class JobOrderForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
-class EmployerSponsorForm(forms.ModelForm):
-    class Meta:
-        model = EmployerSponsor
-        exclude = ['employer_doc',
-            'sponsor_1_nric_nonce',
-            'sponsor_1_nric_tag',
-            'sponsor_2_nric_nonce',
-            'sponsor_2_nric_tag',
-            'sponsor_1_nonce_nric_spouse',
-            'sponsor_1_tag_nric_spouse',
-            'sponsor_1_nonce_fin_spouse',
-            'sponsor_1_tag_fin_spouse',
-            'sponsor_1_nonce_passport_spouse',
-            'sponsor_1_tag_passport_spouse',
-            'sponsor_2_nonce_nric_spouse',
-            'sponsor_2_tag_nric_spouse',
-            'sponsor_2_nonce_fin_spouse',
-            'sponsor_2_tag_fin_spouse',
-            'sponsor_2_nonce_passport_spouse',
-            'sponsor_2_tag_passport_spouse',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
-        super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
-
-        '''
-        Decryption
-        '''
-        if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
-            plaintext = self.instance.get_sponsor_1_nric_full()
-            self.initial.update({'sponsor_1_nric': plaintext})
-        else:
-            self.initial.update({'sponsor_1_nric': ''})
-
-        if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
-            plaintext = self.instance.get_sponsor_2_nric_full()
-            self.initial.update({'sponsor_2_nric': plaintext})
-        else:
-            self.initial.update({'sponsor_2_nric': ''})
-
-        if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_nric_spouse_full()
-            self.initial.update({'sponsor_1_nric_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_nric_spouse': ''})
-
-        if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_fin_spouse_full()
-            self.initial.update({'sponsor_1_fin_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_fin_spouse': ''})
-
-        if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_passport_spouse_full()
-            self.initial.update({'sponsor_1_passport_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_passport_spouse': ''})
-
-        if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_nric_spouse_full()
-            self.initial.update({'sponsor_2_nric_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_nric_spouse': ''})
-
-        if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_fin_spouse_full()
-            self.initial.update({'sponsor_2_fin_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_fin_spouse': ''})
-
-        if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_passport_spouse_full()
-            self.initial.update({'sponsor_2_passport_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_passport_spouse': ''})
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'number_of_sponsors',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    PrependedText(
-                        'single_monthly_income', '$',
-                        min='0', max='9999999',
-                    ),
-                    css_class='form-group col-md-6',
-                    id='single_sponsor_income',
-                ),
-                Column(
-                    PrependedText(
-                        'combined_monthly_income', '$',
-                        min='0', max='9999999',
-                    ),
-                    css_class='form-group col-md-6 sponsor_2',
-                    id='combined_sponsor_income',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_worked_in_sg',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'sponsor_1_nric',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_relationship',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'sponsor_1_name',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_gender',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    Field(
-                        'sponsor_1_date_of_birth',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Sponsor 1 date of birth'
-                    ),
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_nationality',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'sponsor_1_residential_status',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_mobile_number',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'sponsor_1_email',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_address_1',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'sponsor_1_address_2',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_post_code',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'sponsor_1_marital_status',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            # Sponsor 1 spouse
-            Row(
-                Column(
-                    'sponsor_1_marriage_sg_registered',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_1_name_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_gender_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'sponsor_1_date_of_birth_spouse',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Sponsor 1 spouse date of birth'
-                    ),
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_nric_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_1_fin_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_passport_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'sponsor_1_passport_date_spouse',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Sponsor 1 spouse passport expiry date',
-                    ),
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_1_nationality_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_1_residential_status_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            # Sponsor 2
-            Row(
-                Column(
-                    'sponsor_2_nric',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_relationship',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_name',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_gender',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'sponsor_2_date_of_birth',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Sponsor 2 date of birth',
-                    ),
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_nationality',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_residential_status',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_mobile_number',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_email',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_address_1',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_address_2',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_post_code',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_marital_status',
-                    css_class='form-group col-md-6 sponsor-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            # Sponsor 2 spouse
-            Row(
-                Column(
-                    'sponsor_2_marriage_sg_registered',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_name_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_gender_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'sponsor_2_date_of_birth_spouse',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Sponsor 2 date of birth',
-                    ),
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_nric_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_fin_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'sponsor_2_passport_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'sponsor_2_passport_date_spouse',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Sponsor 2 spouse passport expiry date',
-                    ),
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'sponsor_2_nationality_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                Column(
-                    'sponsor_2_residential_status_spouse',
-                    css_class='form-group col-md-6 spouse-2',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Submit('submit', 'Submit')
-        )
-
-    def clean_sponsor_1_nric(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_nric(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-class EmployerJointApplicantForm(forms.ModelForm):
-    class Meta:
-        model = EmployerJointApplicant
-        exclude = [
-            'employer_doc',
-            'joint_applicant_nonce_nric',
-            'joint_applicant_tag_nric',
-            'joint_applicant_nonce_nric_spouse',
-            'joint_applicant_tag_nric_spouse',
-            'joint_applicant_nonce_fin_spouse',
-            'joint_applicant_tag_fin_spouse',
-            'joint_applicant_nonce_passport_spouse',
-            'joint_applicant_tag_passport_spouse',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
-        super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
-
-        '''
-        Decryption
-        '''
-        if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
-            plaintext = self.instance.get_joint_applicant_nric_full()
-            self.initial.update({'joint_applicant_nric': plaintext})
-        else:
-            self.initial.update({'joint_applicant_nric': ''})
-
-        if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
-            plaintext = self.instance.get_joint_applicant_nric_spouse_full()
-            self.initial.update({'joint_applicant_nric_spouse': plaintext})
-        else:
-            self.initial.update({'joint_applicant_nric_spouse': ''})
-
-        if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
-            plaintext = self.instance.get_joint_applicant_fin_spouse_full()
-            self.initial.update({'joint_applicant_fin_spouse': plaintext})
-        else:
-            self.initial.update({'joint_applicant_fin_spouse': ''})
-
-        if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
-            plaintext = self.instance.get_joint_applicant_passport_spouse_full()
-            self.initial.update({'joint_applicant_passport_spouse': plaintext})
-        else:
-            self.initial.update({'joint_applicant_passport_spouse': ''})
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    PrependedText(
-                        'combined_monthly_income', '$',
-                        min='0', max='9999999',
-                    ),
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'worked_in_sg',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_relationship',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_name',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_nric',
-                    css_class='form-group col-md-4',
-                ),
-                Column(
-                    'joint_applicant_gender',
-                    css_class='form-group col-md-4',
-                ),
-                Column(
-                    Field(
-                        'joint_applicant_date_of_birth',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Joint applicant date of birth'
-                    ),
-                    css_class='form-group col-md-4',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_nationality',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_residential_status',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_address_1',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_address_2',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_post_code',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_marital_status',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            # Joint applicant spouse
-            Row(
-                Column(
-                    'joint_applicant_marriage_sg_registered',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'joint_applicant_name_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_gender_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'joint_applicant_date_of_birth_spouse',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Joint applicant spouse date of birth'
-                    ),
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_nric_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'joint_applicant_fin_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_passport_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'joint_applicant_passport_date_spouse',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Joint applicant spouse passport expiry date',
-                    ),
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_nationality_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'joint_applicant_residential_status_spouse',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Submit('submit', 'Submit')
-        )
-
-    def clean_joint_applicant_nric(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_nric')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_nric, self.instance.joint_applicant_tag_nric = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_joint_applicant_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_nric_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_nric_spouse, self.instance.joint_applicant_tag_nric_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_joint_applicant_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_fin_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_fin_spouse, self.instance.joint_applicant_tag_fin_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_joint_applicant_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_passport_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_passport_spouse, self.instance.joint_applicant_tag_passport_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+# class EmployerSponsorForm(forms.ModelForm):
+#     class Meta:
+#         model = EmployerSponsor
+#         exclude = ['employer_doc',
+#             'sponsor_1_nric_nonce',
+#             'sponsor_1_nric_tag',
+#             'sponsor_2_nric_nonce',
+#             'sponsor_2_nric_tag',
+#             'sponsor_1_nonce_nric_spouse',
+#             'sponsor_1_tag_nric_spouse',
+#             'sponsor_1_nonce_fin_spouse',
+#             'sponsor_1_tag_fin_spouse',
+#             'sponsor_1_nonce_passport_spouse',
+#             'sponsor_1_tag_passport_spouse',
+#             'sponsor_2_nonce_nric_spouse',
+#             'sponsor_2_tag_nric_spouse',
+#             'sponsor_2_nonce_fin_spouse',
+#             'sponsor_2_tag_fin_spouse',
+#             'sponsor_2_nonce_passport_spouse',
+#             'sponsor_2_tag_passport_spouse',
+#         ]
+
+#     def __init__(self, *args, **kwargs):
+#         self.user_pk = kwargs.pop('user_pk')
+#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         super().__init__(*args, **kwargs)
+
+#         self.FIELD_MAXLENGTH = 20
+
+#         '''
+#         Decryption
+#         '''
+#         if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
+#             plaintext = self.instance.get_sponsor_1_nric_full()
+#             self.initial.update({'sponsor_1_nric': plaintext})
+#         else:
+#             self.initial.update({'sponsor_1_nric': ''})
+
+#         if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
+#             plaintext = self.instance.get_sponsor_2_nric_full()
+#             self.initial.update({'sponsor_2_nric': plaintext})
+#         else:
+#             self.initial.update({'sponsor_2_nric': ''})
+
+#         if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
+#             plaintext = self.instance.get_sponsor_1_nric_spouse_full()
+#             self.initial.update({'sponsor_1_nric_spouse': plaintext})
+#         else:
+#             self.initial.update({'sponsor_1_nric_spouse': ''})
+
+#         if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
+#             plaintext = self.instance.get_sponsor_1_fin_spouse_full()
+#             self.initial.update({'sponsor_1_fin_spouse': plaintext})
+#         else:
+#             self.initial.update({'sponsor_1_fin_spouse': ''})
+
+#         if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
+#             plaintext = self.instance.get_sponsor_1_passport_spouse_full()
+#             self.initial.update({'sponsor_1_passport_spouse': plaintext})
+#         else:
+#             self.initial.update({'sponsor_1_passport_spouse': ''})
+
+#         if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
+#             plaintext = self.instance.get_sponsor_2_nric_spouse_full()
+#             self.initial.update({'sponsor_2_nric_spouse': plaintext})
+#         else:
+#             self.initial.update({'sponsor_2_nric_spouse': ''})
+
+#         if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
+#             plaintext = self.instance.get_sponsor_2_fin_spouse_full()
+#             self.initial.update({'sponsor_2_fin_spouse': plaintext})
+#         else:
+#             self.initial.update({'sponsor_2_fin_spouse': ''})
+
+#         if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
+#             plaintext = self.instance.get_sponsor_2_passport_spouse_full()
+#             self.initial.update({'sponsor_2_passport_spouse': plaintext})
+#         else:
+#             self.initial.update({'sponsor_2_passport_spouse': ''})
+
+#         self.helper = FormHelper()
+#         self.helper.form_class = 'employer-doc-form'
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column(
+#                     'number_of_sponsors',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     PrependedText(
+#                         'single_monthly_income', '$',
+#                         min='0', max='9999999',
+#                     ),
+#                     css_class='form-group col-md-6',
+#                     id='single_sponsor_income',
+#                 ),
+#                 Column(
+#                     PrependedText(
+#                         'combined_monthly_income', '$',
+#                         min='0', max='9999999',
+#                     ),
+#                     css_class='form-group col-md-6 sponsor_2',
+#                     id='combined_sponsor_income',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_worked_in_sg',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'sponsor_1_nric',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_relationship',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'sponsor_1_name',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_gender',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'sponsor_1_date_of_birth',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Sponsor 1 date of birth'
+#                     ),
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_nationality',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'sponsor_1_residential_status',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_mobile_number',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'sponsor_1_email',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_address_1',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'sponsor_1_address_2',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_post_code',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'sponsor_1_marital_status',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             # Sponsor 1 spouse
+#             Row(
+#                 Column(
+#                     'sponsor_1_marriage_sg_registered',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_1_name_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_gender_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'sponsor_1_date_of_birth_spouse',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Sponsor 1 spouse date of birth'
+#                     ),
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_nric_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_1_fin_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_passport_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'sponsor_1_passport_date_spouse',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Sponsor 1 spouse passport expiry date',
+#                     ),
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_1_nationality_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_1_residential_status_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             # Sponsor 2
+#             Row(
+#                 Column(
+#                     'sponsor_2_nric',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_relationship',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_name',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_gender',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'sponsor_2_date_of_birth',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Sponsor 2 date of birth',
+#                     ),
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_nationality',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_residential_status',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_mobile_number',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_email',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_address_1',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_address_2',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_post_code',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_marital_status',
+#                     css_class='form-group col-md-6 sponsor-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             # Sponsor 2 spouse
+#             Row(
+#                 Column(
+#                     'sponsor_2_marriage_sg_registered',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_name_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_gender_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'sponsor_2_date_of_birth_spouse',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Sponsor 2 date of birth',
+#                     ),
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_nric_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_fin_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_passport_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'sponsor_2_passport_date_spouse',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Sponsor 2 spouse passport expiry date',
+#                     ),
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'sponsor_2_nationality_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'sponsor_2_residential_status_spouse',
+#                     css_class='form-group col-md-6 spouse-2',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Submit('submit', 'Submit')
+#         )
+
+#     def clean_sponsor_1_nric(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_1_nric')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_2_nric(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_2_nric')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_1_nric_spouse(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_1_fin_spouse(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_1_passport_spouse(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_2_nric_spouse(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_2_fin_spouse(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_sponsor_2_passport_spouse(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+# class EmployerJointApplicantForm(forms.ModelForm):
+#     class Meta:
+#         model = EmployerJointApplicant
+#         exclude = [
+#             'employer_doc',
+#             'joint_applicant_nonce_nric',
+#             'joint_applicant_tag_nric',
+#             'joint_applicant_nonce_nric_spouse',
+#             'joint_applicant_tag_nric_spouse',
+#             'joint_applicant_nonce_fin_spouse',
+#             'joint_applicant_tag_fin_spouse',
+#             'joint_applicant_nonce_passport_spouse',
+#             'joint_applicant_tag_passport_spouse',
+#         ]
+
+#     def __init__(self, *args, **kwargs):
+#         self.user_pk = kwargs.pop('user_pk')
+#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         super().__init__(*args, **kwargs)
+
+#         self.FIELD_MAXLENGTH = 20
+
+#         '''
+#         Decryption
+#         '''
+#         if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
+#             plaintext = self.instance.get_joint_applicant_nric_full()
+#             self.initial.update({'joint_applicant_nric': plaintext})
+#         else:
+#             self.initial.update({'joint_applicant_nric': ''})
+
+#         if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
+#             plaintext = self.instance.get_joint_applicant_nric_spouse_full()
+#             self.initial.update({'joint_applicant_nric_spouse': plaintext})
+#         else:
+#             self.initial.update({'joint_applicant_nric_spouse': ''})
+
+#         if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
+#             plaintext = self.instance.get_joint_applicant_fin_spouse_full()
+#             self.initial.update({'joint_applicant_fin_spouse': plaintext})
+#         else:
+#             self.initial.update({'joint_applicant_fin_spouse': ''})
+
+#         if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
+#             plaintext = self.instance.get_joint_applicant_passport_spouse_full()
+#             self.initial.update({'joint_applicant_passport_spouse': plaintext})
+#         else:
+#             self.initial.update({'joint_applicant_passport_spouse': ''})
+
+#         self.helper = FormHelper()
+#         self.helper.form_class = 'employer-doc-form'
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column(
+#                     PrependedText(
+#                         'combined_monthly_income', '$',
+#                         min='0', max='9999999',
+#                     ),
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'worked_in_sg',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_relationship',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'joint_applicant_name',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_nric',
+#                     css_class='form-group col-md-4',
+#                 ),
+#                 Column(
+#                     'joint_applicant_gender',
+#                     css_class='form-group col-md-4',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'joint_applicant_date_of_birth',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Joint applicant date of birth'
+#                     ),
+#                     css_class='form-group col-md-4',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_nationality',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'joint_applicant_residential_status',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_address_1',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'joint_applicant_address_2',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_post_code',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 Column(
+#                     'joint_applicant_marital_status',
+#                     css_class='form-group col-md-6',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             # Joint applicant spouse
+#             Row(
+#                 Column(
+#                     'joint_applicant_marriage_sg_registered',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'joint_applicant_name_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_gender_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'joint_applicant_date_of_birth_spouse',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Joint applicant spouse date of birth'
+#                     ),
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_nric_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'joint_applicant_fin_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_passport_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     Field(
+#                         'joint_applicant_passport_date_spouse',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Joint applicant spouse passport expiry date',
+#                     ),
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Row(
+#                 Column(
+#                     'joint_applicant_nationality_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 Column(
+#                     'joint_applicant_residential_status_spouse',
+#                     css_class='form-group col-md-6 spouse-1',
+#                     hidden='true',
+#                 ),
+#                 css_class='form-row',
+#             ),
+#             Submit('submit', 'Submit')
+#         )
+
+#     def clean_joint_applicant_nric(self):
+#         cleaned_field = self.cleaned_data.get('joint_applicant_nric')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.joint_applicant_nonce_nric, self.instance.joint_applicant_tag_nric = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_joint_applicant_nric_spouse(self):
+#         cleaned_field = self.cleaned_data.get('joint_applicant_nric_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.joint_applicant_nonce_nric_spouse, self.instance.joint_applicant_tag_nric_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_joint_applicant_fin_spouse(self):
+#         cleaned_field = self.cleaned_data.get('joint_applicant_fin_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.joint_applicant_nonce_fin_spouse, self.instance.joint_applicant_tag_fin_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
+
+#     def clean_joint_applicant_passport_spouse(self):
+#         cleaned_field = self.cleaned_data.get('joint_applicant_passport_spouse')
+
+#         if not isinstance(cleaned_field, str):
+#             raise ValidationError('Must be a string')
+
+#         if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+#             raise ValidationError('Can only enter letters or numbers')
+
+#         if len(cleaned_field)>self.FIELD_MAXLENGTH:
+#             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+#         # Encryption
+#         ciphertext, self.instance.joint_applicant_nonce_passport_spouse, self.instance.joint_applicant_tag_passport_spouse = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
+#         return ciphertext
 
 # Signature Forms
 class SignatureForm(forms.ModelForm):

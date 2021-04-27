@@ -5,8 +5,8 @@ from .models import (
     EmployerDocSig,
     EmployerDocMaidStatus,
     EmployerPaymentTransaction,
-    EmployerSponsor,
-    EmployerJointApplicant,
+    # EmployerSponsor,
+    # EmployerJointApplicant,
     JobOrder,
     PdfArchive,
 )
@@ -17,7 +17,7 @@ admin.site.register(EmployerDoc)
 admin.site.register(EmployerDocSig)
 admin.site.register(EmployerDocMaidStatus)
 admin.site.register(EmployerPaymentTransaction)
-admin.site.register(EmployerSponsor)
-admin.site.register(EmployerJointApplicant)
+# admin.site.register(EmployerSponsor)
+# admin.site.register(EmployerJointApplicant)
 admin.site.register(JobOrder)
 admin.site.register(PdfArchive)
