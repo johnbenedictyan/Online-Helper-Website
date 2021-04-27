@@ -63,14 +63,17 @@ def encrypt_string(plaintext, encryption_key):
     return ciphertext, nonce, tag
 
 def decrypt_string(ciphertext, encryption_key, nonce, tag):
-    try:
-        cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
-        plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
-    except Exception:
-        traceback.print_exc()
-        return ''
+    if ciphertext:
+        try:
+            cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
+            plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
+        except Exception:
+            traceback.print_exc()
+            return ''
+        else:
+            return plaintext if isinstance(plaintext, str) else ''
     else:
-        return plaintext if isinstance(plaintext, str) else ''
+        return None
 
 def calculate_age(born):
     today = date.today()
