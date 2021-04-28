@@ -187,7 +187,7 @@ class EmployerForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                <h3 class="mb-3">Employer Details</h3>
+                <h3 class="mb-3">Employer Form</h3>
             """),
             Row(
                 Column(
@@ -314,7 +314,7 @@ class EmployerForm(forms.ModelForm):
             # Spouse's Information
             HTML(
                 """
-                <h5 class="my-3">Spouse's Information'</h5>
+                <h5 class="my-3">Spouse's Information</h5>
             """),
             Row(
                 Column(
@@ -375,7 +375,7 @@ class EmployerForm(forms.ModelForm):
                 Column(
                     HTML(
                         """
-                        <h5 class="doc-section-header" id="id-doc-general">Sponsors</h5>
+                        <h5 class="my-3" id="id-doc-general">Sponsors</h5>
                     """),
                     Row(
                         Column(
@@ -392,6 +392,11 @@ class EmployerForm(forms.ModelForm):
                         ),
                         css_class='form-row',
                     ),
+
+                    HTML(
+                        """
+                        <h5 class="my-3" id="id-doc-general">Sponsor 1's Information</h5>
+                    """),
                     Row(
                         Column(
                             'sponsor_worked_in_sg',
@@ -475,6 +480,10 @@ class EmployerForm(forms.ModelForm):
                         css_class='form-row',
                     ),
                     # Sponsor 1 spouse
+                    HTML(
+                        """
+                        <h5 class="my-3" id="id-doc-general">Sponsor 1 Spouse's Information</h5>
+                    """),
                     Row(
                         Column(
                             'sponsor_1_marriage_sg_registered',
@@ -552,6 +561,10 @@ class EmployerForm(forms.ModelForm):
                     ),
 
                     # Sponsor 2
+                    HTML(
+                        """
+                        <h5 class="my-3" id="id-doc-general">Sponsor 2's Information</h5>
+                    """),
                     Row(
                         Column(
                             'sponsor_2_relationship',
@@ -644,6 +657,10 @@ class EmployerForm(forms.ModelForm):
                         css_class='form-row',
                     ),
                     # Sponsor 2 spouse
+                    HTML(
+                        """
+                        <h5 class="my-3" id="id-doc-general">Sponsor 2 Spouse's Information</h5>
+                    """),
                     Row(
                         Column(
                             'sponsor_2_marriage_sg_registered',
@@ -724,6 +741,10 @@ class EmployerForm(forms.ModelForm):
             ),
 
             # Joint Applicants
+            HTML(
+                """
+                <h5 class="my-3" id="id-doc-general">Joint Applicant's Information</h5>
+            """),
             Row(
                 Column(
                     'joint_applicant_relationship',
@@ -764,11 +785,11 @@ class EmployerForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Joint applicant date of birth'
                     ),
-                    css_class='form-group col-md-4',
+                    css_class='form-group col-md-6',
                 ),
                 Column(
                     'joint_applicant_nric_num',
-                    css_class='form-group col-md-4',
+                    css_class='form-group col-md-6',
                 ),
                 css_class='form-row',
             ),
@@ -806,6 +827,10 @@ class EmployerForm(forms.ModelForm):
                 css_class='form-row',
             ),
             # Joint applicant spouse
+            HTML(
+                """
+                <h5 class="my-3" id="id-doc-general">Joint Applicant Spouse's Information</h5>
+            """),
             Row(
                 Column(
                     'joint_applicant_marriage_sg_registered',
