@@ -866,7 +866,7 @@ class Employer(models.Model):
         return get_mobile_format_sg(self.sponsor_2_mobile_number) if self.sponsor_2_mobile_number else None
 
     ## Joint Applicants
-    joint_applicant_combined_monthly_income = models.PositiveSmallIntegerField(
+    joint_applicant_monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Combined monthly income of Employer and Joint applicant"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
