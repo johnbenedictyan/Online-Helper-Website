@@ -27,9 +27,9 @@ from .constants import (
     IncomeChoices,
     RelationshipChoices,
     GenderChoices,
-    ResidentialStatusChoices,
+    ResidentialStatusFullChoices,
+    ResidentialStatusPartialChoices,
     MaritalStatusChoices,
-    SpouseResidentialStatusChoices,
 )
 
 # Utiliy Classes and Functions
@@ -61,11 +61,24 @@ def get_mobile_format_sg(mobile):
 
 # Employer e-Documentation Models
 class Employer(models.Model):
+    APPLICANT_TYPE_CHOICES = [
+        ('SINGLE', _("Employer Only")),
+        ('SPOUSE', _("Employer with Spouse")),
+        ('SPONS1', _("Employer with 1 Sponsor")),
+        ('SPONS2', _("Employer with 2 Sponsors")),
+        ('JOINT', _("Joint Income")),
+    ]
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
         unique=True
+    )
+    applicant_type = models.CharField(
+        verbose_name=_("Type of Applicant"),
+        max_length=6,
+        choices=APPLICANT_TYPE_CHOICES,
+        default=APPLICANT_TYPE_CHOICES[0][0],
     )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
@@ -76,48 +89,190 @@ class Employer(models.Model):
         verbose_name=_('Employer Name'),
         max_length=40
     )
-    employer_email = models.EmailField(verbose_name=_('Email Address'))
+    employer_gender = models.CharField(
+        verbose_name=_("Employer gender"),
+        max_length=1,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
+    )
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
         validators=[
             RegexValidator(
                 regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
-                message=_('Please enter a valid contact number')
+                message=_('Please enter a valid mobile number')
             )
         ]
     )
-    employer_nric = models.BinaryField(
-        verbose_name=_('NRIC / FIN'),
-        editable=True,
+    employer_home_number = models.CharField(
+        verbose_name=_('Home Tel Number'),
+        max_length=10,
+        validators=[
+            RegexValidator(
+                regex='^[6][0-9]{7}$', # Singapore landline numbers
+                message=_('Please enter a valid home telephone number')
+            )
+        ]
     )
-    nonce = models.BinaryField(editable=True)
-    tag = models.BinaryField(editable=True)
+    employer_email = models.EmailField(verbose_name=_('Email Address'))
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
         max_length=100,
     )
-
     employer_address_2 = models.CharField(
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
         null=True,
     )
-
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
     )
+
+    employer_date_of_birth = models.DateField(
+        verbose_name=_('Employer date of birth'),
+    )
+    employer_nationality = models.CharField(
+        verbose_name=_("Employer nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    employer_residential_status = models.CharField(
+        verbose_name=_("Employer residential status"),
+        max_length=5,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
+    )
+    employer_nric_num = models.BinaryField(
+        verbose_name=_('Employer NRIC'),
+        editable=True,
+    )
+    employer_nric_nonce = models.BinaryField(editable=True)
+    employer_nric_tag = models.BinaryField(editable=True)
+    employer_fin_num = models.BinaryField(
+        verbose_name=_('Employer FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_fin_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_fin_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_passport_num = models.BinaryField(
+        verbose_name=_('Employer passport'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_passport_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_passport_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_passport_date = models.DateField(
+        verbose_name=_('Employer passport expiry date'),
+        blank=True,
+        null=True,
+    )
+    employer_marital_status = models.CharField(
+        verbose_name=_("Employer marital status"),
+        max_length=10,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
+        blank=True,
+        null=True,
+    )
+    employer_marriage_sg_registered = models.BooleanField(
+        verbose_name=_('Employer marriage registered in SG?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+        help_text=_('''
+            Was Employer's marriage registered in Singapore?
+        '''),
+        blank=True,
+        null=True,
+    )
+
+    def get_employer_nric_full(self):
+        return decrypt_string(
+            self.employer_nric_num,
+            settings.ENCRYPTION_KEY,
+            self.employer_nric_nonce,
+            self.employer_nric_tag
+        )
+    
+    def get_employer_nric_partial(self):
+        plaintext = self.get_employer_nric_full()
+        return 'x'*5 + plaintext[-4:] if plaintext else ''
+
+    def mobile_format_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
+
+    def mobile_partial_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
+
+    def get_email_partial(self):
+        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
+
+    ## Employer Spouse
     spouse_name = models.CharField(
-        verbose_name=_('Spouse Name'),
+        verbose_name=_("Spouse's Name"),
         max_length=40,
         blank=True,
         null=True,
         default=None,
     )
-    spouse_nric = models.BinaryField(
-        verbose_name=_('Spouse NRIC/FIN'),
+    spouse_gender = models.CharField(
+        verbose_name=_("Spouse's gender"),
+        max_length=1,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
+        blank=True,
+        null=True,
+    )
+    spouse_date_of_birth = models.DateField(
+        verbose_name=_("Spouse's date of birth"),
+        blank=True,
+        null=True,
+    )
+    spouse_nationality = models.CharField(
+        verbose_name=_("Spouse's nationality/citizenship"),
+        max_length=3,
+        choices=FullNationsChoices.choices,
+        default=FullNationsChoices.SINGAPORE,
+        blank=True,
+        null=True,
+    )
+    spouse_residential_status = models.CharField(
+        verbose_name=_("Spouse's residential status"),
+        max_length=5,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
+        blank=True,
+        null=True,
+    )
+    spouse_nric_num = models.BinaryField(
+        verbose_name=_("Spouse's NRIC"),
         editable=True,
         blank=True,
         null=True,
@@ -132,34 +287,66 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    spouse_fin_num = models.BinaryField(
+        verbose_name=_("Spouse's FIN"),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_fin_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_fin_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_passport_num = models.BinaryField(
+        verbose_name=_("Spouse's Passport No"),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_passport_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_passport_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    spouse_passport_date = models.DateField(
+        verbose_name=_("Spouse's Passport Expiry Date"),
+        blank=True,
+        null=True,
+    )
 
-    def get_nric_full(self):
+    def get_employer_spouse_nric_full(self):
         return decrypt_string(
-            self.employer_nric,
-            settings.ENCRYPTION_KEY,
-            self.nonce,
-            self.tag
-        )
-    
-    def get_nric_partial(self):
-        plaintext = self.get_nric_full()
-        return 'x'*5 + plaintext[-4:] if plaintext else ''
-
-    def mobile_format_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
-
-    def mobile_partial_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
-
-    def get_email_partial(self):
-        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
-
-    def get_spouse_nric_full(self):
-        return decrypt_string(
-            self.spouse_nric,
+            self.spouse_nric_num,
             settings.ENCRYPTION_KEY,
             self.spouse_nric_nonce,
             self.spouse_nric_tag
+        )
+
+    def get_employer_spouse_fin_full(self):
+        return decrypt_string(
+            self.spouse_fin_num,
+            settings.ENCRYPTION_KEY,
+            self.spouse_fin_nonce,
+            self.spouse_fin_tag,
+        )
+
+    def get_employer_spouse_passport_full(self):
+        return decrypt_string(
+            self.spouse_passport_num,
+            settings.ENCRYPTION_KEY,
+            self.spouse_passport_nonce,
+            self.spouse_passport_tag,
         )
 
     ## Sponsors
@@ -202,8 +389,8 @@ class Employer(models.Model):
     )
 
     # Sponsor 1 NRIC
-    sponsor_1_nric = models.BinaryField(
-        verbose_name=_('Sponsor 1 NRIC / FIN'),
+    sponsor_1_nric_num = models.BinaryField(
+        verbose_name=_('Sponsor 1 NRIC'),
         editable=True,
         blank=True,
         null=True,
@@ -220,8 +407,8 @@ class Employer(models.Model):
     )
     
     # Sponsor 2 NRIC
-    sponsor_2_nric = models.BinaryField(
-        verbose_name=_('Sponsor 2 NRIC / FIN'),
+    sponsor_2_nric_num = models.BinaryField(
+        verbose_name=_('Sponsor 2 NRIC'),
         editable=True,
         blank=True,
         null=True,
@@ -276,8 +463,8 @@ class Employer(models.Model):
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
         blank=True,
         null=True,
     )
@@ -339,13 +526,13 @@ class Employer(models.Model):
     )
 
     # Sponsor 1 spouse details
-    sponsor_1_name_spouse = models.CharField(
+    sponsor_1_spouse_name = models.CharField(
         verbose_name=_('Sponsor 1 spouse name'),
         max_length=40,
         blank=True,
         null=True,
     )
-    sponsor_1_gender_spouse = models.CharField(
+    sponsor_1_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
         max_length=1,
         choices=GenderChoices.choices,
@@ -353,65 +540,65 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_1_date_of_birth_spouse = models.DateField(
+    sponsor_1_spouse_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 spouse date of birth'),
         blank=True,
         null=True,
     )
-    sponsor_1_nric_spouse = models.BinaryField(
+    sponsor_1_spouse_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse NRIC'),
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_nonce_nric_spouse = models.BinaryField(
+    sponsor_1_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_tag_nric_spouse = models.BinaryField(
+    sponsor_1_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_fin_spouse = models.BinaryField(
+    sponsor_1_spouse_fin_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse FIN'),
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_nonce_fin_spouse = models.BinaryField(
+    sponsor_1_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_tag_fin_spouse = models.BinaryField(
+    sponsor_1_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_passport_spouse = models.BinaryField(
+    sponsor_1_spouse_passport_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse passport'),
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_nonce_passport_spouse = models.BinaryField(
+    sponsor_1_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_tag_passport_spouse = models.BinaryField(
+    sponsor_1_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_1_passport_date_spouse = models.DateField(
+    sponsor_1_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 1 spouse passport expiry date'),
         blank=True,
         null=True,
     )
-    sponsor_1_nationality_spouse = models.CharField(
+    sponsor_1_spouse_nationality = models.CharField(
         verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
@@ -419,11 +606,11 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_1_residential_status_spouse = models.CharField(
+    sponsor_1_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
         max_length=5,
-        choices=SpouseResidentialStatusChoices.choices,
-        default=SpouseResidentialStatusChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -467,8 +654,8 @@ class Employer(models.Model):
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
         blank=True,
         null=True,
     )
@@ -530,13 +717,13 @@ class Employer(models.Model):
     )
 
     # Sponsor 2 spouse details
-    sponsor_2_name_spouse = models.CharField(
+    sponsor_2_spouse_name = models.CharField(
         verbose_name=_('Sponsor 2 spouse name'),
         max_length=40,
         blank=True,
         null=True,
     )
-    sponsor_2_gender_spouse = models.CharField(
+    sponsor_2_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
         max_length=1,
         choices=GenderChoices.choices,
@@ -544,65 +731,65 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_2_date_of_birth_spouse = models.DateField(
+    sponsor_2_spouse_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 2 spouse date of birth'),
         blank=True,
         null=True,
     )
-    sponsor_2_nric_spouse = models.BinaryField(
+    sponsor_2_spouse_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse NRIC'),
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_nonce_nric_spouse = models.BinaryField(
+    sponsor_2_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_tag_nric_spouse = models.BinaryField(
+    sponsor_2_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_fin_spouse = models.BinaryField(
+    sponsor_2_spouse_fin_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse FIN'),
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_nonce_fin_spouse = models.BinaryField(
+    sponsor_2_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_tag_fin_spouse = models.BinaryField(
+    sponsor_2_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_passport_spouse = models.BinaryField(
+    sponsor_2_spouse_passport_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse passport'),
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_nonce_passport_spouse = models.BinaryField(
+    sponsor_2_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_tag_passport_spouse = models.BinaryField(
+    sponsor_2_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    sponsor_2_passport_date_spouse = models.DateField(
+    sponsor_2_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
         blank=True,
         null=True,
     )
-    sponsor_2_nationality_spouse = models.CharField(
+    sponsor_2_spouse_nationality = models.CharField(
         verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
@@ -610,77 +797,77 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    sponsor_2_residential_status_spouse = models.CharField(
+    sponsor_2_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
         max_length=5,
-        choices=SpouseResidentialStatusChoices.choices,
-        default=SpouseResidentialStatusChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
 
     def get_sponsor_1_nric_full(self):
         return decrypt_string(
-            self.sponsor_1_nric,
+            self.sponsor_1_nric_num,
             settings.ENCRYPTION_KEY,
             self.sponsor_1_nric_nonce,
-            self.sponsor_1_nric_tag
+            self.sponsor_1_nric_tag,
+        )
+
+    def get_sponsor_1_spouse_nric_full(self):
+        return decrypt_string(
+            self.sponsor_1_spouse_nric_num,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_spouse_nric_nonce,
+            self.sponsor_1_spouse_nric_tag,
+        )
+
+    def get_sponsor_1_spouse_fin_full(self):
+        return decrypt_string(
+            self.sponsor_1_spouse_fin_num,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_spouse_fin_nonce,
+            self.sponsor_1_spouse_fin_tag,
+        )
+
+    def get_sponsor_1_spouse_passport_full(self):
+        return decrypt_string(
+            self.sponsor_1_spouse_passport_num,
+            settings.ENCRYPTION_KEY,
+            self.sponsor_1_spouse_passport_nonce,
+            self.sponsor_1_spouse_passport_tag,
         )
     
     def get_sponsor_2_nric_full(self):
         return decrypt_string(
-            self.sponsor_2_nric,
+            self.sponsor_2_nric_num,
             settings.ENCRYPTION_KEY,
             self.sponsor_2_nric_nonce,
-            self.sponsor_2_nric_tag
+            self.sponsor_2_nric_tag,
         )
 
-    def get_sponsor_1_nric_spouse_full(self):
+    def get_sponsor_2_spouse_nric_full(self):
         return decrypt_string(
-            self.sponsor_1_nric_spouse,
+            self.sponsor_2_spouse_nric_num,
             settings.ENCRYPTION_KEY,
-            self.sponsor_1_nonce_nric_spouse,
-            self.sponsor_1_tag_nric_spouse
+            self.sponsor_2_spouse_nric_nonce,
+            self.sponsor_2_spouse_nric_tag,
         )
 
-    def get_sponsor_1_fin_spouse_full(self):
+    def get_sponsor_2_spouse_fin_full(self):
         return decrypt_string(
-            self.sponsor_1_fin_spouse,
+            self.sponsor_2_spouse_fin_num,
             settings.ENCRYPTION_KEY,
-            self.sponsor_1_nonce_fin_spouse,
-            self.sponsor_1_tag_fin_spouse
+            self.sponsor_2_spouse_fin_nonce,
+            self.sponsor_2_spouse_fin_tag,
         )
 
-    def get_sponsor_1_passport_spouse_full(self):
+    def get_sponsor_2_spouse_passport_full(self):
         return decrypt_string(
-            self.sponsor_1_passport_spouse,
+            self.sponsor_2_spouse_passport_num,
             settings.ENCRYPTION_KEY,
-            self.sponsor_1_nonce_passport_spouse,
-            self.sponsor_1_tag_passport_spouse
-        )
-
-    def get_sponsor_2_nric_spouse_full(self):
-        return decrypt_string(
-            self.sponsor_2_nric_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nonce_nric_spouse,
-            self.sponsor_2_tag_nric_spouse
-        )
-
-    def get_sponsor_2_fin_spouse_full(self):
-        return decrypt_string(
-            self.sponsor_2_fin_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nonce_fin_spouse,
-            self.sponsor_2_tag_fin_spouse
-        )
-
-    def get_sponsor_2_passport_spouse_full(self):
-        return decrypt_string(
-            self.sponsor_2_passport_spouse,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nonce_passport_spouse,
-            self.sponsor_2_tag_passport_spouse
+            self.sponsor_2_spouse_passport_nonce,
+            self.sponsor_2_spouse_passport_tag,
         )
 
     def get_sponsor_1_mobile(self):
@@ -711,18 +898,18 @@ class Employer(models.Model):
         null=True,
     )
 
-    joint_applicant_nric = models.BinaryField(
-        verbose_name=_('Joint applicant NRIC / FIN'),
+    joint_applicant_nric_num = models.BinaryField(
+        verbose_name=_('Joint applicant NRIC'),
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_nonce_nric = models.BinaryField(
+    joint_applicant_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_tag_nric = models.BinaryField(
+    joint_applicant_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
@@ -765,8 +952,8 @@ class Employer(models.Model):
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
-        choices=ResidentialStatusChoices.choices,
-        default=ResidentialStatusChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
         blank=True,
         null=True,
     )
@@ -811,13 +998,13 @@ class Employer(models.Model):
     )
 
     # Joint applicant's spouse details
-    joint_applicant_name_spouse = models.CharField(
+    joint_applicant_spouse_name = models.CharField(
         verbose_name=_("Joint applicant's spouse name"),
         max_length=40,
         blank=True,
         null=True,
     )
-    joint_applicant_gender_spouse = models.CharField(
+    joint_applicant_spouse_gender = models.CharField(
         verbose_name=_("Joint applicant's spouse gender"),
         max_length=1,
         choices=GenderChoices.choices,
@@ -825,65 +1012,65 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    joint_applicant_date_of_birth_spouse = models.DateField(
+    joint_applicant_spouse_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's spouse date of birth"),
         blank=True,
         null=True,
     )
-    joint_applicant_nric_spouse = models.BinaryField(
+    joint_applicant_spouse_nric_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse NRIC"),
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_nonce_nric_spouse = models.BinaryField(
+    joint_applicant_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_tag_nric_spouse = models.BinaryField(
+    joint_applicant_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_fin_spouse = models.BinaryField(
+    joint_applicant_spouse_fin_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse FIN"),
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_nonce_fin_spouse = models.BinaryField(
+    joint_applicant_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_tag_fin_spouse = models.BinaryField(
+    joint_applicant_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_passport_spouse = models.BinaryField(
+    joint_applicant_spouse_passport_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse passport"),
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_nonce_passport_spouse = models.BinaryField(
+    joint_applicant_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_tag_passport_spouse = models.BinaryField(
+    joint_applicant_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    joint_applicant_passport_date_spouse = models.DateField(
+    joint_applicant_spouse_passport_date = models.DateField(
         verbose_name=_("Joint applicant's spouse passport expiry date"),
         blank=True,
         null=True,
     )
-    joint_applicant_nationality_spouse = models.CharField(
+    joint_applicant_spouse_nationality = models.CharField(
         verbose_name=_("Joint applicant's spouse nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
@@ -891,45 +1078,45 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    joint_applicant_residential_status_spouse = models.CharField(
+    joint_applicant_spouse_residential_status = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
         max_length=5,
-        choices=SpouseResidentialStatusChoices.choices,
-        default=SpouseResidentialStatusChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
 
     def get_joint_applicant_nric_full(self):
         return decrypt_string(
-            self.joint_applicant_nric,
+            self.joint_applicant_nric_num,
             settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_nric,
-            self.joint_applicant_tag_nric
+            self.joint_applicant_nric_nonce,
+            self.joint_applicant_nric_tag,
         )
     
-    def get_joint_applicant_nric_spouse_full(self):
+    def get_joint_applicant_spouse_nric_full(self):
         return decrypt_string(
-            self.joint_applicant_nric_spouse,
+            self.joint_applicant_spouse_nric_num,
             settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_nric_spouse,
-            self.joint_applicant_tag_nric_spouse
+            self.joint_applicant_spouse_nric_nonce,
+            self.joint_applicant_spouse_nric_tag,
         )
 
-    def get_joint_applicant_fin_spouse_full(self):
+    def get_joint_applicant_spouse_fin_full(self):
         return decrypt_string(
-            self.joint_applicant_fin_spouse,
+            self.joint_applicant_spouse_fin_num,
             settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_fin_spouse,
-            self.joint_applicant_tag_fin_spouse
+            self.joint_applicant_spouse_fin_nonce,
+            self.joint_applicant_spouse_fin_tag,
         )
 
-    def get_joint_applicant_passport_spouse_full(self):
+    def get_joint_applicant_spouse_passport_full(self):
         return decrypt_string(
-            self.joint_applicant_passport_spouse,
+            self.joint_applicant_spouse_passport_num,
             settings.ENCRYPTION_KEY,
-            self.joint_applicant_nonce_passport_spouse,
-            self.joint_applicant_tag_passport_spouse
+            self.joint_applicant_spouse_passport_nonce,
+            self.joint_applicant_spouse_passport_tag,
         )
 
 class EmployerDoc(models.Model):
@@ -1596,18 +1783,6 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-    # spouse_name = models.CharField(
-    #     verbose_name=_('Spouse Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # spouse_nric = models.CharField(
-    #     verbose_name=_('Spouse NRIC/FIN'),
-    #     max_length=20,
-    #     blank=True,
-    #     null=True
-    # )
     sponsor_1_signature = models.TextField(
         verbose_name=_('Sponsor 1 Signature'),
         blank=True,
