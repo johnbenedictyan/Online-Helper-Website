@@ -23,7 +23,7 @@ from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
-    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices
+    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices
 )
 
 # Utiliy Classes and Functions
@@ -95,14 +95,14 @@ class Maid(models.Model):
 
     maid_type = models.CharField(
         verbose_name=_('Maid Type'),
-        max_length=3,
+        max_length=6,
         blank=False,
-        choices=TypeOfMaidChoices.choices,
-        default=TypeOfMaidChoices.NEW
+        choices=MaidStatusChoices.choices,
+        default=MaidStatusChoices.UNPUBLISHED
     )
 
-    days_off = models.PositiveSmallIntegerField(
-        verbose_name=_('Days off'),
+    expected_days_off = models.PositiveSmallIntegerField(
+        verbose_name=_('Expected number of days off'),
         blank=False,
         default=0
     )
@@ -145,21 +145,14 @@ class Maid(models.Model):
         editable=False
     )
 
-    published = models.BooleanField(
-        default=False,
-        blank=False
+    status = models.CharField(
+        verbose_name=_('Maid Status'),
+        max_length=3,
+        blank=False,
+        choices=TypeOfMaidChoices.choices,
+        default=TypeOfMaidChoices.NEW
     )
 
-    featured = models.BooleanField(
-        default=False,
-        blank=False
-    )
-    
-    frozen = models.BooleanField(
-        default=False,
-        editable=False
-    )
-    
     def __str__(self):
         return self.reference_number + ' - ' + self.name
 

@@ -373,7 +373,13 @@ class MaidLoanDescriptionChoices(models.TextChoices):
     TRANSFER_FEE = 'ATF', _('Add Transfer Fee')
     OTHER_COST = 'AOC', _('Add Other Cost')
     LOAN_REPAYMENT = 'LR', _('Loan Repayment')
-    
+
+class MaidStatusChoices(models.TextChoices):
+    UNPUBLISHED = 'UNPUB', _('Unpublished')    
+    PUBLISHED = 'PUB', _('Published')
+    FEATURED = 'FEAT', _('Featured')
+    EMPLOYED = 'EMPLOY', _('Employed')
+
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes
