@@ -46,34 +46,42 @@ class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
         exclude = [
-            'nonce',
-            'tag',
+            'employer_nric_nonce',
+            'employer_nric_tag',
+            'employer_fin_nonce',
+            'employer_fin_tag',
+            'employer_passport_nonce',
+            'employer_passport_tag',
             'spouse_nric_nonce',
             'spouse_nric_tag',
+            'spouse_fin_nonce',
+            'spouse_fin_tag',
+            'spouse_passport_nonce',
+            'spouse_passport_tag',
             'sponsor_1_nric_nonce',
             'sponsor_1_nric_tag',
+            'sponsor_1_spouse_nric_nonce',
+            'sponsor_1_spouse_nric_tag',
+            'sponsor_1_spouse_fin_nonce',
+            'sponsor_1_spouse_fin_tag',
+            'sponsor_1_spouse_passport_nonce',
+            'sponsor_1_spouse_passport_tag',
             'sponsor_2_nric_nonce',
             'sponsor_2_nric_tag',
-            'sponsor_1_nonce_nric_spouse',
-            'sponsor_1_tag_nric_spouse',
-            'sponsor_1_nonce_fin_spouse',
-            'sponsor_1_tag_fin_spouse',
-            'sponsor_1_nonce_passport_spouse',
-            'sponsor_1_tag_passport_spouse',
-            'sponsor_2_nonce_nric_spouse',
-            'sponsor_2_tag_nric_spouse',
-            'sponsor_2_nonce_fin_spouse',
-            'sponsor_2_tag_fin_spouse',
-            'sponsor_2_nonce_passport_spouse',
-            'sponsor_2_tag_passport_spouse',
-            'joint_applicant_nonce_nric',
-            'joint_applicant_tag_nric',
-            'joint_applicant_nonce_nric_spouse',
-            'joint_applicant_tag_nric_spouse',
-            'joint_applicant_nonce_fin_spouse',
-            'joint_applicant_tag_fin_spouse',
-            'joint_applicant_nonce_passport_spouse',
-            'joint_applicant_tag_passport_spouse',
+            'sponsor_2_spouse_nric_nonce',
+            'sponsor_2_spouse_nric_tag',
+            'sponsor_2_spouse_fin_nonce',
+            'sponsor_2_spouse_fin_tag',
+            'sponsor_2_spouse_passport_nonce',
+            'sponsor_2_spouse_passport_tag',
+            'joint_applicant_nric_nonce',
+            'joint_applicant_nric_tag',
+            'joint_applicant_spouse_nric_nonce',
+            'joint_applicant_spouse_nric_tag',
+            'joint_applicant_spouse_fin_nonce',
+            'joint_applicant_spouse_fin_tag',
+            'joint_applicant_spouse_passport_nonce',
+            'joint_applicant_spouse_passport_tag',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -87,91 +95,91 @@ class EmployerForm(forms.ModelForm):
         '''
         Decryption
         '''
-        if self.instance.employer_nric and self.instance.employer_nric!=b'':
-            plaintext = self.instance.get_nric_full()
-            self.initial.update({'employer_nric': plaintext})
-        else:
-            self.initial.update({'employer_nric': ''})
+        # if self.instance.employer_nric and self.instance.employer_nric!=b'':
+        #     plaintext = self.instance.get_nric_full()
+        #     self.initial.update({'employer_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'employer_nric_num': ''})
 
-        self.initial.update({'spouse_nric': self.instance.get_spouse_nric_full()})
+        # self.initial.update({'spouse_nric_num': self.instance.get_spouse_nric_full()})
         
-        # Sponsors
-        if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
-            plaintext = self.instance.get_sponsor_1_nric_full()
-            self.initial.update({'sponsor_1_nric': plaintext})
-        else:
-            self.initial.update({'sponsor_1_nric': ''})
+        # # Sponsors
+        # if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
+        #     plaintext = self.instance.get_sponsor_1_nric_full()
+        #     self.initial.update({'sponsor_1_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_nric_num': ''})
 
-        if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
-            plaintext = self.instance.get_sponsor_2_nric_full()
-            self.initial.update({'sponsor_2_nric': plaintext})
-        else:
-            self.initial.update({'sponsor_2_nric': ''})
+        # if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
+        #     plaintext = self.instance.get_sponsor_2_nric_full()
+        #     self.initial.update({'sponsor_2_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_nric_num': ''})
 
-        if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_nric_spouse_full()
-            self.initial.update({'sponsor_1_nric_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_nric_spouse': ''})
+        # if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_1_nric_spouse_full()
+        #     self.initial.update({'sponsor_1_spouse_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_spouse_nric_num': ''})
 
-        if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_fin_spouse_full()
-            self.initial.update({'sponsor_1_fin_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_fin_spouse': ''})
+        # if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_1_fin_spouse_full()
+        #     self.initial.update({'sponsor_1_spouse_fin_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_spouse_fin_num': ''})
 
-        if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
-            plaintext = self.instance.get_sponsor_1_passport_spouse_full()
-            self.initial.update({'sponsor_1_passport_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_1_passport_spouse': ''})
+        # if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_1_passport_spouse_full()
+        #     self.initial.update({'sponsor_1_spouse_passport_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_spouse_passport_num': ''})
 
-        if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_nric_spouse_full()
-            self.initial.update({'sponsor_2_nric_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_nric_spouse': ''})
+        # if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_2_nric_spouse_full()
+        #     self.initial.update({'sponsor_2_spouse_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_spouse_nric_num': ''})
 
-        if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_fin_spouse_full()
-            self.initial.update({'sponsor_2_fin_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_fin_spouse': ''})
+        # if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_2_fin_spouse_full()
+        #     self.initial.update({'sponsor_2_spouse_fin_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_spouse_fin_num': ''})
 
-        if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
-            plaintext = self.instance.get_sponsor_2_passport_spouse_full()
-            self.initial.update({'sponsor_2_passport_spouse': plaintext})
-        else:
-            self.initial.update({'sponsor_2_passport_spouse': ''})
+        # if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_2_passport_spouse_full()
+        #     self.initial.update({'sponsor_2_spouse_passport_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_spouse_passport_num': ''})
         
-        # Joint Applicants
-        if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
-            plaintext = self.instance.get_joint_applicant_nric_full()
-            self.initial.update({'joint_applicant_nric': plaintext})
-        else:
-            self.initial.update({'joint_applicant_nric': ''})
+        # # Joint Applicants
+        # if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
+        #     plaintext = self.instance.get_joint_applicant_nric_full()
+        #     self.initial.update({'joint_applicant_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_nric_num': ''})
 
-        if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
-            plaintext = self.instance.get_joint_applicant_nric_spouse_full()
-            self.initial.update({'joint_applicant_nric_spouse': plaintext})
-        else:
-            self.initial.update({'joint_applicant_nric_spouse': ''})
+        # if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
+        #     plaintext = self.instance.get_joint_applicant_nric_spouse_full()
+        #     self.initial.update({'joint_applicant_spouse_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_spouse_nric_num': ''})
 
-        if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
-            plaintext = self.instance.get_joint_applicant_fin_spouse_full()
-            self.initial.update({'joint_applicant_fin_spouse': plaintext})
-        else:
-            self.initial.update({'joint_applicant_fin_spouse': ''})
+        # if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
+        #     plaintext = self.instance.get_joint_applicant_fin_spouse_full()
+        #     self.initial.update({'joint_applicant_spouse_fin_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_spouse_fin_num': ''})
 
-        if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
-            plaintext = self.instance.get_joint_applicant_passport_spouse_full()
-            self.initial.update({'joint_applicant_passport_spouse': plaintext})
-        else:
-            self.initial.update({'joint_applicant_passport_spouse': ''})
+        # if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
+        #     plaintext = self.instance.get_joint_applicant_passport_spouse_full()
+        #     self.initial.update({'joint_applicant_spouse_passport_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_spouse_passport_num': ''})
 
 
         #  Remove employer_nric number from initial form display
-        # self.initial.update({'employer_nric':''})
+        # self.initial.update({'employer_nric_num':''})
         
         self.helper = FormHelper()
         self.helper.form_class = 'employer-form'
@@ -183,7 +191,7 @@ class EmployerForm(forms.ModelForm):
             """),
             Row(
                 Column(
-                    'employer_name',
+                    'applicant_type',
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -195,20 +203,37 @@ class EmployerForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            
+            # Employer Contact Details
+            HTML(
+                """
+                <h5 class="my-3">Employer Contact Details</h5>
+            """),
             Row(
                 Column(
-                    'employer_email',
+                    'employer_name',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'employer_mobile_number',
+                    'employer_gender',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'employer_nric',
+                    'employer_mobile_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_home_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_email',
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -229,6 +254,68 @@ class EmployerForm(forms.ModelForm):
                 css_class='form-row'
             ),
 
+            # Employer's Information
+            HTML(
+                """
+                <h5 class="my-3">Employer's Information'</h5>
+            """),
+            Row(
+                Column(
+                    'employer_date_of_birth',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_nationality',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_residential_status',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_nric_num',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_fin_num',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_passport_num',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_passport_date',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'employer_marital_status',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer_marriage_sg_registered',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+
+            # Spouse's Information
+            HTML(
+                """
+                <h5 class="my-3">Spouse's Information'</h5>
+            """),
             Row(
                 Column(
                     'spouse_name',
@@ -236,9 +323,49 @@ class EmployerForm(forms.ModelForm):
                     hidden='true',
                 ),
                 Column(
-                    'spouse_nric',
+                    'spouse_gender',
                     css_class='form-group col-md-6 employer-spouse spouse-only',
                     hidden='true',
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'spouse_date_of_birth',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'spouse_nationality',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'spouse_residential_status',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'spouse_nric_num',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'spouse_fin_num',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'spouse_passport_num',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'spouse_passport_date',
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -257,20 +384,11 @@ class EmployerForm(forms.ModelForm):
                         ),
                         Column(
                             PrependedText(
-                                'single_monthly_income', '$',
+                                'sponsor_monthly_income', '$',
                                 min='0', max='9999999',
                             ),
                             css_class='form-group col-md-6',
-                            id='single_sponsor_income',
-                        ),
-                        Column(
-                            PrependedText(
-                                'combined_monthly_income_sponsors', '$',
-                                min='0', max='9999999',
-                            ),
-                            css_class='form-group col-md-6 sponsor_2',
-                            id='combined_sponsor_income',
-                            hidden='true',
+                            id='sponsor_monthly_income',
                         ),
                         css_class='form-row',
                     ),
@@ -280,27 +398,23 @@ class EmployerForm(forms.ModelForm):
                             css_class='form-group col-md-6',
                         ),
                         Column(
-                            'sponsor_1_nric',
+                            'sponsor_1_relationship',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
                     Row(
-                        Column(
-                            'sponsor_1_relationship',
-                            css_class='form-group col-md-6',
-                        ),
                         Column(
                             'sponsor_1_name',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             'sponsor_1_gender',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             Field(
                                 'sponsor_1_date_of_birth',
@@ -308,6 +422,10 @@ class EmployerForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Sponsor 1 date of birth'
                             ),
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'sponsor_1_nric_num',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
@@ -364,7 +482,7 @@ class EmployerForm(forms.ModelForm):
                             hidden='true',
                         ),
                         Column(
-                            'sponsor_1_name_spouse',
+                            'sponsor_1_spouse_name',
                             css_class='form-group col-md-6 spouse-1',
                             hidden='true',
                         ),
@@ -372,13 +490,13 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'sponsor_1_gender_spouse',
+                            'sponsor_1_spouse_gender',
                             css_class='form-group col-md-6 spouse-1',
                             hidden='true',
                         ),
                         Column(
                             Field(
-                                'sponsor_1_date_of_birth_spouse',
+                                'sponsor_1_spouse_date_of_birth',
                                 type='text',
                                 onfocus="(this.type='date')",
                                 placeholder='Sponsor 1 spouse date of birth'
@@ -390,12 +508,12 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'sponsor_1_nric_spouse',
+                            'sponsor_1_spouse_nationality',
                             css_class='form-group col-md-6 spouse-1',
                             hidden='true',
                         ),
                         Column(
-                            'sponsor_1_fin_spouse',
+                            'sponsor_1_spouse_residential_status',
                             css_class='form-group col-md-6 spouse-1',
                             hidden='true',
                         ),
@@ -403,7 +521,20 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'sponsor_1_passport_spouse',
+                            'sponsor_1_spouse_nric_num',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        Column(
+                            'sponsor_1_spouse_fin_num',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'sponsor_1_spouse_passport_num',
                             css_class='form-group col-md-6 spouse-1',
                             hidden='true',
                         ),
@@ -419,47 +550,30 @@ class EmployerForm(forms.ModelForm):
                         ),
                         css_class='form-row',
                     ),
-                    Row(
-                        Column(
-                            'sponsor_1_nationality_spouse',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_1_residential_status_spouse',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
+
                     # Sponsor 2
-                    Row(
-                        Column(
-                            'sponsor_2_nric',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
                     Row(
                         Column(
                             'sponsor_2_relationship',
                             css_class='form-group col-md-6 sponsor-2',
                             hidden='true',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'sponsor_2_name',
+                            css_class='form-group col-md-6 sponsor-2',
+                            hidden='true',
+                        ),
+                        Column(
+                            'sponsor_2_gender',
                             css_class='form-group col-md-6 sponsor-2',
                             hidden='true',
                         ),
                         css_class='form-row',
                     ),
                     Row(
-                        Column(
-                            'sponsor_2_gender',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
                         Column(
                             Field(
                                 'sponsor_2_date_of_birth',
@@ -467,6 +581,11 @@ class EmployerForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Sponsor 2 date of birth',
                             ),
+                            css_class='form-group col-md-6 sponsor-2',
+                            hidden='true',
+                        ),
+                        Column(
+                            'sponsor_2_nric_num',
                             css_class='form-group col-md-6 sponsor-2',
                             hidden='true',
                         ),
@@ -532,7 +651,7 @@ class EmployerForm(forms.ModelForm):
                             hidden='true',
                         ),
                         Column(
-                            'sponsor_2_name_spouse',
+                            'sponsor_2_spouse_name',
                             css_class='form-group col-md-6 spouse-2',
                             hidden='true',
                         ),
@@ -540,13 +659,13 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'sponsor_2_gender_spouse',
+                            'sponsor_2_spouse_gender',
                             css_class='form-group col-md-6 spouse-2',
                             hidden='true',
                         ),
                         Column(
                             Field(
-                                'sponsor_2_date_of_birth_spouse',
+                                'sponsor_2_spouse_date_of_birth',
                                 type='text',
                                 onfocus="(this.type='date')",
                                 placeholder='Sponsor 2 date of birth',
@@ -558,30 +677,12 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'sponsor_2_nric_spouse',
+                            'sponsor_2_spouse_nationality',
                             css_class='form-group col-md-6 spouse-2',
                             hidden='true',
                         ),
                         Column(
-                            'sponsor_2_fin_spouse',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row'
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_passport_spouse',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            Field(
-                                'sponsor_2_passport_date_spouse',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 2 spouse passport expiry date',
-                            ),
+                            'sponsor_2_spouse_residential_status',
                             css_class='form-group col-md-6 spouse-2',
                             hidden='true',
                         ),
@@ -589,12 +690,30 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'sponsor_2_nationality_spouse',
+                            'sponsor_2_spouse_nric_num',
                             css_class='form-group col-md-6 spouse-2',
                             hidden='true',
                         ),
                         Column(
-                            'sponsor_2_residential_status_spouse',
+                            'sponsor_2_spouse_fin_num',
+                            css_class='form-group col-md-6 spouse-2',
+                            hidden='true',
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'sponsor_2_spouse_passport_num',
+                            css_class='form-group col-md-6 spouse-2',
+                            hidden='true',
+                        ),
+                        Column(
+                            Field(
+                                'sponsor_2_spouse_passport_date',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Sponsor 2 spouse passport expiry date',
+                            ),
                             css_class='form-group col-md-6 spouse-2',
                             hidden='true',
                         ),
@@ -607,38 +726,37 @@ class EmployerForm(forms.ModelForm):
             # Joint Applicants
             Row(
                 Column(
+                    'joint_applicant_relationship',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
                     PrependedText(
-                        'combined_monthly_income_joint_applicants', '$',
+                        'joint_applicant_monthly_income', '$',
                         min='0', max='9999999',
                     ),
                     css_class='form-group col-md-6',
                 ),
                 Column(
-                    'worked_in_sg',
+                    'joint_applicant_worked_in_sg',
                     css_class='form-group col-md-6',
                 ),
                 css_class='form-row',
             ),
             Row(
-                Column(
-                    'joint_applicant_relationship',
-                    css_class='form-group col-md-6',
-                ),
                 Column(
                     'joint_applicant_name',
                     css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_nric',
-                    css_class='form-group col-md-4',
                 ),
                 Column(
                     'joint_applicant_gender',
                     css_class='form-group col-md-4',
                 ),
+                css_class='form-row',
+            ),
+            Row(
                 Column(
                     Field(
                         'joint_applicant_date_of_birth',
@@ -646,6 +764,10 @@ class EmployerForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Joint applicant date of birth'
                     ),
+                    css_class='form-group col-md-4',
+                ),
+                Column(
+                    'joint_applicant_nric_num',
                     css_class='form-group col-md-4',
                 ),
                 css_class='form-row',
@@ -691,7 +813,7 @@ class EmployerForm(forms.ModelForm):
                     hidden='true',
                 ),
                 Column(
-                    'joint_applicant_name_spouse',
+                    'joint_applicant_spouse_name',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
@@ -699,13 +821,13 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'joint_applicant_gender_spouse',
+                    'joint_applicant_spouse_gender',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
                 Column(
                     Field(
-                        'joint_applicant_date_of_birth_spouse',
+                        'joint_applicant_spouse_date_of_birth',
                         type='text',
                         onfocus="(this.type='date')",
                         placeholder='Joint applicant spouse date of birth'
@@ -717,12 +839,12 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'joint_applicant_nric_spouse',
+                    'joint_applicant_spouse_nric_num',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
                 Column(
-                    'joint_applicant_fin_spouse',
+                    'joint_applicant_spouse_fin_num',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
@@ -730,13 +852,13 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'joint_applicant_passport_spouse',
+                    'joint_applicant_spouse_passport_num',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
                 Column(
                     Field(
-                        'joint_applicant_passport_date_spouse',
+                        'joint_applicant_spouse_passport_date',
                         type='text',
                         onfocus="(this.type='date')",
                         placeholder='Joint applicant spouse passport expiry date',
@@ -748,12 +870,12 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'joint_applicant_nationality_spouse',
+                    'joint_applicant_spouse_nationality',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
                 Column(
-                    'joint_applicant_residential_status_spouse',
+                    'joint_applicant_spouse_residential_status',
                     css_class='form-group col-md-6 spouse-1',
                     hidden='true',
                 ),
@@ -849,8 +971,8 @@ class EmployerForm(forms.ModelForm):
             )
         return cleaned_field
 
-    def clean_employer_nric(self):
-        cleaned_field = self.cleaned_data.get('employer_nric')
+    def clean_employer_nric_num(self):
+        cleaned_field = self.cleaned_data.get('employer_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -862,7 +984,7 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+        ciphertext, self.instance.employer_nric_nonce, self.instance.employer_nric_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -870,8 +992,8 @@ class EmployerForm(forms.ModelForm):
         return ciphertext
 
     # Employer Spouse
-    def clean_spouse_nric(self):
-        cleaned_field = self.cleaned_data.get('spouse_nric')
+    def clean_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('spouse_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -890,8 +1012,8 @@ class EmployerForm(forms.ModelForm):
         return ciphertext
 
     # Sponsors
-    def clean_sponsor_1_nric(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric')
+    def clean_sponsor_1_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -909,8 +1031,65 @@ class EmployerForm(forms.ModelForm):
         )
         return ciphertext
 
-    def clean_sponsor_2_nric(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric')
+    def clean_sponsor_1_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_spouse_fin_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_fin_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_spouse_passport_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -928,8 +1107,8 @@ class EmployerForm(forms.ModelForm):
         )
         return ciphertext
 
-    def clean_sponsor_1_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
+    def clean_sponsor_2_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -941,14 +1120,14 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
         return ciphertext
 
-    def clean_sponsor_1_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
+    def clean_sponsor_2_spouse_fin_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_fin_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -960,14 +1139,14 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
         return ciphertext
 
-    def clean_sponsor_1_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
+    def clean_sponsor_2_spouse_passport_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -979,72 +1158,15 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
+        ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
         return ciphertext
 
     # Joint Applicants
-    def clean_joint_applicant_nric(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_nric')
+    def clean_joint_applicant_nric_num(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -1056,14 +1178,14 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_nric, self.instance.joint_applicant_tag_nric = encrypt_string(
+        ciphertext, self.instance.joint_applicant_nric_nonce, self.instance.joint_applicant_nric_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
         return ciphertext
 
-    def clean_joint_applicant_nric_spouse(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_nric_spouse')
+    def clean_joint_applicant_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_nric_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -1075,14 +1197,14 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_nric_spouse, self.instance.joint_applicant_tag_nric_spouse = encrypt_string(
+        ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
         return ciphertext
 
-    def clean_joint_applicant_fin_spouse(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_fin_spouse')
+    def clean_joint_applicant_spouse_fin_num(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_fin_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -1094,14 +1216,14 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_fin_spouse, self.instance.joint_applicant_tag_fin_spouse = encrypt_string(
+        ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
         return ciphertext
 
-    def clean_joint_applicant_passport_spouse(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_passport_spouse')
+    def clean_joint_applicant_spouse_passport_num(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_num')
 
         if not isinstance(cleaned_field, str):
             raise ValidationError('Must be a string')
@@ -1113,7 +1235,7 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
         # Encryption
-        ciphertext, self.instance.joint_applicant_nonce_passport_spouse, self.instance.joint_applicant_tag_passport_spouse = encrypt_string(
+        ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
         )
@@ -1983,18 +2105,18 @@ class JobOrderForm(forms.ModelForm):
 #             'sponsor_1_nric_tag',
 #             'sponsor_2_nric_nonce',
 #             'sponsor_2_nric_tag',
-#             'sponsor_1_nonce_nric_spouse',
-#             'sponsor_1_tag_nric_spouse',
-#             'sponsor_1_nonce_fin_spouse',
-#             'sponsor_1_tag_fin_spouse',
-#             'sponsor_1_nonce_passport_spouse',
-#             'sponsor_1_tag_passport_spouse',
-#             'sponsor_2_nonce_nric_spouse',
-#             'sponsor_2_tag_nric_spouse',
-#             'sponsor_2_nonce_fin_spouse',
-#             'sponsor_2_tag_fin_spouse',
-#             'sponsor_2_nonce_passport_spouse',
-#             'sponsor_2_tag_passport_spouse',
+#             'sponsor_1_spouse_nric_nonce',
+#             'sponsor_1_spouse_nric_tag',
+#             'sponsor_1_spouse_fin_nonce',
+#             'sponsor_1_spouse_fin_tag',
+#             'sponsor_1_spouse_passport_nonce',
+#             'sponsor_1_spouse_passport_tag',
+#             'sponsor_2_spouse_nric_nonce',
+#             'sponsor_2_spouse_nric_tag',
+#             'sponsor_2_spouse_fin_nonce',
+#             'sponsor_2_spouse_fin_tag',
+#             'sponsor_2_spouse_passport_nonce',
+#             'sponsor_2_spouse_passport_tag',
 #         ]
 
 #     def __init__(self, *args, **kwargs):
@@ -2009,15 +2131,15 @@ class JobOrderForm(forms.ModelForm):
 #         '''
 #         if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
 #             plaintext = self.instance.get_sponsor_1_nric_full()
-#             self.initial.update({'sponsor_1_nric': plaintext})
+#             self.initial.update({'sponsor_1_nric_num': plaintext})
 #         else:
-#             self.initial.update({'sponsor_1_nric': ''})
+#             self.initial.update({'sponsor_1_nric_num': ''})
 
 #         if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
 #             plaintext = self.instance.get_sponsor_2_nric_full()
-#             self.initial.update({'sponsor_2_nric': plaintext})
+#             self.initial.update({'sponsor_2_nric_num': plaintext})
 #         else:
-#             self.initial.update({'sponsor_2_nric': ''})
+#             self.initial.update({'sponsor_2_nric_num': ''})
 
 #         if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
 #             plaintext = self.instance.get_sponsor_1_nric_spouse_full()
@@ -2088,7 +2210,7 @@ class JobOrderForm(forms.ModelForm):
 #                     css_class='form-group col-md-6',
 #                 ),
 #                 Column(
-#                     'sponsor_1_nric',
+#                     'sponsor_1_nric_num',
 #                     css_class='form-group col-md-6',
 #                 ),
 #                 css_class='form-row',
@@ -2243,7 +2365,7 @@ class JobOrderForm(forms.ModelForm):
 #             # Sponsor 2
 #             Row(
 #                 Column(
-#                     'sponsor_2_nric',
+#                     'sponsor_2_nric_num',
 #                     css_class='form-group col-md-6 sponsor-2',
 #                     hidden='true',
 #                 ),
@@ -2411,8 +2533,8 @@ class JobOrderForm(forms.ModelForm):
 #             Submit('submit', 'Submit')
 #         )
 
-#     def clean_sponsor_1_nric(self):
-#         cleaned_field = self.cleaned_data.get('sponsor_1_nric')
+#     def clean_sponsor_1_nric_num(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
 
 #         if not isinstance(cleaned_field, str):
 #             raise ValidationError('Must be a string')
@@ -2430,8 +2552,8 @@ class JobOrderForm(forms.ModelForm):
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_2_nric(self):
-#         cleaned_field = self.cleaned_data.get('sponsor_2_nric')
+#     def clean_sponsor_2_nric_num(self):
+#         cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
 
 #         if not isinstance(cleaned_field, str):
 #             raise ValidationError('Must be a string')
@@ -2449,7 +2571,7 @@ class JobOrderForm(forms.ModelForm):
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_1_nric_spouse(self):
+#     def clean_sponsor_1_spouse_nric_num(self):
 #         cleaned_field = self.cleaned_data.get('sponsor_1_nric_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2462,13 +2584,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.sponsor_1_nonce_nric_spouse, self.instance.sponsor_1_tag_nric_spouse = encrypt_string(
+#         ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_1_fin_spouse(self):
+#     def clean_sponsor_1_spouse_fin_num(self):
 #         cleaned_field = self.cleaned_data.get('sponsor_1_fin_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2481,13 +2603,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.sponsor_1_nonce_fin_spouse, self.instance.sponsor_1_tag_fin_spouse = encrypt_string(
+#         ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_1_passport_spouse(self):
+#     def clean_sponsor_1_spouse_passport_num(self):
 #         cleaned_field = self.cleaned_data.get('sponsor_1_passport_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2500,13 +2622,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.sponsor_1_nonce_passport_spouse, self.instance.sponsor_1_tag_passport_spouse = encrypt_string(
+#         ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_2_nric_spouse(self):
+#     def clean_sponsor_2_spouse_nric_num(self):
 #         cleaned_field = self.cleaned_data.get('sponsor_2_nric_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2519,13 +2641,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.sponsor_2_nonce_nric_spouse, self.instance.sponsor_2_tag_nric_spouse = encrypt_string(
+#         ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_2_fin_spouse(self):
+#     def clean_sponsor_2_spouse_fin_num(self):
 #         cleaned_field = self.cleaned_data.get('sponsor_2_fin_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2538,13 +2660,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.sponsor_2_nonce_fin_spouse, self.instance.sponsor_2_tag_fin_spouse = encrypt_string(
+#         ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_sponsor_2_passport_spouse(self):
+#     def clean_sponsor_2_spouse_passport_num(self):
 #         cleaned_field = self.cleaned_data.get('sponsor_2_passport_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2557,7 +2679,7 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.sponsor_2_nonce_passport_spouse, self.instance.sponsor_2_tag_passport_spouse = encrypt_string(
+#         ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
@@ -2568,14 +2690,14 @@ class JobOrderForm(forms.ModelForm):
 #         model = EmployerJointApplicant
 #         exclude = [
 #             'employer_doc',
-#             'joint_applicant_nonce_nric',
-#             'joint_applicant_tag_nric',
-#             'joint_applicant_nonce_nric_spouse',
-#             'joint_applicant_tag_nric_spouse',
-#             'joint_applicant_nonce_fin_spouse',
-#             'joint_applicant_tag_fin_spouse',
-#             'joint_applicant_nonce_passport_spouse',
-#             'joint_applicant_tag_passport_spouse',
+#             'joint_applicant_nric_nonce_num',
+#             'joint_applicant_nric_tag_num',
+#             'joint_applicant_spouse_nric_nonce',
+#             'joint_applicant_spouse_nric_tag',
+#             'joint_applicant_spouse_fin_nonce',
+#             'joint_applicant_spouse_fin_tag',
+#             'joint_applicant_spouse_passport_nonce',
+#             'joint_applicant_spouse_passport_tag',
 #         ]
 
 #     def __init__(self, *args, **kwargs):
@@ -2590,9 +2712,9 @@ class JobOrderForm(forms.ModelForm):
 #         '''
 #         if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
 #             plaintext = self.instance.get_joint_applicant_nric_full()
-#             self.initial.update({'joint_applicant_nric': plaintext})
+#             self.initial.update({'joint_applicant_nric_num': plaintext})
 #         else:
-#             self.initial.update({'joint_applicant_nric': ''})
+#             self.initial.update({'joint_applicant_nric_num': ''})
 
 #         if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
 #             plaintext = self.instance.get_joint_applicant_nric_spouse_full()
@@ -2642,7 +2764,7 @@ class JobOrderForm(forms.ModelForm):
 #             ),
 #             Row(
 #                 Column(
-#                     'joint_applicant_nric',
+#                     'joint_applicant_nric_num',
 #                     css_class='form-group col-md-4',
 #                 ),
 #                 Column(
@@ -2772,8 +2894,8 @@ class JobOrderForm(forms.ModelForm):
 #             Submit('submit', 'Submit')
 #         )
 
-#     def clean_joint_applicant_nric(self):
-#         cleaned_field = self.cleaned_data.get('joint_applicant_nric')
+#     def clean_joint_applicant_nric_num(self):
+#         cleaned_field = self.cleaned_data.get('joint_applicant_nric_num')
 
 #         if not isinstance(cleaned_field, str):
 #             raise ValidationError('Must be a string')
@@ -2785,13 +2907,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.joint_applicant_nonce_nric, self.instance.joint_applicant_tag_nric = encrypt_string(
+#         ciphertext, self.instance.joint_applicant_nric_nonce, self.instance.joint_applicant_nric_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_joint_applicant_nric_spouse(self):
+#     def clean_joint_applicant_spouse_nric_num(self):
 #         cleaned_field = self.cleaned_data.get('joint_applicant_nric_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2804,13 +2926,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.joint_applicant_nonce_nric_spouse, self.instance.joint_applicant_tag_nric_spouse = encrypt_string(
+#         ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_joint_applicant_fin_spouse(self):
+#     def clean_joint_applicant_spouse_fin_num(self):
 #         cleaned_field = self.cleaned_data.get('joint_applicant_fin_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2823,13 +2945,13 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.joint_applicant_nonce_fin_spouse, self.instance.joint_applicant_tag_fin_spouse = encrypt_string(
+#         ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
 #         return ciphertext
 
-#     def clean_joint_applicant_passport_spouse(self):
+#     def clean_joint_applicant_spouse_passport_num(self):
 #         cleaned_field = self.cleaned_data.get('joint_applicant_passport_spouse')
 
 #         if not isinstance(cleaned_field, str):
@@ -2842,7 +2964,7 @@ class JobOrderForm(forms.ModelForm):
 #             raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
 
 #         # Encryption
-#         ciphertext, self.instance.joint_applicant_nonce_passport_spouse, self.instance.joint_applicant_tag_passport_spouse = encrypt_string(
+#         ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = encrypt_string(
 #             cleaned_field,
 #             settings.ENCRYPTION_KEY
 #         )
