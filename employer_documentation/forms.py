@@ -549,7 +549,7 @@ class EmployerForm(forms.ModelForm):
                         ),
                         Column(
                             Field(
-                                'sponsor_1_passport_date_spouse',
+                                'sponsor_1_spouse_passport_date',
                                 type='text',
                                 onfocus="(this.type='date')",
                                 placeholder='Sponsor 1 spouse passport expiry date',
