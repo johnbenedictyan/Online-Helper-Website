@@ -312,62 +312,67 @@ class EmployerForm(forms.ModelForm):
             ),
 
             # Spouse's Information
-            HTML(
-                """
-                <h5 class="my-3">Spouse's Information</h5>
-            """),
             Row(
                 Column(
-                    'spouse_name',
-                    css_class='form-group col-md-6 employer-spouse spouse-only',
-                    hidden='true',
+                    HTML(
+                        """
+                        <h5 class="my-3">Spouse's Information</h5>
+                    """),
+                    Row(
+                        Column(
+                            'spouse_name',
+                            css_class='form-group col-md-6 employer-spouse spouse-only',
+                            hidden='true',
+                        ),
+                        Column(
+                            'spouse_gender',
+                            css_class='form-group col-md-6 employer-spouse spouse-only',
+                            hidden='true',
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'spouse_date_of_birth',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'spouse_nationality',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'spouse_residential_status',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'spouse_nric_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'spouse_fin_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'spouse_passport_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'spouse_passport_date',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
                 ),
-                Column(
-                    'spouse_gender',
-                    css_class='form-group col-md-6 employer-spouse spouse-only',
-                    hidden='true',
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'spouse_date_of_birth',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'spouse_nationality',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'spouse_residential_status',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'spouse_nric_num',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'spouse_fin_num',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'spouse_passport_num',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'spouse_passport_date',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
+                id='spouse-section',
             ),
             
             # Sponsors
@@ -737,174 +742,180 @@ class EmployerForm(forms.ModelForm):
                         css_class='form-row',
                     ),
                     id='sponsors',
-                )
+                ),
+                id='sponsors-section',
             ),
 
             # Joint Applicants
-            HTML(
-                """
-                <h5 class="my-3" id="id-doc-general">Joint Applicant's Information</h5>
-            """),
             Row(
                 Column(
-                    'joint_applicant_relationship',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    PrependedText(
-                        'joint_applicant_monthly_income', '$',
-                        min='0', max='9999999',
+                    HTML(
+                        """
+                        <h5 class="my-3" id="id-doc-general">Joint Applicant's Information</h5>
+                    """),
+                    Row(
+                        Column(
+                            'joint_applicant_relationship',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row',
                     ),
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_worked_in_sg',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_name',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_gender',
-                    css_class='form-group col-md-4',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    Field(
-                        'joint_applicant_date_of_birth',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Joint applicant date of birth'
+                    Row(
+                        Column(
+                            PrependedText(
+                                'joint_applicant_monthly_income', '$',
+                                min='0', max='9999999',
+                            ),
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_worked_in_sg',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row',
                     ),
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_nric_num',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_nationality',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_residential_status',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_address_1',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_address_2',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_post_code',
-                    css_class='form-group col-md-6',
-                ),
-                Column(
-                    'joint_applicant_marital_status',
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
-            # Joint applicant spouse
-            HTML(
-                """
-                <h5 class="my-3" id="id-doc-general">Joint Applicant Spouse's Information</h5>
-            """),
-            Row(
-                Column(
-                    'joint_applicant_marriage_sg_registered',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'joint_applicant_spouse_name',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_spouse_gender',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'joint_applicant_spouse_date_of_birth',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Joint applicant spouse date of birth'
+                    Row(
+                        Column(
+                            'joint_applicant_name',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_gender',
+                            css_class='form-group col-md-4',
+                        ),
+                        css_class='form-row',
                     ),
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_spouse_nric_num',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'joint_applicant_spouse_fin_num',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_spouse_passport_num',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    Field(
-                        'joint_applicant_spouse_passport_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Joint applicant spouse passport expiry date',
+                    Row(
+                        Column(
+                            Field(
+                                'joint_applicant_date_of_birth',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Joint applicant date of birth'
+                            ),
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_nric_num',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row',
                     ),
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
+                    Row(
+                        Column(
+                            'joint_applicant_nationality',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_residential_status',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'joint_applicant_address_1',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_address_2',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'joint_applicant_post_code',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_marital_status',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row',
+                    ),
+                    # Joint applicant spouse
+                    HTML(
+                        """
+                        <h5 class="my-3" id="id-doc-general">Joint Applicant Spouse's Information</h5>
+                    """),
+                    Row(
+                        Column(
+                            'joint_applicant_marriage_sg_registered',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        Column(
+                            'joint_applicant_spouse_name',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'joint_applicant_spouse_gender',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        Column(
+                            Field(
+                                'joint_applicant_spouse_date_of_birth',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Joint applicant spouse date of birth'
+                            ),
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'joint_applicant_spouse_nric_num',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        Column(
+                            'joint_applicant_spouse_fin_num',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'joint_applicant_spouse_passport_num',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        Column(
+                            Field(
+                                'joint_applicant_spouse_passport_date',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Joint applicant spouse passport expiry date',
+                            ),
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        css_class='form-row',
+                    ),
+                    Row(
+                        Column(
+                            'joint_applicant_spouse_nationality',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        Column(
+                            'joint_applicant_spouse_residential_status',
+                            css_class='form-group col-md-6 spouse-1',
+                            hidden='true',
+                        ),
+                        css_class='form-row',
+                    ),
                 ),
-                css_class='form-row',
-            ),
-            Row(
-                Column(
-                    'joint_applicant_spouse_nationality',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                Column(
-                    'joint_applicant_spouse_residential_status',
-                    css_class='form-group col-md-6 spouse-1',
-                    hidden='true',
-                ),
-                css_class='form-row',
+                id='joint-applicant-section',
             ),
 
             Row(
