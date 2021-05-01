@@ -22,11 +22,6 @@ from .validators import validate_postcode
 # Start of Models
 
 class Agency(models.Model):
-    email = models.EmailField(
-        verbose_name=_('Company Email Address'),
-        blank=False
-    )
-
     name = models.CharField(
         verbose_name=_('Company Name'),
         max_length=100,

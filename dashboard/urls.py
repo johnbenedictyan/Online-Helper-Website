@@ -25,6 +25,9 @@ from .views import DashboardMaidCreation, DashboardAgencyUpdate
 from .views import DashboardHomePage
 
 ## Update Views
+from .views import (
+    DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate
+)
 
 ## Delete Views
 
@@ -102,6 +105,16 @@ urlpatterns = [
                 DashboardAgencyUpdate.as_view(),
                 name='dashboard_agency_update'
             ),
+            path(
+                'agency-information',
+                DashboardAgencyInformationUpdate.as_view(),
+                name='dashboard_agency_information_update'
+            ),
+            path(
+                'agency-opening-hours',
+                DashboardAgencyOpeningHoursUpdate.as_view(),
+                name='dashboard_agency_opening_hours_update'
+            )
         ])
     ),
     path(

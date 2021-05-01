@@ -13,7 +13,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView
 
 # Imports from foreign installed apps
-from agency.forms import AgencyForm
+from agency.forms import AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm
 from agency.models import (
     Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
 )
@@ -358,6 +358,42 @@ class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
         return initial
 
+class DashboardAgencyInformationUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyUpdateForm
+    http_method_names = ['get','post']
+    model = Agency
+    template_name = 'update/dashboard-agency-update.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.agency_id
+    )
+
+class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyOpeningHoursForm
+    http_method_names = ['get','post']
+    model = AgencyOpeningHours
+    template_name = 'update/dashboard-agency-update.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return AgencyOpeningHours.objects.get(
+            agency__pk = self.agency_id
+    )
+        
 # Create Views
         
 # Update Views

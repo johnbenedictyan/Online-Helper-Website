@@ -371,7 +371,7 @@ class AgencyForm(forms.ModelForm):
     
     class Meta:
         model = Agency
-        fields = ['name', 'license_number', 'email', 'website_uri', 'logo',
+        fields = ['name', 'license_number', 'website_uri', 'logo',
                   'profile', 'services']
 
     def __init__(self, *args, **kwargs):
@@ -415,10 +415,6 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'website_uri',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'email',
                     css_class='form-group col-md-6'
                 ),
                 css_class='row form-group mb-xl-3'
@@ -1045,7 +1041,71 @@ class AgencyForm(forms.ModelForm):
                 }
             )
         return new_agency
-            
+
+class AgencyUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Agency
+        fields = [
+            'name', 'license_number', 'website_uri', 'logo', 'profile', 
+            'services'
+        ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Agency Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyInformationGroup'
+            ),
+            Row(
+                Column(
+                    'logo',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'license_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'website_uri',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='mb-xl-3'
+            ),
+            Row(
+                Column(
+                    'profile',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'services',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='mb-xl-3'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Next',
+                        css_class="btn btn-primary w-25"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+        
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),

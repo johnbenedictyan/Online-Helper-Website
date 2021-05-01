@@ -20,7 +20,7 @@ from .filters import AgencyFilter
 from .forms import (
     AgencyForm, AgencyBranchForm, AgencyEmployeeForm,
     AgencyOpeningHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
-    AgencyEmployeeForm, PotentialAgencyForm
+    AgencyEmployeeForm, PotentialAgencyForm, AgencyUpdateForm
 )
 
 from .models import (
@@ -141,7 +141,7 @@ class AgencySignUp(SuccessMessageMixin, CreateView):
 class AgencyUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin, 
                    SuccessMessageMixin, UpdateView):
     context_object_name = 'agency'
-    form_class = AgencyForm
+    form_class = AgencyUpdateForm
     http_method_names = ['get','post']
     model = Agency
     template_name = 'update/agency-update.html'
