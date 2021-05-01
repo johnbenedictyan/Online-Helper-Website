@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
+from django.forms.models import inlineformset_factory, formset_factory
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -1395,57 +1396,74 @@ class AgencyBranchForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'name',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'address_1',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'address_2',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'postal_code',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'main_branch',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'office_number',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'mobile_number',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="1"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
                     ),
-                    css_class='form-group col-12 text-center'
+                    Row(
+                        Column(
+                            'name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'address_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'address_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'main_branch',
+                            css_class='col-md-6'
+                        )
+                    )
                 ),
-                css_class='form-row'
+                css_class='form-group',
             )
         )
 
+# AgencyBranchFormSet = inlineformset_factory(
+#     parent_model = Agency,
+#     form=AgencyBranchForm,
+#     model = AgencyBranch
+# )
+
+# class AgencyBranchFormSetHelper(FormHelper):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.form_method = 'post'
+#         self.layout = Layout(
+#             'name'
+#         )
+#         self.render_required_fields = True
+        
 class AgencyOpeningHoursForm(forms.ModelForm):
     class Meta:
         model = AgencyOpeningHours
@@ -1651,6 +1669,13 @@ class PotentialAgencyForm(forms.ModelForm):
                 self.add_error('email', msg)
 
         return super().save(*args, **kwargs)    
+
+
+
+
+
+
+
 
 # Forms that are going to be deprecated
 class AgencyPlanForm(forms.ModelForm):

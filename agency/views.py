@@ -4,12 +4,15 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView, SingleObjectMixin
+from django.views.generic.edit import (
+    CreateView, UpdateView, DeleteView, FormView
+)
 
 # Imports from foreign installed apps
 import stripe
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
+from crispy_forms.layout import Submit
 
 # Imports from local app
 from .filters import AgencyFilter
@@ -174,6 +177,71 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
         })
         return kwargs
 
+class AgencyBranchFormSetView(GetAuthorityMixin, SingleObjectMixin, FormView):
+    pass
+#     model = Agency
+#     template_name = 'update/agency-branch-formset.html'
+#     authority = ''
+#     agency_id = ''
+
+#     def get_context_data(self, **kwargs):
+#         self.object = self.get_object()
+#         context = super().get_context_data(**kwargs)
+
+#         helper = AgencyBranchFormSetHelper()
+#         helper.add_input(Submit("submit", "Save"))
+
+#         if self.request.POST:
+#             context['formset'] = AgencyBranchFormSet(
+#                 self.request.POST,
+#                 instance=self.object
+#             )
+#             context['helper'] = helper
+#         else:
+#             context['formset'] = AgencyBranchFormSet(
+#                 instance=self.object
+#             )
+#             context['helper'] = helper
+#         return context
+
+#     def get_object(self, queryset=None):
+#         return Agency.objects.get(
+#             pk=self.agency_id
+#         )
+    
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         return super().get(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         return super().post(request, *args, **kwargs)
+
+#     def get_form(self, form_class=None):
+#         return AgencyBranchFormSet(
+#             **self.get_form_kwargs(), 
+#             instance=self.object
+#         )
+
+#     def form_valid(self, form):
+#         form.save()
+
+#         messages.add_message(
+#             self.request,
+#             messages.SUCCESS,
+#             'Changes were saved.'
+#         )
+
+#         return self.get_success_url()
+
+#     def get_success_url(self):
+#         return HttpResponseRedirect(
+#             reverse_lazy(
+#                 'maid_employment_formset', 
+#                 kwargs={'pk':self.object.pk}
+#             )
+#         )
+        
 class AgencyOpeningHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
                                  SuccessMessageMixin, UpdateView):
     context_object_name = 'agency_opening_hours'
