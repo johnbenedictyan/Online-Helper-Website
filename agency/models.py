@@ -231,6 +231,10 @@ class AgencyOwner(models.Model):
         related_name='owners'
     )
 
+    name = models.CharField()
+
+    mobile_number = models.CharField()
+
     def __str__(self):
         return self.agency.name + ' Owner'
 

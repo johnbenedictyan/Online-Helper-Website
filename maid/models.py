@@ -513,6 +513,18 @@ class MaidFinancialDetails(models.Model):
         default=0
     )
 
+class MaidWorkPermitDetails(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='work_permit_details'
+    )
+
+    number = models.CharField(
+        verbose_name = _('Maid work permit number'),
+        max_length=10
+    )
+
 class MaidStatus(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -850,6 +862,7 @@ class MaidCooking(models.Model):
         blank=True
     )
 
+# TODO: Need to change Maid Employment History to be a 1-M instead of 1-1.
 class MaidEmploymentHistory(models.Model):
     maid = models.OneToOneField(
         Maid,
