@@ -284,8 +284,9 @@ class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin,
         pass
     
 # Create Views
-class DashboardMaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                          SuccessMessageMixin, CreateView):
+class DashboardMaidInformationCreate(AgencyLoginRequiredMixin, 
+                                     GetAuthorityMixin, SuccessMessageMixin,
+                                     CreateView):
     context_object_name = 'maid'
     form_class = MaidForm
     http_method_names = ['get','post']

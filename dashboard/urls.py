@@ -20,7 +20,7 @@ from .views import DashboardAgencyDetail, DashboardMaidDetail
 from .views import DashboardMaidCreation, DashboardAgencyUpdate
 
 ## Create Views
-from .views import DashboardMaidCreate, DashboardAgencyEmployeeCreate
+from .views import DashboardMaidInformationCreate, DashboardAgencyEmployeeCreate
 
 ## Template Views
 from .views import DashboardHomePage
@@ -94,13 +94,13 @@ urlpatterns = [
         include([
             path(
                 'maid',
-                DashboardMaidCreate.as_view(),
-                name='dashboard_maid_creation'
+                DashboardMaidInformationCreate.as_view(),
+                name='dashboard_maid_information_create'
             ),
             path(
                 'employee',
                 DashboardAgencyEmployeeCreate.as_view(),
-                name='dashboard_employee_creation'
+                name='dashboard_employee_create'
             )
         ])
     ),
