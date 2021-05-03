@@ -226,9 +226,23 @@ class AgencyOwner(models.Model):
         related_name='owners'
     )
 
-    name = models.CharField()
+    name = models.CharField(
+        verbose_name=_('Agency Owner Name'),
+        max_length=50,
+        blank=False
+    )
 
-    mobile_number = models.CharField()
+    mobile_number = models.CharField(
+        verbose_name=_('Agency Owner Mobile Number'),
+        max_length=50,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
 
     def __str__(self):
         return self.agency.name + ' Owner'
@@ -252,29 +266,25 @@ class AgencyBranch(models.Model):
     name = models.CharField(
         verbose_name=_('Branch Name'),
         max_length=50,
-        blank=False,
-        null=True
+        blank=False
     )
 
     address_1 = models.CharField(
         verbose_name=_('Street Address'),
         max_length=100,
-        blank=False,
-        null=True
+        blank=False
     )
 
     address_2 = models.CharField(
         verbose_name=_('Unit Number'),
         max_length=50,
-        blank=False,
-        null=True
+        blank=False
     )
 
     postal_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
         blank=False,
-        null=True,
         validators=[validate_postcode],
     )
 
@@ -291,7 +301,6 @@ class AgencyBranch(models.Model):
         verbose_name=_('Office Number'),
         max_length=10,
         blank=False,
-        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -306,7 +315,6 @@ class AgencyBranch(models.Model):
         verbose_name=_('Mobile Number'),
         max_length=10,
         blank=False,
-        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
