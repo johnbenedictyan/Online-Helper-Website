@@ -90,7 +90,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         {% with request.resolver_match.url_name as url_name %}
-                            {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' or url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' %}
+                            {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' or url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' or url_name == 'dashboard_employee_creation' or url_name == 'dashboard_agency_employee_update' %}
                             <div id="dashboardSideNavWrapper" class="col-md-3 col-lg-3 bg-light text-dark">
                                 {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
                             </div>

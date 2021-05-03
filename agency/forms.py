@@ -1223,23 +1223,42 @@ class AgencyEmployeeForm(forms.ModelForm):
             self.pk = kwargs.pop('pk')
             
         super().__init__(*args, **kwargs)
-        self.fields['branch'].queryset = AgencyBranch.objects.filter(
+        branch_list = AgencyBranch.objects.filter(
             agency = Agency.objects.get(
-                pk = agency_id
+                pk = self.agency_id
             )
         )
         
-        if self.form_type == 'update' and self.authority == 'employee':
-            self.fields['ea_personnel_number'].disabled = True
-            self.fields['branch'].disabled = True
-            self.fields['role'].disabled = True
+        if self.form_type == 'create':
+            self.fields['branch'].queryset = branch_list
+            self.fields['branch'].initial = branch_list[0]
+            self.fields['ea_personnel_number'].initial = ''
+        
+        if self.form_type == 'update':
+            self.fields['password'].required = False
+            self.fields['password'].help_text = _(
+                'Enter a new password if you wish to change your password'
+            )
+            if self.authority == 'employee':
+                self.fields['ea_personnel_number'].disabled = True
+                self.fields['branch'].disabled = True
+                self.fields['role'].disabled = True
             
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Employee Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='employeeInformationGroup'
+            ),
             Row(
                 Column(
                     'name',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -1302,12 +1321,15 @@ class AgencyEmployeeForm(forms.ModelForm):
         except UserModel.DoesNotExist:
             pass
         else:
-            msg = _('This email is taken')
-            self.add_error('email', msg)
+            if self.form_type == 'create':
+                msg = _('This email is taken')
+                self.add_error('email', msg)
 
-        if validate_password(password):
-            msg = _('This password does not meet our requirements')
-            self.add_error('password', msg)
+        if self.form_type == 'create':
+            if validate_password(password):
+                msg = _('This password does not meet our requirements')
+                self.add_error('password', msg)
+                
             
         return cleaned_data
 
@@ -1362,8 +1384,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                 agency_employee_group.user_set.add(
                     new_user
                 )
-
-        self.instance.user = employee.user
+                self.instance.user = new_user
         self.instance.name = cleaned_data.get('name')
         self.instance.contact_number = cleaned_data.get('contact_number')
         self.instance.ea_personnel_number = cleaned_data.get(

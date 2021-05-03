@@ -400,14 +400,14 @@ class AgencyEmployee(models.Model):
     ea_personnel_number = models.CharField(
         verbose_name=_('EA personnel number'),
         max_length=50,
-        blank=False
+        default='NA',
+        blank=True,
+        help_text=_('Optional for non-personnel')
     )
 
     email = models.EmailField(
         verbose_name=_('Employee\'s Email Address'),
-        null=True,
-        blank=True,
-        help_text=_('Optional')
+        blank=False
     )
 
     agency = models.ForeignKey(

@@ -8,7 +8,7 @@
                 <h4>Account Management</h4>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-3">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -25,10 +25,15 @@
                     </div>
                   </div>
             </div>
+        </div> -->
+        <div class="row">
+            <div class="col text-right mb-3">
+                <a href="{% url 'dashboard_employee_creation' %}" class="btn btn-primary mr-1">Add Employee</a>
+            </div>
         </div>
         <div class="row">
             <div class="col text-right mb-3">
-                <a href="{% url 'agency_employee_create' %}" class="btn btn-lg btn-success mr-5 py-3">Add Sub Account</a>
+                <p class="mb-0 mr-1">Account Limit: 8/10</p>
             </div>
         </div>
         <div class="row bg-custom-light-blue text-dark mx-half py-3 border text-center">
@@ -98,7 +103,7 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="{% url 'agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>

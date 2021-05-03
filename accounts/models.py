@@ -54,6 +54,9 @@ class User(AbstractUser):
     is_online = models.BooleanField(
         default=False
     )
+    last_login = models.DateTimeField(
+        editable=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

@@ -1,0 +1,37 @@
+<div class="col px-0 d-flex flex-column">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-center" style="height: 2.5rem;">
+            <a class="text-reset" data-toggle="collapse" href="#dashboardMainSideNavbar" role="button" aria-expanded="true" aria-controls="dashboardMainSideNavbar" id="miniNavbarMainSideNavbarToggler">
+                <i class="fas fa-angle-double-left fa-lg"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight active" href="#employeeInformationGroup">
+                <p class="m-1 pl-2">Employee Information</p>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $(".mini-side-nav-link").on("click", function(){
+            $(".mini-side-nav-link").removeClass("active");
+            $(this).addClass("active");
+        })
+        $("#miniNavbarMainSideNavbarToggler").on("click", (event)=>{
+            if($("#dashboardMainSideNavbar").hasClass("show")){
+                if(!$("#dashboardSideNavWrapper").hasClass("col-lg-3")){
+                    $("#dashboardSideNavWrapper").addClass("col-lg-3");
+                    $("#dashboardSideNavWrapper").removeClass("col-lg-2");
+                }
+            } else {
+                if(!$("#dashboardSideNavWrapper").hasClass("col-lg-2")){
+                    $("#dashboardSideNavWrapper").addClass("col-lg-2");
+                    $("#dashboardSideNavWrapper").removeClass("col-lg-3");
+                }
+            }
+        });
+    })
+</script>
