@@ -95,12 +95,21 @@ class Maid(models.Model):
 
     maid_type = models.CharField(
         verbose_name=_('Maid Type'),
-        max_length=3,
+        max_length=6,
         blank=False,
-        choices=TypeOfMaidChoices.choices,
-        default=TypeOfMaidChoices.NEW
+        choices=MaidStatusChoices.choices,
+        default=MaidStatusChoices.UNPUBLISHED
     )
 
+<<<<<<< HEAD
+=======
+    expected_days_off = models.PositiveSmallIntegerField(
+        verbose_name=_('Expected number of days off'),
+        blank=False,
+        default=0
+    )
+
+>>>>>>> c76cfad0ba8445d386295bbf8b8b00e5b0292172
     passport_status = models.BooleanField(
         verbose_name=_('Passport status'),
         max_length=1,
@@ -149,6 +158,7 @@ class Maid(models.Model):
     )
 
     status = models.CharField(
+<<<<<<< HEAD
         verbose_name=_('Status'),
         max_length=4,
         blank=False,
@@ -233,6 +243,13 @@ class Maid(models.Model):
             MaxValueValidator(100)
         ],
         blank=False
+=======
+        verbose_name=_('Maid Status'),
+        max_length=3,
+        blank=False,
+        choices=TypeOfMaidChoices.choices,
+        default=TypeOfMaidChoices.NEW
+>>>>>>> c76cfad0ba8445d386295bbf8b8b00e5b0292172
     )
     
     place_of_birth = models.CharField(
@@ -249,6 +266,7 @@ class Maid(models.Model):
         null=True
     )
 
+<<<<<<< HEAD
     address_2 = models.CharField(
         verbose_name=_('Address 2'),
         max_length=100,
@@ -290,6 +308,8 @@ class Maid(models.Model):
         default=MaidEducationLevelChoices.HIGH_SCHOOL
     )
     
+=======
+>>>>>>> c76cfad0ba8445d386295bbf8b8b00e5b0292172
     def __str__(self):
         return self.reference_number + ' - ' + self.name
 
