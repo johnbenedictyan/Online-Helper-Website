@@ -434,6 +434,114 @@ class DashboardAgencyEmployeeCreate(AgencyLoginRequiredMixin,
             return super().form_invalid(form)
 
 # Update Views
+class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin, 
+                                     GetAuthorityMixin, SuccessMessageMixin,
+                                     UpdateView):
+    context_object_name = 'maid_information'
+    form_class = MaidForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidLanguageSpokenUpdate(AgencyLoginRequiredMixin, 
+                                     GetAuthorityMixin, SuccessMessageMixin,
+                                     UpdateView):
+    context_object_name = 'maid_languages'
+    form_class = MaidLanguageSpokenForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidFHPDRUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                               SuccessMessageMixin, UpdateView):
+    context_object_name = 'maid_food_handling_preference_dietary_restriction'
+    form_class = MaidFoodHandlingPreferencesDietaryRestrictionsForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidExperienceUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                                    SuccessMessageMixin, UpdateView):
+    context_object_name = 'maid_experience'
+    form_class = MaidExperienceForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidOtherRemarksUpdate(AgencyLoginRequiredMixin, 
+                                      GetAuthorityMixin, SuccessMessageMixin,
+                                      UpdateView):
+    context_object_name = 'maid_other_remarks'
+    form_class = MaidOtherRemarksForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
 class DashboardAgencyEmployeeUpdate(AgencyLoginRequiredMixin, 
                                     GetAuthorityMixin, SuccessMessageMixin, 
                                     UpdateView):

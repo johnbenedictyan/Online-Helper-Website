@@ -33,7 +33,9 @@ from .views import DashboardHomePage
 ## Update Views
 from .views import (
     DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate,
-    DashboardAgencyEmployeeUpdate
+    DashboardMaidInformationUpdate, DashboardMaidLanguageSpokenUpdate,
+    DashboardMaidFHPDRUpdate, DashboardMaidExperienceUpdate,
+    DashboardMaidOtherRemarksUpdate, DashboardAgencyEmployeeUpdate
 )
 
 ## Delete Views
@@ -156,6 +158,36 @@ urlpatterns = [
                 'agency-employee/<int:pk>',
                 DashboardAgencyEmployeeUpdate.as_view(),
                 name='dashboard_agency_employee_update'
+            ),
+            path(
+                'maid/',
+                include([
+                    path(
+                        'information',
+                        DashboardMaidInformationCreate.as_view(),
+                        name='dashboard_maid_information_update'
+                    ),
+                    path(
+                        'language-spoken',
+                        DashboardMaidLanguageSpokenCreate.as_view(),
+                        name='dashboard_maid_language_spoken_update'
+                    ),
+                    path(
+                        'food-handling-dietary-restriction',
+                        DashboardMaidFHPDRCreate.as_view(),
+                        name='dashboard_maid_fhpdr_update'
+                    ),
+                    path(
+                        'experience',
+                        DashboardMaidExperienceCreate.as_view(),
+                        name='dashboard_maid_experience_update'
+                    ),
+                    path(
+                        'other-remarks',
+                        DashboardMaidOtherRemarksCreate.as_view(),
+                        name='dashboard_maid_other_remarks_update'
+                    )
+                ])
             )
         ])
     ),
