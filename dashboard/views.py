@@ -23,7 +23,11 @@ from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
 from enquiry.models import GeneralEnquiry
-from maid.forms import MainMaidCreationForm, MaidForm
+from maid.forms import (
+    MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
+    MaidFoodHandlingPreferencesDietaryRestrictionsForm, MaidExperienceForm,
+    MaidOtherRemarksForm
+)
 from maid.mixins import FDWLimitMixin
 from maid.models import Maid
 from payment.models import Customer, Subscription
@@ -287,8 +291,94 @@ class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin,
 class DashboardMaidInformationCreate(AgencyLoginRequiredMixin, 
                                      GetAuthorityMixin, SuccessMessageMixin,
                                      CreateView):
-    context_object_name = 'maid'
+    context_object_name = 'maid_information'
     form_class = MaidForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidLanguageSpokenCreate(AgencyLoginRequiredMixin, 
+                                     GetAuthorityMixin, SuccessMessageMixin,
+                                     CreateView):
+    context_object_name = 'maid_languages'
+    form_class = MaidLanguageSpokenForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidFHPDRCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                               SuccessMessageMixin, CreateView):
+    context_object_name = 'maid_food_handling_preference_dietary_restriction'
+    form_class = MaidFoodHandlingPreferencesDietaryRestrictionsForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidExperienceCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                                    SuccessMessageMixin, CreateView):
+    context_object_name = 'maid_experience'
+    form_class = MaidExperienceForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+class DashboardMaidOtherRemarksCreate(AgencyLoginRequiredMixin, 
+                                      GetAuthorityMixin, SuccessMessageMixin,
+                                      CreateView):
+    context_object_name = 'maid_other_remarks'
+    form_class = MaidOtherRemarksForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'

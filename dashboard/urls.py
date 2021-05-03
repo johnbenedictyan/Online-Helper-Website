@@ -20,7 +20,12 @@ from .views import DashboardAgencyDetail, DashboardMaidDetail
 from .views import DashboardMaidCreation, DashboardAgencyUpdate
 
 ## Create Views
-from .views import DashboardMaidInformationCreate, DashboardAgencyEmployeeCreate
+from .views import (
+    DashboardMaidInformationCreate, DashboardMaidLanguageSpokenCreate,
+    DashboardMaidFHPDRCreate,
+    DashboardMaidExperienceCreate, DashboardMaidOtherRemarksCreate,
+    DashboardAgencyEmployeeCreate
+)
 
 ## Template Views
 from .views import DashboardHomePage
@@ -93,9 +98,34 @@ urlpatterns = [
         'create/',
         include([
             path(
-                'maid',
-                DashboardMaidInformationCreate.as_view(),
-                name='dashboard_maid_information_create'
+                'maid/',
+                include([
+                    path(
+                        'information',
+                        DashboardMaidInformationCreate.as_view(),
+                        name='dashboard_maid_information_create'
+                    ),
+                    path(
+                        'language-spoken',
+                        DashboardMaidLanguageSpokenCreate.as_view(),
+                        name='dashboard_maid_language_spoken_create'
+                    ),
+                    path(
+                        'food-handling-dietary-restriction',
+                        DashboardMaidFHPDRCreate.as_view(),
+                        name='dashboard_maid_fhpdr_create'
+                    ),
+                    path(
+                        'experience',
+                        DashboardMaidExperienceCreate.as_view(),
+                        name='dashboard_maid_experience_create'
+                    ),
+                    path(
+                        'other-remarks',
+                        DashboardMaidOtherRemarksCreate.as_view(),
+                        name='dashboard_maid_other_remarks_create'
+                    )
+                ])
             ),
             path(
                 'employee',
