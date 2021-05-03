@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Maid, MaidWorkDuty, MaidFoodHandlingPreference, MaidDietaryRestriction,
-    MaidEmploymentHistory, MaidPersonalDetails, MaidStatus, MaidFamilyDetails,
+    MaidEmploymentHistory, MaidEmploymentStatus,
     MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidResponsibility,
     MaidLoanTransaction, MaidLanguage, 
@@ -13,9 +13,7 @@ admin.site.register(MaidWorkDuty)
 admin.site.register(MaidFoodHandlingPreference)
 admin.site.register(MaidDietaryRestriction)
 admin.site.register(MaidEmploymentHistory)
-admin.site.register(MaidPersonalDetails)
-admin.site.register(MaidStatus)
-admin.site.register(MaidFamilyDetails)
+admin.site.register(MaidEmploymentStatus)
 admin.site.register(MaidInfantChildCare)
 admin.site.register(MaidElderlyCare)
 admin.site.register(MaidDisabledCare)

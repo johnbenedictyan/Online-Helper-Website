@@ -27,11 +27,9 @@ from .constants import (
 )
 
 from .models import (
-    Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, 
-    MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
+    Maid, MaidLanguage, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
-    MaidDietaryRestriction, MaidEmploymentHistory, MaidLoanTransaction,
-    MaidFinancialDetails,
+    MaidDietaryRestriction, MaidEmploymentHistory, MaidLoanTransaction
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -55,23 +53,16 @@ from .widgets import CustomDateInput
 # Forms that inherit from inbuilt Django forms
 
 # Model Forms
-class MaidCreationForm(forms.ModelForm):
-    initial_agency_fee_amount = forms.IntegerField(
-        required=True,
-        initial=0
-    )
-
-    initial_agency_fee_description = forms.CharField(
-        required=True,
-        widget=forms.Textarea()
-    )
-
+class MaidForm(forms.ModelForm):
     class Meta:
         model = Maid
         exclude = [
-            'agency', 'created_on', 'updated_on', 'agency_fee_amount',
-            'responsibilities', 'nonce', 'tag'
+            'agency', 'created_on', 'updated_on', 'nonce', 'tag'
         ]
+        widgets = {
+            'passport_expiry': CustomDateInput(),
+            'date_of_birth': CustomDateInput()
+        }
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
@@ -81,13 +72,154 @@ class MaidCreationForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>FDW Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='fdwInformationGroup'
+            ),
+            Row(
+                Column(
+                    'photo',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'status',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'expected_salary',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'expected_days_off',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
             Row(
                 Column(
                     'reference_number',
                     css_class='form-group col-md-6'
                 ),
                 Column(
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'country_of_origin',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
                     'maid_type',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'date_of_birth',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'age',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'height',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'weight',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'height',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'weight',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'marital_status',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'number_of_siblings',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'number_of_children',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'age_of_children',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'religion',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'place_of_birth',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'address_1',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'address_2',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'education_level',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'repatriation_airport',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'contact_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'passport_status',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -101,60 +233,10 @@ class MaidCreationForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'photo',
+                    'passport_expiry',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row form-group'
-            ),
-            Row(
-                Column(
-                    PrependedText(
-                        'salary', '$'
-                    ),
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    PrependedText(
-                        'personal_loan_amount', '$'
-                    ),
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    PrependedText(
-                        'initial_agency_fee_amount', '$'
-                    ),
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'days_off',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'passport_status',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'repatriation_airport',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'initial_agency_fee_description',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'remarks',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
             ),
             Row(
                 Column(
@@ -198,265 +280,142 @@ class MaidCreationForm(forms.ModelForm):
 
         return ciphertext
 
-class MaidUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Maid
-        exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount',
-            'responsibilities', 'nonce', 'tag'
-        ]
+# class MaidUpdateForm(forms.ModelForm):
+#     class Meta:
+#         model = Maid
+#         exclude = ['agency', 'created_on', 'updated_on', 'agency_fee_amount',
+#             'responsibilities', 'nonce', 'tag'
+#         ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
 
-        self.FIELD_MAXLENGTH = 20
+#         self.FIELD_MAXLENGTH = 20
 
-        ###################################################################################################### TO BE REMOVED
-        '''
-        Decryption
-        '''
-        if self.instance.passport_number and self.instance.passport_number!=b'':
-            try:
-                plaintext = decrypt_string(self.instance.passport_number, settings.ENCRYPTION_KEY, self.instance.nonce, self.instance.tag)
-                self.initial.update({'passport_number': plaintext})
-            except (ValueError, KeyError):
-                print("Incorrect decryption")
-                self.initial.update({'passport_number': ''})
-        ###################################################################################################### TO BE REMOVED
+#         ###################################################################################################### TO BE REMOVED
+#         '''
+#         Decryption
+#         '''
+#         if self.instance.passport_number and self.instance.passport_number!=b'':
+#             try:
+#                 plaintext = decrypt_string(self.instance.passport_number, settings.ENCRYPTION_KEY, self.instance.nonce, self.instance.tag)
+#                 self.initial.update({'passport_number': plaintext})
+#             except (ValueError, KeyError):
+#                 print("Incorrect decryption")
+#                 self.initial.update({'passport_number': ''})
+#         ###################################################################################################### TO BE REMOVED
 
-        #  Remove passport number from initial form display
-        # self.initial.update({'passport_number':''})
+#         #  Remove passport number from initial form display
+#         # self.initial.update({'passport_number':''})
         
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'reference_number',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'maid_type',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Field(
-                        'passport_number',
-                        maxlength=self.FIELD_MAXLENGTH,
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'photo',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row form-group'
-            ),
-            Row(
-                Column(
-                    PrependedText(
-                        'salary', '$'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    PrependedText(
-                        'personal_loan_amount', '$'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'days_off',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'passport_status',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'repatriation_airport',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'remarks',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column(
+#                     'reference_number',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     'maid_type',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column(
+#                     Field(
+#                         'passport_number',
+#                         maxlength=self.FIELD_MAXLENGTH,
+#                     ),
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     'photo',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 css_class='form-row form-group'
+#             ),
+#             Row(
+#                 Column(
+#                     PrependedText(
+#                         'salary', '$'
+#                     ),
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     PrependedText(
+#                         'personal_loan_amount', '$'
+#                     ),
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column(
+#                     'days_off',
+#                     css_class='form-group col-md-4'
+#                 ),
+#                 Column(
+#                     'passport_status',
+#                     css_class='form-group col-md-4'
+#                 ),
+#                 Column(
+#                     'repatriation_airport',
+#                     css_class='form-group col-md-4'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column(
+#                     'remarks',
+#                     css_class='form-group col'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Row(
+#                 Column(
+#                     Submit(
+#                         'submit',
+#                         'Submit',
+#                         css_class="btn btn-primary w-50"
+#                     ),
+#                     css_class='form-group col-12 text-center'
+#                 ),
+#                 css_class='form-row'
+#             )
+#         )
  
-    def clean_reference_number(self):
-        reference_number = self.cleaned_data.get('reference_number')
-        try:
-            maid = Maid.objects.get(
-                agency = Agency.objects.get(
-                    pk = self.instance.agency.pk
-                ),
-                reference_number = reference_number
-            )
-        except Maid.DoesNotExist:
-            return reference_number
-        else:
-            if maid.pk==self.instance.pk:
-                return reference_number
-            else:
-                msg = _('A maid with this reference number already exists')
-                self.add_error('reference_number', msg)
+#     def clean_reference_number(self):
+#         reference_number = self.cleaned_data.get('reference_number')
+#         try:
+#             maid = Maid.objects.get(
+#                 agency = Agency.objects.get(
+#                     pk = self.instance.agency.pk
+#                 ),
+#                 reference_number = reference_number
+#             )
+#         except Maid.DoesNotExist:
+#             return reference_number
+#         else:
+#             if maid.pk==self.instance.pk:
+#                 return reference_number
+#             else:
+#                 msg = _('A maid with this reference number already exists')
+#                 self.add_error('reference_number', msg)
        
-    def clean_passport_number(self):
-        cleaned_field = self.cleaned_data.get('passport_number')
+#     def clean_passport_number(self):
+#         cleaned_field = self.cleaned_data.get('passport_number')
 
-        # If form errors then raise ValidationError, else continue
-        validate_passport_number(cleaned_field, self.FIELD_MAXLENGTH)
+#         # If form errors then raise ValidationError, else continue
+#         validate_passport_number(cleaned_field, self.FIELD_MAXLENGTH)
 
-        # Encryption
-        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
+#         # Encryption
+#         ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+#             cleaned_field,
+#             settings.ENCRYPTION_KEY
+#         )
 
-        return ciphertext
-
-class MaidPersonalDetailsForm(forms.ModelForm):
-    class Meta:
-        model = MaidPersonalDetails
-        exclude = ['maid']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'name',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'age',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'country_of_origin',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'place_of_birth',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'address_1',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'address_2',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    AppendedText(
-                        'height', 'cm'
-                    ),
-                    css_class='form-group col-md'
-                ),
-                Column(
-                    AppendedText(
-                        'weight', 'kg'
-                    ),
-                    css_class='form-group col-md'
-                ),
-                Column(
-                    'religion',
-                    css_class='form-group col-md'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class MaidFamilyDetailsForm(forms.ModelForm):
-    class Meta:
-        model = MaidFamilyDetails
-        exclude = ['maid']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'marital_status',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'number_of_children',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'age_of_children',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'number_of_siblings',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class MaidFinancialDetailsForm(forms.ModelForm):
-    class Meta:
-        model = MaidFinancialDetails
-        exclude = ['maid']
+#         return ciphertext
 
 class MaidInfantChildCareForm(forms.ModelForm):
     class Meta:
@@ -2337,13 +2296,14 @@ class MainMaidCreationForm(forms.ModelForm):
         model = Maid
         fields = [
             'reference_number', 'name', 'passport_number', 'photo', 'maid_type',
-            'days_off', 'passport_status', 'skills_evaluation_method'
+            'expected_days_off', 'passport_status', 'skills_evaluation_method'
         ]
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
         self.update = kwargs.pop('update')
         super().__init__(*args, **kwargs)
+        self.fields['passport_number'].required = False
         eh_display_map = {
             'eh_1_display': '',
             'eh_2_display': 'd-none',
@@ -2430,7 +2390,7 @@ class MainMaidCreationForm(forms.ModelForm):
                     css_class='col-md-6'
                 ),
                 Column(
-                    'days_off',
+                    'expected_days_off',
                     css_class='col-md-6'
                 ),
                 Column(
@@ -4120,7 +4080,7 @@ class MainMaidCreationForm(forms.ModelForm):
         passport_number = self.cleaned_data.get('passport_number')
         passport_status = self.cleaned_data.get('passport_status')
         print(self.cleaned_data.get('passport_status'))
-        if passport_status == 1 and passport_number == '':
+        if passport_status == 1 and passport_number == b'':
             self.add_error(
                 'passport_number',
                 ValidationError(_('This field is required'), code='required')
@@ -4203,9 +4163,9 @@ class MainMaidCreationForm(forms.ModelForm):
         possible_duplicate_maids = Maid.objects.filter(
             agency__pk=self.agency_id,
             name__trigram_similar = name,
-            personal_details__date_of_birth = date_of_birth,
-            personal_details__country_of_origin = country_of_origin,
-            personal_details__place_of_birth__trigram_similar = place_of_birth
+            date_of_birth = date_of_birth,
+            country_of_origin = country_of_origin,
+            place_of_birth__trigram_similar = place_of_birth
         )
         # This value 3 should be a threshold settings
 
@@ -4241,43 +4201,14 @@ class MainMaidCreationForm(forms.ModelForm):
         self.passport_number = encrypted_passport_number
         self.nonce = nonce
         self.tag = tag
-        new_maid = super().save()
+        new_maid = super().save(*args, **kwargs)
         
-        new_maid_personal_details = MaidPersonalDetails.objects.create(
-            maid=new_maid,
-            date_of_birth=cleaned_data.get('date_of_birth'),
-            age=cleaned_data.get('age'),
-            country_of_origin=cleaned_data.get('country_of_origin'),
-            height=cleaned_data.get('height'),
-            weight=cleaned_data.get('weight'),
-            place_of_birth=cleaned_data.get('place_of_birth'),
-            address_1=cleaned_data.get('address_1'),
-            address_2=cleaned_data.get('address_2'),
-            repatriation_airport=cleaned_data.get('repatriation_airport'),
-            religion=cleaned_data.get('religion'),
-            preferred_language=MaidLanguage.objects.get(
-                language=cleaned_data.get('preferred_language')
-            ),
-            contact_number=cleaned_data.get('contact_number'),
-            education_level=cleaned_data.get('education_level')
-        )
         for language in cleaned_data.get('language_spoken'):
             new_maid_personal_details.languages.add(
                 MaidLanguage.objects.get(
                     language=language
                 )
             )
-        MaidFamilyDetails.objects.create(
-            maid=new_maid,
-            marital_status=cleaned_data.get('marital_status'),
-            number_of_children=cleaned_data.get('number_of_children'),
-            age_of_children=cleaned_data.get('age_of_children'),
-            number_of_siblings=cleaned_data.get('number_of_siblings')
-        )
-        MaidFinancialDetails.objects.create(
-            maid=new_maid,
-            expected_salary=cleaned_data.get('salary'),
-        )
         MaidInfantChildCare.objects.create(
             maid=new_maid,
             assessment=cleaned_data.get('cfi_assessment'),
@@ -4325,6 +4256,7 @@ class MainMaidCreationForm(forms.ModelForm):
             description=cleaned_data.get('initial_agency_fee_description'),
             transaction_date=cleaned_data.get('transaction_date')
         )
+        return new_maid
 
 class MaidCareForm(forms.Form):
     skills_evaluation_method = forms.ChoiceField(

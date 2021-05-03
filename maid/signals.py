@@ -11,10 +11,9 @@ from django.dispatch import receiver
 from .constants import MaidResponsibilityChoices
 
 from .models import (
-    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    Maid, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidStatus, MaidLoanTransaction, MaidResponsibility, 
-    MaidFinancialDetails, 
+    MaidEmploymentStatus, MaidLoanTransaction, MaidResponsibility, 
 )
 
 # Utiliy Classes and Functions
@@ -113,39 +112,6 @@ def maid_counter(sender, instance, created, **kwargs):
     ).count()
     agency.save()
     
-@receiver(post_save, sender=MaidPersonalDetails)
-def maid_biodata_completed(sender, instance, created, **kwargs):
-    if created == False:
-        maid = instance.maid
-        biodata_valid = True
-
-        for k,v in instance.__dict__.items():
-            if not v:
-                biodata_valid = False
-
-        maid.biodata_complete = biodata_valid
-        maid.save()
-        if biodata_valid == True:
-            maid_completed(maid)
-
-@receiver(post_save, sender=MaidFamilyDetails)
-def maid_family_details_completed(sender, instance, created, **kwargs):
-    if created == False:
-        maid = instance.maid
-        family_details_valid = True
-
-        for k,v in instance.__dict__.items():
-            if not v:
-                family_details_valid = False
-                if k == 'number_of_children' or k == 'number_of_siblings':
-                    if v == 0:
-                        family_details_valid = True
-
-        maid.family_details_complete = family_details_valid
-        maid.save()
-        if family_details_valid == True:
-            maid_completed(maid)
-
 @receiver(post_save, sender=MaidInfantChildCare)
 @receiver(post_save, sender=MaidElderlyCare)
 @receiver(post_save, sender=MaidDisabledCare)
@@ -198,7 +164,7 @@ def maid_care_completed(sender, instance, created, **kwargs):
             maid_main_responsibility(maid)
             maid_completed(maid)
 
-@receiver(post_save, sender=MaidStatus)
+@receiver(post_save, sender=MaidEmploymentStatus)
 def maid_status_completed(sender, instance, created, **kwargs):
     if created == False:
         maid = instance.maid
@@ -213,23 +179,23 @@ def maid_status_completed(sender, instance, created, **kwargs):
         if status_valid == True:
             maid_completed(maid)
 
-@receiver(post_save, sender=MaidLoanTransaction)
-def update_agency_fee(sender, instance, **kwargs):
-    maid = instance.maid
+# @receiver(post_save, sender=MaidLoanTransaction)
+# def update_agency_fee(sender, instance, **kwargs):
+#     maid = instance.maid
     
-    transactions = MaidLoanTransaction.objects.filter(
-        maid=maid
-    )
+#     transactions = MaidLoanTransaction.objects.filter(
+#         maid=maid
+#     )
 
-    amount = 0
-    for transaction in transactions:
-        if transaction.transaction_type == 'ADD':
-            amount += transaction.amount
-        elif transaction.transaction_type == 'SUB':
-            amount -= transaction.amount
+#     amount = 0
+#     for transaction in transactions:
+#         if transaction.transaction_type == 'ADD':
+#             amount += transaction.amount
+#         elif transaction.transaction_type == 'SUB':
+#             amount -= transaction.amount
     
-    financial_details = MaidFinancialDetails.objects.get(
-        maid=maid
-    )
-    financial_details.main_loan = amount
-    financial_details.save()
+#     financial_details = MaidFinancialDetails.objects.get(
+#         maid=maid
+#     )
+#     financial_details.main_loan = amount
+#     financial_details.save()

@@ -65,14 +65,14 @@
                         </a>
                     </div>  
                 </div>
-                <div class="collapse row" id="accountManagementDropdownNav">
+                <div class="collapse row {% if url_name == 'dashboard_employee_creation' or url_name == 'dashboard_agency_employee_update' %}show{% endif %}" id="accountManagementDropdownNav">
                     <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_employee_creation' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_employee_creation' %}active{% endif %}">
                             <p class="m-1 pl-5">Add Employee</p>
                         </a>
                     </div>
-                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_agency_employee_update' %}active{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_update' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-5">Update Employees</p>
                         </a>
                     </div>
@@ -93,9 +93,9 @@
                         </a>
                     </div>  
                 </div>
-                <div class="collapse row" id="agencyProfileManagementDropdownNav">
+                <div class="collapse row {% if url_name == 'dashboard_agency_information_update' %}show{% endif %}" id="agencyProfileManagementDropdownNav">
                     <div class="col-12">
-                        <a href="{% url 'dashboard_agency_update' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_agency_information_update' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_information_update' %}active{% endif %}">
                             <p class="m-1 pl-5">Update Agency Profile</p>
                         </a>
                     </div>
@@ -218,6 +218,16 @@
     {% if url_name == 'dashboard_agency_update' %}
         <div class="col">   
         {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
+        </div>
+    {% endif %}
+    {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' %}
+        <div class="col">   
+        {% include 'components/nav/mini-navs/agency-update-mini-nav.html' %}
+        </div>
+    {% endif %}
+    {% if url_name == 'dashboard_employee_creation' or url_name == 'dashboard_agency_employee_update' %}
+        <div class="col">   
+        {% include 'components/nav/mini-navs/agency-employee-mini-nav.html' %}
         </div>
     {% endif %}
     {% endwith %}

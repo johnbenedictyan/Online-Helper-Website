@@ -114,11 +114,20 @@ class Maid(models.Model):
         choices=MaidPassportStatusChoices.choices,
         default=MaidPassportStatusChoices.NOT_READY
     )
-
+    
+    passport_expiry = models.DateField(
+        verbose_name=_('Passport Expiry Date'),
+        blank=False
+    )
+    
     remarks = models.CharField(
         verbose_name=_('Remarks'),
         max_length=255,
         blank=False
+    )
+    
+    languages = models.ManyToManyField(
+        MaidLanguage
     )
     
     responsibilities = models.ManyToManyField(
@@ -152,7 +161,62 @@ class Maid(models.Model):
         choices=TypeOfMaidChoices.choices,
         default=TypeOfMaidChoices.NEW
     )
+    
+    place_of_birth = models.CharField(
+        verbose_name=_('Place of birth'),
+        max_length=25,
+        blank=False,
+        null=True
+    )
 
+    address_1 = models.CharField(
+        verbose_name=_('Address 1'),
+        max_length=100,
+        blank=False,
+        null=True
+    )
+
+    address_2 = models.CharField(
+        verbose_name=_('Address 2'),
+        max_length=100,
+        blank=False,
+        null=True
+    )
+
+    repatriation_airport = models.CharField(
+        verbose_name=_('Repatriation airport'),
+        max_length=100,
+        blank=False
+    )
+
+    religion = models.CharField(
+        verbose_name=_('Religion'),
+        max_length=4,
+        blank=False,
+        choices=MaidReligionChoices.choices,
+        default=MaidReligionChoices.NONE
+    )
+    
+    contact_number = models.CharField(
+        verbose_name=_('Contact number in home country'),
+        max_length=30,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
+    
+    education_level = models.CharField(
+        verbose_name=_('Education Level'),
+        max_length=3,
+        blank=False,
+        choices=MaidEducationLevelChoices.choices,
+        default=MaidEducationLevelChoices.HIGH_SCHOOL
+    )
+    
     def __str__(self):
         return self.reference_number + ' - ' + self.name
 
@@ -173,6 +237,26 @@ class Maid(models.Model):
         )
         return plaintext
 
+    def get_age(self):
+        today = timezone.now().date()
+        try:
+            birthday_current_year = self.date_of_birth.replace(
+                year = today.year)
+    
+        # Raised when birth date is 29 February and the current year is not a
+        # leap year
+        except ValueError:
+            birthday_current_year = self.date_of_birth.replace(
+                year = today.year,
+                month = self.date_of_birth.month + 1,
+                day = 1
+            )
+    
+        if birthday_current_year > today:
+            return today.year - self.date_of_birth.year - 1
+        else:
+            return today.year - self.date_of_birth.year
+        
 class MaidWorkDuty(models.Model):
     class WorkDutyChoices(models.TextChoices):
         HOUSEWORK = 'H', _('Housework')
@@ -312,224 +396,11 @@ class MaidLoanTransaction(models.Model):
     )
 
 ## Models which have a one-to-one relationship with the maid model 
-class MaidPersonalDetails(models.Model):
+class MaidEmploymentStatus(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
-        related_name='personal_details'
-    )
-
-    date_of_birth = models.DateField(
-        verbose_name=_('Date of Birth'),
-        blank=False,
-        null=True
-    )
-    
-    age = models.IntegerField(
-        verbose_name=_('Age'),
-        blank=False,
-        null=True
-    )
-
-    country_of_origin = models.CharField(
-        verbose_name=_('Country of Origin'),
-        max_length=3,
-        blank=False,
-        null=True,
-        choices=MaidCountryOfOrigin.choices
-    )
-
-    height = models.DecimalField(
-        verbose_name=_('Height'),
-        max_digits=5,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(200)
-        ],
-        blank=False
-    )
-
-    weight = models.DecimalField(
-        verbose_name=_('Weight (in kg)'),
-        max_digits=5,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(100)
-        ],
-        blank=False
-    )
-    
-    place_of_birth = models.CharField(
-        verbose_name=_('Place of birth'),
-        max_length=25,
-        blank=False,
-        null=True
-    )
-
-    address_1 = models.CharField(
-        verbose_name=_('Address 1'),
-        max_length=100,
-        blank=False,
-        null=True
-    )
-
-    address_2 = models.CharField(
-        verbose_name=_('Address 2'),
-        max_length=100,
-        blank=False,
-        null=True
-    )
-
-    repatriation_airport = models.CharField(
-        verbose_name=_('Repatriation airport'),
-        max_length=100,
-        blank=False
-    )
-
-    religion = models.CharField(
-        verbose_name=_('Religion'),
-        max_length=4,
-        blank=False,
-        choices=MaidReligionChoices.choices,
-        default=MaidReligionChoices.NONE
-    )
-    
-    contact_number = models.CharField(
-        verbose_name=_('Contact number in home country'),
-        max_length=30,
-        blank=False,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-    )
-
-    education_level = models.CharField(
-        verbose_name=_('Education Level'),
-        max_length=3,
-        blank=False,
-        choices=MaidEducationLevelChoices.choices,
-        default=MaidEducationLevelChoices.HIGH_SCHOOL
-    )
-    
-    languages = models.ManyToManyField(
-        MaidLanguage
-    )
-
-    preferred_language = models.ForeignKey(
-        MaidLanguage,
-        on_delete=models.PROTECT,
-        related_name='preferred_language'
-    )
-    
-    def save(self, *args, **kwargs):
-        self.age = calculate_age(self.date_of_birth)
-        return super().save(*args, **kwargs)
-
-    def get_age(self):
-        today = timezone.now().date()
-        try:
-            birthday_current_year = self.date_of_birth.replace(
-                year = today.year)
-    
-        # Raised when birth date is 29 February and the current year is not a
-        # leap year
-        except ValueError:
-            birthday_current_year = self.date_of_birth.replace(
-                year = today.year,
-                month = self.date_of_birth.month + 1,
-                day = 1
-            )
-    
-        if birthday_current_year > today:
-            return today.year - self.date_of_birth.year - 1
-        else:
-            return today.year - self.date_of_birth.year
-
-class MaidFamilyDetails(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='family_details'
-    )
-
-    marital_status = models.CharField(
-        verbose_name=_('Marital Status'),
-        max_length=2,
-        blank=False,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE
-    )
-
-    number_of_children = models.PositiveSmallIntegerField(
-        blank=False,
-        default=0
-    )
-
-    age_of_children = models.CharField(
-        verbose_name=_('Age of children'),
-        max_length=50,
-        blank=False,
-        default='N.A'
-    )
-
-    number_of_siblings = models.PositiveSmallIntegerField(
-        blank=False,
-        default=0
-    )
-
-class MaidFinancialDetails(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='financial_details'
-    )
-
-    expected_salary = models.DecimalField(
-        verbose_name=_('Salary'),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=False,
-        default=0
-    )
-
-    maid_loan = models.DecimalField(
-        verbose_name=_('Maid loan'),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=False,
-        default=0
-    )
-
-class MaidWorkPermitDetails(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='work_permit_details'
-    )
-
-    number = models.CharField(
-        verbose_name = _('Maid work permit number'),
-        max_length=10
-    )
-
-class MaidStatus(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='status'
+        related_name='employment_status'
     )
 
     ipa_approved = models.BooleanField(

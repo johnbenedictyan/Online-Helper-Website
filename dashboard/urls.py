@@ -20,11 +20,16 @@ from .views import DashboardAgencyDetail, DashboardMaidDetail
 from .views import DashboardMaidCreation, DashboardAgencyUpdate
 
 ## Create Views
+from .views import DashboardAgencyEmployeeCreate
 
 ## Template Views
 from .views import DashboardHomePage
 
 ## Update Views
+from .views import (
+    DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate,
+    DashboardAgencyEmployeeUpdate
+)
 
 ## Delete Views
 
@@ -92,6 +97,11 @@ urlpatterns = [
                 DashboardMaidCreation.as_view(),
                 name='dashboard_maid_creation'
             ),
+            path(
+                'employee',
+                DashboardAgencyEmployeeCreate.as_view(),
+                name='dashboard_employee_creation'
+            )
         ])
     ),
     path(
@@ -102,6 +112,21 @@ urlpatterns = [
                 DashboardAgencyUpdate.as_view(),
                 name='dashboard_agency_update'
             ),
+            path(
+                'agency-information',
+                DashboardAgencyInformationUpdate.as_view(),
+                name='dashboard_agency_information_update'
+            ),
+            path(
+                'agency-opening-hours',
+                DashboardAgencyOpeningHoursUpdate.as_view(),
+                name='dashboard_agency_opening_hours_update'
+            ),
+            path(
+                'agency-employee/<int:pk>',
+                DashboardAgencyEmployeeUpdate.as_view(),
+                name='dashboard_agency_employee_update'
+            )
         ])
     ),
     path(

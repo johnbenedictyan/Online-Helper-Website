@@ -90,13 +90,19 @@
                 <div class="container-fluid">
                     <div class="row">
                         {% with request.resolver_match.url_name as url_name %}
-                        <div id="dashboardSideNavWrapper" class="col-md-3 {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' %}col-lg-3{% else %}col-lg-2{% endif %} bg-light text-dark">
-                            {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority name="Maid Create" %}
-                        </div>
-                        <div id="dashboardMainContentWrapper" class="col-md-9 {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' %}col-lg-9{% else %}col-lg-10{% endif %} p-6">
-                            {% block dashboard_section %}
-                            {% endblock dashboard_section %}
-                        </div>
+                            {% if url_name == 'dashboard_maid_creation' or url_name == 'dashboard_agency_detail' or url_name == 'dashboard_agency_update' or url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' or url_name == 'dashboard_employee_creation' or url_name == 'dashboard_agency_employee_update' %}
+                            <div id="dashboardSideNavWrapper" class="col-md-3 col-lg-3 bg-light text-dark">
+                                {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
+                            </div>
+                            {% else %}
+                            <div id="dashboardSideNavWrapper" class="col-md-3 col-lg-2 bg-light text-dark">
+                                {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
+                            </div>
+                            {% endif %}
+                            <div id="dashboardMainContentWrapper" class="col p-6">
+                                {% block dashboard_section %}
+                                {% endblock dashboard_section %}
+                            </div>
                         {% endwith %}
                     </div>
                 </div>

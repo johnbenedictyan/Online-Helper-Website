@@ -10,10 +10,12 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView, UpdateView
+from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
-from agency.forms import AgencyForm
+from agency.forms import (
+    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+)
 from agency.models import (
     Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
 )
@@ -250,18 +252,111 @@ class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
             }
         )
     
+    # def form_valid(self, form):
+        # try:
+        #     self.object = form.save()
+        # except Exception as e:
+        #     messages.warning(
+        #         self.request,
+        #         'Please try again',
+        #         extra_tags='warning'
+        #     )
+        #     return super().form_invalid(form)
+        # else:
+        #     return super().form_valid(form)
+
+class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin, 
+                                                  GetAuthorityMixin,
+                                                  SuccessMessageMixin, 
+                                                  FormView):
+    form_class = MainMaidCreationForm
+    http_method_names = ['get','post']
+    success_url = reverse_lazy('dashboard_maid_detail')
+    template_name = 'form/maid-create-form.html'
+    authority = ''
+    agency_id = ''
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        return kwargs
+    
     def form_valid(self, form):
-        try:
-            self.object = form.save()
-        except Exception as e:
+        pass
+    
+# Create Views
+class DashboardAgencyEmployeeCreate(AgencyLoginRequiredMixin, 
+                                    GetAuthorityMixin, SuccessMessageMixin, 
+                                    CreateView):
+    context_object_name = 'agency_employee'
+    form_class = AgencyEmployeeForm
+    http_method_names = ['get','post']
+    model = AgencyEmployee
+    template_name = 'form/agency-employee-create-form.html'
+    success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Agency employee created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'authority': self.authority,
+            'form_type': 'create'
+        })
+        return kwargs
+
+    def form_valid(self, form):
+        agency = Agency.objects.get(
+            pk = self.agency_id
+        )
+        form.instance.agency = agency
+        if agency.amount_of_employees < agency.amount_of_employees_allowed:
+            return super().form_valid(form)
+        else:
             messages.warning(
                 self.request,
-                'Please try again',
-                extra_tags='warning'
+                'You have reached the limit of employee accounts',
+                extra_tags='error'
             )
             return super().form_invalid(form)
-        else:
-            return super().form_valid(form)
+
+# Update Views
+class DashboardAgencyEmployeeUpdate(AgencyLoginRequiredMixin, 
+                                    GetAuthorityMixin, SuccessMessageMixin, 
+                                    UpdateView):
+    context_object_name = 'agency_employee'
+    form_class = AgencyEmployeeForm
+    http_method_names = ['get','post']
+    model = AgencyEmployee
+    template_name = 'form/agency-employee-create-form.html'
+    success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Employee details updated'
+    authority = ''
+    agency_id = ''
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        employee = AgencyEmployee.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        initial['email'] = employee.user.email
+
+        return initial
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'authority': self.authority,
+            'pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            'form_type': 'update'
+        })
+        return kwargs
 
 class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                             SuccessMessageMixin, UpdateView):
@@ -358,10 +453,42 @@ class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
         return initial
 
-# Create Views
-        
-# Update Views
+class DashboardAgencyInformationUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyUpdateForm
+    http_method_names = ['get','post']
+    model = Agency
+    template_name = 'update/dashboard-agency-update.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
 
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.agency_id
+    )
+
+class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyOpeningHoursForm
+    http_method_names = ['get','post']
+    model = AgencyOpeningHours
+    template_name = 'update/dashboard-agency-update.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return AgencyOpeningHours.objects.get(
+            agency__pk = self.agency_id
+    )
+  
 # Delete Views
 
 # Generic Views
