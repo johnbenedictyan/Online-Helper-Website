@@ -101,12 +101,6 @@ class Maid(models.Model):
         default=MaidStatusChoices.UNPUBLISHED
     )
 
-    expected_days_off = models.PositiveSmallIntegerField(
-        verbose_name=_('Expected number of days off'),
-        blank=False,
-        default=0
-    )
-
     passport_status = models.BooleanField(
         verbose_name=_('Passport status'),
         max_length=1,
@@ -155,11 +149,90 @@ class Maid(models.Model):
     )
 
     status = models.CharField(
-        verbose_name=_('Maid Status'),
+        verbose_name=_('Status'),
+        max_length=4,
+        blank=False,
+        choices=MaidStatusChoices.choices,
+        default=MaidStatusChoices.UNPUBLISHED
+    )
+    
+    marital_status = models.CharField(
+        verbose_name=_('Marital Status'),
+        max_length=2,
+        blank=False,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE
+    )
+
+    number_of_children = models.PositiveSmallIntegerField(
+        blank=False,
+        default=0
+    )
+
+    age_of_children = models.CharField(
+        verbose_name=_('Age of children'),
+        max_length=50,
+        blank=False,
+        default='N.A'
+    )
+
+    number_of_siblings = models.PositiveSmallIntegerField(
+        blank=False,
+        default=0
+    )
+
+    country_of_origin = models.CharField(
+        verbose_name=_('Country of Origin'),
         max_length=3,
         blank=False,
-        choices=TypeOfMaidChoices.choices,
-        default=TypeOfMaidChoices.NEW
+        null=True,
+        choices=MaidCountryOfOrigin.choices
+    )
+    
+    expected_salary = models.PositiveSmallIntegerField(
+        verbose_name=_('Expected Salary'),
+        blank=False,
+        default=0
+    )
+    
+    expected_days_off = models.PositiveSmallIntegerField(
+        verbose_name=_('Expected No of Off Days'),
+        blank=False,
+        default=0
+    )
+    
+    date_of_birth = models.DateField(
+        verbose_name=_('Date of Birth'),
+        blank=False,
+        null=True
+    )
+    
+    age = models.IntegerField(
+        verbose_name=_('Age'),
+        blank=False,
+        null=True
+    )
+
+    height = models.DecimalField(
+        verbose_name=_('Height'),
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(200)
+        ],
+        blank=False
+    )
+
+    weight = models.DecimalField(
+        verbose_name=_('Weight (in kg)'),
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ],
+        blank=False
     )
     
     place_of_birth = models.CharField(
