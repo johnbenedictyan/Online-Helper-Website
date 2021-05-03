@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'dashboard_agency_information_update' %}">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_information_update' %}active{% endif %}" href="{% url 'dashboard_agency_information_update' %}">
                 <p class="m-1 pl-2">Agency Information</p>
             </a>
         </div>
@@ -36,7 +36,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'dashboard_agency_opening_hours_update' %}">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_opening_hours_update' %}active{% endif %}" href="{% url 'dashboard_agency_opening_hours_update' %}">
                 <p class="m-1 pl-2">Opening Hours</p>
             </a>
         </div>

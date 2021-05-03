@@ -93,9 +93,9 @@
                         </a>
                     </div>  
                 </div>
-                <div class="collapse row" id="agencyProfileManagementDropdownNav">
+                <div class="collapse row {% if url_name == 'dashboard_agency_information_update' %}show{% endif %}" id="agencyProfileManagementDropdownNav">
                     <div class="col-12">
-                        <a href="{% url 'dashboard_agency_update' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_agency_information_update' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_information_update' %}active{% endif %}">
                             <p class="m-1 pl-5">Update Agency Profile</p>
                         </a>
                     </div>
