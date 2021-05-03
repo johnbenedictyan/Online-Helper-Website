@@ -1140,6 +1140,17 @@ class AgencyOwnerCreationForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'mobile_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     Submit(
                         'submit',
                         'Submit',
