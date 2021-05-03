@@ -22,9 +22,8 @@ from .views import MaidDetail, PdfMaidBiodataView
 
 ## Update Views
 from .views import (
-    MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
-    MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate,
+    MaidGeneralHouseworkUpdate, MaidCookingUpdate,
     MaidLoanTransactionUpdate
 )
 
@@ -62,26 +61,11 @@ urlpatterns = [
     path(
         'update/<int:pk>/',
         include([
-            path(
-                '',
-                MaidUpdate.as_view(),
-                name='maid_update'
-            ),
-            path(
-                'biodata/',
-                MaidPersonalDetailsUpdate.as_view(),
-                name='maid_personal_details_update'
-            ),
-            path(
-                'family-details/',
-                MaidFamilyDetailsUpdate.as_view(),
-                name='maid_family_details_update'
-            ),
-            path(
-                'finance/',
-                MaidFinancialDetailsUpdate.as_view(),
-                name='maid_financial_details_update'
-            ),
+            # path(
+            #     '',
+            #     MaidUpdate.as_view(),
+            #     name='maid_update'
+            # ),
             path(
                 'care/',
                 MaidCareDetailsUpdate.as_view(),

@@ -252,18 +252,18 @@ class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
             }
         )
     
-    def form_valid(self, form):
-        try:
-            self.object = form.save()
-        except Exception as e:
-            messages.warning(
-                self.request,
-                'Please try again',
-                extra_tags='warning'
-            )
-            return super().form_invalid(form)
-        else:
-            return super().form_valid(form)
+    # def form_valid(self, form):
+        # try:
+        #     self.object = form.save()
+        # except Exception as e:
+        #     messages.warning(
+        #         self.request,
+        #         'Please try again',
+        #         extra_tags='warning'
+        #     )
+        #     return super().form_invalid(form)
+        # else:
+        #     return super().form_valid(form)
 
 class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin, 
                                                   GetAuthorityMixin,

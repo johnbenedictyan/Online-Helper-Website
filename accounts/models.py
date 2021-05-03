@@ -55,7 +55,8 @@ class User(AbstractUser):
         default=False
     )
     last_login = models.DateTimeField(
-        editable=False
+        editable=False,
+        null=True
     )
 
     USERNAME_FIELD = 'email'

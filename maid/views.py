@@ -34,11 +34,11 @@ from .mixins import (
 )
 
 from .forms import (
-    MaidCreationForm, MaidPersonalDetailsForm, MaidFamilyDetailsForm, 
+    MaidForm,
     MaidInfantChildCareForm, MaidElderlyCareForm, MaidDisabledCareForm,
     MaidGeneralHouseworkForm, MaidCookingForm, MaidFoodHandlingPreferenceForm,
-    MaidDietaryRestrictionForm, MaidUpdateForm, 
-    MainMaidCreationForm, MaidCareForm, MaidFinancialDetailsForm, 
+    MaidDietaryRestrictionForm, 
+    MainMaidCreationForm, MaidCareForm, 
     MaidLoanTransactionForm
 )
 # from .forms import (
@@ -47,10 +47,10 @@ from .forms import (
 # )
 
 from .models import (
-    Maid, MaidPersonalDetails, MaidFamilyDetails, MaidInfantChildCare, 
+    Maid, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory,
-    MaidLoanTransaction, MaidFinancialDetails, 
+    MaidLoanTransaction
 )
 
 from .mixins import SpecificAgencyMaidLoginRequiredMixin
@@ -286,7 +286,7 @@ class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
-    queryset = Maid.objects.filter(published=True)
+    queryset = Maid.objects.filter(status='PUB')
     template_name = 'list/maid-list.html'
     filter_set = MaidFilter
     paginate_by = settings.MAID_PAGINATE_BY
@@ -317,9 +317,9 @@ class MaidDetail(LoginRequiredMixin, DetailView):
         country_of_origin = self.object.personal_details.country_of_origin
         languages = self.object.personal_details.languages.all()
         similar_maids = Maid.objects.filter(
-            personal_details__country_of_origin=country_of_origin,
+            country_of_origin=country_of_origin,
             responsibilities=self.object.get_main_responsibility(),
-            personal_details__languages__in=languages
+            languages__in=languages
         ).exclude(
             pk=self.object.pk
         ).distinct()
@@ -333,7 +333,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
 class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                  SuccessMessageMixin, CreateView):
     context_object_name = 'maid'
-    form_class = MaidCreationForm
+    form_class = MaidForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'create/maid-create.html'
@@ -353,12 +353,6 @@ class MaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
             'initial_agency_fee_description'
         )
         response = super().form_valid(form)
-        MaidPersonalDetails.objects.create(
-            maid=self.object
-        )
-        MaidFamilyDetails.objects.create(
-            maid=self.object
-        )
         MaidInfantChildCare.objects.create(
             maid=self.object
         )
@@ -495,118 +489,34 @@ class MaidDietaryRestrictionCreate(AgencyLoginRequiredMixin,
 #         )
 
 # Update Views
-class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
-                 SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid'
-    form_class = MaidUpdateForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'update/maid-update.html'
-    success_message = 'Maid details updated'
-    authority = ''
-    agency_id = ''
+# class MaidUpdate(SpecificAgencyMaidLoginRequiredMixin, GetAuthorityMixin,
+#                  SuccessMessageMixin, UpdateView):
+#     context_object_name = 'maid'
+#     form_class = MaidUpdateForm
+#     http_method_names = ['get','post']
+#     model = Maid
+#     template_name = 'update/maid-update.html'
+#     success_message = 'Maid details updated'
+#     authority = ''
+#     agency_id = ''
 
-    def get_object(self, queryset=None):
-        return Maid.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            ),
-            agency__pk = self.agency_id
-        )
+#     def get_object(self, queryset=None):
+#         return Maid.objects.get(
+#             pk = self.kwargs.get(
+#                 self.pk_url_kwarg
+#             ),
+#             agency__pk = self.agency_id
+#         )
 
-    def get_success_url(self):
-        return reverse_lazy(
-            'dashboard_maid_detail',
-            kwargs={
-                'pk': self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            }
-        )
-
-class MaidPersonalDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, 
-                        SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_biodata'
-    form_class = MaidPersonalDetailsForm
-    http_method_names = ['get','post']
-    model = MaidPersonalDetails
-    template_name = 'update/maid-biodata-update.html'
-    success_message = 'FDW biodata updated'
-
-    def get_object(self, queryset=None):
-        return MaidPersonalDetails.objects.get(
-            maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        )
-    
-    def get_success_url(self):
-        return reverse_lazy(
-            'dashboard_maid_detail',
-            kwargs={
-                'pk': self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            }
-        )
-
-class MaidFamilyDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, 
-                              SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_family_details'
-    form_class = MaidFamilyDetailsForm
-    http_method_names = ['get','post']
-    model = MaidFamilyDetails
-    template_name = 'update/maid-family-details-update.html'
-    success_message = 'Maid family details updated'
-
-    def get_object(self, queryset=None):
-        return MaidFamilyDetails.objects.get(
-            maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        )
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'dashboard_maid_detail',
-            kwargs={
-                'pk': self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            }
-        )
-
-class MaidFinancialDetailsUpdate(SpecificAgencyMaidLoginRequiredMixin, 
-                              SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_family_details'
-    form_class = MaidFinancialDetailsForm
-    http_method_names = ['get','post']
-    model = MaidFinancialDetails
-    template_name = 'update/maid-financial-details-update.html'
-    success_message = 'Maid financial details updated'
-
-    def get_object(self, queryset=None):
-        return MaidFinancialDetails.objects.get(
-            maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        )
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'dashboard_maid_detail',
-            kwargs={
-                'pk': self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            }
-        )
+#     def get_success_url(self):
+#         return reverse_lazy(
+#             'dashboard_maid_detail',
+#             kwargs={
+#                 'pk': self.kwargs.get(
+#                     self.pk_url_kwarg
+#                 )
+#             }
+#         )
 
 class MaidInfantChildCareUpdate(
     SpecificAgencyMaidLoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -882,11 +792,11 @@ class FeaturedMaidListView(View):
         request_data = json.loads(request.body.decode('utf-8'))
         nationality = request_data.get('nationality')
         featured_maids = Maid.objects.filter(
-            featured=True
+            status='FEAT'
         )
         if nationality != 'ANY':
             featured_maids = featured_maids.filter(
-                personal_details__country_of_origin=nationality
+                country_of_origin=nationality
             )
 
         shuffle(list(featured_maids))
