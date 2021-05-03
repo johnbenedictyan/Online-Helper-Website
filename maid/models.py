@@ -117,7 +117,8 @@ class Maid(models.Model):
     remarks = models.CharField(
         verbose_name=_('Remarks'),
         max_length=255,
-        blank=False
+        null=True,
+        blank=True
     )
     
     languages = models.ManyToManyField(
@@ -289,7 +290,7 @@ class Maid(models.Model):
         choices=MaidEducationLevelChoices.choices,
         default=MaidEducationLevelChoices.HIGH_SCHOOL
     )
-    
+
     def __str__(self):
         return self.reference_number + ' - ' + self.name
 

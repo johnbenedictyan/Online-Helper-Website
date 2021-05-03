@@ -35,17 +35,17 @@ from .models import (
 
 
 # Start of Signals
-# @receiver(post_save, sender=Agency)
-# def agency_created(sender, instance, created, **kwargs):
-#     if created == True:
-#         try:
-#             pa = PotentialAgency.objects.get(
-#                 license_number = instance.license_number
-#             )
-#         except PotentialAgency.DoesNotExist as e:
-#             print(e)
-#         else:
-#             pa.delete()
+@receiver(post_save, sender=Agency)
+def agency_created(sender, instance, created, **kwargs):
+    if created == True:
+        try:
+            pa = PotentialAgency.objects.get(
+                license_number = instance.license_number
+            )
+        except PotentialAgency.DoesNotExist as e:
+            print(e)
+        else:
+            pa.delete()
 
 # @receiver(post_save, sender=AgencyBranch)
 # def agency_location_completed(sender, instance, created, **kwargs):
@@ -108,7 +108,7 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
                     'state': None,
                 },
                 description = f'Customer account for {agency.name}',
-                email=agency.email,
+                email=None,
                 name=agency.name,
                 invoice_settings={
                     'custom_fields': None,

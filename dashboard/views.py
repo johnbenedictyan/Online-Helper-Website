@@ -23,7 +23,7 @@ from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
 from enquiry.models import GeneralEnquiry
-from maid.forms import MainMaidCreationForm
+from maid.forms import MainMaidCreationForm, MaidForm
 from maid.mixins import FDWLimitMixin
 from maid.models import Maid
 from payment.models import Customer, Subscription
@@ -284,6 +284,27 @@ class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin,
         pass
     
 # Create Views
+class DashboardMaidCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                          SuccessMessageMixin, CreateView):
+    context_object_name = 'maid'
+    form_class = MaidForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_url = reverse_lazy('dashboard_maid_list')
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
 class DashboardAgencyEmployeeCreate(AgencyLoginRequiredMixin, 
                                     GetAuthorityMixin, SuccessMessageMixin, 
                                     CreateView):
