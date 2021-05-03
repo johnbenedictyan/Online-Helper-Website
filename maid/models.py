@@ -150,7 +150,7 @@ class Maid(models.Model):
 
     status = models.CharField(
         verbose_name=_('Status'),
-        max_length=4,
+        max_length=6,
         blank=False,
         choices=MaidStatusChoices.choices,
         default=MaidStatusChoices.UNPUBLISHED
