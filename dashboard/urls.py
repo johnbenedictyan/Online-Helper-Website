@@ -160,7 +160,7 @@ urlpatterns = [
                 name='dashboard_agency_employee_update'
             ),
             path(
-                'maid/',
+                'maid/<int:pk>/',
                 include([
                     path(
                         'information',
