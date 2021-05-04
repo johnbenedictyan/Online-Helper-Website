@@ -54,6 +54,16 @@ from .widgets import CustomDateInput
 
 # Model Forms
 class MaidForm(forms.ModelForm):
+    date_of_birth = forms.DateField(
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
+    passport_expiry = forms.DateField(
+        widget=CustomDateInput(),
+        input_formats=['%d %b %Y']
+    )
+    
     class Meta:
         model = Maid
         exclude = [
@@ -128,21 +138,6 @@ class MaidForm(forms.ModelForm):
             Row(
                 Column(
                     'date_of_birth',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'age',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'height',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'weight',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -280,6 +275,24 @@ class MaidForm(forms.ModelForm):
 
         return ciphertext
 
+    def save(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
+
+        # Encrypting the passport number
+        raw_passport_number = cleaned_data.get('passport_number')
+        encrypted_passport_number, nonce, tag = encrypt_string(
+            raw_passport_number,
+            settings.ENCRYPTION_KEY
+        )
+
+        self.agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        self.passport_number = encrypted_passport_number
+        self.nonce = nonce
+        self.tag = tag
+        return super().save(*args, **kwargs)
+    
 class MaidLanguageSpokenForm(forms.ModelForm):
     class Meta:
         model = MaidLanguage
