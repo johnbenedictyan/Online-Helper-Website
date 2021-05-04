@@ -208,11 +208,11 @@ class Maid(models.Model):
         null=True
     )
     
-    age = models.IntegerField(
-        verbose_name=_('Age'),
-        blank=False,
-        null=True
-    )
+    # age = models.IntegerField(
+    #     verbose_name=_('Age'),
+    #     blank=False,
+    #     null=True
+    # )
 
     height = models.DecimalField(
         verbose_name=_('Height'),
