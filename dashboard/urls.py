@@ -99,38 +99,8 @@ urlpatterns = [
         include([
             path(
                 'maid/',
-                include([
-                    path(
-                        'information',
-                        DashboardMaidInformationCreate.as_view(),
-                        name='dashboard_maid_information_create'
-                    ),
-                    path(
-                        '<int:pk>/',
-                        include([
-                            path(
-                                'language-spoken',
-                                DashboardMaidLanguageSpokenCreate.as_view(),
-                                name='dashboard_maid_language_spoken_form'
-                            ),
-                            path(
-                                'food-handling-dietary-restriction',
-                                DashboardMaidFHPDRCreate.as_view(),
-                                name='dashboard_maid_fhpdr_form'
-                            ),
-                            path(
-                                'experience',
-                                DashboardMaidExperienceCreate.as_view(),
-                                name='dashboard_maid_experience_form'
-                            ),
-                            path(
-                                'other-remarks',
-                                DashboardMaidOtherRemarksCreate.as_view(),
-                                name='dashboard_maid_other_remarks_form'
-                            )
-                        ])
-                    )
-                ])
+                DashboardMaidInformationCreate.as_view(),
+                name='dashboard_maid_information_create'
             ),
             path(
                 'employee',
@@ -189,33 +159,8 @@ urlpatterns = [
             ),
             path(
                 'maid/<int:pk>/',
-                include([
-                    path(
-                        'information',
-                        DashboardMaidInformationCreate.as_view(),
-                        name='dashboard_maid_information_update'
-                    ),
-                    path(
-                        'language-spoken',
-                        DashboardMaidLanguageSpokenCreate.as_view(),
-                        name='dashboard_maid_language_spoken_update'
-                    ),
-                    path(
-                        'food-handling-dietary-restriction',
-                        DashboardMaidFHPDRCreate.as_view(),
-                        name='dashboard_maid_fhpdr_update'
-                    ),
-                    path(
-                        'experience',
-                        DashboardMaidExperienceCreate.as_view(),
-                        name='dashboard_maid_experience_update'
-                    ),
-                    path(
-                        'other-remarks',
-                        DashboardMaidOtherRemarksCreate.as_view(),
-                        name='dashboard_maid_other_remarks_update'
-                    )
-                ])
+                DashboardMaidInformationCreate.as_view(),
+                name='dashboard_maid_information_update'
             )
         ])
     ),

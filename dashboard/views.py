@@ -304,9 +304,6 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
         kwargs.update({
             'agency_id': self.agency_id,
             'maid_id': self.maid_id,
@@ -317,8 +314,19 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
     
     def get_initial(self):
         intial =  super().get_initial()
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
         intial.update({
-            
+            'language_spoken': list(
+                maid.languages.values_list(
+                    'language',
+                    flat=True
+                )
+            )
         })
         return intial
     

@@ -332,6 +332,7 @@ class MaidLanguageSpokenForm(forms.Form):
             pk=self.maid_id
         )
         
+        maid.languages.clear()
         for language in cleaned_data.get('language_spoken'):
             maid.languages.add(
                 MaidLanguage.objects.get(
@@ -380,6 +381,7 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
+        self.maid_id = kwargs.pop('maid_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -435,9 +437,7 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         maid = Maid.objects.get(
-            pk=self.kwargs.get(
-                self.pk_url_kwarg
-            )   
+            pk=self.maid_id
         )
         return maid
 
