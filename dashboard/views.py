@@ -288,37 +288,7 @@ class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin,
     def form_valid(self, form):
         pass
     
-# Create Views
-class DashboardMaidInformationCreate(AgencyLoginRequiredMixin, 
-                                     GetAuthorityMixin, SuccessMessageMixin,
-                                     CreateView):
-    context_object_name = 'maid_information'
-    form_class = MaidForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
-        })
-        return kwargs
-
-    def get_success_url(self) -> str:
-        return reverse_lazy(
-            'dashboard_maid_language_spoken_create',
-            kwargs={
-                'pk':self.object.pk
-            }
-        )
-
-class DashboardMaidLanguageSpokenCreate(AgencyLoginRequiredMixin, 
+class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin, 
                                      GetAuthorityMixin, SuccessMessageMixin,
                                      FormView):
     context_object_name = 'maid_languages'
@@ -345,61 +315,101 @@ class DashboardMaidLanguageSpokenCreate(AgencyLoginRequiredMixin,
         })
         return kwargs
     
+    def get_initial(self):
+        intial =  super().get_initial()
+        intial.update({
+            
+        })
+        return intial
+    
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_fhpdr_create',
+            'dashboard_maid_fhpdr_form',
             kwargs={
                 'pk':self.maid_id
             }
         )
 
-class DashboardMaidFHPDRCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                                SuccessMessageMixin, FormView):
     context_object_name = 'maid_food_handling_preference_dietary_restriction'
     form_class = MaidFoodHandlingPreferencesDietaryRestrictionsForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
     success_message = 'Maid created'
+    pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         kwargs.update({
             'agency_id': self.agency_id,
+            'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
         })
         return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_experience_form',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
 
-class DashboardMaidExperienceCreate(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                                    SuccessMessageMixin, CreateView):
+class DashboardMaidExperienceFormView(AgencyLoginRequiredMixin, 
+                                      GetAuthorityMixin, SuccessMessageMixin, 
+                                      FormView):
     context_object_name = 'maid_experience'
     form_class = MaidExperienceForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
     success_message = 'Maid created'
+    pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         kwargs.update({
             'agency_id': self.agency_id,
+            'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
         })
         return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_other_remarks_form',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
 
-class DashboardMaidOtherRemarksCreate(AgencyLoginRequiredMixin, 
+class DashboardMaidOtherRemarksFormView(AgencyLoginRequiredMixin, 
                                       GetAuthorityMixin, SuccessMessageMixin,
                                       CreateView):
     context_object_name = 'maid_other_remarks'
@@ -420,6 +430,36 @@ class DashboardMaidOtherRemarksCreate(AgencyLoginRequiredMixin,
             # 'form_type': 'create'
         })
         return kwargs
+
+# Create Views
+class DashboardMaidInformationCreate(AgencyLoginRequiredMixin, 
+                                     GetAuthorityMixin, SuccessMessageMixin,
+                                     CreateView):
+    context_object_name = 'maid_information'
+    form_class = MaidForm
+    http_method_names = ['get','post']
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_message = 'Maid created'
+    authority = ''
+    agency_id = ''
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            # 'authority': self.authority,
+            # 'form_type': 'create'
+        })
+        return kwargs
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_language_spoken_form',
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
 
 class DashboardAgencyEmployeeCreate(AgencyLoginRequiredMixin, 
                                     GetAuthorityMixin, SuccessMessageMixin, 
@@ -459,114 +499,6 @@ class DashboardAgencyEmployeeCreate(AgencyLoginRequiredMixin,
             return super().form_invalid(form)
 
 # Update Views
-class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin, 
-                                     GetAuthorityMixin, SuccessMessageMixin,
-                                     UpdateView):
-    context_object_name = 'maid_information'
-    form_class = MaidForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
-    success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
-        })
-        return kwargs
-
-class DashboardMaidLanguageSpokenUpdate(AgencyLoginRequiredMixin, 
-                                     GetAuthorityMixin, SuccessMessageMixin,
-                                     UpdateView):
-    context_object_name = 'maid_languages'
-    form_class = MaidLanguageSpokenForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
-    success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
-        })
-        return kwargs
-
-class DashboardMaidFHPDRUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                               SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_food_handling_preference_dietary_restriction'
-    form_class = MaidFoodHandlingPreferencesDietaryRestrictionsForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
-    success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
-        })
-        return kwargs
-
-class DashboardMaidExperienceUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                                    SuccessMessageMixin, UpdateView):
-    context_object_name = 'maid_experience'
-    form_class = MaidExperienceForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
-    success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
-        })
-        return kwargs
-
-class DashboardMaidOtherRemarksUpdate(AgencyLoginRequiredMixin, 
-                                      GetAuthorityMixin, SuccessMessageMixin,
-                                      UpdateView):
-    context_object_name = 'maid_other_remarks'
-    form_class = MaidOtherRemarksForm
-    http_method_names = ['get','post']
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
-    success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
-        })
-        return kwargs
-
 class DashboardAgencyEmployeeUpdate(AgencyLoginRequiredMixin, 
                                     GetAuthorityMixin, SuccessMessageMixin, 
                                     UpdateView):

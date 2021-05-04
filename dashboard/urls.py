@@ -17,14 +17,14 @@ from .views import (
 from .views import DashboardAgencyDetail, DashboardMaidDetail
 
 ## Form Views
-from .views import DashboardMaidCreation, DashboardAgencyUpdate
-
+from .views import (
+    DashboardMaidCreation, DashboardAgencyUpdate,
+    DashboardMaidLanguageSpokenFormView, DashboardMaidFHPDRFormView,
+    DashboardMaidExperienceFormView, DashboardMaidOtherRemarksFormView
+)
 ## Create Views
 from .views import (
-    DashboardMaidInformationCreate, DashboardMaidLanguageSpokenCreate,
-    DashboardMaidFHPDRCreate,
-    DashboardMaidExperienceCreate, DashboardMaidOtherRemarksCreate,
-    DashboardAgencyEmployeeCreate
+    DashboardMaidInformationCreate, DashboardAgencyEmployeeCreate
 )
 
 ## Template Views
@@ -33,9 +33,7 @@ from .views import DashboardHomePage
 ## Update Views
 from .views import (
     DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate,
-    DashboardMaidInformationUpdate, DashboardMaidLanguageSpokenUpdate,
-    DashboardMaidFHPDRUpdate, DashboardMaidExperienceUpdate,
-    DashboardMaidOtherRemarksUpdate, DashboardAgencyEmployeeUpdate
+    DashboardAgencyEmployeeUpdate
 )
 
 ## Delete Views
@@ -113,22 +111,22 @@ urlpatterns = [
                             path(
                                 'language-spoken',
                                 DashboardMaidLanguageSpokenCreate.as_view(),
-                                name='dashboard_maid_language_spoken_create'
+                                name='dashboard_maid_language_spoken_form'
                             ),
                             path(
                                 'food-handling-dietary-restriction',
                                 DashboardMaidFHPDRCreate.as_view(),
-                                name='dashboard_maid_fhpdr_create'
+                                name='dashboard_maid_fhpdr_form'
                             ),
                             path(
                                 'experience',
                                 DashboardMaidExperienceCreate.as_view(),
-                                name='dashboard_maid_experience_create'
+                                name='dashboard_maid_experience_form'
                             ),
                             path(
                                 'other-remarks',
                                 DashboardMaidOtherRemarksCreate.as_view(),
-                                name='dashboard_maid_other_remarks_create'
+                                name='dashboard_maid_other_remarks_form'
                             )
                         ])
                     )
@@ -138,6 +136,31 @@ urlpatterns = [
                 'employee',
                 DashboardAgencyEmployeeCreate.as_view(),
                 name='dashboard_employee_create'
+            )
+        ])
+    ),
+    path(
+        'maid/<int:pk>/',
+        include([
+            path(
+                'language-spoken',
+                DashboardMaidLanguageSpokenFormView.as_view(),
+                name='dashboard_maid_language_spoken_form'
+            ),
+            path(
+                'food-handling-dietary-restriction',
+                DashboardMaidFHPDRFormView.as_view(),
+                name='dashboard_maid_fhpdr_form'
+            ),
+            path(
+                'experience',
+                DashboardMaidExperienceFormView.as_view(),
+                name='dashboard_maid_experience_form'
+            ),
+            path(
+                'other-remarks',
+                DashboardMaidOtherRemarksFormView.as_view(),
+                name='dashboard_maid_other_remarks_form'
             )
         ])
     ),
