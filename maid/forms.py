@@ -275,21 +275,9 @@ class MaidForm(forms.ModelForm):
         return ciphertext
 
     def save(self, *args, **kwargs):
-        cleaned_data = self.cleaned_data
-
-        # Encrypting the passport number
-        raw_passport_number = cleaned_data.get('passport_number')
-        encrypted_passport_number, nonce, tag = encrypt_string(
-            raw_passport_number,
-            settings.ENCRYPTION_KEY
-        )
-
-        self.agency = Agency.objects.get(
+        self.instance.agency = Agency.objects.get(
             pk=self.agency_id
         )
-        self.passport_number = encrypted_passport_number
-        self.nonce = nonce
-        self.tag = tag
         return super().save(*args, **kwargs)
     
 class MaidLanguageSpokenForm(forms.ModelForm):
