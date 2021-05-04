@@ -134,7 +134,8 @@ class Maid(models.Model):
     skills_evaluation_method = models.CharField(
         verbose_name=_('Skills evaluation method'),
         max_length=4,
-        blank=False,
+        blank=True,
+        null=True,
         choices=MaidSkillsEvaluationMethod.choices,
         default=MaidSkillsEvaluationMethod.DECLARATION
     )
