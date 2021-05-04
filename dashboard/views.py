@@ -326,7 +326,7 @@ class DashboardMaidLanguageSpokenCreate(AgencyLoginRequiredMixin,
     http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_list')
+    success_url = reverse_lazy('dashboard_maid_fhpdr_create')
     success_message = 'Maid created'
     authority = ''
     agency_id = ''

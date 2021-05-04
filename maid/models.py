@@ -97,8 +97,8 @@ class Maid(models.Model):
         verbose_name=_('Maid Type'),
         max_length=6,
         blank=False,
-        choices=MaidStatusChoices.choices,
-        default=MaidStatusChoices.UNPUBLISHED
+        choices=TypeOfMaidChoices.choices,
+        default=TypeOfMaidChoices.NEW
     )
 
     passport_status = models.BooleanField(
