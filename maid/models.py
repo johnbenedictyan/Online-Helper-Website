@@ -79,11 +79,13 @@ class Maid(models.Model):
     )
     
     nonce = models.BinaryField(
-        editable=True
+        editable=True,
+        blank=True
     )
     
     tag = models.BinaryField(
-        editable=True
+        editable=True,
+        blank=True
     )
 
     photo = models.FileField(
