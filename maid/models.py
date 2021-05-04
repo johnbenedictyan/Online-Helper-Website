@@ -366,6 +366,7 @@ class MaidFoodHandlingPreference(models.Model):
         CHICKEN = 'C', _('No chicken')
         BEEF = 'B', _('No beef')
         SEAFOOD = 'S', _('No seafood')
+        VEG = 'V', _('Vegetarian')
 
     maid = models.ForeignKey(
         Maid,
@@ -387,6 +388,7 @@ class MaidDietaryRestriction(models.Model):
         CHICKEN = 'C', _('No chicken')
         BEEF = 'B', _('No beef')
         SEAFOOD = 'S', _('No seafood')
+        VEG = 'V', _('Able to work in a Vegetarian family')
 
     maid = models.ForeignKey(
         Maid,
