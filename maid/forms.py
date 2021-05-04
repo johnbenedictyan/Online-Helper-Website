@@ -23,13 +23,15 @@ from .constants import (
     MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
     MaidCareRemarksChoices, MaidPassportStatusChoices, 
     MaidEducationLevelChoices, MaidSkillsEvaluationMethod, 
-    MaidLoanDescriptionChoices
+    MaidLoanDescriptionChoices, MaidFoodPreferenceChoices, 
+    MaidDietaryRestrictionChoices
 )
 
 from .models import (
     Maid, MaidLanguage, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
-    MaidDietaryRestriction, MaidEmploymentHistory, MaidLoanTransaction
+    MaidDietaryRestriction, MaidEmploymentHistory, MaidLoanTransaction,
+    MaidFoodHandlingPreference, MaidDietaryRestriction
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -439,6 +441,45 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
         maid = Maid.objects.get(
             pk=self.maid_id
         )
+        maid.food_handling_preferences.clear()
+        maid.dietary_restrictions.clear()
+        food_handling_pork = cleaned_data.get('food_handling_pork')
+        food_handling_beef = cleaned_data.get('food_handling_beef')
+        food_handling_veg = cleaned_data.get('food_handling_veg')
+        dietary_restriction_pork = cleaned_data.get('dietary_restriction_pork')
+        dietary_restriction_beef = cleaned_data.get('dietary_restriction_beef')
+        dietary_restriction_veg = cleaned_data.get('dietary_restriction_veg')
+        if food_handling_pork == 'True':
+            MaidFoodHandlingPreference.objects.create(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.PORK
+            )
+        if food_handling_beef == 'True':
+            MaidFoodHandlingPreference.objects.create(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.BEEF
+            )
+        if food_handling_veg == 'True':
+            MaidFoodHandlingPreference.objects.create(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.VEG
+            )
+        if dietary_restriction_pork == 'True':
+            MaidDietaryRestriction.objects.create(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.PORK
+            )
+        if dietary_restriction_beef == 'True':
+            MaidDietaryRestriction.objects.create(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.BEEF
+            )
+        if dietary_restriction_veg == 'True':
+            MaidDietaryRestriction.objects.create(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.VEG
+            )
+            
         return maid
 
 class MaidExperienceForm(forms.Form):

@@ -23,7 +23,8 @@ from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
-    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices
+    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices,
+    MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices
 )
 
 # Utiliy Classes and Functions
@@ -361,13 +362,6 @@ class MaidWorkDuty(models.Model):
 
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
-    class FoodPreferenceChoices(models.TextChoices):
-        PORK = 'P', _('No pork')
-        CHICKEN = 'C', _('No chicken')
-        BEEF = 'B', _('No beef')
-        SEAFOOD = 'S', _('No seafood')
-        VEG = 'V', _('Vegetarian')
-
     maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
@@ -378,18 +372,11 @@ class MaidFoodHandlingPreference(models.Model):
         verbose_name = _('Food preference'),
         max_length=1,
         blank=False,
-        choices=FoodPreferenceChoices.choices,
-        default=FoodPreferenceChoices.PORK
+        choices=MaidFoodPreferenceChoices.choices,
+        default=MaidFoodPreferenceChoices.PORK
     )
 
 class MaidDietaryRestriction(models.Model):
-    class DietaryRestrictionChoices(models.TextChoices):
-        PORK = 'P', _('No pork')
-        CHICKEN = 'C', _('No chicken')
-        BEEF = 'B', _('No beef')
-        SEAFOOD = 'S', _('No seafood')
-        VEG = 'V', _('Able to work in a Vegetarian family')
-
     maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
@@ -400,8 +387,8 @@ class MaidDietaryRestriction(models.Model):
         verbose_name = _('Dietary restriction'),
         max_length=1,
         blank=False,
-        choices=DietaryRestrictionChoices.choices,
-        default=DietaryRestrictionChoices.PORK
+        choices=MaidDietaryRestrictionChoices.choices,
+        default=MaidDietaryRestrictionChoices.PORK
     )
 
 # class MaidEmploymentHistory(models.Model):
