@@ -280,16 +280,17 @@ class MaidForm(forms.ModelForm):
         )
         return super().save(*args, **kwargs)
     
-class MaidLanguageSpokenForm(forms.ModelForm):
-    class Meta:
-        model = MaidLanguage
-        fields = ['language']
-        widgets = {
-            'language': forms.CheckboxSelectMultiple()
-        }
-
+class MaidLanguageSpokenForm(forms.Form):
+    language_spoken = forms.MultipleChoiceField(
+        label=_('Language Spoken'),
+        choices=MaidLanguageChoices.choices,
+        widget=forms.CheckboxSelectMultiple(),
+        required=True
+    )
+    
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
+        self.maid_id = kwargs.pop('maid_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -324,6 +325,21 @@ class MaidLanguageSpokenForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+        
+    def save(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        
+        for language in cleaned_data.get('language_spoken'):
+            maid.languages.add(
+                MaidLanguage.objects.get(
+                    language=language
+                )
+            )
+            
+        return maid
 
 class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
     food_handling_pork = forms.ChoiceField(
@@ -417,7 +433,13 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
         )
     
     def save(self, *args, **kwargs):
-        pass
+        cleaned_data = self.cleaned_data
+        maid = Maid.objects.get(
+            pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )   
+        )
+        return maid
 
 class MaidExperienceForm(forms.Form):
     skills_evaluation_method = forms.ChoiceField(

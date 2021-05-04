@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.urls.base import reverse
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -296,7 +297,6 @@ class DashboardMaidInformationCreate(AgencyLoginRequiredMixin,
     http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_language_spoken_create')
     success_message = 'Maid created'
     authority = ''
     agency_id = ''
@@ -310,9 +310,9 @@ class DashboardMaidInformationCreate(AgencyLoginRequiredMixin,
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy(
-            super().get_success_url(),
+            'dashboard_maid_language_spoken_create',
             kwargs={
                 'pk':self.object.pk
             }
@@ -320,28 +320,45 @@ class DashboardMaidInformationCreate(AgencyLoginRequiredMixin,
 
 class DashboardMaidLanguageSpokenCreate(AgencyLoginRequiredMixin, 
                                      GetAuthorityMixin, SuccessMessageMixin,
-                                     CreateView):
+                                     FormView):
     context_object_name = 'maid_languages'
     form_class = MaidLanguageSpokenForm
     http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'
-    success_url = reverse_lazy('dashboard_maid_fhpdr_create')
     success_message = 'Maid created'
+    pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
+    maid_id = ''
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         kwargs.update({
             'agency_id': self.agency_id,
+            'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
         })
         return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_fhpdr_create',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
 
 class DashboardMaidFHPDRCreate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                               SuccessMessageMixin, CreateView):
+                               SuccessMessageMixin, FormView):
     context_object_name = 'maid_food_handling_preference_dietary_restriction'
     form_class = MaidFoodHandlingPreferencesDietaryRestrictionsForm
     http_method_names = ['get','post']
