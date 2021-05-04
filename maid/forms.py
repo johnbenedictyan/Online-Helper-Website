@@ -67,12 +67,9 @@ class MaidForm(forms.ModelForm):
     class Meta:
         model = Maid
         exclude = [
-            'agency', 'created_on', 'updated_on', 'nonce', 'tag', 'remarks'
+            'agency', 'created_on', 'updated_on', 'nonce', 'tag', 'remarks',
+            'responsibilities', 'languages', 'skills_evaluation_method'
         ]
-        widgets = {
-            'passport_expiry': CustomDateInput(),
-            'date_of_birth': CustomDateInput()
-        }
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
@@ -256,10 +253,12 @@ class MaidForm(forms.ModelForm):
                 reference_number = reference_number
             )
         except Maid.DoesNotExist:
-            return reference_number
+            pass
         else:
             msg = _('A maid with this reference number already exists')
             self.add_error('reference_number', msg)
+        finally:
+            return reference_number
 
     def clean_passport_number(self):
         cleaned_field = self.cleaned_data.get('passport_number')
