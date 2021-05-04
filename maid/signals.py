@@ -108,7 +108,7 @@ def maid_counter(sender, instance, created, **kwargs):
     ).count()
     agency.amount_of_featured_biodata = Maid.objects.filter(
         agency=agency,
-        featured=True
+        status='FEAT'
     ).count()
     agency.save()
     
