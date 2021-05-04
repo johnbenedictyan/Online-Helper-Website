@@ -291,7 +291,6 @@ class MaidLanguageSpokenForm(forms.Form):
     )
     
     def __init__(self, *args, **kwargs):
-        self.agency_id = kwargs.pop('agency_id')
         self.maid_id = kwargs.pop('maid_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -382,7 +381,6 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        self.agency_id = kwargs.pop('agency_id')
         self.maid_id = kwargs.pop('maid_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -658,6 +656,7 @@ class MaidExperienceForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
+        self.maid_id = kwargs.pop('maid_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -864,7 +863,7 @@ class MaidOtherRemarksForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        self.agency_id = kwargs.pop('agency_id')
+        self.maid_id = kwargs.pop('maid_id')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(

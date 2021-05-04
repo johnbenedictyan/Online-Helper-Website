@@ -305,7 +305,6 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.agency_id,
             'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
@@ -353,6 +352,7 @@ class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
+    maid_id = ''
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -360,7 +360,6 @@ class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
             self.pk_url_kwarg
         )
         kwargs.update({
-            'agency_id': self.agency_id,
             'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
@@ -391,6 +390,7 @@ class DashboardMaidExperienceFormView(AgencyLoginRequiredMixin,
     pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
+    maid_id = ''
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -398,7 +398,6 @@ class DashboardMaidExperienceFormView(AgencyLoginRequiredMixin,
             self.pk_url_kwarg
         )
         kwargs.update({
-            'agency_id': self.agency_id,
             'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
