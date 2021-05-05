@@ -20,16 +20,7 @@ from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HT
 from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
 
 # Imports from local apps
-from .models import (
-    Employer,
-    EmployerDoc,
-    EmployerDocMaidStatus,
-    EmployerDocSig,
-    JobOrder,
-    EmployerPaymentTransaction,
-    # EmployerSponsor,
-    # EmployerJointApplicant,
-)
+from . import models
 from onlinemaid.constants import (
     AG_OWNERS,
     AG_ADMINS,
@@ -44,7 +35,7 @@ from maid.models import Maid
 # Start of Forms
 class EmployerForm(forms.ModelForm):
     class Meta:
-        model = Employer
+        model = models.Employer
         exclude = [
             'employer_nric_nonce',
             'employer_nric_tag',
@@ -58,30 +49,6 @@ class EmployerForm(forms.ModelForm):
             'spouse_fin_tag',
             'spouse_passport_nonce',
             'spouse_passport_tag',
-            'sponsor_1_nric_nonce',
-            'sponsor_1_nric_tag',
-            'sponsor_1_spouse_nric_nonce',
-            'sponsor_1_spouse_nric_tag',
-            'sponsor_1_spouse_fin_nonce',
-            'sponsor_1_spouse_fin_tag',
-            'sponsor_1_spouse_passport_nonce',
-            'sponsor_1_spouse_passport_tag',
-            'sponsor_2_nric_nonce',
-            'sponsor_2_nric_tag',
-            'sponsor_2_spouse_nric_nonce',
-            'sponsor_2_spouse_nric_tag',
-            'sponsor_2_spouse_fin_nonce',
-            'sponsor_2_spouse_fin_tag',
-            'sponsor_2_spouse_passport_nonce',
-            'sponsor_2_spouse_passport_tag',
-            'joint_applicant_nric_nonce',
-            'joint_applicant_nric_tag',
-            'joint_applicant_spouse_nric_nonce',
-            'joint_applicant_spouse_nric_tag',
-            'joint_applicant_spouse_fin_nonce',
-            'joint_applicant_spouse_fin_tag',
-            'joint_applicant_spouse_passport_nonce',
-            'joint_applicant_spouse_passport_tag',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -103,80 +70,6 @@ class EmployerForm(forms.ModelForm):
 
         # self.initial.update({'spouse_nric_num': self.instance.get_spouse_nric_full()})
         
-        # # Sponsors
-        # if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
-        #     plaintext = self.instance.get_sponsor_1_nric_full()
-        #     self.initial.update({'sponsor_1_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_nric_num': ''})
-
-        # if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
-        #     plaintext = self.instance.get_sponsor_2_nric_full()
-        #     self.initial.update({'sponsor_2_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_nric_num': ''})
-
-        # if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_1_nric_spouse_full()
-        #     self.initial.update({'sponsor_1_spouse_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_spouse_nric_num': ''})
-
-        # if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_1_fin_spouse_full()
-        #     self.initial.update({'sponsor_1_spouse_fin_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_spouse_fin_num': ''})
-
-        # if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_1_passport_spouse_full()
-        #     self.initial.update({'sponsor_1_spouse_passport_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_spouse_passport_num': ''})
-
-        # if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_2_nric_spouse_full()
-        #     self.initial.update({'sponsor_2_spouse_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_spouse_nric_num': ''})
-
-        # if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_2_fin_spouse_full()
-        #     self.initial.update({'sponsor_2_spouse_fin_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_spouse_fin_num': ''})
-
-        # if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_2_passport_spouse_full()
-        #     self.initial.update({'sponsor_2_spouse_passport_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_spouse_passport_num': ''})
-        
-        # # Joint Applicants
-        # if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
-        #     plaintext = self.instance.get_joint_applicant_nric_full()
-        #     self.initial.update({'joint_applicant_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'joint_applicant_nric_num': ''})
-
-        # if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
-        #     plaintext = self.instance.get_joint_applicant_nric_spouse_full()
-        #     self.initial.update({'joint_applicant_spouse_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'joint_applicant_spouse_nric_num': ''})
-
-        # if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
-        #     plaintext = self.instance.get_joint_applicant_fin_spouse_full()
-        #     self.initial.update({'joint_applicant_spouse_fin_num': plaintext})
-        # else:
-        #     self.initial.update({'joint_applicant_spouse_fin_num': ''})
-
-        # if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
-        #     plaintext = self.instance.get_joint_applicant_passport_spouse_full()
-        #     self.initial.update({'joint_applicant_spouse_passport_num': plaintext})
-        # else:
-        #     self.initial.update({'joint_applicant_spouse_passport_num': ''})
-
 
         #  Remove employer_nric number from initial form display
         # self.initial.update({'employer_nric_num':''})
@@ -374,7 +267,219 @@ class EmployerForm(forms.ModelForm):
                 ),
                 id='spouse-section',
             ),
-            
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(
+                    agency=self.user_obj.agency_owner.agency
+                )
+            )
+        elif self.agency_user_group==AG_ADMINS:
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(
+                    agency=self.user_obj.agency_employee.agency
+                )
+            )
+        elif self.agency_user_group==AG_MANAGERS:
+            self.fields['agency_employee'].queryset = (
+                AgencyEmployee.objects.filter(
+                    branch=self.user_obj.agency_employee.branch
+                )
+            )
+        else:
+            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            del self.fields['agency_employee']
+    
+    def check_queryset(self, queryset, error_msg):
+        for employer_obj in queryset:
+            if not employer_obj==self.instance:
+                # Check if it belongs to current user's agency
+                if self.agency_user_group==AG_OWNERS:
+                    if (
+                        employer_obj.agency_employee.agency
+                        == self.user_obj.agency_owner.agency
+                    ):
+                        raise ValidationError(error_msg)
+                elif (
+                    employer_obj.agency_employee.agency
+                    == self.user_obj.agency_employee.agency
+                ):
+                    raise ValidationError(error_msg)
+    
+    def clean_employer_email(self):
+        cleaned_field = self.cleaned_data.get('employer_email')
+
+        try:
+            # Check if employer_email exists in database
+            employer_queryset = Employer.objects.filter(
+                employer_email=cleaned_field
+            )
+        except Employer.DoesNotExist:
+            # If no entries for employer_email, then no further checks
+            return cleaned_field
+        else:
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this email address already exists in your \
+                    agency'
+            )
+        return cleaned_field
+
+    def clean_employer_mobile_number(self):
+        cleaned_field = self.cleaned_data.get('employer_mobile_number')
+
+        try:
+            # Check if employer_mobile_number exists in database
+            employer_queryset = Employer.objects.filter(
+                employer_mobile_number=cleaned_field
+            )
+        except Employer.DoesNotExist:
+            # If no entries for employer_mobile_number, then no further checks
+            return cleaned_field
+        else:
+            self.check_queryset(
+                employer_queryset,
+                'An employer with this mobile number already exists in your \
+                    agency'
+            )
+        return cleaned_field
+
+    def clean_employer_nric_num(self):
+        cleaned_field = self.cleaned_data.get('employer_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.employer_nric_nonce, self.instance.employer_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        
+        return ciphertext
+
+    # Employer Spouse
+    def clean_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('spouse_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+class EmployerSponsorForm(forms.ModelForm):
+    class Meta:
+        model = models.EmployerSponsor
+        exclude = [
+            'employer',
+            'sponsor_1_nric_nonce',
+            'sponsor_1_nric_tag',
+            'sponsor_1_spouse_nric_nonce',
+            'sponsor_1_spouse_nric_tag',
+            'sponsor_1_spouse_fin_nonce',
+            'sponsor_1_spouse_fin_tag',
+            'sponsor_1_spouse_passport_nonce',
+            'sponsor_1_spouse_passport_tag',
+            'sponsor_2_nric_nonce',
+            'sponsor_2_nric_tag',
+            'sponsor_2_spouse_nric_nonce',
+            'sponsor_2_spouse_nric_tag',
+            'sponsor_2_spouse_fin_nonce',
+            'sponsor_2_spouse_fin_tag',
+            'sponsor_2_spouse_passport_nonce',
+            'sponsor_2_spouse_passport_tag',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        # # Sponsors
+        # if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
+        #     plaintext = self.instance.get_sponsor_1_nric_full()
+        #     self.initial.update({'sponsor_1_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_nric_num': ''})
+
+        # if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
+        #     plaintext = self.instance.get_sponsor_2_nric_full()
+        #     self.initial.update({'sponsor_2_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_nric_num': ''})
+
+        # if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_1_nric_spouse_full()
+        #     self.initial.update({'sponsor_1_spouse_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_spouse_nric_num': ''})
+
+        # if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_1_fin_spouse_full()
+        #     self.initial.update({'sponsor_1_spouse_fin_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_spouse_fin_num': ''})
+
+        # if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_1_passport_spouse_full()
+        #     self.initial.update({'sponsor_1_spouse_passport_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_1_spouse_passport_num': ''})
+
+        # if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_2_nric_spouse_full()
+        #     self.initial.update({'sponsor_2_spouse_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_spouse_nric_num': ''})
+
+        # if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_2_fin_spouse_full()
+        #     self.initial.update({'sponsor_2_spouse_fin_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_spouse_fin_num': ''})
+
+        # if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
+        #     plaintext = self.instance.get_sponsor_2_passport_spouse_full()
+        #     self.initial.update({'sponsor_2_spouse_passport_num': plaintext})
+        # else:
+        #     self.initial.update({'sponsor_2_spouse_passport_num': ''})
+        
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
             # Sponsors
             Row(
                 Column(
@@ -746,6 +851,222 @@ class EmployerForm(forms.ModelForm):
                 id='sponsors-section',
             ),
 
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+    
+    def clean_sponsor_1_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_spouse_fin_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_fin_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_1_spouse_passport_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_spouse_nric_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_nric_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_spouse_fin_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_fin_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+    def clean_sponsor_2_spouse_passport_num(self):
+        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
+
+class EmployerJointApplicantForm(forms.ModelForm):
+    class Meta:
+        model = models.EmployerJointApplicant
+        exclude = [
+            'employer',
+            'joint_applicant_nric_nonce',
+            'joint_applicant_nric_tag',
+            'joint_applicant_spouse_nric_nonce',
+            'joint_applicant_spouse_nric_tag',
+            'joint_applicant_spouse_fin_nonce',
+            'joint_applicant_spouse_fin_tag',
+            'joint_applicant_spouse_passport_nonce',
+            'joint_applicant_spouse_passport_tag',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        # # Joint Applicants
+        # if self.instance.joint_applicant_nric and self.instance.joint_applicant_nric!=b'':
+        #     plaintext = self.instance.get_joint_applicant_nric_full()
+        #     self.initial.update({'joint_applicant_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_nric_num': ''})
+
+        # if self.instance.joint_applicant_nric_spouse and self.instance.joint_applicant_nric_spouse!=b'':
+        #     plaintext = self.instance.get_joint_applicant_nric_spouse_full()
+        #     self.initial.update({'joint_applicant_spouse_nric_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_spouse_nric_num': ''})
+
+        # if self.instance.joint_applicant_fin_spouse and self.instance.joint_applicant_fin_spouse!=b'':
+        #     plaintext = self.instance.get_joint_applicant_fin_spouse_full()
+        #     self.initial.update({'joint_applicant_spouse_fin_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_spouse_fin_num': ''})
+
+        # if self.instance.joint_applicant_passport_spouse and self.instance.joint_applicant_passport_spouse!=b'':
+        #     plaintext = self.instance.get_joint_applicant_passport_spouse_full()
+        #     self.initial.update({'joint_applicant_spouse_passport_num': plaintext})
+        # else:
+        #     self.initial.update({'joint_applicant_spouse_passport_num': ''})
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'employer-doc-form'
+        self.helper.layout = Layout(
             # Joint Applicants
             Row(
                 Column(
@@ -917,7 +1238,8 @@ class EmployerForm(forms.ModelForm):
                 ),
                 id='joint-applicant-section',
             ),
-
+            
+            # Submit
             Row(
                 Column(
                     Submit(
@@ -930,277 +1252,7 @@ class EmployerForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-        if self.agency_user_group==AG_OWNERS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_owner.agency
-                )
-            )
-        elif self.agency_user_group==AG_ADMINS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_employee.agency
-                )
-            )
-        elif self.agency_user_group==AG_MANAGERS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    branch=self.user_obj.agency_employee.branch
-                )
-            )
-        else:
-            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
-            del self.fields['agency_employee']
     
-    def check_queryset(self, queryset, error_msg):
-        for employer_obj in queryset:
-            if not employer_obj==self.instance:
-                # Check if it belongs to current user's agency
-                if self.agency_user_group==AG_OWNERS:
-                    if (
-                        employer_obj.agency_employee.agency
-                        == self.user_obj.agency_owner.agency
-                    ):
-                        raise ValidationError(error_msg)
-                elif (
-                    employer_obj.agency_employee.agency
-                    == self.user_obj.agency_employee.agency
-                ):
-                    raise ValidationError(error_msg)
-    
-    def clean_employer_email(self):
-        cleaned_field = self.cleaned_data.get('employer_email')
-
-        try:
-            # Check if employer_email exists in database
-            employer_queryset = Employer.objects.filter(
-                employer_email=cleaned_field
-            )
-        except Employer.DoesNotExist:
-            # If no entries for employer_email, then no further checks
-            return cleaned_field
-        else:
-            self.check_queryset(
-                employer_queryset,
-                'An employer with this email address already exists in your \
-                    agency'
-            )
-        return cleaned_field
-
-    def clean_employer_mobile_number(self):
-        cleaned_field = self.cleaned_data.get('employer_mobile_number')
-
-        try:
-            # Check if employer_mobile_number exists in database
-            employer_queryset = Employer.objects.filter(
-                employer_mobile_number=cleaned_field
-            )
-        except Employer.DoesNotExist:
-            # If no entries for employer_mobile_number, then no further checks
-            return cleaned_field
-        else:
-            self.check_queryset(
-                employer_queryset,
-                'An employer with this mobile number already exists in your \
-                    agency'
-            )
-        return cleaned_field
-
-    def clean_employer_nric_num(self):
-        cleaned_field = self.cleaned_data.get('employer_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.employer_nric_nonce, self.instance.employer_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        
-        return ciphertext
-
-    # Employer Spouse
-    def clean_spouse_nric_num(self):
-        cleaned_field = self.cleaned_data.get('spouse_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    # Sponsors
-    def clean_sponsor_1_nric_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_spouse_nric_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_spouse_fin_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_fin_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_1_spouse_passport_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_nric_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_spouse_nric_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_spouse_fin_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_fin_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    def clean_sponsor_2_spouse_passport_num(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
-
-    # Joint Applicants
     def clean_joint_applicant_nric_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_nric_num')
 
@@ -1279,7 +1331,7 @@ class EmployerForm(forms.ModelForm):
 
 class EmployerDocForm(forms.ModelForm):
     class Meta:
-        model = EmployerDoc
+        model = models.EmployerDoc
         exclude = ['employer']
 
     def __init__(self, *args, **kwargs):
@@ -1342,13 +1394,6 @@ class EmployerDocForm(forms.ModelForm):
                     'application_scheme',
                     css_class='form-group col-md-6',
                     id='application-scheme',
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'monthly_combined_income',
-                    css_class='form-group col-md-6 employer-spouse employer-only',
                 ),
                 css_class='form-row'
             ),
@@ -1878,7 +1923,7 @@ class EmployerDocForm(forms.ModelForm):
 
 class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocSig
+        model = models.EmployerDocSig
         fields = ['employer_slug', 'fdw_slug']
         labels = {
             'employer_slug': _('Employer signature URL'),
@@ -1949,7 +1994,7 @@ class EmployerDocSigSlugForm(forms.ModelForm):
 
 class EmployerDocMaidStatusForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocMaidStatus
+        model = models.EmployerDocMaidStatus
         exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
@@ -2071,12 +2116,12 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
 class EmployerDocMaidDeploymentForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocMaidStatus
+        model = models.EmployerDocMaidStatus
         fields = ['is_deployed']
 
 class EmployerPaymentTransactionForm(forms.ModelForm):
     class Meta:
-        model = EmployerPaymentTransaction
+        model = models.EmployerPaymentTransaction
         exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
@@ -2115,7 +2160,7 @@ class EmployerPaymentTransactionForm(forms.ModelForm):
 
 class JobOrderForm(forms.ModelForm):
     class Meta:
-        model = JobOrder
+        model = models.JobOrder
         widgets = {'job_order_pdf': forms.FileInput(attrs={'accept': 'application/pdf'})}
         exclude = ['employer_doc']
 
@@ -2135,7 +2180,7 @@ class JobOrderForm(forms.ModelForm):
 
 # class EmployerSponsorForm(forms.ModelForm):
 #     class Meta:
-#         model = EmployerSponsor
+#         model = models.EmployerSponsor
 #         exclude = ['employer_doc',
 #             'sponsor_1_nric_nonce',
 #             'sponsor_1_nric_tag',
@@ -2723,7 +2768,7 @@ class JobOrderForm(forms.ModelForm):
 
 # class EmployerJointApplicantForm(forms.ModelForm):
 #     class Meta:
-#         model = EmployerJointApplicant
+#         model = models.EmployerJointApplicant
 #         exclude = [
 #             'employer_doc',
 #             'joint_applicant_nric_nonce_num',
@@ -3009,7 +3054,7 @@ class JobOrderForm(forms.ModelForm):
 # Signature Forms
 class SignatureForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocSig
+        model = models.EmployerDocSig
         fields = '__all__'
     
     def __init__(self, *args, **kwargs):
@@ -3132,7 +3177,7 @@ class SignatureForm(forms.ModelForm):
 
 class VerifyUserTokenForm(forms.ModelForm):
     class Meta:
-        model = EmployerDocSig
+        model = models.EmployerDocSig
         exclude = '__all__'
         fields = ['employer_token', 'fdw_token']
     
