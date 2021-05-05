@@ -72,7 +72,7 @@ class Employer(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
-        unique=True
+        unique=True,
     )
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
@@ -80,14 +80,27 @@ class Employer(models.Model):
         choices=APPLICANT_TYPE_CHOICES,
         default=APPLICANT_TYPE_CHOICES[0][0],
     )
+    household_details_required = models.BooleanField(
+        verbose_name=_('Applicable for subsidised levy?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+        help_text=_('''
+            If yes, please fill in household details section at bottom of form
+        '''),
+    )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
-        verbose_name=_('Assigned Agent / Salesperson'),
-        on_delete=models.RESTRICT
+        verbose_name=_('Assigned EA Personnel'),
+        on_delete=models.RESTRICT,
     )
+
+    # Employer Information
     employer_name = models.CharField(
         verbose_name=_('Employer Name'),
-        max_length=40
+        max_length=40,
     )
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
@@ -103,7 +116,7 @@ class Employer(models.Model):
                 regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
                 message=_('Please enter a valid mobile number')
             )
-        ]
+        ],
     )
     employer_home_number = models.CharField(
         verbose_name=_('Home Tel Number'),
@@ -113,7 +126,7 @@ class Employer(models.Model):
                 regex='^[6][0-9]{7}$', # Singapore landline numbers
                 message=_('Please enter a valid home telephone number')
             )
-        ]
+        ],
     )
     employer_email = models.EmailField(verbose_name=_('Email Address'))
     employer_address_1 = models.CharField(
@@ -218,7 +231,7 @@ class Employer(models.Model):
             self.employer_nric_num,
             settings.ENCRYPTION_KEY,
             self.employer_nric_nonce,
-            self.employer_nric_tag
+            self.employer_nric_tag,
         )
     
     def get_employer_nric_partial(self):
@@ -325,12 +338,21 @@ class Employer(models.Model):
         null=True,
     )
 
+    # Income Details
+    monthly_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Employer monthly income / combined income with spouse"),
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
+        blank=True,
+        null=True,
+    )
+
     def get_employer_spouse_nric_full(self):
         return decrypt_string(
             self.spouse_nric_num,
             settings.ENCRYPTION_KEY,
             self.spouse_nric_nonce,
-            self.spouse_nric_tag
+            self.spouse_nric_tag,
         )
 
     def get_employer_spouse_fin_full(self):
@@ -349,7 +371,13 @@ class Employer(models.Model):
             self.spouse_passport_tag,
         )
 
-    ## Sponsors
+## Sponsors
+class EmployerSponsor(models.Model):
+    employer = models.ForeignKey(
+        Employer,
+        on_delete=models.CASCADE,
+        related_name='rn_sponsor_employer'
+    )
     number_of_sponsors = models.PositiveSmallIntegerField(
         verbose_name=_("Number of sponsors"),
         choices=[
@@ -359,7 +387,7 @@ class Employer(models.Model):
         ],
         default=0,
     )
-    sponsor_monthly_income = models.PositiveSmallIntegerField(
+    monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Sponsor's monthly income or sponsors' combined monthly income"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
@@ -865,8 +893,14 @@ class Employer(models.Model):
     def get_sponsor_2_mobile(self):
         return get_mobile_format_sg(self.sponsor_2_mobile_number) if self.sponsor_2_mobile_number else None
 
-    ## Joint Applicants
-    joint_applicant_monthly_income = models.PositiveSmallIntegerField(
+## Joint Applicants
+class EmployerJointApplicant(models.Model):
+    employer = models.ForeignKey(
+        Employer,
+        on_delete=models.CASCADE,
+        related_name='rn_ja_employer'
+    )
+    monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Combined monthly income of Employer and Joint applicant"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
@@ -1210,13 +1244,6 @@ class EmployerDoc(models.Model):
     )
     agreement_date = models.DateField(
         verbose_name=_('Agreement Date for Signed Documents'),
-    )
-    monthly_combined_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Employer monthly income / combined income with spouse"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
     )
     application_scheme = models.CharField(
         verbose_name=_("Application scheme"),
