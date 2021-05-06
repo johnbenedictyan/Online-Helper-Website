@@ -24,13 +24,16 @@ from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
 from enquiry.models import GeneralEnquiry
+from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
     MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
     MaidFoodHandlingPreferencesDietaryRestrictionsForm, MaidExperienceForm,
     MaidOtherRemarksForm
 )
 from maid.mixins import FDWLimitMixin
-from maid.models import Maid
+from maid.models import (
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction
+)
 from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 from onlinemaid.mixins import SuccessMessageMixin
@@ -301,6 +304,16 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
     authority = ''
     agency_id = ''
     maid_id = ''
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        context.update({
+            'maid_id': self.maid_id
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -313,9 +326,6 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
     
     def get_initial(self):
         intial =  super().get_initial()
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
         maid = Maid.objects.get(
             pk=self.maid_id
         )
@@ -354,11 +364,84 @@ class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     agency_id = ''
     maid_id = ''
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'maid_id': self.maid_id
+        })
+        return context
+
+    def get_initial(self):
+        intial =  super().get_initial()
         self.maid_id = self.kwargs.get(
             self.pk_url_kwarg
         )
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        food_handling_pork = food_handling_beef = food_handling_veg = None
+        dietary_restriction_pork = dietary_restriction_beef = None
+        dietary_restriction_veg = None
+        try:
+            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.PORK
+            )
+        except MaidFoodHandlingPreference.DoesNotExist:
+            pass
+        
+        try:
+            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.BEEF
+            )
+        except MaidFoodHandlingPreference.DoesNotExist:
+            pass
+        
+        try:
+            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.VEG
+            )
+        except MaidFoodHandlingPreference.DoesNotExist:
+            pass
+        
+        try:
+            dietary_restriction_pork = MaidDietaryRestriction.objects.get(
+                maid__pk=self.maid_id,
+                restriction=MaidFoodPreferenceChoices.PORK
+            )
+        except MaidDietaryRestriction.DoesNotExist:
+            pass
+        
+        try:
+            dietary_restriction_beef = MaidDietaryRestriction.objects.get(
+                maid__pk=self.maid_id,
+                restriction=MaidFoodPreferenceChoices.BEEF
+            )
+        except MaidDietaryRestriction.DoesNotExist:
+            pass
+        
+        try:
+            dietary_restriction_veg = MaidDietaryRestriction.objects.get(
+                maid__pk=self.maid_id,
+                restriction=MaidFoodPreferenceChoices.VEG
+            )
+        except MaidDietaryRestriction.DoesNotExist:
+            pass
+            
+        intial.update({
+            'food_handling_pork': food_handling_pork,
+            'food_handling_beef': food_handling_beef,
+            'food_handling_veg': food_handling_veg,
+            'dietary_restriction_pork': dietary_restriction_pork,
+            'dietary_restriction_beef': dietary_restriction_beef,
+            'dietary_restriction_veg': dietary_restriction_veg,
+        })
+        return intial
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
         kwargs.update({
             'maid_id': self.maid_id,
             # 'authority': self.authority,
@@ -391,12 +474,19 @@ class DashboardMaidExperienceFormView(AgencyLoginRequiredMixin,
     authority = ''
     agency_id = ''
     maid_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         self.maid_id = self.kwargs.get(
             self.pk_url_kwarg
         )
+        context.update({
+            'maid_id': self.maid_id
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
         kwargs.update({
             'maid_id': self.maid_id,
             # 'authority': self.authority,
@@ -418,7 +508,7 @@ class DashboardMaidExperienceFormView(AgencyLoginRequiredMixin,
 
 class DashboardMaidOtherRemarksFormView(AgencyLoginRequiredMixin, 
                                       GetAuthorityMixin, SuccessMessageMixin,
-                                      CreateView):
+                                      FormView):
     context_object_name = 'maid_other_remarks'
     form_class = MaidOtherRemarksForm
     http_method_names = ['get','post']
@@ -426,17 +516,38 @@ class DashboardMaidOtherRemarksFormView(AgencyLoginRequiredMixin,
     template_name = 'form/maid-create-form.html'
     success_url = reverse_lazy('dashboard_maid_list')
     success_message = 'Maid created'
+    pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
+    maid_id = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        context.update({
+            'maid_id': self.maid_id
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'agency_id': self.agency_id,
+            'maid_id': self.maid_id,
             # 'authority': self.authority,
             # 'form_type': 'create'
         })
         return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_list',
+        )
 
 # Create Views
 class DashboardMaidInformationCreate(AgencyLoginRequiredMixin, 
@@ -451,6 +562,13 @@ class DashboardMaidInformationCreate(AgencyLoginRequiredMixin,
     authority = ''
     agency_id = ''
 
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context.update({
+            'new_maid': True
+        })
+        return context
+    
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
