@@ -448,32 +448,32 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
         dietary_restriction_beef = cleaned_data.get('dietary_restriction_beef')
         dietary_restriction_veg = cleaned_data.get('dietary_restriction_veg')
         if food_handling_pork == 'True':
-            MaidFoodHandlingPreference.objects.create(
+            MaidFoodHandlingPreference.objects.get_or_create(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.PORK
             )
         if food_handling_beef == 'True':
-            MaidFoodHandlingPreference.objects.create(
+            MaidFoodHandlingPreference.objects.get_or_create(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.BEEF
             )
         if food_handling_veg == 'True':
-            MaidFoodHandlingPreference.objects.create(
+            MaidFoodHandlingPreference.objects.get_or_create(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.VEG
             )
         if dietary_restriction_pork == 'True':
-            MaidDietaryRestriction.objects.create(
+            MaidDietaryRestriction.objects.get_or_create(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.PORK
             )
         if dietary_restriction_beef == 'True':
-            MaidDietaryRestriction.objects.create(
+            MaidDietaryRestriction.objects.get_or_create(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.BEEF
             )
         if dietary_restriction_veg == 'True':
-            MaidDietaryRestriction.objects.create(
+            MaidDietaryRestriction.objects.get_or_create(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.VEG
             )
@@ -643,17 +643,17 @@ class MaidExperienceForm(forms.Form):
         required=False
     )
     
-    care_for_pets = forms.ChoiceField(
-        label=_('Care for pets'),
-        required=True,
-        choices=TrueFalseChoices('Able', 'Unable')
-    )
+    # care_for_pets = forms.ChoiceField(
+    #     label=_('Care for pets'),
+    #     required=True,
+    #     choices=TrueFalseChoices('Able', 'Unable')
+    # )
     
-    gardening = forms.ChoiceField(
-        label=_('Gardening'),
-        required=True,
-        choices=TrueFalseChoices('Able', 'Unable')
-    )
+    # gardening = forms.ChoiceField(
+    #     label=_('Gardening'),
+    #     required=True,
+    #     choices=TrueFalseChoices('Able', 'Unable')
+    # )
 
     def __init__(self, *args, **kwargs):
         self.maid_id = kwargs.pop('maid_id')
@@ -851,6 +851,103 @@ class MaidExperienceForm(forms.Form):
             )
         )
 
+    def save(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
+        skills_evaluation_method = cleaned_data.get('skills_evaluation_method')
+        
+        cfi_assessment = cleaned_data.get('cfi_assessment')
+        cfi_willingness = cleaned_data.get('cfi_willingness')
+        cfi_experience = cleaned_data.get('cfi_experience')
+        cfi_remarks = cleaned_data.get('cfi_remarks')
+        cfi_other_remarks = cleaned_data.get('cfi_other_remarks')
+
+        cfe_assessment = cleaned_data.get('cfe_assessment')
+        cfe_willingness = cleaned_data.get('cfe_willingness')
+        cfe_experience = cleaned_data.get('cfe_experience')
+        cfe_remarks = cleaned_data.get('cfe_remarks')
+        cfe_other_remarks = cleaned_data.get('cfe_other_remarks')
+        
+        cfd_assessment = cleaned_data.get('cfd_assessment')
+        cfd_willingness = cleaned_data.get('cfd_willingness')
+        cfd_experience = cleaned_data.get('cfd_experience')
+        cfd_remarks = cleaned_data.get('cfd_remarks')
+        cfd_other_remarks = cleaned_data.get('cfd_other_remarks')
+
+        geh_assessment = cleaned_data.get('geh_assessment')
+        geh_willingness = cleaned_data.get('geh_willingness')
+        geh_experience = cleaned_data.get('geh_experience')
+        geh_remarks = cleaned_data.get('geh_remarks')
+        geh_other_remarks = cleaned_data.get('geh_other_remarks')
+
+        cok_assessment = cleaned_data.get('cok_assessment')
+        cok_willingness = cleaned_data.get('cok_willingness')
+        cok_experience = cleaned_data.get('cok_experience')
+        cok_remarks = cleaned_data.get('cok_remarks')
+        cok_other_remarks = cleaned_data.get('cok_other_remarks')
+        
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        
+        maid.update(skills_evaluation_method=skills_evaluation_method)
+        
+        MaidInfantChildCare.objects.update_or_create(
+            maid__pk=self.maid_id, 
+            defaults={
+                'assessment': cfi_assessment,
+                'willingness': cfi_willingness,
+                'experience': cfi_experience,
+                'remarks': cfi_remarks,
+                'other_remarks': cfi_other_remarks,
+            }
+        )
+        
+        MaidElderlyCare.objects.update_or_create(
+            maid__pk=self.maid_id, 
+            defaults={
+                'assessment': cfe_assessment,
+                'willingness': cfe_willingness,
+                'experience': cfe_experience,
+                'remarks': cfe_remarks,
+                'other_remarks': cfe_other_remarks,
+            }
+        )
+        
+        MaidDisabledCare.objects.update_or_create(
+            maid__pk=self.maid_id, 
+            defaults={
+                'assessment': cfd_assessment,
+                'willingness': cfd_willingness,
+                'experience': cfd_experience,
+                'remarks': cfd_remarks,
+                'other_remarks': cfd_other_remarks,
+            }
+        )
+        
+        MaidGeneralHousework.objects.update_or_create(
+            maid__pk=self.maid_id, 
+            defaults={
+                'assessment': geh_assessment,
+                'willingness': geh_willingness,
+                'experience': geh_experience,
+                'remarks': geh_remarks,
+                'other_remarks': geh_other_remarks,
+            }
+        )
+        
+        MaidCooking.objects.update_or_create(
+            maid__pk=self.maid_id, 
+            defaults={
+                'assessment': cok_assessment,
+                'willingness': cok_willingness,
+                'experience': cok_experience,
+                'remarks': cok_remarks,
+                'other_remarks': cok_other_remarks,
+            }
+        )
+
+        return maid
+        
 class MaidOtherRemarksForm(forms.Form):
     remarks = forms.CharField(
         label=_(''),
@@ -898,12 +995,12 @@ class MaidOtherRemarksForm(forms.Form):
 
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
-        agency = Agency.objects.get(
-            pk=self.agency_id
+        remarks = cleaned_data.get('remarks')
+        maid = Maid.objects.get(
+            pk=self.maid_id
         )
-        agency.remarks = cleaned_data.get('remarks')
-        agency.save()
-        return agency
+        maid.update(remarks=remarks)
+        return maid
 
 # class MaidUpdateForm(forms.ModelForm):
 #     class Meta:

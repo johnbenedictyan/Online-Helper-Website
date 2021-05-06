@@ -325,11 +325,11 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
         return kwargs
     
     def get_initial(self):
-        intial =  super().get_initial()
+        initial =  super().get_initial()
         maid = Maid.objects.get(
             pk=self.maid_id
         )
-        intial.update({
+        initial.update({
             'language_spoken': list(
                 maid.languages.values_list(
                     'language',
@@ -337,7 +337,7 @@ class DashboardMaidLanguageSpokenFormView(AgencyLoginRequiredMixin,
                 )
             )
         })
-        return intial
+        return initial
     
     def form_valid(self, form):
         form.save()
@@ -372,12 +372,9 @@ class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return context
 
     def get_initial(self):
-        intial =  super().get_initial()
+        initial =  super().get_initial()
         self.maid_id = self.kwargs.get(
             self.pk_url_kwarg
-        )
-        maid = Maid.objects.get(
-            pk=self.maid_id
         )
         food_handling_pork = food_handling_beef = food_handling_veg = None
         dietary_restriction_pork = dietary_restriction_beef = None
@@ -430,7 +427,7 @@ class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         except MaidDietaryRestriction.DoesNotExist:
             pass
             
-        intial.update({
+        initial.update({
             'food_handling_pork': food_handling_pork,
             'food_handling_beef': food_handling_beef,
             'food_handling_veg': food_handling_veg,
@@ -438,7 +435,7 @@ class DashboardMaidFHPDRFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
             'dietary_restriction_beef': dietary_restriction_beef,
             'dietary_restriction_veg': dietary_restriction_veg,
         })
-        return intial
+        return initial
     
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -485,6 +482,16 @@ class DashboardMaidExperienceFormView(AgencyLoginRequiredMixin,
         })
         return context
 
+    def get_initial(self):
+        initial =  super().get_initial()
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        initial.update({
+            
+        })
+        return initial
+    
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
