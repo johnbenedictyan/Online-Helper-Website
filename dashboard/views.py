@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.urls.base import reverse
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -32,7 +31,9 @@ from maid.forms import (
 )
 from maid.mixins import FDWLimitMixin
 from maid.models import (
-    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
+    MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
+    MaidGeneralHousework, MaidCooking
 )
 from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
@@ -437,8 +438,67 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
     
     def get_initial(self):
         initial =  super().get_initial()
+        try:
+            maid_cfi = MaidInfantChildCare.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cfi = {}
+
+        try:
+            maid_cfe = MaidElderlyCare.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cfe = {}
+
+        try:
+            maid_cfd = MaidDisabledCare.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cfd = {}
+
+        try:
+            maid_geh = MaidGeneralHousework.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_geh = {}
+
+        try:
+            maid_cok = MaidCooking.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cok = {}
+
         initial.update({
-            
+            'cfi_assessment': maid_cfi.get('assessment', None),
+            'cfi_willingness': maid_cfi.get('willingness', None),
+            'cfi_experience': maid_cfi.get('experience', None),
+            'cfi_remarks': maid_cfi.get('remarks', None),
+            'cfi_other_remarks': maid_cfi.get('other_remarks', None),
+            'cfe_assessment': maid_cfe.get('assessment', None),
+            'cfe_willingness': maid_cfe.get('willingness', None),
+            'cfe_experience': maid_cfe.get('experience', None),
+            'cfe_remarks': maid_cfe.get('remarks', None),
+            'cfe_other_remarks': maid_cfe.get('other_remarks', None),
+            'cfd_assessment': maid_cfd.get('assessment', None),
+            'cfd_willingness': maid_cfd.get('willingness', None),
+            'cfd_experience': maid_cfd.get('experience', None),
+            'cfd_remarks': maid_cfd.get('remarks', None),
+            'cfd_other_remarks': maid_cfd.get('other_remarks', None),
+            'geh_assessment': maid_geh.get('assessment', None),
+            'geh_willingness': maid_geh.get('willingness', None),
+            'geh_experience': maid_geh.get('experience', None),
+            'geh_remarks': maid_geh.get('remarks', None),
+            'geh_other_remarks': maid_geh.get('other_remarks', None),
+            'cok_assessment': maid_cok.get('assessment', None),
+            'cok_willingness': maid_cok.get('willingness', None),
+            'cok_experience': maid_cok.get('experience', None),
+            'cok_remarks': maid_cok.get('remarks', None),
+            'cok_other_remarks': maid_cok.get('other_remarks', None)
         })
         return initial
     
@@ -457,8 +517,11 @@ class DashboardMaidOtherRemarksFormView(DashboardMaidSubFormView):
 
     def get_initial(self):
         initial =  super().get_initial()
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
         initial.update({
-            
+            'remarks': maid.remarks
         })
         return initial
     
