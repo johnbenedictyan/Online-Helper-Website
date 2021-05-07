@@ -33,7 +33,7 @@ from .views import DashboardHomePage
 ## Update Views
 from .views import (
     DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate,
-    DashboardAgencyEmployeeUpdate
+    DashboardAgencyEmployeeUpdate, DashboardMaidInformationUpdate
 )
 
 ## Delete Views
@@ -159,7 +159,7 @@ urlpatterns = [
             ),
             path(
                 'maid/<int:pk>/',
-                DashboardMaidInformationCreate.as_view(),
+                DashboardMaidInformationUpdate.as_view(),
                 name='dashboard_maid_information_update'
             )
         ])

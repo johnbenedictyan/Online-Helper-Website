@@ -768,6 +768,43 @@ class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin,
         return AgencyOpeningHours.objects.get(
             agency__pk = self.agency_id
     )
+        
+class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'maid_information'
+    form_class = MaidForm
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_message = 'Maid updated'
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        context.update({
+            'maid_id': self.maid_id,
+            'new_maid': False
+        })
+        return context
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+        })
+        return kwargs
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_language_spoken_form',
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
   
 # Delete Views
 
