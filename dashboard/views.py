@@ -205,27 +205,28 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
         )
 
 # Detail Views
-class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
+class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
                             DetailView):
-    context_object_name = 'agency'
     http_method_names = ['get']
+    authority = ''
+    agency_id = ''
+    
+class DashboardAgencyDetail(DashboardDetailView):
+    context_object_name = 'agency'
     model = Agency
     template_name = 'detail/new-dashboard-agency-detail.html'
-    authority = ''
-    agency_id = ''
 
     def get_object(self):
-        agency = get_object_or_404(Agency, pk=self.agency_id)
+        agency = get_object_or_404(
+            Agency, 
+            pk=self.agency_id
+        )
         return agency
 
-class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          DetailView):
+class DashboardMaidDetail(DashboardDetailView):
     context_object_name = 'maid'
-    http_method_names = ['get']
     model = Maid
     template_name = 'detail/new-dashboard-maid-detail.html'
-    authority = ''
-    agency_id = ''
 
     def get_object(self):
         return Maid.objects.get(
@@ -531,17 +532,18 @@ class DashboardMaidOtherRemarksFormView(DashboardMaidSubFormView):
         )
 
 # Create Views
-class DashboardMaidInformationCreate(AgencyLoginRequiredMixin, 
-                                     GetAuthorityMixin, SuccessMessageMixin,
-                                     CreateView):
+class DashboardCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                          SuccessMessageMixin, CreateView):
+    http_method_names = ['get','post']
+    authority = ''
+    agency_id = ''
+    
+class DashboardMaidInformationCreate(DashboardCreateView):
     context_object_name = 'maid_information'
     form_class = MaidForm
-    http_method_names = ['get','post']
     model = Maid
     template_name = 'form/maid-create-form.html'
     success_message = 'Maid created'
-    authority = ''
-    agency_id = ''
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
@@ -567,18 +569,13 @@ class DashboardMaidInformationCreate(AgencyLoginRequiredMixin,
             }
         )
 
-class DashboardAgencyEmployeeCreate(AgencyLoginRequiredMixin, 
-                                    GetAuthorityMixin, SuccessMessageMixin, 
-                                    CreateView):
+class DashboardAgencyEmployeeCreate(DashboardCreateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeForm
-    http_method_names = ['get','post']
     model = AgencyEmployee
     template_name = 'form/agency-employee-create-form.html'
     success_url = reverse_lazy('dashboard_account_list')
     success_message = 'Agency employee created'
-    authority = ''
-    agency_id = ''
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
