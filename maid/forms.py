@@ -75,10 +75,35 @@ class MaidForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.agency_id = kwargs.pop('agency_id')
+        self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
-
         self.FIELD_MAXLENGTH = 20
-
+        if self.form_type == 'update':
+            if (
+                self.instance.passport_number and 
+                self.instance.passport_number!=b''
+            ):
+                try:
+                    plaintext = decrypt_string(
+                        self.instance.passport_number, 
+                        settings.ENCRYPTION_KEY, 
+                        self.instance.nonce, 
+                        self.instance.tag
+                    )
+                    self.initial.update(
+                        {
+                            'passport_number': plaintext
+                        }
+                    )
+                    
+                except (ValueError, KeyError):
+                    print("Incorrect decryption")
+                    self.initial.update(
+                        {
+                            'passport_number': ''
+                        }
+                    )
+                
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(

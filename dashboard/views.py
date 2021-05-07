@@ -556,8 +556,7 @@ class DashboardMaidInformationCreate(DashboardCreateView):
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'agency_id': self.agency_id,
-            # 'authority': self.authority,
-            # 'form_type': 'create'
+            'form_type': 'create'
         })
         return kwargs
 
@@ -795,6 +794,7 @@ class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin,
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'agency_id': self.agency_id,
+            'form_type': 'update'
         })
         return kwargs
 
