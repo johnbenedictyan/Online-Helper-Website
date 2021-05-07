@@ -30,6 +30,7 @@ from .constants import (
     ResidentialStatusFullChoices,
     ResidentialStatusPartialChoices,
     MaritalStatusChoices,
+    HouseholdIdTypeChoices,
 )
 
 # Utiliy Classes and Functions
@@ -66,7 +67,7 @@ class Employer(models.Model):
         ('SPOUSE', _("Employer with Spouse")),
         ('SPONS1', _("Employer with 1 Sponsor")),
         ('SPONS2', _("Employer with 2 Sponsors")),
-        ('JOINT', _("Joint Income")),
+        ('JNT_AP', _("Employer with Joint Applicant")),
     ]
     id = models.UUIDField(
         primary_key=True,
@@ -79,17 +80,6 @@ class Employer(models.Model):
         max_length=6,
         choices=APPLICANT_TYPE_CHOICES,
         default=APPLICANT_TYPE_CHOICES[0][0],
-    )
-    household_details_required = models.BooleanField(
-        verbose_name=_('Applicable for subsidised levy?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            If yes, please fill in household details section at bottom of form
-        '''),
     )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
@@ -338,15 +328,6 @@ class Employer(models.Model):
         null=True,
     )
 
-    # Income Details
-    monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Employer monthly income / combined income with spouse"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
-    )
-
     def get_employer_spouse_nric_full(self):
         return decrypt_string(
             self.spouse_nric_num,
@@ -370,6 +351,61 @@ class Employer(models.Model):
             self.spouse_passport_nonce,
             self.spouse_passport_tag,
         )
+
+    # Income Details
+    monthly_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Employer monthly income / combined income with spouse"),
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
+        blank=True,
+        null=True,
+    )
+
+    # Household Details
+    household_details_required = models.BooleanField(
+        verbose_name=_('Applicable for subsidised levy?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+        help_text=_('''
+            If yes, please fill in household details section
+        '''),
+    )
+    household_name = models.CharField(
+        verbose_name=_("Household member's name"),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    household_date_of_birth = models.DateField(
+        verbose_name=_("Household member's date of birth"),
+        blank=True,
+        null=True,
+    )
+    household_id_type = models.CharField(
+        verbose_name=_("Household member ID type"),
+        max_length=8,
+        choices=HouseholdIdTypeChoices.choices,
+        # default=HouseholdIdTypeChoices.NRIC,
+        blank=True,
+        null=True,
+    )
+    household_id_num = models.CharField(
+        verbose_name=_("Household member's ID number"),
+        max_length=20,
+        blank=True,
+        null=True,
+    )
+    household_relationship = models.CharField(
+        verbose_name=_("Household member's relationship with Employer"),
+        max_length=30,
+        choices=RelationshipChoices.choices,
+        # default=RelationshipChoices.DAUGHTER,
+        blank=True,
+        null=True,
+    )
 
 ## Sponsors
 class EmployerSponsor(models.Model):

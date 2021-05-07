@@ -268,6 +268,68 @@ class EmployerForm(forms.ModelForm):
                 id='spouse-section',
             ),
 
+            # Income Details
+            Row(
+                Column(
+                    HTML(
+                        """
+                        <h5 class="my-3">Income Details</h5>
+                    """),
+                    Row(
+                        Column(
+                            'monthly_income',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row'
+                    ),
+                ),
+                id='household-section',
+            ),
+
+            # Household Details
+            Row(
+                Column(
+                    HTML(
+                        """
+                        <h5 class="my-3">Household Details</h5>
+                    """),
+                    Row(
+                        Column(
+                            'household_details_required',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'household_name',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'household_id_type',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'household_id_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            'household_date_of_birth',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'household_relationship',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                ),
+                id='household-section',
+            ),
+
             # Submit
             Row(
                 Column(

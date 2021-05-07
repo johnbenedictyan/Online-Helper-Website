@@ -63,3 +63,7 @@ class MaritalStatusChoices(models.TextChoices):
     DIVORCED = 'DIVORCED', _('Divorced')
     WIDOWED = 'WIDOWED', _('Widowed')
     SEPARATED = 'SEPARATED', _('Separated')
+
+class HouseholdIdTypeChoices(models.TextChoices):
+    NRIC = 'NRIC', _('NRIC')
+    BC = 'BC', _('Birth Certificate')
