@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
     # 3rd party packages
     # 'captcha',
+    'extra_views',
     'crispy_forms',
     'django_filters',
     'django_otp',

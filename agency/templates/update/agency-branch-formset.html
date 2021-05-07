@@ -12,7 +12,9 @@
     {% endif %}
     <div class="container">
         <form method="post" enctype="multipart/form-data">
-            {% crispy formset helper %}
+            {% for formset in inlines %}
+                {% crispy formset %}
+            {% endfor %}
         </form>
     </div>
 {% endblock agency_section %}
