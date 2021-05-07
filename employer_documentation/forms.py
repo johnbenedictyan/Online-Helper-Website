@@ -196,13 +196,6 @@ class EmployerForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    'employer_marriage_sg_registered',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
 
             # Spouse's Information
             Row(
@@ -260,6 +253,10 @@ class EmployerForm(forms.ModelForm):
                     Row(
                         Column(
                             'spouse_passport_date',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'employer_marriage_sg_registered',
                             css_class='form-group col-md-6'
                         ),
                         css_class='form-row'
@@ -387,10 +384,10 @@ class EmployerForm(forms.ModelForm):
 
         try:
             # Check if employer_email exists in database
-            employer_queryset = Employer.objects.filter(
+            employer_queryset = models.Employer.objects.filter(
                 employer_email=cleaned_field
             )
-        except Employer.DoesNotExist:
+        except models.Employer.DoesNotExist:
             # If no entries for employer_email, then no further checks
             return cleaned_field
         else:
@@ -406,10 +403,10 @@ class EmployerForm(forms.ModelForm):
 
         try:
             # Check if employer_mobile_number exists in database
-            employer_queryset = Employer.objects.filter(
+            employer_queryset = models.Employer.objects.filter(
                 employer_mobile_number=cleaned_field
             )
-        except Employer.DoesNotExist:
+        except models.Employer.DoesNotExist:
             # If no entries for employer_mobile_number, then no further checks
             return cleaned_field
         else:
@@ -1907,7 +1904,7 @@ class EmployerDocForm(forms.ModelForm):
             return cleaned_field
 
     def clean(self):
-        window_exterior_location_verbose_name = EmployerDoc._meta.get_field('window_exterior_location').verbose_name
+        window_exterior_location_verbose_name = models.EmployerDoc._meta.get_field('window_exterior_location').verbose_name
         window_exterior_error_msg = window_exterior_location_verbose_name + ' field cannot be blank'
         if self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('window_exterior_location'):
             self.add_error(
@@ -1921,7 +1918,7 @@ class EmployerDocForm(forms.ModelForm):
                 )
             )
         
-        grilles_installed_verbose_name = EmployerDoc._meta.get_field('grilles_installed_require_cleaning').verbose_name
+        grilles_installed_verbose_name = models.EmployerDoc._meta.get_field('grilles_installed_require_cleaning').verbose_name
         grilles_installed_error_msg = grilles_installed_verbose_name + ' field cannot be blank'
         if self.cleaned_data.get('window_exterior_location')=='OTHER' and self.cleaned_data.get('grilles_installed_require_cleaning')==None:
             self.add_error(
@@ -1935,7 +1932,7 @@ class EmployerDocForm(forms.ModelForm):
                 )
             )
         
-        adult_supervision_verbose_name = EmployerDoc._meta.get_field('adult_supervision').verbose_name
+        adult_supervision_verbose_name = models.EmployerDoc._meta.get_field('adult_supervision').verbose_name
         adult_supervision_error_msg = 'Adult supervision is required if grilles installed on windows are to be cleaned by FDW'
         if self.cleaned_data.get('grilles_installed_require_cleaning') and not self.cleaned_data.get('adult_supervision'):
             self.add_error(
@@ -1949,7 +1946,7 @@ class EmployerDocForm(forms.ModelForm):
                 )
             )
         
-        verifiy_employer_understands_verbose_name = EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
+        verifiy_employer_understands_verbose_name = models.EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
         verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
         if (
             (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1)
