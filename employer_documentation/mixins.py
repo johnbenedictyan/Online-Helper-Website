@@ -141,7 +141,11 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             # Assign to respective attribute
             if isinstance(self.object, Employer):
                 self.employer_obj = self.object
-            elif isinstance(self.object, EmployerDoc):
+            elif (
+                isinstance(self.object, EmployerDoc)
+                or isinstance(self.object, EmployerSponsor)
+                or isinstance(self.object, EmployerJointApplicant)
+            ):
                 self.employer_doc_obj = self.object
             elif (
                 isinstance(self.object, EmployerDocMaidStatus)
@@ -149,8 +153,6 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 or isinstance(self.object, JobOrder)
                 or isinstance(self.object, PdfArchive)
                 or isinstance(self.object, EmployerPaymentTransaction)
-                # or isinstance(self.object, EmployerSponsor)
-                # or isinstance(self.object, EmployerJointApplicant)
             ):
                 self.employer_subdoc_obj = self.object
 

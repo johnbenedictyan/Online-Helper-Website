@@ -550,35 +550,20 @@ class EmployerSponsorForm(forms.ModelForm):
                 Column(
                     HTML(
                         """
-                        <h5 class="my-3" id="id-doc-general">Sponsors</h5>
+                        <h5 class="my-3">Sponsors</h5>
                     """),
-                    Row(
-                        Column(
-                            'number_of_sponsors',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            PrependedText(
-                                'sponsor_monthly_income', '$',
-                                min='0', max='9999999',
-                            ),
-                            css_class='form-group col-md-6',
-                            id='sponsor_monthly_income',
-                        ),
-                        css_class='form-row',
-                    ),
 
                     HTML(
                         """
-                        <h5 class="my-3" id="id-doc-general">Sponsor 1's Information</h5>
+                        <h5 class="my-3">Sponsor 1's Information</h5>
                     """),
                     Row(
                         Column(
-                            'sponsor_worked_in_sg',
+                            'sponsor_1_relationship',
                             css_class='form-group col-md-6',
                         ),
                         Column(
-                            'sponsor_1_relationship',
+                            'sponsor_1_worked_in_sg',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
@@ -657,7 +642,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     # Sponsor 1 spouse
                     HTML(
                         """
-                        <h5 class="my-3" id="id-doc-general">Sponsor 1 Spouse's Information</h5>
+                        <h5 class="my-3">Sponsor 1 Spouse's Information</h5>
                     """),
                     Row(
                         Column(
@@ -738,13 +723,17 @@ class EmployerSponsorForm(forms.ModelForm):
                     # Sponsor 2
                     HTML(
                         """
-                        <h5 class="my-3" id="id-doc-general">Sponsor 2's Information</h5>
+                        <h5 class="my-3">Sponsor 2's Information</h5>
                     """),
                     Row(
                         Column(
                             'sponsor_2_relationship',
                             css_class='form-group col-md-6 sponsor-2',
                             hidden='true',
+                        ),
+                        Column(
+                            'sponsor_2_worked_in_sg',
+                            css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
@@ -834,7 +823,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     # Sponsor 2 spouse
                     HTML(
                         """
-                        <h5 class="my-3" id="id-doc-general">Sponsor 2 Spouse's Information</h5>
+                        <h5 class="my-3">Sponsor 2 Spouse's Information</h5>
                     """),
                     Row(
                         Column(
@@ -911,7 +900,24 @@ class EmployerSponsorForm(forms.ModelForm):
                         ),
                         css_class='form-row',
                     ),
-                    id='sponsors',
+
+                    # Income Details
+                    HTML(
+                        """
+                        <h5 class="my-3">Income Details</h5>
+                    """),
+                    Row(
+                        Column(
+                            PrependedText(
+                                'monthly_income', '$',
+                                min='0', max='9999999',
+                            ),
+                            css_class='form-group col-md-6',
+                            id='sponsor_monthly_income',
+                        ),
+                        css_class='form-row',
+                    ),
+                    # id='sponsors',
                 ),
                 id='sponsors-section',
             ),
@@ -1149,7 +1155,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     Row(
                         Column(
                             PrependedText(
-                                'joint_applicant_monthly_income', '$',
+                                'monthly_income', '$',
                                 min='0', max='9999999',
                             ),
                             css_class='form-group col-md-6',

@@ -414,36 +414,6 @@ class EmployerSponsor(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_sponsor_employer'
     )
-    number_of_sponsors = models.PositiveSmallIntegerField(
-        verbose_name=_("Number of sponsors"),
-        choices=[
-            (0, _("0 sponsors")),
-            (1, _("1 sponsor")),
-            (2, _("2 sponsors")),
-        ],
-        default=0,
-    )
-    monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Sponsor's monthly income or sponsors' combined monthly income"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
-    )
-    sponsor_worked_in_sg = models.BooleanField(
-        verbose_name=_('Sponsor(s) worked in SG for last 2 years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            Has either Sponsor 1 or Sponsor 2 (if applicable) worked in 
-            Singapore for the last 2 years?
-        '''),
-        blank=True,
-        null=True,
-    )
     
     # Sponsor 1 details
     sponsor_1_relationship = models.CharField(
@@ -451,59 +421,49 @@ class EmployerSponsor(models.Model):
         max_length=30,
         choices=RelationshipChoices.choices,
         default=RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True,
+    )
+    sponsor_1_worked_in_sg = models.BooleanField(
+        verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
     )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
         max_length=40,
-        blank=True,
-        null=True,
     )
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
         choices=GenderChoices.choices,
         default=GenderChoices.F,
-        blank=True,
-        null=True,
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
-        blank=True,
-        null=True,
     )
     sponsor_1_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 NRIC'),
         editable=True,
-        blank=True,
-        null=True,
     )
     sponsor_1_nric_nonce = models.BinaryField(
         editable=True,
-        blank=True,
-        null=True,
     )
     sponsor_1_nric_tag = models.BinaryField(
         editable=True,
-        blank=True,
-        null=True,
     )
     sponsor_1_nationality = models.CharField(
         verbose_name=_("Sponsor 1 nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True,
     )
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
         default=ResidentialStatusPartialChoices.SC,
-        blank=True,
-        null=True,
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -514,19 +474,13 @@ class EmployerSponsor(models.Model):
                 message=_('Please enter a valid contact number')
             )
         ],
-        blank=True,
-        null=True,
     )
     sponsor_1_email = models.EmailField(
         verbose_name=_('Sponsor 1 email address'),
-        blank=True,
-        null=True,
     )
     sponsor_1_address_1 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 1'),
         max_length=100,
-        blank=True,
-        null=True,
     )
     sponsor_1_address_2 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 2'),
@@ -537,17 +491,15 @@ class EmployerSponsor(models.Model):
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
         max_length=25,
-        blank=True,
-        null=True,
     )
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True,
     )
+
+    # Sponsor 1 spouse details
     sponsor_1_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Sponsor 1 marriage registered in SG?'),
         default=True,
@@ -561,8 +513,6 @@ class EmployerSponsor(models.Model):
         blank=True,
         null=True,
     )
-
-    # Sponsor 1 spouse details
     sponsor_1_spouse_name = models.CharField(
         verbose_name=_('Sponsor 1 spouse name'),
         max_length=40,
@@ -658,6 +608,16 @@ class EmployerSponsor(models.Model):
         max_length=30,
         choices=RelationshipChoices.choices,
         default=RelationshipChoices.DAUGHTER,
+        blank=True,
+        null=True,
+    )
+    sponsor_2_worked_in_sg = models.BooleanField(
+        verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
         blank=True,
         null=True,
     )
@@ -855,6 +815,15 @@ class EmployerSponsor(models.Model):
     )
     sponsor_2_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
+        blank=True,
+        null=True,
+    )
+
+    # Income Details
+    monthly_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Sponsor's monthly income or sponsors' combined monthly income"),
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
