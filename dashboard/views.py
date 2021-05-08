@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 # Imports from django
 from django.contrib import messages
 from django.http import JsonResponse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -13,6 +14,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
+from crispy_forms.layout import Button, Layout, Submit, Row, Column, Field, Hidden
 from agency.forms import (
     AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
 )
@@ -547,6 +549,29 @@ class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         helper = AgencyBranchFormSetHelper()
+        helper.add_input(
+            Hidden(
+                'submitFlag',
+                'False',
+                css_id="submitFlag"
+            )
+        )
+        helper.add_input(
+            Button(
+                "add",
+                "Add Outlet",
+                css_class="btn btn-outline-primary w-50 mb-2",
+                css_id="addOutletButton"
+            )
+        )
+        helper.add_input(
+            Submit(
+                "save",
+                "Save",
+                css_class="btn btn-primary w-50 mb-2",
+                css_id="submitButton"
+            )
+        )
         context.update({
             'helper': helper
         })
@@ -558,6 +583,18 @@ class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
         }
         return kwargs
     
+    def get_instance_object(self):
+        return Agency.objects.get(
+            pk=self.agency_id
+        )
+        
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+    
     def get_form(self, form_class=None):
         """Return an instance of the form to be used in this view."""
         if form_class is None:
@@ -566,7 +603,18 @@ class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
             form_kwargs=self.get_formset_form_kwargs(),
             **self.get_form_kwargs()
         )
-    
+        
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'dashboard_agency_outlet_details_update'
+                )
+            )
+        
 # Create Views
 class DashboardCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                           SuccessMessageMixin, CreateView):

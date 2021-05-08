@@ -5,13 +5,12 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
-from django.forms.models import inlineformset_factory, formset_factory
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML, Field
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
 from onlinemaid.constants import TrueFalseChoices
@@ -1415,31 +1414,20 @@ class AgencyBranchForm(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super().clean()
+        branch_name = cleaned_data.get('name')
         main_branch = cleaned_data.get("main_branch")
-        self.agency = Agency.objects.get(
-            pk=self.agency_id
+        current_main_branch = AgencyBranch.objects.get(
+            agency=self.agency,
+            main_branch=True
         )
-        branches = AgencyBranch.objects.filter(
-            agency=self.agency
-        )
-        main_branch_counter = 0
-        current_main_branch = None
-        for branch in branches:
-            if branch.main_branch == True:
-                current_main_branch = branch.name
-                main_branch_counter += 1
-
-        if main_branch_counter > 0 and main_branch == True:
-            if self.form_type == 'CREATE':
-                if current_main_branch:
-                    msg = _(f"""
-                        {current_main_branch} is already set as the main branch
-                    """)
-                else:
-                    msg = _('There can only be one main branch')
+        if current_main_branch:
+            if main_branch == True and branch_name != current_main_branch.name:
+                msg = _(f"""
+                    {current_main_branch} is already set as the main branch
+                """)
                 self.add_error('main_branch', msg)
 
-        elif main_branch_counter == 0 and main_branch == False:
+        elif main_branch == False:
             msg = _('You must have at least one main branch')
             self.add_error('main_branch', msg)
         return cleaned_data
@@ -1481,8 +1469,10 @@ class AgencyBranchForm(forms.ModelForm):
         return super().save(*args, **kwargs)
 
     def __init__(self, *args, **kwargs):
-        self.agency_id = kwargs.pop('agency_id', None)
-        self.form_type = kwargs.pop('form_type', None)
+        self.agency_id = kwargs.pop('agency_id')
+        self.agency = Agency.objects.get(
+            pk=self.agency_id
+        )
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(

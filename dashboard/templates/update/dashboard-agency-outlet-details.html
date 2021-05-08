@@ -5,17 +5,21 @@
     <div class="container-fluid" style="min-height: 75vh;">
         <form method="post" enctype="multipart/form-data">
             {% crispy form helper %}
-            <div class="row form-row">
-                <div class="col-12 form-group text-center">
-                    <button type="submit" class="btn btn-outline-primary w-50">Add Outlet</button>
-                </div>
-            </div>
-            <div class="row form-row">
-                <div class="col-12 form-group text-center">
-                    <button type="submit" class="btn btn-primary w-50">Submit</button>
-                </div>
-            </div>
         </form>
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $("#addOutletButton").on('click', function(e){
+            this.form.submit();
+        })
+        $("#submitButton").on('click', function(e){
+            e.preventDefault();
+            $("#submitFlag").val('True');
+            this.form.submit();
+        })
+    })
+</script>
+{% endblock js %}
