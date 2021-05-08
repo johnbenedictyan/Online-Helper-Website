@@ -119,10 +119,10 @@ class Agency(models.Model):
     def __str__(self):
         return self.name
 
-    def get_main_office_number(self):
+    def get_main_branch_number(self):
         return self.branches.get(main_branch=True).office_number
 
-    def get_main_office(self):
+    def get_main_branch(self):
         return self.branches.get(main_branch=True)
     
     def get_branches(self):

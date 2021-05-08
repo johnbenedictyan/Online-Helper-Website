@@ -6,11 +6,11 @@
         <p class="card-text text-muted mb-0">{{agency.license_number}}</p>
         <hr>
         <address>
-            {{ agency.get_main_office.address_1 }}<br/>
-            {{ agency.get_main_office.address_2 }}<br/>
-            Singapore {{ agency.get_main_office.postal_code }}
+            {{ agency.get_main_branch.address_1 }}<br/>
+            {{ agency.get_main_branch.address_2 }}<br/>
+            Singapore {{ agency.get_main_branch.postal_code }}
         </address>
-        <p class="card-text">{{agency.get_main_office_number|fcn}}</p>
+        <p class="card-text">{{agency.get_main_branch_number|fcn}}</p>
         <p class="card-text mb-0">{{agency.sales_email}}</p>
         <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
     </div>
