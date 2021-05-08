@@ -125,6 +125,9 @@ class Agency(models.Model):
     def get_main_office(self):
         return self.branches.get(main_branch=True)
     
+    def get_branches(self):
+        return self.branches.filter(main_branch=False)
+    
     def get_enquiries(self):
         return self.enquiries.all()
     
