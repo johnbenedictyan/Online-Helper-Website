@@ -1,0 +1,25 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid" style="min-height: 75vh;">
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form helper %}
+        </form>
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $("#addOutletButton").on('click', function(e){
+            this.form.submit();
+        })
+        $("#submitButton").on('click', function(e){
+            e.preventDefault();
+            $("#submitFlag").val('True');
+            this.form.submit();
+        })
+    })
+</script>
+{% endblock js %}

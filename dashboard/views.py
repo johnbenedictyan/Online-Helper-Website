@@ -357,7 +357,7 @@ class DashboardMaidLanguageSpokenFormView(DashboardMaidSubFormView):
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_fhpdr_form',
+            'dashboard_maid_fhpdr_update',
             kwargs={
                 'pk':self.maid_id
             }
@@ -433,7 +433,7 @@ class DashboardMaidFHPDRFormView(DashboardMaidSubFormView):
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_experience_form',
+            'dashboard_maid_experience_update',
             kwargs={
                 'pk':self.maid_id
             }
@@ -512,7 +512,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_other_remarks_form',
+            'dashboard_maid_other_remarks_update',
             kwargs={
                 'pk':self.maid_id
             }
@@ -543,13 +543,20 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     form_class = MaidLoanTransactionFormSet
     http_method_names = ['get', 'post']
     success_url = reverse_lazy('dashboard_maid_list')
-    template_name = 'form/maid-create-form.html'
+    template_name = 'form/maid-formset.html'
+    pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
     success_message = 'Maid loan details updated'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        context.update({
+            'maid_id': self.maid_id
+        })
         helper = MaidLoanTransactionFormSetHelper()
         helper.add_input(
             Hidden(
@@ -611,7 +618,7 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'dashboard_maid_list'
+                    'dashboard_maid_loan_update'
                 )
             )
 
@@ -726,7 +733,7 @@ class DashboardMaidInformationCreate(DashboardCreateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_language_spoken_form',
+            'dashboard_maid_language_spoken_update',
             kwargs={
                 'pk':self.object.pk
             }
@@ -964,7 +971,7 @@ class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin,
 
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_language_spoken_form',
+            'dashboard_maid_language_spoken_update',
             kwargs={
                 'pk':self.object.pk
             }
