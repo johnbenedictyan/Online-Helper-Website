@@ -14,7 +14,9 @@ from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
 from agency.forms import (
-    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm,
+    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+)
+from agency.formsets import (
     AgencyBranchFormSetHelper, AgencyBranchFormSet
 )
 from agency.models import (
