@@ -178,28 +178,29 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
         })
         return kwargs
 
-class BranchInline(InlineFormSetFactory):
-    model = AgencyBranch
-    form_class = AgencyBranchForm
-    fields = '__all__'
-    # initial = [{'name': 'example1'}, {'name', 'example2'}]
-    # prefix = 'item-form'
-    factory_kwargs = {'extra': 1, 'max_num': None,
-                      'can_order': False, 'can_delete': False}
-    # formset_kwargs = {'auto_id': 'my_id_%s'}
+# class BranchInline(InlineFormSetFactory):
+#     model = AgencyBranch
+#     form_class = AgencyBranchForm
+#     fields = '__all__'
+#     # initial = [{'name': 'example1'}, {'name', 'example2'}]
+#     # prefix = 'item-form'
+#     factory_kwargs = {'extra': 1, 'max_num': None,
+#                       'can_order': False, 'can_delete': False}
+#     # formset_kwargs = {'auto_id': 'my_id_%s'}
     
 class AgencyBranchFormSetView(GetAuthorityMixin, UpdateWithInlinesView):
-    model = Agency
-    inlines = [BranchInline]
-    template_name = 'update/agency-branch-formset.html'
-    fields = '__all__'
-    authority = ''
-    agency_id = ''
+    pass
+#     model = Agency
+#     inlines = [BranchInline]
+#     template_name = 'update/agency-branch-formset.html'
+#     fields = '__all__'
+#     authority = ''
+#     agency_id = ''
     
-    def get_object(self, queryset=None):
-        return Agency.objects.get(
-            pk=self.agency_id
-        )
+#     def get_object(self, queryset=None):
+#         return Agency.objects.get(
+#             pk=self.agency_id
+#         )
         
 #     model = Agency
 #     template_name = 'update/agency-branch-formset.html'

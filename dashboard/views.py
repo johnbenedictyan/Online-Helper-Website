@@ -14,7 +14,8 @@ from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
 from agency.forms import (
-    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm,
+    AgencyBranchFormSetHelper, AgencyBranchFormSet
 )
 from agency.models import (
     Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
@@ -293,9 +294,8 @@ class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin,
     def form_valid(self, form):
         pass
     
-class DashboardMaidSubFormView(AgencyLoginRequiredMixin, 
-                                     GetAuthorityMixin, SuccessMessageMixin,
-                                     FormView):
+class DashboardMaidSubFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                               SuccessMessageMixin, FormView):
     http_method_names = ['get','post']
     pk_url_kwarg = 'pk'
     template_name = 'form/maid-create-form.html'
@@ -531,6 +531,40 @@ class DashboardMaidOtherRemarksFormView(DashboardMaidSubFormView):
             'dashboard_maid_list',
         )
 
+class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
+                                           GetAuthorityMixin, 
+                                           SuccessMessageMixin, FormView):
+    form_class = AgencyBranchFormSet
+    http_method_names = ['get', 'post']
+    success_url = reverse_lazy('dashboard_agency_opening_hours_update')
+    template_name = 'update/dashboard-agency-outlet-details.html'
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        helper = AgencyBranchFormSetHelper()
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        kwargs = {
+            'agency_id': self.agency_id
+        }
+        return kwargs
+    
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+    
 # Create Views
 class DashboardCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                           SuccessMessageMixin, CreateView):
@@ -767,7 +801,7 @@ class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin,
         return AgencyOpeningHours.objects.get(
             agency__pk = self.agency_id
     )
-        
+
 class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin, 
                                        GetAuthorityMixin, SuccessMessageMixin,
                                        UpdateView):

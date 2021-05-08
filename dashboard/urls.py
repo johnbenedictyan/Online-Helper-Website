@@ -20,7 +20,8 @@ from .views import DashboardAgencyDetail, DashboardMaidDetail
 from .views import (
     DashboardMaidCreation, DashboardAgencyUpdate,
     DashboardMaidLanguageSpokenFormView, DashboardMaidFHPDRFormView,
-    DashboardMaidExperienceFormView, DashboardMaidOtherRemarksFormView
+    DashboardMaidExperienceFormView, DashboardMaidOtherRemarksFormView,
+    DashboardAgencyOutletDetailsFormView
 )
 ## Create Views
 from .views import (
@@ -151,6 +152,11 @@ urlpatterns = [
                 'agency-opening-hours',
                 DashboardAgencyOpeningHoursUpdate.as_view(),
                 name='dashboard_agency_opening_hours_update'
+            ),
+            path(
+                'agency-outlet-details',
+                DashboardAgencyOutletDetailsFormView.as_view(),
+                name='dashboard_agency_outlet_details_update'
             ),
             path(
                 'agency-employee/<int:pk>',
