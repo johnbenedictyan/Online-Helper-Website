@@ -1292,36 +1292,34 @@ class MaidLoanTransactionForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'amount',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'transaction_type',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'transaction_date',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'description',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
+                    Row(
+                        Column(
+                            Field(
+                                'DELETE'
+                            ),
+                            css_class='col-12 text-right'
+                        )
                     ),
-                    css_class='form-group col-12 text-center'
+                    Row(
+                        Column(
+                            'date',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'description',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'amount',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'remarks',
+                            css_class='col-md-6'
+                        )
+                    )
                 ),
-                css_class='form-row'
+                css_class='form-group'
             )
         )
 
