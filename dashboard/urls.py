@@ -111,36 +111,6 @@ urlpatterns = [
         ])
     ),
     path(
-        'maid/<int:pk>/',
-        include([
-            path(
-                'language-spoken',
-                DashboardMaidLanguageSpokenFormView.as_view(),
-                name='dashboard_maid_language_spoken_form'
-            ),
-            path(
-                'food-handling-dietary-restriction',
-                DashboardMaidFHPDRFormView.as_view(),
-                name='dashboard_maid_fhpdr_form'
-            ),
-            path(
-                'experience',
-                DashboardMaidExperienceFormView.as_view(),
-                name='dashboard_maid_experience_form'
-            ),
-            path(
-                'other-remarks',
-                DashboardMaidOtherRemarksFormView.as_view(),
-                name='dashboard_maid_other_remarks_form'
-            ),
-            path(
-                'loan',
-                DashboardMaidLoanFormView.as_view(),
-                name='dashboard_maid_loan_form'
-            )
-        ])
-    ),
-    path(
         'update/',
         include([
             path(
@@ -170,8 +140,38 @@ urlpatterns = [
             ),
             path(
                 'maid/<int:pk>/',
-                DashboardMaidInformationUpdate.as_view(),
-                name='dashboard_maid_information_update'
+                include([
+                    path(
+                        '',
+                        DashboardMaidInformationUpdate.as_view(),
+                        name='dashboard_maid_information_update'
+                    ),
+                    path(
+                        'language-spoken',
+                        DashboardMaidLanguageSpokenFormView.as_view(),
+                        name='dashboard_maid_language_spoken_update'
+                    ),
+                    path(
+                        'food-handling-dietary-restriction',
+                        DashboardMaidFHPDRFormView.as_view(),
+                        name='dashboard_maid_fhpdr_update'
+                    ),
+                    path(
+                        'experience',
+                        DashboardMaidExperienceFormView.as_view(),
+                        name='dashboard_maid_experience_update'
+                    ),
+                    path(
+                        'other-remarks',
+                        DashboardMaidOtherRemarksFormView.as_view(),
+                        name='dashboard_maid_other_remarks_update'
+                    ),
+                    path(
+                        'loan',
+                        DashboardMaidLoanFormView.as_view(),
+                        name='dashboard_maid_loan_update'
+                    )
+                ])
             )
         ])
     ),
