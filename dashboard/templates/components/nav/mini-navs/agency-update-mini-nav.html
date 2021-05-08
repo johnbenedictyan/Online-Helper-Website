@@ -15,14 +15,14 @@
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#agencyProfileGroup">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name != 'dashboard_agency_information_update' %}{% url 'dashboard_agency_information_update' %}{% endif %}#agencyProfileGroup">
                 <p class="m-1 pl-2">Profile</p>
             </a>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="#agencyServicesGroup">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name != 'dashboard_agency_information_update' %}{% url 'dashboard_agency_information_update' %}{% endif %}#agencyServicesGroup">
                 <p class="m-1 pl-2">Our Services</p>
             </a>
         </div>
