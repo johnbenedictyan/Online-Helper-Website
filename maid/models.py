@@ -24,7 +24,8 @@ from .constants import (
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
     MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices,
-    MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices
+    MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices,
+    MaidNationalityChoices
 )
 
 # Utiliy Classes and Functions
@@ -187,11 +188,11 @@ class Maid(models.Model):
     )
 
     country_of_origin = models.CharField(
-        verbose_name=_('Country of Origin'),
+        verbose_name=_('Nationality'),
         max_length=3,
         blank=False,
         null=True,
-        choices=MaidCountryOfOrigin.choices
+        choices=MaidNationalityChoices.choices
     )
     
     expected_salary = models.PositiveSmallIntegerField(
@@ -293,6 +294,12 @@ class Maid(models.Model):
         blank=False,
         choices=MaidEducationLevelChoices.choices,
         default=MaidEducationLevelChoices.HIGH_SCHOOL
+    )
+    
+    about_me = models.TextField(
+        verbose_name=_('About Me'),
+        max_length=350,
+        null=True
     )
 
     def __str__(self):

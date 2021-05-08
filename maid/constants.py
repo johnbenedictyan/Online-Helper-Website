@@ -272,12 +272,21 @@ class MaidCountryOfOrigin(models.TextChoices):
     SRI_LANKA   = 'LKA', _('Sri Lanka')
     OTHERS      = 'OTH', _('Others')
 
+class MaidNationalityChoices(models.TextChoices):
+    BANGLADESH  = 'BGD', _('Bangladeshi')
+    CAMBODIA    = 'KHM', _('Cambodian')
+    INDIA       = 'IND', _('Indian')
+    INDONESIA   = 'IDN', _('Indonesian')
+    MYANMAR	    = 'MMR', _('Myanma')
+    PHILIPPINES = 'PHL', _('Filipino')
+    SRI_LANKA   = 'LKA', _('Sri Lankan')
+    OTHERS      = 'OTH', _('Others')
+    
 class MaidLanguageChoices(models.TextChoices):
     ENGLISH     = 'ENG', _('English')
     BENGALI     = 'BEN', _('Bengali')
     BURMESE     = 'BUR', _('Burmese')
-    CHINESE     = 'CHI', _('Mandarin Chinese')
-    HINDI       = 'HIN', _('Hindi')
+    CHINESE     = 'CHI', _('Mandarin / Dialect')
     INDONESIAN  = 'IND', _('Bahasa Indonesia')
     KHMER       = 'KHM', _('Khmer')
     SINHALA     = 'SIN', _('Sinhala')
@@ -330,7 +339,6 @@ class MaidCareRemarksChoices(models.TextChoices):
         'Experience in own country, overseas and Singapore'
     )
     NO_EXP = 'NE', _('No experience, but willing to learn')
-    NOT_WILLING = 'NW', _('Not willing')
     OTHERS = 'OTH', _('Other remarks (Please specify)')
     
 class MaidGeneralHouseworkRemarksChoices(models.TextChoices):
