@@ -158,32 +158,32 @@ class DocListView(
 
         return queryset
 
-# class EmployerDocListView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     ListView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'employer_pk'
-#     ordering = ['-agreement_date']
+class EmployerDocListView(
+    CheckAgencyEmployeePermissionsMixin,
+    ListView
+):
+    model = models.EmployerDoc
+    pk_url_kwarg = 'employer_pk'
+    ordering = ['-agreement_date']
 
-#     def get_object(self, *args, **kwargs):
-#         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+    def get_object(self, *args, **kwargs):
+        return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
-#     def get_queryset(self):
-#         return super().get_queryset().filter(employer=self.kwargs.get(
-#             self.pk_url_kwarg))
+    def get_queryset(self):
+        return super().get_queryset().filter(employer=self.kwargs.get(
+            self.pk_url_kwarg))
 
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object(*args, **kwargs)
-#         if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
-#             return super().get(request, *args, **kwargs)
-#         else:
-#             return HttpResponseRedirect(
-#                 reverse(
-#                     'employerdoc_create_route',
-#                     kwargs={'employer_pk': self.object.pk}
-#                 )
-#             )
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(*args, **kwargs)
+        if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(
+                reverse(
+                    'employerdoc_create_route',
+                    kwargs={'employer_pk': self.object.pk}
+                )
+            )
 
 # class EmployerPaymentTransactionListView(
 #     CheckAgencyEmployeePermissionsMixin,
@@ -216,13 +216,13 @@ class EmployerDetailView(
     model = models.Employer
     pk_url_kwarg = 'employer_pk'
 
-# class EmployerDocDetailView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     DetailView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'employerdoc_pk'
+class EmployerDocDetailView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    DetailView
+):
+    model = models.EmployerDoc
+    pk_url_kwarg = 'employerdoc_pk'
 
 # Create Views
 class EmployerCreateView(

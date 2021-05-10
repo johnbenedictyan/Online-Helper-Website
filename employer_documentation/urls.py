@@ -80,19 +80,19 @@ urlpatterns = [
                                 views.EmployerDocCreateView.as_view(),
                                 name='employerdoc_create_route'
                             ),
-                    #         path(
-                    #             'list/',
-                    #             views.EmployerDocListView.as_view(),
-                    #             name='employerdoc_list_route'
-                    #         ),
-                    #         path(
-                    #             '<uuid:employerdoc_pk>/',
-                    #             include([
-                    #                 path(
-                    #                     'detail/',
-                    #                     views.EmployerDocDetailView.as_view(),
-                    #                     name='employerdoc_detail_route'
-                    #                 ),
+                            path(
+                                'list/',
+                                views.EmployerDocListView.as_view(),
+                                name='employerdoc_list_route'
+                            ),
+                            path(
+                                '<uuid:employerdoc_pk>/',
+                                include([
+                                    path(
+                                        'detail/',
+                                        views.EmployerDocDetailView.as_view(),
+                                        name='employerdoc_detail_route'
+                                    ),
                     #                 path(
                     #                     'update/',
                     #                     views.EmployerDocUpdateView.as_view(),
@@ -500,8 +500,8 @@ urlpatterns = [
                     #                     ),
                     #                     name='pdf_agency_joint_applicants'
                     #                 ),
-                    #             ]),
-                    #         ),
+                                ]),
+                            ),
                         ]),
                     ),
                 ]),

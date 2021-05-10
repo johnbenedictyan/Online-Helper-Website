@@ -12,6 +12,7 @@
         </a>
     </div>
 </div>
+{% comment %}
 <div class="row">
     <div class="col px-0">
         <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">
@@ -54,3 +55,4 @@
         </a>
     </div>
 </div>
+{% endcomment %}
