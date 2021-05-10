@@ -1,23 +1,13 @@
 from django.contrib import admin
-from .models import (
-    Employer,
-    EmployerDoc,
-    EmployerDocSig,
-    EmployerDocMaidStatus,
-    EmployerPaymentTransaction,
-    # EmployerSponsor,
-    # EmployerJointApplicant,
-    JobOrder,
-    PdfArchive,
-)
+from . import models
 
 # Register your models here.
-admin.site.register(Employer)
-admin.site.register(EmployerDoc)
-admin.site.register(EmployerDocSig)
-admin.site.register(EmployerDocMaidStatus)
-admin.site.register(EmployerPaymentTransaction)
-# admin.site.register(EmployerSponsor)
-# admin.site.register(EmployerJointApplicant)
-admin.site.register(JobOrder)
-admin.site.register(PdfArchive)
+admin.site.register(models.Employer)
+admin.site.register(models.EmployerDoc)
+admin.site.register(models.EmployerDocSig)
+admin.site.register(models.EmployerDocMaidStatus)
+admin.site.register(models.EmployerPaymentTransaction)
+admin.site.register(models.EmployerSponsor)
+admin.site.register(models.EmployerJointApplicant)
+admin.site.register(models.JobOrder)
+admin.site.register(models.PdfArchive)
