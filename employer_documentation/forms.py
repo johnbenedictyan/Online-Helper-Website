@@ -493,54 +493,15 @@ class EmployerSponsorForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        # # Sponsors
-        # if self.instance.sponsor_1_nric and self.instance.sponsor_1_nric!=b'':
-        #     plaintext = self.instance.get_sponsor_1_nric_full()
-        #     self.initial.update({'sponsor_1_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_nric_num': ''})
-
-        # if self.instance.sponsor_2_nric and self.instance.sponsor_2_nric!=b'':
-        #     plaintext = self.instance.get_sponsor_2_nric_full()
-        #     self.initial.update({'sponsor_2_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_nric_num': ''})
-
-        # if self.instance.sponsor_1_nric_spouse and self.instance.sponsor_1_nric_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_1_nric_spouse_full()
-        #     self.initial.update({'sponsor_1_spouse_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_spouse_nric_num': ''})
-
-        # if self.instance.sponsor_1_fin_spouse and self.instance.sponsor_1_fin_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_1_fin_spouse_full()
-        #     self.initial.update({'sponsor_1_spouse_fin_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_spouse_fin_num': ''})
-
-        # if self.instance.sponsor_1_passport_spouse and self.instance.sponsor_1_passport_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_1_passport_spouse_full()
-        #     self.initial.update({'sponsor_1_spouse_passport_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_1_spouse_passport_num': ''})
-
-        # if self.instance.sponsor_2_nric_spouse and self.instance.sponsor_2_nric_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_2_nric_spouse_full()
-        #     self.initial.update({'sponsor_2_spouse_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_spouse_nric_num': ''})
-
-        # if self.instance.sponsor_2_fin_spouse and self.instance.sponsor_2_fin_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_2_fin_spouse_full()
-        #     self.initial.update({'sponsor_2_spouse_fin_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_spouse_fin_num': ''})
-
-        # if self.instance.sponsor_2_passport_spouse and self.instance.sponsor_2_passport_spouse!=b'':
-        #     plaintext = self.instance.get_sponsor_2_passport_spouse_full()
-        #     self.initial.update({'sponsor_2_spouse_passport_num': plaintext})
-        # else:
-        #     self.initial.update({'sponsor_2_spouse_passport_num': ''})
+        self.initial.update({'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full()})
+        self.initial.update({'sponsor_1_spouse_nric_num': self.instance.get_sponsor_1_spouse_nric_full()})
+        self.initial.update({'sponsor_1_spouse_fin_num': self.instance.get_sponsor_1_spouse_fin_full()})
+        self.initial.update({'sponsor_1_spouse_passport_num': self.instance.get_sponsor_1_spouse_passport_full()})
+        
+        self.initial.update({'sponsor_2_nric_num': self.instance.get_sponsor_2_nric_full()})
+        self.initial.update({'sponsor_2_spouse_nric_num': self.instance.get_sponsor_2_spouse_nric_full()})
+        self.initial.update({'sponsor_2_spouse_fin_num': self.instance.get_sponsor_2_spouse_fin_full()})
+        self.initial.update({'sponsor_2_spouse_passport_num': self.instance.get_sponsor_2_spouse_passport_full()})
         
         self.helper = FormHelper()
         self.helper.form_class = 'employer-doc-form'
