@@ -118,12 +118,12 @@ class Maid(models.Model):
         blank=False
     )
     
-    remarks = models.CharField(
-        verbose_name=_('Remarks'),
-        max_length=255,
-        null=True,
-        blank=True
-    )
+    # remarks = models.CharField(
+    #     verbose_name=_('Remarks'),
+    #     max_length=255,
+    #     null=True,
+    #     blank=True
+    # )
     
     languages = models.ManyToManyField(
         MaidLanguage

@@ -20,7 +20,7 @@ from .views import DashboardAgencyDetail, DashboardMaidDetail
 from .views import (
     DashboardMaidCreation, DashboardAgencyUpdate,
     DashboardMaidLanguageSpokenFormView, DashboardMaidFHPDRFormView,
-    DashboardMaidExperienceFormView, DashboardMaidOtherRemarksFormView,
+    DashboardMaidExperienceFormView, DashboardMaidAboutMeFormView,
     DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
     DashboardMaidEmploymentHistoryFormView
 )
@@ -164,7 +164,7 @@ urlpatterns = [
                     ),
                     path(
                         'other-remarks',
-                        DashboardMaidOtherRemarksFormView.as_view(),
+                        DashboardMaidAboutMeFormView.as_view(),
                         name='dashboard_maid_other_remarks_update'
                     ),
                     path(

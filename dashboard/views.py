@@ -32,7 +32,7 @@ from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
     MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
     MaidFoodHandlingPreferencesDietaryRestrictionsForm, MaidExperienceForm,
-    MaidOtherRemarksForm, MaidEmploymentHistoryForm
+    MaidAboutMeForm, MaidEmploymentHistoryForm
 )
 from maid.formsets import (
     MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
@@ -519,9 +519,9 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             }
         )
 
-class DashboardMaidOtherRemarksFormView(DashboardMaidSubFormView):
-    context_object_name = 'maid_other_remarks'
-    form_class = MaidOtherRemarksForm
+class DashboardMaidAboutMeFormView(DashboardMaidSubFormView):
+    context_object_name = 'maid_about_me'
+    form_class = MaidAboutMeForm
     success_message = 'Maid created'
 
     def get_initial(self):

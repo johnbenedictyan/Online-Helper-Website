@@ -981,8 +981,8 @@ class MaidExperienceForm(forms.Form):
 
         return maid
         
-class MaidOtherRemarksForm(forms.Form):
-    remarks = forms.CharField(
+class MaidAboutMeForm(forms.Form):
+    about_me = forms.CharField(
         label=_(''),
         widget=forms.Textarea(attrs={
             'rows': '10',
@@ -1004,11 +1004,11 @@ class MaidOtherRemarksForm(forms.Form):
                     ),
                 ),
                 css_class='row',
-                css_id='maidOtherRemarksGroup'
+                css_id='maidAboutMeGroup'
             ),
             Row(
                 Column(
-                    'remarks',
+                    'about_me',
                     css_class='col-12'
                 ),
                 css_class='form-group'
@@ -1028,11 +1028,11 @@ class MaidOtherRemarksForm(forms.Form):
 
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
-        remarks = cleaned_data.get('remarks')
+        about_me = cleaned_data.get('about_me')
         maid = Maid.objects.get(
             pk=self.maid_id
         )
-        maid.update(remarks=remarks)
+        maid.update(about_me=about_me)
         return maid
 
 class MaidEmploymentHistoryForm(forms.ModelForm):
@@ -4630,7 +4630,7 @@ class MainMaidCreationForm(forms.ModelForm):
                     ),
                 ),
                 css_class='row',
-                css_id='maidOtherRemarksGroup'
+                css_id='maidAboutMeGroup'
             ),
             Row(
                 Column(
