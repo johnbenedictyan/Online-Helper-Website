@@ -16,7 +16,6 @@ from agency.mixins import AgencyOwnerRequiredMixin
 # Imports from within the app
 from .models import (
     Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
-    MaidEmploymentHistory
 )
 
 # Utiliy Classes and Functions
@@ -58,7 +57,7 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         'maid': Maid,
         'food_handling_preference': MaidFoodHandlingPreference,
         'dietary_restriction': MaidDietaryRestriction,
-        'employment_history': MaidEmploymentHistory
+        # 'employment_history': MaidEmploymentHistory
     }
     permission_denied_message = '''You are required to login using the specific
                                 Agency owner account to perform this action'''

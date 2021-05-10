@@ -46,7 +46,7 @@ from .forms import (
 from .models import (
     Maid, MaidInfantChildCare, 
     MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory,
+    MaidFoodHandlingPreference, MaidDietaryRestriction,
     MaidLoanTransaction
 )
 
@@ -288,19 +288,19 @@ class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     filter_set = MaidFilter
     paginate_by = settings.MAID_PAGINATE_BY
 
-class MaidEmploymentHistoryList(AgencyLoginRequiredMixin, ListView):
-    context_object_name = 'maid_employment_history_list'
-    http_method_names = ['get']
-    model = MaidEmploymentHistory
-    template_name = 'list/maid-employment-history-list.html'
+# class MaidEmploymentHistoryList(AgencyLoginRequiredMixin, ListView):
+#     context_object_name = 'maid_employment_history_list'
+#     http_method_names = ['get']
+#     model = MaidEmploymentHistory
+#     template_name = 'list/maid-employment-history-list.html'
 
-    def get_queryset(self):
-        return MaidEmploymentHistory.objects.filter(
-            maid__pk = self.kwargs['maid_id'],
-            maid__agency = Agency.objects.get(
-                pk = self.request.user.pk
-            )
-        )
+#     def get_queryset(self):
+#         return MaidEmploymentHistory.objects.filter(
+#             maid__pk = self.kwargs['maid_id'],
+#             maid__agency = Agency.objects.get(
+#                 pk = self.request.user.pk
+#             )
+#         )
 
 # Detail Views
 class MaidDetail(LoginRequiredMixin, DetailView):
@@ -593,22 +593,22 @@ class MaidDietaryRestrictionDelete(SpecificAgencyOwnerRequiredMixin,
     check_type = 'maid'
     success_message = 'Maid dietary restriction deleted'
 
-class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
-                                  SuccessMessageMixin, DeleteView):
-    context_object_name = 'maid_employment_history'
-    http_method_names = ['post']
-    model = MaidEmploymentHistory
-    success_url = reverse_lazy('')
-    check_type = 'maid'
-    success_message = 'Maid employment history deleted'
+# class MaidEmploymentHistoryDelete(SpecificAgencyOwnerRequiredMixin,
+#                                   SuccessMessageMixin, DeleteView):
+#     context_object_name = 'maid_employment_history'
+#     http_method_names = ['post']
+#     model = MaidEmploymentHistory
+#     success_url = reverse_lazy('')
+#     check_type = 'maid'
+#     success_message = 'Maid employment history deleted'
 
-    def get_object(self, queryset=None):
-        return MaidEmploymentHistory.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            ),
-            maid__agency = self.request.user.agency_owner.agency
-        )
+#     def get_object(self, queryset=None):
+#         return MaidEmploymentHistory.objects.get(
+#             pk = self.kwargs.get(
+#                 self.pk_url_kwarg
+#             ),
+#             maid__agency = self.request.user.agency_owner.agency
+#         )
 
 # Generic Views
 class MaidProfileView(View):

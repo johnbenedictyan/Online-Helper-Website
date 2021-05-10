@@ -30,7 +30,7 @@ from .constants import (
 from .models import (
     Maid, MaidLanguage, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
-    MaidDietaryRestriction, MaidEmploymentHistory, MaidLoanTransaction,
+    MaidDietaryRestriction, MaidLoanTransaction,
     MaidFoodHandlingPreference, MaidDietaryRestriction
 )
 from agency.models import Agency
@@ -1229,13 +1229,13 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
             )
         )
 
-# MaidEmploymentHistoryFormSet = inlineformset_factory(
+# FormSet = inlineformset_factory(
 #     parent_model = Maid,
-#     model = MaidEmploymentHistory,
+#     model = ,
 #     fields = ['country','start_date','end_date','work_duties',]
 # )
 
-# class MaidEmploymentHistoryFormSetHelper(FormHelper):
+# class FormSetHelper(FormHelper):
 #     def __init__(self, *args, **kwargs):
 #         super().__init__(*args, **kwargs)
 #         self.form_method = 'post'
