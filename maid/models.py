@@ -398,39 +398,53 @@ class MaidDietaryRestriction(models.Model):
         default=MaidDietaryRestrictionChoices.PORK
     )
 
-# class MaidEmploymentHistory(models.Model):
-#     class MaidEmploymentCountry(models.TextChoices):
-#         # https://en.wikipedia.org/wiki/ISO_3166-1
-#         SINGAPORE = 'SGP', _('Singapore')
-#         HONG_KONG = 'HKG', _('Hong Kong')
-#         MALAYSIA = 'MYS', _('Malaysia')
+class MaidEmploymentHistory(models.Model):
+    class MaidEmploymentCountry(models.TextChoices):
+        # https://en.wikipedia.org/wiki/ISO_3166-1
+        SINGAPORE = 'SGP', _('Singapore')
+        HONG_KONG = 'HKG', _('Hong Kong')
+        MALAYSIA = 'MYS', _('Malaysia')
 
-#     maid = models.ForeignKey(
-#         Maid,
-#         on_delete=models.CASCADE,
-#         related_name='employment_history'
-#     )
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='employment_history'
+    )
 
-#     start_date = models.DateField(
-#         verbose_name="Past employment's start date"
-#     )
+    start_date = models.DateField(
+        verbose_name="Past employment's start date"
+    )
 
-#     end_date = models.DateField(
-#         verbose_name="Past employment's end date"
-#     )
+    end_date = models.DateField(
+        verbose_name="Past employment's end date"
+    )
 
-#     country = models.CharField(
-#         verbose_name=_("Country of employment"),
-#         max_length=3,
-#         blank=False,
-#         choices=MaidEmploymentCountry.choices
-#     )
+    country = models.CharField(
+        verbose_name=_("Country of employment"),
+        max_length=3,
+        blank=False,
+        choices=MaidEmploymentCountry.choices
+    )
 
-#     work_duties = models.ManyToManyField(
-#         MaidWorkDuty
-#     )
+    employer = models.CharField(
+        verbose_name=_('Employer'),
+        max_length=255,
+        blank=False
+    )
 
-#     def work_duration(self):
+    work_duties = models.CharField(
+        verbose_name=_('Work Duties'),
+        max_length=150,
+        blank=False
+    )
+
+    reason_for_leaving = models.CharField(
+        verbose_name=_('Reason for leaving'),
+        max_length=100,
+        blank=False
+    )
+
+    def work_duration(self):
         # duration = self.end_date - self.start_date
         # return humanise_time_duration(duration)
 
