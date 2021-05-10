@@ -21,7 +21,8 @@ from .views import (
     DashboardMaidCreation, DashboardAgencyUpdate,
     DashboardMaidLanguageSpokenFormView, DashboardMaidFHPDRFormView,
     DashboardMaidExperienceFormView, DashboardMaidOtherRemarksFormView,
-    DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView
+    DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
+    DashboardMaidEmploymentHistoryFormView
 )
 ## Create Views
 from .views import (
@@ -165,6 +166,11 @@ urlpatterns = [
                         'other-remarks',
                         DashboardMaidOtherRemarksFormView.as_view(),
                         name='dashboard_maid_other_remarks_update'
+                    ),
+                    path(
+                        'employment-history',
+                        DashboardMaidEmploymentHistoryFormView.as_view(),
+                        name='dashboard_maid_employment_history_update'
                     ),
                     path(
                         'loan',

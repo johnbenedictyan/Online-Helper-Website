@@ -548,13 +548,11 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
+    maid_id = ''
     success_message = 'Maid loan details updated'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
         context.update({
             'maid_id': self.maid_id
         })
@@ -588,20 +586,25 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return context
     
     def get_formset_form_kwargs(self):
-        kwargs = {}
+        kwargs = {
+            'maid_id': self.maid_id
+        }
         return kwargs
-    
-    # def get_instance_object(self):
-    #     return Agency.objects.get(
-    #         pk=self.agency_id
-    #     )
+
+    def get_instance_object(self):
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        return Maid.objects.get(
+            pk=self.maid_id
+        )
         
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs.update({
-    #         'instance': self.get_instance_object()
-    #     })
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
     
     def get_form(self, form_class=None):
         """Return an instance of the form to be used in this view."""
@@ -633,6 +636,7 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
     pk_url_kwarg = 'pk'
     authority = ''
     agency_id = ''
+    maid_id = ''
     success_message = 'Maid employment history updated'
     
     def get_context_data(self, **kwargs):
@@ -643,7 +647,7 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
         context.update({
             'maid_id': self.maid_id
         })
-        helper = MaidLoanTransactionFormSetHelper()
+        helper = MaidEmploymentHistoryFormSetHelper()
         helper.add_input(
             Hidden(
                 'submitFlag',
@@ -673,21 +677,27 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
         return context
     
     def get_formset_form_kwargs(self):
-        kwargs = {}
+        kwargs = {
+            'maid_id': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        }
         return kwargs
     
-    # def get_instance_object(self):
-    #     return Agency.objects.get(
-    #         pk=self.agency_id
-    #     )
+    def get_instance_object(self):
+        return Maid.objects.get(
+            pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
         
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs.update({
-    #         'instance': self.get_instance_object()
-    #     })
-    #     return kwargs
-    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+
     def get_form(self, form_class=None):
         """Return an instance of the form to be used in this view."""
         if form_class is None:
