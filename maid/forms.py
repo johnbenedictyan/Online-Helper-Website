@@ -31,7 +31,8 @@ from .models import (
     Maid, MaidLanguage, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
     MaidDietaryRestriction, MaidLoanTransaction,
-    MaidFoodHandlingPreference, MaidDietaryRestriction
+    MaidFoodHandlingPreference, MaidDietaryRestriction,
+    MaidEmploymentHistory
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -1033,6 +1034,103 @@ class MaidOtherRemarksForm(forms.Form):
         )
         maid.update(remarks=remarks)
         return maid
+
+class MaidEmploymentHistoryForm(forms.ModelForm):
+    class Meta:
+        model = MaidEmploymentHistory
+        exclude = ['maid']
+        widgets = {
+            'work_duties': forms.Textarea(attrs={
+                'rows': '4',
+                'cols': '100',
+                'maxlength': '150'
+            }),
+            'reason_for_leaving': forms.Textarea(attrs={
+                'rows': '4',
+                'cols': '100',
+                'maxlength': '100'
+            })
+        }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        self.instance.maid = self.maid
+        return super().save(*args, **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        self.maid_id = kwargs.pop('maid_id')
+        self.maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary">
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'start_date'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'end_date'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'work_duties'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employer'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'country'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'reason_for_leaving'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
 
 # class MaidUpdateForm(forms.ModelForm):
 #     class Meta:

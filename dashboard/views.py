@@ -32,10 +32,11 @@ from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
     MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
     MaidFoodHandlingPreferencesDietaryRestrictionsForm, MaidExperienceForm,
-    MaidOtherRemarksForm
+    MaidOtherRemarksForm, MaidEmploymentHistoryForm
 )
 from maid.formsets import (
-    MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper
+    MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
+    MaidEmploymentHistoryFormSet, MaidEmploymentHistoryFormSetHelper
 )
 from maid.mixins import FDWLimitMixin
 from maid.models import (
@@ -622,6 +623,91 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
                 )
             )
 
+class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin, 
+                                             GetAuthorityMixin, 
+                                             SuccessMessageMixin, FormView):
+    form_class = MaidEmploymentHistoryFormSet
+    http_method_names = ['get', 'post']
+    success_url = reverse_lazy('dashboard_maid_list')
+    template_name = 'form/maid-formset.html'
+    pk_url_kwarg = 'pk'
+    authority = ''
+    agency_id = ''
+    success_message = 'Maid employment history updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        context.update({
+            'maid_id': self.maid_id
+        })
+        helper = MaidLoanTransactionFormSetHelper()
+        helper.add_input(
+            Hidden(
+                'submitFlag',
+                'False',
+                css_id="submitFlag"
+            )
+        )
+        helper.add_input(
+            Button(
+                "add",
+                "Add Employment History",
+                css_class="btn btn-outline-primary w-50 mb-2",
+                css_id="addButton"
+            )
+        )
+        helper.add_input(
+            Submit(
+                "save",
+                "Save",
+                css_class="btn btn-primary w-50 mb-2",
+                css_id="submitButton"
+            )
+        )
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        kwargs = {}
+        return kwargs
+    
+    # def get_instance_object(self):
+    #     return Agency.objects.get(
+    #         pk=self.agency_id
+    #     )
+        
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs.update({
+    #         'instance': self.get_instance_object()
+    #     })
+    #     return kwargs
+    
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+        
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'dashboard_maid_other_remarks_update'
+                )
+            )
+
 class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
                                            GetAuthorityMixin, 
                                            SuccessMessageMixin, FormView):
@@ -648,7 +734,7 @@ class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
                 "add",
                 "Add Outlet",
                 css_class="btn btn-outline-primary w-50 mb-2",
-                css_id="addOutletButton"
+                css_id="addButton"
             )
         )
         helper.add_input(
