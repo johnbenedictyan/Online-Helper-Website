@@ -62,11 +62,11 @@ urlpatterns = [
                         views.EmployerSponsorUpdateView.as_view(),
                         name='employer_sponsor_update_route'
                     ),
-                    # path(
-                    #     'joint-applicants/create/',
-                    #     views.EmployerDocJointApplicantCreateView.as_view(),
-                    #     name='employerdoc_joint_applicants_create_route'
-                    # ),
+                    path(
+                        'joint-applicants/create/',
+                        views.EmployerJointApplicantCreateView.as_view(),
+                        name='employer_joint_applicants_create_route'
+                    ),
                     # path(
                     #     'joint-applicants/<int:employersubdoc_pk>/update/',
                     #     views.EmployerDocJointApplicantUpdateView.as_view(),

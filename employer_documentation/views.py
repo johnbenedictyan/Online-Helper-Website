@@ -274,36 +274,32 @@ class EmployerSponsorCreateView(
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
-# class EmployerDocJointApplicantCreateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     CreateView
-# ):
-#     model = models.EmployerDocJointApplicant
-#     form_class = EmployerDocJointApplicantForm
-#     pk_url_kwarg = 'employerdoc_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
+class EmployerJointApplicantCreateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CreateView
+):
+    model = models.EmployerJointApplicant
+    form_class = forms.EmployerJointApplicantForm
+    pk_url_kwarg = 'employer_pk'
+    template_name = 'employer_documentation/crispy_form.html'
 
-#     def get_object(self, *args, **kwargs):
-#         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+    def get_object(self, *args, **kwargs):
+        return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
-#     def form_valid(self, form):
-#         form.instance.employer_doc = models.EmployerDoc.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
+    def form_valid(self, form):
+        form.instance.employer = models.Employer.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
-#     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
-#             'employer_pk': self.object.employer_doc.employer.pk,
-#             'employerdoc_pk': self.object.employer_doc.pk,
-#         })
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
 
 class EmployerDocCreateView(
     CheckAgencyEmployeePermissionsMixin,
