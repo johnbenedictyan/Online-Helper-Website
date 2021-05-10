@@ -553,352 +553,343 @@ class EmployerSponsorForm(forms.ModelForm):
                         <h5 class="my-3">Sponsors</h5>
                     """),
 
-                    HTML(
-                        """
-                        <h5 class="my-3">Sponsor 1's Information</h5>
-                    """),
+
                     Row(
                         Column(
-                            'sponsor_1_relationship',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_worked_in_sg',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_name',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_gender',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            Field(
-                                'sponsor_1_date_of_birth',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 1 date of birth'
+                            HTML(
+                                """
+                                <h5 class="my-3">Sponsor 1's Information</h5>
+                            """),
+                            Row(
+                                Column(
+                                    'sponsor_1_relationship',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_worked_in_sg',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
                             ),
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_nric_num',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_nationality',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_residential_status',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_mobile_number',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_email',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_address_1',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_address_2',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_post_code',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'sponsor_1_marital_status',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    # Sponsor 1 spouse
-                    HTML(
-                        """
-                        <h5 class="my-3">Sponsor 1 Spouse's Information</h5>
-                    """),
-                    Row(
-                        Column(
-                            'sponsor_1_marriage_sg_registered',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_1_spouse_name',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_spouse_gender',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        Column(
-                            Field(
-                                'sponsor_1_spouse_date_of_birth',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 1 spouse date of birth'
+                            Row(
+                                Column(
+                                    'sponsor_1_name',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_gender',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
                             ),
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_spouse_nationality',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_1_spouse_residential_status',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_spouse_nric_num',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_1_spouse_fin_num',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_1_spouse_passport_num',
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
-                        ),
-                        Column(
-                            Field(
-                                'sponsor_1_spouse_passport_date',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 1 spouse passport expiry date',
+                            Row(
+                                Column(
+                                    Field(
+                                        'sponsor_1_date_of_birth',
+                                        type='text',
+                                        onfocus="(this.type='date')",
+                                        placeholder='Sponsor 1 date of birth'
+                                    ),
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_nric_num',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
                             ),
-                            css_class='form-group col-md-6 spouse-1',
-                            hidden='true',
+                            Row(
+                                Column(
+                                    'sponsor_1_nationality',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_residential_status',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
+                                    'sponsor_1_mobile_number',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_email',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
+                                    'sponsor_1_address_1',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_address_2',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
+                                    'sponsor_1_post_code',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_marital_status',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
+                            ),
+                            # Sponsor 1 spouse
+                            Row(
+                                Column(
+                                    HTML(
+                                        """
+                                        <h5 class="my-3">Sponsor 1 Spouse's Information</h5>
+                                    """),
+                                    Row(
+                                        Column(
+                                            'sponsor_1_marriage_sg_registered',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        Column(
+                                            'sponsor_1_spouse_name',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_1_spouse_gender',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        Column(
+                                            Field(
+                                                'sponsor_1_spouse_date_of_birth',
+                                                type='text',
+                                                onfocus="(this.type='date')",
+                                                placeholder='Sponsor 1 spouse date of birth'
+                                            ),
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_1_spouse_nationality',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        Column(
+                                            'sponsor_1_spouse_residential_status',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_1_spouse_nric_num',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        Column(
+                                            'sponsor_1_spouse_fin_num',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_1_spouse_passport_num',
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        Column(
+                                            Field(
+                                                'sponsor_1_spouse_passport_date',
+                                                type='text',
+                                                onfocus="(this.type='date')",
+                                                placeholder='Sponsor 1 spouse passport expiry date',
+                                            ),
+                                            css_class='form-group col-md-6 spouse-1',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                ),
+                                id="sponsor_1_spouse",
+                                hidden='true',
+                            ),
                         ),
-                        css_class='form-row',
+                        id="sponsor_1",
                     ),
 
                     # Sponsor 2
-                    HTML(
-                        """
-                        <h5 class="my-3">Sponsor 2's Information</h5>
-                    """),
                     Row(
                         Column(
-                            'sponsor_2_relationship',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_worked_in_sg',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_name',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_gender',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            Field(
-                                'sponsor_2_date_of_birth',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 2 date of birth',
+                            HTML(
+                                """
+                                <h5 class="my-3">Sponsor 2's Information</h5>
+                            """),
+                            Row(
+                                Column(
+                                    'sponsor_2_relationship',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_worked_in_sg',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
                             ),
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_nric_num',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_nationality',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_residential_status',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_mobile_number',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_email',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_address_1',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_address_2',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_post_code',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_marital_status',
-                            css_class='form-group col-md-6 sponsor-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    # Sponsor 2 spouse
-                    HTML(
-                        """
-                        <h5 class="my-3">Sponsor 2 Spouse's Information</h5>
-                    """),
-                    Row(
-                        Column(
-                            'sponsor_2_marriage_sg_registered',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_spouse_name',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_spouse_gender',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            Field(
-                                'sponsor_2_spouse_date_of_birth',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 2 date of birth',
+                            Row(
+                                Column(
+                                    'sponsor_2_name',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_gender',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
                             ),
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_spouse_nationality',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_spouse_residential_status',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row',
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_spouse_nric_num',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            'sponsor_2_spouse_fin_num',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        css_class='form-row'
-                    ),
-                    Row(
-                        Column(
-                            'sponsor_2_spouse_passport_num',
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
-                        ),
-                        Column(
-                            Field(
-                                'sponsor_2_spouse_passport_date',
-                                type='text',
-                                onfocus="(this.type='date')",
-                                placeholder='Sponsor 2 spouse passport expiry date',
+                            Row(
+                                Column(
+                                    Field(
+                                        'sponsor_2_date_of_birth',
+                                        type='text',
+                                        onfocus="(this.type='date')",
+                                        placeholder='Sponsor 2 date of birth',
+                                    ),
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_nric_num',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
                             ),
-                            css_class='form-group col-md-6 spouse-2',
-                            hidden='true',
+                            Row(
+                                Column(
+                                    'sponsor_2_nationality',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_residential_status',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
+                                    'sponsor_2_mobile_number',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_email',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
+                                    'sponsor_2_address_1',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_address_2',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
+                                    'sponsor_2_post_code',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_marital_status',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
+                            ),
+                            # Sponsor 2 spouse
+                            Row(
+                                Column(
+                                    HTML(
+                                        """
+                                        <h5 class="my-3">Sponsor 2 Spouse's Information</h5>
+                                    """),
+                                    Row(
+                                        Column(
+                                            'sponsor_2_marriage_sg_registered',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        Column(
+                                            'sponsor_2_spouse_name',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_2_spouse_gender',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        Column(
+                                            Field(
+                                                'sponsor_2_spouse_date_of_birth',
+                                                type='text',
+                                                onfocus="(this.type='date')",
+                                                placeholder='Sponsor 2 date of birth',
+                                            ),
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_2_spouse_nationality',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        Column(
+                                            'sponsor_2_spouse_residential_status',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_2_spouse_nric_num',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        Column(
+                                            'sponsor_2_spouse_fin_num',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        css_class='form-row'
+                                    ),
+                                    Row(
+                                        Column(
+                                            'sponsor_2_spouse_passport_num',
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        Column(
+                                            Field(
+                                                'sponsor_2_spouse_passport_date',
+                                                type='text',
+                                                onfocus="(this.type='date')",
+                                                placeholder='Sponsor 2 spouse passport expiry date',
+                                            ),
+                                            css_class='form-group col-md-6 spouse-2',
+                                        ),
+                                        css_class='form-row',
+                                    ),
+                                ),
+                                id="sponsor_2_spouse",
+                                hidden="true",
+                            ),
                         ),
-                        css_class='form-row',
+                        id="sponsor_2",
+                        hidden="true",
                     ),
 
                     # Income Details
