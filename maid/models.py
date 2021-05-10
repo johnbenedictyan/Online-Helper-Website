@@ -445,8 +445,8 @@ class MaidEmploymentHistory(models.Model):
     )
 
     def work_duration(self):
-        # duration = self.end_date - self.start_date
-        # return humanise_time_duration(duration)
+        duration = self.end_date - self.start_date
+        return humanise_time_duration(duration)
 
 class MaidLoanTransaction(models.Model):
     maid = models.ForeignKey(
