@@ -13,17 +13,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from weasyprint import HTML, CSS
 
 # From our apps
-from .models import (
-    Employer,
-    EmployerDoc,
-    EmployerDocMaidStatus,
-    EmployerDocSig,
-    JobOrder,
-    PdfArchive,
-    EmployerPaymentTransaction,
-    # EmployerSponsor,
-    # EmployerJointApplicant,
-)
+from . import models
 from onlinemaid.constants import (
     AG_OWNERS,
     AG_ADMINS,
@@ -139,20 +129,20 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             return HttpResponseRedirect(reverse_lazy('home'))
         else:
             # Assign to respective attribute
-            if isinstance(self.object, Employer):
+            if isinstance(self.object, models.Employer):
                 self.employer_obj = self.object
             elif (
-                isinstance(self.object, EmployerDoc)
-                or isinstance(self.object, EmployerSponsor)
-                or isinstance(self.object, EmployerJointApplicant)
+                isinstance(self.object, models.EmployerDoc)
+                or isinstance(self.object, models.EmployerSponsor)
+                or isinstance(self.object, models.EmployerJointApplicant)
             ):
                 self.employer_doc_obj = self.object
             elif (
-                isinstance(self.object, EmployerDocMaidStatus)
-                or isinstance(self.object, EmployerDocSig)
-                or isinstance(self.object, JobOrder)
-                or isinstance(self.object, PdfArchive)
-                or isinstance(self.object, EmployerPaymentTransaction)
+                isinstance(self.object, models.EmployerDocMaidStatus)
+                or isinstance(self.object, models.EmployerDocSig)
+                or isinstance(self.object, models.JobOrder)
+                or isinstance(self.object, models.PdfArchive)
+                or isinstance(self.object, models.EmployerPaymentTransaction)
             ):
                 self.employer_subdoc_obj = self.object
 
@@ -533,7 +523,7 @@ class PdfHtmlViewMixin:
 
             return country_language.get(context['object'].fdw.personal_details.country_of_origin, 'ENG')
 
-        if isinstance(self.object, EmployerDoc):
+        if isinstance(self.object, models.EmployerDoc):
             context = super().get_context_data(object=self.object)
 
             # Document version number formatting
@@ -543,7 +533,7 @@ class PdfHtmlViewMixin:
             for i in range(1,4):
                 context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
-        elif isinstance(self.object, EmployerDocSig):
+        elif isinstance(self.object, models.EmployerDocSig):
             '''
             context['object'] set as EmployerDoc object instead of
             EmployerDocSig so that same PDF templates can be re-used
