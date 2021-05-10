@@ -716,7 +716,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                     ),
                                 ),
                                 id="sponsor_1_spouse",
-                                hidden='true',
+                                # hidden='true',
                             ),
                         ),
                         id="sponsor_1",
@@ -885,11 +885,11 @@ class EmployerSponsorForm(forms.ModelForm):
                                     ),
                                 ),
                                 id="sponsor_2_spouse",
-                                hidden="true",
+                                # hidden="true",
                             ),
                         ),
                         id="sponsor_2",
-                        hidden="true",
+                        # hidden="true",
                     ),
 
                     # Income Details
