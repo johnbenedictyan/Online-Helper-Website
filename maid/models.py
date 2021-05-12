@@ -25,7 +25,7 @@ from .constants import (
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
     MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices,
     MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices,
-    MaidNationalityChoices
+    MaidNationalityChoices, MaidLanguageProficiencyChoices
 )
 
 # Utiliy Classes and Functions
@@ -45,16 +45,16 @@ class MaidResponsibility(models.Model):
     def get_db_value(self):
         return self.name
 
-class MaidLanguage(models.Model):
-    language = models.CharField(
-        verbose_name=_("Maid's spoken languages"),
-        max_length=3,
-        blank=False,
-        choices=MaidLanguageChoices.choices
-    )
+# class MaidLanguage(models.Model):
+#     language = models.CharField(
+#         verbose_name=_("Maid's spoken languages"),
+#         max_length=3,
+#         blank=False,
+#         choices=MaidLanguageChoices.choices
+#     )
 
-    def __str__(self) -> str:
-        return f'{self.get_language_display()}'
+#     def __str__(self) -> str:
+#         return f'{self.get_language_display()}'
 
 class Maid(models.Model):
     agency = models.ForeignKey(
@@ -821,6 +821,61 @@ class MaidCooking(models.Model):
         blank=True
     )
 
+class MaidLanguageProficiency(models.Model):
+    maid = models.OneToOneField(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='language_proficiency'
+    )
+    
+    english = models.CharField(
+        verbose=_('English'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    malay = models.CharField(
+        verbose=_('Malay / Bahasa Indonesia'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    mandarin = models.CharField(
+        verbose=_('Mandarin'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    chinese_dialect = models.CharField(
+        verbose=_('Chinese Dialect'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    hindi = models.CharField(
+        verbose=_('Hindi'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    tamil = models.CharField(
+        verbose=_('Tamil'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
 # TODO: Need to change Maid Employment History to be a 1-M instead of 1-1.
 # class MaidOtherCare(models.Model):
 #     maid = models.OneToOneField(

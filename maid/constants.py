@@ -408,6 +408,12 @@ class MaidDietaryRestrictionChoices(models.TextChoices):
     SEAFOOD = 'S', _('No seafood')
     VEG = 'V', _('Able to work in a Vegetarian family')
 
+class MaidLanguageProficiencyChoices(models.TextChoices):
+    UNABLE = 'UNABLE', _('Unable to speak')
+    BASIC = 'BASIC', _('Basic')
+    INTERMEDIATE = 'INTER', _('Intermediate')
+    ADVANCED = 'ADVAN', _('Advanced')
+    
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes
