@@ -45,16 +45,16 @@ class MaidResponsibility(models.Model):
     def get_db_value(self):
         return self.name
 
-# class MaidLanguage(models.Model):
-#     language = models.CharField(
-#         verbose_name=_("Maid's spoken languages"),
-#         max_length=3,
-#         blank=False,
-#         choices=MaidLanguageChoices.choices
-#     )
+class MaidLanguage(models.Model):
+    language = models.CharField(
+        verbose_name=_("Maid's spoken languages"),
+        max_length=3,
+        blank=False,
+        choices=MaidLanguageChoices.choices
+    )
 
-#     def __str__(self) -> str:
-#         return f'{self.get_language_display()}'
+    def __str__(self) -> str:
+        return f'{self.get_language_display()}'
 
 class Maid(models.Model):
     agency = models.ForeignKey(
