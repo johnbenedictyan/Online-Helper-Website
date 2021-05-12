@@ -27,11 +27,11 @@
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
                         <a class="navToggler" data-toggle="collapse" href="#fdwManagementDropdownNav" role="button" aria-expanded="true" aria-controls="fdwManagementDropdownNav">
-                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_other_remarks_update' or url_name == 'dashboard_maid_loan_update'%}down{% else %}right{% endif %}"></i>
+                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update'%}down{% else %}right{% endif %}"></i>
                         </a>
                     </div>
                 </div>
-                <div class="collapse row {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_other_remarks_update' or url_name == 'dashboard_maid_loan_update' %}show{% endif %}" id="fdwManagementDropdownNav">
+                <div class="collapse row {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update' %}show{% endif %}" id="fdwManagementDropdownNav">
                     <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_information_create' %}active{% endif %}">
                         <a href="{% url 'dashboard_maid_information_create' %}" class="nav-link new-side-nav-link text-smaller-slight">
                             <p class="m-1 pl-4">Add FDW</p>
@@ -42,7 +42,7 @@
                             <p class="m-1 pl-4">FDW Profile</p>
                         </a>
                     </div>
-                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_other_remarks_update' or url_name == 'dashboard_maid_loan_update' %}active{% else %}d-none{% endif %}">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update' %}active{% else %}d-none{% endif %}">
                         <a class="nav-link new-side-nav-link text-smaller-slight">
                             <p class="m-1 pl-4">Update FDW</p>
                         </a>
@@ -205,7 +205,7 @@
             </div>
         </div>
     </div>
-    {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_other_remarks_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' %}
+    {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' %}
         <div class="col">   
         {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
         </div>

@@ -962,6 +962,12 @@ class MaidExperienceForm(forms.Form):
             ),
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="#" class="
+                            btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Next',
@@ -1070,7 +1076,7 @@ class MaidExperienceForm(forms.Form):
 
         return maid
         
-class MaidAboutMeForm(forms.Form):
+class MaidAboutFDWForm(forms.Form):
     about_me = forms.CharField(
         label=_(''),
         widget=forms.Textarea(attrs={
@@ -1089,7 +1095,7 @@ class MaidAboutMeForm(forms.Form):
             Div(
                 Column(
                     HTML(
-                        '<h4>Other Remarks</h4>'
+                        '<h4>About FDW</h4>'
                     ),
                 ),
                 css_class='row',
@@ -1104,6 +1110,12 @@ class MaidAboutMeForm(forms.Form):
             ),
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="#" class="
+                            btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Next',
@@ -1416,64 +1428,16 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
             )
         )
 
-# FormSet = inlineformset_factory(
-#     parent_model = Maid,
-#     model = ,
-#     fields = ['country','start_date','end_date','work_duties',]
-# )
-
-# class FormSetHelper(FormHelper):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.form_method = 'post'
-#         self.layout = Layout(
-#             HTML('''
-#                 <h5>Past employment {{ forloop.counter }}</h5>
-#             '''),
-#             Row(
-#                 Column(
-#                     Row(
-#                         Column(
-#                             'country',
-#                             css_class='form-group col-12'
-#                         ),
-#                         Column(
-#                             Field(
-#                                 'start_date',
-#                                 type='text',
-#                                 onfocus="(this.type='date')",
-#                                 placeholder='Past employment start date'
-#                             ),
-#                             css_class='form-group col-12'
-#                         ),
-#                         Column(
-#                             Field(
-#                                 'end_date',
-#                                 type='text',
-#                                 onfocus="(this.type='date')",
-#                                 placeholder='Past employment end date'
-#                             ),
-#                             css_class='form-group col-12'
-#                         ),
-#                     ),
-#                     css_class='form-group col-md-6'
-#                 ),
-#                 Column(
-#                     InlineCheckboxes('work_duties'),
-#                     css_class='form-group col-md-6 work-duties'
-#                 ),
-#                 css_class='form-row'
-#             ),
-#             HTML('<hr>'),
-#         )
-#         self.render_required_fields = True
-
 class MaidLoanTransactionForm(forms.ModelForm):
     class Meta:
         model = MaidLoanTransaction
         exclude = ['maid']
 
     def __init__(self, *args, **kwargs):
+        self.maid_id = kwargs.pop('maid_id')
+        self.maid = Maid.objects.get(
+            pk=self.maid_id
+        )
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -1510,6 +1474,10 @@ class MaidLoanTransactionForm(forms.ModelForm):
             )
         )
 
+    def save(self, *args, **kwargs):
+        self.instance.maid = self.maid
+        return super().save(*args, **kwargs)
+    
 # Generic Forms (forms.Form)
 class MainMaidCreationForm(forms.ModelForm):
     # Maid Information

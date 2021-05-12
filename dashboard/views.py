@@ -32,7 +32,7 @@ from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
     MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
     MaidLanguagesAndFHPDRForm, MaidExperienceForm,
-    MaidAboutMeForm, MaidEmploymentHistoryForm
+    MaidAboutFDWForm, MaidEmploymentHistoryForm
 )
 from maid.formsets import (
     MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
@@ -441,12 +441,12 @@ class DashboardMaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         finally:
             if languages:
                 initial.update({
-                    'english': languages.get('english'),
-                    'malay': languages.get('malay'),
-                    'mandarin': languages.get('mandarin'),
-                    'chinese_dialect': languages.get('chinese_dialect'),
-                    'hindi': languages.get('hindi'),
-                    'tamil': languages.get('tamil')
+                    'english': languages.english,
+                    'malay': languages.malay,
+                    'mandarin': languages.mandarin,
+                    'chinese_dialect': languages.chinese_dialect,
+                    'hindi': languages.hindi,
+                    'tamil': languages.tamil
                 })
         return initial
     
@@ -531,15 +531,15 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_other_remarks_update',
+            'dashboard_maid_about_fdw_update',
             kwargs={
                 'pk':self.maid_id
             }
         )
 
-class DashboardMaidAboutMeFormView(DashboardMaidSubFormView):
+class DashboardMaidAboutFDWFormView(DashboardMaidSubFormView):
     context_object_name = 'maid_about_me'
-    form_class = MaidAboutMeForm
+    form_class = MaidAboutFDWForm
     success_message = 'Maid created'
 
     def get_initial(self):
@@ -548,7 +548,7 @@ class DashboardMaidAboutMeFormView(DashboardMaidSubFormView):
             pk=self.maid_id
         )
         initial.update({
-            'remarks': maid.remarks
+            'about_me': maid.about_me
         })
         return initial
     
@@ -604,15 +604,15 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return context
     
     def get_formset_form_kwargs(self):
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         kwargs = {
             'maid_id': self.maid_id
         }
         return kwargs
 
     def get_instance_object(self):
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
         return Maid.objects.get(
             pk=self.maid_id
         )
@@ -659,9 +659,6 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
         context.update({
             'maid_id': self.maid_id
         })
@@ -695,18 +692,17 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
         return context
     
     def get_formset_form_kwargs(self):
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         kwargs = {
-            'maid_id': self.kwargs.get(
-                self.pk_url_kwarg
-            )
+            'maid_id': self.maid_id
         }
         return kwargs
     
     def get_instance_object(self):
         return Maid.objects.get(
-            pk=self.kwargs.get(
-                self.pk_url_kwarg
-            )
+            pk=self.maid_id
         )
         
     def get_form_kwargs(self):
@@ -732,7 +728,7 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'dashboard_maid_other_remarks_update'
+                    'dashboard_maid_about_fdw_update'
                 )
             )
 

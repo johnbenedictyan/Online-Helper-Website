@@ -15,8 +15,8 @@
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_language_spoken_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_language_spoken_update' maid_id %}{% else %}#{% endif %}">
-                <p class="m-1 pl-2">Language Spoken</p>
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_language_spoken_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">Spoken Language</p>
             </a>
         </div>
     </div>
@@ -43,14 +43,14 @@
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_other_remarks_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_other_remarks_update' maid_id %}{% else %}#{% endif %}">
-                <p class="m-1 pl-2">Other Remarks</p>
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_about_fdw_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_about_fdw_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">About FDW</p>
             </a>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_loan_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_loan_update' maid_id %}{% else %}#{% endif %}>">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_loan_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_loan_update' maid_id %}{% else %}#{% endif %}">
                 <p class="m-1 pl-2">FDW Loan</p>
             </a>
         </div>
