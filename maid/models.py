@@ -829,7 +829,7 @@ class MaidLanguageProficiency(models.Model):
     )
     
     english = models.CharField(
-        verbose=_('English'),
+        verbose_name=_('English'),
         blank=False,
         max_length=6,
         choices=MaidLanguageProficiencyChoices.choices,
@@ -837,7 +837,7 @@ class MaidLanguageProficiency(models.Model):
     )
     
     malay = models.CharField(
-        verbose=_('Malay / Bahasa Indonesia'),
+        verbose_name=_('Malay / Bahasa Indonesia'),
         blank=False,
         max_length=6,
         choices=MaidLanguageProficiencyChoices.choices,
@@ -845,7 +845,7 @@ class MaidLanguageProficiency(models.Model):
     )
     
     mandarin = models.CharField(
-        verbose=_('Mandarin'),
+        verbose_name=_('Mandarin'),
         blank=False,
         max_length=6,
         choices=MaidLanguageProficiencyChoices.choices,
@@ -853,7 +853,7 @@ class MaidLanguageProficiency(models.Model):
     )
     
     chinese_dialect = models.CharField(
-        verbose=_('Chinese Dialect'),
+        verbose_name=_('Chinese Dialect'),
         blank=False,
         max_length=6,
         choices=MaidLanguageProficiencyChoices.choices,
@@ -861,7 +861,7 @@ class MaidLanguageProficiency(models.Model):
     )
     
     hindi = models.CharField(
-        verbose=_('Hindi'),
+        verbose_name=_('Hindi'),
         blank=False,
         max_length=6,
         choices=MaidLanguageProficiencyChoices.choices,
@@ -869,7 +869,7 @@ class MaidLanguageProficiency(models.Model):
     )
     
     tamil = models.CharField(
-        verbose=_('Tamil'),
+        verbose_name=_('Tamil'),
         blank=False,
         max_length=6,
         choices=MaidLanguageProficiencyChoices.choices,
