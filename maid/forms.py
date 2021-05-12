@@ -24,7 +24,7 @@ from .constants import (
     MaidCareRemarksChoices, MaidPassportStatusChoices, 
     MaidEducationLevelChoices, MaidSkillsEvaluationMethod, 
     MaidLoanDescriptionChoices, MaidFoodPreferenceChoices, 
-    MaidDietaryRestrictionChoices
+    MaidDietaryRestrictionChoices, MaidLanguageProficiencyChoices
 )
 
 from .models import (
@@ -32,7 +32,7 @@ from .models import (
     MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
     MaidDietaryRestriction, MaidLoanTransaction,
     MaidFoodHandlingPreference, MaidDietaryRestriction,
-    MaidEmploymentHistory
+    MaidEmploymentHistory, MaidLanguageProficiency
 )
 from agency.models import Agency
 from onlinemaid.helper_functions import encrypt_string, decrypt_string
@@ -376,7 +376,43 @@ class MaidLanguageSpokenForm(forms.Form):
             
         return maid
 
-class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
+class MaidLanguagesAndFHPDRForm(forms.Form):
+    english = forms.ChoiceField(
+        label=_('English'),
+        required=True,
+        choices=MaidLanguageProficiencyChoices.choices
+    )
+    
+    malay = forms.ChoiceField(
+        label=_('Malay / Bahasa Indonesia'),
+        required=True,
+        choices=MaidLanguageProficiencyChoices.choices
+    )
+    
+    mandarin = forms.ChoiceField(
+        label=_('Mandarin'),
+        required=True,
+        choices=MaidLanguageProficiencyChoices.choices
+    )
+    
+    chinese_dialect = forms.ChoiceField(
+        label=_('Chinese Dialect'),
+        required=True,
+        choices=MaidLanguageProficiencyChoices.choices
+    )
+    
+    hindi = forms.ChoiceField(
+        label=_('Hindi'),
+        required=True,
+        choices=MaidLanguageProficiencyChoices.choices
+    )
+    
+    tamil = forms.ChoiceField(
+        label=_('Tamil'),
+        required=True,
+        choices=MaidLanguageProficiencyChoices.choices
+    )
+    
     food_handling_pork = forms.ChoiceField(
         label=_('Can you handle pork'),
         required=True,
@@ -421,6 +457,42 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
             Div(
                 Column(
                     HTML(
+                        '<h4>Spoken Language</h4>'
+                    ),
+                ),
+                css_class='row',
+                css_id='maidSpokenLanguageGroup'
+            ),
+            Row(
+                Column(
+                    'english',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'malay',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'mandarin',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'chinese_dialect',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'hindi',
+                    css_class='col-md-6'
+                ),
+                Column(
+                    'tamil',
+                    css_class='col-md-6'
+                ),
+                css_class='form-group mb-xl-3'
+            ),
+            Div(
+                Column(
+                    HTML(
                         '<h4>Food Handling and Dietary Restriction</h4>'
                     ),
                 ),
@@ -456,10 +528,16 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
             ),
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="#" class="
+                            btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-primary w-25"
+                        css_class="btn btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
@@ -472,8 +550,8 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
         maid = Maid.objects.get(
             pk=self.maid_id
         )
-        maid.food_handling_preferences.clear()
-        maid.dietary_restrictions.clear()
+        maid.food_handling_preferences.all().delete()
+        maid.dietary_restrictions.all().delete()
         food_handling_pork = cleaned_data.get('food_handling_pork')
         food_handling_beef = cleaned_data.get('food_handling_beef')
         food_handling_veg = cleaned_data.get('food_handling_veg')
@@ -482,35 +560,46 @@ class MaidFoodHandlingPreferencesDietaryRestrictionsForm(forms.Form):
         dietary_restriction_veg = cleaned_data.get('dietary_restriction_veg')
         if food_handling_pork == 'True':
             MaidFoodHandlingPreference.objects.get_or_create(
-                maid__pk=self.maid_id,
+                maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.PORK
             )
         if food_handling_beef == 'True':
             MaidFoodHandlingPreference.objects.get_or_create(
-                maid__pk=self.maid_id,
+                maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.BEEF
             )
         if food_handling_veg == 'True':
             MaidFoodHandlingPreference.objects.get_or_create(
-                maid__pk=self.maid_id,
+                maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.VEG
             )
         if dietary_restriction_pork == 'True':
             MaidDietaryRestriction.objects.get_or_create(
-                maid__pk=self.maid_id,
-                preference=MaidFoodPreferenceChoices.PORK
+                maid=Maid.objects.get(pk=self.maid_id),
+                restriction=MaidDietaryRestrictionChoices.PORK
             )
         if dietary_restriction_beef == 'True':
             MaidDietaryRestriction.objects.get_or_create(
-                maid__pk=self.maid_id,
-                preference=MaidFoodPreferenceChoices.BEEF
+                maid=Maid.objects.get(pk=self.maid_id),
+                restriction=MaidDietaryRestrictionChoices.BEEF
             )
         if dietary_restriction_veg == 'True':
             MaidDietaryRestriction.objects.get_or_create(
-                maid__pk=self.maid_id,
-                preference=MaidFoodPreferenceChoices.VEG
+                maid=Maid.objects.get(pk=self.maid_id),
+                restriction=MaidDietaryRestrictionChoices.VEG
             )
-            
+        
+        obj, created = MaidLanguageProficiency.objects.update_or_create(
+            maid=Maid.objects.get(pk=self.maid_id),
+            defaults={
+                'english': cleaned_data.get('english'),
+                'malay': cleaned_data.get('malay'),
+                'mandarin': cleaned_data.get('mandarin'),
+                'chinese_dialect': cleaned_data.get('chinese_dialect'),
+                'hindi': cleaned_data.get('hindi'),
+                'tamil': cleaned_data.get('tamil')
+            }
+        )
         return maid
 
 class MaidExperienceForm(forms.Form):

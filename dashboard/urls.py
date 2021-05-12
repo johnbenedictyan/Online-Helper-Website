@@ -19,7 +19,7 @@ from .views import DashboardAgencyDetail, DashboardMaidDetail
 ## Form Views
 from .views import (
     DashboardMaidCreation, DashboardAgencyUpdate,
-    DashboardMaidLanguageSpokenFormView, DashboardMaidFHPDRFormView,
+    DashboardMaidLanguageSpokenFormView, DashboardMaidLanguagesAndFHPDRFormView,
     DashboardMaidExperienceFormView, DashboardMaidAboutMeFormView,
     DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
     DashboardMaidEmploymentHistoryFormView
@@ -154,8 +154,8 @@ urlpatterns = [
                     ),
                     path(
                         'food-handling-dietary-restriction',
-                        DashboardMaidFHPDRFormView.as_view(),
-                        name='dashboard_maid_fhpdr_update'
+                        DashboardMaidLanguagesAndFHPDRFormView.as_view(),
+                        name='dashboard_maid_languages_and_fhpdr_update'
                     ),
                     path(
                         'experience',

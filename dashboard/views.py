@@ -31,7 +31,7 @@ from enquiry.models import GeneralEnquiry
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
     MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
-    MaidFoodHandlingPreferencesDietaryRestrictionsForm, MaidExperienceForm,
+    MaidLanguagesAndFHPDRForm, MaidExperienceForm,
     MaidAboutMeForm, MaidEmploymentHistoryForm
 )
 from maid.formsets import (
@@ -42,7 +42,7 @@ from maid.mixins import FDWLimitMixin
 from maid.models import (
     Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
     MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
-    MaidGeneralHousework, MaidCooking
+    MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
 )
 from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
@@ -358,15 +358,15 @@ class DashboardMaidLanguageSpokenFormView(DashboardMaidSubFormView):
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_fhpdr_update',
+            'dashboard_maid_languages_and_fhpdr_update',
             kwargs={
                 'pk':self.maid_id
             }
         )
 
-class DashboardMaidFHPDRFormView(DashboardMaidSubFormView):
+class DashboardMaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
     context_object_name = 'maid_food_handling_preference_dietary_restriction'
-    form_class = MaidFoodHandlingPreferencesDietaryRestrictionsForm
+    form_class = MaidLanguagesAndFHPDRForm
     success_message = 'Maid created'
 
     def get_initial(self):
@@ -374,6 +374,7 @@ class DashboardMaidFHPDRFormView(DashboardMaidSubFormView):
         food_handling_pork = food_handling_beef = food_handling_veg = None
         dietary_restriction_pork = dietary_restriction_beef = None
         dietary_restriction_veg = None
+        languages = None
         try:
             food_handling_pork = MaidFoodHandlingPreference.objects.get(
                 maid__pk=self.maid_id,
@@ -428,8 +429,25 @@ class DashboardMaidFHPDRFormView(DashboardMaidSubFormView):
             'food_handling_veg': food_handling_veg,
             'dietary_restriction_pork': dietary_restriction_pork,
             'dietary_restriction_beef': dietary_restriction_beef,
-            'dietary_restriction_veg': dietary_restriction_veg,
+            'dietary_restriction_veg': dietary_restriction_veg
         })
+        
+        try:
+            languages = MaidLanguageProficiency.objects.get(
+                maid__pk=self.maid_id
+            )
+        except MaidLanguageProficiency.DoesNotExist:
+            pass
+        finally:
+            if languages:
+                initial.update({
+                    'english': languages.get('english'),
+                    'malay': languages.get('malay'),
+                    'mandarin': languages.get('mandarin'),
+                    'chinese_dialect': languages.get('chinese_dialect'),
+                    'hindi': languages.get('hindi'),
+                    'tamil': languages.get('tamil')
+                })
         return initial
     
     def get_success_url(self) -> str:
