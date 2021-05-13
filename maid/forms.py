@@ -531,8 +531,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                 Column(
                     HTML(
                         '''
-                        <a href="
-                        {% url 'dashboard_maid_information_update' maid_id %}"
+                        <a href="{% url 'dashboard_maid_information_update' maid_id %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -966,8 +965,7 @@ class MaidExperienceForm(forms.Form):
                 Column(
                     HTML(
                         '''
-                        <a href="
-                        {% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}"
+                        <a href="{% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -1116,8 +1114,8 @@ class MaidAboutFDWForm(forms.Form):
                 Column(
                     HTML(
                         '''
-                        <a href="#" class="
-                            btn btn-outline-primary w-25 mx-2">Back</a>
+                        <a href="{% url 'dashboard_maid_employment_history_update' maid_id %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(

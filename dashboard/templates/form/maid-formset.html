@@ -5,6 +5,27 @@
     <div class="container-fluid" style="min-height: 75vh;">
         <form method="post" enctype="multipart/form-data">
             {% crispy form helper %}
+            <div class="row form-row">
+                <div class="col-12 my-2 text-center">
+                    <button class="btn btn-outline-success w-50 mb-2" id="addButton">Add</button>
+                </div>
+                <div class="col-12 my-2 text-center">
+                    <input type="hidden" name="submitFlag" class="form-control" id="submitFlag">
+                    {% if url_name == 'dashboard_maid_employment_history_update' %}
+                    <a href="{% url 'dashboard_maid_experience_update' maid_id %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
+                    {% elif url_name == 'dashboard_maid_loan_update' %}
+                    <a href="{% url 'dashboard_maid_about_fdw_update' maid_id %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
+                    {% else %}
+                    <a href="#" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
+                    {% endif %}
+
+                    {% if url_name == 'dashboard_maid_loan_update' %}
+                    <button type="submit" id="submitButton" class="btn btn-primary w-25 mb-2 mx-2">Submit</button>
+                    {% else %}
+                    <button type="submit" id="submitButton" class="btn btn-primary w-25 mb-2 mx-2">Next</button>
+                    {% endif %}
+                </div>
+            </div>
         </form>
     </div>
 </section>

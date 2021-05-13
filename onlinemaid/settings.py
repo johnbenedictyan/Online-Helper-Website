@@ -108,7 +108,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'onlinemaid.context_processors.authority',
                 'onlinemaid.context_processors.cartcount',
-                'onlinemaid.context_processors.enquiry_form'
+                'onlinemaid.context_processors.enquiry_form',
+                'onlinemaid.context_processors.dashboard_side_nav'
             ],
         },
     },

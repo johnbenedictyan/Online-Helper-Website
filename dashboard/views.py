@@ -578,29 +578,30 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
             'maid_id': self.maid_id
         })
         helper = MaidLoanTransactionFormSetHelper()
-        helper.add_input(
-            Hidden(
-                'submitFlag',
-                'False',
-                css_id="submitFlag"
-            )
-        )
-        helper.add_input(
-            Button(
-                "add",
-                "Add Loan Transaction",
-                css_class="btn btn-outline-primary w-50 mb-2",
-                css_id="addOutletButton"
-            )
-        )
-        helper.add_input(
-            Submit(
-                "save",
-                "Save",
-                css_class="btn btn-primary w-50 mb-2",
-                css_id="submitButton"
-            )
-        )
+        # helper.add_input(
+        #     Hidden(
+        #         'submitFlag',
+        #         'False',
+        #         css_id="submitFlag"
+        #     )
+        # )
+        helper.form_tag = False
+        # helper.add_input(
+        #     Button(
+        #         "add",
+        #         "Add Loan Transaction",
+        #         css_class="btn btn-outline-primary w-50 mb-2 mx-auto",
+        #         css_id="addOutletButton"
+        #     )
+        # )
+        # helper.add_input(
+        #     Submit(
+        #         "save",
+        #         "Save",
+        #         css_class="btn btn-primary w-50 mb-2",
+        #         css_id="submitButton"
+        #     )
+        # )
         context.update({
             'helper': helper
         })
@@ -638,12 +639,16 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         
     def form_valid(self, form):
         form.save()
+        print(form.data)
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'dashboard_maid_loan_update'
+                    'dashboard_maid_loan_update',
+                    kwargs={
+                        'pk':self.maid_id
+                    }
                 )
             )
 
@@ -666,29 +671,30 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
             'maid_id': self.maid_id
         })
         helper = MaidEmploymentHistoryFormSetHelper()
-        helper.add_input(
-            Hidden(
-                'submitFlag',
-                'False',
-                css_id="submitFlag"
-            )
-        )
-        helper.add_input(
-            Button(
-                "add",
-                "Add Employment History",
-                css_class="btn btn-outline-primary w-50 mb-2",
-                css_id="addButton"
-            )
-        )
-        helper.add_input(
-            Submit(
-                "save",
-                "Save",
-                css_class="btn btn-primary w-50 mb-2",
-                css_id="submitButton"
-            )
-        )
+        # helper.add_input(
+        #     Hidden(
+        #         'submitFlag',
+        #         'False',
+        #         css_id="submitFlag"
+        #     )
+        # )
+        helper.form_tag = False
+        # helper.add_input(
+        #     Button(
+        #         "add",
+        #         "Add Employment History",
+        #         css_class="btn btn-outline-primary w-50 mb-2 mx-auto",
+        #         css_id="addButton"
+        #     )
+        # )
+        # helper.add_input(
+        #     Submit(
+        #         "save",
+        #         "Save",
+        #         css_class="btn btn-primary w-50 mb-2",
+        #         css_id="submitButton"
+        #     )
+        # )
         context.update({
             'helper': helper
         })
@@ -731,7 +737,10 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'dashboard_maid_about_fdw_update'
+                    'dashboard_maid_employment_history_update',
+                    kwargs={
+                        'pk':self.maid_id
+                    }
                 )
             )
 
@@ -757,29 +766,30 @@ class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         helper = AgencyBranchFormSetHelper()
-        helper.add_input(
-            Hidden(
-                'submitFlag',
-                'False',
-                css_id="submitFlag"
-            )
-        )
-        helper.add_input(
-            Button(
-                "add",
-                "Add Outlet",
-                css_class="btn btn-outline-primary w-50 mb-2",
-                css_id="addButton"
-            )
-        )
-        helper.add_input(
-            Submit(
-                "save",
-                "Save",
-                css_class="btn btn-primary w-50 mb-2",
-                css_id="submitButton"
-            )
-        )
+        helper.form_tag = False
+        # helper.add_input(
+        #     Hidden(
+        #         'submitFlag',
+        #         'False',
+        #         css_id="submitFlag"
+        #     )
+        # )
+        # helper.add_input(
+        #     Button(
+        #         "add",
+        #         "Add Outlet",
+        #         css_class="btn btn-outline-primary w-50 mb-2",
+        #         css_id="addButton"
+        #     )
+        # )
+        # helper.add_input(
+        #     Submit(
+        #         "save",
+        #         "Save",
+        #         css_class="btn btn-primary w-50 mb-2",
+        #         css_id="submitButton"
+        #     )
+        # )
         context.update({
             'helper': helper
         })

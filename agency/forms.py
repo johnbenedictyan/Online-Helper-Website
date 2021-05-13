@@ -1593,10 +1593,16 @@ class AgencyOpeningHoursForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="{% url 'dashboard_agency_outlet_details_update' %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
