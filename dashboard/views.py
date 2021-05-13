@@ -55,7 +55,7 @@ from onlinemaid.mixins import SuccessMessageMixin
 # Template Views
 class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
                         TemplateView):
-    template_name = 'base/new-dashboard-home-page.html'
+    template_name = 'base/dashboard-home-page.html'
     authority = ''
     agency_id = ''
 
@@ -1285,7 +1285,7 @@ class DashboardDataProviderView(View):
         request_data = json.loads(request.body.decode('utf-8'))
         chart = request_data.get('chart')
         authority = request_data.get('authority')
-        if chart['name'] == 'salesChart' and authority == 'Agency Managers':
+        if chart['name'] == 'salesChart':
             if chart['year'] == '2010':
                 chart_data = [{
                     'name': 'Sales',
@@ -1342,129 +1342,191 @@ class DashboardDataProviderView(View):
                     'data': self.fake_data[120:]
                 }]
                 
-        if chart['name'] == 'salesStaffPerformanceSales' and authority == 'Agency Managers':
+        if chart['name'] == 'salesStaffPerformanceSales':
             if chart['year'] == '2010':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[0:36:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[1:37:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[2:38:3]
-                    }
-                ]
-            elif chart['year'] == '2011':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[36:72:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[37:73:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[38:74:3]
-                    }
-                ]
-            elif chart['year'] == '2012':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[72:108:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[73:109:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[74:110:3]
-                    }
-                ]
-            else:
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[108::3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[109::3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[110::3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[0:36:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[1:37:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[2:38:3]
+                        }
+                    ]
                 
-        if chart['name'] == 'salesStaffPerformanceCases' and authority == 'Agency Managers':
-            if chart['year'] == '2010':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[0:36:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[1:37:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[2:38:3]
-                    }
-                ]
             elif chart['year'] == '2011':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[36:72:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[37:73:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[38:74:3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[36:72:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[37:73:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[38:74:3]
+                        }
+                    ]
+                    
             elif chart['year'] == '2012':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[72:108:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[73:109:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[74:110:3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[72:108:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[73:109:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[74:110:3]
+                        }
+                    ]
+                    
             else:
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[108::3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[109::3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[110::3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[108::3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[109::3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[110::3]
+                        }
+                    ]
+                
+        if chart['name'] == 'salesStaffPerformanceCases':
+            if chart['year'] == '2010':
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[0:36:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[1:37:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[2:38:3]
+                        }
+                    ]
+                
+            elif chart['year'] == '2011':
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[36:72:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[37:73:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[38:74:3]
+                        }
+                    ]
+                    
+            elif chart['year'] == '2012':
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[72:108:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[73:109:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[74:110:3]
+                        }
+                    ]
+                    
+            else:
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[108::3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[109::3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[110::3]
+                        }
+                    ]
                 
         if chart['name'] == 'branchPerformanceSales':
             if chart['group_by'] == 'Month':
