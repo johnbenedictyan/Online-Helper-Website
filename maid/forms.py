@@ -70,7 +70,7 @@ class MaidForm(forms.ModelForm):
     class Meta:
         model = Maid
         exclude = [
-            'agency', 'created_on', 'updated_on', 'nonce', 'tag', 'remarks',
+            'agency', 'created_on', 'updated_on', 'nonce', 'tag', 'about_me',
             'responsibilities', 'languages', 'skills_evaluation_method'
         ]
 
@@ -290,8 +290,9 @@ class MaidForm(forms.ModelForm):
         except Maid.DoesNotExist:
             pass
         else:
-            msg = _('A maid with this reference number already exists')
-            self.add_error('reference_number', msg)
+            if self.form_type != 'update':
+                msg = _('A maid with this reference number already exists')
+                self.add_error('reference_number', msg)
         finally:
             return reference_number
 
@@ -530,8 +531,9 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                 Column(
                     HTML(
                         '''
-                        <a href="#" class="
-                            btn btn-outline-primary w-25 mx-2">Back</a>
+                        <a href="
+                        {% url 'dashboard_maid_information_update' maid_id %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -964,14 +966,15 @@ class MaidExperienceForm(forms.Form):
                 Column(
                     HTML(
                         '''
-                        <a href="#" class="
-                            btn btn-outline-primary w-25 mx-2">Back</a>
+                        <a href="
+                        {% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-25"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
@@ -1017,10 +1020,11 @@ class MaidExperienceForm(forms.Form):
             pk=self.maid_id
         )
         
-        maid.update(skills_evaluation_method=skills_evaluation_method)
+        maid.skills_evaluation_method=skills_evaluation_method
+        maid.save()
         
         MaidInfantChildCare.objects.update_or_create(
-            maid__pk=self.maid_id, 
+            maid=maid, 
             defaults={
                 'assessment': cfi_assessment,
                 'willingness': cfi_willingness,
@@ -1031,7 +1035,7 @@ class MaidExperienceForm(forms.Form):
         )
         
         MaidElderlyCare.objects.update_or_create(
-            maid__pk=self.maid_id, 
+            maid=maid, 
             defaults={
                 'assessment': cfe_assessment,
                 'willingness': cfe_willingness,
@@ -1042,7 +1046,7 @@ class MaidExperienceForm(forms.Form):
         )
         
         MaidDisabledCare.objects.update_or_create(
-            maid__pk=self.maid_id, 
+            maid=maid, 
             defaults={
                 'assessment': cfd_assessment,
                 'willingness': cfd_willingness,
@@ -1053,7 +1057,7 @@ class MaidExperienceForm(forms.Form):
         )
         
         MaidGeneralHousework.objects.update_or_create(
-            maid__pk=self.maid_id, 
+            maid=maid, 
             defaults={
                 'assessment': geh_assessment,
                 'willingness': geh_willingness,
@@ -1064,7 +1068,7 @@ class MaidExperienceForm(forms.Form):
         )
         
         MaidCooking.objects.update_or_create(
-            maid__pk=self.maid_id, 
+            maid=maid, 
             defaults={
                 'assessment': cok_assessment,
                 'willingness': cok_willingness,
@@ -1133,7 +1137,8 @@ class MaidAboutFDWForm(forms.Form):
         maid = Maid.objects.get(
             pk=self.maid_id
         )
-        maid.update(about_me=about_me)
+        maid.about_me=about_me
+        maid.save()
         return maid
 
 class MaidEmploymentHistoryForm(forms.ModelForm):

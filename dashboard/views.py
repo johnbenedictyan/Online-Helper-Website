@@ -501,37 +501,37 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_cok = {}
 
         initial.update({
-            'cfi_assessment': maid_cfi.get('assessment', None),
-            'cfi_willingness': maid_cfi.get('willingness', None),
-            'cfi_experience': maid_cfi.get('experience', None),
-            'cfi_remarks': maid_cfi.get('remarks', None),
-            'cfi_other_remarks': maid_cfi.get('other_remarks', None),
-            'cfe_assessment': maid_cfe.get('assessment', None),
-            'cfe_willingness': maid_cfe.get('willingness', None),
-            'cfe_experience': maid_cfe.get('experience', None),
-            'cfe_remarks': maid_cfe.get('remarks', None),
-            'cfe_other_remarks': maid_cfe.get('other_remarks', None),
-            'cfd_assessment': maid_cfd.get('assessment', None),
-            'cfd_willingness': maid_cfd.get('willingness', None),
-            'cfd_experience': maid_cfd.get('experience', None),
-            'cfd_remarks': maid_cfd.get('remarks', None),
-            'cfd_other_remarks': maid_cfd.get('other_remarks', None),
-            'geh_assessment': maid_geh.get('assessment', None),
-            'geh_willingness': maid_geh.get('willingness', None),
-            'geh_experience': maid_geh.get('experience', None),
-            'geh_remarks': maid_geh.get('remarks', None),
-            'geh_other_remarks': maid_geh.get('other_remarks', None),
-            'cok_assessment': maid_cok.get('assessment', None),
-            'cok_willingness': maid_cok.get('willingness', None),
-            'cok_experience': maid_cok.get('experience', None),
-            'cok_remarks': maid_cok.get('remarks', None),
-            'cok_other_remarks': maid_cok.get('other_remarks', None)
+            'cfi_assessment': maid_cfi.assessment,
+            'cfi_willingness': maid_cfi.willingness,
+            'cfi_experience': maid_cfi.experience,
+            'cfi_remarks': maid_cfi.remarks,
+            'cfi_other_remarks': maid_cfi.other_remarks,
+            'cfe_assessment': maid_cfe.assessment,
+            'cfe_willingness': maid_cfe.willingness,
+            'cfe_experience': maid_cfe.experience,
+            'cfe_remarks': maid_cfe.remarks,
+            'cfe_other_remarks': maid_cfe.other_remarks,
+            'cfd_assessment': maid_cfd.assessment,
+            'cfd_willingness': maid_cfd.willingness,
+            'cfd_experience': maid_cfd.experience,
+            'cfd_remarks': maid_cfd.remarks,
+            'cfd_other_remarks': maid_cfd.other_remarks,
+            'geh_assessment': maid_geh.assessment,
+            'geh_willingness': maid_geh.willingness,
+            'geh_experience': maid_geh.experience,
+            'geh_remarks': maid_geh.remarks,
+            'geh_other_remarks': maid_geh.other_remarks,
+            'cok_assessment': maid_cok.assessment,
+            'cok_willingness': maid_cok.willingness,
+            'cok_experience': maid_cok.experience,
+            'cok_remarks': maid_cok.remarks,
+            'cok_other_remarks': maid_cok.other_remarks
         })
         return initial
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_about_fdw_update',
+            'dashboard_maid_employment_history_update',
             kwargs={
                 'pk':self.maid_id
             }
@@ -554,7 +554,10 @@ class DashboardMaidAboutFDWFormView(DashboardMaidSubFormView):
     
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_list',
+            'dashboard_maid_loan_update',
+            kwargs={
+                'pk':self.maid_id
+            }
         )
 
 class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
@@ -732,6 +735,14 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
                 )
             )
 
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_about_fdw_update',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
+        
 class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
                                            GetAuthorityMixin, 
                                            SuccessMessageMixin, FormView):
@@ -1081,7 +1092,7 @@ class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin,
 
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_language_spoken_update',
+            'dashboard_maid_languages_and_fhpdr_update',
             kwargs={
                 'pk':self.object.pk
             }

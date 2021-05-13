@@ -17,7 +17,7 @@ MaidLoanTransactionFormSet = inlineformset_factory(
     form=MaidLoanTransactionForm,
     model=MaidLoanTransaction,
     extra=1,
-    min_num=1,
+    min_num=0,
     max_num=10
 )
 
@@ -65,7 +65,7 @@ MaidEmploymentHistoryFormSet = inlineformset_factory(
     form=MaidEmploymentHistoryForm,
     model=MaidEmploymentHistory,
     extra=1,
-    min_num=1,
+    min_num=0,
     max_num=10
 )
 

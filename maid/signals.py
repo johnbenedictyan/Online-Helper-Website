@@ -90,14 +90,14 @@ def maid_main_responsibility(maid):
             )
         )
 
-def maid_completed(maid):
-    if(
-        maid.biodata_complete == True and 
-        maid.family_details_complete == True and 
-        maid.care_complete == True
-    ):
-        maid.complete = True
-        maid.save()
+# def maid_completed(maid):
+#     if(
+#         maid.biodata_complete == True and 
+#         maid.family_details_complete == True and 
+#         maid.care_complete == True
+#     ):
+#         maid.complete = True
+#         maid.save()
 
 # Start of Signals
 @receiver(post_save, sender=Maid)
@@ -112,57 +112,57 @@ def maid_counter(sender, instance, created, **kwargs):
     ).count()
     agency.save()
     
-@receiver(post_save, sender=MaidInfantChildCare)
-@receiver(post_save, sender=MaidElderlyCare)
-@receiver(post_save, sender=MaidDisabledCare)
-@receiver(post_save, sender=MaidGeneralHousework)
-@receiver(post_save, sender=MaidCooking)
-def maid_care_completed(sender, instance, created, **kwargs):
-    care_models = [
-        MaidInfantChildCare,
-        MaidElderlyCare,
-        MaidDisabledCare,
-        MaidGeneralHousework,
-        MaidCooking,
-    ]
+# @receiver(post_save, sender=MaidInfantChildCare)
+# @receiver(post_save, sender=MaidElderlyCare)
+# @receiver(post_save, sender=MaidDisabledCare)
+# @receiver(post_save, sender=MaidGeneralHousework)
+# @receiver(post_save, sender=MaidCooking)
+# def maid_care_completed(sender, instance, created, **kwargs):
+#     care_models = [
+#         MaidInfantChildCare,
+#         MaidElderlyCare,
+#         MaidDisabledCare,
+#         MaidGeneralHousework,
+#         MaidCooking,
+#     ]
 
-    related_names = {
-        'MaidInfantChildCare': 'infant_child_care',
-        'MaidElderlyCare': 'elderly_care',
-        'MaidDisabledCare': 'disabled_care',
-        'MaidGeneralHousework': 'general_housework',
-        'MaidCooking': 'cooking',
-    }
+#     related_names = {
+#         'MaidInfantChildCare': 'infant_child_care',
+#         'MaidElderlyCare': 'elderly_care',
+#         'MaidDisabledCare': 'disabled_care',
+#         'MaidGeneralHousework': 'general_housework',
+#         'MaidCooking': 'cooking',
+#     }
     
-    maid = instance.maid
-    safe_flag = True
+#     maid = instance.maid
+#     safe_flag = True
 
-    for i in care_models:
-        if hasattr(maid, related_names[i.__name__]) == False:
-            safe_flag = False
+#     for i in care_models:
+#         if hasattr(maid, related_names[i.__name__]) == False:
+#             safe_flag = False
         
-    care_complete = maid.care_complete
-    instance_model_class = instance.__class__
+#     care_complete = maid.care_complete
+#     instance_model_class = instance.__class__
 
-    if safe_flag == True:
-        if instance_model_class in care_models:
-            care_models.remove(instance_model_class)
-            try:
-                for i in care_models:
-                    for k,v in i.objects.get(maid=maid).__dict__.items():
-                        if k != 'other_remarks':
-                            if not v:
-                                raise Exception
-            except Exception as e:
-                care_complete = False
-            else:
-                care_complete = True
+#     if safe_flag == True:
+#         if instance_model_class in care_models:
+#             care_models.remove(instance_model_class)
+#             try:
+#                 for i in care_models:
+#                     for k,v in i.objects.get(maid=maid).__dict__.items():
+#                         if k != 'other_remarks':
+#                             if not v:
+#                                 raise Exception
+#             except Exception as e:
+#                 care_complete = False
+#             else:
+#                 care_complete = True
         
-        maid.care_complete = care_complete
-        maid.save()
-        if care_complete == True:
-            maid_main_responsibility(maid)
-            maid_completed(maid)
+#         maid.care_complete = care_complete
+#         maid.save()
+#         if care_complete == True:
+#             maid_main_responsibility(maid)
+            # maid_completed(maid)
 
 @receiver(post_save, sender=MaidEmploymentStatus)
 def maid_status_completed(sender, instance, created, **kwargs):
