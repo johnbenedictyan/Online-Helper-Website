@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
-            <div class="col">
+            <div class="col-1">
                 <h6 class="mb-0">S/N</h6>
             </div>
             <div class="col">
@@ -69,23 +69,23 @@
         </div>
         {% for maid in maids %}
         <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
-            <div class="col">
+            <div class="col-1">
                 <p class="mb-0">{{maid.pk}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{maid.name}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{maid.personal_details.get_country_of_origin_display}}</p>
+                <p class="mb-0">{{maid.get_country_of_origin_display}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{maid.get_maid_type_display}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{maid.get_maid_type_display}}</p>
+                <p class="mb-0">{{maid.passport_expiry|date:"j M Y"}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{maid.get_maid_type_display}}</p>
+                <p class="mb-0">{{maid.get_status_display}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
