@@ -86,15 +86,15 @@
                 <p class="mb-0">{{account.branch.name}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{account.user.last_login}}</p>
+                <p class="mb-0">{{account.user.last_login|date:"j M g:i A"}}</p>
             </div>
             <div class="col-1">
                 <p class="mb-0">
                     {% if account.get_ea_personnel_no %}
                         {% if account.published == True %}
-                        <i class="far fa-check-circle"></i>
+                        Yes
                         {% else %}
-                        <i class="far fa-times-circle"></i>
+                        No
                         {% endif %}
                     {% else %}
                     N.A.

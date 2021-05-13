@@ -14,7 +14,6 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
-from crispy_forms.layout import Button, Layout, Submit, Row, Column, Field, Hidden
 from agency.forms import (
     AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
 )

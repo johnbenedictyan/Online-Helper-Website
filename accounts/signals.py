@@ -1,8 +1,8 @@
 # Imports from python
-from datetime import datetime
+from django.utils import timezone
 
 # Imports from django
-from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver    
 
 # Imports from other apps
@@ -23,5 +23,5 @@ from .models import User
 
 @receiver(user_logged_in)
 def set_last_login(sender, user, request, **kwargs):    
-    user.last_login = datetime.now()
+    user.last_login = timezone.now()
     user.save()
