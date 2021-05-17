@@ -414,6 +414,14 @@ class MaidLanguageProficiencyChoices(models.TextChoices):
     INTERMEDIATE = 'INTER', _('Intermediate')
     ADVANCED = 'ADVAN', _('Advanced')
     
+class MaidExperienceChoices(models.TextChoices):
+    NO = 'NO', _('No Experience')
+    ONE = 'ONE', _('1 Year')
+    TWO = 'TWO', _('2 Years')
+    THREE = 'THREE', _('3 Years')
+    FOUR = 'FOUR', _('4 Years')
+    O_FIVE = 'O_FIVE', _('>5 Years')
+    
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes

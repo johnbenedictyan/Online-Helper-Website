@@ -260,7 +260,7 @@ class MaidForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'about_me',
+                    'work_permit',
                     css_class='form-group col-12'
                 ),
                 css_class='form-row form-group'

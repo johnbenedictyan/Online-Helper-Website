@@ -25,7 +25,8 @@ from .constants import (
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
     MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices,
     MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices,
-    MaidNationalityChoices, MaidLanguageProficiencyChoices
+    MaidNationalityChoices, MaidLanguageProficiencyChoices,
+    MaidExperienceChoices
 )
 
 # Utiliy Classes and Functions
@@ -301,6 +302,12 @@ class Maid(models.Model):
         max_length=350,
         null=True
     )
+    
+    work_permit = models.CharField(
+        verbose_name=_('Work Permit'),
+        max_length=255,
+        blank=False
+    )
 
     def __str__(self):
         return self.reference_number + ' - ' + self.name
@@ -427,8 +434,8 @@ class MaidEmploymentHistory(models.Model):
         default=MaidEmploymentCountry.SINGAPORE
     )
 
-    employer = models.CharField(
-        verbose_name=_('Employer'),
+    race_of_employer = models.CharField(
+        verbose_name=_('Race of employer'),
         max_length=255,
         blank=False
     )
@@ -559,11 +566,12 @@ class MaidInfantChildCare(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
+    experience = models.CharField(
         verbose_name=_('Experience with infant child care'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -617,11 +625,12 @@ class MaidElderlyCare(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
+    experience = models.CharField(
         verbose_name=_('Experience with elderly care'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -675,11 +684,12 @@ class MaidDisabledCare(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
+    experience = models.CharField(
         verbose_name=_('Experience with disabled care'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -720,11 +730,12 @@ class MaidGeneralHousework(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
+    experience = models.CharField(
         verbose_name=_('Experience with general housework'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -801,11 +812,12 @@ class MaidCooking(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
+    experience = models.CharField(
         verbose_name=_('Experience with cooking'),
         blank=False,
-        choices=TrueFalseChoices('Experience', 'No experience'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
