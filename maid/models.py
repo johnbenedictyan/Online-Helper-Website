@@ -306,7 +306,7 @@ class Maid(models.Model):
     work_permit = models.CharField(
         verbose_name=_('Work Permit'),
         max_length=255,
-        blank=False
+        null=True
     )
 
     def __str__(self):
@@ -570,7 +570,7 @@ class MaidInfantChildCare(models.Model):
         verbose_name=_('Experience with infant child care'),
         blank=False,
         max_length=6,
-        choices=MaidExperienceChoices,
+        choices=MaidExperienceChoices.choices,
         default=MaidExperienceChoices.NO
     )
 
@@ -629,7 +629,7 @@ class MaidElderlyCare(models.Model):
         verbose_name=_('Experience with elderly care'),
         blank=False,
         max_length=6,
-        choices=MaidExperienceChoices,
+        choices=MaidExperienceChoices.choices,
         default=MaidExperienceChoices.NO
     )
 
@@ -688,7 +688,7 @@ class MaidDisabledCare(models.Model):
         verbose_name=_('Experience with disabled care'),
         blank=False,
         max_length=6,
-        choices=MaidExperienceChoices,
+        choices=MaidExperienceChoices.choices,
         default=MaidExperienceChoices.NO
     )
 
@@ -734,7 +734,7 @@ class MaidGeneralHousework(models.Model):
         verbose_name=_('Experience with general housework'),
         blank=False,
         max_length=6,
-        choices=MaidExperienceChoices,
+        choices=MaidExperienceChoices.choices,
         default=MaidExperienceChoices.NO
     )
 
@@ -816,7 +816,7 @@ class MaidCooking(models.Model):
         verbose_name=_('Experience with cooking'),
         blank=False,
         max_length=6,
-        choices=MaidExperienceChoices,
+        choices=MaidExperienceChoices.choices,
         default=MaidExperienceChoices.NO
     )
 
