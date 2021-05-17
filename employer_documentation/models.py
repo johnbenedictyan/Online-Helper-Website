@@ -1236,18 +1236,12 @@ class EmployerDoc(models.Model):
         (23, _("23 months")),
         (24, _("24 months")),
     ]
-    SCHEME_CHOICES = [
-        ('SINGL', _("Employer Only")),
-        ('SPOUS', _("Employer and Spouse")),
-        ('JOINT', _("Joint Income")),
-        ('SPONS', _("Sponsorship")),
-    ]
 
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
-        unique=True
+        unique=True,
     )
     version = models.PositiveSmallIntegerField(
         editable=False,
@@ -1256,29 +1250,94 @@ class EmployerDoc(models.Model):
     case_ref_no = models.CharField(
         verbose_name=_("Case Reference Number"),
         max_length=20,
-        unique=True
+        unique=True,
+    )
+    agreement_date = models.DateField(
+        verbose_name=_("Contract Date"),
     )
     employer = models.ForeignKey(
         Employer,
+        verbose_name=_("Name of Employer"),
         on_delete=models.CASCADE,
-        related_name='rn_ed_employer'
+        related_name="rn_ed_employer",
     )
     fdw = models.ForeignKey(
         Maid,
-        verbose_name=_("Foreign Domestic Worker (FDW)"),
-        on_delete=models.RESTRICT
+        verbose_name=_("Name of FDW"),
+        on_delete=models.RESTRICT,
     )
-    agreement_date = models.DateField(
-        verbose_name=_('Agreement Date for Signed Documents'),
+    fdw_salary = models.DecimalField(
+        verbose_name=_("FDW Basic Salary"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_("FDW monthly salary per contract"),
     )
-    application_scheme = models.CharField(
-        verbose_name=_("Application scheme"),
-        max_length=5,
-        choices=SCHEME_CHOICES,
-        default=SCHEME_CHOICES[0][0],
+    fdw_loan = models.DecimalField(
+        verbose_name=_("FDW Loan Amount"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_("FDW loan amount per contract"),
+    )
+    fdw_off_days = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("FDW No. of off-days per month"),
+        choices=DAY_CHOICES[0:5],
+        default=4,
+        help_text=_("FDW off-days a month per contract"),
     )
 
     # Service Fee Schedule
+    is_new_case = models.BooleanField(
+        verbose_name=_("Type of case (Form A / Form B)"),
+        choices=TrueFalseChoices(
+            _('New case (Form A)'),
+            _('Replacement case (Form B)'),
+        ),
+        default=True,
+    )
+    fdw_replaced_name = models.CharField(
+        verbose_name=_("Name of FDW Replaced"),
+        max_length=50,
+        blank=True,
+        null=True,
+    )
+    fdw_replaced_passport_num = models.BinaryField(
+        verbose_name=_('Passport No. of FDW Replaced'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    fdw_replaced_passport_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    fdw_replaced_passport_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    b4_loan_transferred = models.DecimalField(
+        verbose_name=_("4. Loan Transferred"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        blank=True,
+        null=True,
+        help_text=_("Loan amount brought forward from FDW replaced"),
+    )
+
     b1_service_fee = models.DecimalField(
         verbose_name=_("1. Service Fee"),
         max_digits=7,
@@ -1445,7 +1504,7 @@ class EmployerDoc(models.Model):
         ],
         help_text=_('Personal loan incurred by FDW in overseas'),
     )
-    ca_deposit = models.DecimalField(
+    ca_deposit_amount = models.DecimalField(
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
         max_digits=7,
         decimal_places=2,
@@ -1455,34 +1514,8 @@ class EmployerDoc(models.Model):
         ],
         help_text=_('Deposit paid by Employer'),
     )
-
-    # If FDW is replacement, then additional fields
-    fdw_is_replacement = models.BooleanField(
-        verbose_name=_("Is this FDW a replacement? (Form A / Form B)"),
-        choices=TrueFalseChoices(
-            _('Yes, replacement (Form B)'),
-            _('No, not replacement (Form A)'),
-        ),
-        default=False,
-    )
-    fdw_replaced = models.ForeignKey(
-        Maid,
-        verbose_name=_("FDW Replaced* (required if FDW is replacement)"),
-        on_delete=models.RESTRICT,
-        blank=True,
-        null=True,
-        related_name='rn_ed_fdwreplaced',
-    )
-    b4_loan_transferred = models.DecimalField(
-        verbose_name=_("4. Loan Transferred* (required if FDW is replacement)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=True,
-        null=True,
+    ca_deposit_date = models.DateField(
+        verbose_name=_('Deposit Paid Date'),
     )
 
     # Service Agreement

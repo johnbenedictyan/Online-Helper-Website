@@ -1341,7 +1341,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDoc
-        exclude = ['employer']
+        exclude = ['fdw_replaced_passport_nonce, fdw_replaced_passport_tag']
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -1355,16 +1355,8 @@ class EmployerDocForm(forms.ModelForm):
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
             )
-            self.fields['fdw_replaced'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
         else:
             self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
-            self.fields['fdw_replaced'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_employee.agency)
             )
@@ -1374,14 +1366,29 @@ class EmployerDocForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                <h3 class="mb-3">Documentation Form</h3>
-                <h5 class="doc-section-header">General</h5>
+                <h5 class="doc-section-header">Case Information</h5>
             """),
             # General
             Row(
                 Column(
                     'case_ref_no',
                     css_class='form-group col-md-6'
+                ),
+                Column(
+                    Field(
+                        'agreement_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Contract date'
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'employer',
+                    css_class='form-group col-md-6',
                 ),
                 Column(
                     'fdw',
@@ -1391,26 +1398,65 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    Field(
-                        'agreement_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Agreement date'
-                    ),
-                    css_class='form-group col-md-6'
+                    'fdw_salary',
+                    css_class='form-group col-md-6',
                 ),
                 Column(
-                    'application_scheme',
+                    'fdw_loan',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'fdw_off_days',
                     css_class='form-group col-md-6',
-                    id='application-scheme',
                 ),
                 css_class='form-row'
             ),
 
-            # Service Fee Schedule - Form A
+            # Service Fee Schedule
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
+            """),
+
+            # Form B
+            Row(
+                Column(
+                    'is_new_case',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'fdw_replaced_name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'fdw_replaced_passport_num',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row',
+                id="form_b",
+            ),
+            Row(
+                Column(
+                    PrependedText(
+                        'b4_loan_transferred', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row',
+                id="form_b",
+            ),
+
+            # Form A
+            HTML(
+                """
+                <h6>Service Fee</h6>
             """),
             Row(
                 Column(
@@ -1422,6 +1468,11 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+
+            HTML(
+                """
+                <h6>Administrative Cost</h6>
+            """),
             Row(
                 Column(
                     PrependedText(
@@ -1546,6 +1597,11 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+
+            HTML(
+                """
+                <h6>Placement Fee</h6>
+            """),
             Row(
                 Column(
                     PrependedText(
@@ -1563,35 +1619,31 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+
+            HTML(
+                """
+                <h6>Deposit</h6>
+            """),
             Row(
                 Column(
                     PrependedText(
-                        'ca_deposit', '$',
+                        'ca_deposit_amount', '$',
                         min='0', max='10000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'fdw_is_replacement',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            # Replacement - Service Fee Schedule - Form B
-            Row(
-                Column(
-                    'fdw_replaced',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    PrependedText(
-                        'b4_loan_transferred', '$',
-                        min='0', max='1000',
+                    Field(
+                        'ca_deposit_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Deposit paid date'
                     ),
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
+
             # Service Agreement
             HTML(
                 """
@@ -1826,20 +1878,6 @@ class EmployerDocForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-    def clean_fdw_replaced(self):
-        is_replacement = self.cleaned_data.get('fdw_is_replacement')
-        cleaned_field = self.cleaned_data.get('fdw_replaced')
-
-        if not is_replacement:
-            return cleaned_field
-        elif is_replacement and not cleaned_field:
-            raise ValidationError('FDW being replaced is a required field')
-        elif cleaned_field==self.cleaned_data.get('fdw'):
-            raise ValidationError('Replacement FDW cannot be the same as new \
-                FDW')
-        else:
-            return cleaned_field
 
     def clean_b4_loan_transferred(self):
         is_replacement = self.cleaned_data.get('fdw_is_replacement')
