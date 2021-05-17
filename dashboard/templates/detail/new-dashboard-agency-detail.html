@@ -2,14 +2,14 @@
 {% block dashboard_section %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-10 text-right">
-            <a href="{% url 'dashboard_agency_information_update' %}" class="btn btn-primary">Update</a>
+        <div class="col-11 text-right mb-5">
+            <a href="{% url 'dashboard_agency_information_update' %}" class="btn btn-primary btn-dashboard-primary w-25">Edit</a>
         </div>
     </div>
-    <div class="row mx-2 mb-5">
-        <div class="col-4 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+    <div class="row mb-5">
+        <div class="col-5 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
-        <div class="col-4 offset-1 text-dark pt-4 pl-5" id="agencyInformationGroup">
+        <div class="col-5 offset-2 text-dark pt-4" id="agencyInformationGroup">
             <h4>{{agency.name}}</h4>
             <p>License Number: {{agency.license_number}}</p>
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
@@ -17,7 +17,7 @@
     </div>
     <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
     <div class="row">
-        <div class="col-md-6" id="agencyOutletDetailsGroup">
+        <div class="col-md-6 mb-4" id="agencyOutletDetailsGroup">
             <div class="row">
                 <div class="col mb-lg-3 mb-xl-4">
                     <div class="row">
@@ -105,7 +105,7 @@
             </div>
             {% endfor %}
         </div>
-        <div class="col-md-6" id="agencyOpeningHoursGroup">
+        <div class="col-md-6 mb-4" id="agencyOpeningHoursGroup">
             <h5>Opening Hours</h5>
             <p>Monday: {{agency.opening_hours.monday}}</p>
             <p>Tuesday: {{agency.opening_hours.tuesday}}</p>
@@ -116,11 +116,11 @@
             <p>Sunday: {{agency.opening_hours.sunday}}</p>
             <p>Public Holidays: {{agency.opening_hours.public_holiday}}</p>
         </div>
-        <div class="col-md-4" id="agencyProfileGroup">
+        <div class="col-md-6" id="agencyProfileGroup">
             <h5>Profile</h5>
             <p>{{agency.profile}}</p>
         </div>
-        <div class="col-md-4 offset-md-2" id="agencyServicesGroup">
+        <div class="col-md-6" id="agencyServicesGroup">
             <h5>Our Services</h5>
             <p>{{agency.services}}</p>
         </div>
