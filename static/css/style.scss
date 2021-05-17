@@ -29,6 +29,23 @@ $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
 $FONT_SIZE_SMALLER_SLIGHT: .9rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
+// Dashboard CSS Settings
+$DASHBOARD_FONT_SIZE_TEXT: .75rem;
+$DASHBOARD_FONT_SIZE_TABLE_HEADER: .875rem;
+$DASHBOARD_FONT_SIZE_BUTTON: .875rem;
+
+.dashboard-font-size{
+    &-text {
+        font-size: $DASHBOARD_FONT_SIZE_TEXT;
+    }
+    &-table-header {
+        font-size: $DASHBOARD_FONT_SIZE_TABLE_HEADER;
+    }
+    &-button {
+        font-size: $DASHBOARD_FONT_SIZE_BUTTON;
+    }
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -162,9 +179,9 @@ button.mini-faq-button {
 $PRIMARY_COLOUR: #0571bb;
 
 .new-side-nav-link{
-    color: black !important;
+    color: #1F4E78 !important;
     a {
-        color: black !important;
+        color: #1F4E78 !important;
     }
 
     &.active {
@@ -194,6 +211,9 @@ $PRIMARY_COLOUR: #0571bb;
     &:hover:not(.active) {
         font-weight: 600;
     }
+}
+a.mini-side-nav-link{
+    color: #1F4E78 !important;
 }
 
 $CUSTOM_CARD_BOX_SHADOW_SETTINGS: 0px 16px 40px;

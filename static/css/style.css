@@ -1,3 +1,15 @@
+.dashboard-font-size-text {
+  font-size: 0.75rem;
+}
+
+.dashboard-font-size-table-header {
+  font-size: 0.875rem;
+}
+
+.dashboard-font-size-button {
+  font-size: 0.875rem;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -121,11 +133,11 @@ button.mini-faq-button i {
 }
 
 .new-side-nav-link {
-  color: black !important;
+  color: #1F4E78 !important;
 }
 
 .new-side-nav-link a {
-  color: black !important;
+  color: #1F4E78 !important;
 }
 
 .new-side-nav-link.active {
@@ -156,6 +168,10 @@ button.mini-faq-button i {
 
 .mini-side-nav-link:hover:not(.active) {
   font-weight: 600;
+}
+
+a.mini-side-nav-link {
+  color: #1F4E78 !important;
 }
 
 body.dashboard-body {

@@ -100,10 +100,10 @@
                     <div class="row">
                         {% with request.resolver_match.url_name as url_name %}
                             {% if url_name in dashboard_side_nav_list%}
-                            <div id="dashboardSideNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-navbar-color text-dark collapse show">
+                            <div id="dashboardSideNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
                                 {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
                             </div>
-                            <div id="dashboardPageNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-pagebar-color text-dark">
+                            <div id="dashboardPageNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-pagebar-color text-dashboard-text-color">
                                 {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
                                     <div class="col">   
                                     {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
