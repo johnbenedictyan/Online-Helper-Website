@@ -63,15 +63,15 @@ urlpatterns = [
                         name='employer_sponsor_update_route'
                     ),
                     path(
-                        'joint-applicants/create/',
+                        'joint-applicant/create/',
                         views.EmployerJointApplicantCreateView.as_view(),
-                        name='employer_joint_applicants_create_route'
+                        name='employer_joint_applicant_create_route'
                     ),
-                    # path(
-                    #     'joint-applicants/<int:employersubdoc_pk>/update/',
-                    #     views.EmployerDocJointApplicantUpdateView.as_view(),
-                    #     name='employerdoc_joint_applicants_update_route'
-                    # ),
+                    path(
+                        'joint-applicant/<int:employerdoc_pk>/update/',
+                        views.EmployerDocJointApplicantUpdateView.as_view(),
+                        name='employer_joint_applicant_update_route'
+                    ),
                     path(
                         'documentation/',
                         include([
@@ -493,10 +493,10 @@ urlpatterns = [
                     #                     name='pdf_agency_sponsor_details'
                     #                 ),
                     #                 path(
-                    #                     'pdf/joint-applicants/',
+                    #                     'pdf/joint-applicant/',
                     #                     views.PdfGenericAgencyView.as_view(
-                    #                         template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicants.html',
-                    #                         content_disposition = 'inline; filename="joint-applicants-details.pdf"',
+                    #                         template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicant.html',
+                    #                         content_disposition = 'inline; filename="joint-applicant-details.pdf"',
                     #                     ),
                     #                     name='pdf_agency_joint_applicants'
                     #                 ),

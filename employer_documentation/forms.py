@@ -59,30 +59,16 @@ class EmployerForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        '''
-        Decryption
-        '''
+        # Decryption
         self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
-        self.initial.update({'employer_fin_num': ''})
-        self.initial.update({'employer_passport_num': ''})
-        self.initial.update({'spouse_nric_num': ''})
-        self.initial.update({'spouse_fin_num': ''})
-        self.initial.update({'spouse_passport_num': ''})
-        # if self.instance.employer_nric and self.instance.employer_nric!=b'':
-        #     plaintext = self.instance.get_nric_full()
-        #     self.initial.update({'employer_nric_num': plaintext})
-        # else:
-        #     self.initial.update({'employer_nric_num': ''})
-
-        # self.initial.update({'spouse_nric_num': self.instance.get_spouse_nric_full()})
+        self.initial.update({'employer_fin_num': self.instance.get_employer_fin()})
+        self.initial.update({'employer_passport_num': self.instance.get_employer_passport()})
+        self.initial.update({'spouse_nric_num': self.instance.get_spouse_nric_full()})
+        self.initial.update({'spouse_fin_num': self.instance.get_spouse_fin()})
+        self.initial.update({'spouse_passport_num': self.instance.get_spouse_passport()})
         
-
-        #  Remove employer_nric number from initial form display
-        # self.initial.update({'employer_nric_num':''})
-        
+        # CrispyForm Helper
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-form'
-
         self.helper.layout = Layout(
             HTML(
                 """
@@ -681,6 +667,23 @@ class EmployerSponsorForm(forms.ModelForm):
                             ),
                         ),
                         id="sponsor_1",
+                    ),
+
+                    # Is Sponsor 2 required?
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h5 class="my-3">Is Sponsor 2 required?</h5>
+                            """),
+                            Row(
+                                Column(
+                                    'sponsor_2_required',
+                                    css_class='form-group col-md-6',
+                                ),
+                                css_class='form-row',
+                            ),
+                        ),
                     ),
 
                     # Sponsor 2

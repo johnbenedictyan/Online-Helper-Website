@@ -13,12 +13,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 # From our apps
 from . import models, forms
 from .mixins import *
-from onlinemaid.constants import (
-    AG_OWNERS,
-    AG_ADMINS,
-    AG_MANAGERS,
-    AG_SALES,
-)
+from onlinemaid import constants as om_constants
 
 # Start of Views
 
@@ -46,25 +41,25 @@ class EmployerListView(
 
         # Further filter queryset to only show the employers that current user
         # has necessary permission to access
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             # If agency owner, return all employers belonging to agency
             return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_owner.agency
             )
-        elif self.agency_user_group==AG_ADMINS:
+        elif self.agency_user_group==om_constants.AG_ADMINS:
             # If agency administrator, return all employers belonging to agency
             return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_employee.agency
             )
-        elif self.agency_user_group==AG_MANAGERS:
+        elif self.agency_user_group==om_constants.AG_MANAGERS:
             # If agency manager, return all employers belonging to branch
             return queryset.filter(
                 agency_employee__branch
                 = self.request.user.agency_employee.branch
             )
-        elif self.agency_user_group==AG_SALES:
+        elif self.agency_user_group==om_constants.AG_SALES:
             # If agency owner, return all employers belonging to self
             return queryset.filter(
                 agency_employee = self.request.user.agency_employee
@@ -122,25 +117,25 @@ class DocListView(
         
         # Further filter queryset to only show the employers that current user
         # has necessary permission to access
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             # If agency owner, return all employers belonging to agency
             queryset = queryset.filter(
                 employer__agency_employee__agency
                 = self.request.user.agency_owner.agency
             )
-        elif self.agency_user_group==AG_ADMINS:
+        elif self.agency_user_group==om_constants.AG_ADMINS:
             # If agency administrator, return all employers belonging to agency
             queryset = queryset.filter(
                 employer__agency_employee__agency
                 = self.request.user.agency_employee.agency
             )
-        elif self.agency_user_group==AG_MANAGERS:
+        elif self.agency_user_group==om_constants.AG_MANAGERS:
             # If agency manager, return all employers belonging to branch
             queryset = queryset.filter(
                 employer__agency_employee__branch
                 = self.request.user.agency_employee.branch
             )
-        elif self.agency_user_group==AG_SALES:
+        elif self.agency_user_group==om_constants.AG_SALES:
             # If agency owner, return all employers belonging to self
             queryset = queryset.filter(
                 employer__agency_employee = self.request.user.agency_employee
@@ -240,7 +235,7 @@ class EmployerCreateView(
         return kwargs
 
     def form_valid(self, form):
-        if self.agency_user_group==AG_SALES:
+        if self.agency_user_group==om_constants.AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
@@ -409,32 +404,26 @@ class EmployerSponsorUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employerdoc_detail_route', kwargs={
-            'employer_pk': self.object.employer_doc.employer.pk,
-            'employerdoc_pk': self.object.employer_doc.pk,
-        })
+        return reverse_lazy('employer_list_route')
 
-# class EmployerDocJointApplicantUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocJointApplicant
-#     form_class = EmployerDocJointApplicantForm
-#     pk_url_kwarg = 'employersubdoc_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
+class EmployerDocJointApplicantUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.EmployerJointApplicant
+    form_class = forms.EmployerJointApplicantForm
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
-#     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
-#             'employer_pk': self.object.employer_doc.employer.pk,
-#             'employerdoc_pk': self.object.employer_doc.pk,
-#         })
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
 
 # class EmployerDocUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,

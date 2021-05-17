@@ -65,8 +65,7 @@ class Employer(models.Model):
     APPLICANT_TYPE_CHOICES = [
         ('SINGLE', _("Employer Only")),
         ('SPOUSE', _("Employer with Spouse")),
-        ('SPONS1', _("Employer with 1 Sponsor")),
-        ('SPONS2', _("Employer with 2 Sponsors")),
+        ('SPONSR', _("Employer with Sponsor(s)")),
         ('JNT_AP', _("Employer with Joint Applicant")),
     ]
     id = models.UUIDField(
@@ -227,6 +226,46 @@ class Employer(models.Model):
     def get_employer_nric_partial(self):
         plaintext = self.get_employer_nric_full()
         return 'x'*5 + plaintext[-4:] if plaintext else ''
+
+    def get_employer_fin(self):
+        return decrypt_string(
+            self.employer_fin_num,
+            settings.ENCRYPTION_KEY,
+            self.employer_fin_nonce,
+            self.employer_fin_tag,
+        )
+
+    def get_employer_passport(self):
+        return decrypt_string(
+            self.employer_passport_num,
+            settings.ENCRYPTION_KEY,
+            self.employer_passport_nonce,
+            self.employer_passport_tag,
+        )
+
+    def get_spouse_nric_full(self):
+        return decrypt_string(
+            self.spouse_nric_num,
+            settings.ENCRYPTION_KEY,
+            self.spouse_nric_nonce,
+            self.spouse_nric_tag,
+        )
+    
+    def get_spouse_fin(self):
+        return decrypt_string(
+            self.spouse_fin_num,
+            settings.ENCRYPTION_KEY,
+            self.spouse_fin_nonce,
+            self.spouse_fin_tag,
+        )
+
+    def get_spouse_passport(self):
+        return decrypt_string(
+            self.spouse_passport_num,
+            settings.ENCRYPTION_KEY,
+            self.spouse_passport_nonce,
+            self.spouse_passport_tag,
+        )
 
     def mobile_format_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
@@ -602,6 +641,16 @@ class EmployerSponsor(models.Model):
         null=True,
     )
 
+    # Sponsor required?
+    sponsor_2_required = models.BooleanField(
+        verbose_name=_('Is Sponsor 2 required?'),
+        default=False,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+    )
+
     # Sponsor 2 details
     sponsor_2_relationship = models.CharField(
         verbose_name=_("Sponsor 2 relationship with Employer"),
@@ -909,8 +958,6 @@ class EmployerJointApplicant(models.Model):
         verbose_name=_("Combined monthly income of Employer and Joint applicant"),
         choices=IncomeChoices.choices,
         default=IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
     )
     joint_applicant_worked_in_sg = models.BooleanField(
         verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
@@ -922,8 +969,6 @@ class EmployerJointApplicant(models.Model):
         help_text=_('''
             Have both Employer and Joint applicant worked in Singapore for the last 2 years?
         '''),
-        blank=True,
-        null=True,
     )
 
     joint_applicant_relationship = models.CharField(
@@ -931,65 +976,45 @@ class EmployerJointApplicant(models.Model):
         max_length=30,
         choices=RelationshipChoices.choices,
         default=RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True,
     )
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
         max_length=40,
-        blank=True,
-        null=True,
     )
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
         choices=GenderChoices.choices,
         default=GenderChoices.F,
-        blank=True,
-        null=True,
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
-        blank=True,
-        null=True,
     )
     joint_applicant_nric_num = models.BinaryField(
         verbose_name=_('Joint applicant NRIC'),
         editable=True,
-        blank=True,
-        null=True,
     )
     joint_applicant_nric_nonce = models.BinaryField(
         editable=True,
-        blank=True,
-        null=True,
     )
     joint_applicant_nric_tag = models.BinaryField(
         editable=True,
-        blank=True,
-        null=True,
     )
     joint_applicant_nationality = models.CharField(
         verbose_name=_("Joint applicant's nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True,
     )
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
         default=ResidentialStatusPartialChoices.SC,
-        blank=True,
-        null=True,
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
         max_length=100,
-        blank=True,
-        null=True,
     )
     joint_applicant_address_2 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 2"),
@@ -1000,16 +1025,12 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
         max_length=25,
-        blank=True,
-        null=True,
     )
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
