@@ -80,6 +80,17 @@ class Employer(models.Model):
         choices=APPLICANT_TYPE_CHOICES,
         default=APPLICANT_TYPE_CHOICES[0][0],
     )
+    household_details_required = models.BooleanField(
+        verbose_name=_('Applicable for subsidised levy?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+        help_text=_('''
+            If yes, please fill in household details section
+        '''),
+    )
     agency_employee = models.ForeignKey(
         AgencyEmployee,
         verbose_name=_('Assigned EA Personnel'),
@@ -401,17 +412,6 @@ class Employer(models.Model):
     )
 
     # Household Details
-    household_details_required = models.BooleanField(
-        verbose_name=_('Applicable for subsidised levy?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            If yes, please fill in household details section
-        '''),
-    )
     household_name = models.CharField(
         verbose_name=_("Household member's name"),
         max_length=40,

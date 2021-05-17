@@ -80,6 +80,13 @@ class EmployerForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
+                    'household_details_required',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     # Note: Current position in layout helper object is self.helper.layout.fields[1][1].
                     # If position is changed, MUST update 'del self.helper.layout.fields[1][1]' line
                     # as this removes this object from the layout helper.
@@ -284,31 +291,27 @@ class EmployerForm(forms.ModelForm):
                     """),
                     Row(
                         Column(
-                            'household_details_required',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
                             'household_name',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row'
-                    ),
-                    Row(
                         Column(
                             'household_id_type',
                             css_class='form-group col-md-6'
                         ),
-                        Column(
-                            'household_id_num',
-                            css_class='form-group col-md-6'
-                        ),
                         css_class='form-row'
                     ),
                     Row(
                         Column(
+                            'household_id_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
                             'household_date_of_birth',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row'
+                    ),
+                    Row(
                         Column(
                             'household_relationship',
                             css_class='form-group col-md-6'
@@ -352,7 +355,7 @@ class EmployerForm(forms.ModelForm):
                 )
             )
         else:
-            del self.helper.layout.fields[1][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            del self.helper.layout.fields[2][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
     
     def check_queryset(self, queryset, error_msg):
