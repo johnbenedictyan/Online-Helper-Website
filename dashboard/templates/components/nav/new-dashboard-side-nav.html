@@ -1,11 +1,11 @@
 <nav class="row sticky-top">
     {% with request.resolver_match.url_name as url_name %}
-    <div class="collapse show col" id="dashboardMainSideNavbar">
-        <div class="row">
+    <div class="col">
+        <!-- <div class="row">
             <div class="col" style="height: 2.5rem;">
                 &nbsp;
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col">
                 <div class="row new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}">
@@ -205,30 +205,5 @@
             </div>
         </div>
     </div>
-    {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
-        <div class="col">   
-        {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
-        </div>
-    {% endif %}
-    {% if url_name == 'dashboard_agency_detail' %}
-        <div class="col">   
-        {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
-        </div>
-    {% endif %}
-    {% if url_name == 'dashboard_agency_update' %}
-        <div class="col">   
-        {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
-        </div>
-    {% endif %}
-    {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' or url_name == 'dashboard_agency_outlet_details_update' %}
-        <div class="col">   
-        {% include 'components/nav/mini-navs/agency-update-mini-nav.html' %}
-        </div>
-    {% endif %}
-    {% if url_name == 'dashboard_employee_create' or url_name == 'dashboard_agency_employee_update' %}
-        <div class="col">   
-        {% include 'components/nav/mini-navs/agency-employee-mini-nav.html' %}
-        </div>
-    {% endif %}
     {% endwith %}
 </nav>
