@@ -1218,7 +1218,20 @@ class EmployerDoc(models.Model):
         help_text=_("FDW off-days a month per contract"),
     )
 
-    # Service Fee Schedule
+    def save(self, *args, **kwargs):
+        # Auto-increment document version number on every save
+        self.version += 1
+        super().save(*args, **kwargs)
+
+    def get_version(self):
+        return str(self.version).zfill(4)
+
+class DocServiceFeeSchedule(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_servicefeeschedule_ed'
+    )
     is_new_case = models.BooleanField(
         verbose_name=_("Type of case (Form A / Form B)"),
         choices=TrueFalseChoices(
@@ -1442,7 +1455,61 @@ class EmployerDoc(models.Model):
         verbose_name=_('Deposit Paid Date'),
     )
 
-    # Service Agreement
+    def calc_admin_cost(self):
+        # Method to calculate total administrative cost
+        return (
+            self.b1_service_fee
+            + self.b2a_work_permit_application_collection
+            + self.b2b_medical_examination_fee
+            + self.b2c_security_bond_accident_insurance
+            + self.b2d_indemnity_policy_reimbursement
+            + self.b2e_home_service
+            + self.b2f_counselling
+            + self.b2g_sip
+            + self.b2h_replacement_cost
+            + self.b2i_work_permit_renewal
+            + self.b2j1_other_services_fee
+            + self.b2j2_other_services_fee
+            + self.b2j3_other_services_fee
+        )
+
+    def calc_placement_fee(self):
+        # Method to calculate placement fee
+        return (
+            + self.b3_agency_fee
+            + self.b3_fdw_loan
+        )
+
+    def calc_total_fee(self):
+        # Method to calculate total fee
+        return self.calc_admin_cost() + self.calc_placement_fee()
+
+    def calc_bal(self):
+        # Method to calculate outstanding balance owed by employer
+        balance = (
+            self.calc_admin_cost()
+            + self.calc_placement_fee()
+            - self.ca_deposit_amount
+        )
+
+        subsequent_transactions = EmployerPaymentTransaction.objects.filter(
+            employer_doc=self
+        )
+
+        for transaction in subsequent_transactions:
+            if transaction.transaction_type == 'ADD':
+                balance += transaction.amount
+            elif transaction.transaction_type == 'SUB':
+                balance -= transaction.amount
+        
+        return balance
+
+class DocServiceAgreement(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_serviceagreement_ed'
+    )
     c1_3_handover_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
@@ -1592,7 +1659,12 @@ class EmployerDoc(models.Model):
         choices=ed_constants.DayChoices.choices
     )
 
-    # Employment Contract
+class DocEmploymentContract(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_employmentcontract_ed'
+    )
     c3_1_fdw_salary = models.DecimalField(
         verbose_name=_("3.1 FDW monthly salary"),
         max_digits=7,
@@ -1619,7 +1691,12 @@ class EmployerDoc(models.Model):
         choices=ed_constants.DayChoices.choices
     )
 
-    # Safety Agreement
+class DocSafetyAgreement(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_safetyagreement_ed'
+    )
     residential_dwelling_type = models.CharField(
         max_length=6,
         choices=[
@@ -1690,67 +1767,6 @@ class EmployerDoc(models.Model):
         ],
         default='not_required_to_clean_window_exterior',
     )
-
-    def save(self, *args, **kwargs):
-        # Auto-increment document version number on every save
-        self.version += 1
-
-        # Spouse is required if application_scheme is 'SPOUS'
-        self.spouse_required = True if self.application_scheme=='SPOUS' else False
-
-        super().save(*args, **kwargs)
-
-    def calc_admin_cost(self):
-        # Method to calculate total administrative cost
-        return (
-            self.b1_service_fee
-            + self.b2a_work_permit_application_collection
-            + self.b2b_medical_examination_fee
-            + self.b2c_security_bond_accident_insurance
-            + self.b2d_indemnity_policy_reimbursement
-            + self.b2e_home_service
-            + self.b2f_counselling
-            + self.b2g_sip
-            + self.b2h_replacement_cost
-            + self.b2i_work_permit_renewal
-            + self.b2j1_other_services_fee
-            + self.b2j2_other_services_fee
-            + self.b2j3_other_services_fee
-        )
-
-    def calc_placement_fee(self):
-        # Method to calculate placement fee
-        return (
-            + self.b3_agency_fee
-            + self.b3_fdw_loan
-        )
-
-    def calc_total_fee(self):
-        # Method to calculate total fee
-        return self.calc_admin_cost() + self.calc_placement_fee()
-
-    def calc_bal(self):
-        # Method to calculate outstanding balance owed by employer
-        balance = (
-            self.calc_admin_cost()
-            + self.calc_placement_fee()
-            - self.ca_deposit
-        )
-
-        subsequent_transactions = EmployerPaymentTransaction.objects.filter(
-            employer_doc=self
-        )
-
-        for transaction in subsequent_transactions:
-            if transaction.transaction_type == 'ADD':
-                balance += transaction.amount
-            elif transaction.transaction_type == 'SUB':
-                balance -= transaction.amount
-        
-        return balance
-
-    def get_version(self):
-        return str(self.version).zfill(4)
 
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
