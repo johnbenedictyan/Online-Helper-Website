@@ -23,15 +23,7 @@ from maid.models import Maid
 from maid.constants import FullNationsChoices
 
 # Same app
-from .constants import (
-    IncomeChoices,
-    RelationshipChoices,
-    GenderChoices,
-    ResidentialStatusFullChoices,
-    ResidentialStatusPartialChoices,
-    MaritalStatusChoices,
-    HouseholdIdTypeChoices,
-)
+from . import constants as ed_constants
 
 # Utiliy Classes and Functions
 class OverwriteStorage(FileSystemStorage):
@@ -105,8 +97,8 @@ class Employer(models.Model):
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
     )
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
@@ -158,8 +150,8 @@ class Employer(models.Model):
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        choices=ed_constants.ResidentialStatusFullChoices.choices,
+        default=ed_constants.ResidentialStatusFullChoices.SC,
     )
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
@@ -207,8 +199,8 @@ class Employer(models.Model):
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
+        choices=ed_constants.MaritalStatusChoices.choices,
+        default=ed_constants.MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -298,8 +290,8 @@ class Employer(models.Model):
     spouse_gender = models.CharField(
         verbose_name=_("Spouse's gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -319,8 +311,8 @@ class Employer(models.Model):
     spouse_residential_status = models.CharField(
         verbose_name=_("Spouse's residential status"),
         max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        choices=ed_constants.ResidentialStatusFullChoices.choices,
+        default=ed_constants.ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -405,8 +397,8 @@ class Employer(models.Model):
     # Income Details
     monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Employer monthly income / combined income with spouse"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
+        choices=ed_constants.IncomeChoices.choices,
+        default=ed_constants.IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
@@ -426,8 +418,8 @@ class Employer(models.Model):
     household_id_type = models.CharField(
         verbose_name=_("Household member ID type"),
         max_length=8,
-        choices=HouseholdIdTypeChoices.choices,
-        # default=HouseholdIdTypeChoices.NRIC,
+        choices=ed_constants.HouseholdIdTypeChoices.choices,
+        # default=ed_constants.HouseholdIdTypeChoices.NRIC,
         blank=True,
         null=True,
     )
@@ -440,8 +432,8 @@ class Employer(models.Model):
     household_relationship = models.CharField(
         verbose_name=_("Household member's relationship with Employer"),
         max_length=30,
-        choices=RelationshipChoices.choices,
-        # default=RelationshipChoices.DAUGHTER,
+        choices=ed_constants.RelationshipChoices.choices,
+        # default=ed_constants.RelationshipChoices.DAUGHTER,
         blank=True,
         null=True,
     )
@@ -458,8 +450,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_relationship = models.CharField(
         verbose_name=_("Sponsor 1 relationship with Employer"),
         max_length=30,
-        choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
+        choices=ed_constants.RelationshipChoices.choices,
+        default=ed_constants.RelationshipChoices.DAUGHTER,
     )
     sponsor_1_worked_in_sg = models.BooleanField(
         verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
@@ -476,8 +468,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
@@ -501,8 +493,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
-        choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        choices=ed_constants.ResidentialStatusPartialChoices.choices,
+        default=ed_constants.ResidentialStatusPartialChoices.SC,
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -534,8 +526,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
+        choices=ed_constants.MaritalStatusChoices.choices,
+        default=ed_constants.MaritalStatusChoices.SINGLE,
     )
 
     # Sponsor 1 spouse details
@@ -561,8 +553,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -582,8 +574,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
         max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        choices=ed_constants.ResidentialStatusFullChoices.choices,
+        default=ed_constants.ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -655,8 +647,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_relationship = models.CharField(
         verbose_name=_("Sponsor 2 relationship with Employer"),
         max_length=30,
-        choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
+        choices=ed_constants.RelationshipChoices.choices,
+        default=ed_constants.RelationshipChoices.DAUGHTER,
         blank=True,
         null=True,
     )
@@ -679,8 +671,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -716,8 +708,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
-        choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        choices=ed_constants.ResidentialStatusPartialChoices.choices,
+        default=ed_constants.ResidentialStatusPartialChoices.SC,
         blank=True,
         null=True,
     )
@@ -759,8 +751,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
+        choices=ed_constants.MaritalStatusChoices.choices,
+        default=ed_constants.MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -788,8 +780,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -809,8 +801,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
         max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        choices=ed_constants.ResidentialStatusFullChoices.choices,
+        default=ed_constants.ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -871,8 +863,8 @@ class EmployerSponsor(models.Model):
     # Income Details
     monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Sponsor's monthly income or sponsors' combined monthly income"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
+        choices=ed_constants.IncomeChoices.choices,
+        default=ed_constants.IncomeChoices.INCOME_3,
         blank=True,
         null=True,
     )
@@ -956,8 +948,8 @@ class EmployerJointApplicant(models.Model):
     )
     monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Combined monthly income of Employer and Joint applicant"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
+        choices=ed_constants.IncomeChoices.choices,
+        default=ed_constants.IncomeChoices.INCOME_3,
     )
     joint_applicant_worked_in_sg = models.BooleanField(
         verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
@@ -974,8 +966,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_relationship = models.CharField(
         verbose_name=_("Joint applicant's relationship with Employer"),
         max_length=30,
-        choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
+        choices=ed_constants.RelationshipChoices.choices,
+        default=ed_constants.RelationshipChoices.DAUGHTER,
     )
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
@@ -984,8 +976,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
@@ -1009,8 +1001,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
-        choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        choices=ed_constants.ResidentialStatusPartialChoices.choices,
+        default=ed_constants.ResidentialStatusPartialChoices.SC,
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
@@ -1029,8 +1021,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
+        choices=ed_constants.MaritalStatusChoices.choices,
+        default=ed_constants.MaritalStatusChoices.SINGLE,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
@@ -1056,8 +1048,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_spouse_gender = models.CharField(
         verbose_name=_("Joint applicant's spouse gender"),
         max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        choices=ed_constants.GenderChoices.choices,
+        default=ed_constants.GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -1077,8 +1069,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_spouse_residential_status = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
         max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        choices=ed_constants.ResidentialStatusFullChoices.choices,
+        default=ed_constants.ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -1169,74 +1161,6 @@ class EmployerJointApplicant(models.Model):
         )
 
 class EmployerDoc(models.Model):
-    DAY_CHOICES = [
-        (0, _("0 days")),
-        (1, _("1 day")),
-        (2, _("2 days")),
-        (3, _("3 days")),
-        (4, _("4 days")),
-        (5, _("5 days")),
-        (6, _("6 days")),
-        (7, _("7 days")),
-        (8, _("8 days")),
-        (9, _("9 days")),
-        (10, _("10 days")),
-        (11, _("11 days")),
-        (12, _("12 days")),
-        (13, _("13 days")),
-        (14, _("14 days")),
-        (15, _("15 days")),
-        (16, _("16 days")),
-        (17, _("17 days")),
-        (18, _("18 days")),
-        (19, _("19 days")),
-        (20, _("20 days")),
-        (21, _("21 days")),
-        (22, _("22 days")),
-        (23, _("23 days")),
-        (24, _("24 days")),
-        (25, _("25 days")),
-        (26, _("26 days")),
-        (27, _("27 days")),
-        (28, _("28 days")),
-    ]
-
-    WEEK_CHOICES = [
-        (0, _("0 weeks")),
-        (1, _("1 week")),
-        (2, _("2 weeks")),
-        (3, _("3 weeks")),
-        (4, _("4 weeks")),
-    ]
-
-    MONTH_CHOICES = [
-        (0, _("0 months")),
-        (1, _("1 month")),
-        (2, _("2 months")),
-        (3, _("3 months")),
-        (4, _("4 months")),
-        (5, _("5 months")),
-        (6, _("6 months")),
-        (7, _("7 months")),
-        (8, _("8 months")),
-        (9, _("9 months")),
-        (10, _("10 months")),
-        (11, _("11 months")),
-        (12, _("12 months")),
-        (13, _("13 months")),
-        (14, _("14 months")),
-        (15, _("15 months")),
-        (16, _("16 months")),
-        (17, _("17 months")),
-        (18, _("18 months")),
-        (19, _("19 months")),
-        (20, _("20 months")),
-        (21, _("21 months")),
-        (22, _("22 months")),
-        (23, _("23 months")),
-        (24, _("24 months")),
-    ]
-
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -1289,7 +1213,7 @@ class EmployerDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=DAY_CHOICES[0:5],
+        choices=ed_constants.DayChoices.choices[0:5],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
@@ -1413,7 +1337,7 @@ class EmployerDoc(models.Model):
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("2h. Cost for replacement within __ month(s)"),
-        choices=MONTH_CHOICES
+        choices=ed_constants.MonthChoices.choices
     )
     b2h_replacement_cost = models.DecimalField(
         verbose_name=_("2h. Cost for replacement"),
@@ -1522,7 +1446,7 @@ class EmployerDoc(models.Model):
     c1_3_handover_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
-        choices=DAY_CHOICES
+        choices=ed_constants.DayChoices.choices
     )
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
@@ -1569,25 +1493,25 @@ class EmployerDoc(models.Model):
     c4_1_replacement_period = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("4.1 Replacement FDW period validity (months)"),
-        choices=MONTH_CHOICES
+        choices=ed_constants.MonthChoices.choices
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
             __ day(s)"),
-        choices=DAY_CHOICES
+        choices=ed_constants.DayChoices.choices
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
             date FDW returned"),
-        choices=MONTH_CHOICES
+        choices=ed_constants.MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
             Service Agreement"),
-        choices=DAY_CHOICES
+        choices=ed_constants.DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = models.DecimalField(
         verbose_name=_("5.1.1 Failed FDW deployment refund amount"),
@@ -1602,7 +1526,7 @@ class EmployerDoc(models.Model):
         # days
         verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
             to Service Fee refund within __ day(s)"),
-        choices=DAY_CHOICES
+        choices=ed_constants.DayChoices.choices
     )
     c5_1_2_before_fdw_arrives_charge = models.DecimalField(
         verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
@@ -1628,13 +1552,13 @@ class EmployerDoc(models.Model):
         # weeks
         verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
             be transferred to new employer, refund within __ week(s)"),
-        choices=WEEK_CHOICES
+        choices=ed_constants.WeekChoices.choices
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
         verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
             be transferred to new employer, refund within __ week(s)"),
-        choices=WEEK_CHOICES
+        choices=ed_constants.WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = models.DecimalField(
         verbose_name=_("6.4 Accommodation cost per day"),
@@ -1665,7 +1589,7 @@ class EmployerDoc(models.Model):
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("13. Service Agreement termination notice (days)"),
-        choices=DAY_CHOICES
+        choices=ed_constants.DayChoices.choices
     )
 
     # Employment Contract
@@ -1692,7 +1616,7 @@ class EmployerDoc(models.Model):
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("4.1 Employment Contract termination notice (days)"),
-        choices=DAY_CHOICES
+        choices=ed_constants.DayChoices.choices
     )
 
     # Safety Agreement
