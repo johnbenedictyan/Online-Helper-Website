@@ -1341,7 +1341,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDoc
-        exclude = ['fdw_replaced_passport_nonce, fdw_replaced_passport_tag']
+        exclude = []
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -1362,13 +1362,12 @@ class EmployerDocForm(forms.ModelForm):
             )
 
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             HTML(
                 """
                 <h5 class="doc-section-header">Case Information</h5>
             """),
-            # General
+            
             Row(
                 Column(
                     'case_ref_no',
@@ -1415,7 +1414,49 @@ class EmployerDocForm(forms.ModelForm):
                 css_class='form-row'
             ),
 
-            # Service Fee Schedule
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class DocServiceFeeScheduleForm(forms.ModelForm):
+    class Meta:
+        model = models.DocServiceFeeSchedule
+        exclude = [
+            'employer_doc',
+            'fdw_replaced_passport_nonce',
+            'fdw_replaced_passport_tag',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
@@ -1644,7 +1685,57 @@ class EmployerDocForm(forms.ModelForm):
                 css_class='form-row'
             ),
 
-            # Service Agreement
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+    def clean_b4_loan_transferred(self):
+        is_new_case = self.cleaned_data.get('is_new_case')
+        cleaned_field = self.cleaned_data.get('b4_loan_transferred')
+
+        if is_new_case:
+            return cleaned_field
+        elif not is_new_case and not cleaned_field:
+            raise ValidationError('Loan being transferred is a required \
+                field')
+        else:
+            return cleaned_field
+
+class DocServiceAgreementForm(forms.ModelForm):
+    class Meta:
+        model = models.DocServiceAgreement
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-service-agreement">Service Agreement</h5>
@@ -1801,7 +1892,46 @@ class EmployerDocForm(forms.ModelForm):
                 # ),
                 css_class='form-row'
             ),
-            # Employment Contract
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class DocEmploymentContractForm(forms.ModelForm):
+    class Meta:
+        model = models.DocEmploymentContract
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
@@ -1827,7 +1957,46 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            # Safety Agreement
+            
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class DocSafetyAgreementForm(forms.ModelForm):
+    class Meta:
+        model = models.DocSafetyAgreement
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.FIELD_MAXLENGTH = 20
+
+        if self.agency_user_group==AG_OWNERS:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_owner.agency)
+            )
+        else:
+            self.fields['fdw'].queryset = (
+                Maid.objects.filter(agency=get_user_model().objects.get(
+                    pk=self.user_pk).agency_employee.agency)
+            )
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-safety-agreement">Safety Agreement</h5>
@@ -1865,6 +2034,7 @@ class EmployerDocForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+            
             # Submit
             Row(
                 Column(
@@ -1878,18 +2048,6 @@ class EmployerDocForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-    def clean_b4_loan_transferred(self):
-        is_replacement = self.cleaned_data.get('fdw_is_replacement')
-        cleaned_field = self.cleaned_data.get('b4_loan_transferred')
-
-        if not is_replacement:
-            return cleaned_field
-        elif is_replacement and not cleaned_field:
-            raise ValidationError('Loan being transferred is a required \
-                field')
-        else:
-            return cleaned_field
 
     def clean(self):
         window_exterior_location_verbose_name = models.EmployerDoc._meta.get_field('window_exterior_location').verbose_name
