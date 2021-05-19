@@ -1189,6 +1189,8 @@ class EmployerDoc(models.Model):
         Maid,
         verbose_name=_("Name of FDW"),
         on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
     )
     fdw_salary = models.DecimalField(
         verbose_name=_("FDW Basic Salary"),

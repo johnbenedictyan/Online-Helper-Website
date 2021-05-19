@@ -93,11 +93,11 @@ urlpatterns = [
                                         views.EmployerDocDetailView.as_view(),
                                         name='employerdoc_detail_route'
                                     ),
-                    #                 path(
-                    #                     'update/',
-                    #                     views.EmployerDocUpdateView.as_view(),
-                    #                     name='employerdoc_update_route'
-                    #                 ),
+                                    path(
+                                        'update/',
+                                        views.EmployerDocUpdateView.as_view(),
+                                        name='employerdoc_update_route'
+                                    ),
                     #                 path(
                     #                     'delete/',
                     #                     views.EmployerDocDeleteView.as_view(),

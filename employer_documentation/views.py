@@ -320,29 +320,26 @@ class EmployerDocCreateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
-    def form_valid(self, form):
-        form.instance.employer = models.Employer.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
-        )
-        if form.instance.fdw_clean_window_exterior==False:
-            form.instance.window_exterior_location = None
-            form.instance.grilles_installed_require_cleaning = None
-            form.instance.adult_supervision = None
+    # def form_valid(self, form):
+    #     form.instance.employer = models.Employer.objects.get(
+    #         pk = self.kwargs.get(self.pk_url_kwarg)
+    #     )
+    #     if form.instance.fdw_clean_window_exterior==False:
+    #         form.instance.window_exterior_location = None
+    #         form.instance.grilles_installed_require_cleaning = None
+    #         form.instance.adult_supervision = None
 
-        elif not form.instance.window_exterior_location=='OTHER':
-            form.instance.grilles_installed_require_cleaning = None
-            form.instance.adult_supervision = None
+    #     elif not form.instance.window_exterior_location=='OTHER':
+    #         form.instance.grilles_installed_require_cleaning = None
+    #         form.instance.adult_supervision = None
 
-        elif not form.instance.grilles_installed_require_cleaning:
-            form.instance.adult_supervision = None
+    #     elif not form.instance.grilles_installed_require_cleaning:
+    #         form.instance.adult_supervision = None
 
-        return super().form_valid(form)
+    #     return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employerdoc_detail_route', kwargs={
-            'employer_pk': self.object.employer.pk,
-            'employerdoc_pk': self.object.pk,
-        })
+        return reverse_lazy('employer_list_route')
 
 # class EmployerPaymentTransactionCreateView(
 #     CheckAgencyEmployeePermissionsMixin,
@@ -425,42 +422,39 @@ class EmployerDocJointApplicantUpdateView(
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
-# class EmployerDocUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDoc
-#     form_class = EmployerDocForm
-#     pk_url_kwarg = 'employerdoc_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
+class EmployerDocUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.EmployerDoc
+    form_class = forms.EmployerDocForm
+    pk_url_kwarg = 'employerdoc_pk'
+    template_name = 'employer_documentation/crispy_form.html'
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
-#     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
-#             'employer_pk': self.object.employer.pk,
-#             'employerdoc_pk': self.object.pk,
-#         })
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
     
-#     def form_valid(self, form):
-#         if form.instance.fdw_clean_window_exterior==False:
-#             form.instance.window_exterior_location = None
-#             form.instance.grilles_installed_require_cleaning = None
-#             form.instance.adult_supervision = None
+    # def form_valid(self, form):
+    #     if form.instance.fdw_clean_window_exterior==False:
+    #         form.instance.window_exterior_location = None
+    #         form.instance.grilles_installed_require_cleaning = None
+    #         form.instance.adult_supervision = None
 
-#         elif not form.instance.window_exterior_location=='OTHER':
-#             form.instance.grilles_installed_require_cleaning = None
-#             form.instance.adult_supervision = None
+    #     elif not form.instance.window_exterior_location=='OTHER':
+    #         form.instance.grilles_installed_require_cleaning = None
+    #         form.instance.adult_supervision = None
 
-#         elif not form.instance.grilles_installed_require_cleaning:
-#             form.instance.adult_supervision = None
+    #     elif not form.instance.grilles_installed_require_cleaning:
+    #         form.instance.adult_supervision = None
 
-#         return super().form_valid(form)
+    #     return super().form_valid(form)
 
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
