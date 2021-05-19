@@ -21,12 +21,7 @@ from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, Une
 
 # Imports from local apps
 from . import models
-from onlinemaid.constants import (
-    AG_OWNERS,
-    AG_ADMINS,
-    AG_MANAGERS,
-    AG_SALES,
-)
+from onlinemaid import constants as om_constants
 from onlinemaid.helper_functions import encrypt_string
 from agency.models import AgencyEmployee
 from maid.models import Maid
@@ -336,19 +331,19 @@ class EmployerForm(forms.ModelForm):
             )
         )
 
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_owner.agency
                 )
             )
-        elif self.agency_user_group==AG_ADMINS:
+        elif self.agency_user_group==om_constants.AG_ADMINS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_employee.agency
                 )
             )
-        elif self.agency_user_group==AG_MANAGERS:
+        elif self.agency_user_group==om_constants.AG_MANAGERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     branch=self.user_obj.agency_employee.branch
@@ -362,7 +357,7 @@ class EmployerForm(forms.ModelForm):
         for employer_obj in queryset:
             if not employer_obj==self.instance:
                 # Check if it belongs to current user's agency
-                if self.agency_user_group==AG_OWNERS:
+                if self.agency_user_group==om_constants.AG_OWNERS:
                     if (
                         employer_obj.agency_employee.agency
                         == self.user_obj.agency_owner.agency
@@ -1350,7 +1345,7 @@ class EmployerDocForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -1444,7 +1439,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -1723,7 +1718,7 @@ class DocServiceAgreementForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -1919,7 +1914,7 @@ class DocEmploymentContractForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -1984,7 +1979,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==AG_OWNERS:
+        if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -2034,7 +2029,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            
+
             # Submit
             Row(
                 Column(
@@ -2604,7 +2599,7 @@ class VerifyUserTokenForm(forms.ModelForm):
                 ) ############################################## TO BE UPDATED
             )
         ):
-            verification_token = secrets.token_urlsafe(32)
+            verification_token = secrets.token_urlsafe(128)
             self.cleaned_data[self.token_field_name] = verification_token
             self.session['signature_token'] = verification_token
             self.session.set_expiry(60*30) # Session expires in 30 mins

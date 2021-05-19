@@ -1821,7 +1821,7 @@ class EmployerDocSig(models.Model):
         unique=True
     )
     employer_token = models.CharField(
-        max_length=50,
+        max_length=128,
         blank=True,
         null=True
     )
@@ -1831,7 +1831,7 @@ class EmployerDocSig(models.Model):
         unique=True
     )
     fdw_token = models.CharField(
-        max_length=50,
+        max_length=128,
         blank=True,
         null=True
     )
