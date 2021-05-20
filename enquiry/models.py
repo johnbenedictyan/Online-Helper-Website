@@ -45,14 +45,6 @@ class GeneralEnquiry(models.Model):
         max_length=255
     )
 
-    mode_of_contact = models.CharField(
-        verbose_name=_('Mode of Contact'),
-        blank=False,
-        choices=MODE_OF_CONTACT_CHOICES,
-        default=MOBILE_MODE,
-        max_length=6
-    )
-
     property_type = models.CharField(
         verbose_name=_('Type of Property'),
         blank=False,
@@ -87,26 +79,13 @@ class GeneralEnquiry(models.Model):
         max_length=3
     )
 
-    maid_age_group = models.CharField(
-        verbose_name=_('Maid Age Group'),
-        blank=False,
-        choices=MAID_AGE_CHOICES,
-        default=MAID_AGE_23_TO_29,
-        max_length=8
-    )
-
     no_of_family_members = models.IntegerField(
         verbose_name=_('Number of Family Members'),
         blank=False
     )
 
-    no_of_below_12 = models.IntegerField(
-        verbose_name=_('Number of Children below 12'),
-        blank=False
-    )
-
-    no_of_babies = models.IntegerField(
-        verbose_name=_('Number of Babies'),
+    no_of_below_5 = models.IntegerField(
+        verbose_name=_('Number of Children below 5'),
         blank=False
     )
 
@@ -208,9 +187,50 @@ class MaidEnquiry(models.Model):
         related_name='enquiries'
     )
     
-    remarks = models.TextField(
-        verbose_name=_('Remarks'),
+    name = models.CharField(
+        verbose_name=_('Name'),
+        blank=False,
+        max_length=100
+    )
+
+    mobile_number = models.CharField(
+        verbose_name=_('Mobile Number'),
+        blank=False,
+        max_length=100
+    )
+
+    email = models.EmailField(
+        verbose_name=_('Email'),
+        blank=False,
+        max_length=255
+    )
+
+    property_type = models.CharField(
+        verbose_name=_('Type of Property'),
+        blank=False,
+        choices=PROPERTY_CHOICES,
+        default=PROPERTY_2_ROOM_HDB,
+        max_length=7
+    )
+
+    no_of_family_members = models.IntegerField(
+        verbose_name=_('Number of Family Members'),
         blank=False
+    )
+
+    no_of_below_5 = models.IntegerField(
+        verbose_name=_('Number of Children below 5'),
+        blank=False
+    )
+
+    remarks = models.CharField(
+        verbose_name=_('Remarks'),
+        blank=False,
+        max_length=3000,
+        validators=[
+            validate_links, 
+            # validate_obscene_language
+        ]
     )
 
     active = models.BooleanField(

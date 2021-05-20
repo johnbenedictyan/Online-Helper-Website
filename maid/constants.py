@@ -324,8 +324,6 @@ class MaidResponsibilityChoices(models.TextChoices):
     MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI', _('Care for Infants/Children')
     MAID_RESP_CARE_FOR_ELDERLY          = 'CFE', _('Care for the Elderly')
     MAID_RESP_CARE_FOR_DISABLED         = 'CFD', _('Care for the Disabled')
-    MAID_RESP_CARE_FOR_PETS             = 'CFP', _('Care for Pets')
-    MAID_RESP_GARDENING                 = 'GAR', _('Gardening')
 
 class MaidCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Experience in own country')
