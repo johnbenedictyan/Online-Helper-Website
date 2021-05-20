@@ -2116,10 +2116,9 @@ class DocSafetyAgreementForm(forms.ModelForm):
 class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDocSig
-        fields = ['employer_slug', 'fdw_slug']
+        fields = ['employer_slug']
         labels = {
             'employer_slug': _('Employer signature URL'),
-            'fdw_slug': _('FDW signature URL'),
         }
 
     def __init__(self, *args, **kwargs):
@@ -2178,9 +2177,6 @@ class EmployerDocSigSlugForm(forms.ModelForm):
         )
 
     def clean_employer_slug(self):
-        return uuid.uuid4()
-
-    def clean_fdw_slug(self):
         return uuid.uuid4()
 
 class EmployerDocMaidStatusForm(forms.ModelForm):
@@ -2533,7 +2529,7 @@ class VerifyUserTokenForm(forms.ModelForm):
             #         int(self.cleaned_data.get('validation_2', 0)) ==
             #         int(1)
             #     ) ############################################## TO BE UPDATED
-            # )
+            )
         ):
             verification_token = secrets.token_urlsafe(128)
             self.cleaned_data[self.token_field_name] = verification_token
