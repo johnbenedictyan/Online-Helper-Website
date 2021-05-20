@@ -17,6 +17,25 @@
             </a>
         </div>
     </div>
+    {% if object.rn_sponsor_employer %}
+    <div class="row">
+        <div class="col px-0">
+            <a class="nav-link side-nav-link {% if url_name == 'employer_sponsor_update_route' %}active{% endif %}" href="{% url 'employer_sponsor_update_route' employer_pk=object.pk employerdoc_pk=object.rn_sponsor_employer.pk %}">
+            <p class="m-1 pl-2">Sponsor Update</p>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if object.rn_ja_employer %}
+    <div class="row">
+        <div class="col px-0">
+            <a class="nav-link side-nav-link {% if url_name == 'employer_joint_applicant_update_route' %}active{% endif %}" href="{% url 'employer_joint_applicant_update_route' employer_pk=object.pk employerdoc_pk=object.rn_ja_employer.pk %}">
+            <p class="m-1 pl-2">Joint Applicant Update</p>
+            </a>
+        </div>
+    </div>
+    {% endif %}
 {% endif %}
 {% endblock sidenav_extra %}
 

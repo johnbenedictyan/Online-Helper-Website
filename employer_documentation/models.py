@@ -440,7 +440,7 @@ class Employer(models.Model):
 
 ## Sponsors
 class EmployerSponsor(models.Model):
-    employer = models.ForeignKey(
+    employer = models.OneToOneField(
         Employer,
         on_delete=models.CASCADE,
         related_name='rn_sponsor_employer'
@@ -941,7 +941,7 @@ class EmployerSponsor(models.Model):
 
 ## Joint Applicants
 class EmployerJointApplicant(models.Model):
-    employer = models.ForeignKey(
+    employer = models.OneToOneField(
         Employer,
         on_delete=models.CASCADE,
         related_name='rn_ja_employer'
