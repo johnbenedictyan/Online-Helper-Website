@@ -78,26 +78,6 @@ class PotentialEmployer(models.Model):
         primary_key=True
     )
 
-    name = models.CharField(
-        verbose_name=_('Name'),
-        max_length=255,
-        blank=False
-    )
-
-    contact_number = models.CharField(
-        verbose_name=_('Contact Number'),
-        max_length=10,
-        blank=False,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
-    )
-
     def __str__(self):
         return self.name
 

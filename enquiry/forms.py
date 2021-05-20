@@ -31,20 +31,11 @@ class GeneralEnquiryForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple()
     )
     
-    religion = forms.ChoiceField(
-        label=_('Religion'),
-        choices=MaidReligionChoices.choices,
-        initial=MaidReligionChoices.NONE,
-        required=True
-    )
-    
     consent = forms.BooleanField(
         label="""
-            I acknowledge that I have read and understood the Personal Data 
-            Protection Notice. By submitting this enquiry form, I consent to 
-            the collection, use and disclosure of my personal data by 
-            Online Maid Pte Ltd to employment agencies that are listed in the 
-            platform
+            By submitting this enquiry form, I consent to the collection, 
+            use and disclosure of my personal data by Online Maid Pte Ltd to
+            agencies that are listed on this platform.
         """
     )
 
@@ -76,9 +67,9 @@ class GeneralEnquiryForm(forms.ModelForm):
                     'placeholder': 'Number of Family Members'
                 }
             ),
-            'no_of_below_12': forms.NumberInput(
+            'no_of_below_5': forms.NumberInput(
                 attrs={
-                    'placeholder': 'Number of Children below 12'
+                    'placeholder': 'Number of Children below 5'
                 }
             ),
             'no_of_babies': forms.NumberInput(
@@ -115,29 +106,18 @@ class GeneralEnquiryForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'mode_of_contact',
+                    'property_type',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
-                Column(
-                    'property_type',
-                    css_class='form-group col-md-6'
-                ),
                 Column(
                     'no_of_family_members',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
-                    'no_of_below_12',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'no_of_babies',
+                    'no_of_below_5',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -157,17 +137,6 @@ class GeneralEnquiryForm(forms.ModelForm):
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'maid_age_group',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'religion',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -199,16 +168,16 @@ class GeneralEnquiryForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            Row(
-                Column(
-                    Field(
-                        'captcha',
-                        type='hidden'
-                    ),
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
+            # Row(
+            #     Column(
+            #         Field(
+            #             'captcha',
+            #             type='hidden'
+            #         ),
+            #         css_class='form-group col'
+            #     ),
+            #     css_class='form-row'
+            # ),
             Row(
                 Column(
                     'consent',
@@ -307,6 +276,14 @@ class AgencyEnquiryForm(forms.ModelForm):
         )
 
 class MaidEnquiryForm(forms.ModelForm):
+    consent = forms.BooleanField(
+        label="""
+            By submitting this enquiry form, I consent to the collection, 
+            use and disclosure of my personal data by Online Maid Pte Ltd to
+            agencies that are listed on this platform.
+        """
+    )
+
     class Meta:
         model = MaidEnquiry
         exclude = ['potential_employer', 'maids', 'last_modified']
@@ -326,6 +303,13 @@ class MaidEnquiryForm(forms.ModelForm):
                 Column(
                     'remarks',
                     css_class='form-group'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'consent',
+                    css_class='form-group col'
                 ),
                 css_class='form-row'
             ),

@@ -264,6 +264,34 @@ class DashboardMaidDetail(DashboardDetailView):
             agency__pk = self.agency_id
         )
 
+class DashboardEmployerDetail(DashboardDetailView):
+    context_object_name = 'employer'
+    # model = Maid
+    template_name = 'detail/new-dashboard-employer-detail.html'
+
+    def get_object(self):
+        pass
+        # return Maid.objects.get(
+        #     pk = self.kwargs.get(
+        #         self.pk_url_kwarg
+        #     ),
+        #     agency__pk = self.agency_id
+        # )
+
+class DashboardCaseDetail(DashboardDetailView):
+    context_object_name = 'case'
+    # model = Maid
+    template_name = 'detail/new-dashboard-case-detail.html'
+
+    def get_object(self):
+        pass
+        # return Maid.objects.get(
+        #     pk = self.kwargs.get(
+        #         self.pk_url_kwarg
+        #     ),
+        #     agency__pk = self.agency_id
+        # )
+
 # Form Views
 class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
                           FDWLimitMixin, SuccessMessageMixin, FormView):

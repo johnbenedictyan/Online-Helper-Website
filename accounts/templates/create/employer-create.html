@@ -19,16 +19,21 @@
     </div>
     <div class="row">
         <div class="col-10 col-lg-8 col-xxxl-6 offset-1 offset-lg-2 offset-xxxl-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-8 col-xl-10 offset-md-2 offset-xl-1 text-center mb-3 py-xl-3">
                     <h3>Log in to view biodata</h3>
                     <p>In accordance to EA Licence Condition #17, users must sign up to view information of domestic helpers.</p>
                     <p class="small mb-0">Alternatively, users may send in their enquiries, which does not require a sign up.</p>
                     <p class="small">Agencies on this platform will revert within 1-2 working days.</p>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-md-5 py-md-4">
+                    <div class="row">
+                        <div class="col mb-2">
+                            <h5>Sign up with email</h5>
+                        </div>
+                    </div>
                     <form method="post" enctype="multipart/form-data">
                         {% crispy form %}
                     </form>
@@ -43,7 +48,7 @@
                         <div class="col text-center">
                             <div class="row">
                                 <div class="col">
-                                    <p class="text-muted">OR LOG IN WITH</p>
+                                    <p class="text-muted">Or login with</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -65,11 +70,24 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col my-4">
+                    <p class="small text-dark mb-0">
+                        In accordance to EA Licence Condition #17, users must sign up to view information of domestic helpers.
+                    </p>
+                    <p class="small text-dark">
+                        Alternatively, users may send in their enquiries, which does not require a sign up.
+                        Agencies on this platform will revert within 1-2 working days.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col text-center my-2 my-md-3">
                     <div class="row">
-                        <div class="col-md-5 my-2 mt-4 mx-auto">
-                            <p class="text-muted">Agencies</p>
-                            <a href="{% url 'sign_in' %}" class="btn btn-outline-primary w-100">Log In Here</a>
+                        <div class="col-12">
+                            <p class="small text-dark">The form above is for users. If you are an agency, please click via the link below to register with us.</p>
+                        </div>
+                        <div class="col-md-5 my-3 mx-auto">
+                            <a href="{% url 'agency_sign_up' %}" class="btn btn-outline-primary w-100">Create an agency account</a>
                         </div>
                     </div>
                 </div>
