@@ -99,7 +99,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         {% with request.resolver_match.url_name as url_name %}
-                            {% if url_name in dashboard_side_nav_list%}
+                            {% if url_name in dashboard_side_nav_list %}
                             <div id="dashboardSideNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
                                 {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
                             </div>
@@ -127,6 +127,11 @@
                                 {% if url_name == 'dashboard_employee_create' or url_name == 'dashboard_agency_employee_update' %}
                                     <div class="col">   
                                     {% include 'components/nav/mini-navs/agency-employee-mini-nav.html' %}
+                                    </div>
+                                {% endif %}
+                                {% if url_name == 'dashboard_employer_detail' %}
+                                    <div class="col">   
+                                    {% include 'components/nav/mini-navs/employer-profile-mini-nav.html' %}
                                     </div>
                                 {% endif %}
                             </div>
