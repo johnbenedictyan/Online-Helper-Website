@@ -127,18 +127,18 @@ class AgencySignInForm(AuthenticationForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'username',
+                    'agency_license_number',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'password',
+                    'username',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'agency_license_number',
+                    'password',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
