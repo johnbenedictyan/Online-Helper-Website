@@ -15,7 +15,8 @@ from .views import (
 
 ## Detail Views
 from .views import (
-    DashboardAgencyDetail, DashboardMaidDetail, DashboardEmployerDetail
+    DashboardAgencyDetail, DashboardMaidDetail, DashboardEmployerDetail,
+    DashboardCaseDetail
 )
 
 ## Form Views
@@ -100,6 +101,11 @@ urlpatterns = [
                 'employers/<int:pk>/',
                 DashboardEmployerDetail.as_view(),
                 name='dashboard_employer_detail'
+            ),
+            path(
+                'cases/<int:pk>/',
+                DashboardCaseDetail.as_view(),
+                name='dashboard_case_detail'
             )
         ])
     ),

@@ -60,7 +60,10 @@ def dashboard_side_nav(request):
         'dashboard_maid_loan_update',
 
         #Employers
-        'dashboard_employer_detail'
+        'dashboard_employer_detail',
+
+        #Cases
+        'dashboard_case_detail'
     ]
     return {
         'dashboard_side_nav_list' : dashboard_side_nav_list

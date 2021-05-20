@@ -134,6 +134,11 @@
                                     {% include 'components/nav/mini-navs/employer-profile-mini-nav.html' %}
                                     </div>
                                 {% endif %}
+                                {% if url_name == 'dashboard_case_detail' %}
+                                    <div class="col">   
+                                    {% include 'components/nav/mini-navs/case-profile-mini-nav.html' %}
+                                    </div>
+                                {% endif %}
                             </div>
                             {% else %}
                             <div id="dashboardSideNavWrapper" class="col-md-3 col-lg-2 bg-dashboard-navbar-color text-dark">
