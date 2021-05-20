@@ -35,7 +35,7 @@ urlpatterns = [
                 name='sales_list_route'
             ),
             path(
-                '<uuid:employer_pk>/',
+                '<uuid:level_0_pk>/',
                 include([
                     path(
                         'detail/',
@@ -58,7 +58,7 @@ urlpatterns = [
                         name='employer_sponsor_create_route'
                     ),
                     path(
-                        'sponsor/<int:employerdoc_pk>/update/',
+                        'sponsor/<int:level_1_pk>/update/',
                         views.EmployerSponsorUpdateView.as_view(),
                         name='employer_sponsor_update_route'
                     ),
@@ -68,7 +68,7 @@ urlpatterns = [
                         name='employer_joint_applicant_create_route'
                     ),
                     path(
-                        'joint-applicant/<int:employerdoc_pk>/update/',
+                        'joint-applicant/<int:level_1_pk>/update/',
                         views.EmployerDocJointApplicantUpdateView.as_view(),
                         name='employer_joint_applicant_update_route'
                     ),
@@ -86,7 +86,7 @@ urlpatterns = [
                                 name='employerdoc_list_route'
                             ),
                             path(
-                                '<uuid:employerdoc_pk>/',
+                                '<uuid:level_1_pk>/',
                                 include([
                                     path(
                                         'detail/',
@@ -98,23 +98,28 @@ urlpatterns = [
                                         views.EmployerDocUpdateView.as_view(),
                                         name='employerdoc_update_route'
                                     ),
+                                    path(
+                                        'service-fee/create/',
+                                        views.DocServiceFeeScheduleCreateView.as_view(),
+                                        name='employerdoc_update_route'
+                                    ),
                     #                 path(
                     #                     'delete/',
                     #                     views.EmployerDocDeleteView.as_view(),
                     #                     name='employerdoc_delete_route'
                     #                 ),
                     #                 path(
-                    #                     'status/<int:employersubdoc_pk>/update/',
+                    #                     'status/<int:level_2_pk>/update/',
                     #                     views.EmployerDocMaidStatusUpdateView.as_view(),
                     #                     name='employerdoc_status_update_route'
                     #                 ),
                     #                 path(
-                    #                     'deployment/<int:employersubdoc_pk>/update/',
+                    #                     'deployment/<int:level_2_pk>/update/',
                     #                     views.EmployerDocMaidDeploymentUpdateView.as_view(),
                     #                     name='employerdoc_deployment_update_route'
                     #                 ),
                     #                 path(
-                    #                     'job-order/<int:employersubdoc_pk>/update/',
+                    #                     'job-order/<int:level_2_pk>/update/',
                     #                     views.JobOrderUpdateView.as_view(),
                     #                     name='joborder_update_route'
                     #                 ),
@@ -129,12 +134,12 @@ urlpatterns = [
                     #                     name='employer_payment_create_route'
                     #                 ),
                     #                 path(
-                    #                     'payment/<int:employersubdoc_pk>/update/',
+                    #                     'payment/<int:level_2_pk>/update/',
                     #                     views.EmployerPaymentTransactionUpdateView.as_view(),
                     #                     name='employer_payment_update_route'
                     #                 ),
                     #                 path(
-                    #                     '<int:employersubdoc_pk>/employer-url/',
+                    #                     '<int:level_2_pk>/employer-url/',
                     #                     views.EmployerDocSigSlugUpdateView.as_view(
                     #                         model_field_name='employer_slug',
                     #                         form_fields=['employer_slug'],
@@ -143,7 +148,7 @@ urlpatterns = [
                     #                     name='sig_slug_employer_update_route'
                     #                 ),
                     #                 path(
-                    #                     '<int:employersubdoc_pk>/fdw-url/',
+                    #                     '<int:level_2_pk>/fdw-url/',
                     #                     views.EmployerDocSigSlugUpdateView.as_view(
                     #                         model_field_name='fdw_slug',
                     #                         form_fields=['fdw_slug'],
@@ -152,7 +157,7 @@ urlpatterns = [
                     #                     name='sig_slug_fdw_update_route'
                     #                 ),
                     #                 path(
-                    #                     'signature/<int:employersubdoc_pk>/',
+                    #                     'signature/<int:level_2_pk>/',
                     #                     include([
                     #                         path(
                     #                             'agent-access/employer/update/',
@@ -272,7 +277,7 @@ urlpatterns = [
                     #                             'service-fees/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f01_service_fee_schedule',
                     #                             ),
                     #                             name='pdf_archive_service_fees'
@@ -281,7 +286,7 @@ urlpatterns = [
                     #                             'service-agreement/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f03_service_agreement',
                     #                             ),
                     #                             name='pdf_archive_service_agreement'
@@ -290,7 +295,7 @@ urlpatterns = [
                     #                             'employment-contract/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f04_employment_contract',
                     #                             ),
                     #                             name='pdf_archive_employment_contract'
@@ -299,7 +304,7 @@ urlpatterns = [
                     #                             'repayment-schedule/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f05_repayment_schedule',
                     #                             ),
                     #                             name='pdf_archive_repayment_schedule'
@@ -308,7 +313,7 @@ urlpatterns = [
                     #                             'rest-day-agreement/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f06_rest_day_agreement',
                     #                             ),
                     #                             name='pdf_archive_rest_day_agreement'
@@ -317,7 +322,7 @@ urlpatterns = [
                     #                             'handover-checklist/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f08_handover_checklist',
                     #                             ),
                     #                             name='pdf_archive_handover_checklist'
@@ -326,7 +331,7 @@ urlpatterns = [
                     #                             'transfer-consent/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f09_transfer_consent',
                     #                             ),
                     #                             name='pdf_archive_transfer_consent'
@@ -335,7 +340,7 @@ urlpatterns = [
                     #                             'work-pass-authorisation/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f10_work_pass_authorisation',
                     #                             ),
                     #                             name='pdf_archive_work_pass_authorisation'
@@ -344,7 +349,7 @@ urlpatterns = [
                     #                         #     'security-bond/',
                     #                         #     views.PdfFileAgencyView.as_view(
                     #                         #         model=models.EmployerDoc,
-                    #                         #         pk_url_kwarg='employerdoc_pk',
+                    #                         #         pk_url_kwarg='level_1_pk',
                     #                         #         field_name='f11_security_bond',
                     #                         #     ),
                     #                         #     name='pdf_archive_security_bond'
@@ -353,7 +358,7 @@ urlpatterns = [
                     #                         #     'fdw-work-permit-12b/',
                     #                         #     views.PdfFileAgencyView.as_view(
                     #                         #         model=models.EmployerDoc,
-                    #                         #         pk_url_kwarg='employerdoc_pk',
+                    #                         #         pk_url_kwarg='level_1_pk',
                     #                         #         field_name='f12_fdw_work_permit',
                     #                         #     ),
                     #                         #     name='pdf_archive_fdw_work_permit'
@@ -362,7 +367,7 @@ urlpatterns = [
                     #                             'income-tax-declaration/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f13_income_tax_declaration',
                     #                             ),
                     #                             name='pdf_archive_income_tax_declaration'
@@ -371,7 +376,7 @@ urlpatterns = [
                     #                             'safety-agreement/',
                     #                             views.PdfFileAgencyView.as_view(
                     #                                 model=models.EmployerDoc,
-                    #                                 pk_url_kwarg='employerdoc_pk',
+                    #                                 pk_url_kwarg='level_1_pk',
                     #                                 field_name='f14_safety_agreement',
                     #                             ),
                     #                             name='pdf_archive_safety_agreement'

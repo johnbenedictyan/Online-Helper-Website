@@ -158,7 +158,7 @@ class EmployerDocListView(
     ListView
 ):
     model = models.EmployerDoc
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
     ordering = ['-agreement_date']
 
     def get_object(self, *args, **kwargs):
@@ -176,7 +176,7 @@ class EmployerDocListView(
             return HttpResponseRedirect(
                 reverse(
                     'employerdoc_create_route',
-                    kwargs={'employer_pk': self.object.pk}
+                    kwargs={'level_0_pk': self.object.pk}
                 )
             )
 
@@ -185,7 +185,7 @@ class EmployerDocListView(
 #     ListView
 # ):
 #     model = EmployerPaymentTransaction
-#     pk_url_kwarg = 'employerdoc_pk'
+#     pk_url_kwarg = 'level_1_pk'
 #     ordering = ['transaction_date']
 
 #     def get_object(self, *args, **kwargs):
@@ -209,7 +209,7 @@ class EmployerDetailView(
     DetailView,
 ):
     model = models.Employer
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
 
 class EmployerDocDetailView(
     CheckAgencyEmployeePermissionsMixin,
@@ -217,7 +217,7 @@ class EmployerDocDetailView(
     DetailView
 ):
     model = models.EmployerDoc
-    pk_url_kwarg = 'employerdoc_pk'
+    pk_url_kwarg = 'level_1_pk'
 
 # Create Views
 class EmployerCreateView(
@@ -248,7 +248,7 @@ class EmployerSponsorCreateView(
 ):
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
@@ -275,7 +275,7 @@ class EmployerJointApplicantCreateView(
 ):
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
@@ -302,7 +302,7 @@ class EmployerDocCreateView(
 ):
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
@@ -341,6 +341,28 @@ class EmployerDocCreateView(
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
+class DocServiceFeeScheduleCreateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    CreateView
+):
+    model = models.DocServiceFeeSchedule
+    form_class = forms.DocServiceFeeScheduleForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self, *args, **kwargs):
+        return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
+
 # class EmployerPaymentTransactionCreateView(
 #     CheckAgencyEmployeePermissionsMixin,
 #     CheckEmployerDocRelationshipsMixin,
@@ -348,7 +370,7 @@ class EmployerDocCreateView(
 # ):
 #     model = EmployerPaymentTransaction
 #     form_class = EmployerPaymentTransactionForm
-#     pk_url_kwarg = 'employerdoc_pk'
+#     pk_url_kwarg = 'level_1_pk'
 #     template_name = 'employer_documentation/crispy_form.html'
 #     success_url = reverse_lazy('sales_list_route')
 
@@ -375,7 +397,7 @@ class EmployerUpdateView(
     model = models.Employer
     form_class = forms.EmployerForm
     template_name = 'employer_documentation/crispy_form.html'
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
     success_url = reverse_lazy('employer_list_route')
 
     def get_form_kwargs(self):
@@ -391,7 +413,7 @@ class EmployerSponsorUpdateView(
 ):
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
-    pk_url_kwarg = 'employerdoc_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_form_kwargs(self):
@@ -410,7 +432,7 @@ class EmployerDocJointApplicantUpdateView(
 ):
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
-    pk_url_kwarg = 'employerdoc_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_form_kwargs(self):
@@ -429,7 +451,7 @@ class EmployerDocUpdateView(
 ):
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
-    pk_url_kwarg = 'employerdoc_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_form_kwargs(self):
@@ -456,6 +478,19 @@ class EmployerDocUpdateView(
 
     #     return super().form_valid(form)
 
+# class DocServiceFeeScheduleUpdateView(
+#     CheckAgencyEmployeePermissionsMixin,
+#     CheckEmployerDocRelationshipsMixin,
+#     UpdateView
+# ):
+#     model = models.DocServiceFeeSchedule
+#     form_class = forms.DocServiceFeeScheduleForm
+#     pk_url_kwarg = 'level_2_pk'
+#     template_name = 'employer_documentation/crispy_form.html'
+
+#     def get_success_url(self):
+#         return reverse_lazy('employer_list_route')
+
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
 #     CheckEmployerDocRelationshipsMixin,
@@ -463,7 +498,7 @@ class EmployerDocUpdateView(
 # ):
 #     model = models.EmployerDocSig
 #     form_class = EmployerDocSigSlugForm
-#     pk_url_kwarg = 'employersubdoc_pk'
+#     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/crispy_form.html'
 #     model_field_name = None # Aslog in urls.py
 #     form_fields = None # Aslog in urls.py
@@ -477,9 +512,9 @@ class EmployerDocUpdateView(
 
 #     def get_success_url(self):
 #         return reverse_lazy(self.success_url_route_name, kwargs={
-#             'employer_pk': self.object.employer_doc.employer.pk,
-#             'employerdoc_pk': self.object.employer_doc.pk,
-#             'employersubdoc_pk': self.object.pk,
+#             'level_0_pk': self.object.employer_doc.employer.pk,
+#             'level_1_pk': self.object.employer_doc.pk,
+#             'level_2_pk': self.object.pk,
 #         })
 
 # class EmployerDocMaidStatusUpdateView(
@@ -489,7 +524,7 @@ class EmployerDocUpdateView(
 # ):
 #     model = models.EmployerDocMaidStatus
 #     form_class = EmployerDocMaidStatusForm
-#     pk_url_kwarg = 'employersubdoc_pk'
+#     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/crispy_form.html'
 
 #     def get_form_kwargs(self):
@@ -500,8 +535,8 @@ class EmployerDocUpdateView(
 
 #     def get_success_url(self):
 #         return reverse_lazy('employerdoc_detail_route', kwargs={
-#             'employer_pk': self.object.employer_doc.employer.pk,
-#             'employerdoc_pk': self.object.employer_doc.pk,
+#             'level_0_pk': self.object.employer_doc.employer.pk,
+#             'level_1_pk': self.object.employer_doc.pk,
 #         })
 
 # class EmployerDocMaidDeploymentUpdateView(
@@ -511,7 +546,7 @@ class EmployerDocUpdateView(
 # ):
 #     model = models.EmployerDocMaidStatus
 #     form_class = EmployerDocMaidDeploymentForm
-#     pk_url_kwarg = 'employersubdoc_pk'
+#     pk_url_kwarg = 'level_2_pk'
 
 #     def get_success_url(self):
 #         if self.object.is_deployed:
@@ -526,7 +561,7 @@ class EmployerDocUpdateView(
 # ):
 #     model = JobOrder
 #     form_class = JobOrderForm
-#     pk_url_kwarg = 'employersubdoc_pk'
+#     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/joborder_form.html'
 #     success_url = reverse_lazy('employer_list_route')
 
@@ -538,8 +573,8 @@ class EmployerDocUpdateView(
 
 #     def get_success_url(self):
 #         return reverse_lazy('employerdoc_detail_route', kwargs={
-#             'employer_pk': self.object.employer_doc.employer.pk,
-#             'employerdoc_pk': self.object.employer_doc.pk,
+#             'level_0_pk': self.object.employer_doc.employer.pk,
+#             'level_1_pk': self.object.employer_doc.pk,
 #         })
 
 # class EmployerPaymentTransactionUpdateView(
@@ -549,7 +584,7 @@ class EmployerDocUpdateView(
 # ):
 #     model = EmployerPaymentTransaction
 #     form_class = EmployerPaymentTransactionForm
-#     pk_url_kwarg = 'employersubdoc_pk'
+#     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/crispy_form.html'
 #     success_url = reverse_lazy('sales_list_route')
 
@@ -566,7 +601,7 @@ class EmployerDeleteView(
     DeleteView
 ):
     model = models.Employer
-    pk_url_kwarg = 'employer_pk'
+    pk_url_kwarg = 'level_0_pk'
     success_url = reverse_lazy('employer_list_route')
 
 # class EmployerDocDeleteView(
@@ -575,7 +610,7 @@ class EmployerDeleteView(
 #     DeleteView
 # ):
 #     model = models.EmployerDoc
-#     pk_url_kwarg = 'employerdoc_pk'
+#     pk_url_kwarg = 'level_1_pk'
 #     template_name = 'employer_documentation/employer_confirm_delete.html'
 #     success_url = reverse_lazy('employer_list_route')
 
@@ -588,7 +623,7 @@ class EmployerDeleteView(
 # ):
 #     model = models.EmployerDocSig
 #     form_class = SignatureForm
-#     pk_url_kwarg = 'employersubdoc_pk'
+#     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/signature_form_agency.html'
 #     model_field_name = None
 #     form_fields = None
@@ -607,8 +642,8 @@ class EmployerDeleteView(
 
 #     def get_success_url(self):
 #         return reverse_lazy('employerdoc_detail_route', kwargs={
-#             'employer_pk': self.object.employer_doc.employer.pk,
-#             'employerdoc_pk': self.object.employer_doc.pk,
+#             'level_0_pk': self.object.employer_doc.employer.pk,
+#             'level_1_pk': self.object.employer_doc.pk,
 #         })
 
 # class VerifyUserTokenView(
@@ -700,7 +735,7 @@ class EmployerDeleteView(
 #     DetailView
 # ):
 #     model = models.EmployerDoc
-#     pk_url_kwarg = 'employerdoc_pk'
+#     pk_url_kwarg = 'level_1_pk'
 
 #     def get(self, request, *args, **kwargs):
 #         self.object = self.get_object()
@@ -737,9 +772,9 @@ class EmployerDeleteView(
 #             except Exception:
 #                 return HttpResponseRedirect(
 #                     reverse('joborder_update_route', kwargs={
-#                         'employer_pk': self.object.employer_doc.employer.pk,
-#                         'employerdoc_pk': self.object.employer_doc.pk,
-#                         'employersubdoc_pk': self.object.pk,
+#                         'level_0_pk': self.object.employer_doc.employer.pk,
+#                         'level_1_pk': self.object.employer_doc.pk,
+#                         'level_2_pk': self.object.pk,
 #                 }))
 #         elif isinstance(self.object, EmployerDoc):
 #             try:
@@ -752,8 +787,8 @@ class EmployerDeleteView(
 #             except Exception:
 #                 return HttpResponseRedirect(
 #                     reverse('pdf_archive_detail', kwargs={
-#                         'employer_pk': self.object.employer.pk,
-#                         'employerdoc_pk': self.object.pk,
+#                         'level_0_pk': self.object.employer.pk,
+#                         'level_1_pk': self.object.pk,
 #                 }))
 
 # class PdfGenericTokenView(
@@ -803,7 +838,7 @@ class EmployerDeleteView(
 #     DetailView
 # ):
 #     model = models.EmployerDoc
-#     pk_url_kwarg = 'employerdoc_pk'
+#     pk_url_kwarg = 'level_1_pk'
 
 #     def check_signatures(self, employer_doc):
 #         if (
@@ -894,5 +929,5 @@ class EmployerDeleteView(
 #     DetailView
 # ):
 #     model = models.EmployerDoc
-#     pk_url_kwarg = 'employerdoc_pk'
+#     pk_url_kwarg = 'level_1_pk'
 #     template_name = 'employer_documentation/pdfarchive_detail.html'

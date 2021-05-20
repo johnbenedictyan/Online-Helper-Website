@@ -39,10 +39,10 @@ def generate_joborder_path(instance, filename):
 
 def generate_archive_path(instance, filename):
     # filename parameter is passed from view in format:
-    # 'employerdoc_pk:name_of_file.pdf'
+    # 'level_1_pk:name_of_file.pdf'
     filename_split = filename.split(':')
-    employerdoc_pk = filename_split[0]
-    relative_path = 'archive/' + employerdoc_pk
+    level_1_pk = filename_split[0]
+    relative_path = 'archive/' + level_1_pk
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 

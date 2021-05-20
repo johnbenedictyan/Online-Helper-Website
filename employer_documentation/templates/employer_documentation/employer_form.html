@@ -12,7 +12,7 @@
     <!-- {% comment %}Employers{% endcomment %} -->
     <div class="row">
         <div class="col px-0">
-            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object.pk %}">
+            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' level_0_pk=object.pk %}">
             <p class="m-1 pl-2">Employer Profile</p>
             </a>
         </div>
@@ -20,7 +20,7 @@
     {% if object.rn_sponsor_employer %}
     <div class="row">
         <div class="col px-0">
-            <a class="nav-link side-nav-link {% if url_name == 'employer_sponsor_update_route' %}active{% endif %}" href="{% url 'employer_sponsor_update_route' employer_pk=object.pk employerdoc_pk=object.rn_sponsor_employer.pk %}">
+            <a class="nav-link side-nav-link {% if url_name == 'employer_sponsor_update_route' %}active{% endif %}" href="{% url 'employer_sponsor_update_route' level_0_pk=object.pk level_1_pk=object.rn_sponsor_employer.pk %}">
             <p class="m-1 pl-2">Sponsor Update</p>
             </a>
         </div>
@@ -30,7 +30,7 @@
     {% if object.rn_ja_employer %}
     <div class="row">
         <div class="col px-0">
-            <a class="nav-link side-nav-link {% if url_name == 'employer_joint_applicant_update_route' %}active{% endif %}" href="{% url 'employer_joint_applicant_update_route' employer_pk=object.pk employerdoc_pk=object.rn_ja_employer.pk %}">
+            <a class="nav-link side-nav-link {% if url_name == 'employer_joint_applicant_update_route' %}active{% endif %}" href="{% url 'employer_joint_applicant_update_route' level_0_pk=object.pk level_1_pk=object.rn_ja_employer.pk %}">
             <p class="m-1 pl-2">Joint Applicant Update</p>
             </a>
         </div>

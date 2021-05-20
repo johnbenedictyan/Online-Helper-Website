@@ -27,17 +27,17 @@ from accounts.models import User
 class CheckEmployerDocRelationshipsMixin(UserPassesTestMixin):
     def test_func(self):
         if self.employer_doc_obj:
-            if self.object.employer.pk==self.kwargs.get('employer_pk'):
+            if self.object.employer.pk==self.kwargs.get('level_0_pk'):
                 return True
             else:
                 return False
         elif self.employer_subdoc_obj:
             if (
                 self.object.employer_doc.employer.pk==self.kwargs.get(
-                    'employer_pk')
+                    'level_0_pk')
                 and
                 self.object.employer_doc.pk==self.kwargs.get(
-                    'employerdoc_pk')
+                    'level_1_pk')
             ):
                 return True
             else:
