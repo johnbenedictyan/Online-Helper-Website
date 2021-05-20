@@ -1770,6 +1770,21 @@ class DocSafetyAgreement(models.Model):
         default='not_required_to_clean_window_exterior',
     )
 
+    def save(self):
+        if self.fdw_clean_window_exterior==False:
+            self.window_exterior_location = None
+            self.grilles_installed_require_cleaning = None
+            self.adult_supervision = None
+
+        elif not self.window_exterior_location=='OTHER':
+            self.grilles_installed_require_cleaning = None
+            self.adult_supervision = None
+
+        elif not self.grilles_installed_require_cleaning:
+            self.adult_supervision = None
+
+        return super().save()
+
 class DocUpload(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
