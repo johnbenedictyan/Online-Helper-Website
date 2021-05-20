@@ -211,6 +211,26 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return AgencyBranch.objects.filter(
             agency__pk = self.agency_id
         )
+        
+class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+    context_object_name = 'cases'
+    http_method_names = ['get']
+    template_name = 'list/dashboard-case-list.html'
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        pass
+
+class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+    context_object_name = 'sales'
+    http_method_names = ['get']
+    template_name = 'list/dashboard-sales-list.html'
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        pass
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,

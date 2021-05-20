@@ -34,6 +34,56 @@ $DASHBOARD_FONT_SIZE_TEXT: .75rem;
 $DASHBOARD_FONT_SIZE_TABLE_HEADER: .875rem;
 $DASHBOARD_FONT_SIZE_BUTTON: .875rem;
 
+.col{
+    &-0-5{
+        flex: 0 0 4.166667%;
+        max-width: 4.166667%;
+    }
+    &-1-5{
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+    }
+    &-2-5{
+        flex: 0 0 20.833333%;
+        max-width: 20.833333%;
+    }
+    &-3-5{
+        flex: 0 0 29.166667%;
+        max-width: 29.166667%;
+    }
+    &-4-5{
+        flex: 0 0 37.5%;
+        max-width: 37.5%;
+    }
+    &-5-5{
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+    &-6-5{
+        flex: 0 0 54.16667%;
+        max-width: 54.16667%;
+    }
+    &-7-5{
+        flex: 0 0 62.5%;
+        max-width: 62.5%;
+    }
+    &-8-5{
+        flex: 0 0 70.83333%;
+        max-width: 70.83333%;
+    }
+    &-9-5{
+        flex: 0 0 79.16667%;
+        max-width: 79.16667%;
+    }
+    &-10-5{
+        flex: 0 0 87.5%;
+        max-width: 87.5%;
+    }
+    &-11-5{
+        flex: 0 0 95.83333%;
+        max-width: 95.83333%;
+    }
+}
 .dashboard-font-size{
     &-text {
         font-size: $DASHBOARD_FONT_SIZE_TEXT;
