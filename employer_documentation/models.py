@@ -2062,30 +2062,30 @@ class PdfArchive(models.Model):
         null=True,
     )
 
-class EmployerPaymentTransaction(models.Model):
-    TRANSACTION_CHOICES = (
-        ('SUB', _('Repayment')),
-        ('ADD', _('New charge')),
-    )
-    employer_doc = models.ForeignKey(
-        EmployerDoc,
-        on_delete=models.CASCADE,
-        related_name='rn_repayment_ed'
-    )
-    amount = models.DecimalField(
-        verbose_name=_("Amount"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-    )
-    transaction_type = models.CharField(
-        verbose_name=_("Type of transaction"),
-        max_length=3,
-        blank=False,
-        choices=TRANSACTION_CHOICES,
-        default=TRANSACTION_CHOICES[0][0]
-    )
-    transaction_date = models.DateField()
+# class EmployerPaymentTransaction(models.Model):
+#     TRANSACTION_CHOICES = (
+#         ('SUB', _('Repayment')),
+#         ('ADD', _('New charge')),
+#     )
+#     employer_doc = models.ForeignKey(
+#         EmployerDoc,
+#         on_delete=models.CASCADE,
+#         related_name='rn_repayment_ed'
+#     )
+#     amount = models.DecimalField(
+#         verbose_name=_("Amount"),
+#         max_digits=7,
+#         decimal_places=2,
+#         validators=[
+#             MinValueValidator(0),
+#             MaxValueValidator(10000),
+#         ],
+#     )
+#     transaction_type = models.CharField(
+#         verbose_name=_("Type of transaction"),
+#         max_length=3,
+#         blank=False,
+#         choices=TRANSACTION_CHOICES,
+#         default=TRANSACTION_CHOICES[0][0]
+#     )
+#     transaction_date = models.DateField()

@@ -91,10 +91,10 @@ class EmployerForm(forms.ModelForm):
                 css_class='form-row'
             ),
             
-            # Employer Contact Details
+            # Employer Details
             HTML(
                 """
-                <h5 class="my-3">Employer Contact Details</h5>
+                <h5 class="my-3">Employer Information</h5>
             """),
             Row(
                 Column(
@@ -140,12 +140,6 @@ class EmployerForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-
-            # Employer's Information
-            HTML(
-                """
-                <h5 class="my-3">Employer's Information'</h5>
-            """),
             Row(
                 Column(
                     'employer_date_of_birth',
@@ -196,7 +190,7 @@ class EmployerForm(forms.ModelForm):
                 Column(
                     HTML(
                         """
-                        <h5 class="my-3">Spouse's Information</h5>
+                        <h5 class="my-3">Spouse Information</h5>
                     """),
                     Row(
                         Column(
@@ -488,7 +482,6 @@ class EmployerSponsorForm(forms.ModelForm):
         self.initial.update({'sponsor_2_spouse_passport_num': self.instance.get_sponsor_2_spouse_passport_full()})
         
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             # Sponsors
             Row(
@@ -1069,7 +1062,6 @@ class EmployerJointApplicantForm(forms.ModelForm):
         self.initial.update({'joint_applicant_spouse_passport_num': self.instance.get_joint_applicant_spouse_passport_full()})
 
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             # Joint Applicants
             Row(
@@ -2136,7 +2128,6 @@ class EmployerDocSigSlugForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout()
         
         # Insert full URL path to signature token URL
@@ -2203,22 +2194,12 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             HTML('''
                 <h3>FDW Status</h3>
                 '''
             ),
             Row(
-                Column(
-                    Field(
-                        'fdw_work_commencement_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='FDW work commencement date'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
                 Column(
                     Field(
                         'ipa_approval_date',
@@ -2242,7 +2223,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                 ),
                 Column(
                     Field(
-                        'security_bond_approval_date',
+                        'shn_end_date',
                         type='text',
                         onfocus="(this.type='date')",
                         placeholder='Security bond approval date'
@@ -2263,26 +2244,11 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                 ),
                 Column(
                     Field(
-                        'sip_date',
+                        'fdw_work_commencement_date',
                         type='text',
                         onfocus="(this.type='date')",
-                        placeholder='Settling in Programme (SIP) date'
+                        placeholder='FDW work commencement date'
                     ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Field(
-                        'work_permit_no',
-                        type='text',
-                        placeholder='Work permit number'
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'is_deployed',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -2314,49 +2280,43 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
         return self.cleaned_data
 
-class EmployerDocMaidDeploymentForm(forms.ModelForm):
-    class Meta:
-        model = models.EmployerDocMaidStatus
-        fields = ['is_deployed']
+# class EmployerPaymentTransactionForm(forms.ModelForm):
+#     class Meta:
+#         model = models.EmployerPaymentTransaction
+#         exclude = ['employer_doc']
 
-class EmployerPaymentTransactionForm(forms.ModelForm):
-    class Meta:
-        model = models.EmployerPaymentTransaction
-        exclude = ['employer_doc']
+#     def __init__(self, *args, **kwargs):
+#         self.user_pk = kwargs.pop('user_pk')
+#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         super().__init__(*args, **kwargs)
 
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Field(
-                        'transaction_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Transaction date'
-                    ),
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    PrependedText(
-                        'amount', '$',
-                        min='0', max='10000',
-                    ),
-                    css_class='form-group col-md-4'
-                ),
-                Column(
-                    'transaction_type',
-                    css_class='form-group col-md-4'
-                ),
-                css_class='form-row'
-            ),
-            Submit('submit', 'Submit')
-        )
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column(
+#                     Field(
+#                         'transaction_date',
+#                         type='text',
+#                         onfocus="(this.type='date')",
+#                         placeholder='Transaction date'
+#                     ),
+#                     css_class='form-group col-md-4'
+#                 ),
+#                 Column(
+#                     PrependedText(
+#                         'amount', '$',
+#                         min='0', max='10000',
+#                     ),
+#                     css_class='form-group col-md-4'
+#                 ),
+#                 Column(
+#                     'transaction_type',
+#                     css_class='form-group col-md-4'
+#                 ),
+#                 css_class='form-row'
+#             ),
+#             Submit('submit', 'Submit')
+#         )
 
 # class JobOrderForm(forms.ModelForm):
 #     class Meta:
@@ -2370,7 +2330,6 @@ class EmployerPaymentTransactionForm(forms.ModelForm):
 #         super().__init__(*args, **kwargs)
 
 #         self.helper = FormHelper()
-#         self.helper.form_class = 'employer-doc-form'
 #         self.helper.layout = Layout(
 #             Field(
 #                 'job_order_pdf',
@@ -2553,7 +2512,6 @@ class VerifyUserTokenForm(forms.ModelForm):
 
         self.fields['nric'].label = 'NRIC'
         self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
         self.helper.layout = Layout(
             fieldset,
             Submit('submit', 'Submit')
