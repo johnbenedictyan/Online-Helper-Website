@@ -463,33 +463,18 @@ class EmployerDocUpdateView(
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
     
-    # def form_valid(self, form):
-    #     if form.instance.fdw_clean_window_exterior==False:
-    #         form.instance.window_exterior_location = None
-    #         form.instance.grilles_installed_require_cleaning = None
-    #         form.instance.adult_supervision = None
+class DocServiceFeeScheduleUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.DocServiceFeeSchedule
+    form_class = forms.DocServiceFeeScheduleForm
+    pk_url_kwarg = 'level_2_pk'
+    template_name = 'employer_documentation/crispy_form.html'
 
-    #     elif not form.instance.window_exterior_location=='OTHER':
-    #         form.instance.grilles_installed_require_cleaning = None
-    #         form.instance.adult_supervision = None
-
-    #     elif not form.instance.grilles_installed_require_cleaning:
-    #         form.instance.adult_supervision = None
-
-    #     return super().form_valid(form)
-
-# class DocServiceFeeScheduleUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     UpdateView
-# ):
-#     model = models.DocServiceFeeSchedule
-#     form_class = forms.DocServiceFeeScheduleForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-
-#     def get_success_url(self):
-#         return reverse_lazy('employer_list_route')
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
 
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,

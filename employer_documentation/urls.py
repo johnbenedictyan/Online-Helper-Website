@@ -78,12 +78,12 @@ urlpatterns = [
                             path(
                                 'create/',
                                 views.EmployerDocCreateView.as_view(),
-                                name='employerdoc_create_route'
+                                name='ed_create_route'
                             ),
                             path(
                                 'list/',
                                 views.EmployerDocListView.as_view(),
-                                name='employerdoc_list_route'
+                                name='ed_list_route'
                             ),
                             path(
                                 '<uuid:level_1_pk>/',
@@ -91,32 +91,37 @@ urlpatterns = [
                                     path(
                                         'detail/',
                                         views.EmployerDocDetailView.as_view(),
-                                        name='employerdoc_detail_route'
+                                        name='ed_detail_route'
                                     ),
                                     path(
                                         'update/',
                                         views.EmployerDocUpdateView.as_view(),
-                                        name='employerdoc_update_route'
+                                        name='ed_update_route'
                                     ),
                                     path(
                                         'service-fee/create/',
                                         views.DocServiceFeeScheduleCreateView.as_view(),
-                                        name='employerdoc_update_route'
+                                        name='servicefee_create_route'
+                                    ),
+                                    path(
+                                        'service-fee/<int:level_2_pk>/update/',
+                                        views.DocServiceFeeScheduleUpdateView.as_view(),
+                                        name='servicefee_update_route'
                                     ),
                     #                 path(
                     #                     'delete/',
                     #                     views.EmployerDocDeleteView.as_view(),
-                    #                     name='employerdoc_delete_route'
+                    #                     name='ed_delete_route'
                     #                 ),
                     #                 path(
                     #                     'status/<int:level_2_pk>/update/',
                     #                     views.EmployerDocMaidStatusUpdateView.as_view(),
-                    #                     name='employerdoc_status_update_route'
+                    #                     name='ed_status_update_route'
                     #                 ),
                     #                 path(
                     #                     'deployment/<int:level_2_pk>/update/',
                     #                     views.EmployerDocMaidDeploymentUpdateView.as_view(),
-                    #                     name='employerdoc_deployment_update_route'
+                    #                     name='ed_deployment_update_route'
                     #                 ),
                     #                 path(
                     #                     'job-order/<int:level_2_pk>/update/',
