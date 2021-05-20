@@ -2358,25 +2358,25 @@ class EmployerPaymentTransactionForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
-class JobOrderForm(forms.ModelForm):
-    class Meta:
-        model = models.JobOrder
-        widgets = {'job_order_pdf': forms.FileInput(attrs={'accept': 'application/pdf'})}
-        exclude = ['employer_doc']
+# class JobOrderForm(forms.ModelForm):
+#     class Meta:
+#         model = models.JobOrder
+#         widgets = {'job_order_pdf': forms.FileInput(attrs={'accept': 'application/pdf'})}
+#         exclude = ['employer_doc']
 
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         self.user_pk = kwargs.pop('user_pk')
+#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         super().__init__(*args, **kwargs)
 
-        self.helper = FormHelper()
-        self.helper.form_class = 'employer-doc-form'
-        self.helper.layout = Layout(
-            Field(
-                'job_order_pdf',
-            ),
-            Submit('submit', 'Submit')
-        )
+#         self.helper = FormHelper()
+#         self.helper.form_class = 'employer-doc-form'
+#         self.helper.layout = Layout(
+#             Field(
+#                 'job_order_pdf',
+#             ),
+#             Submit('submit', 'Submit')
+#         )
 
 # Signature Forms
 class SignatureForm(forms.ModelForm):

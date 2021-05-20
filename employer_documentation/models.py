@@ -1770,6 +1770,45 @@ class DocSafetyAgreement(models.Model):
         default='not_required_to_clean_window_exterior',
     )
 
+class DocUpload(models.Model):
+    employer_doc = models.OneToOneField(
+        EmployerDoc,
+        on_delete=models.CASCADE,
+        related_name='rn_docupload_ed'
+    )
+    job_order_pdf = models.FileField(
+        verbose_name=_('Upload Job Order (PDF)'),
+        upload_to=generate_joborder_path,
+        blank=True,
+        null=True,
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
+    ipa_pdf = models.FileField(
+        verbose_name=_('Upload IPA (PDF)'),
+        upload_to=generate_joborder_path,
+        blank=True,
+        null=True,
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
+    e_issuance_pdf = models.FileField(
+        verbose_name=_('Upload E-Issuance Document (PDF)'),
+        upload_to=generate_joborder_path,
+        blank=True,
+        null=True,
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
+    medical_report_pdf = models.FileField(
+        verbose_name=_('Upload Medical Report (PDF)'),
+        upload_to=generate_joborder_path,
+        blank=True,
+        null=True,
+        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    )
+
 class EmployerDocSig(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
@@ -1918,18 +1957,8 @@ class EmployerDocMaidStatus(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_maidstatus_ed'
     )
-    fdw_work_commencement_date = models.DateField(
-        verbose_name=_('Deployment Date'),
-        blank=True,
-        null=True
-    )
     ipa_approval_date = models.DateField(
         verbose_name=_('In Principle Approval (IPA) Date'),
-        blank=True,
-        null=True
-    )
-    security_bond_approval_date = models.DateField(
-        verbose_name=_('Security Bond Approval Date'),
         blank=True,
         null=True
     )
@@ -1938,54 +1967,20 @@ class EmployerDocMaidStatus(models.Model):
         blank=True,
         null=True
     )
+    shn_end_date = models.DateField(
+        verbose_name=_('SHN End Date'),
+        blank=True,
+        null=True
+    )
     thumb_print_date = models.DateField(
         verbose_name=_('FDW Thumb Print Date'),
         blank=True,
         null=True
     )
-    sip_date = models.DateField(
-        verbose_name=_('Settling-In Programme (SIP) Date'),
+    fdw_work_commencement_date = models.DateField(
+        verbose_name=_('Deployment Date'),
         blank=True,
         null=True
-    )
-    work_permit_no = models.CharField(
-        verbose_name=_('Work Permit Number'),
-        max_length=20,
-        blank=True,
-        null=True
-    )
-    is_deployed = models.BooleanField(
-        verbose_name=_('deployed status'),
-        default=False,
-        choices=TrueFalseChoices(
-            _('Yes, deployed'),
-            _('No, not yet deployed'),
-        ),
-        help_text=_('''
-            Marking FDW status as deployed will move case from status summary
-            to sales summary.
-        '''),
-    )
-
-class JobOrder(models.Model):
-    employer_doc = models.OneToOneField(
-        EmployerDoc,
-        on_delete=models.CASCADE,
-        related_name='rn_joborder_ed'
-    )
-    slug = models.SlugField(
-        max_length=100,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True
-    )
-    job_order_pdf = models.FileField(
-        verbose_name=_('Upload Job Order (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
 
 class PdfArchive(models.Model):
