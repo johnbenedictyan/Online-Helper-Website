@@ -1431,17 +1431,6 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
-        else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
-
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
@@ -1710,17 +1699,6 @@ class DocServiceAgreementForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
-        else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
-
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
@@ -1906,17 +1884,6 @@ class DocEmploymentContractForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
-        else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
-
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
@@ -1970,17 +1937,6 @@ class DocSafetyAgreementForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.FIELD_MAXLENGTH = 20
-
-        if self.agency_user_group==om_constants.AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
-            )
-        else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
-            )
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
