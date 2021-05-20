@@ -2465,16 +2465,11 @@ class VerifyUserTokenForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDocSig
         exclude = '__all__'
-        fields = ['employer_token', 'fdw_token']
+        fields = ['employer_token']
     
     # Employer fields
     nric = forms.CharField()
     mobile = forms.IntegerField()
-
-    # FDW fields
-    validation_1 = forms.CharField() ############################################## TO BE UPDATED
-    validation_2 = forms.IntegerField() ############################################## TO BE UPDATED
-
     
     def __init__(self, *args, **kwargs):
         self.is_employer = False
@@ -2494,20 +2489,7 @@ class VerifyUserTokenForm(forms.ModelForm):
                 # Form fields - main
                 'nric',
                 'mobile',
-            )
-        elif self.token_field_name=='fdw_token':
-            self.is_fdw = True
-            self.object = EmployerDocSig.objects.get(fdw_slug=self.slug)
-            fieldset = Fieldset(
-                # Legend for form
-                'For security purposes, please enter the following details \
-                    to verify your identify:',
-                
-                # Form fields - main
-                'validation_1', ############################################## TO BE UPDATED
-                'validation_2', ############################################## TO BE UPDATED
-            )
-        
+            )        
         super().__init__(*args, **kwargs)
 
         self.fields['nric'].label = 'NRIC'
@@ -2526,12 +2508,7 @@ class VerifyUserTokenForm(forms.ModelForm):
                 and (field=='nric' or field=='mobile')
             ):
                 continue
-            elif (
-                self.is_fdw
-                and (field=='validation_1' or field=='validation_2') ############################################## TO BE UPDATED
-            ):
-                continue
-            elif field!=self.token_field_name:
+            else:
                 del self.fields[field]
 
     def clean(self):
@@ -2547,15 +2524,16 @@ class VerifyUserTokenForm(forms.ModelForm):
                     int(self.object.employer_doc.employer.employer_mobile_number)
                 )
             or (
-            self.is_fdw
-                and ( ############################################## TO BE UPDATED
-                    self.cleaned_data.get('validation_1', '') ==
-                    '1'
-                    and
-                    int(self.cleaned_data.get('validation_2', 0)) ==
-                    int(1)
-                ) ############################################## TO BE UPDATED
-            )
+                False
+            # self.is_fdw
+            #     and ( ############################################## TO BE UPDATED
+            #         self.cleaned_data.get('validation_1', '') ==
+            #         '1'
+            #         and
+            #         int(self.cleaned_data.get('validation_2', 0)) ==
+            #         int(1)
+            #     ) ############################################## TO BE UPDATED
+            # )
         ):
             verification_token = secrets.token_urlsafe(128)
             self.cleaned_data[self.token_field_name] = verification_token
