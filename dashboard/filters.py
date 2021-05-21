@@ -1,4 +1,5 @@
 # Imports from django
+import django
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
@@ -49,3 +50,12 @@ class DashboardEmployerFilter(django_filters.FilterSet):
             'employer_name',
             'agency_employee'
         ]
+
+class DashboardCaseFilter(django_filters.FilterSet):
+    pass
+
+class DashboardSalesFilter(django_filters.FilterSet):
+    pass
+
+class DashboardStatusFilter(django_filters.FilterSet):
+    pass

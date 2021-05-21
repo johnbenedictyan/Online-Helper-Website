@@ -48,7 +48,10 @@ from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from local app
-from .filters import DashboardMaidFilter, DashboardEmployerFilter
+from .filters import (
+    DashboardMaidFilter, DashboardEmployerFilter, DashboardCaseFilter, DashboardSalesFilter,
+    DashboardStatusFilter
+)
 
 # Start of Views
 
@@ -225,25 +228,41 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
             agency__pk = self.agency_id
         )
         
-class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilteredMixin, 
+                        ListView):
     context_object_name = 'cases'
     http_method_names = ['get']
     template_name = 'list/dashboard-case-list.html'
+    # filter_set = DashboardCaseFilter
     authority = ''
     agency_id = ''
 
     def get_queryset(self):
-        pass
+        return Maid.objects.all()
 
-class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilteredMixin, 
+                        ListView):
     context_object_name = 'sales'
     http_method_names = ['get']
     template_name = 'list/dashboard-sales-list.html'
+    # filter_set = DashboardSalesFilter
     authority = ''
     agency_id = ''
 
     def get_queryset(self):
-        pass
+        return Maid.objects.all()
+
+class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, # ListFilteredMixin, 
+                        ListView):
+    context_object_name = 'status'
+    http_method_names = ['get']
+    template_name = 'list/dashboard-status-list.html'
+    # filter_set = DashboardStatusFilter
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        return Maid.objects.all()
 
 class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'employers'

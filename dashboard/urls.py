@@ -11,7 +11,7 @@ from django.urls import include, path
 from .views import (
     DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
     DashboardEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
-    DashboardSalesList, DashboardEmployerList
+    DashboardSalesList, DashboardEmployerList, DashboardStatusList
 )
 
 ## Detail Views
@@ -107,6 +107,11 @@ urlpatterns = [
                 'sales/',
                 DashboardSalesList.as_view(),
                 name='dashboard_sales_list'
+            ),
+            path(
+                'status/',
+                DashboardStatusList.as_view(),
+                name='dashboard_status_list'
             ),
             path(
                 'employers/',
