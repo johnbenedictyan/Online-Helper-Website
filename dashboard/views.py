@@ -284,9 +284,10 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
         #         agency__pk = self.agency_id
         #     ).order_by(order_by)
         # else:
-        return Employer.objects.filter(
-            agency__pk = self.agency_id
-        )
+            # return Employer.objects.filter(
+            #     agency__pk = self.agency_id
+            # )
+        return Employer.objects.all()
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
