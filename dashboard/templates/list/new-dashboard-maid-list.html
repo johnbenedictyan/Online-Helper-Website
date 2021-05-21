@@ -1,4 +1,5 @@
 {% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
 {% load dashboard_tags %}
 {% block dashboard_section %}
 <section>
@@ -8,24 +9,16 @@
                 <h4>FDW Biodata</h4>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-                    </div>
-                  </div>
+        <form action="" method="get">
+            <div class="row">
+                <div class="col-4">
+                    {{filter.form.name|as_crispy_field}}
+                </div>
+                <div class="col-4 offset-2">
+                    {{filter.form.status|as_crispy_field}}
+                </div>
             </div>
-            <div class="col-3 offset-2">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-                    </div>
-                  </div>
-            </div>
-        </div>
+        </form>
         <div class="row">
             <div class="col text-right pb-3">
                 <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-primary mr-1">Add Biodata</a>

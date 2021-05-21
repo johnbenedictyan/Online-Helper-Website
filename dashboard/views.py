@@ -45,9 +45,9 @@ from maid.models import (
 )
 from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
-from onlinemaid.mixins import SuccessMessageMixin
-
+from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from local app
+from .filters import DashboardMaidFilter
 
 # Start of Views
 
@@ -109,11 +109,12 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
 # Redirect Views
 
 # List Views
-class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     template_name = 'list/new-dashboard-maid-list.html'
+    filter_set = DashboardMaidFilter
     authority = ''
     agency_id = ''
 
