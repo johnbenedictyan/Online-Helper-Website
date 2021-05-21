@@ -120,30 +120,41 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFiltere
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        # agency = Agency.objects.get(
-        #     pk=self.agency_id
-        # )
-        # kwargs.update({
-        #     'biodata': {
-        #         'current': Maid.objects.filter(
-        #             agency=agency
-        #         ).count(),
-        #         'max': agency.amount_of_biodata_allowed
-        #     },
-        #     'featured_maids': {
-        #         'current': Maid.objects.filter(
-        #             agency=agency,
-        #             featured=True
-        #         ).count(),
-        #         'max': agency.amount_of_featured_biodata_allowed
-        #     }
-        # })
+        kwargs.update({
+            'order_by': self.request.GET.get('order-by')
+        })
         return kwargs
     
     def get_queryset(self):
-        return Maid.objects.filter(
-            agency__pk = self.agency_id
-        ).order_by('passport_expiry')
+        order_by = self.request.GET.get('order-by')
+        if order_by:
+            if order_by == 'serialNo':
+                order_by = 'id'
+            elif order_by == '-serialNo':
+                order_by = '-id'
+            elif order_by == 'nationality':
+                order_by = 'country_of_origin'
+            elif order_by == '-nationality':
+                order_by = '-country_of_origin'
+            elif order_by == 'type':
+                order_by = 'maid_type'
+            elif order_by == '-type':
+                order_by = '-maid_type'
+            elif order_by == 'ppExpiry':
+                order_by = 'passport_expiry'
+            elif order_by == '-ppExpiry':
+                order_by = '-passport_expiry'
+            elif order_by == 'dateCreated':
+                order_by = 'created_on'
+            elif order_by == '-dateCreated':
+                order_by = '-created_on'
+            return Maid.objects.filter(
+                agency__pk = self.agency_id
+            ).order_by(order_by)
+        else:
+            return Maid.objects.filter(
+                agency__pk = self.agency_id
+            ).order_by('passport_expiry')
 
 class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, 
                            ListView):
