@@ -1492,15 +1492,15 @@ class DocServiceFeeSchedule(models.Model):
             - self.ca_deposit_amount
         )
 
-        subsequent_transactions = EmployerPaymentTransaction.objects.filter(
-            employer_doc=self
-        )
+        # subsequent_transactions = EmployerPaymentTransaction.objects.filter(
+        #     employer_doc=self
+        # )
 
-        for transaction in subsequent_transactions:
-            if transaction.transaction_type == 'ADD':
-                balance += transaction.amount
-            elif transaction.transaction_type == 'SUB':
-                balance -= transaction.amount
+        # for transaction in subsequent_transactions:
+        #     if transaction.transaction_type == 'ADD':
+        #         balance += transaction.amount
+        #     elif transaction.transaction_type == 'SUB':
+        #         balance -= transaction.amount
         
         return balance
 
