@@ -108,6 +108,36 @@ urlpatterns = [
                                         views.DocServiceFeeScheduleUpdateView.as_view(),
                                         name='servicefee_update_route'
                                     ),
+                                    path(
+                                        'service-agreement/create/',
+                                        views.DocServiceAgreementCreateView.as_view(),
+                                        name='serviceagreement_create_route'
+                                    ),
+                                    # path(
+                                    #     'service-agreement/<int:level_2_pk>/update/',
+                                    #     views..as_view(),
+                                    #     name='serviceagreement_update_route'
+                                    # ),
+                                    path(
+                                        'employment-contract/create/',
+                                        views.DocEmploymentContractCreateView.as_view(),
+                                        name='employmentcontract_create_route'
+                                    ),
+                                    # path(
+                                    #     'employment-contract/<int:level_2_pk>/update/',
+                                    #     views..as_view(),
+                                    #     name='employmentcontract_update_route'
+                                    # ),
+                                    path(
+                                        'safety-agreement/create/',
+                                        views.DocSafetyAgreementCreateView.as_view(),
+                                        name='safetyagreement_create_route'
+                                    ),
+                                    # path(
+                                    #     'safety-agreement/<int:level_2_pk>/update/',
+                                    #     views..as_view(),
+                                    #     name='safetyagreement_update_route'
+                                    # ),
                     #                 path(
                     #                     'delete/',
                     #                     views.EmployerDocDeleteView.as_view(),
