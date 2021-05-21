@@ -52,9 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'django.contrib.postgres',
 
     # 3rd party packages
     # 'captcha',
+    'extra_views',
     'crispy_forms',
     'django_filters',
     'django_otp',
@@ -106,7 +108,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'onlinemaid.context_processors.authority',
                 'onlinemaid.context_processors.cartcount',
-                'onlinemaid.context_processors.enquiry_form'
+                'onlinemaid.context_processors.enquiry_form',
+                'onlinemaid.context_processors.dashboard_side_nav'
             ],
         },
     },

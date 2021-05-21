@@ -2,444 +2,127 @@
 {% block dashboard_section %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col text-right">
-            <a href="{% url 'agency_update' %}" class="btn btn-lg btn-success pr-3">Edit Profile</a>
+        <div class="col-11 text-right mb-5">
+            <a href="{% url 'dashboard_agency_information_update' %}" class="btn btn-primary btn-dashboard-primary w-25">Edit</a>
         </div>
     </div>
-    <div class="row mx-2 mb-5">
-        <div class="col-4 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+    <div class="row mb-5">
+        <div class="col-5 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
-        <div class="col-4 text-dark pt-4 pl-5">
-            <h6>{{agency.name}}</h6>
-            <p>{{agency.license_number}}</p>
-        </div>
-    </div>
-    <div class="row text-dark">
-        <div class="col-6 p-3">
-            <div class="row py-3 border bg-custom-light-blue mr-0">
-                <div class="col">
-                    <h6 class="mb-0">Agency License Info</h6>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Licensee Name</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">asd</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Licensee Mobile Number</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">asd</p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Licensee Email</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">asd</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 p-3">
-            <div class="row py-3 border bg-custom-light-blue ml-0">
-                <div class="col">
-                    <h6 class="mb-0">Agency Bank Details</h6>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">UEN No</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.uen}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Bank Account No</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0"></p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Bank Account Type</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0"></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 p-3">
-            <div class="row py-3 border bg-custom-light-blue mr-0">
-                <div class="col">
-                    <h6 class="mb-0">Main Office</h6>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Address</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.get_main_office.address_1}}<br/>Singapore {{agency.get_main_office.postal_code}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Website</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.website_uri}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Sales Email</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.sales_email}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Other No</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.get_main_office.office_number}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Mobile No</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.get_main_office.mobile_number}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 mr-0">
-                <div class="col-4">
-                    <p class="mb-0">Contact Person</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0"></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 p-3">
-            <div class="row py-3 border bg-custom-light-blue ml-0">
-                <div class="col">
-                    <h6 class="mb-0">Opening Hours</h6>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Monday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.monday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Tuesday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.tuesday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Wednesday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.wednesday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Thursday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.thursday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Friday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.friday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Saturday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.saturday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Sunday</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.sunday}}</p>
-                </div>
-            </div>
-            <div class="row py-3 border bg-light border-top-0 ml-0">
-                <div class="col-4">
-                    <p class="mb-0">Public Holidays</p>
-                </div>
-                <div class="col-8">
-                    <p class="mb-0">{{agency.operating_hours.public_holiday}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 p-3">
-            <div class="row py-3 bg-custom-light-blue border mr-0">
-                <div class="col">
-                    <h6 class="mb-0">Mission</h6>
-                </div>
-            </div>
-            <div class="row py-3 border border-top-0 mr-0">
-                <div class="col">
-                    <p>{{agency.mission}}</p>
-                </div>
-            </div>
+        <div class="col-5 offset-2 text-dark pt-4" id="agencyInformationGroup">
+            <h4>{{agency.name}}</h4>
+            <p>License Number: {{agency.license_number}}</p>
+            <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
         </div>
     </div>
-    <div class="row d-none">
-        <div class="col mt-md-5">
-            <div class="card custom-card">
-                <div class="row">
-                    <div class="col">
-                        <h3 class="custom-card__header">Agency Details</h3>
-                    </div>
-                    <div class="col d-none d-md-block">
-                        <a href="{% url 'agency_update' %}" class="btn btn-primary float-right mr-1">Modify Agency Details</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 col-lg-3">
-                        <img src="{{agency.logo.url}}" class="rounded img-fluid" alt="Agency Logo">
-                    </div>
-                    <div class="col-md-8 col-lg-9">
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h6 class="text-muted">License Number</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <p>{{agency.license_number}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h6 class="text-muted">Name</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <p>{{agency.name}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h6 class="text-muted">Company Email</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <p>{{agency.company_email}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h6 class="text-muted">Sales Email</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <p>{{agency.sales_email}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h6 class="text-muted">Website</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <p>{{agency.website_uri}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h6 class="text-muted">UEN</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <p>{{agency.uen}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col ml-1 mt-3">
-                        <h6 class="text-muted">Mission</h6>
-                        <p>{{agency.mission}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col ml-1">
-                        <h5>Bank Account Details</h5>
-                        <div class="row">
-                            <div class="col">
-                                <h6 class="text-muted">QR Code</h6>
-                                <img src="{{agency.qr_code.url}}" alt="" class="img-fluid d-md-none mb-3">
-                                <button type="button" class="btn btn-primary d-none d-md-block" data-toggle="modal" data-target=".qr-code-modal">View</button>
-                                <div class="modal fade qr-code-modal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">QR Code</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="card custom-card">
-                                                    <div class="row">
-                                                        <div class="col text-center my-5">
-                                                            <img src="{{agency.qr_code.url}}" alt="" class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col d-md-none">
-                        <a href="{% url 'agency_update' %}" class="btn btn-primary w-100">Modify Agency Details</a>
-                    </div>
-                </div>
-            </div>
+    <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
+    <div class="row">
+        <div class="col-md-6 mb-4" id="agencyOutletDetailsGroup">
             <div class="row">
-                <div class="col">
-                    <div class="card custom-card">
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="custom-card__header">Main Office</h3>
-                            </div>
-                            <div class="col d-none d-md-block">
-                                <a href="{% url 'dashboard_branches_list' %}" class="btn btn-primary float-right mr-1">View All Branches</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Address</h6>
-                                <p class="mb-0">{{agency.get_main_office.address_1|default:"Incomplete"}}</p>
-                                <p>{{agency.get_main_office.address_2|default:"Incomplete"}}</p>
-                            </div>
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Postal Code</h6>
-                                <p>{{agency.get_main_office.postal_code|default:"Incomplete"}}</p>
-                            </div>
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Area</h6>
-                                <p>{{agency.get_main_office.get_area_display|default:"Incomplete"}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="text-muted">Office Number</h6>
-                                <p>{{agency.get_main_office.office_number|default:"Incomplete"}}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="text-muted">Mobile Number</h6>
-                                <p>{{agency.get_main_office.mobile_number|default:"Incomplete"}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col d-md-none">
-                                <a href="{% url 'dashboard_branches_list' %}" class="btn btn-primary w-100">View All Branches</a>
-                            </div>
+                <div class="col mb-lg-3 mb-xl-4">
+                    <div class="row">
+                        <div class="col">
+                            <h5>Main Branch</h5>
+                            <p>
+                                {{agency.get_main_branch.address_1}} <br>
+                                {{agency.get_main_branch.address_2}} <br>
+                                Singapore {{agency.get_main_branch.postal_code}}
+                            </p>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card custom-card">
-                        <div class="row">
-                            <div class="col mb-md-4">
-                                <h3 class="custom-card__header">Operating Hours</h3>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-2">
+                                    Office No:
+                                </div>
+                                <div class="col">
+                                    {{agency.get_main_branch.office_number}}
+                                </div>
                             </div>
-                            <div class="col d-none d-md-block">
-                                <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-primary float-right mr-1">Modify Operating Hours</a>
+                            <div class="row">
+                                <div class="col-2">
+                                    Mobile No:
+                                </div>
+                                <div class="col">
+                                    {{agency.get_main_branch.mobile_number}}
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Monday</h6>
-                                <p>{{agency.operating_hours.monday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Tuesday</h6>
-                                <p>{{agency.operating_hours.tuesday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Wednesday</h6>
-                                <p>{{agency.operating_hours.wednesday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Thursday</h6>
-                                <p>{{agency.operating_hours.thursday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Friday</h6>
-                                <p>{{agency.operating_hours.friday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Saturday</h6>
-                                <p>{{agency.operating_hours.saturday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Sunday</h6>
-                                <p>{{agency.operating_hours.sunday|default:"Not Completed"}}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="text-muted">Public Holidays</h6>
-                                <p>{{agency.operating_hours.public_holiday|default:"Not Completed"}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col d-md-none">
-                                <a href="{% url 'agency_operating_hours_update' %}" class="btn btn-primary w-100">Modify Operating Hours</a>
+                            <div class="row">
+                                <div class="col-2">
+                                    EA Personnel:
+                                </div>
+                                <div class="col">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {% for branch in agency.get_branches %}
+            <div class="row">
+                <div class="col mb-lg-3 mb-xl-4">
+                    <div class="row">
+                        <div class="col">
+                            <h5>{{branch.name|title}}</h5>
+                            <p>
+                                {{branch.address_1}} <br>
+                                {{branch.address_2}} <br>
+                                Singapore {{branch.postal_code}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-2">
+                                    Office No:
+                                </div>
+                                <div class="col">
+                                    {{branch.office_number}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    Mobile No:
+                                </div>
+                                <div class="col">
+                                    {{branch.mobile_number}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    EA Personnel:
+                                </div>
+                                <div class="col">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6 mb-4" id="agencyOpeningHoursGroup">
+            <h5>Opening Hours</h5>
+            <p>Monday: {{agency.opening_hours.monday}}</p>
+            <p>Tuesday: {{agency.opening_hours.tuesday}}</p>
+            <p>Wednesday: {{agency.opening_hours.wednesday}}</p>
+            <p>Thursday: {{agency.opening_hours.thursday}}</p>
+            <p>Friday: {{agency.opening_hours.friday}}</p>
+            <p>Saturday: {{agency.opening_hours.saturday}}</p>
+            <p>Sunday: {{agency.opening_hours.sunday}}</p>
+            <p>Public Holidays: {{agency.opening_hours.public_holiday}}</p>
+        </div>
+        <div class="col-md-6" id="agencyProfileGroup">
+            <h5>Profile</h5>
+            <p>{{agency.profile}}</p>
+        </div>
+        <div class="col-md-6" id="agencyServicesGroup">
+            <h5>Our Services</h5>
+            <p>{{agency.services}}</p>
         </div>
     </div>
 </div>

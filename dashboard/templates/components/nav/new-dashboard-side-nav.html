@@ -1,78 +1,209 @@
-<nav>
-    <div class="col d-flex flex-column justify-content-around px-md-0">
-        {% with request.resolver_match.url_name as url_name %}
+<nav class="row sticky-top">
+    {% with request.resolver_match.url_name as url_name %}
+    <div class="col">
+        <!-- <div class="row">
+            <div class="col" style="height: 2.5rem;">
+                &nbsp;
+            </div>
+        </div> -->
         <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
-                <p class="m-1 pl-3">Dashboard</p>
-                </a>
+            <div class="col">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}">
+                    <div class="col-11">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
+                            <p class="m-1 pl-2">Dashboard</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}">
+                            <p class="m-1 pl-2">FDW Biodata</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#fdwManagementDropdownNav" role="button" aria-expanded="true" aria-controls="fdwManagementDropdownNav">
+                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update'%}down{% else %}right{% endif %}"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse row {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update' %}show{% endif %}" id="fdwManagementDropdownNav">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_information_create' %}active{% endif %}">
+                        <a href="{% url 'dashboard_maid_information_create' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">Add FDW</p>
+                        </a>
+                    </div>
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_detail' %}active{% else %}d-none{% endif %}">
+                        <a class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">FDW Profile</p>
+                        </a>
+                    </div>
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update' %}active{% else %}d-none{% endif %}">
+                        <a class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">Update FDW</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         {% if authority == 'Agency Owners' %}
         <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}" class="">
-                <p class="m-1 pl-3">Account Management</p>
-                </a>
+            <div class="col">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}">
+                            <p class="m-1 pl-2">Employee Accounts</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#accountManagementDropdownNav" role="button" aria-expanded="true" aria-controls="accountManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </div>  
+                </div>
+                <div class="collapse row {% if url_name == 'dashboard_employee_create' or url_name == 'dashboard_agency_employee_update' %}show{% endif %}" id="accountManagementDropdownNav">
+                    <div class="col-12">
+                        <a href="{% url 'dashboard_employee_create' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_employee_create' %}active{% endif %}">
+                            <p class="m-1 pl-5">Add Employee</p>
+                        </a>
+                    </div>
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_agency_employee_update' %}active{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_update' %}active{% else %}d-none{% endif %}">
+                            <p class="m-1 pl-5">Update Employees</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}" href="{% url 'dashboard_agency_detail' %}" class="">
-                <p class="m-1 pl-3">Agency Management</p>
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}" href="{% url 'dashboard_agency_plan_list' %}" class="">
-                <p class="m-1 pl-3">Subscriptions</p>
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link" href="{% url 'stripe_customer_portal' %}" class="">
-                <p class="m-1 pl-3">Billing History</p>
-                </a>
+            <div class="col">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_detail' %}active{% endif %}" href="{% url 'dashboard_agency_detail' %}">
+                            <p class="m-1 pl-2">Agency Profile</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#agencyProfileManagementDropdownNav" role="button" aria-expanded="true" aria-controls="agencyProfileManagementDropdownNav">
+                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_outlet_details_update' or url_name == 'dashboard_agency_opening_hours_update' %}down{% else %}right{% endif %}"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse row {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_outlet_details_update' or url_name == 'dashboard_agency_opening_hours_update' %}show{% endif %}" id="agencyProfileManagementDropdownNav">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_outlet_details_update' or url_name == 'dashboard_agency_opening_hours_update' %}active{% endif %}">
+                        <a href="{% url 'dashboard_agency_information_update' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">Update Agency Profile</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         {% endif %}
         <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% endif %}" href="{% url 'dashboard_maid_list' %}" class="">
-                <p class="m-1 pl-3">FDW Biodata</p>
-                </a>
+            <div class="col">
+                <div class="row new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}">
+                            <p class="m-1 pl-2">Employers</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#employersManagementDropdownNav" role="button" aria-expanded="true" aria-controls="employersManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </div>  
+                </div>
+                <div class="collapse row" id="employersManagementDropdownNav">
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Employer</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                            <p class="m-1 pl-5">Employer Profile</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                            <p class="m-1 pl-5">Update Employer</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
-                <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}" class="">
-                <p class="m-1 pl-3">Employer Summary</p>
-                </a>
+            <div class="col">
+                <div class="row new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link {% if url_name == 'employer_list_route' %}active{% endif %}" href="{% url 'employer_list_route' %}">
+                            <p class="m-1 pl-2">Case</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#caseManagementDropdownNav" role="button" aria-expanded="true" aria-controls="caseManagementDropdownNav">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </div>  
+                </div>
+                <div class="collapse row" id="caseManagementDropdownNav">
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-5">Add Case</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                            <p class="m-1 pl-5">Case Profile</p>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                            <p class="m-1 pl-5">Update Case</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'sales_list_route' %}active{% endif %}" href="{% url 'sales_list_route' %}" class="">
-                <p class="m-1 pl-3">Sales Summary</p>
+                <p class="m-1 pl-2">Sales Summary</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'status_list_route' %}active{% endif %}" href="{% url 'status_list_route' %}" class="">
-                <p class="m-1 pl-3">Status Summary</p>
+                <p class="m-1 pl-2">Status Summary</p>
                 </a>
             </div>
         </div>
         <div class="row">
-            <div class="col px-0">
+            <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}" href="{% url 'dashboard_enquiries_list' %}" class="">
-                <p class="m-1 pl-3">Enquiries</p>
+                <p class="m-1 pl-2">Enquiries</p>
                 </a>
             </div>
         </div>
-        {% endwith %}
+        <div class="row">
+            <div class="col">
+                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}" href="{% url 'dashboard_agency_plan_list' %}" class="">
+                <p class="m-1 pl-2">Subscriptions</p>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a class="nav-link new-side-nav-link" href="{% url 'stripe_customer_portal' %}" class="">
+                <p class="m-1 pl-2">Billing History</p>
+                </a>
+            </div>
+        </div>
     </div>
+    {% endwith %}
 </nav>

@@ -1,3 +1,19 @@
+.dashboard-font-size-text {
+  font-size: 0.75rem;
+}
+
+.dashboard-font-size-table-header {
+  font-size: 0.875rem;
+}
+
+.dashboard-font-size-button {
+  font-size: 0.875rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 .bg-primary1 {
   background-color: #3066be;
 }
@@ -117,17 +133,45 @@ button.mini-faq-button i {
 }
 
 .new-side-nav-link {
-  color: black !important;
+  color: #1F4E78 !important;
+}
+
+.new-side-nav-link a {
+  color: #1F4E78 !important;
 }
 
 .new-side-nav-link.active {
-  background-color: #fff;
+  background-color: #0571bb;
+  color: #fff !important;
+}
+
+.new-side-nav-link.active a {
+  color: #fff !important;
 }
 
 .new-side-nav-link:hover:not(.active) {
-  background-color: #fff;
+  background-color: #0571bb;
+  color: #fff !important;
   -webkit-transition: background-color .5s ease-in-out;
   transition: background-color .5s ease-in-out;
+  -webkit-transition: color .5s ease-in-out;
+  transition: color .5s ease-in-out;
+}
+
+.new-side-nav-link:hover:not(.active) a {
+  color: #fff !important;
+}
+
+.mini-side-nav-link.active {
+  font-weight: 600;
+}
+
+.mini-side-nav-link:hover:not(.active) {
+  font-weight: 600;
+}
+
+a.mini-side-nav-link {
+  color: #1F4E78 !important;
 }
 
 body.dashboard-body {
@@ -164,6 +208,10 @@ body.dashboard-body {
 
 .text-smaller {
   font-size: 0.75rem;
+}
+
+.text-smaller-slight {
+  font-size: 0.9rem;
 }
 
 .text-larger-slight {

@@ -8,7 +8,7 @@
                 <h4>Account Management</h4>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-3">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -25,58 +25,85 @@
                     </div>
                   </div>
             </div>
+        </div> -->
+        <div class="row">
+            <div class="col text-right mb-3">
+                <a href="{% url 'dashboard_employee_create' %}" class="btn btn-primary mr-1">Add Employee</a>
+            </div>
         </div>
         <div class="row">
             <div class="col text-right mb-3">
-                <a href="{% url 'agency_employee_create' %}" class="btn btn-lg btn-success mr-5 py-3">Add Sub Account</a>
+                <p class="mb-0 mr-1">Account Limit: {{employee_accounts.current}}/{{employee_accounts.max}}</p>
             </div>
         </div>
-        <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
+        <div class="row bg-custom-light-blue text-dark mx-half py-3 border text-center">
             <div class="col-1">
                 <h6 class="mb-0">S/N</h6>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <h6 class="mb-0">Name</h6>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <h6 class="mb-0">Email</h6>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <h6 class="mb-0">EA Personnel No</h6>
             </div>
-            <div class="col-2">
-                <h6 class="mb-0">Account Type</h6>
+            <div class="col">
+                <h6 class="mb-0">Type</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Branch</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Last Login</h6>
             </div>
             <div class="col-1">
-                <h6 class="mb-0">Last Login</h6>
+                <h6 class="mb-0">Published</h6>
             </div>
             <div class="col-1">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
         {% for account in accounts %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
             <div class="col-1">
                 <p class="mb-0">{{account.pk}}</p>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <p class="mb-0">{{account.name}}</p>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <p class="mb-0">{{account.user.email}}</p>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <p class="mb-0">{{account.ea_personnel_number}}</p>
             </div>
-            <div class="col-2">
+            <div class="col">
                 <p class="mb-0">{{account.get_role_display}}</p>
             </div>
-            <div class="col-1">
+            <div class="col">
                 <p class="mb-0">{{account.branch.name}}</p>
             </div>
+            <div class="col">
+                <p class="mb-0">{{account.user.last_login|date:"j M g:i A"}}</p>
+            </div>
             <div class="col-1">
-                <div class="row" style="justify-content: space-around;">
-                    <a href="{% url 'agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                <p class="mb-0">
+                    {% if account.get_ea_personnel_no %}
+                        {% if account.published == True %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                    {% else %}
+                    N.A.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-1">
+                <div class="row justify-content-evenly">
+                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>

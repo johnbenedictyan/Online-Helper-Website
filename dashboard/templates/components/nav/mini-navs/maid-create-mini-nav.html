@@ -1,0 +1,75 @@
+<div class="col px-0 d-flex flex-column">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-center" style="height: 2.5rem;">
+            <a class="text-reset" data-toggle="collapse" href="#dashboardSideNavWrapper" role="button" aria-expanded="true" aria-controls="dashboardMainSideNavbar" id="miniNavbarMainSideNavbarToggler">
+                <i id="miniNavbarMainSideNavbarTogglerIcon" class="fas fa-angle-double-left fa-lg"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_information_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_information_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">FDW Information</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_language_spoken_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">Spoken Language</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_languages_and_fhpdr_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">Food Handling</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_experience_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_experience_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">Experience</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_employment_history_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_employment_history_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">Employment History</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_about_fdw_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_about_fdw_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">About FDW</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_loan_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_loan_update' maid_id %}{% else %}#{% endif %}">
+                <p class="m-1 pl-2">FDW Loan</p>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $(".mini-side-nav-link").on("click", function(){
+            $(".mini-side-nav-link").removeClass("active");
+            $(this).addClass("active");
+        })
+        $("#miniNavbarMainSideNavbarToggler").on("click", (event)=>{
+            if($("#miniNavbarMainSideNavbarTogglerIcon").hasClass("fa-angle-double-left")){
+                $("#miniNavbarMainSideNavbarTogglerIcon").removeClass("fa-angle-double-left");
+                $("#miniNavbarMainSideNavbarTogglerIcon").addClass("fa-angle-double-right");
+            } else {
+                $("#miniNavbarMainSideNavbarTogglerIcon").removeClass("fa-angle-double-right");
+                $("#miniNavbarMainSideNavbarTogglerIcon").addClass("fa-angle-double-left");
+            }
+        });
+    })
+</script>

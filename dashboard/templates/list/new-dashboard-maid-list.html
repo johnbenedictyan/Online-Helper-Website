@@ -1,4 +1,5 @@
 {% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
 {% load dashboard_tags %}
 {% block dashboard_section %}
 <section>
@@ -8,97 +9,85 @@
                 <h4>FDW Biodata</h4>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-                    </div>
-                  </div>
+        <form action="" method="get">
+            <div class="row">
+                <div class="col-4">
+                    {{filter.form.name|as_crispy_field}}
+                </div>
+                <div class="col-4 offset-2">
+                    {{filter.form.status|as_crispy_field}}
+                </div>
             </div>
-            <div class="col-3 offset-2">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-                    </div>
-                  </div>
+        </form>
+        <div class="row">
+            <div class="col text-right pb-3">
+                <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-primary mr-1">Add Biodata</a>
             </div>
         </div>
         <div class="row">
             <div class="col text-right pb-3">
-                <a href="{% url 'maid_create' %}" class="btn btn-lg btn-success mr-5 py-3">Add Biodata</a>
+                <p class="mb-0 mr-1">Biodata Limit: 0/100</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right pb-3">
+                <p class="mb-0 mr-1">Featured Limit: 0/100</p>
             </div>
         </div>
         <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
-            <div class="col">
-                <h6 class="mb-0">S/N</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Name</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Nationality</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Type of Maid</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Age</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Date Created</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Published</h6>
-            </div>
-            <div class="col">
-                <h6 class="mb-0">Featured</h6>
-            </div>
             <div class="col-1">
+                <h6 class="mb-0">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Name <i class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nameSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Nationality <i class="fas {% if order_by == 'nationality' %}fa-sort-alpha-down{% elif order_by == '-nationality' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nationalitySortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Type <i class="fas {% if order_by == 'type' %}fa-sort-alpha-down{% elif order_by == '-type' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="typeSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">PP Expiry <i class="fas {% if order_by == 'ppExpiry' %}fa-sort-amount-down{% elif order_by == '-ppExpiry' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="ppExpirySortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Status <i class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="statusSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Date Created <i class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateCreatedSortToggle"></i></h6>
+            </div>
+            <div class="col-1 text-center">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
         {% for maid in maids %}
         <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
-            <div class="col">
+            <div class="col-1">
                 <p class="mb-0">{{maid.pk}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{maid.name}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{maid.personal_details.get_country_of_origin_display}}</p>
+                <p class="mb-0">{{maid.get_country_of_origin_display}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{maid.get_maid_type_display}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{maid.personal_details.get_age}}</p>
+                <p class="mb-0">{{maid.passport_expiry|date:"j M Y"}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.get_status_display}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
             </div>
-            <div class="col">
-                {% if maid.published is True %}
-                <i class="far fa-check-circle text-success"></i>
-                {% else %}
-                <i class="far fa-times-circle text-danger"></i>
-                {% endif %}
-            </div>
-            <div class="col">
-                {% if maid.featured is True %}
-                <i class="far fa-check-circle text-success"></i>
-                {% else %}
-                <i class="far fa-times-circle text-danger"></i>
-                {% endif %}
-            </div>
             <div class="col-1">
-                <div class="row" style="justify-content: space-around;">
-                    <a href="#"><i class="far fa-edit"></i></a>
+                <div class="row justify-content-evenly">
+                    <a href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
                     <a href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
-                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                    <a href="#"><i class="far fa-trash"></i></a>
                 </div>
             </div>
         </div>
@@ -106,3 +95,134 @@
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $('.sortToggle').on('click', function(){
+            $('.sortToggle').not(this).each(function(){
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'nameSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=name"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-name"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=name"
+                    }
+                    break;
+
+                case 'nationalitySortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=nationality"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-nationality"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=nationality"
+                    }
+                    break;
+
+                case 'typeSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=type"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-type"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=type"
+                    }
+                    break;
+
+                case 'ppExpirySortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=ppExpiry"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-ppExpiry"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=ppExpiry"
+                    }
+                    break;
+
+                case 'statusSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=status"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-status"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=status"
+                    }
+                    break;
+
+                case 'dateCreatedSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=dateCreated"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-dateCreated"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=dateCreated"
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        })
+    })
+</script>
+{% endblock js%}

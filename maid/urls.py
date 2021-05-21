@@ -6,7 +6,7 @@ from django.urls import include, path
 # Imports from local app
 
 ## Form Views
-from .views import MaidCreateFormView, MaidCareDetailsUpdate
+from .views import MaidCreateFormView, MaidExperienceUpdate
 
 ## Redirect Views
 from .views import MaidTogglePublished, MaidToggleFeatured
@@ -18,14 +18,13 @@ from .views import MaidList
 from .views import MaidDetail, PdfMaidBiodataView
 
 ## Create Views
-from .views import MaidEmploymentHistoryFormSetView
+# from .views import MaidEmploymentHistoryFormSetView
 
 ## Update Views
 from .views import (
-    MaidUpdate, MaidPersonalDetailsUpdate, MaidFamilyDetailsUpdate, 
-    MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
-    MaidGeneralHouseworkUpdate, MaidCookingUpdate, MaidFinancialDetailsUpdate,
-    MaidAgencyFeeTransactionUpdate
+#     MaidInfantChildCareUpdate, MaidElderlyCareUpdate, MaidDisabledCareUpdate,
+#     MaidGeneralHouseworkUpdate, MaidCookingUpdate,
+    MaidLoanTransactionUpdate
 )
 
 ## Delete Views
@@ -62,66 +61,51 @@ urlpatterns = [
     path(
         'update/<int:pk>/',
         include([
+            # path(
+            #     '',
+            #     MaidUpdate.as_view(),
+            #     name='maid_update'
+            # ),
             path(
-                '',
-                MaidUpdate.as_view(),
-                name='maid_update'
-            ),
-            path(
-                'biodata/',
-                MaidPersonalDetailsUpdate.as_view(),
-                name='maid_personal_details_update'
-            ),
-            path(
-                'family-details/',
-                MaidFamilyDetailsUpdate.as_view(),
-                name='maid_family_details_update'
-            ),
-            path(
-                'finance/',
-                MaidFinancialDetailsUpdate.as_view(),
-                name='maid_financial_details_update'
-            ),
-            path(
-                'care/',
-                MaidCareDetailsUpdate.as_view(),
+                'experience/',
+                MaidExperienceUpdate.as_view(),
                 name='maid_care_details_update'
             ),
+            # path(
+            #     'employment/',
+            #     MaidEmploymentHistoryFormSetView.as_view(),
+            #     name='maid_employment_formset'
+            # ),
             path(
-                'employment/',
-                MaidEmploymentHistoryFormSetView.as_view(),
-                name='maid_employment_formset'
+                'aft/<int:loan_transaction_pk>/',
+                MaidLoanTransactionUpdate.as_view(),
+                name='maid_loan_transaction_update'
             ),
-            path(
-                'aft/<int:agency_fee_transaction_pk>/',
-                MaidAgencyFeeTransactionUpdate.as_view(),
-                name='maid_agency_fee_transaction_update'
-            ),
-            path(
-                'icc/',
-                MaidInfantChildCareUpdate.as_view(),
-                name='maid_infant_child_care_update'
-            ),
-            path(
-                'ec/',
-                MaidElderlyCareUpdate.as_view(),
-                name='maid_elderly_care_update'
-            ),
-            path(
-                'dc/',
-                MaidDisabledCareUpdate.as_view(),
-                name='maid_disabled_care_update'
-            ),
-            path(
-                'gh/',
-                MaidGeneralHouseworkUpdate.as_view(),
-                name='maid_general_housework_update'
-            ),
-            path(
-                'c/',
-                MaidCookingUpdate.as_view(),
-                name='maid_cooking_update'
-            )
+            # path(
+            #     'icc/',
+            #     MaidInfantChildCareUpdate.as_view(),
+            #     name='maid_infant_child_care_update'
+            # ),
+            # path(
+            #     'ec/',
+            #     MaidElderlyCareUpdate.as_view(),
+            #     name='maid_elderly_care_update'
+            # ),
+            # path(
+            #     'dc/',
+            #     MaidDisabledCareUpdate.as_view(),
+            #     name='maid_disabled_care_update'
+            # ),
+            # path(
+            #     'gh/',
+            #     MaidGeneralHouseworkUpdate.as_view(),
+            #     name='maid_general_housework_update'
+            # ),
+            # path(
+            #     'c/',
+            #     MaidCookingUpdate.as_view(),
+            #     name='maid_cooking_update'
+            # )
         ])
     ),
     path(

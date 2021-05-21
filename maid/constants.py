@@ -273,6 +273,16 @@ class MaidCountryOfOrigin(models.TextChoices):
     THAILAND    = 'THA', _('Thailand')
     OTHERS      = 'OTH', _('Others')
 
+class MaidNationalityChoices(models.TextChoices):
+    BANGLADESH  = 'BGD', _('Bangladeshi')
+    CAMBODIA    = 'KHM', _('Cambodian')
+    INDIA       = 'IND', _('Indian')
+    INDONESIA   = 'IDN', _('Indonesian')
+    MYANMAR	    = 'MMR', _('Myanma')
+    PHILIPPINES = 'PHL', _('Filipino')
+    SRI_LANKA   = 'LKA', _('Sri Lankan')
+    OTHERS      = 'OTH', _('Others')
+    
 country_language = {
     MaidCountryOfOrigin.BANGLADESH: 'TAM',
     MaidCountryOfOrigin.CAMBODIA: 'KHM',
@@ -288,8 +298,7 @@ class MaidLanguageChoices(models.TextChoices):
     ENGLISH     = 'ENG', _('English')
     BENGALI     = 'BEN', _('Bengali')
     BURMESE     = 'BUR', _('Burmese')
-    CHINESE     = 'CHI', _('Mandarin Chinese')
-    HINDI       = 'HIN', _('Hindi')
+    CHINESE     = 'CHI', _('Mandarin / Dialect')
     INDONESIAN  = 'IND', _('Bahasa Indonesia')
     KHMER       = 'KHM', _('Khmer')
     SINHALA     = 'SIN', _('Sinhala')
@@ -327,8 +336,6 @@ class MaidResponsibilityChoices(models.TextChoices):
     MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI', _('Care for Infants/Children')
     MAID_RESP_CARE_FOR_ELDERLY          = 'CFE', _('Care for the Elderly')
     MAID_RESP_CARE_FOR_DISABLED         = 'CFD', _('Care for the Disabled')
-    MAID_RESP_CARE_FOR_PETS             = 'CFP', _('Care for Pets')
-    MAID_RESP_GARDENING                 = 'GAR', _('Gardening')
 
 class MaidCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Experience in own country')
@@ -342,7 +349,6 @@ class MaidCareRemarksChoices(models.TextChoices):
         'Experience in own country, overseas and Singapore'
     )
     NO_EXP = 'NE', _('No experience, but willing to learn')
-    NOT_WILLING = 'NW', _('Not willing')
     OTHERS = 'OTH', _('Other remarks (Please specify)')
     
 class MaidGeneralHouseworkRemarksChoices(models.TextChoices):
@@ -358,7 +364,13 @@ class TypeOfMaidChoices(models.TextChoices):
 class MaidPassportStatusChoices(models.IntegerChoices):
     NOT_READY = 0, _('Not Ready')
     READY = 1, _('Ready')
-        
+
+class MaidStatusChoices(models.TextChoices):
+    FEATURED = 'FEAT', _('Featured')
+    PUBLISHED = 'PUB', _('Published')
+    UNPUBLISHED = 'UPUB', _('Unpublished')
+    EMPLOYED = 'EMPL', _('Employed')
+    
 class MaidEducationLevelChoices(models.TextChoices):
     HIGH_SCHOOL = 'HS', _('High School')
     COLLEGE = 'COL', _('College')
@@ -379,7 +391,47 @@ class MaidCreatedOnChoices(models.IntegerChoices):
     THREE_DAYS = 3, _('Last 3 days')
     SEVEN_DAYS = 7, _('Last 7 days')
     FIFTEEN_DAYS = 15, _('Last 15 days')
+    
+class MaidLoanDescriptionChoices(models.TextChoices):
+    INITIAL_LOAN = 'IML', _('Initial Maid Loan')
+    TRANSFER_FEE = 'ATF', _('Add Transfer Fee')
+    OTHER_COST = 'AOC', _('Add Other Cost')
+    LOAN_REPAYMENT = 'LR', _('Loan Repayment')
 
+class MaidStatusChoices(models.TextChoices):
+    UNPUBLISHED = 'UNPUB', _('Unpublished')    
+    PUBLISHED = 'PUB', _('Published')
+    FEATURED = 'FEAT', _('Featured')
+    EMPLOYED = 'EMPLOY', _('Employed')
+
+class MaidFoodPreferenceChoices(models.TextChoices):
+    PORK = 'P', _('No pork')
+    CHICKEN = 'C', _('No chicken')
+    BEEF = 'B', _('No beef')
+    SEAFOOD = 'S', _('No seafood')
+    VEG = 'V', _('Vegetarian')
+    
+class MaidDietaryRestrictionChoices(models.TextChoices):
+    PORK = 'P', _('No pork')
+    CHICKEN = 'C', _('No chicken')
+    BEEF = 'B', _('No beef')
+    SEAFOOD = 'S', _('No seafood')
+    VEG = 'V', _('Able to work in a Vegetarian family')
+
+class MaidLanguageProficiencyChoices(models.TextChoices):
+    UNABLE = 'UNABLE', _('Unable to speak')
+    BASIC = 'BASIC', _('Basic')
+    INTERMEDIATE = 'INTER', _('Intermediate')
+    ADVANCED = 'ADVAN', _('Advanced')
+    
+class MaidExperienceChoices(models.TextChoices):
+    NO = 'NO', _('No Experience')
+    ONE = 'ONE', _('1 Year')
+    TWO = 'TWO', _('2 Years')
+    THREE = 'THREE', _('3 Years')
+    FOUR = 'FOUR', _('4 Years')
+    O_FIVE = 'O_FIVE', _('>5 Years')
+    
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes

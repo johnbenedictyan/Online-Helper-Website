@@ -16,3 +16,12 @@
         </form>
     </div>
 {% endblock agency_section %}
+{% block js %}
+<script>
+    $(function(){
+        $('#agencyBranchAdditionButton').on('click', function(){
+            $(`#branch_section_${$(this).data('rownumber')+1}`).removeClass('d-none');
+        });
+    });
+</script>
+{% endblock js %}

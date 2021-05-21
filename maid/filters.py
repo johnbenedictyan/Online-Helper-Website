@@ -20,7 +20,7 @@ from agency.models import Agency
 
 # Start of Filters
 class MiniMaidFilter(django_filters.FilterSet):
-    personal_details__country_of_origin = django_filters.ChoiceFilter(
+    country_of_origin = django_filters.ChoiceFilter(
         choices=MaidCountryOfOrigin.choices,
         empty_label=_('No Preference'),
         label=''
@@ -39,7 +39,7 @@ class MiniMaidFilter(django_filters.FilterSet):
     class Meta:
         model = Maid
         fields = {
-            'personal_details__country_of_origin': ['exact'],
+            'country_of_origin': ['exact'],
             'maid_type': ['exact'],
             'responsibilities': ['exact']
         }
@@ -56,14 +56,14 @@ class MaidFilter(django_filters.FilterSet):
         label=_('Search by Maid Name')
     )
     languages = django_filters.ModelMultipleChoiceFilter(
-        field_name='personal_details__languages',
+        field_name='languages',
         lookup_expr='exact',
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
         label=_('Language Spoken')
     )
     country_of_origin = django_filters.ChoiceFilter(
-        field_name='personal_details__country_of_origin',
+        field_name='country_of_origin',
         lookup_expr='exact',
         label=_('Country of Origin'),
         choices=MaidCountryOfOrigin.choices,
@@ -75,7 +75,7 @@ class MaidFilter(django_filters.FilterSet):
         empty_label=_('No Preference')
     )
     marital_status = django_filters.ChoiceFilter(
-        field_name='family_details__marital_status',
+        field_name='marital_status',
         lookup_expr='exact',
         label=_('Marital Status'),
         choices=MaritalStatusChoices.choices,
@@ -130,7 +130,7 @@ class MaidFilter(django_filters.FilterSet):
             365*int(value.start)+int(value.start//4)
         )
         return queryset.filter(
-            personal_details__date_of_birth__range=(
+            date_of_birth__range=(
                 start_date,
                 end_date
             )

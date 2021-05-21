@@ -48,6 +48,12 @@ $fire-opal: #de6449 !default;
 $custom-blue: #5B7FB5 !default;
 $custom-black: #383e47 !default;
 $custom-light-blue : #d9e9f1 !default;
+$dashboard-primary: #4F72A7 !default;
+$dashboard-navbar-color: #DFE5EC !default;
+$dashboard-pagebar-color: #EFF2F6 !default;
+$dashboard-text-color: #1F4E78 !default;
+$dashboard-table-background-light: #FFFFFF !default;
+$dashboard-table-background-dark: #F5F7F9 !default;
 
 $colors: () !default;
 $colors: map-merge(("blue": $blue,
@@ -70,7 +76,13 @@ $colors: map-merge(("blue": $blue,
         "dark-blue": $dark-blue,
         "fire-opal": $fire-opal,
         "custom-black": $custom-black,
-        "custom-light-blue": $custom-light-blue
+        "custom-light-blue": $custom-light-blue,
+        "dashboard-primary": $dashboard-primary,
+        "dashboard-navbar-color": $dashboard-navbar-color,
+        "dashboard-pagebar-color": $dashboard-pagebar-color,
+        "dashboard-text-color": $dashboard-text-color,
+        "dashboard-table-background-light": $dashboard-table-background-light,
+        "dashboard-table-background-dark": $dashboard-table-background-dark
 ),
     $colors);
 
@@ -99,7 +111,13 @@ $theme-colors: map-merge(
         "dark": $dark,
         "tertiary": $tertiary,
         "custom-dark": $custom-dark,
-        "custom-light-blue": $custom-light-blue
+        "custom-light-blue": $custom-light-blue,
+        "dashboard-primary": $dashboard-primary,
+        "dashboard-navbar-color": $dashboard-navbar-color,
+        "dashboard-pagebar-color": $dashboard-pagebar-color,
+        "dashboard-text-color": $dashboard-text-color,
+        "dashboard-table-background-light": $dashboard-table-background-light,
+        "dashboard-table-background-dark": $dashboard-table-background-dark
     ),
     $theme-colors);
 

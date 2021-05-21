@@ -60,7 +60,7 @@ class SetUp():
         self.potential_agency.save()
         
         self.agency = Agency(
-            company_email = 'a@a.com',
+            email = 'a@a.com',
             sales_email = 'a@a.com',
             name = 'AAA Agency Pte Ltd',
             license_number = '12345',
@@ -392,7 +392,7 @@ class SetUp():
         self.potential_agency_other.save()
         
         self.agency_other = Agency(
-            company_email = 'b@a.com',
+            email = 'b@a.com',
             sales_email = 'b@a.com',
             name = 'BBB Agency Pte Ltd',
             license_number = '23456',

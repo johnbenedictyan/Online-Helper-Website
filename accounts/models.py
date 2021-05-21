@@ -54,6 +54,10 @@ class User(AbstractUser):
     is_online = models.BooleanField(
         default=False
     )
+    last_login = models.DateTimeField(
+        editable=False,
+        null=True
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -72,26 +76,6 @@ class PotentialEmployer(models.Model):
         User,
         on_delete=models.CASCADE,
         primary_key=True
-    )
-
-    name = models.CharField(
-        verbose_name=_('Name'),
-        max_length=255,
-        blank=False
-    )
-
-    contact_number = models.CharField(
-        verbose_name=_('Contact Number'),
-        max_length=10,
-        blank=False,
-        validators=[
-            RegexValidator(
-                regex='^[0-9]*$',
-                message=_('Please enter a valid contact number')
-            )
-        ]
-        # This regex validator checks if the contact number provided is all 
-        # numbers.
     )
 
     def __str__(self):

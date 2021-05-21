@@ -28,7 +28,7 @@ def create_potential_employer_group():
         'view_employer',
         'view_agency',
         'view_agencybranch',
-        'view_agencyoperatinghours',
+        'view_agencyopeninghours',
         'view_employerbase',
         'view_employerdocbase',
         'view_employerdocemploymentcontract',

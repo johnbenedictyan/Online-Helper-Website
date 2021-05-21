@@ -37,3 +37,34 @@ def enquiry_form(request):
         'enquiry_form': GeneralEnquiryForm()
     }
         
+def dashboard_side_nav(request):
+    dashboard_side_nav_list = [
+        #Agency
+        'dashboard_agency_detail',
+        'dashboard_agency_update',
+        'dashboard_agency_information_update',
+        'dashboard_agency_outlet_details_update',
+        'dashboard_agency_opening_hours_update',
+        
+        #Agency Employees
+        'dashboard_employee_create',
+        'dashboard_agency_employee_update',
+        
+        #Maid
+        'dashboard_maid_information_create',
+        'dashboard_maid_information_update',
+        'dashboard_maid_languages_and_fhpdr_update',
+        'dashboard_maid_experience_update',
+        'dashboard_maid_employment_history_update',
+        'dashboard_maid_about_fdw_update',
+        'dashboard_maid_loan_update',
+
+        #Employers
+        'dashboard_employer_detail',
+
+        #Cases
+        'dashboard_case_detail'
+    ]
+    return {
+        'dashboard_side_nav_list' : dashboard_side_nav_list
+    }

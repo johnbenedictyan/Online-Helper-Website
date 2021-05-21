@@ -26,7 +26,79 @@ $mercury: #d7d4d3 !default;
 $BASE_FONT_SIZE: 1rem !default;
 $FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
 $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
+$FONT_SIZE_SMALLER_SLIGHT: .9rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
+
+// Dashboard CSS Settings
+$DASHBOARD_FONT_SIZE_TEXT: .75rem;
+$DASHBOARD_FONT_SIZE_TABLE_HEADER: .875rem;
+$DASHBOARD_FONT_SIZE_BUTTON: .875rem;
+
+.col{
+    &-0-5{
+        flex: 0 0 4.166667%;
+        max-width: 4.166667%;
+    }
+    &-1-5{
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+    }
+    &-2-5{
+        flex: 0 0 20.833333%;
+        max-width: 20.833333%;
+    }
+    &-3-5{
+        flex: 0 0 29.166667%;
+        max-width: 29.166667%;
+    }
+    &-4-5{
+        flex: 0 0 37.5%;
+        max-width: 37.5%;
+    }
+    &-5-5{
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+    &-6-5{
+        flex: 0 0 54.16667%;
+        max-width: 54.16667%;
+    }
+    &-7-5{
+        flex: 0 0 62.5%;
+        max-width: 62.5%;
+    }
+    &-8-5{
+        flex: 0 0 70.83333%;
+        max-width: 70.83333%;
+    }
+    &-9-5{
+        flex: 0 0 79.16667%;
+        max-width: 79.16667%;
+    }
+    &-10-5{
+        flex: 0 0 87.5%;
+        max-width: 87.5%;
+    }
+    &-11-5{
+        flex: 0 0 95.83333%;
+        max-width: 95.83333%;
+    }
+}
+.dashboard-font-size{
+    &-text {
+        font-size: $DASHBOARD_FONT_SIZE_TEXT;
+    }
+    &-table-header {
+        font-size: $DASHBOARD_FONT_SIZE_TABLE_HEADER;
+    }
+    &-button {
+        font-size: $DASHBOARD_FONT_SIZE_BUTTON;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 .bg {
     &-primary1 {
@@ -154,17 +226,44 @@ button.mini-faq-button {
     }
 }
 
+$PRIMARY_COLOUR: #0571bb;
+
 .new-side-nav-link{
-    color: black !important;
+    color: #1F4E78 !important;
+    a {
+        color: #1F4E78 !important;
+    }
 
     &.active {
-        background-color: $WHITE;
+        background-color: $PRIMARY_COLOUR;
+        color: $WHITE !important;
+        a {
+            color: $WHITE !important;
+        } 
     }
 
     &:hover:not(.active) {
-        background-color: $WHITE;
+        background-color: $PRIMARY_COLOUR;
+        color: $WHITE !important;
         transition: background-color .5s ease-in-out;
+        transition: color .5s ease-in-out; 
+        a {
+            color: $WHITE !important;
+        }
     }
+}
+
+.mini-side-nav-link{
+    &.active {
+        font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+        font-weight: 600;
+    }
+}
+a.mini-side-nav-link{
+    color: #1F4E78 !important;
 }
 
 $CUSTOM_CARD_BOX_SHADOW_SETTINGS: 0px 16px 40px;
@@ -218,6 +317,10 @@ body.dashboard-body{
 
 .text-smaller {
     font-size: $FONT_SIZE_SMALLER;
+
+    &-slight{
+        font-size: $FONT_SIZE_SMALLER_SLIGHT;
+    }
 }
 
 .text-larger-slight {

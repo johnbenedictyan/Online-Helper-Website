@@ -5,29 +5,60 @@ from datetime import datetime, timedelta
 # Imports from django
 from django.contrib import messages
 from django.http import JsonResponse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
-from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch
+from agency.forms import (
+    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+)
+from agency.formsets import (
+    AgencyBranchFormSetHelper, AgencyBranchFormSet
+)
+from agency.models import (
+    Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
+)
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
+from employer_documentation.models import Employer
 from enquiry.models import GeneralEnquiry
-from maid.models import Maid
+from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
+from maid.forms import (
+    MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
+    MaidLanguagesAndFHPDRForm, MaidExperienceForm,
+    MaidAboutFDWForm, MaidEmploymentHistoryForm
+)
+from maid.formsets import (
+    MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
+    MaidEmploymentHistoryFormSet, MaidEmploymentHistoryFormSetHelper
+)
+from maid.mixins import FDWLimitMixin
+from maid.models import (
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
+    MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
+    MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
+)
 from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
-
+from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from local app
+from .filters import (
+    DashboardMaidFilter, DashboardEmployerFilter, DashboardCaseFilter, DashboardSalesFilter,
+    DashboardStatusFilter
+)
 
 # Start of Views
 
 # Template Views
 class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
                         TemplateView):
-    template_name = 'base/new-dashboard-home-page.html'
+    template_name = 'base/dashboard-home-page.html'
     authority = ''
     agency_id = ''
 
@@ -82,45 +113,55 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
 # Redirect Views
 
 # List Views
-class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
     template_name = 'list/new-dashboard-maid-list.html'
+    filter_set = DashboardMaidFilter
     authority = ''
     agency_id = ''
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        # agency = Agency.objects.get(
-        #     pk=self.agency_id
-        # )
-        # kwargs.update({
-        #     'biodata': {
-        #         'current': Maid.objects.filter(
-        #             agency=agency
-        #         ).count(),
-        #         'max': agency.amount_of_biodata_allowed
-        #     },
-        #     'featured_maids': {
-        #         'current': Maid.objects.filter(
-        #             agency=agency,
-        #             featured=True
-        #         ).count(),
-        #         'max': agency.amount_of_featured_biodata_allowed
-        #     }
-        # })
+        kwargs.update({
+            'order_by': self.request.GET.get('order-by')
+        })
         return kwargs
     
     def get_queryset(self):
-        print(self.agency_id)
-        print(list(Maid.objects.filter(agency__pk=self.agency_id)))
-        return Maid.objects.filter(
-            agency__pk = self.agency_id
-        ).order_by('id')
+        order_by = self.request.GET.get('order-by')
+        if order_by:
+            if order_by == 'serialNo':
+                order_by = 'id'
+            elif order_by == '-serialNo':
+                order_by = '-id'
+            elif order_by == 'nationality':
+                order_by = 'country_of_origin'
+            elif order_by == '-nationality':
+                order_by = '-country_of_origin'
+            elif order_by == 'type':
+                order_by = 'maid_type'
+            elif order_by == '-type':
+                order_by = '-maid_type'
+            elif order_by == 'ppExpiry':
+                order_by = 'passport_expiry'
+            elif order_by == '-ppExpiry':
+                order_by = '-passport_expiry'
+            elif order_by == 'dateCreated':
+                order_by = 'created_on'
+            elif order_by == '-dateCreated':
+                order_by = '-created_on'
+            return Maid.objects.filter(
+                agency__pk = self.agency_id
+            ).order_by(order_by)
+        else:
+            return Maid.objects.filter(
+                agency__pk = self.agency_id
+            ).order_by('passport_expiry')
 
-class DashboardAccountList(
-    AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                           ListView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
@@ -154,7 +195,6 @@ class DashboardAccountList(
                 branch = self.request.user.agency_employee.branch
             )
 
-
 class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     context_object_name = 'plans'
     http_method_names = ['get']
@@ -187,29 +227,110 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return AgencyBranch.objects.filter(
             agency__pk = self.agency_id
         )
+        
+class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilteredMixin, 
+                        ListView):
+    context_object_name = 'cases'
+    http_method_names = ['get']
+    template_name = 'list/dashboard-case-list.html'
+    # filter_set = DashboardCaseFilter
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        return Maid.objects.all()
+
+class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilteredMixin, 
+                        ListView):
+    context_object_name = 'sales'
+    http_method_names = ['get']
+    template_name = 'list/dashboard-sales-list.html'
+    # filter_set = DashboardSalesFilter
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        return Maid.objects.all()
+
+class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, # ListFilteredMixin, 
+                        ListView):
+    context_object_name = 'status'
+    http_method_names = ['get']
+    template_name = 'list/dashboard-status-list.html'
+    # filter_set = DashboardStatusFilter
+    authority = ''
+    agency_id = ''
+
+    def get_queryset(self):
+        return Maid.objects.all()
+
+class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
+    context_object_name = 'employers'
+    http_method_names = ['get']
+    model = Employer
+    template_name = 'list/dashboard-employer-list.html'
+    filter_set = DashboardEmployerFilter
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        kwargs.update({
+            'order_by': self.request.GET.get('order-by')
+        })
+        return kwargs
+    
+    def get_queryset(self):
+        order_by = self.request.GET.get('order-by')
+        # if order_by:
+        #     if order_by == 'serialNo':
+        #         order_by = 'id'
+        #     elif order_by == '-serialNo':
+        #         order_by = '-id'
+        #     elif order_by == 'employerName':
+        #         order_by = 'country_of_origin'
+        #     elif order_by == '-employerName':
+        #         order_by = '-country_of_origin'
+        #     elif order_by == 'dateOfBirth':
+        #         order_by = 'maid_type'
+        #     elif order_by == '-dateOfBirth':
+        #         order_by = '-maid_type'
+        #     elif order_by == 'eaPersonnel':
+        #         order_by = 'passport_expiry'
+        #     elif order_by == '-eaPersonnel':
+        #         order_by = '-passport_expiry'
+        #     return Employer.objects.filter(
+        #         agency__pk = self.agency_id
+        #     ).order_by(order_by)
+        # else:
+            # return Employer.objects.filter(
+            #     agency__pk = self.agency_id
+            # )
+        return Employer.objects.all()
 
 # Detail Views
-class DashboardAgencyDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
+class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
                             DetailView):
-    context_object_name = 'agency'
     http_method_names = ['get']
+    authority = ''
+    agency_id = ''
+    
+class DashboardAgencyDetail(DashboardDetailView):
+    context_object_name = 'agency'
     model = Agency
     template_name = 'detail/new-dashboard-agency-detail.html'
-    authority = ''
-    agency_id = ''
 
     def get_object(self):
-        agency = get_object_or_404(Agency, pk=self.agency_id)
+        agency = get_object_or_404(
+            Agency, 
+            pk=self.agency_id
+        )
         return agency
 
-class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          DetailView):
+class DashboardMaidDetail(DashboardDetailView):
     context_object_name = 'maid'
-    http_method_names = ['get']
     model = Maid
-    template_name = 'detail/dashboard-maid-detail.html'
-    authority = ''
-    agency_id = ''
+    template_name = 'detail/new-dashboard-maid-detail.html'
 
     def get_object(self):
         return Maid.objects.get(
@@ -219,10 +340,897 @@ class DashboardMaidDetail(AgencyLoginRequiredMixin, GetAuthorityMixin,
             agency__pk = self.agency_id
         )
 
+class DashboardEmployerDetail(DashboardDetailView):
+    context_object_name = 'employer'
+    # model = Maid
+    template_name = 'detail/new-dashboard-employer-detail.html'
+
+    def get_object(self):
+        pass
+        # return Maid.objects.get(
+        #     pk = self.kwargs.get(
+        #         self.pk_url_kwarg
+        #     ),
+        #     agency__pk = self.agency_id
+        # )
+
+class DashboardCaseDetail(DashboardDetailView):
+    context_object_name = 'case'
+    # model = Maid
+    template_name = 'detail/new-dashboard-case-detail.html'
+
+    def get_object(self):
+        pass
+        # return Maid.objects.get(
+        #     pk = self.kwargs.get(
+        #         self.pk_url_kwarg
+        #     ),
+        #     agency__pk = self.agency_id
+        # )
+
+# Form Views
+class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                          FDWLimitMixin, SuccessMessageMixin, FormView):
+    form_class = MainMaidCreationForm
+    http_method_names = ['get','post']
+    success_url = reverse_lazy('dashboard_maid_detail')
+    template_name = 'form/maid-create-form.html'
+    authority = ''
+    agency_id = ''
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'update': False
+        })
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy(
+            super().get_success_url(),
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
+    
+    # def form_valid(self, form):
+        # try:
+        #     self.object = form.save()
+        # except Exception as e:
+        #     messages.warning(
+        #         self.request,
+        #         'Please try again',
+        #         extra_tags='warning'
+        #     )
+        #     return super().form_invalid(form)
+        # else:
+        #     return super().form_valid(form)
+
+class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin, 
+                                                  GetAuthorityMixin,
+                                                  SuccessMessageMixin, 
+                                                  FormView):
+    form_class = MainMaidCreationForm
+    http_method_names = ['get','post']
+    success_url = reverse_lazy('dashboard_maid_detail')
+    template_name = 'form/maid-create-form.html'
+    authority = ''
+    agency_id = ''
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        return kwargs
+    
+    def form_valid(self, form):
+        pass
+    
+class DashboardMaidSubFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                               SuccessMessageMixin, FormView):
+    http_method_names = ['get','post']
+    pk_url_kwarg = 'pk'
+    template_name = 'form/maid-create-form.html'
+    authority = ''
+    agency_id = ''
+    maid_id = ''
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'maid_id': self.maid_id
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'maid_id': self.maid_id
+        })
+        return kwargs
+    
+    def get_initial(self):
+        initial =  super().get_initial()
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        return initial
+    
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+class DashboardMaidLanguageSpokenFormView(DashboardMaidSubFormView):
+    context_object_name = 'maid_languages'
+    form_class = MaidLanguageSpokenForm
+    success_message = 'Maid created'
+    
+    def get_initial(self):
+        initial =  super().get_initial()
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        initial.update({
+            'language_spoken': list(
+                maid.languages.values_list(
+                    'language',
+                    flat=True
+                )
+            )
+        })
+        return initial
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_languages_and_fhpdr_update',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
+
+class DashboardMaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
+    context_object_name = 'maid_food_handling_preference_dietary_restriction'
+    form_class = MaidLanguagesAndFHPDRForm
+    success_message = 'Maid created'
+
+    def get_initial(self):
+        initial =  super().get_initial()
+        food_handling_pork = food_handling_beef = food_handling_veg = None
+        dietary_restriction_pork = dietary_restriction_beef = None
+        dietary_restriction_veg = None
+        languages = None
+        try:
+            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.PORK
+            )
+        except MaidFoodHandlingPreference.DoesNotExist:
+            pass
+        
+        try:
+            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.BEEF
+            )
+        except MaidFoodHandlingPreference.DoesNotExist:
+            pass
+        
+        try:
+            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+                maid__pk=self.maid_id,
+                preference=MaidFoodPreferenceChoices.VEG
+            )
+        except MaidFoodHandlingPreference.DoesNotExist:
+            pass
+        
+        try:
+            dietary_restriction_pork = MaidDietaryRestriction.objects.get(
+                maid__pk=self.maid_id,
+                restriction=MaidFoodPreferenceChoices.PORK
+            )
+        except MaidDietaryRestriction.DoesNotExist:
+            pass
+        
+        try:
+            dietary_restriction_beef = MaidDietaryRestriction.objects.get(
+                maid__pk=self.maid_id,
+                restriction=MaidFoodPreferenceChoices.BEEF
+            )
+        except MaidDietaryRestriction.DoesNotExist:
+            pass
+        
+        try:
+            dietary_restriction_veg = MaidDietaryRestriction.objects.get(
+                maid__pk=self.maid_id,
+                restriction=MaidFoodPreferenceChoices.VEG
+            )
+        except MaidDietaryRestriction.DoesNotExist:
+            pass
+            
+        initial.update({
+            'food_handling_pork': food_handling_pork,
+            'food_handling_beef': food_handling_beef,
+            'food_handling_veg': food_handling_veg,
+            'dietary_restriction_pork': dietary_restriction_pork,
+            'dietary_restriction_beef': dietary_restriction_beef,
+            'dietary_restriction_veg': dietary_restriction_veg
+        })
+        
+        try:
+            languages = MaidLanguageProficiency.objects.get(
+                maid__pk=self.maid_id
+            )
+        except MaidLanguageProficiency.DoesNotExist:
+            pass
+        finally:
+            if languages:
+                initial.update({
+                    'english': languages.english,
+                    'malay': languages.malay,
+                    'mandarin': languages.mandarin,
+                    'chinese_dialect': languages.chinese_dialect,
+                    'hindi': languages.hindi,
+                    'tamil': languages.tamil
+                })
+        return initial
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_experience_update',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
+
+class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
+    context_object_name = 'maid_experience'
+    form_class = MaidExperienceForm
+    success_message = 'Maid created'
+    
+    def get_initial(self):
+        initial =  super().get_initial()
+        try:
+            maid_cfi = MaidInfantChildCare.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cfi = {}
+
+        try:
+            maid_cfe = MaidElderlyCare.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cfe = {}
+
+        try:
+            maid_cfd = MaidDisabledCare.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cfd = {}
+
+        try:
+            maid_geh = MaidGeneralHousework.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_geh = {}
+
+        try:
+            maid_cok = MaidCooking.objects.get(
+                maid__pk=self.maid_id
+            )
+        except:
+            maid_cok = {}
+
+        initial.update({
+            'cfi_assessment': maid_cfi.assessment,
+            'cfi_willingness': maid_cfi.willingness,
+            'cfi_experience': maid_cfi.experience,
+            'cfi_remarks': maid_cfi.remarks,
+            'cfi_other_remarks': maid_cfi.other_remarks,
+            'cfe_assessment': maid_cfe.assessment,
+            'cfe_willingness': maid_cfe.willingness,
+            'cfe_experience': maid_cfe.experience,
+            'cfe_remarks': maid_cfe.remarks,
+            'cfe_other_remarks': maid_cfe.other_remarks,
+            'cfd_assessment': maid_cfd.assessment,
+            'cfd_willingness': maid_cfd.willingness,
+            'cfd_experience': maid_cfd.experience,
+            'cfd_remarks': maid_cfd.remarks,
+            'cfd_other_remarks': maid_cfd.other_remarks,
+            'geh_assessment': maid_geh.assessment,
+            'geh_willingness': maid_geh.willingness,
+            'geh_experience': maid_geh.experience,
+            'geh_remarks': maid_geh.remarks,
+            'geh_other_remarks': maid_geh.other_remarks,
+            'cok_assessment': maid_cok.assessment,
+            'cok_willingness': maid_cok.willingness,
+            'cok_experience': maid_cok.experience,
+            'cok_remarks': maid_cok.remarks,
+            'cok_other_remarks': maid_cok.other_remarks
+        })
+        return initial
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_employment_history_update',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
+
+class DashboardMaidAboutFDWFormView(DashboardMaidSubFormView):
+    context_object_name = 'maid_about_me'
+    form_class = MaidAboutFDWForm
+    success_message = 'Maid created'
+
+    def get_initial(self):
+        initial =  super().get_initial()
+        maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        initial.update({
+            'about_me': maid.about_me
+        })
+        return initial
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_loan_update',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
+
+class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                                SuccessMessageMixin, FormView):
+    form_class = MaidLoanTransactionFormSet
+    http_method_names = ['get', 'post']
+    success_url = reverse_lazy('dashboard_maid_list')
+    template_name = 'form/maid-formset.html'
+    pk_url_kwarg = 'pk'
+    authority = ''
+    agency_id = ''
+    maid_id = ''
+    success_message = 'Maid loan details updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'maid_id': self.maid_id
+        })
+        helper = MaidLoanTransactionFormSetHelper()
+        # helper.add_input(
+        #     Hidden(
+        #         'submitFlag',
+        #         'False',
+        #         css_id="submitFlag"
+        #     )
+        # )
+        helper.form_tag = False
+        # helper.add_input(
+        #     Button(
+        #         "add",
+        #         "Add Loan Transaction",
+        #         css_class="btn btn-outline-primary w-50 mb-2 mx-auto",
+        #         css_id="addOutletButton"
+        #     )
+        # )
+        # helper.add_input(
+        #     Submit(
+        #         "save",
+        #         "Save",
+        #         css_class="btn btn-primary w-50 mb-2",
+        #         css_id="submitButton"
+        #     )
+        # )
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        kwargs = {
+            'maid_id': self.maid_id
+        }
+        return kwargs
+
+    def get_instance_object(self):
+        return Maid.objects.get(
+            pk=self.maid_id
+        )
+        
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+    
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+        
+    def form_valid(self, form):
+        form.save()
+        print(form.data)
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'dashboard_maid_loan_update',
+                    kwargs={
+                        'pk':self.maid_id
+                    }
+                )
+            )
+
+class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin, 
+                                             GetAuthorityMixin, 
+                                             SuccessMessageMixin, FormView):
+    form_class = MaidEmploymentHistoryFormSet
+    http_method_names = ['get', 'post']
+    success_url = reverse_lazy('dashboard_maid_list')
+    template_name = 'form/maid-formset.html'
+    pk_url_kwarg = 'pk'
+    authority = ''
+    agency_id = ''
+    maid_id = ''
+    success_message = 'Maid employment history updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'maid_id': self.maid_id
+        })
+        helper = MaidEmploymentHistoryFormSetHelper()
+        # helper.add_input(
+        #     Hidden(
+        #         'submitFlag',
+        #         'False',
+        #         css_id="submitFlag"
+        #     )
+        # )
+        helper.form_tag = False
+        # helper.add_input(
+        #     Button(
+        #         "add",
+        #         "Add Employment History",
+        #         css_class="btn btn-outline-primary w-50 mb-2 mx-auto",
+        #         css_id="addButton"
+        #     )
+        # )
+        # helper.add_input(
+        #     Submit(
+        #         "save",
+        #         "Save",
+        #         css_class="btn btn-primary w-50 mb-2",
+        #         css_id="submitButton"
+        #     )
+        # )
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        kwargs = {
+            'maid_id': self.maid_id
+        }
+        return kwargs
+    
+    def get_instance_object(self):
+        return Maid.objects.get(
+            pk=self.maid_id
+        )
+        
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+        
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'dashboard_maid_employment_history_update',
+                    kwargs={
+                        'pk':self.maid_id
+                    }
+                )
+            )
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_about_fdw_update',
+            kwargs={
+                'pk':self.maid_id
+            }
+        )
+        
+class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
+                                           GetAuthorityMixin, 
+                                           SuccessMessageMixin, FormView):
+    form_class = AgencyBranchFormSet
+    http_method_names = ['get', 'post']
+    success_url = reverse_lazy('dashboard_agency_opening_hours_update')
+    template_name = 'update/dashboard-agency-outlet-details.html'
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        helper = AgencyBranchFormSetHelper()
+        helper.form_tag = False
+        # helper.add_input(
+        #     Hidden(
+        #         'submitFlag',
+        #         'False',
+        #         css_id="submitFlag"
+        #     )
+        # )
+        # helper.add_input(
+        #     Button(
+        #         "add",
+        #         "Add Outlet",
+        #         css_class="btn btn-outline-primary w-50 mb-2",
+        #         css_id="addButton"
+        #     )
+        # )
+        # helper.add_input(
+        #     Submit(
+        #         "save",
+        #         "Save",
+        #         css_class="btn btn-primary w-50 mb-2",
+        #         css_id="submitButton"
+        #     )
+        # )
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        kwargs = {
+            'agency_id': self.agency_id
+        }
+        return kwargs
+    
+    def get_instance_object(self):
+        return Agency.objects.get(
+            pk=self.agency_id
+        )
+        
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+    
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+        
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'dashboard_agency_outlet_details_update'
+                )
+            )
+        
 # Create Views
+class DashboardCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                          SuccessMessageMixin, CreateView):
+    http_method_names = ['get','post']
+    authority = ''
+    agency_id = ''
+    
+class DashboardMaidInformationCreate(DashboardCreateView):
+    context_object_name = 'maid_information'
+    form_class = MaidForm
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_message = 'Maid created'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context.update({
+            'new_maid': True
+        })
+        return context
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'form_type': 'create'
+        })
+        return kwargs
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_language_spoken_update',
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
+
+class DashboardAgencyEmployeeCreate(DashboardCreateView):
+    context_object_name = 'agency_employee'
+    form_class = AgencyEmployeeForm
+    model = AgencyEmployee
+    template_name = 'form/agency-employee-create-form.html'
+    success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Agency employee created'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'authority': self.authority,
+            'form_type': 'create'
+        })
+        return kwargs
+
+    def form_valid(self, form):
+        agency = Agency.objects.get(
+            pk = self.agency_id
+        )
+        form.instance.agency = agency
+        if agency.amount_of_employees < agency.amount_of_employees_allowed:
+            return super().form_valid(form)
+        else:
+            messages.warning(
+                self.request,
+                'You have reached the limit of employee accounts',
+                extra_tags='error'
+            )
+            return super().form_invalid(form)
 
 # Update Views
+class DashboardAgencyEmployeeUpdate(AgencyLoginRequiredMixin, 
+                                    GetAuthorityMixin, SuccessMessageMixin, 
+                                    UpdateView):
+    context_object_name = 'agency_employee'
+    form_class = AgencyEmployeeForm
+    http_method_names = ['get','post']
+    model = AgencyEmployee
+    template_name = 'form/agency-employee-create-form.html'
+    success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Employee details updated'
+    authority = ''
+    agency_id = ''
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        employee = AgencyEmployee.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+        initial['email'] = employee.user.email
 
+        return initial
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'authority': self.authority,
+            'pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            'form_type': 'update'
+        })
+        return kwargs
+
+class DashboardAgencyUpdate(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                            SuccessMessageMixin, UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyForm
+    http_method_names = ['get','post']
+    model = Agency
+    template_name = 'update/agency-details-form.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.agency_id
+    )
+    
+    def get_form_kwargs(self):
+        kwargs =  super().get_form_kwargs()
+        branch_count = AgencyBranch.objects.filter(
+            agency__pk=self.agency_id
+        ).count()
+        
+        branch_1_display = 'd-none'
+        branch_2_display = 'd-none'
+        branch_3_display = 'd-none'
+        branch_4_display = 'd-none'
+        branch_5_display = 'd-none'
+        
+        if branch_count == 1:
+            branch_1_display = ''
+        elif branch_count == 2:
+            branch_1_display = ''
+            branch_2_display = ''
+        elif branch_count == 3:
+            branch_1_display = ''
+            branch_2_display = ''
+            branch_3_display = ''
+        elif branch_count == 4:
+            branch_1_display = ''
+            branch_2_display = ''
+            branch_3_display = ''
+            branch_4_display = ''
+        elif branch_count == 5:
+            branch_1_display = ''
+            branch_2_display = ''
+            branch_3_display = ''
+            branch_4_display = ''
+            branch_5_display = ''
+            
+        branch_display_map = {
+                'branch_1_display': branch_1_display,
+                'branch_2_display': branch_2_display,
+                'branch_3_display': branch_3_display,
+                'branch_4_display': branch_4_display,
+                'branch_5_display': branch_5_display
+            }
+        kwargs.update({
+            'branch_display_map': branch_display_map,
+            'agency_branch_row_number': branch_count
+        })
+        return kwargs
+    
+    def get_initial(self):
+        initial =  super().get_initial()
+        branch_list = AgencyBranch.objects.filter(
+            agency__pk=self.agency_id
+        )
+        branch_count = branch_list.count()
+        for index, element in enumerate(list(branch_list),1):
+            initial[f'branch_{index}_name'] = element.name
+            initial[f'branch_{index}_address_1'] = element.address_1
+            initial[f'branch_{index}_address_2'] = element.address_2
+            initial[f'branch_{index}_postal_code'] = element.postal_code
+            initial[f'branch_{index}_email'] = element.email
+            initial[f'branch_{index}_office_number'] = element.office_number
+            initial[f'branch_{index}_mobile_number'] = element.mobile_number
+            initial[f'branch_{index}_main'] = element.main_branch
+            initial[f'branch_{index}_id'] = element.id
+        
+        opening_hours = AgencyOpeningHours.objects.get(
+            agency__pk=self.agency_id
+        )
+        initial['opening_hours_type'] = opening_hours.type
+        initial['opening_hours_monday'] = opening_hours.monday
+        initial['opening_hours_tuesday'] = opening_hours.tuesday
+        initial['opening_hours_wednesday'] = opening_hours.wednesday
+        initial['opening_hours_thursday'] = opening_hours.thursday
+        initial['opening_hours_friday'] = opening_hours.friday
+        initial['opening_hours_saturday'] = opening_hours.saturday
+        initial['opening_hours_sunday'] = opening_hours.sunday
+        initial['opening_hours_public_holiday'] = opening_hours.public_holiday
+
+        return initial
+
+class DashboardAgencyInformationUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyUpdateForm
+    http_method_names = ['get','post']
+    model = Agency
+    template_name = 'update/dashboard-agency-update.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return Agency.objects.get(
+            pk = self.agency_id
+    )
+
+class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'agency'
+    form_class = AgencyOpeningHoursForm
+    http_method_names = ['get','post']
+    model = AgencyOpeningHours
+    template_name = 'update/dashboard-agency-update.html'
+    success_url = reverse_lazy('dashboard_agency_detail')
+    authority = ''
+    agency_id = ''
+    success_message = 'Agency details updated'
+
+    def get_object(self, queryset=None):
+        return AgencyOpeningHours.objects.get(
+            agency__pk = self.agency_id
+    )
+
+class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin, 
+                                       GetAuthorityMixin, SuccessMessageMixin,
+                                       UpdateView):
+    context_object_name = 'maid_information'
+    form_class = MaidForm
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_message = 'Maid updated'
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        context.update({
+            'maid_id': self.maid_id,
+            'new_maid': False
+        })
+        return context
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'form_type': 'update'
+        })
+        return kwargs
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_languages_and_fhpdr_update',
+            kwargs={
+                'pk':self.object.pk
+            }
+        )
+  
 # Delete Views
 
 # Generic Views
@@ -400,7 +1408,7 @@ class DashboardDataProviderView(View):
         request_data = json.loads(request.body.decode('utf-8'))
         chart = request_data.get('chart')
         authority = request_data.get('authority')
-        if chart['name'] == 'salesChart' and authority == 'Agency Managers':
+        if chart['name'] == 'salesChart':
             if chart['year'] == '2010':
                 chart_data = [{
                     'name': 'Sales',
@@ -457,129 +1465,191 @@ class DashboardDataProviderView(View):
                     'data': self.fake_data[120:]
                 }]
                 
-        if chart['name'] == 'salesStaffPerformanceSales' and authority == 'Agency Managers':
+        if chart['name'] == 'salesStaffPerformanceSales':
             if chart['year'] == '2010':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[0:36:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[1:37:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[2:38:3]
-                    }
-                ]
-            elif chart['year'] == '2011':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[36:72:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[37:73:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[38:74:3]
-                    }
-                ]
-            elif chart['year'] == '2012':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[72:108:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[73:109:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[74:110:3]
-                    }
-                ]
-            else:
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_sales_data[108::3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_sales_data[109::3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_sales_data[110::3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[0:36:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[1:37:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[2:38:3]
+                        }
+                    ]
                 
-        if chart['name'] == 'salesStaffPerformanceCases' and authority == 'Agency Managers':
-            if chart['year'] == '2010':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[0:36:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[1:37:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[2:38:3]
-                    }
-                ]
             elif chart['year'] == '2011':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[36:72:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[37:73:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[38:74:3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[36:72:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[37:73:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[38:74:3]
+                        }
+                    ]
+                    
             elif chart['year'] == '2012':
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[72:108:3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[73:109:3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[74:110:3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[72:108:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[73:109:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[74:110:3]
+                        }
+                    ]
+                    
             else:
-                chart_data = [
-                    {
-                        'name': 'john',
-                        'data': self.fake_cases_data[108::3]
-                    },
-                    {
-                        'name': 'jane',
-                        'data': self.fake_cases_data[109::3]
-                    },
-                    {
-                        'name': 'dave',
-                        'data': self.fake_cases_data[110::3]
-                    }
-                ]
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_sales_data[108::3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_sales_data[109::3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_sales_data[110::3]
+                        }
+                    ]
+                
+        if chart['name'] == 'salesStaffPerformanceCases':
+            if chart['year'] == '2010':
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[0:36:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[1:37:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[2:38:3]
+                        }
+                    ]
+                
+            elif chart['year'] == '2011':
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[36:72:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[37:73:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[38:74:3]
+                        }
+                    ]
+                    
+            elif chart['year'] == '2012':
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[72:108:3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[73:109:3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[74:110:3]
+                        }
+                    ]
+                    
+            else:
+                if chart['staff'] == 'john':
+                    chart_data = [
+                        {
+                            'name': 'john',
+                            'data': self.fake_cases_data[108::3]
+                        }
+                    ]
+                elif chart['staff'] == 'jane':
+                    chart_data = [
+                        {
+                            'name': 'jane',
+                            'data': self.fake_cases_data[109::3]
+                        }
+                    ]
+                elif chart['staff'] == 'dave':
+                    chart_data = [
+                        {
+                            'name': 'dave',
+                            'data': self.fake_cases_data[110::3]
+                        }
+                    ]
                 
         if chart['name'] == 'branchPerformanceSales':
             if chart['group_by'] == 'Month':

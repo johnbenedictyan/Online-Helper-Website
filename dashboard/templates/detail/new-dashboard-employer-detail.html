@@ -1,0 +1,604 @@
+{% extends 'dashboard-base.html' %}
+{% block dashboard_section %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-11 text-right mb-5">
+            <a href="#" class="btn btn-primary btn-dashboard-primary w-25">Edit</a>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col">
+            <p class="mb-1">Type of Applicant</p>
+            <h6 class="text-dark mb-3">Employer Only</h6>
+        </div>
+        <div class="col">
+            <p class="mb-1">Assigned EA Personnel</p>
+            <h6 class="text-dark mb-3">Cindy</h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Employer Contact Details</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Name</p>
+                    <h6 class="text-dark mb-3">Raymond</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Gender</p>
+                    <h6 class="text-dark mb-3">Male</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Mobile Number</p>
+                    <h6 class="text-dark mb-3">81234567</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Home Telephone Number</p>
+                    <h6 class="text-dark mb-3">61234567</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Email</p>
+                    <h6 class="text-dark mb-3">Raymond@example.com</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Address Line 1</p>
+                    <h6 class="text-dark mb-3">Blk 123 fake street</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Address Line 2</p>
+                    <h6 class="text-dark mb-3">#12-34</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Postal Code</p>
+                    <h6 class="text-dark mb-3">123456</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Employer's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Date of Birth</p>
+                    <h6 class="text-dark mb-3">12 Jan 1946</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Nationality</p>
+                    <h6 class="text-dark mb-3">Singaporean</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Employer Residential Status</p>
+                    <h6 class="text-dark mb-3">S Pass Holder</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">NRIC</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">FIN</p>
+                    <h6 class="text-dark mb-3">F1234 5678</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Passport No</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Passport Expiry Date</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Marital Status</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Married in Singapore</p>
+                    <h6 class="text-dark mb-3">No</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Spouse's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Name</p>
+                    <h6 class="text-dark mb-3">Raymond</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Gender</p>
+                    <h6 class="text-dark mb-3">Male</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Date of Birth</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Nationality</p>
+                    <h6 class="text-dark mb-3">61234567</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Residential Status</p>
+                    <h6 class="text-dark mb-3">Raymond@example.com</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's NRIC</p>
+                    <h6 class="text-dark mb-3">Blk 123 fake street</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's FIN</p>
+                    <h6 class="text-dark mb-3">#12-34</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport No</p>
+                    <h6 class="text-dark mb-3">123456</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport Expiry Date</p>
+                    <h6 class="text-dark mb-3">#12-34</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Sponsor 1's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Name</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Gender</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Date of Birth</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">NRIC</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Nationality</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Residential Status</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Mobile No</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Email</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Address Line 1</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Address Line 2</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Postal Code</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Marital Status</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Marriage in Singapore</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Sponsor 1 Spouse's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Name</p>
+                    <h6 class="text-dark mb-3">12 Jan 1946</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Gender</p>
+                    <h6 class="text-dark mb-3">Singaporean</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Date of Birth</p>
+                    <h6 class="text-dark mb-3">S Pass Holder</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Nationality</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Residential Status</p>
+                    <h6 class="text-dark mb-3">F1234 5678</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's NRIC</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's FIN</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport No</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport Expiry Date</p>
+                    <h6 class="text-dark mb-3">No</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Sponsor 2's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Name</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Gender</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Date of Birth</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">NRIC</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Nationality</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Residential Status</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Mobile No</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Email</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Address Line 1</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Address Line 2</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Postal Code</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Marital Status</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Marriage in Singapore</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Sponsor 2 Spouse's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Name</p>
+                    <h6 class="text-dark mb-3">12 Jan 1946</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Gender</p>
+                    <h6 class="text-dark mb-3">Singaporean</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Date of Birth</p>
+                    <h6 class="text-dark mb-3">S Pass Holder</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Nationality</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Residential Status</p>
+                    <h6 class="text-dark mb-3">F1234 5678</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's NRIC</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's FIN</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport No</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport Expiry Date</p>
+                    <h6 class="text-dark mb-3">No</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Joint Applicant's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Name</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Gender</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Date of Birth</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">NRIC</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Nationality</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Residential Status</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Mobile No</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Email</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Address Line 1</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Address Line 2</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Postal Code</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Marital Status</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Marriage in Singapore</p>
+                    <h6 class="text-dark mb-3"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Joint Applicant Spouse's Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Name</p>
+                    <h6 class="text-dark mb-3">12 Jan 1946</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Gender</p>
+                    <h6 class="text-dark mb-3">Singaporean</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Date of Birth</p>
+                    <h6 class="text-dark mb-3">S Pass Holder</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Nationality</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Residential Status</p>
+                    <h6 class="text-dark mb-3">F1234 5678</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's NRIC</p>
+                    <h6 class="text-dark mb-3">P1234 5678</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's FIN</p>
+                    <h6 class="text-dark mb-3">12 Jan 2043</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport No</p>
+                    <h6 class="text-dark mb-3">Married</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Spouse's Passport Expiry Date</p>
+                    <h6 class="text-dark mb-3">No</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Income Details</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Employer's Monthly Income</p>
+                    <h6 class="text-dark mb-3">12 Jan 1946</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Employer's & Spouse's Combined Monthly Income</p>
+                    <h6 class="text-dark mb-3">Singaporean</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Employer's & Joint Combined Monthly Income</p>
+                    <h6 class="text-dark mb-3">S Pass Holder</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Sponsor's Monthly Income</p>
+                    <h6 class="text-dark mb-3">S1234567A</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Sponsor's Combined Monthly Income</p>
+                    <h6 class="text-dark mb-3">F1234 5678</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_section %}

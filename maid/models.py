@@ -23,7 +23,10 @@ from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
     MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
     MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
-    MaidSkillsEvaluationMethod
+    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices,
+    MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices,
+    MaidNationalityChoices, MaidLanguageProficiencyChoices,
+    MaidExperienceChoices
 )
 
 # Utiliy Classes and Functions
@@ -81,11 +84,13 @@ class Maid(models.Model):
     )
     
     nonce = models.BinaryField(
-        editable=True
+        editable=True,
+        blank=True
     )
     
     tag = models.BinaryField(
-        editable=True
+        editable=True,
+        blank=True
     )
 
     photo = models.FileField(
@@ -97,16 +102,10 @@ class Maid(models.Model):
 
     maid_type = models.CharField(
         verbose_name=_('Maid Type'),
-        max_length=3,
+        max_length=6,
         blank=False,
         choices=TypeOfMaidChoices.choices,
         default=TypeOfMaidChoices.NEW
-    )
-
-    days_off = models.PositiveSmallIntegerField(
-        verbose_name=_('Days off'),
-        blank=False,
-        default=0
     )
 
     passport_status = models.BooleanField(
@@ -116,11 +115,21 @@ class Maid(models.Model):
         choices=MaidPassportStatusChoices.choices,
         default=MaidPassportStatusChoices.NOT_READY
     )
-
-    remarks = models.CharField(
-        verbose_name=_('Remarks'),
-        max_length=255,
+    
+    passport_expiry = models.DateField(
+        verbose_name=_('Passport Expiry Date'),
         blank=False
+    )
+    
+    # remarks = models.CharField(
+    #     verbose_name=_('Remarks'),
+    #     max_length=255,
+    #     null=True,
+    #     blank=True
+    # )
+    
+    languages = models.ManyToManyField(
+        MaidLanguage
     )
     
     responsibilities = models.ManyToManyField(
@@ -130,7 +139,8 @@ class Maid(models.Model):
     skills_evaluation_method = models.CharField(
         verbose_name=_('Skills evaluation method'),
         max_length=4,
-        blank=False,
+        blank=True,
+        null=True,
         choices=MaidSkillsEvaluationMethod.choices,
         default=MaidSkillsEvaluationMethod.DECLARATION
     )
@@ -147,226 +157,37 @@ class Maid(models.Model):
         editable=False
     )
 
-    complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    biodata_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    family_details_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    care_complete = models.BooleanField(
-        default=False,
-        blank=True,
-        editable=False
-    )
-
-    published = models.BooleanField(
-        default=False,
-        blank=False
-    )
-
-    featured = models.BooleanField(
-        default=False,
-        blank=False
+    status = models.CharField(
+        verbose_name=_('Status'),
+        max_length=6,
+        blank=False,
+        choices=MaidStatusChoices.choices,
+        default=MaidStatusChoices.UNPUBLISHED
     )
     
-    frozen = models.BooleanField(
-        default=False,
-        editable=False
-    )
-    
-    def __str__(self):
-        return self.reference_number + ' - ' + self.name
-
-    def get_main_responsibility(self):
-        main_responsibility = [
-            i for i in self.responsibilities.all()
-            if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
-            and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
-        ]
-        return main_responsibility[0]
-
-    def get_passport_number(self):
-        plaintext = decrypt_string(
-            self.passport_number,
-            settings.ENCRYPTION_KEY,
-            self.nonce,
-            self.tag
-        )
-        return plaintext
-
-class MaidWorkDuty(models.Model):
-    class WorkDutyChoices(models.TextChoices):
-        HOUSEWORK = 'H', _('Housework')
-        HOUSEWORK_HDB = 'H_HDB', _('Housework (HDB)')
-        HOUSEWORK_CONDO = 'H_CON', _('Housework (Condo)')
-        HOUSEWORK_PRIVATE = 'H_PLP', _('Housework (Landed Property)')
-        COOKING = 'CO', _('Cooking')
-        COOKING_CHINESE = 'CO_C', _('Cooking (Chinese Food)')
-        COOKING_INDIAN = 'CO_I', _('Cooking (Indian Food)')
-        COOKING_MALAY = 'CO_M', _('Cooking (Malay Food)')
-        CARE_INFANT_CHILD = 'CA_IC', _('Infant child care')
-        CARE_ELDERLY = 'CA_E', _('Elderly care')
-        CARE_DISABLED = 'CA_D', _('Disabled care')
-        CARE_PETS = 'CA_P', _('Pet care')
-
-    name = models.CharField(
-        verbose_name=_("Maid's work duties"),
-        max_length=5,
+    marital_status = models.CharField(
+        verbose_name=_('Marital Status'),
+        max_length=2,
         blank=False,
-        choices=WorkDutyChoices.choices
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE
     )
 
-    def __str__(self):
-        return self.get_name_display()
-
-## Models which have a one-to-many relationship with the maid model
-class MaidFoodHandlingPreference(models.Model):
-    class FoodPreferenceChoices(models.TextChoices):
-        PORK = 'P', _('No pork')
-        CHICKEN = 'C', _('No chicken')
-        BEEF = 'B', _('No beef')
-        SEAFOOD = 'S', _('No seafood')
-
-    maid = models.ForeignKey(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='food_handling_preferences'
-    )
-
-    preference = models.CharField(
-        verbose_name = _('Food preference'),
-        max_length=1,
+    number_of_children = models.PositiveSmallIntegerField(
         blank=False,
-        choices=FoodPreferenceChoices.choices,
-        default=FoodPreferenceChoices.PORK
+        default=0
     )
 
-class MaidDietaryRestriction(models.Model):
-    class DietaryRestrictionChoices(models.TextChoices):
-        PORK = 'P', _('No pork')
-        CHICKEN = 'C', _('No chicken')
-        BEEF = 'B', _('No beef')
-        SEAFOOD = 'S', _('No seafood')
-
-    maid = models.ForeignKey(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='dietary_restrictions'
-    )
-
-    restriction = models.CharField(
-        verbose_name = _('Dietary restriction'),
-        max_length=1,
+    age_of_children = models.CharField(
+        verbose_name=_('Age of children'),
+        max_length=50,
         blank=False,
-        choices=DietaryRestrictionChoices.choices,
-        default=DietaryRestrictionChoices.PORK
+        default='N.A'
     )
 
-class MaidEmploymentHistory(models.Model):
-    class MaidEmploymentCountry(models.TextChoices):
-        # https://en.wikipedia.org/wiki/ISO_3166-1
-        SINGAPORE = 'SGP', _('Singapore')
-        HONG_KONG = 'HKG', _('Hong Kong')
-        MALAYSIA = 'MYS', _('Malaysia')
-
-    maid = models.ForeignKey(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='employment_history'
-    )
-
-    start_date = models.DateField(
-        verbose_name="Past employment's start date"
-    )
-
-    end_date = models.DateField(
-        verbose_name="Past employment's end date"
-    )
-
-    country = models.CharField(
-        verbose_name=_("Country of employment"),
-        max_length=3,
+    number_of_siblings = models.PositiveSmallIntegerField(
         blank=False,
-        choices=MaidEmploymentCountry.choices
-    )
-
-    work_duties = models.ManyToManyField(
-        MaidWorkDuty
-    )
-
-    def work_duration(self):
-        duration = self.end_date - self.start_date
-        return humanise_time_duration(duration)
-
-class MaidAgencyFeeTransaction(models.Model):
-    TRANSCATION_CHOICES = (
-        ('ADD', _('Loan Increase')),
-        ('SUB', _('Loan Repayment'))
-    )
-
-    maid = models.ForeignKey(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='agency_fee_transactions'
-    )
-
-    amount = models.DecimalField(
-        verbose_name=_('Amount'),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=False
-    )
-
-    transaction_type = models.CharField(
-        verbose_name=_("Type of transaction"),
-        max_length=3,
-        blank=False,
-        choices=TRANSCATION_CHOICES
-    )
-
-    description = models.TextField(
-        verbose_name=_('Description of transaction'),
-        blank=False
-    )
-
-    transaction_date = models.DateField(
-        blank=False
-    )
-
-## Models which have a one-to-one relationship with the maid model 
-class MaidPersonalDetails(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='personal_details'
-    )
-
-    date_of_birth = models.DateField(
-        verbose_name=_('Date of Birth'),
-        blank=False,
-        null=True
-    )
-    
-    age = models.IntegerField(
-        verbose_name=_('Age'),
-        blank=False,
-        null=True
+        default=0
     )
 
     country_of_origin = models.CharField(
@@ -374,8 +195,32 @@ class MaidPersonalDetails(models.Model):
         max_length=3,
         blank=False,
         null=True,
-        choices=MaidCountryOfOrigin.choices
+        choices=MaidNationalityChoices.choices
     )
+    
+    expected_salary = models.PositiveSmallIntegerField(
+        verbose_name=_('Expected Salary'),
+        blank=False,
+        default=0
+    )
+    
+    expected_days_off = models.PositiveSmallIntegerField(
+        verbose_name=_('Expected No of Off Days'),
+        blank=False,
+        default=0
+    )
+    
+    date_of_birth = models.DateField(
+        verbose_name=_('Date of Birth'),
+        blank=False,
+        null=True
+    )
+    
+    # age = models.IntegerField(
+    #     verbose_name=_('Age'),
+    #     blank=False,
+    #     null=True
+    # )
 
     height = models.DecimalField(
         verbose_name=_('Height'),
@@ -446,7 +291,7 @@ class MaidPersonalDetails(models.Model):
             )
         ]
     )
-
+    
     education_level = models.CharField(
         verbose_name=_('Education Level'),
         max_length=3,
@@ -455,19 +300,37 @@ class MaidPersonalDetails(models.Model):
         default=MaidEducationLevelChoices.HIGH_SCHOOL
     )
     
-    languages = models.ManyToManyField(
-        MaidLanguage
-    )
-
-    preferred_language = models.ForeignKey(
-        MaidLanguage,
-        on_delete=models.PROTECT,
-        related_name='preferred_language'
+    about_me = models.TextField(
+        verbose_name=_('About Me'),
+        max_length=350,
+        null=True
     )
     
-    def save(self, *args, **kwargs):
-        self.age = calculate_age(self.date_of_birth)
-        return super().save(*args, **kwargs)
+    work_permit = models.CharField(
+        verbose_name=_('Work Permit'),
+        max_length=255,
+        null=True
+    )
+
+    def __str__(self):
+        return self.reference_number + ' - ' + self.name
+
+    def get_main_responsibility(self):
+        main_responsibility = [
+            i for i in self.responsibilities.all()
+            if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
+            and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
+        ]
+        return main_responsibility[0]
+
+    def get_passport_number(self):
+        plaintext = decrypt_string(
+            self.passport_number,
+            settings.ENCRYPTION_KEY,
+            self.nonce,
+            self.tag
+        )
+        return plaintext
 
     def get_age(self):
         today = timezone.now().date()
@@ -488,86 +351,154 @@ class MaidPersonalDetails(models.Model):
             return today.year - self.date_of_birth.year - 1
         else:
             return today.year - self.date_of_birth.year
+        
+class MaidWorkDuty(models.Model):
+    class WorkDutyChoices(models.TextChoices):
+        HOUSEWORK = 'H', _('Housework')
+        HOUSEWORK_HDB = 'H_HDB', _('Housework (HDB)')
+        HOUSEWORK_CONDO = 'H_CON', _('Housework (Condo)')
+        HOUSEWORK_PRIVATE = 'H_PLP', _('Housework (Landed Property)')
+        COOKING = 'CO', _('Cooking')
+        COOKING_CHINESE = 'CO_C', _('Cooking (Chinese Food)')
+        COOKING_INDIAN = 'CO_I', _('Cooking (Indian Food)')
+        COOKING_MALAY = 'CO_M', _('Cooking (Malay Food)')
+        CARE_INFANT_CHILD = 'CA_IC', _('Infant child care')
+        CARE_ELDERLY = 'CA_E', _('Elderly care')
+        CARE_DISABLED = 'CA_D', _('Disabled care')
+        CARE_PETS = 'CA_P', _('Pet care')
 
-class MaidFamilyDetails(models.Model):
-    maid = models.OneToOneField(
+    name = models.CharField(
+        verbose_name=_("Maid's work duties"),
+        max_length=5,
+        blank=False,
+        choices=WorkDutyChoices.choices
+    )
+
+    def __str__(self):
+        return self.get_name_display()
+
+## Models which have a one-to-many relationship with the maid model
+class MaidFoodHandlingPreference(models.Model):
+    maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
-        related_name='family_details'
+        related_name='food_handling_preferences'
     )
 
-    marital_status = models.CharField(
-        verbose_name=_('Marital Status'),
-        max_length=2,
+    preference = models.CharField(
+        verbose_name = _('Food preference'),
+        max_length=1,
         blank=False,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE
+        choices=MaidFoodPreferenceChoices.choices,
+        default=MaidFoodPreferenceChoices.PORK
     )
 
-    number_of_children = models.PositiveSmallIntegerField(
-        blank=False,
-        default=0
-    )
-
-    age_of_children = models.CharField(
-        verbose_name=_('Age of children'),
-        max_length=50,
-        blank=False,
-        default='N.A'
-    )
-
-    number_of_siblings = models.PositiveSmallIntegerField(
-        blank=False,
-        default=0
-    )
-
-class MaidFinancialDetails(models.Model):
-    maid = models.OneToOneField(
+class MaidDietaryRestriction(models.Model):
+    maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
-        related_name='financial_details'
+        related_name='dietary_restrictions'
     )
 
-    salary = models.DecimalField(
-        verbose_name=_('Salary'),
+    restriction = models.CharField(
+        verbose_name = _('Dietary restriction'),
+        max_length=1,
+        blank=False,
+        choices=MaidDietaryRestrictionChoices.choices,
+        default=MaidDietaryRestrictionChoices.PORK
+    )
+
+class MaidEmploymentHistory(models.Model):
+    class MaidEmploymentCountry(models.TextChoices):
+        # https://en.wikipedia.org/wiki/ISO_3166-1
+        SINGAPORE = 'SGP', _('Singapore')
+        HONG_KONG = 'HKG', _('Hong Kong')
+        MALAYSIA = 'MYS', _('Malaysia')
+
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='employment_history'
+    )
+
+    start_date = models.DateField(
+        verbose_name="Past employment's start date"
+    )
+
+    end_date = models.DateField(
+        verbose_name="Past employment's end date"
+    )
+
+    country = models.CharField(
+        verbose_name=_("Country of employment"),
+        max_length=3,
+        blank=False,
+        choices=MaidEmploymentCountry.choices,
+        default=MaidEmploymentCountry.SINGAPORE
+    )
+
+    race_of_employer = models.CharField(
+        verbose_name=_('Race of employer'),
+        max_length=255,
+        blank=False
+    )
+
+    work_duties = models.CharField(
+        verbose_name=_('Work Duties'),
+        max_length=150,
+        blank=False
+    )
+
+    reason_for_leaving = models.CharField(
+        verbose_name=_('Reason for leaving'),
+        max_length=100,
+        blank=False
+    )
+
+    def work_duration(self):
+        duration = self.end_date - self.start_date
+        return humanise_time_duration(duration)
+
+class MaidLoanTransaction(models.Model):
+    maid = models.ForeignKey(
+        Maid,
+        on_delete=models.CASCADE,
+        related_name='loan_transactions'
+    )
+
+    amount = models.DecimalField(
+        verbose_name=_('Amount'),
         max_digits=7,
         decimal_places=2,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(10000),
         ],
+        blank=False
+    )
+
+    description = models.CharField(
+        verbose_name=_('Type of transaction'),
+        max_length=3,
         blank=False,
-        default=0
+        choices=MaidLoanDescriptionChoices.choices
     )
 
-    agency_fee_amount = models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        editable=False,
-        default=0
+    remarks = models.TextField(
+        verbose_name=_('Transaction Remarks'),
+        blank=False
     )
 
-    personal_loan_amount = models.DecimalField(
-        verbose_name=_('Personal loan amount'),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        blank=False,
-        default=0
+    date = models.DateField(
+        blank=False
     )
 
-class MaidStatus(models.Model):
+## Models which have a one-to-one relationship with the maid model 
+class MaidEmploymentStatus(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
-        related_name='status'
+        related_name='employment_status'
     )
 
     ipa_approved = models.BooleanField(
@@ -638,11 +569,12 @@ class MaidInfantChildCare(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
-        verbose_name=_('Experience'),
+    experience = models.CharField(
+        verbose_name=_('Experience with infant child care'),
         blank=False,
-        choices=TrueFalseChoices('Yes', 'No'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices.choices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -696,11 +628,12 @@ class MaidElderlyCare(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
+    experience = models.CharField(
         verbose_name=_('Experience with elderly care'),
         blank=False,
-        choices=TrueFalseChoices('Yes', 'No'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices.choices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -733,7 +666,6 @@ class MaidDisabledCare(models.Model):
         NO_EXP = 'NE', _('No experience, but willing to learn')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
 
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -754,11 +686,12 @@ class MaidDisabledCare(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
-        verbose_name=_('Experience'),
+    experience = models.CharField(
+        verbose_name=_('Experience with disabled care'),
         blank=False,
-        choices=TrueFalseChoices('Yes', 'No'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices.choices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -799,11 +732,12 @@ class MaidGeneralHousework(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
-        verbose_name=_('Experience'),
+    experience = models.CharField(
+        verbose_name=_('Experience with general housework'),
         blank=False,
-        choices=TrueFalseChoices('Yes', 'No'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices.choices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -880,11 +814,12 @@ class MaidCooking(models.Model):
         default=True,
     )
 
-    experience = models.BooleanField(
-        verbose_name=_('Experience'),
+    experience = models.CharField(
+        verbose_name=_('Experience with cooking'),
         blank=False,
-        choices=TrueFalseChoices('Yes', 'No'),
-        default=True,
+        max_length=6,
+        choices=MaidExperienceChoices.choices,
+        default=MaidExperienceChoices.NO
     )
 
     remarks = models.CharField(
@@ -900,23 +835,80 @@ class MaidCooking(models.Model):
         blank=True
     )
 
-class MaidOtherCare(models.Model):
+class MaidLanguageProficiency(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
-        related_name='other_care'
+        related_name='language_proficiency'
     )
-
-    care_for_pets = models.BooleanField(
-        verbose_name=_('Care for pets'),
+    
+    english = models.CharField(
+        verbose_name=_('English'),
         blank=False,
-        choices=TrueFalseChoices('Able', 'Unable'),
-        default=False
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
     )
-
-    gardening = models.BooleanField(
-        verbose_name=_('Gardening'),
+    
+    malay = models.CharField(
+        verbose_name=_('Malay / Bahasa Indonesia'),
         blank=False,
-        choices=TrueFalseChoices('Able', 'Unable'),
-        default=False
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
     )
+    
+    mandarin = models.CharField(
+        verbose_name=_('Mandarin'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    chinese_dialect = models.CharField(
+        verbose_name=_('Chinese Dialect'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    hindi = models.CharField(
+        verbose_name=_('Hindi'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+    tamil = models.CharField(
+        verbose_name=_('Tamil'),
+        blank=False,
+        max_length=6,
+        choices=MaidLanguageProficiencyChoices.choices,
+        default=MaidLanguageProficiencyChoices.UNABLE
+    )
+    
+# TODO: Need to change Maid Employment History to be a 1-M instead of 1-1.
+# class MaidOtherCare(models.Model):
+#     maid = models.OneToOneField(
+#         Maid,
+#         on_delete=models.CASCADE,
+#         related_name='other_care'
+#     )
+
+#     care_for_pets = models.BooleanField(
+#         verbose_name=_('Care for pets'),
+#         blank=False,
+#         choices=TrueFalseChoices('Able', 'Unable'),
+#         default=False
+#     )
+
+#     gardening = models.BooleanField(
+#         verbose_name=_('Gardening'),
+#         blank=False,
+#         choices=TrueFalseChoices('Able', 'Unable'),
+#         default=False
+#     )
+    

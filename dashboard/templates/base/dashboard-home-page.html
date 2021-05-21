@@ -123,7 +123,7 @@
         </div>
     </div>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row d-none">
             <div class="col-md-6 col-xl-3">
                 <div class="card custom-card">
                     <div class="row">
@@ -137,13 +137,10 @@
             </div>
         </div>
         <div class="row">
+            {% if authority == 'Agency Owners' %}
             <div class="col-xl-6">
+                <h5 class="ml-1 mb-3">Sales based on collection</h5>
                 <div class="card custom-card card-wrapper-chart">
-                    <div class="row">
-                        <div class="col">
-                            <h3 class="pl-md-1 pl-lg-3">Sales</h3>
-                        </div>
-                    </div>
                     <div class="row justify-content-end">
                         <div class="col-md-3 offset-md-9 pr-4">
                             <label for="year-select-chart">Year</label>
@@ -171,18 +168,22 @@
                 </div>
             </div>
             <div class="col-xl-6">
+                <h5 class="ml-1 mb-3">Staff Performance</h5>
                 <div class="card custom-card card-wrapper-chart">
-                    <div class="row">
-                        <div class="col">
-                            <h3 class="pl-md-1 pl-lg-3">Staff Performance</h3>
-                        </div>
-                    </div>
                     <div class="row justify-content-end">
                         <div class="col-md-3 mb-2">
                             <label for="sales-staff-performance-chart-type">Type</label>
                             <select name="type" id="sales-staff-performance-chart-type" class="form-control sales-staff-performance-chart-controls">
                                 <option value="Sales">Sales</option>
                                 <option value="Cases">Cases</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 pr-4 mb-2">
+                            <label for="sales-staff-performance-chart-year">Staff</label>
+                            <select name="year" id="sales-staff-performance-chart-staff" class="form-control sales-staff-performance-chart-controls">
+                                <option value="john">John</option>
+                                <option value="jane">Jane</option>
+                                <option value="dave">Dave</option>
                             </select>
                         </div>
                         <div class="col-md-3 pr-4 mb-2">
@@ -203,6 +204,81 @@
                 </div>
             </div>
             <div class="col-xl-6">
+                <h5 class="ml-1 mb-3">Plan Subscribed</h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col-8">
+                            <h6>Description</h6>
+                        </div>
+                        <div class="col-4 text-center">
+                            <h6>Expiry Date</h6>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-8">
+                            <p class="mb-0">Biodata & CRM - Basic Plan</p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p class="mb-0">31 May 2021</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-8">
+                            <p class="mb-0">Featured Maid</p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p class="mb-0">31 May 2021</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-8">
+                            <p class="mb-0">Advert - Main Page</p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p class="mb-0">31 July 2021</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <h5 class="ml-1 mb-3">FDW Biodata</h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col-8">
+                            <h6>Description</h6>
+                        </div>
+                        <div class="col-4 text-center">
+                            <h6>No of Biodata</h6>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-8">
+                            <p class="mb-0">Featured</p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p class="mb-0">3</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-8">
+                            <p class="mb-0">Published</p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p class="mb-0">30</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-8">
+                            <p class="mb-0">Unpublished</p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p class="mb-0">50</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <!-- <div class="col-xl-6">
                 <div class="card custom-card card-wrapper-chart">
                     <div class="row">
                         <div class="col">
@@ -312,7 +388,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
@@ -494,7 +570,7 @@
         series: [],
         chart: {
             height: 'auto',
-            type: 'line',
+            type: 'bar',
             toolbar: {
                 show: false
             }
@@ -512,9 +588,9 @@
             formatter: function (val) {
                 return `$${val}`;
             },
-            offsetY: -20,
+            offsetY: -10,
             style: {
-                fontSize: '1rem',
+                fontSize: '.6rem',
                 colors: ["#304758"]
             }
         },
@@ -810,6 +886,7 @@
     const authority = '{{authority}}'
     
     $(function(){
+        let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
         let salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
         let salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
 
@@ -903,7 +980,8 @@
         let salesStaffPerformanceDataSelectors = {
             'name': 'salesStaffPerformance' + salesStaffPerformanceType,
             'group_by': 'month',
-            'year': salesStaffPerformanceChartYear
+            'year': salesStaffPerformanceChartYear,
+            'staff': salesStaffPerformanceStaff
         }
         salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
 
@@ -976,6 +1054,7 @@
     });
 
     $('.sales-staff-performance-chart-controls').on('change', function(event){
+        let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
         salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
         salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
         var salesStaffPerformanceChartUpdatedProperties = {}
@@ -988,9 +1067,7 @@
                         }
                     },
                     yaxis: {
-                        min: function(min) {
-                            return min - 1
-                        },
+                        min: 0,
                         max: function(max) {
                             return max + 1
                         },
@@ -1035,7 +1112,8 @@
         salesStaffPerformanceDataSelectors = {
             'name': 'salesStaffPerformance' + salesStaffPerformanceType,
             'group_by': 'month',
-            'year': salesStaffPerformanceChartYear
+            'year': salesStaffPerformanceChartYear,
+            'staff':  salesStaffPerformanceStaff
         }
         salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, salesStaffPerformanceChartUpdatedProperties, csrftoken, 'Agency Managers', 'xaxis');
     });

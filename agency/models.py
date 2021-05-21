@@ -12,7 +12,9 @@ from onlinemaid.helper_functions import get_sg_region
 from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
-from .constants import AreaChoices, AgencyEmployeeRoleChoices
+from .constants import (
+    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursChoices
+)
 from .validators import validate_postcode
 
 # Utiliy Classes and Functions
@@ -20,16 +22,6 @@ from .validators import validate_postcode
 # Start of Models
 
 class Agency(models.Model):
-    company_email = models.EmailField(
-        verbose_name=_('Company Email Address'),
-        blank=False
-    )
-
-    sales_email = models.EmailField(
-        verbose_name=_('Company Sales Email Address'),
-        blank=False
-    )
-
     name = models.CharField(
         verbose_name=_('Company Name'),
         max_length=100,
@@ -61,21 +53,13 @@ class Agency(models.Model):
         storage=PublicMediaStorage() if settings.USE_S3 else None
     )
 
-    uen = models.CharField(
-        verbose_name=_('Company\'s UEN code'),
-        max_length=10,
+    profile = models.TextField(
+        verbose_name=_('Profile'),
         blank=False
     )
-
-    qr_code = models.FileField(
-        verbose_name=_('Website QR Code'),
-        blank=True,
-        null=True,
-        storage=PublicMediaStorage() if settings.USE_S3 else None
-    )
-
-    mission = models.TextField(
-        verbose_name=_('Mission Statement'),
+    
+    services = models.TextField(
+        verbose_name=_('Services'),
         blank=False
     )
     
@@ -132,29 +116,17 @@ class Agency(models.Model):
         editable=False
     )
 
-    complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
-    branch_complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
-    operating_hours_complete = models.BooleanField(
-        default=False,
-        editable=False
-    )
-
     def __str__(self):
         return self.name
 
-    def get_main_office_number(self):
+    def get_main_branch_number(self):
         return self.branches.get(main_branch=True).office_number
 
-    def get_main_office(self):
+    def get_main_branch(self):
         return self.branches.get(main_branch=True)
+    
+    def get_branches(self):
+        return self.branches.filter(main_branch=False)
     
     def get_enquiries(self):
         return self.enquiries.all()
@@ -170,24 +142,20 @@ class Agency(models.Model):
         verbose_name_plural = 'Agencies'
         
 # Models which are one to one with Agency
-class AgencyOperatingHours(models.Model):
-    class OperatingHoursChoices(models.TextChoices):
-        OPENING_HOURS = 'OH', _('Opening Hours')
-        APPOINTMENT_ONLY = 'AO', _('Appointment Only')
-
+class AgencyOpeningHours(models.Model):
     agency = models.OneToOneField(
         Agency,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name='operating_hours'
+        related_name='opening_hours'
     )
 
-    operating_type = models.CharField(
+    type = models.CharField(
         verbose_name=_('Agency\'s operating hours type'),
         max_length=2,
         blank=False,
-        choices=OperatingHoursChoices.choices,
-        default=OperatingHoursChoices.OPENING_HOURS
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.OPENING_HOURS
     )
 
     monday = models.CharField(
@@ -261,6 +229,24 @@ class AgencyOwner(models.Model):
         related_name='owners'
     )
 
+    name = models.CharField(
+        verbose_name=_('Agency Owner Name'),
+        max_length=50,
+        blank=False
+    )
+
+    mobile_number = models.CharField(
+        verbose_name=_('Agency Owner Mobile Number'),
+        max_length=50,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex='^[0-9]*$',
+                message=_('Please enter a valid contact number')
+            )
+        ]
+    )
+
     def __str__(self):
         return self.agency.name + ' Owner'
 
@@ -283,29 +269,25 @@ class AgencyBranch(models.Model):
     name = models.CharField(
         verbose_name=_('Branch Name'),
         max_length=50,
-        blank=False,
-        null=True
+        blank=False
     )
 
     address_1 = models.CharField(
         verbose_name=_('Street Address'),
         max_length=100,
-        blank=False,
-        null=True
+        blank=False
     )
 
     address_2 = models.CharField(
         verbose_name=_('Unit Number'),
         max_length=50,
-        blank=False,
-        null=True
+        blank=False
     )
 
     postal_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
         blank=False,
-        null=True,
         validators=[validate_postcode],
     )
 
@@ -322,7 +304,6 @@ class AgencyBranch(models.Model):
         verbose_name=_('Office Number'),
         max_length=10,
         blank=False,
-        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -337,7 +318,6 @@ class AgencyBranch(models.Model):
         verbose_name=_('Mobile Number'),
         max_length=10,
         blank=False,
-        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -352,6 +332,11 @@ class AgencyBranch(models.Model):
         verbose_name=_('Main Branch'),
         choices=MAIN_BRANCH_CHOICES,
         default=True
+    )
+    
+    email = models.EmailField(
+        verbose_name=_('Branch Email Address'),
+        blank=False
     )
 
     def __str__(self):
@@ -430,14 +415,14 @@ class AgencyEmployee(models.Model):
     ea_personnel_number = models.CharField(
         verbose_name=_('EA personnel number'),
         max_length=50,
-        blank=False
+        default='NA',
+        blank=True,
+        help_text=_('Optional for non-personnel')
     )
 
     email = models.EmailField(
         verbose_name=_('Employee\'s Email Address'),
-        null=True,
-        blank=True,
-        help_text=_('Optional')
+        blank=False
     )
 
     agency = models.ForeignKey(
@@ -465,9 +450,17 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
+    published = models.BooleanField(
+        editable=False,
+        default=False
+    )
+    
     def __str__(self):
         return self.ea_personnel_number + ' - ' + self.name
 
+    def get_ea_personnel_no(self):
+        return self.ea_personnel_number
+    
     class Meta:
         verbose_name = 'Agency Employee'
         verbose_name_plural = 'Agency Employees'

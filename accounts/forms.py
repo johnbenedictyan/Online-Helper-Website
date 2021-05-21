@@ -104,18 +104,14 @@ class AgencySignInForm(AuthenticationForm):
     )
 
     username = forms.CharField(
-        label=_('Username'),
+        label=_('Email'),
         required=True,
-        max_length=255,
-        help_text=_('''
-            For Agency Owners use your email.
-            For Agency Employees use your EA personnel registration number.'''
-        )
+        max_length=255
     )
 
     placeholders = {
         'agency_license_number': 'abc123',
-        'username': 'john@agency.com / johndoe123',
+        'username': 'owner@agency.com',
         'password': 'topsecret'
     }
     
@@ -131,18 +127,18 @@ class AgencySignInForm(AuthenticationForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'username',
+                    'agency_license_number',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'password',
+                    'username',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'agency_license_number',
+                    'password',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -169,14 +165,14 @@ class AgencySignInForm(AuthenticationForm):
             ),
         )
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        try:
-            validate_email(username)
-        except:
-            username = username + '@' + settings.AGENCY_EMPLOYEE_FEP
+    # def clean_username(self):
+    #     username = self.cleaned_data.get('username')
+    #     try:
+    #         validate_email(username)
+    #     except:
+    #         username = username + '@' + settings.AGENCY_EMPLOYEE_FEP
 
-        return username
+    #     return username
 
     def clean(self):
         cleaned_data = super().clean()
@@ -246,9 +242,7 @@ class EmployerCreationForm(forms.ModelForm):
 
     placeholders = {
         'email': 'johndoe@example.com',
-        'password': 'topsecret',
-        'name': 'John Doe',
-        'contact_number': '81234567'
+        'password': 'topsecret'
     }
     
     class Meta:
@@ -280,22 +274,11 @@ class EmployerCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-12'
                 ),
                 Column(
                     'password',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'name',
-                    css_class='form-group col'
-                ),
-                Column(
-                    'contact_number',
-                    css_class='form-group col'
+                    css_class='form-group col-12'
                 ),
                 css_class='form-row'
             ),

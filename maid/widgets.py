@@ -6,7 +6,7 @@ class CustomDateInput(DateInput):
 
     def __init__(self, attrs=None):
         if attrs:
-            if not attrs['placeholder']:
+            if not 'placeholder' in attrs:
                 attrs.update({
                     'placeholder': 'Select Date'
                 })

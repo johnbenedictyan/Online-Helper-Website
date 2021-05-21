@@ -147,10 +147,9 @@ def maid_seed_data():
     )
 
     from maid.models import (
-        Maid, MaidFinancialDetails, MaidLanguage, MaidPersonalDetails, 
-        MaidFamilyDetails, MaidInfantChildCare, MaidElderlyCare, 
+        Maid, MaidLanguage, MaidInfantChildCare, MaidElderlyCare, 
         MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-        MaidAgencyFeeTransaction, MaidOtherCare, MaidFinancialDetails
+        MaidLoanTransaction, 
     )
 
     import json
@@ -192,41 +191,6 @@ def maid_seed_data():
                 )
                 new_maid.photo = 'maid.png'
                 new_maid.save()
-                selected_maid_personal_details = MaidPersonalDetails.objects.create(
-                    maid=new_maid,
-                    date_of_birth=datetime.strptime(
-                        maid['date_of_birth'],
-                        '%d %b %Y'
-                    ),
-                    country_of_origin=MaidCountryOfOrigin.INDONESIA,
-                    height=maid['height'],
-                    weight=maid['weight'],
-                    place_of_birth=maid['place_of_birth'],
-                    address_1=maid['address_1'],
-                    address_2=maid['address_2'],
-                    repatriation_airport=maid['repatriation_airport'],
-                    religion=MaidReligionChoices.NONE,
-                    preferred_language=MaidLanguage.objects.get(
-                        language=MaidLanguageChoices.ENGLISH
-                    )
-                )
-                selected_maid_personal_details.languages.add(
-                    MaidLanguage.objects.get(
-                        language=MaidLanguageChoices.ENGLISH
-                    )
-                )
-                MaidFamilyDetails.objects.create(
-                    maid=new_maid,
-                    marital_status=MaritalStatusChoices.SINGLE,
-                    number_of_children=0,
-                    age_of_children='N.A.',
-                    number_of_siblings=0
-                )
-                MaidFinancialDetails.objects.create(
-                    maid=new_maid,
-                    salary=maid['salary'],
-                    personal_loan_amount=0
-                )
                 MaidInfantChildCare.objects.create(
                     maid=new_maid,
                     assessment=random.randint(1,5),
@@ -267,12 +231,7 @@ def maid_seed_data():
                     remarks=MaidCareRemarksChoices.OWN_COUNTRY,
                     other_remarks=''
                 )
-                MaidOtherCare.objects.create(
-                    maid=new_maid,
-                    care_for_pets=True,
-                    gardening=True
-                )
-                MaidAgencyFeeTransaction.objects.create(
+                MaidLoanTransaction.objects.create(
                     maid=new_maid,
                     amount=100,
                     transaction_type='ADD',

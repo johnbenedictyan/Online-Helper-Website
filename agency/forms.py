@@ -10,11 +10,13 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
+from onlinemaid.constants import TrueFalseChoices
+from .constants import OpeningHoursChoices
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOperatingHours, AgencyPlan,
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
     AgencyOwner, PotentialAgency
 )
 
@@ -23,16 +25,126 @@ from .models import (
 # Forms that inherit from inbuilt Django forms
 
 # Model Forms
-class AgencyCreationForm(forms.ModelForm):
+class AgencyForm(forms.ModelForm):
+    main_branch_name = forms.CharField(
+        label=_('Branch Name'),
+        max_length=100,
+        required=False
+    )
+    
+    main_branch_address_1 = forms.CharField(
+        label=_('Address Line 1'),
+        max_length=100,
+        required=True
+    )
+    
+    main_branch_address_2 = forms.CharField(
+        label=_('Address Line 2'),
+        max_length=100,
+        required=True
+    )
+    
+    main_branch_postal_code = forms.CharField(
+        label=_('Postal Code'),
+        max_length=100,
+        required=True
+    )
+    
+    main_branch_email = forms.CharField(
+        label=_('Email'),
+        max_length=100,
+        required=True
+    )
+    
+    main_branch_office_number = forms.CharField(
+        label=_('Office No'),
+        max_length=100,
+        required=True
+    )
+    
+    main_branch_mobile_number = forms.CharField(
+        label=_('Mobile Number'),
+        max_length=100,
+        required=True
+    )
+    
+    opening_hours_type = forms.ChoiceField(
+        label=_('Agency\'s operating hours type'),
+        required=True,
+        choices=OpeningHoursChoices.choices,
+    )
+
+    opening_hours_monday = forms.CharField(
+        label=_('Monday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_tuesday = forms.CharField(
+        label=_('Tuesday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_wednesday = forms.CharField(
+        label=_('Wednesday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_thursday = forms.CharField(
+        label=_('Thursday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_friday = forms.CharField(
+        label=_('Friday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_saturday = forms.CharField(
+        label=_('Saturday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_sunday = forms.CharField(
+        label=_('Sunday\'s opening hours'),
+        max_length=30,
+        required=False
+    )
+
+    opening_hours_public_holiday = forms.CharField(
+        label=_('Public holiday opening hours'),
+        max_length=30,
+        required=False
+    )
+    
     class Meta:
         model = Agency
-        fields = ['name', 'license_number', 'company_email', 'sales_email', 'uen', 'website_uri', 'logo', 'qr_code', 'mission']
+        fields = ['name', 'license_number', 'website_uri', 'logo',
+                  'profile', 'services']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Agency Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyInformationGroup'
+            ),
+            Div(
+                Column(
+                    'logo',
+                    css_class='form-group col-md-6'
+                ),
                 Column(
                     'name',
                     css_class='form-group col-md-6'
@@ -41,47 +153,138 @@ class AgencyCreationForm(forms.ModelForm):
                     'license_number',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'company_email',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'sales_email',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'uen',
-                    css_class='form-group col-md-6'
-                ),
                 Column(
                     'website_uri',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                css_class='row form-group mb-xl-3'
             ),
-            Row(
+            Div(
                 Column(
-                    'logo',
+                    HTML(
+                        '<h5>Main Outlet Details</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyOutletDetailsGroup'
+            ),
+            Div(
+                Column(
+                    'main_branch_name',
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'qr_code',
+                    'main_branch_address_1',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
-                    'mission',
-                    css_class='form-group col'
+                    'main_branch_address_2',
+                    css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                Column(
+                    'main_branch_postal_code',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'main_branch_email',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'main_branch_office_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'main_branch_mobile_number',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='row form-group mb-xl-3'
+            ),
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Opening Hours</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyOpeningHoursGroup'
+            ),
+            Div(
+                Column(
+                    'opening_hours_type',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_monday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_tuesday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_wednesday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_thursday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_friday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_saturday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_sunday',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'opening_hours_public_holiday',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='row form-group mb-xl-3'
+            ),
+            Div(
+                Div(
+                    Div(
+                        Column(
+                            HTML(
+                                '<h5>Profile</h5>'
+                            )
+                        ),
+                        css_class='row',
+                        css_id='agencyProfileGroup'
+                    ),
+                    Div(
+                        Column(
+                            'profile'
+                        ),
+                        css_class='row form-group mb-xl-3'
+                    ),
+                    css_class='col'
+                ),
+                Div(
+                    Div(
+                        Column(
+                            HTML(
+                                '<h5>Our Services</h5>'
+                            )
+                        ),
+                        css_class='row',
+                        css_id='agencyServicesGroup'
+                    ),
+                    Div(
+                        Column(
+                            'services'
+                        ),
+                        css_class='row form-group mb-xl-3'
+                    ),
+                    css_class='col'
+                ),
+                css_class='row'
             ),
             Row(
                 Column(
@@ -96,6 +299,102 @@ class AgencyCreationForm(forms.ModelForm):
             )
         )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+    
+    def save(self, *args, **kwargs):
+        cleaned_data = self.cleaned_data
+        new_agency = super().save()
+        AgencyBranch.objects.create(
+            agency=new_agency,
+            name=cleaned_data.get('main_branch_name'),
+            address_1=cleaned_data.get('main_branch_address_1'),
+            address_2=cleaned_data.get('main_branch_address_2'),
+            postal_code=cleaned_data.get('main_branch_postal_code'),
+            office_number=cleaned_data.get('main_branch_office_number'),
+            mobile_number=cleaned_data.get('main_branch_mobile_number'),
+            main_branch=True
+        )
+        
+        AgencyOpeningHours.objects.create(
+            agency=new_agency,
+            type=cleaned_data.get('opening_hours_type'),
+            monday=cleaned_data.get('opening_hours_monday'),
+            tuesday=cleaned_data.get('opening_hours_tuesday'),
+            wednesday=cleaned_data.get('opening_hours_wednesday'),
+            thursday=cleaned_data.get('opening_hours_thursday'),
+            friday=cleaned_data.get('opening_hours_friday'),
+            saturday=cleaned_data.get('opening_hours_saturday'),
+            sunday=cleaned_data.get('opening_hours_sunday'),
+            public_holiday=cleaned_data.get('opening_hours_public_holiday')
+        )
+        return new_agency
+
+class AgencyUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Agency
+        fields = [
+            'name', 'license_number', 'website_uri', 'logo', 'profile', 
+            'services'
+        ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Agency Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='agencyInformationGroup'
+            ),
+            Row(
+                Column(
+                    'logo',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'license_number',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'website_uri',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='mb-xl-3'
+            ),
+            Row(
+                Column(
+                    'profile',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'services',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='mb-xl-3'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Next',
+                        css_class="btn btn-primary w-25"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+        
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),
@@ -124,6 +423,17 @@ class AgencyOwnerCreationForm(forms.ModelForm):
                 ),
                 Column(
                     'password',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'mobile_number',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -185,7 +495,12 @@ class AgencyOwnerCreationForm(forms.ModelForm):
 
             return super().save(*args, **kwargs)
 
-class AgencyEmployeeCreationForm(forms.ModelForm):
+class AgencyEmployeeForm(forms.ModelForm):
+    pk = None
+    agency_id = None
+    authority = None
+    form_type = None
+    
     password = forms.CharField(
         label=_('Password'),
         required=True,
@@ -200,174 +515,56 @@ class AgencyEmployeeCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # Limit the choices of the foreign key branch to just the branches
         # under the current agency
-        agency_id = kwargs.pop('agency_id')
-        super().__init__(*args, **kwargs)
-        self.fields['branch'].queryset = AgencyBranch.objects.filter(
-            agency = Agency.objects.get(
-                pk = agency_id
-            )
-        )
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'name',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'ea_personnel_number',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'password',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'email',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'contact_number',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'branch',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'role',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        ea_personnel_number = cleaned_data.get("ea_personnel_number")
-        password = cleaned_data.get("password")
-        UserModel = get_user_model()
-
-        user_email = ea_personnel_number + '@' + settings.AGENCY_EMPLOYEE_FEP
-        try:
-            user = UserModel.objects.get(
-                email=user_email
-            )
-        except UserModel.DoesNotExist:
-            pass
-        else:
-            msg = _('This ea personnel number is in use')
-            self.add_error('ea_personnel_number', msg)
-
-        if validate_password(password):
-            msg = _('This password does not meet our requirements')
-            self.add_error('password', msg)
-            
-        return cleaned_data
-
-    def save(self, *args, **kwargs):
-        # There is a cleaner way to write this save method
-        cleaned_data = self.cleaned_data
-        role = cleaned_data.get('role')
-        role_name_dict = {
-            'AA': 'Agency Administrators',
-            'AM': 'Agency Managers',
-            'AS': 'Agency Sales Staff'
-        }
-        ea_personnel_number = cleaned_data.get('ea_personnel_number')
-        user_email = ea_personnel_number + '@' + settings.AGENCY_EMPLOYEE_FEP
-        try:
-            new_user = get_user_model().objects.create_user(
-                email=user_email,
-                password=cleaned_data.get('password')
-            )
-        except Exception as e:
-            pass
-        else:
-            agency_employee_group = Group.objects.get(
-                name=role_name_dict[role]
-            ) 
-            agency_employee_group.user_set.add(
-                new_user
-            )
-
-            self.instance.user = new_user
-            self.instance.name = cleaned_data.get('name')
-            self.instance.contact_number = cleaned_data.get(
-                'contact_number'
-            )
-            self.instance.ea_personnel_number = cleaned_data.get(
-                'ea_personnel_number'
-            )
-            self.instance.email = cleaned_data.get('email')
-            self.instance.branch = cleaned_data.get('branch')
-            self.instance.role = cleaned_data.get('role')
-
-            return super().save(*args, **kwargs)
-
-class AgencyEmployeeUpdateForm(forms.ModelForm):
-    pk = None
-    agency_id = None
-    authority = None
-
-    email = forms.EmailField(
-        label=_('Email Address'),
-        required=True
-    )
-
-    password = forms.CharField(
-        label=_('Password'),
-        required=False,
-        max_length=255,
-        widget=forms.PasswordInput()
-    )
-
-    class Meta:
-        model = AgencyEmployee
-        exclude = ['agency','user']
-
-    def __init__(self, *args, **kwargs):
-        # Limit the choices of the foreign key branch to just the branches
-        # under the current agency
+        self.form_type = kwargs.pop('form_type')
         self.agency_id = kwargs.pop('agency_id')
-        self.pk = kwargs.pop('pk')
         self.authority = kwargs.pop('authority')
+        
+        if self.form_type == 'update':
+            self.pk = kwargs.pop('pk')
+            
         super().__init__(*args, **kwargs)
-        self.fields['branch'].queryset = AgencyBranch.objects.filter(
+        branch_list = AgencyBranch.objects.filter(
             agency = Agency.objects.get(
-                pk = self.agency_id 
+                pk = self.agency_id
             )
         )
-        if self.authority == 'employee':
-            self.fields['ea_personnel_number'].disabled = True
-            self.fields['branch'].disabled = True
-            self.fields['role'].disabled = True
-
+        
+        if self.form_type == 'create':
+            self.fields['branch'].queryset = branch_list
+            self.fields['branch'].initial = branch_list[0]
+            self.fields['ea_personnel_number'].initial = ''
+        
+        if self.form_type == 'update':
+            self.fields['password'].required = False
+            self.fields['password'].help_text = _(
+                'Enter a new password if you wish to change your password'
+            )
+            if self.authority == 'employee':
+                self.fields['ea_personnel_number'].disabled = True
+                self.fields['branch'].disabled = True
+                self.fields['role'].disabled = True
+            
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5>Employee Information</h5>'
+                    )
+                ),
+                css_class='row',
+                css_id='employeeInformationGroup'
+            ),
             Row(
                 Column(
-                    'email',
+                    'name',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'ea_personnel_number',
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -378,7 +575,7 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'name',
+                    'email',
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -389,16 +586,12 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'ea_personnel_number',
-                    css_class='form-group col-md-4'
-                ),
-                Column(
                     'branch',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 Column(
                     'role',
-                    css_class='form-group col-md-4'
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
@@ -414,9 +607,6 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-    # This from is used when the agency employee details are being updated
-    # It has a different clean and save method thatn the creation form
 
     def clean(self):
         cleaned_data = super().clean()
@@ -431,13 +621,15 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
         except UserModel.DoesNotExist:
             pass
         else:
-            if not user.pk == self.pk:
+            if self.form_type == 'create':
                 msg = _('This email is taken')
                 self.add_error('email', msg)
 
-        if password and validate_password(password):
-            msg = _('This password does not meet our requirements')
-            self.add_error('password', msg)
+        if self.form_type == 'create':
+            if validate_password(password):
+                msg = _('This password does not meet our requirements')
+                self.add_error('password', msg)
+                
             
         return cleaned_data
 
@@ -450,45 +642,56 @@ class AgencyEmployeeUpdateForm(forms.ModelForm):
             'AM': 'Agency Managers',
             'AS': 'Agency Sales Staff'
         }
-        employee = AgencyEmployee.objects.get(
-            pk = self.pk
-        )
-
-        old_agency_employee_group = Group.objects.get(
-            name=role_name_dict[employee.role]
-        ) 
-
-        new_agency_employee_group = Group.objects.get(
-            name=role_name_dict[role]
-        ) 
-
-        if self.instance.user.email != cleaned_data.get('email'):
-            employee.user.email = cleaned_data.get('email')
-            employee.user.save()
+        email = cleaned_data.get("email")
         
-        if cleaned_data.get('password'):
-            employee.user.set_password(cleaned_data.get('password'))
-            employee.user.save()
+        if self.form_type == 'update':
+            employee = AgencyEmployee.objects.get(
+                pk = self.pk
+            )
 
-        if old_agency_employee_group != new_agency_employee_group:
-            old_agency_employee_group.user_set.remove(employee.user)
-            new_agency_employee_group.user_set.add(employee.user)
+            old_agency_employee_group = Group.objects.get(
+                name=role_name_dict[employee.role]
+            ) 
 
-        self.instance.user = employee.user
+            new_agency_employee_group = Group.objects.get(
+                name=role_name_dict[role]
+            ) 
+
+            if self.instance.user.email != cleaned_data.get('email'):
+                employee.user.email = cleaned_data.get('email')
+                employee.user.save()
+            
+            if cleaned_data.get('password'):
+                employee.user.set_password(cleaned_data.get('password'))
+                employee.user.save()
+
+            if old_agency_employee_group != new_agency_employee_group:
+                old_agency_employee_group.user_set.remove(employee.user)
+                new_agency_employee_group.user_set.add(employee.user)
+
+        else:
+            try:
+                new_user = get_user_model().objects.create_user(
+                    email=email,
+                    password=cleaned_data.get('password')
+                )
+            except Exception as e:
+                pass
+            else:
+                agency_employee_group = Group.objects.get(
+                    name=role_name_dict[role]
+                ) 
+                agency_employee_group.user_set.add(
+                    new_user
+                )
+                self.instance.user = new_user
         self.instance.name = cleaned_data.get('name')
-        self.instance.contact_number = cleaned_data.get(
-            'contact_number'
-        )
+        self.instance.contact_number = cleaned_data.get('contact_number')
         self.instance.ea_personnel_number = cleaned_data.get(
             'ea_personnel_number'
         )
-        self.instance.branch = cleaned_data.get(
-            'branch'
-        )
-        self.instance.role = cleaned_data.get(
-            'role'
-        )
-
+        self.instance.branch = cleaned_data.get('branch')
+        self.instance.role = cleaned_data.get('role')
         return super().save(*args, **kwargs)
 
 class AgencyBranchForm(forms.ModelForm):
@@ -501,31 +704,20 @@ class AgencyBranchForm(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super().clean()
+        branch_name = cleaned_data.get('name')
         main_branch = cleaned_data.get("main_branch")
-        self.agency = Agency.objects.get(
-            pk=self.agency_id
+        current_main_branch = AgencyBranch.objects.get(
+            agency=self.agency,
+            main_branch=True
         )
-        branches = AgencyBranch.objects.filter(
-            agency=self.agency
-        )
-        main_branch_counter = 0
-        current_main_branch = None
-        for branch in branches:
-            if branch.main_branch == True:
-                current_main_branch = branch.name
-                main_branch_counter += 1
-
-        if main_branch_counter > 0 and main_branch == True:
-            if self.form_type == 'CREATE':
-                if current_main_branch:
-                    msg = _(f"""
-                        {current_main_branch} is already set as the main branch
-                    """)
-                else:
-                    msg = _('There can only be one main branch')
+        if current_main_branch:
+            if main_branch == True and branch_name != current_main_branch.name:
+                msg = _(f"""
+                    {current_main_branch} is already set as the main branch
+                """)
                 self.add_error('main_branch', msg)
 
-        elif main_branch_counter == 0 and main_branch == False:
+        elif main_branch == False:
             msg = _('You must have at least one main branch')
             self.add_error('main_branch', msg)
         return cleaned_data
@@ -567,67 +759,71 @@ class AgencyBranchForm(forms.ModelForm):
         return super().save(*args, **kwargs)
 
     def __init__(self, *args, **kwargs):
-        self.agency_id = kwargs.pop('agency_id', None)
-        self.form_type = kwargs.pop('form_type', None)
+        self.agency_id = kwargs.pop('agency_id')
+        self.agency = Agency.objects.get(
+            pk=self.agency_id
+        )
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'name',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'address_1',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'address_2',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'postal_code',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'main_branch',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'office_number',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'mobile_number',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary 
+                                                eh-delete-button"
+                                        data-rowNumber="1"
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
                     ),
-                    css_class='form-group col-12 text-center'
+                    Row(
+                        Column(
+                            'name',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'address_1',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'address_2',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'postal_code',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'email',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'office_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'mobile_number',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'main_branch',
+                            css_class='col-md-6'
+                        )
+                    )
                 ),
-                css_class='form-row'
+                css_class='form-group',
             )
         )
 
-class AgencyOperatingHoursForm(forms.ModelForm):
+class AgencyOpeningHoursForm(forms.ModelForm):
     class Meta:
-        model = AgencyOperatingHours
+        model = AgencyOpeningHours
         exclude = ['agency']
 
     def __init__(self, *args, **kwargs):
@@ -636,7 +832,7 @@ class AgencyOperatingHoursForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'operating_type',
+                    'type',
                     css_class='form-group col'
                 ),
                 css_class='form-row'
@@ -687,39 +883,16 @@ class AgencyOperatingHoursForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="{% url 'dashboard_agency_outlet_details_update' %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class AgencyPlanForm(forms.ModelForm):
-    class Meta:
-        model = AgencyPlan
-        exclude = ['agency']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'choice',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Purchase',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
@@ -859,4 +1032,41 @@ class PotentialAgencyForm(forms.ModelForm):
                 self.add_error('email', msg)
 
         return super().save(*args, **kwargs)    
-# Generic Forms (forms.Form)
+
+
+
+
+
+
+
+
+# Forms that are going to be deprecated
+class AgencyPlanForm(forms.ModelForm):
+    pass
+    # class Meta:
+    #     model = AgencyPlan
+    #     exclude = ['agency']
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #     self.helper.layout = Layout(
+    #         Row(
+    #             Column(
+    #                 'choice',
+    #                 css_class='form-group col'
+    #             ),
+    #             css_class='form-row'
+    #         ),
+    #         Row(
+    #             Column(
+    #                 Submit(
+    #                     'submit',
+    #                     'Purchase',
+    #                     css_class="btn btn-primary w-50"
+    #                 ),
+    #                 css_class='form-group col-12 text-center'
+    #             ),
+    #             css_class='form-row'
+    #         )
+    #     )
