@@ -4,21 +4,21 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' level_0_pk=request.resolver_match.kwargs.level_0_pk %}">
         <p class="m-1 pl-2">Employer Profile</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' level_0_pk=request.resolver_match.kwargs.level_0_pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' level_0_pk=request.resolver_match.kwargs.level_0_pk %}">
         <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
@@ -32,7 +32,7 @@
     <h5>Case #:&nbsp;&nbsp;{{ object.case_ref_no }}</h5>
 
     <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
-        <a href="{% url 'employer_payment_create_route' employer_pk=request.resolver_match.kwargs.employer_pk employerdoc_pk=request.resolver_match.kwargs.employerdoc_pk %}" class="btn btn-secondary btn-sm">Add transaction</a>
+        <a href="{% url 'employer_payment_create_route' level_0_pk=request.resolver_match.kwargs.level_0_pk level_1_pk=request.resolver_match.kwargs.level_1_pk %}" class="btn btn-secondary btn-sm">Add transaction</a>
     </div>
 
     <table class="table table-hover">

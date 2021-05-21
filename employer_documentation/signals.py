@@ -1,36 +1,29 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from .models import (
-    EmployerDoc,
-    EmployerDocMaidStatus,
-    EmployerDocSig,
-    JobOrder,
-    PdfArchive,
-)
+from . import models
 
-@receiver(post_save, sender=EmployerDoc)
+@receiver(post_save, sender=models.EmployerDoc)
 def employer_doc_post_save(sender, instance, created, **kwargs):
     if created:
-        # If SQL INSERT, create EmployerDocSig, EmployerDocMaidStatus,
-        # JobOrder, PdfArchive instances.
-        EmployerDocSig.objects.create(employer_doc=instance)
-        EmployerDocMaidStatus.objects.create(employer_doc=instance)
-        JobOrder.objects.create(employer_doc=instance)
-        PdfArchive.objects.create(employer_doc=instance)
+        # If SQL INSERT, create models.EmployerDocSig, models.EmployerDocMaidStatus,
+        # JobOrder, models.PdfArchive instances.
+        models.EmployerDocSig.objects.create(employer_doc=instance)
+        models.EmployerDocMaidStatus.objects.create(employer_doc=instance)
+        models.PdfArchive.objects.create(employer_doc=instance)
     else:
-        # If SQL UPDATE, create EmployerDocSig, EmployerDocMaidStatus,
-        # JobOrder, PdfArchive instances if they don't exist.
+        # If SQL UPDATE, create models.EmployerDocSig, models.EmployerDocMaidStatus,
+        # JobOrder, models.PdfArchive instances if they don't exist.
         if not hasattr(instance, 'rn_signatures_ed'):
-            EmployerDocSig.objects.create(employer_doc=instance)
+            models.EmployerDocSig.objects.create(employer_doc=instance)
         if not hasattr(instance, 'rn_maidstatus_ed'):
-            EmployerDocMaidStatus.objects.create(employer_doc=instance)
+            models.EmployerDocMaidStatus.objects.create(employer_doc=instance)
         if not hasattr(instance, 'rn_joborder_ed'):
             JobOrder.objects.create(employer_doc=instance)
-        if not hasattr(instance, 'rn_pdfarchive_ed'):
-            PdfArchive.objects.create(employer_doc=instance)
+        if not hasattr(instance, 'rn_models.PdfArchive_ed'):
+            models.PdfArchive.objects.create(employer_doc=instance)
         
-        # If SQL UPDATE, reset all e-signatures in EmployerDocSig instance
+        # If SQL UPDATE, reset all e-signatures in models.EmployerDocSig instance
         doc_sig_obj = instance.rn_signatures_ed
         doc_sig_obj.employer_signature = None
         doc_sig_obj.fdw_signature = None

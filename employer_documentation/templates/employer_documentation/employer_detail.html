@@ -3,21 +3,21 @@
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=object.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' level_0_pk=object.pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' level_0_pk=object.pk %}">
         <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' level_0_pk=object.pk %}">
         <p class="m-1 pl-2">Add Document</p>
         </a>
     </div>
@@ -35,23 +35,23 @@
             </tr>
             <tr>
                 <th scope="row">Employer Name</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_name }}</a></td>
+                <td><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.employer_name }}</a></td>
             </tr>
             <tr>
                 <th scope="row">Employer Email</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_email }}</a></td>
+                <td><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.employer_email }}</a></td>
             </tr>
             <tr>
                 <th scope="row">Employer Mobile</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.mobile_format_sg }}</a></td>
+                <td><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.mobile_format_sg }}</a></td>
             </tr>
             <tr>
                 <th scope="row">Employer NRIC</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.get_nric_full }}</a></td>
+                <td><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.get_nric_full }}</a></td>
             </tr>
             <tr>
                 <th scope="row">Employer Address</th>
-                <td><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_address_1 }}, {{ object.employer_address_2 }}, {{ object.employer_post_code }}</a></td>
+                <td><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.employer_address_1 }}, {{ object.employer_address_2 }}, {{ object.employer_post_code }}</a></td>
             </tr>
         </tbody>
     </table>

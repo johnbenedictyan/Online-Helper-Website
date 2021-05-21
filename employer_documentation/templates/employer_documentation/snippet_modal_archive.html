@@ -15,7 +15,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="{% url 'pdf_archive_save' employer_pk=object.employer.pk employerdoc_pk=object.pk %}" class="btn btn-primary">Archive</a>
+                <a href="{% url 'pdf_archive_save' level_0_pk=object.employer.pk level_1_pk=object.pk %}" class="btn btn-primary">Archive</a>
             </div>
         </div>
     </div>
