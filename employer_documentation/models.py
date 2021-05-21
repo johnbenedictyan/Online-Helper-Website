@@ -1347,13 +1347,8 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
     )
-    b2h_replacement_months = models.PositiveSmallIntegerField(
-        # months
-        verbose_name=_("2h. Cost for replacement within __ month(s)"),
-        choices=ed_constants.MonthChoices.choices
-    )
-    b2h_replacement_cost = models.DecimalField(
-        verbose_name=_("2h. Cost for replacement"),
+    b2h_food_lodging = models.DecimalField(
+        verbose_name=_("2h. Food and Lodging"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1361,23 +1356,14 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
     )
-    b2i_work_permit_renewal = models.DecimalField(
-        verbose_name=_("2i. Renewal of Work Permit"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-    )
-    b2j1_other_services_description = models.CharField(
-        verbose_name=_("2j. Other services provided (i)"),
+    b2i1_other_services_description = models.CharField(
+        verbose_name=_("2i. Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2j1_other_services_fee = models.DecimalField(
-        verbose_name=_("2j. Other services fee (i)"),
+    b2i1_other_services_fee = models.DecimalField(
+        verbose_name=_("2i. Other services fee (i)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1387,14 +1373,14 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2j2_other_services_description = models.CharField(
-        verbose_name=_("2j. Other services provided (ii)"),
+    b2i2_other_services_description = models.CharField(
+        verbose_name=_("2i. Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2j2_other_services_fee = models.DecimalField(
-        verbose_name=_("2j. Other services fee (ii)"),
+    b2i2_other_services_fee = models.DecimalField(
+        verbose_name=_("2i. Other services fee (ii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1404,14 +1390,43 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2j3_other_services_description = models.CharField(
-        verbose_name=_("2j. Other services provided (iii)"),
+    b2i3_other_services_description = models.CharField(
+        verbose_name=_("2i. Other services provided (iii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2j3_other_services_fee = models.DecimalField(
-        verbose_name=_("2j. Other services fee (iii)"),
+    b2i3_other_services_fee = models.DecimalField(
+        verbose_name=_("2i. Other services fee (iii)"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        blank=True,
+        null=True,
+    )
+    b2j_replacement_months = models.PositiveSmallIntegerField(
+        # months
+        verbose_name=_("2j. Cost for replacement within __ month(s)"),
+        choices=ed_constants.MonthChoices.choices,
+        blank=True,
+        null=True,
+    )
+    b2j_replacement_cost = models.DecimalField(
+        verbose_name=_("2j. Cost for replacement"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        blank=True,
+        null=True,
+    )
+    b2k_work_permit_renewal = models.DecimalField(
+        verbose_name=_("2k. Renewal of Work Permit"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1430,16 +1445,6 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
         help_text=_('Agency fee charged on the FDW by the Agency'),
-    )
-    b3_fdw_loan = models.DecimalField(
-        verbose_name=_("3b. FDW personal loan"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_('Personal loan incurred by FDW in overseas'),
     )
     ca_deposit_amount = models.DecimalField(
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
@@ -1466,11 +1471,12 @@ class DocServiceFeeSchedule(models.Model):
             + self.b2e_home_service
             + self.b2f_counselling
             + self.b2g_sip
-            + self.b2h_replacement_cost
-            + self.b2i_work_permit_renewal
-            + self.b2j1_other_services_fee
-            + self.b2j2_other_services_fee
-            + self.b2j3_other_services_fee
+            + self.b2h_food_lodging
+            + self.b2i1_other_services_fee
+            + self.b2i2_other_services_fee
+            + self.b2i3_other_services_fee
+            + self.b2j_replacement_cost
+            + self.b2k_work_permit_renewal
         )
 
     def calc_placement_fee(self):
@@ -1664,16 +1670,6 @@ class DocEmploymentContract(models.Model):
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_employmentcontract_ed'
-    )
-    c3_1_fdw_salary = models.DecimalField(
-        verbose_name=_("3.1 FDW monthly salary"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_('FDW monthly salary in employment contract'),
     )
     c3_5_fdw_sleeping_arrangement = models.CharField(
         verbose_name=_("3.5 FDW sleeping arrangement"),
