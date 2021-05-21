@@ -1,0 +1,167 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid" style="min-height: 75vh;">
+        <div class="row">
+            <div class="col text-dark mb-3">
+                <h4>FDW Biodata</h4>
+            </div>
+        </div>
+        <form action="" method="get">
+            <div class="row">
+                <div class="col-4">
+                    {{filter.form.employer_name|as_crispy_field}}
+                </div>
+                <div class="col-4 offset-2">
+                    {{filter.form.agency_employee|as_crispy_field}}
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col text-right pb-3">
+                <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-primary mr-1">Add Employer</a>
+            </div>
+        </div>
+        <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
+            <div class="col-1">
+                <h6 class="mb-0">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Employer <i class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="employerNameSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Mobile</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Home No</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Date of Birth <i class="fas {% if order_by == 'dateOfBirth' %}fa-sort-amount-down{% elif order_by == '-dateOfBirth' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateOfBirthSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">EA Personnel <i class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="eaPersonnelSortToggle"></i></h6>
+            </div>
+            <div class="col-1 text-center">
+                <h6 class="mb-0">Actions</h6>
+            </div>
+        </div>
+        {% for maid in maids %}
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
+            <div class="col-1">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col-1">
+                <div class="row justify-content-evenly">
+                    <a href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
+                    <a href="#"><i class="far fa-trash"></i></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $('.sortToggle').on('click', function(){
+            $('.sortToggle').not(this).each(function(){
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'employerNameSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=employerName"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-employerName"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=employerName"
+                    }
+                    break;
+
+                case 'dateOfBirthSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=dateOfBirth"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-dateOfBirth"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=dateOfBirth"
+                    }
+                    break;
+                    
+                    case 'eaPersonnelSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=eaPersonnel"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-eaPersonnel"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=eaPersonnel"
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        })
+    })
+</script>
+{% endblock js%}

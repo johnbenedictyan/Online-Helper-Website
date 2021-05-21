@@ -26,6 +26,7 @@ from agency.models import (
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
+from employer_documentation.models import Employer
 from enquiry.models import GeneralEnquiry
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
@@ -47,7 +48,7 @@ from payment.models import Customer, Subscription
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from local app
-from .filters import DashboardMaidFilter
+from .filters import DashboardMaidFilter, DashboardEmployerFilter
 
 # Start of Views
 
@@ -243,6 +244,49 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
 
     def get_queryset(self):
         pass
+
+class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
+    context_object_name = 'employers'
+    http_method_names = ['get']
+    model = Employer
+    template_name = 'list/dashboard-employer-list.html'
+    filter_set = DashboardEmployerFilter
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        kwargs.update({
+            'order_by': self.request.GET.get('order-by')
+        })
+        return kwargs
+    
+    def get_queryset(self):
+        order_by = self.request.GET.get('order-by')
+        # if order_by:
+        #     if order_by == 'serialNo':
+        #         order_by = 'id'
+        #     elif order_by == '-serialNo':
+        #         order_by = '-id'
+        #     elif order_by == 'employerName':
+        #         order_by = 'country_of_origin'
+        #     elif order_by == '-employerName':
+        #         order_by = '-country_of_origin'
+        #     elif order_by == 'dateOfBirth':
+        #         order_by = 'maid_type'
+        #     elif order_by == '-dateOfBirth':
+        #         order_by = '-maid_type'
+        #     elif order_by == 'eaPersonnel':
+        #         order_by = 'passport_expiry'
+        #     elif order_by == '-eaPersonnel':
+        #         order_by = '-passport_expiry'
+        #     return Employer.objects.filter(
+        #         agency__pk = self.agency_id
+        #     ).order_by(order_by)
+        # else:
+        return Employer.objects.filter(
+            agency__pk = self.agency_id
+        )
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
