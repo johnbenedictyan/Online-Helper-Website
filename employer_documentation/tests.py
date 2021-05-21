@@ -43,7 +43,7 @@ class SetUp():
         self.user_potential_employer.save()
         self.user_potential_employer.groups.set([self.PE])
 
-        self.potential_employer = accounts.models.Employer(
+        self.potential_employer = accounts.models.PotentialEmployer(
             user=self.user_potential_employer,
             name='name',
             contact_number='91919191',
@@ -141,7 +141,7 @@ class SetUp():
         self.agency_employee_manager_b1 = AgencyEmployee(
             user=self.user_manager_b1,
             name = 'manager',
-            last_name = '1',
+            # last_name = '1',
             contact_number = '92929292',
             ea_personnel_number = 'EA#2',
             agency = self.agency,
@@ -162,7 +162,7 @@ class SetUp():
         self.agency_employee_manager_b2 = AgencyEmployee(
             user=self.user_manager_b2,
             name = 'manager',
-            last_name = '2',
+            # last_name = '2',
             contact_number = '92929292',
             ea_personnel_number = 'EA#3',
             agency = self.agency,
@@ -183,7 +183,7 @@ class SetUp():
         self.agency_employee_sales_b1 = AgencyEmployee(
             user = self.user_sales_b1,
             name = 'sales',
-            last_name = '1',
+            # last_name = '1',
             contact_number = '93939393',
             ea_personnel_number = 'EA#4',
             agency = self.agency,
@@ -204,7 +204,7 @@ class SetUp():
         self.agency_employee_sales_b2 = AgencyEmployee(
             user = self.user_sales_b2,
             name = 'sales',
-            last_name = '2',
+            # last_name = '2',
             contact_number = '93939393',
             ea_personnel_number = 'EA#5',
             agency = self.agency,
@@ -233,7 +233,7 @@ class SetUp():
             published=True,
             featured=False,
         )
-        with open('static/favicon-16x16.png', 'rb') as fp:
+        with open('static/favicon.ico', 'rb') as fp:
             self.maid.photo = ImageFile(fp, 'photo.png')
             self.maid.save()
     
@@ -464,7 +464,7 @@ class SetUp():
         #     published=True,
         #     featured=False,
         # )
-        # with open('static/favicon-16x16.png', 'rb') as fp:
+        # with open('static/favicon.ico', 'rb') as fp:
         #     self.maid_other.photo = ImageFile(fp, 'photo.png')
         #     self.maid_other.save()
     
@@ -686,67 +686,67 @@ class EmployerDetailViewTestCase(SetUp, TestCase):
     
     def test_anon_redirect(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_anon_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_potential_employer_redirect(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_potential_employer_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_owner_access(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_owner_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_access_because_same_agency(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_admin_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_redirect_because_not_agency(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_admin_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_sales(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_redirect_because_not_branch(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_manager_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_access_because_same_user(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_sales_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_manager(self):
         url_kwargs={
-            'employer_pk': self.employer_manager_b1.pk,
+            'level_0_pk': self.employer_manager_b1.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_sales(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
@@ -756,67 +756,67 @@ class EmployerUpdateViewTestCase(SetUp, TestCase):
 
     def test_anon_redirect(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_anon_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_potential_employer_redirect(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_potential_employer_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_owner_access(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_owner_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_access_because_same_agency(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_admin_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_redirect_because_not_agency(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_admin_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_sales(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_redirect_because_not_branch(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_manager_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_access_because_same_user(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_sales_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_manager(self):
         url_kwargs={
-            'employer_pk': self.employer_manager_b1.pk,
+            'level_0_pk': self.employer_manager_b1.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_sales(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
     
@@ -826,67 +826,67 @@ class DocListViewTestCase(SetUp, TestCase):
 
     def test_anon_redirect(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_anon_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_potential_employer_redirect(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_potential_employer_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_owner_access(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_owner_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_access_because_same_agency(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_admin_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_redirect_because_not_agency(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_admin_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_sales(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_redirect_because_not_branch(self):
         url_kwargs={
-            'employer_pk': self.employer_admin.pk,
+            'level_0_pk': self.employer_admin.pk,
         }
         test_manager_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_access_because_same_user(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_sales_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_manager(self):
         url_kwargs={
-            'employer_pk': self.employer_manager_b1.pk,
+            'level_0_pk': self.employer_manager_b1.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_sales(self):
         url_kwargs={
-            'employer_pk': self.employer_sales_b1.pk,
+            'level_0_pk': self.employer_sales_b1.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
@@ -896,78 +896,78 @@ class EmployerDocDetailViewTestCase(SetUp, TestCase):
     
     def test_anon_redirect(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_anon_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_potential_employer_redirect(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_potential_employer_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_owner_access(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_owner_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_access_because_same_agency(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_admin_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_redirect_because_not_agency(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_admin_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_sales(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_sales.employer.pk,
-            'employerdoc_pk': self.employerdoc_sales.pk,
+            'level_0_pk': self.employerdoc_sales.employer.pk,
+            'level_1_pk': self.employerdoc_sales.pk,
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_redirect_because_not_branch(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
         }
         test_manager_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_access_because_same_user(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_sales.employer.pk,
-            'employerdoc_pk': self.employerdoc_sales.pk,
+            'level_0_pk': self.employerdoc_sales.employer.pk,
+            'level_1_pk': self.employerdoc_sales.pk,
         }
         test_sales_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_manager(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_manager.employer.pk,
-            'employerdoc_pk': self.employerdoc_manager.pk,
+            'level_0_pk': self.employerdoc_manager.employer.pk,
+            'level_1_pk': self.employerdoc_manager.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_sales(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_sales.employer.pk,
-            'employerdoc_pk': self.employerdoc_sales.pk,
+            'level_0_pk': self.employerdoc_sales.employer.pk,
+            'level_1_pk': self.employerdoc_sales.pk,
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
@@ -985,88 +985,88 @@ class SignatureUpdateByAgentViewTestCase(SetUp, TestCase):
     
     def test_anon_redirect(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_anon_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_potential_employer_redirect(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_potential_employer_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_owner_access(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_owner_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_access_because_same_agency(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_admin_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_admin_redirect_because_not_agency(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_admin_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_admin(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_access_because_same_branch_sales(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_sales.employer.pk,
-            'employerdoc_pk': self.employerdoc_sales.pk,
+            'level_0_pk': self.employerdoc_sales.employer.pk,
+            'level_1_pk': self.employerdoc_sales.pk,
             'employersubdoc_pk': self.employerdoc_sales.rn_signatures_ed.pk
         }
         test_manager_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_manager_redirect_because_not_branch(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_admin.employer.pk,
-            'employerdoc_pk': self.employerdoc_admin.pk,
+            'level_0_pk': self.employerdoc_admin.employer.pk,
+            'level_1_pk': self.employerdoc_admin.pk,
             'employersubdoc_pk': self.employerdoc_admin.rn_signatures_ed.pk
         }
         test_manager_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_access_because_same_user(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_sales.employer.pk,
-            'employerdoc_pk': self.employerdoc_sales.pk,
+            'level_0_pk': self.employerdoc_sales.employer.pk,
+            'level_1_pk': self.employerdoc_sales.pk,
             'employersubdoc_pk': self.employerdoc_sales.rn_signatures_ed.pk
         }
         test_sales_access(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_manager(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_manager.employer.pk,
-            'employerdoc_pk': self.employerdoc_manager.pk,
+            'level_0_pk': self.employerdoc_manager.employer.pk,
+            'level_1_pk': self.employerdoc_manager.pk,
             'employersubdoc_pk': self.employerdoc_manager.rn_signatures_ed.pk
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
     def test_sales_redirect_because_not_user_sales(self):
         url_kwargs={
-            'employer_pk': self.employerdoc_sales.employer.pk,
-            'employerdoc_pk': self.employerdoc_sales.pk,
+            'level_0_pk': self.employerdoc_sales.employer.pk,
+            'level_1_pk': self.employerdoc_sales.pk,
             'employersubdoc_pk': self.employerdoc_sales.rn_signatures_ed.pk
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))

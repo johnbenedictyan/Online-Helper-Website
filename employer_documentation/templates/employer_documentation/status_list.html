@@ -40,23 +40,23 @@
                         <!-- Display for xl screens and above -->
                         <div class="row mx-0 custom-table-data">
                             <div class="col">Name:&emsp;{{ object.employer.employer_name }}<br>NRIC:&emsp;{{ object.employer.get_nric_partial }}</div>
-                            <div class="col"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
+                            <div class="col"><a href="{% url 'employerdoc_detail_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
                             <div class="col">{{ object.employer.agency_employee.ea_personnel_number }}<br>{{ object.employer.agency_employee.name}}</div>
                             <div class="col">{{ object.fdw.reference_number }}<br>{{ object.fdw.name }}</div>
                             <div class="col-5">
                                 <div class="row text-center">
-                                    <div class="col"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></div>
-                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
-                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
-                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date %}{{ object.rn_maidstatus_ed.arrival_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
-                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
-                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date %}{{ object.rn_maidstatus_ed.sip_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_detail_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date %}{{ object.rn_maidstatus_ed.arrival_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                                    <div class="col"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date %}{{ object.rn_maidstatus_ed.sip_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                                 </div>
                             </div>
-                            <div class="col"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></div>
+                            <div class="col"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.work_permit_no %}{{ object.rn_maidstatus_ed.work_permit_no }}{% else %}Add{% endif %}</a></div>
                             <div class="col">
-                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>
-                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
                                 {% if not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}{% else %}
                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-paper-plane"></i></button>
                                 {% endif %}
@@ -72,7 +72,7 @@
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Case #</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.case_ref_no }}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Staff</div>
@@ -84,33 +84,33 @@
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Agreement Date</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_detail_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.agreement_date|date:"d M Y" }}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">IPA Date</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.ipa_approval_date %}{{ object.rn_maidstatus_ed.ipa_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Security Bond Approval Date</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.security_bond_approval_date %}{{ object.rn_maidstatus_ed.security_bond_approval_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Arrival Date</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date %}{{ object.rn_maidstatus_ed.arrival_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.arrival_date %}{{ object.rn_maidstatus_ed.arrival_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Thumb Print Date</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.thumb_print_date %}{{ object.rn_maidstatus_ed.thumb_print_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">SIP Date</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date %}{{ object.rn_maidstatus_ed.sip_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employerdoc_status_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.sip_date %}{{ object.rn_maidstatus_ed.sip_date|date:"d M Y" }}{% else %}Add{% endif %}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Action</div>
                             <div class="{{ class_col_right }}">
-                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-edit"></i></a>
-                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-secondary btn-sm" href="{% url 'employer_payment_list_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-money-check-alt"></i></a>
                                 {% if not object.rn_maidstatus_ed.ipa_approval_date or not object.rn_maidstatus_ed.security_bond_approval_date or not object.rn_maidstatus_ed.arrival_date or not object.rn_maidstatus_ed.thumb_print_date or not object.rn_maidstatus_ed.sip_date or not object.rn_maidstatus_ed.fdw_work_commencement_date %}{% else %}
                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deployFdwModal-{{ object.rn_maidstatus_ed.pk }}"><i class="fas fa-paper-plane"></i></button>
                                 {% endif %}

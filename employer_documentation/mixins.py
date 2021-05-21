@@ -13,17 +13,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from weasyprint import HTML, CSS
 
 # From our apps
-from .models import (
-    Employer,
-    EmployerDoc,
-    EmployerDocMaidStatus,
-    EmployerDocSig,
-    JobOrder,
-    PdfArchive,
-    EmployerPaymentTransaction,
-    EmployerDocSponsor,
-    EmployerDocJointApplicant,
-)
+from . import models
 from onlinemaid.constants import (
     AG_OWNERS,
     AG_ADMINS,
@@ -37,17 +27,17 @@ from accounts.models import User
 class CheckEmployerDocRelationshipsMixin(UserPassesTestMixin):
     def test_func(self):
         if self.employer_doc_obj:
-            if self.object.employer.pk==self.kwargs.get('employer_pk'):
+            if self.object.employer.pk==self.kwargs.get('level_0_pk'):
                 return True
             else:
                 return False
         elif self.employer_subdoc_obj:
             if (
                 self.object.employer_doc.employer.pk==self.kwargs.get(
-                    'employer_pk')
+                    'level_0_pk')
                 and
                 self.object.employer_doc.pk==self.kwargs.get(
-                    'employerdoc_pk')
+                    'level_1_pk')
             ):
                 return True
             else:
@@ -135,22 +125,24 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
         # Try to get object from database
         try:
             if not hasattr(self, 'object'): self.object = self.get_object()
-        except:
+        except Exception:
             return HttpResponseRedirect(reverse_lazy('home'))
         else:
             # Assign to respective attribute
-            if isinstance(self.object, Employer):
+            if isinstance(self.object, models.Employer):
                 self.employer_obj = self.object
-            elif isinstance(self.object, EmployerDoc):
+            elif (
+                isinstance(self.object, models.EmployerDoc)
+                or isinstance(self.object, models.EmployerSponsor)
+                or isinstance(self.object, models.EmployerJointApplicant)
+            ):
                 self.employer_doc_obj = self.object
             elif (
-                isinstance(self.object, EmployerDocMaidStatus)
-                or isinstance(self.object, EmployerDocSig)
-                or isinstance(self.object, JobOrder)
-                or isinstance(self.object, PdfArchive)
-                or isinstance(self.object, EmployerPaymentTransaction)
-                or isinstance(self.object, EmployerDocSponsor)
-                or isinstance(self.object, EmployerDocJointApplicant)
+                isinstance(self.object, models.EmployerDocMaidStatus)
+                or isinstance(self.object, models.EmployerDocSig)
+                or isinstance(self.object, models.JobOrder)
+                or isinstance(self.object, models.PdfArchive)
+                or isinstance(self.object, models.EmployerPaymentTransaction)
             ):
                 self.employer_subdoc_obj = self.object
 
@@ -347,8 +339,8 @@ class PdfHtmlViewMixin:
             payment_month = work_commencement_date.month
             payment_year = work_commencement_date.year
             placement_fee = (
-                self.object.fdw.financial_details.agency_fee_amount +
-                self.object.fdw.financial_details.personal_loan_amount
+                self.object.b3_agency_fee +
+                self.object.b3_fdw_loan
             )
             placement_fee_per_month = round(placement_fee/6, 0)
             work_days_in_month = 26
@@ -524,21 +516,14 @@ class PdfHtmlViewMixin:
         version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
 
         def get_preferred_language():
+            from maid.constants import country_language
             # MoM Safety Agreements are available in different languages.
             # Relevant language template snippet is selected based on FDW's
-            # preferred language.
+            # country of origin.
 
-            available_languages = ['BUR', 'ENG', 'IDN', 'KHM', 'SIN', 'TAG', 'TAM', 'THA']
-            default_language = 'IDN'
-            
-            try:
-                preferred_language = context['object'].fdw.personal_details.preferred_language.language
-            except:
-                return default_language
-            else:
-                return preferred_language if preferred_language in available_languages else default_language
+            return country_language.get(context['object'].fdw.personal_details.country_of_origin, 'ENG')
 
-        if isinstance(self.object, EmployerDoc):
+        if isinstance(self.object, models.EmployerDoc):
             context = super().get_context_data(object=self.object)
 
             # Document version number formatting
@@ -548,7 +533,7 @@ class PdfHtmlViewMixin:
             for i in range(1,4):
                 context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
-        elif isinstance(self.object, EmployerDocSig):
+        elif isinstance(self.object, models.EmployerDocSig):
             '''
             context['object'] set as EmployerDoc object instead of
             EmployerDocSig so that same PDF templates can be re-used
@@ -556,7 +541,7 @@ class PdfHtmlViewMixin:
             context = super().get_context_data(object=self.object.employer_doc)
 
             # Document version number formatting
-            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
+            context['object'].version = f'[{self.object.employer_doc.get_version()}] - {version_explainer_text}'
         
             preferred_language = get_preferred_language()
             for i in range(1,4):

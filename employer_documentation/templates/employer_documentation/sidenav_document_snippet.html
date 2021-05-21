@@ -1,56 +1,78 @@
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=object.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' level_0_pk=object.employer.pk %}">
         <p class="m-1 pl-2">Employer Profile</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=object.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
+        </a>
+    </div>
+</div>
+
+{% if object.employer %}
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_sponsor_create_route' %}active{% endif %}" href="{% url 'employer_sponsor_create_route' level_0_pk=object.employer.pk %}">
+        <p class="m-1 pl-2">Sponsor Create</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=object.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_joint_applicant_create_route' %}active{% endif %}" href="{% url 'employer_joint_applicant_create_route' level_0_pk=object.employer.pk %}">
+        <p class="m-1 pl-2">Joint Applicant Create</p>
+        </a>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% comment %}
+<div class="row">
+    <div class="col px-0">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' level_0_pk=object.employer.pk %}">
         <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_detail_route' %}active{% endif %}" href="{% url 'employerdoc_detail_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_detail_route' %}active{% endif %}" href="{% url 'employerdoc_detail_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">
         <p class="m-1 pl-2">Documentation Detail</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_update_route' %}active{% endif %}" href="{% url 'employerdoc_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_update_route' %}active{% endif %}" href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">
         <p class="m-1 pl-2">Edit Documentation</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' employer_pk=object.employer.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_create_route' %}active{% endif %}" href="{% url 'employerdoc_create_route' level_0_pk=object.employer.pk %}">
         <p class="m-1 pl-2">Add Document</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_status_update_route' %}active{% endif %}" href="{% url 'employerdoc_status_update_route'  employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_maidstatus_ed.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_status_update_route' %}active{% endif %}" href="{% url 'employerdoc_status_update_route'  level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">
         <p class="m-1 pl-2">FDW Status</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'joborder_update_route' %}active{% endif %}" href="{% url 'joborder_update_route' employer_pk=object.employer.pk employerdoc_pk=object.pk employersubdoc_pk=object.rn_joborder_ed.pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'joborder_update_route' %}active{% endif %}" href="{% url 'joborder_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_joborder_ed.pk %}">
         <p class="m-1 pl-2">Job Order</p>
         </a>
     </div>
 </div>
+{% endcomment %}

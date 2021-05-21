@@ -38,14 +38,14 @@
                     <div class="clickable d-none d-xl-block">
                         <!-- Display for xl screens and above -->
                         <div class="row mx-0 custom-table-data">
-                            <div class="col"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
-                            <div class="col"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></div>
-                            <div class="col"><a href="{% url 'employer_update_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></div>
-                            <div class="col">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
+                            <div class="col"><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
+                            <div class="col"><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.get_email_partial }}</a></div>
+                            <div class="col"><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.mobile_partial_sg }}</a></div>
+                            <div class="col">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' level_0_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' level_0_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
                             <div class="col">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.name }}</div>
                             <div class="col">
-                                <a href="{% url 'employer_update_route' employer_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
-                                {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
+                                <a href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
+                                {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -54,19 +54,19 @@
                         {% with class_col_left="col-6" class_col_right="col-6" %}
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Employer</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' level_0_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Email</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' level_0_pk=object.pk %}">{{ object.employer_email|slice:":3" }}&#9679;&#9679;&#9679;&#9679;&#9679;{{ object.employer_email|slice:"-3:" }}</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Mobile</div>
-                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' employer_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></div>
+                            <div class="{{ class_col_right }}"><a href="{% url 'employer_detail_route' level_0_pk=object.pk %}">{{ object.employer_mobile_number|slice:":4" }}&#9679;&#9679;&#9679;&#9679;</a></div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Cases</div>
-                            <div class="{{ class_col_right }}">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' employer_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' employer_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
+                            <div class="{{ class_col_right }}">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' level_0_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' level_0_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Staff</div>
@@ -75,8 +75,8 @@
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Action</div>
                             <div class="{{ class_col_right }}">
-                                <a href="{% url 'employer_update_route' employer_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
-                                {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' employer_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
+                                <a href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
+                                {% comment %}{% if request.user.groups.all.0.name == 'Agency Owners' %}<a href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i class="fas fa-trash"></i></a>{% endif %}{% endcomment %}
                             </div>
                         </div>
                         {% endwith %}

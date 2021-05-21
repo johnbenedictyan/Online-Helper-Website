@@ -78,7 +78,9 @@ class Maid(models.Model):
     )
     
     passport_number = models.BinaryField(
-        editable=True
+        editable=True,
+        blank=True,
+        null=True
     )
     
     nonce = models.BinaryField(
@@ -280,7 +282,8 @@ class Maid(models.Model):
     contact_number = models.CharField(
         verbose_name=_('Contact number in home country'),
         max_length=30,
-        blank=False,
+        blank=True,
+        null=True,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -560,9 +563,9 @@ class MaidInfantChildCare(models.Model):
     )
 
     willingness = models.BooleanField(
-        verbose_name=_('Willingness for infant child care'),
+        verbose_name=_('Willingness'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -619,9 +622,9 @@ class MaidElderlyCare(models.Model):
     )
 
     willingness = models.BooleanField(
-        verbose_name=_('Willingness for elderly care'),
+        verbose_name=_('Willingness'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -661,7 +664,6 @@ class MaidDisabledCare(models.Model):
             'Experience in own country, overseas and Singapore'
         )
         NO_EXP = 'NE', _('No experience, but willing to learn')
-        NOT_WILLING = 'NW', _('Not willing to care for disabled')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
 
     maid = models.OneToOneField(
@@ -678,9 +680,9 @@ class MaidDisabledCare(models.Model):
     )
 
     willingness = models.BooleanField(
-        verbose_name=_('Willingness for disabled care'),
+        verbose_name=_('Willingness'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -724,9 +726,9 @@ class MaidGeneralHousework(models.Model):
     )
 
     willingness = models.BooleanField(
-        verbose_name=_('Willingness for general housework'),
+        verbose_name=_('Willingness'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 
@@ -806,9 +808,9 @@ class MaidCooking(models.Model):
     )
 
     willingness = models.BooleanField(
-        verbose_name=_('Willingness for cooking'),
+        verbose_name=_('Willingness'),
         blank=False,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Yes', 'No'),
         default=True,
     )
 

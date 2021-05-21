@@ -16,6 +16,7 @@ from .constants import (
 )
 from .models import Maid, MaidResponsibility, MaidLanguage
 from .widgets import CustomRangeWidget
+from agency.models import Agency
 
 # Start of Filters
 class MiniMaidFilter(django_filters.FilterSet):
@@ -52,7 +53,7 @@ class MaidFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(
         field_name='name',
         lookup_expr='icontains',
-        label=_('Name')
+        label=_('Search by Maid Name')
     )
     languages = django_filters.ModelMultipleChoiceFilter(
         field_name='languages',
@@ -100,6 +101,11 @@ class MaidFilter(django_filters.FilterSet):
         choices=MaidCreatedOnChoices.choices,
         empty_label=_('No Preference'),
         method='created_on_filter'
+    )
+    agency = django_filters.ModelChoiceFilter(
+        label=_('Agency'),
+        queryset=Agency.objects.all(),
+        empty_label=_('No Preference')
     )
 
     class Meta:

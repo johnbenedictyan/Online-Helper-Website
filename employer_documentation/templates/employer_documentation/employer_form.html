@@ -8,43 +8,34 @@
     <!-- {% comment %}Documents{% endcomment %} -->
     {% include 'employer_documentation/sidenav_document_snippet.html' %}
 
-    <!-- {% comment %}
-    <div class="row">
-        <div class="col px-0">
-            <a class="nav-link side-nav-link " data-toggle="collapse" href="#forms-nav" role="button" aria-expanded="false" aria-controls="forms">
-            <p class="m-1 pl-2">Form Sections<i class="fa fa-caret-down float-right align-middle"></i></p>
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col px-0">
-            <ul class="collapse" id="forms-nav">
-                <li>
-                    <a href="#id-doc-general">Top</a>
-                </li>
-                <li>
-                    <a href="#id-doc-service-fee-schedule">Service & Fees Schedule</a>
-                </li>
-                <li>
-                    <a href="#id-doc-service-agreement">Service Agreement</a>
-                </li>
-                <li>
-                    <a href="#id-doc-employment-contract">Employment Contract</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    {% endcomment %} -->
-
 {% elif object.employer_name %}
     <!-- {% comment %}Employers{% endcomment %} -->
     <div class="row">
         <div class="col px-0">
-            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' employer_pk=object.pk %}">
+            <a class="nav-link side-nav-link " href="{% url 'employer_detail_route' level_0_pk=object.pk %}">
             <p class="m-1 pl-2">Employer Profile</p>
             </a>
         </div>
     </div>
+    {% if object.rn_sponsor_employer %}
+    <div class="row">
+        <div class="col px-0">
+            <a class="nav-link side-nav-link {% if url_name == 'employer_sponsor_update_route' %}active{% endif %}" href="{% url 'employer_sponsor_update_route' level_0_pk=object.pk level_1_pk=object.rn_sponsor_employer.pk %}">
+            <p class="m-1 pl-2">Sponsor Update</p>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if object.rn_ja_employer %}
+    <div class="row">
+        <div class="col px-0">
+            <a class="nav-link side-nav-link {% if url_name == 'employer_joint_applicant_update_route' %}active{% endif %}" href="{% url 'employer_joint_applicant_update_route' level_0_pk=object.pk level_1_pk=object.rn_ja_employer.pk %}">
+            <p class="m-1 pl-2">Joint Applicant Update</p>
+            </a>
+        </div>
+    </div>
+    {% endif %}
 {% endif %}
 {% endblock sidenav_extra %}
 
@@ -66,155 +57,6 @@
 
 {% block js %}
     <script>
-        // Employer Document Form
-        let replacementFdwSelector = document.querySelector('#id_fdw_is_replacement');
-        if (replacementFdwSelector) {
-            let fdwReplacedField = document.querySelector('#div_id_fdw_replaced');
-            let loanTransferredField = document.querySelector('#div_id_b4_loan_transferred');
-            if (replacementFdwSelector.value!=='True') {
-                fdwReplacedField.hidden = true;
-                loanTransferredField.hidden = true;
-            }
-            replacementFdwSelector.addEventListener('change', () => {
-                if (replacementFdwSelector.value!=='True') {
-                fdwReplacedField.hidden = true;
-                loanTransferredField.hidden = true;
-                }
-                else {
-                fdwReplacedField.hidden = false;
-                loanTransferredField.hidden = false;
-                }
-            })
-        }
-
-        // Sponsor Form
-        let numberOfSponsors = document.querySelector('#id_number_of_sponsors');
-        if (numberOfSponsors) {
-            let singleIncome = document.querySelector('#single_sponsor_income');
-            let combinedIncome = document.querySelector('#combined_sponsor_income');
-            let sponsorOneMaritalStatus = document.querySelector('#id_sponsor_1_marital_status');
-            let sponsorTwoMaritalStatus = document.querySelector('#id_sponsor_2_marital_status');
-            let spouseOneElements = document.querySelectorAll('.spouse-1');
-            let spouseTwoElements = document.querySelectorAll('.spouse-2');
-            let sponsorTwoElements = document.querySelectorAll('.sponsor-2');
-
-            // On load
-            if (numberOfSponsors.value==='1') {
-                singleIncome.hidden = false;
-                combinedIncome.hidden = true;
-                for (let sp of sponsorTwoElements) {
-                    sp.hidden = true;
-                }
-                for (let sp of spouseTwoElements) {
-                    sp.hidden = true;
-                }
-            } else if (numberOfSponsors.value==='2') {
-                singleIncome.hidden = true;
-                combinedIncome.hidden = false;
-                for (let sp of sponsorTwoElements) {
-                    sp.hidden = false;
-                }
-                if (sponsorTwoMaritalStatus.value==='MARRIED') {
-                    for (let sp of spouseTwoElements) {
-                        sp.hidden = false;
-                    }
-                } else {
-                    for (let sp of spouseTwoElements) {
-                        sp.hidden = true;
-                    }
-                }
-            }
-            if (sponsorOneMaritalStatus.value==='MARRIED') {
-                for (let sp of spouseOneElements) {
-                    sp.hidden = false;
-                }
-            } else {
-                for (let sp of spouseOneElements) {
-                    sp.hidden = true;
-                }
-            }
-
-            // On change based on user input
-            numberOfSponsors.addEventListener('change', function() {
-                if (this.value==='1') {
-                    singleIncome.hidden = false;
-                    combinedIncome.hidden = true;
-                    for (let sp of sponsorTwoElements) {
-                        sp.hidden = true;
-                    }
-                    for (let sp of spouseTwoElements) {
-                        sp.hidden = true;
-                    }
-                } else if (this.value==='2') {
-                    singleIncome.hidden = true;
-                    combinedIncome.hidden = false;
-                    for (let sp of sponsorTwoElements) {
-                        sp.hidden = false;
-                    }
-                    if (sponsorTwoMaritalStatus.value==='MARRIED') {
-                        for (let sp of spouseTwoElements) {
-                            sp.hidden = false;
-                        }
-                    } else {
-                        for (let sp of spouseTwoElements) {
-                            sp.hidden = true;
-                        }
-                    }
-                }
-            })
-            sponsorOneMaritalStatus.addEventListener('change', function() {
-                if (this.value==='MARRIED') {
-                    for (let sp of spouseOneElements) {
-                        sp.hidden = false;
-                    }
-                } else {
-                    for (let sp of spouseOneElements) {
-                        sp.hidden = true;
-                    }
-                }
-            })
-            sponsorTwoMaritalStatus.addEventListener('change', function() {
-                if (this.value==='MARRIED') {
-                    for (let sp of spouseTwoElements) {
-                        sp.hidden = false;
-                    }
-                } else {
-                    for (let sp of spouseTwoElements) {
-                        sp.hidden = true;
-                    }
-                }
-            })
-        }
-
-        // Joint Applicants Form
-        let jointApplicantMaritalStatus = document.querySelector('#id_joint_applicant_marital_status');
-        if (jointApplicantMaritalStatus) {
-            let spouseOneElements = document.querySelectorAll('.spouse-1');
-
-            // On load
-            if (jointApplicantMaritalStatus.value==='MARRIED') {
-                for (let sp of spouseOneElements) {
-                    sp.hidden = false;
-                }
-            } else {
-                for (let sp of spouseOneElements) {
-                    sp.hidden = true;
-                }
-            }
-
-            // On change based on user input
-            jointApplicantMaritalStatus.addEventListener('change', function() {
-                if (this.value==='MARRIED') {
-                    for (let sp of spouseOneElements) {
-                        sp.hidden = false;
-                    }
-                } else {
-                    for (let sp of spouseOneElements) {
-                        sp.hidden = true;
-                    }
-                }
-            })
-        }
         
         // Token URL copy
         let copyBtn = document.querySelector('#copy-button');

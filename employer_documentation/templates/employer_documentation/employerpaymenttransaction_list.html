@@ -1,23 +1,24 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
+{% load humanize %}
 
 {% block sidenav_extra %}
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}" href="{% url 'employer_detail_route' level_0_pk=request.resolver_match.kwargs.level_0_pk %}">
         <p class="m-1 pl-2">Employer Profile</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' level_0_pk=request.resolver_match.kwargs.level_0_pk %}">
         <p class="m-1 pl-2">Edit Employer</p>
         </a>
     </div>
 </div>
 <div class="row">
     <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' employer_pk=request.resolver_match.kwargs.employer_pk %}">
+        <a class="nav-link side-nav-link {% if url_name == 'employerdoc_list_route' %}active{% endif %}" href="{% url 'employerdoc_list_route' level_0_pk=request.resolver_match.kwargs.level_0_pk %}">
         <p class="m-1 pl-2">Documents Summary</p>
         </a>
     </div>
@@ -25,12 +26,13 @@
 {% endblock sidenav_extra %}
 
 {% block ed_section %}
-    <h2>Payment Transactions</h2>
-    <h4>{{ object.employer.employer_name }}</h4>
-    <h4>{{ object.employer.mobile_format_sg }}</h4>
+    <h3>Payment Transactions</h3>
+    <h5>{{ object.employer.employer_name }}</h5>
+    <h5>{{ object.employer.mobile_format_sg }}</h5>
+    <h5>Case #:&nbsp;&nbsp;{{ object.case_ref_no }}</h5>
 
     <div class="d-flex row justify-content-end mx-0 pr-3 pb-3">
-        <a href="{% url 'employer_payment_create_route' employer_pk=request.resolver_match.kwargs.employer_pk employerdoc_pk=request.resolver_match.kwargs.employerdoc_pk %}" class="btn btn-secondary btn-sm">Add transaction</a>
+        <a href="{% url 'employer_payment_create_route' level_0_pk=request.resolver_match.kwargs.level_0_pk level_1_pk=request.resolver_match.kwargs.level_1_pk %}" class="btn btn-secondary btn-sm">Add transaction</a>
     </div>
 
     <table class="table table-hover">
@@ -38,40 +40,40 @@
             <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Description</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Amount (S$)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
                 <td>Total admin cost</td>
-                <td>{{ object.calc_admin_cost }}</td>
+                <td>{{ object.calc_admin_cost|intcomma }}</td>
             </tr>
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
                 <td>FDW agency fee</td>
-                <td>{{ object.fdw.financial_details.agency_fee_amount }}</td>
+                <td>{{ object.fdw.financial_details.agency_fee_amount|intcomma }}</td>
             </tr>
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
                 <td>FDW personal loan</td>
-                <td>{{ object.fdw.financial_details.personal_loan_amount }}</td>
+                <td>{{ object.fdw.financial_details.personal_loan_amount|intcomma }}</td>
             </tr>
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
                 <td>Deposit paid</td>
-                <td>&ndash; {{ object.ca_deposit }}</td>
+                <td>&ndash; {{ object.ca_deposit|intcomma }}</td>
             </tr>
             {% for object in object_list %}
                 <tr>
                     <td>{{ object.transaction_date|date:"d M Y" }}</td>
                     <td>{{ object.get_transaction_type_display }}</td>
-                    <td>{% if object.transaction_type == 'SUB' %}&ndash; {% endif %}{{ object.amount }}</td>
+                    <td>{% if object.transaction_type == 'SUB' %}&ndash; {% endif %}{{ object.amount|intcomma }}</td>
                 </tr>
             {% endfor %}
             <tr style="border-top: solid 2px black;">
                 <td colspan="2">Amount outstanding</td>
-                <td>{{ object.calc_bal }}</td>
+                <td>{{ object.calc_bal|intcomma }}</td>
             </tr>
         </tbody>
     </table>

@@ -270,6 +270,7 @@ class MaidCountryOfOrigin(models.TextChoices):
     MYANMAR	    = 'MMR', _('Myanmar')
     PHILIPPINES = 'PHL', _('Philippines (the)')
     SRI_LANKA   = 'LKA', _('Sri Lanka')
+    THAILAND    = 'THA', _('Thailand')
     OTHERS      = 'OTH', _('Others')
 
 class MaidNationalityChoices(models.TextChoices):
@@ -282,6 +283,17 @@ class MaidNationalityChoices(models.TextChoices):
     SRI_LANKA   = 'LKA', _('Sri Lankan')
     OTHERS      = 'OTH', _('Others')
     
+country_language = {
+    MaidCountryOfOrigin.BANGLADESH: 'TAM',
+    MaidCountryOfOrigin.CAMBODIA: 'KHM',
+    MaidCountryOfOrigin.INDIA: 'TAM',
+    MaidCountryOfOrigin.INDONESIA: 'IDN',
+    MaidCountryOfOrigin.MYANMAR: 'BUR',
+    MaidCountryOfOrigin.PHILIPPINES: 'TAG',
+    MaidCountryOfOrigin.SRI_LANKA: 'SIN',
+    MaidCountryOfOrigin.OTHERS: 'ENG',
+}
+
 class MaidLanguageChoices(models.TextChoices):
     ENGLISH     = 'ENG', _('English')
     BENGALI     = 'BEN', _('Bengali')
@@ -305,11 +317,11 @@ class MaidReligionChoices(models.TextChoices):
         NONE = 'NONE', _('None')
 
 class MaidAssessmentChoices(models.IntegerChoices):
-    POOR = 1, _('Poor')
-    FAIR = 2, _('Fair')
-    AVERAGE = 3, _('Average')
-    GOOD = 4, _('Good')
-    EXCELLENT = 5, _('Excellent')
+    POOR = 1, _('1 - Poor')
+    FAIR = 2, _('2 - Fair')
+    AVERAGE = 3, _('3 - Average')
+    GOOD = 4, _('4 - Good')
+    EXCELLENT = 5, _('5 - Excellent')
 
 class MaritalStatusChoices(models.TextChoices):
         SINGLE = 'S', _('Single')
