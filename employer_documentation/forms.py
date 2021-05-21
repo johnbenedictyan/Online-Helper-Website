@@ -1438,7 +1438,6 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
             """),
 
-            # Form B
             Row(
                 Column(
                     'is_new_case',
@@ -1446,6 +1445,8 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+
+            # Form B
             Row(
                 Column(
                     'fdw_replaced_name',
@@ -1550,22 +1551,8 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 ),
                 Column(
-                    'b2h_replacement_months',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
                     PrependedText(
-                        'b2h_replacement_cost', '$',
-                        min='0', max='1000',
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    PrependedText(
-                        'b2i_work_permit_renewal', '$',
+                        'b2h_food_lodging', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1574,12 +1561,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'b2j1_other_services_description',
+                    'b2i1_other_services_description',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     PrependedText(
-                        'b2j1_other_services_fee', '$',
+                        'b2i1_other_services_fee', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1588,12 +1575,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'b2j2_other_services_description',
+                    'b2i2_other_services_description',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     PrependedText(
-                        'b2j2_other_services_fee', '$',
+                        'b2i2_other_services_fee', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1602,17 +1589,47 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'b2j3_other_services_description',
+                    'b2i3_other_services_description',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     PrependedText(
-                        'b2j3_other_services_fee', '$',
+                        'b2i3_other_services_fee', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'b2j_replacement_months',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            PrependedText(
+                                'b2j_replacement_cost', '$',
+                                min='0', max='1000',
+                            ),
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(
+                            PrependedText(
+                                'b2k_work_permit_renewal', '$',
+                                min='0', max='1000',
+                            ),
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                ),
+                css_class='form-row',
+                id="b2j_b2k"
             ),
 
             HTML(
@@ -1623,13 +1640,6 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 Column(
                     PrependedText(
                         'b3_agency_fee', '$',
-                        min='0', max='10000',
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    PrependedText(
-                        'b3_fdw_loan', '$',
                         min='0', max='10000',
                     ),
                     css_class='form-group col-md-6'
@@ -1710,13 +1720,6 @@ class DocServiceAgreementForm(forms.ModelForm):
                     'c1_3_handover_days',
                     css_class='form-group col-md-6'
                 ),
-                # Column(
-                #     PrependedText(
-                #         '', '$',
-                #         min='0', max='1000',
-                #     ),
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
             Row(
@@ -1748,35 +1751,37 @@ class DocServiceAgreementForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+
+            Row(
                 Column(
                     'c4_1_number_of_replacements',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'c4_1_replacement_period',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     'c4_1_replacement_after_min_working_days',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'c4_1_5_replacement_deadline',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            
+            Row(
                 Column(
                     'c5_1_1_deployment_deadline',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'c5_1_1_failed_deployment_refund', '$',
@@ -1784,13 +1789,13 @@ class DocServiceAgreementForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     'c5_1_2_refund_within_days',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     PrependedText(
                         'c5_1_2_before_fdw_arrives_charge', '$',
@@ -1798,6 +1803,9 @@ class DocServiceAgreementForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     PrependedText(
                         'c5_1_2_after_fdw_arrives_charge', '$',
@@ -1805,19 +1813,20 @@ class DocServiceAgreementForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'c5_2_2_can_transfer_refund_within',
                     css_class='form-group col-md-6'
                 ),
+                css_class='form-row'
+            ),
+            Row(
                 Column(
                     'c5_3_2_cannot_transfer_refund_within',
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
+
             Row(
                 Column(
                     PrependedText(
@@ -1835,6 +1844,7 @@ class DocServiceAgreementForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+
             Row(
                 Column(
                     'c9_1_independent_mediator_1',
@@ -1846,15 +1856,12 @@ class DocServiceAgreementForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
+
             Row(
                 Column(
                     'c13_termination_notice',
                     css_class='form-group col-md-6'
                 ),
-                # Column(
-                #     '',
-                #     css_class='form-group col-md-6'
-                # ),
                 css_class='form-row'
             ),
 
@@ -1890,16 +1897,6 @@ class DocEmploymentContractForm(forms.ModelForm):
                 """
                 <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
             """),
-            Row(
-                Column(
-                    PrependedText(
-                        'c3_1_fdw_salary', '$',
-                        min='0', max='1000',
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
             Row(
                 Column(
                     'c3_5_fdw_sleeping_arrangement',
