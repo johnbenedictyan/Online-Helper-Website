@@ -147,12 +147,12 @@ urlpatterns = [
         'toggle/<int:pk>/',
         include([
             path(
-                'published',
+                'published/',
                 MaidTogglePublished.as_view(),
                 name='maid_toggle_published'
             ),
             path(
-                'featured',
+                'featured/',
                 MaidToggleFeatured.as_view(),
                 name='maid_toggle_featured'
             )

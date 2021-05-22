@@ -15,21 +15,19 @@ from .views import AgencyList
 from .views import AgencyDetail
 
 ## Create Views
-from .views import (
-    AgencyCreate, AgencyEmployeeCreate, AgencyPlanCreate, AgencyOwnerCreate,
-    AgencyBranchCreate
-)
+from .views import AgencyCreate, AgencyPlanCreate, AgencyOwnerCreate
+# from .views import AgencyEmployeeCreate, AgencyBranchCreate
 
 ## Update Views
-from .views import (
-    AgencyUpdate, AgencyEmployeeUpdate,AgencyBranchUpdate, AgencyPlanUpdate,
-    AgencyOpeningHoursUpdate, #AgencyBranchFormSetView
-)
+# from .views import (
+#     AgencyUpdate, AgencyEmployeeUpdate,AgencyBranchUpdate, AgencyPlanUpdate,
+#     AgencyOpeningHoursUpdate, AgencyBranchFormSetView
+# )
+from .views import AgencyPlanUpdate
 
 ## Delete Views
-from .views import (
-    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete, AgencyBranchDelete
-)
+from .views import AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
+# from .views import AgencyBranchDelete
 
 # Start of Urls
 
@@ -47,16 +45,16 @@ urlpatterns = [
                 AgencyPlanCreate.as_view(),
                 name='agency_plan_create'
             ),
-            path(
-                'branch/',
-                AgencyBranchCreate.as_view(),
-                name='agency_branch_create'
-            ),
-            path(
-                'employee/',
-                AgencyEmployeeCreate.as_view(),
-                name='agency_employee_create'
-            ),
+            # path(
+            #     'branch/',
+            #     AgencyBranchCreate.as_view(),
+            #     name='agency_branch_create'
+            # ),
+            # path(
+            #     'employee/',
+            #     AgencyEmployeeCreate.as_view(),
+            #     name='agency_employee_create'
+            # ),
             path(
                 '<int:pk>/owner/',
                 AgencyOwnerCreate.as_view(),
@@ -82,41 +80,41 @@ urlpatterns = [
                 AgencyPlanDelete.as_view(),
                 name='agency_plan_delete'
             ),
-            path(
-                'branch/<int:pk>/',
-                AgencyBranchDelete.as_view(),
-                name='agency_branch_delete'
-            )
+            # path(
+            #     'branch/<int:pk>/',
+            #     AgencyBranchDelete.as_view(),
+            #     name='agency_branch_delete'
+            # )
         ])
     ),
     path(
         'update/',
         include([
-            path(
-                '',
-                AgencyUpdate.as_view(),
-                name='agency_update'
-            ),
-            path(
-                'employee/<int:pk>',
-                AgencyEmployeeUpdate.as_view(),
-                name='agency_employee_update'
-            ),
+            # path(
+            #     '',
+            #     AgencyUpdate.as_view(),
+            #     name='agency_update'
+            # ),
+            # path(
+            #     'employee/<int:pk>',
+            #     AgencyEmployeeUpdate.as_view(),
+            #     name='agency_employee_update'
+            # ),
             # path(
             #     'branches/',
             #     AgencyBranchFormSetView.as_view(),
             #     name='agency_branch_formset'
             # ),
-            path(
-                'branch/<int:pk>',
-                AgencyBranchUpdate.as_view(),
-                name='agency_branch_update'
-            ),
-            path(
-                'operating-hours/',
-                AgencyOpeningHoursUpdate.as_view(),
-                name='agency_opening_hours_update'
-            ),
+            # path(
+            #     'branch/<int:pk>',
+            #     AgencyBranchUpdate.as_view(),
+            #     name='agency_branch_update'
+            # ),
+            # path(
+            #     'operating-hours/',
+            #     AgencyOpeningHoursUpdate.as_view(),
+            #     name='agency_opening_hours_update'
+            # ),
             path(
                 'plan/',
                 AgencyPlanUpdate.as_view(),
