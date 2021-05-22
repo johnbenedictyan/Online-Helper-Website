@@ -54,6 +54,7 @@ $dashboard-pagebar-color: #EFF2F6 !default;
 $dashboard-text-color: #1F4E78 !default;
 $dashboard-table-background-light: #FFFFFF !default;
 $dashboard-table-background-dark: #F5F7F9 !default;
+$forms-background: #F7F9FB !default;
 
 $colors: () !default;
 $colors: map-merge(("blue": $blue,
@@ -82,7 +83,8 @@ $colors: map-merge(("blue": $blue,
         "dashboard-pagebar-color": $dashboard-pagebar-color,
         "dashboard-text-color": $dashboard-text-color,
         "dashboard-table-background-light": $dashboard-table-background-light,
-        "dashboard-table-background-dark": $dashboard-table-background-dark
+        "dashboard-table-background-dark": $dashboard-table-background-dark,
+        "forms-background": $forms-background
 ),
     $colors);
 
@@ -117,7 +119,8 @@ $theme-colors: map-merge(
         "dashboard-pagebar-color": $dashboard-pagebar-color,
         "dashboard-text-color": $dashboard-text-color,
         "dashboard-table-background-light": $dashboard-table-background-light,
-        "dashboard-table-background-dark": $dashboard-table-background-dark
+        "dashboard-table-background-dark": $dashboard-table-background-dark,
+        "forms-background": $forms-background
     ),
     $theme-colors);
 
@@ -870,7 +873,7 @@ $pagination-border-radius-lg: $border-radius-lg !default;
 // Jumbotron
 
 $jumbotron-padding: 2rem !default;
-$jumbotron-padding-small: 1.5rem !default;
+$jumbotron-padding-small: .75rem !default;
 $jumbotron-color: null !default;
 $jumbotron-bg: $gray-200 !default;
 
