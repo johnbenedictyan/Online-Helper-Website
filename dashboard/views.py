@@ -282,31 +282,30 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
     
     def get_queryset(self):
         order_by = self.request.GET.get('order-by')
-        # if order_by:
-        #     if order_by == 'serialNo':
-        #         order_by = 'id'
-        #     elif order_by == '-serialNo':
-        #         order_by = '-id'
-        #     elif order_by == 'employerName':
-        #         order_by = 'country_of_origin'
-        #     elif order_by == '-employerName':
-        #         order_by = '-country_of_origin'
-        #     elif order_by == 'dateOfBirth':
-        #         order_by = 'maid_type'
-        #     elif order_by == '-dateOfBirth':
-        #         order_by = '-maid_type'
-        #     elif order_by == 'eaPersonnel':
-        #         order_by = 'passport_expiry'
-        #     elif order_by == '-eaPersonnel':
-        #         order_by = '-passport_expiry'
-        #     return Employer.objects.filter(
-        #         agency__pk = self.agency_id
-        #     ).order_by(order_by)
-        # else:
-            # return Employer.objects.filter(
-            #     agency__pk = self.agency_id
-            # )
-        return Employer.objects.all()
+        if order_by:
+            if order_by == 'serialNo':
+                order_by = 'id'
+            elif order_by == '-serialNo':
+                order_by = '-id'
+            elif order_by == 'employerName':
+                order_by = 'employer_name'
+            elif order_by == '-employerName':
+                order_by = '-employer_name'
+            elif order_by == 'dateOfBirth':
+                order_by = 'employer_date_of_birth'
+            elif order_by == '-dateOfBirth':
+                order_by = '-employer_date_of_birth'
+            elif order_by == 'eaPersonnel':
+                order_by = 'agency_employee__ea_personnel_number'
+            elif order_by == '-eaPersonnel':
+                order_by = '-agency_employee__ea_personnel_number'
+            return Employer.objects.filter(
+                agency_employee__agency__pk = self.agency_id
+            ).order_by(order_by)
+        else:
+            return Employer.objects.filter(
+                agency_employee__agency__pk = self.agency_id
+            )
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,

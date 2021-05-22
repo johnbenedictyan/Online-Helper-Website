@@ -753,6 +753,7 @@ class MaidExperienceForm(forms.Form):
         label=_('Experience '),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
+    )
 
     def __init__(self, *args, **kwargs):
         self.maid_id = kwargs.pop('maid_id')
