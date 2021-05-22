@@ -23,7 +23,7 @@ from .views import (
 ## Update Views
 from .views import (
     AgencyUpdate, AgencyEmployeeUpdate,AgencyBranchUpdate, AgencyPlanUpdate,
-    AgencyOpeningHoursUpdate, AgencyBranchFormSetView
+    AgencyOpeningHoursUpdate, #AgencyBranchFormSetView
 )
 
 ## Delete Views
@@ -102,11 +102,11 @@ urlpatterns = [
                 AgencyEmployeeUpdate.as_view(),
                 name='agency_employee_update'
             ),
-            path(
-                'branches/',
-                AgencyBranchFormSetView.as_view(),
-                name='agency_branch_formset'
-            ),
+            # path(
+            #     'branches/',
+            #     AgencyBranchFormSetView.as_view(),
+            #     name='agency_branch_formset'
+            # ),
             path(
                 'branch/<int:pk>',
                 AgencyBranchUpdate.as_view(),
