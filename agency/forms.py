@@ -935,31 +935,31 @@ class PotentialAgencyForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 pr-3'
                 ),
                 Column(
                     'license_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 pl-3'
                 )
             ),
             Row(
                 Column(
                     'person_in_charge',
-                    css_class='form-group col-md'
+                    css_class='form-group col-md-6 pr-3'
                 ),
                 Column(
                     'email',
-                    css_class='form-group col-md'
+                    css_class='form-group col-md-6 pl-3'
                 )
             ),
             Row(
                 Column(
                     'contact_number',
-                    css_class='form-group col-md'
+                    css_class='form-group col-md-6 pr-3'
                 ),
                 Column(
                     'office_number',
-                    css_class='form-group col-md'
+                    css_class='form-group col-md-6 pl-3'
                 ),
             ),
             Row(

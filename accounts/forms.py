@@ -128,18 +128,18 @@ class AgencySignInForm(AuthenticationForm):
             Row(
                 Column(
                     'agency_license_number',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6 pr-3'
+                ),
+                Column(
+                    'username',
+                    css_class='form-group col-md-6 pl-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'username',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
                     'password',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 pr-3'
                 ),
                 css_class='form-row'
             ),
