@@ -90,7 +90,7 @@ MIDDLEWARE = [
     'django_otp.middleware.OTPMiddleware', # django_otp requirement
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'onlinemaid.middleware.AdminAccessIPWhiteListMiddleware'
+    # 'onlinemaid.middleware.AdminAccessIPWhiteListMiddleware'
 ]
 
 ROOT_URLCONF = 'onlinemaid.urls'
