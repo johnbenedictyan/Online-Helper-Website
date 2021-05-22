@@ -11,7 +11,7 @@ from django.views.generic.edit import (
 
 # Imports from foreign installed apps
 import stripe
-from extra_views import InlineFormSetView, InlineFormSetFactory, UpdateWithInlinesView
+# from extra_views import InlineFormSetView, InlineFormSetFactory, UpdateWithInlinesView
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 from crispy_forms.layout import Submit
 
@@ -188,8 +188,8 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
 #                       'can_order': False, 'can_delete': False}
 #     # formset_kwargs = {'auto_id': 'my_id_%s'}
     
-class AgencyBranchFormSetView(GetAuthorityMixin, UpdateWithInlinesView):
-    pass
+# class AgencyBranchFormSetView(GetAuthorityMixin, UpdateWithInlinesView):
+#     pass
 #     model = Agency
 #     inlines = [BranchInline]
 #     template_name = 'update/agency-branch-formset.html'
