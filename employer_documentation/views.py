@@ -360,6 +360,12 @@ class DocServiceFeeScheduleCreateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
@@ -381,6 +387,12 @@ class DocServiceAgreementCreateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
@@ -404,6 +416,12 @@ class DocEmploymentContractCreateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
@@ -425,6 +443,12 @@ class DocSafetyAgreementCreateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
