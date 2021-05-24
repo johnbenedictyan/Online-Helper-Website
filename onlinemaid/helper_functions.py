@@ -65,6 +65,7 @@ def encrypt_string(plaintext, encryption_key):
 def decrypt_string(ciphertext, encryption_key, nonce, tag):
     if ciphertext:
         try:
+            # cipher = AES.new(bytes.fromhex(encryption_key.replace(r'\x', '')), AES.MODE_GCM, nonce=nonce)
             cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
             plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
         except Exception:
