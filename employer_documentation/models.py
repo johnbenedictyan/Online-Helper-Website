@@ -1510,6 +1510,14 @@ class DocServiceFeeSchedule(models.Model):
         
         return balance
 
+    def get_fdw_replaced_passport_full(self):
+        return decrypt_string(
+            self.fdw_replaced_passport_num,
+            settings.ENCRYPTION_KEY,
+            self.fdw_replaced_passport_nonce,
+            self.fdw_replaced_passport_tag,
+        )
+
 class DocServiceAgreement(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,

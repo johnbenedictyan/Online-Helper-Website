@@ -1431,6 +1431,8 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
         self.FIELD_MAXLENGTH = 20
 
+        self.initial.update({'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()})
+
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
@@ -1684,6 +1686,25 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+
+    def clean_fdw_replaced_passport_num(self):
+        cleaned_field = self.cleaned_data.get('fdw_replaced_passport_num')
+
+        if not isinstance(cleaned_field, str):
+            raise ValidationError('Must be a string')
+
+        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+            raise ValidationError('Can only enter letters or numbers')
+
+        if len(cleaned_field)>self.FIELD_MAXLENGTH:
+            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
+
+        # Encryption
+        ciphertext, self.instance.fdw_replaced_passport_nonce, self.instance.fdw_replaced_passport_tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+        return ciphertext
 
     def clean_b4_loan_transferred(self):
         is_new_case = self.cleaned_data.get('is_new_case')
