@@ -175,7 +175,7 @@ class EmployerDocListView(
         else:
             return HttpResponseRedirect(
                 reverse(
-                    'employerdoc_create_route',
+                    'ed_create_route',
                     kwargs={'level_0_pk': self.object.pk}
                 )
             )
@@ -585,7 +585,7 @@ class DocServiceFeeScheduleUpdateView(
 #         return kwargs
 
 #     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
+#         return reverse_lazy('ed_detail_route', kwargs={
 #             'level_0_pk': self.object.employer_doc.employer.pk,
 #             'level_1_pk': self.object.employer_doc.pk,
 #         })
@@ -623,7 +623,7 @@ class DocServiceFeeScheduleUpdateView(
 #         return kwargs
 
 #     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
+#         return reverse_lazy('ed_detail_route', kwargs={
 #             'level_0_pk': self.object.employer_doc.employer.pk,
 #             'level_1_pk': self.object.employer_doc.pk,
 #         })
@@ -692,7 +692,7 @@ class EmployerDeleteView(
 #         return context
 
 #     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
+#         return reverse_lazy('ed_detail_route', kwargs={
 #             'level_0_pk': self.object.employer_doc.employer.pk,
 #             'level_1_pk': self.object.employer_doc.pk,
 #         })
