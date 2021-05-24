@@ -130,19 +130,27 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
         else:
             # Assign to respective attribute
             if isinstance(self.object, models.Employer):
+                # level 0
                 self.employer_obj = self.object
             elif (
-                isinstance(self.object, models.EmployerDoc)
-                or isinstance(self.object, models.EmployerSponsor)
-                or isinstance(self.object, models.EmployerJointApplicant)
+                # level 1
+                isinstance(self.object, models.EmployerDoc) or
+                isinstance(self.object, models.EmployerSponsor) or
+                isinstance(self.object, models.EmployerJointApplicant)
             ):
                 self.employer_doc_obj = self.object
             elif (
-                isinstance(self.object, models.EmployerDocMaidStatus)
-                or isinstance(self.object, models.EmployerDocSig)
-                or isinstance(self.object, models.JobOrder)
-                or isinstance(self.object, models.PdfArchive)
-                or isinstance(self.object, models.EmployerPaymentTransaction)
+                # level 2
+                isinstance(self.object, models.DocServiceFeeSchedule) or
+                isinstance(self.object, models.DocServiceAgreement) or
+                isinstance(self.object, models.DocEmploymentContract) or
+                isinstance(self.object, models.DocSafetyAgreement) or
+                isinstance(self.object, models.DocUpload) or
+                isinstance(self.object, models.EmployerDocMaidStatus) or
+                isinstance(self.object, models.EmployerDocSig) or
+                isinstance(self.object, models.JobOrder) or
+                isinstance(self.object, models.PdfArchive) or
+                isinstance(self.object, models.EmployerPaymentTransaction)
             ):
                 self.employer_subdoc_obj = self.object
 
