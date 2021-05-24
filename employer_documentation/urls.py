@@ -65,12 +65,12 @@ urlpatterns = [
                     path(
                         'joint-applicant/create/',
                         views.EmployerJointApplicantCreateView.as_view(),
-                        name='employer_joint_applicant_create_route'
+                        name='employer_jointapplicant_create_route'
                     ),
                     path(
                         'joint-applicant/<int:level_1_pk>/update/',
                         views.EmployerDocJointApplicantUpdateView.as_view(),
-                        name='employer_joint_applicant_update_route'
+                        name='employer_jointapplicant_update_route'
                     ),
                     path(
                         'documentation/',
