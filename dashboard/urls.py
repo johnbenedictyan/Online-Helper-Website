@@ -129,7 +129,7 @@ urlpatterns = [
                 name='dashboard_maid_information_create'
             ),
             path(
-                'employee',
+                'employee/',
                 DashboardAgencyEmployeeCreate.as_view(),
                 name='dashboard_employee_create'
             )
@@ -139,27 +139,27 @@ urlpatterns = [
         'update/',
         include([
             path(
-                'agency',
+                'agency/',
                 DashboardAgencyUpdate.as_view(),
                 name='dashboard_agency_update'
             ),
             path(
-                'agency-information',
+                'agency-information/',
                 DashboardAgencyInformationUpdate.as_view(),
                 name='dashboard_agency_information_update'
             ),
             path(
-                'agency-opening-hours',
+                'agency-opening-hours/',
                 DashboardAgencyOpeningHoursUpdate.as_view(),
                 name='dashboard_agency_opening_hours_update'
             ),
             path(
-                'agency-outlet-details',
+                'agency-outlet-details/',
                 DashboardAgencyOutletDetailsFormView.as_view(),
                 name='dashboard_agency_outlet_details_update'
             ),
             path(
-                'agency-employee/<int:pk>',
+                'agency-employee/<int:pk>/',
                 DashboardAgencyEmployeeUpdate.as_view(),
                 name='dashboard_agency_employee_update'
             ),
@@ -172,32 +172,32 @@ urlpatterns = [
                         name='dashboard_maid_information_update'
                     ),
                     path(
-                        'language-spoken',
+                        'language-spoken/',
                         DashboardMaidLanguageSpokenFormView.as_view(),
                         name='dashboard_maid_language_spoken_update'
                     ),
                     path(
-                        'languages-and-food-handling-dietary-restriction',
+                        'languages-and-food-handling-dietary-restriction/',
                         DashboardMaidLanguagesAndFHPDRFormView.as_view(),
                         name='dashboard_maid_languages_and_fhpdr_update'
                     ),
                     path(
-                        'experience',
+                        'experience/',
                         DashboardMaidExperienceFormView.as_view(),
                         name='dashboard_maid_experience_update'
                     ),
                     path(
-                        'about-fdw',
+                        'about-fdw/',
                         DashboardMaidAboutFDWFormView.as_view(),
                         name='dashboard_maid_about_fdw_update'
                     ),
                     path(
-                        'employment-history',
+                        'employment-history/',
                         DashboardMaidEmploymentHistoryFormView.as_view(),
                         name='dashboard_maid_employment_history_update'
                     ),
                     path(
-                        'loan',
+                        'loan/',
                         DashboardMaidLoanFormView.as_view(),
                         name='dashboard_maid_loan_update'
                     )
