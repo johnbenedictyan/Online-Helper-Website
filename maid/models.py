@@ -137,14 +137,14 @@ class Maid(models.Model):
         MaidResponsibility
     )
     
-    skills_evaluation_method = models.CharField(
-        verbose_name=_('Skills evaluation method'),
-        max_length=4,
-        blank=True,
-        null=True,
-        choices=MaidSkillsEvaluationMethod.choices,
-        default=MaidSkillsEvaluationMethod.DECLARATION
-    )
+    # skills_evaluation_method = models.CharField(
+    #     verbose_name=_('Skills evaluation method'),
+    #     max_length=4,
+    #     blank=True,
+    #     null=True,
+    #     choices=MaidSkillsEvaluationMethod.choices,
+    #     default=MaidSkillsEvaluationMethod.DECLARATION
+    # )
 
     created_on = models.DateTimeField(
         verbose_name=_('Created On'),

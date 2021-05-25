@@ -171,11 +171,11 @@ urlpatterns = [
                         DashboardMaidInformationUpdate.as_view(),
                         name='dashboard_maid_information_update'
                     ),
-                    path(
-                        'language-spoken/',
-                        DashboardMaidLanguageSpokenFormView.as_view(),
-                        name='dashboard_maid_language_spoken_update'
-                    ),
+                    # path(
+                    #     'language-spoken/',
+                    #     DashboardMaidLanguageSpokenFormView.as_view(),
+                    #     name='dashboard_maid_language_spoken_update'
+                    # ),
                     path(
                         'languages-and-food-handling-dietary-restriction/',
                         DashboardMaidLanguagesAndFHPDRFormView.as_view(),
