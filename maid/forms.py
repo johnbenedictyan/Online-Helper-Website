@@ -64,7 +64,8 @@ class MaidForm(forms.ModelForm):
     
     passport_expiry = forms.DateField(
         widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
+        input_formats=['%d %b %Y'],
+        required=False
     )
     
     class Meta:

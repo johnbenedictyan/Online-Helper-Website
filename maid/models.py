@@ -118,6 +118,7 @@ class Maid(models.Model):
     
     passport_expiry = models.DateField(
         verbose_name=_('Passport Expiry Date'),
+        null=True,
         blank=True
     )
     
