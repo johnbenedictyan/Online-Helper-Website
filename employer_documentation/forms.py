@@ -1718,9 +1718,9 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         else:
             return cleaned_field
 
-class DocServiceAgreementForm(forms.ModelForm):
+class DocServAgmtEmpCtrForm(forms.ModelForm):
     class Meta:
-        model = models.DocServiceAgreement
+        model = models.DocServAgmtEmpCtr
         exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
@@ -1732,6 +1732,7 @@ class DocServiceAgreementForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            # Service Agreement
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-service-agreement">Service Agreement</h5>
@@ -1886,34 +1887,7 @@ class DocServiceAgreementForm(forms.ModelForm):
                 css_class='form-row'
             ),
 
-            # Submit
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class DocEmploymentContractForm(forms.ModelForm):
-    class Meta:
-        model = models.DocEmploymentContract
-        exclude = ['employer_doc']
-
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
-        super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
-
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
+            # Employment Contract
             HTML(
                 """
                 <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
@@ -1929,7 +1903,7 @@ class DocEmploymentContractForm(forms.ModelForm):
                 ),
                 css_class='form-row'
             ),
-            
+
             # Submit
             Row(
                 Column(
@@ -1943,6 +1917,50 @@ class DocEmploymentContractForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+
+# class DocEmploymentContractForm(forms.ModelForm):
+#     class Meta:
+#         model = models.DocEmploymentContract
+#         exclude = ['employer_doc']
+
+#     def __init__(self, *args, **kwargs):
+#         self.user_pk = kwargs.pop('user_pk')
+#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         super().__init__(*args, **kwargs)
+
+#         self.FIELD_MAXLENGTH = 20
+
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout(
+#             HTML(
+#                 """
+#                 <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
+#             """),
+#             Row(
+#                 Column(
+#                     'c3_5_fdw_sleeping_arrangement',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 Column(
+#                     'c4_1_termination_notice',
+#                     css_class='form-group col-md-6'
+#                 ),
+#                 css_class='form-row'
+#             ),
+            
+#             # Submit
+#             Row(
+#                 Column(
+#                     Submit(
+#                         'submit',
+#                         'Submit',
+#                         css_class="btn btn-primary w-50"
+#                     ),
+#                     css_class='form-group col-12 text-center'
+#                 ),
+#                 css_class='form-row'
+#             )
+#         )
 
 class DocSafetyAgreementForm(forms.ModelForm):
     class Meta:

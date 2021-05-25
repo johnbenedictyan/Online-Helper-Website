@@ -394,50 +394,6 @@ class Employer(models.Model):
             self.spouse_passport_tag,
         )
 
-    # Income Details
-    monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Employer monthly income / combined income with spouse"),
-        choices=ed_constants.IncomeChoices.choices,
-        default=ed_constants.IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
-    )
-
-    # Household Details
-    household_name = models.CharField(
-        verbose_name=_("Household member's name"),
-        max_length=40,
-        blank=True,
-        null=True,
-    )
-    household_date_of_birth = models.DateField(
-        verbose_name=_("Household member's date of birth"),
-        blank=True,
-        null=True,
-    )
-    household_id_type = models.CharField(
-        verbose_name=_("Household member ID type"),
-        max_length=8,
-        choices=ed_constants.HouseholdIdTypeChoices.choices,
-        # default=ed_constants.HouseholdIdTypeChoices.NRIC,
-        blank=True,
-        null=True,
-    )
-    household_id_num = models.CharField(
-        verbose_name=_("Household member's ID number"),
-        max_length=20,
-        blank=True,
-        null=True,
-    )
-    household_relationship = models.CharField(
-        verbose_name=_("Household member's relationship with Employer"),
-        max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        # default=ed_constants.RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True,
-    )
-
 ## Sponsors
 class EmployerSponsor(models.Model):
     employer = models.OneToOneField(
@@ -635,7 +591,7 @@ class EmployerSponsor(models.Model):
 
     # Sponsor required?
     sponsor_2_required = models.BooleanField(
-        verbose_name=_('Is Sponsor 2 required?'),
+        verbose_name=_('Do you need to add Sponsor 2?'),
         default=False,
         choices=TrueFalseChoices(
             _('Yes'),
@@ -860,15 +816,6 @@ class EmployerSponsor(models.Model):
         null=True,
     )
 
-    # Income Details
-    monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Sponsor's monthly income or sponsors' combined monthly income"),
-        choices=ed_constants.IncomeChoices.choices,
-        default=ed_constants.IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
-    )
-
     def get_sponsor_1_nric_full(self):
         return decrypt_string(
             self.sponsor_1_nric_num,
@@ -946,23 +893,6 @@ class EmployerJointApplicant(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_ja_employer'
     )
-    monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Combined monthly income of Employer and Joint applicant"),
-        choices=ed_constants.IncomeChoices.choices,
-        default=ed_constants.IncomeChoices.INCOME_3,
-    )
-    joint_applicant_worked_in_sg = models.BooleanField(
-        verbose_name=_('Employer and Joint applicant worked in SG for last 2 years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            Have both Employer and Joint applicant worked in Singapore for the last 2 years?
-        '''),
-    )
-
     joint_applicant_relationship = models.CharField(
         verbose_name=_("Joint applicant's relationship with Employer"),
         max_length=30,
@@ -1158,6 +1088,70 @@ class EmployerJointApplicant(models.Model):
             settings.ENCRYPTION_KEY,
             self.joint_applicant_spouse_passport_nonce,
             self.joint_applicant_spouse_passport_tag,
+        )
+
+class EmployerIncome(models.Model):
+    employer = models.OneToOneField(
+        Employer,
+        verbose_name=_("Name of Employer"),
+        on_delete=models.CASCADE,
+        related_name="rn_income_employer",
+    )
+    # Income Details
+    worked_in_sg = models.BooleanField(
+        verbose_name=_('Has employer worked in SG for last 2 years?'),
+        default=True,
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+    )
+    monthly_income = models.PositiveSmallIntegerField(
+        verbose_name=_("Employer monthly income / combined income with spouse"),
+        choices=ed_constants.IncomeChoices.choices,
+        default=ed_constants.IncomeChoices.INCOME_3,
+        blank=True,
+        null=True,
+    )
+
+class EmployerHousehold(models.Model):
+    employer = models.ForeignKey(
+        Employer,
+        verbose_name=_("Name of Employer"),
+        on_delete=models.CASCADE,
+        related_name="rn_household_employer",
+    )
+    # Household Details
+    household_name = models.CharField(
+        verbose_name=_("Household member's name"),
+        max_length=40,
+    )
+    household_id_type = models.CharField(
+        verbose_name=_("Household member ID type"),
+        max_length=8,
+        choices=ed_constants.HouseholdIdTypeChoices.choices,
+        # default=ed_constants.HouseholdIdTypeChoices.NRIC,
+    )
+    household_id_num = models.BinaryField(
+        verbose_name=_("Household member's ID number"),
+        editable=True,
+    )
+    household_date_of_birth = models.DateField(
+        verbose_name=_("Household member's date of birth"),
+    )
+    household_relationship = models.CharField(
+        verbose_name=_("Household member's relationship with Employer"),
+        max_length=30,
+        choices=ed_constants.RelationshipChoices.choices,
+        # default=ed_constants.RelationshipChoices.DAUGHTER,
+    )
+
+    def get_household_id_full(self):
+        return decrypt_string(
+            self.household_id_num,
+            settings.ENCRYPTION_KEY,
+            self.household_id_nonce,
+            self.household_id_tag,
         )
 
 class EmployerDoc(models.Model):
@@ -1518,12 +1512,14 @@ class DocServiceFeeSchedule(models.Model):
             self.fdw_replaced_passport_tag,
         )
 
-class DocServiceAgreement(models.Model):
+class DocServAgmtEmpCtr(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
         on_delete=models.CASCADE,
         related_name='rn_serviceagreement_ed'
     )
+
+    # Service Agreement
     c1_3_handover_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
@@ -1661,24 +1657,23 @@ class DocServiceAgreement(models.Model):
     )
     c9_1_independent_mediator_1 = models.CharField(
         verbose_name=_("9.1 Independent mediator #1"),
-        max_length=40
+        max_length=40,
+        blank=True,
+        null=True,
     )
     c9_2_independent_mediator_2 = models.CharField(
         verbose_name=_("9.2 Independent mediator #2"),
-        max_length=40
+        max_length=40,
+        blank=True,
+        null=True,
     )
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("13. Service Agreement termination notice (days)"),
         choices=ed_constants.DayChoices.choices
     )
-
-class DocEmploymentContract(models.Model):
-    employer_doc = models.OneToOneField(
-        EmployerDoc,
-        on_delete=models.CASCADE,
-        related_name='rn_employmentcontract_ed'
-    )
+    
+    # Employment Contract
     c3_5_fdw_sleeping_arrangement = models.CharField(
         verbose_name=_("3.5 FDW sleeping arrangement"),
         max_length=6,

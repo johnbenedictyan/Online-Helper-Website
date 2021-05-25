@@ -142,8 +142,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             elif (
                 # level 2
                 isinstance(self.object, models.DocServiceFeeSchedule) or
-                isinstance(self.object, models.DocServiceAgreement) or
-                isinstance(self.object, models.DocEmploymentContract) or
+                isinstance(self.object, models.DocServAgmtEmpCtr) or
                 isinstance(self.object, models.DocSafetyAgreement) or
                 isinstance(self.object, models.DocUpload) or
                 isinstance(self.object, models.EmployerDocMaidStatus) or
