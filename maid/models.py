@@ -118,7 +118,7 @@ class Maid(models.Model):
     
     passport_expiry = models.DateField(
         verbose_name=_('Passport Expiry Date'),
-        blank=False
+        blank=True
     )
     
     # remarks = models.CharField(
@@ -309,7 +309,8 @@ class Maid(models.Model):
     work_permit = models.CharField(
         verbose_name=_('Work Permit'),
         max_length=255,
-        null=True
+        null=True,
+        blank=True
     )
 
     def __str__(self):
