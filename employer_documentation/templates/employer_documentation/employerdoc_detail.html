@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Case #</th>
-                    <td><a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
+                    <td><a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.case_ref_no }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">FDW</th>
@@ -38,11 +38,11 @@
                 </tr>
                 <tr>
                     <th scope="row">Is spouse required?</th>
-                    <td><a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.get_spouse_required_display }}</a></td>
+                    <td><a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.get_spouse_required_display }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">Application scheme</th>
-                    <td><a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.get_application_scheme_display }}</a></td>
+                    <td><a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{{ object.get_application_scheme_display }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row" colspan="2"></th>
@@ -124,12 +124,12 @@
                     <tbody>
                         <tr>
                             <th scope="row">Agreement Date</th>
-                            <td><a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{% if object.agreement_date %}{{ object.agreement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                            <td><a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}">{% if object.agreement_date %}{{ object.agreement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
                         </tr>
                         <!-- {% comment %}
                         <tr>
                             <th scope="row">FDW Work Commencement Date</th>
-                            <td><a href="{% url 'employerdoc_status_update_route'  level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
+                            <td><a href="{% url 'ed_status_update_route'  level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}">{% if object.rn_maidstatus_ed.fdw_work_commencement_date %}{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}{% else %}<i class="far fa-plus-square"></i>{% endif %}</a></td>
                         </tr>
                         {% endcomment %} -->
                         <tr>
@@ -138,19 +138,19 @@
                         </tr>
                         <tr>
                             <th scope="row">Service Fee Schedule {% if object.fdw_is_replacement %}(Form B){% else %}(Form A){% endif %}</th>
-                            <td><a href="{% url 'pdf_agency_service_fee_schedule' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_service_fee_schedule' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Service Agreement</th>
-                            <td><a href="{% url 'pdf_agency_service_agreement' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_service_agreement' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Employment Contract</th>
-                            <td><a href="{% url 'pdf_agency_employment_contract' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_employment_contract' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Repayment Schedule</th>
-                            <td><a href="{% url 'pdf_agency_repayment_schedule' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_repayment_schedule' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -162,48 +162,48 @@
                     <tbody>
                         <tr>
                             <th scope="row">Rest Day Agreement</th>
-                            <td><a href="{% url 'pdf_agency_rest_day_agreement' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_rest_day_agreement' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Handover Checklist</th>
-                            <td><a href="{% url 'pdf_agency_handover_checklist' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_handover_checklist' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Transfer Consent</th>
-                            <td><a href="{% url 'pdf_agency_transfer_consent' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_transfer_consent' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Work Pass Authorisation</th>
-                            <td><a href="{% url 'pdf_agency_work_pass_authorisation' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_work_pass_authorisation' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <!-- {% comment %}
                         <tr>
                             <th scope="row">Security Bond</th>
-                            <td><a href="{% url 'pdf_agency_security_bond' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_security_bond' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Work Permit Application - Form 12B</th>
-                            <td><a href="{% url 'pdf_agency_fdw_work_permit_12b' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_fdw_work_permit_12b' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         {% endcomment %} -->
                         <tr>
                             <th scope="row">Income Tax Declaration</th>
-                            <td><a href="{% url 'pdf_agency_income_tax_declaration' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
+                            <td><a href="{% url 'pdf_agency_income_tax_declaration' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></a></td>
                         </tr>
                         <tr>
                             <th scope="row">Safety Agreement</th>
-                            <td><a href="{% url 'pdf_agency_safety_agreement' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="{% url 'pdf_agency_safety_agreement' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="fas fa-edit"></i></a></td>
                         </tr>
                         {% if object.application_scheme == 'SPONS' %}
                         <tr>
                             <th scope="row">Sponsor(s) Details</th>
-                            <td>{% if object.rn_sponsor_ed %}<a href="{% url 'pdf_agency_sponsor_details' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_sponsor_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_sponsor_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'employerdoc_sponsor_create_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
+                            <td>{% if object.rn_sponsor_ed %}<a href="{% url 'pdf_agency_sponsor_details' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_sponsor_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_sponsor_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'ed_sponsor_create_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
                         </tr>
                         {% endif %}
                         {% if object.application_scheme == 'JOINT' %}
                         <tr>
                             <th scope="row">Joint Applicant Details</th>
-                            <td>{% if object.rn_jointapplicant_ed %}<a href="{% url 'pdf_agency_joint_applicants' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'employerdoc_joint_applicants_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_jointapplicant_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'employerdoc_joint_applicants_create_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
+                            <td>{% if object.rn_jointapplicant_ed %}<a href="{% url 'pdf_agency_joint_applicants' level_0_pk=object.employer.pk level_1_pk=object.pk %}" target="_blank"><i class="far fa-file-pdf"></i></a>&emsp;<a href="{% url 'ed_joint_applicants_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_jointapplicant_ed.pk %}"><i class="fas fa-edit"></i></a>{% else %}<a href="{% url 'ed_joint_applicants_create_route' level_0_pk=object.employer.pk level_1_pk=object.pk %}"><i class="far fa-plus-square"></i></a>{% endif %}</td>
                         </tr>
                         {% endif %}
                         <tr>

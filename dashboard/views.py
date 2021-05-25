@@ -265,7 +265,7 @@ class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, # ListFil
         return Maid.objects.all()
 
 class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
-    context_object_name = 'employers'
+    # context_object_name = 'employers'
     http_method_names = ['get']
     model = Employer
     template_name = 'list/dashboard-employer-list.html'

@@ -65,12 +65,12 @@ urlpatterns = [
                     path(
                         'joint-applicant/create/',
                         views.EmployerJointApplicantCreateView.as_view(),
-                        name='employer_joint_applicant_create_route'
+                        name='employer_jointapplicant_create_route'
                     ),
                     path(
                         'joint-applicant/<int:level_1_pk>/update/',
                         views.EmployerDocJointApplicantUpdateView.as_view(),
-                        name='employer_joint_applicant_update_route'
+                        name='employer_jointapplicant_update_route'
                     ),
                     path(
                         'documentation/',
@@ -110,22 +110,22 @@ urlpatterns = [
                                     ),
                                     path(
                                         'service-agreement/create/',
-                                        views.DocServiceAgreementCreateView.as_view(),
+                                        views.DocServAgmtEmpCtrCreateView.as_view(),
                                         name='serviceagreement_create_route'
                                     ),
-                                    # path(
-                                    #     'service-agreement/<int:level_2_pk>/update/',
-                                    #     views..as_view(),
-                                    #     name='serviceagreement_update_route'
-                                    # ),
                                     path(
-                                        'employment-contract/create/',
-                                        views.DocEmploymentContractCreateView.as_view(),
-                                        name='employmentcontract_create_route'
+                                        'service-agreement/<int:level_2_pk>/update/',
+                                        views.DocServAgmtEmpCtrUpdateView.as_view(),
+                                        name='serviceagreement_update_route'
                                     ),
                                     # path(
+                                    #     'employment-contract/create/',
+                                    #     views.DocEmploymentContractCreateView.as_view(),
+                                    #     name='employmentcontract_create_route'
+                                    # ),
+                                    # path(
                                     #     'employment-contract/<int:level_2_pk>/update/',
-                                    #     views..as_view(),
+                                    #     views.DocEmploymentContractUpdateView.as_view(),
                                     #     name='employmentcontract_update_route'
                                     # ),
                                     path(
@@ -133,11 +133,11 @@ urlpatterns = [
                                         views.DocSafetyAgreementCreateView.as_view(),
                                         name='safetyagreement_create_route'
                                     ),
-                                    # path(
-                                    #     'safety-agreement/<int:level_2_pk>/update/',
-                                    #     views..as_view(),
-                                    #     name='safetyagreement_update_route'
-                                    # ),
+                                    path(
+                                        'safety-agreement/<int:level_2_pk>/update/',
+                                        views.DocSafetyAgreementUpdateView.as_view(),
+                                        name='safetyagreement_update_route'
+                                    ),
                     #                 path(
                     #                     'delete/',
                     #                     views.EmployerDocDeleteView.as_view(),

@@ -1,4 +1,5 @@
 # Imports from the system
+import re
 import math
 import random
 import string
@@ -10,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
+from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from Crypto.Cipher import AES
@@ -65,6 +67,7 @@ def encrypt_string(plaintext, encryption_key):
 def decrypt_string(ciphertext, encryption_key, nonce, tag):
     if ciphertext:
         try:
+            # cipher = AES.new(bytes.fromhex(encryption_key.replace(r'\x', '')), AES.MODE_GCM, nonce=nonce)
             cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
             plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
         except Exception:
@@ -261,3 +264,36 @@ def subscription_seed_data():
                     interval_count=subscription_price['subcription_price_interval_count'],
                     unit_amount=subscription_price['subcription_price_unit_amount']
                 )
+
+def validate_nric(plaintext):
+    # return error message if fail, else return False for success
+    if plaintext:
+        if not isinstance(plaintext, str):
+            return _('Must be a string')
+        if not len(plaintext)==9:
+            return _(f'Must be 9 characters in length')
+        if not re.match('^[A-Za-z0-9]*$', plaintext):
+            return _('Can only enter letters or numbers')
+    return False
+
+def validate_fin(plaintext):
+    # return error message if fail, else return False for success
+    if plaintext:
+        if not isinstance(plaintext, str):
+            return _('Must be a string')
+        if not len(plaintext)==9:
+            return _(f'Must be 9 characters in length')
+        if not re.match('^[A-Za-z0-9]*$', plaintext):
+            return _('Can only enter letters or numbers')
+    return False
+
+def validate_passport(plaintext):
+    # return error message if fail, else return False for success
+    if plaintext:
+        if not isinstance(plaintext, str):
+            return _('Must be a string')
+        if len(plaintext)>20:
+            return _(f'Must not exceed 20 characters')
+        if not re.match('^[A-Za-z0-9]*$', plaintext):
+            return _('Can only enter letters or numbers')
+    return False

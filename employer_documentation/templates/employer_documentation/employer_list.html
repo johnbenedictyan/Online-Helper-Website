@@ -41,7 +41,7 @@
                             <div class="col"><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">Name:&emsp;{{ object.employer_name }}<br>NRIC:&emsp;{{ object.get_nric_partial }}</a></div>
                             <div class="col"><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.get_email_partial }}</a></div>
                             <div class="col"><a href="{% url 'employer_update_route' level_0_pk=object.pk %}">{{ object.mobile_partial_sg }}</a></div>
-                            <div class="col">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' level_0_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' level_0_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
+                            <div class="col">{% if object.rn_ed_employer.all %}<a href="{% url 'ed_list_route' level_0_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'ed_create_route' level_0_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
                             <div class="col">{{ object.agency_employee.ea_personnel_number }}<br>{{ object.agency_employee.name }}</div>
                             <div class="col">
                                 <a href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i class="fas fa-edit"></i></a>&emsp;
@@ -66,7 +66,7 @@
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Cases</div>
-                            <div class="{{ class_col_right }}">{% if object.rn_ed_employer.all %}<a href="{% url 'employerdoc_list_route' level_0_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'employerdoc_create_route' level_0_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
+                            <div class="{{ class_col_right }}">{% if object.rn_ed_employer.all %}<a href="{% url 'ed_list_route' level_0_pk=object.pk %}">View Documents</a>{% else %}<a href="{% url 'ed_create_route' level_0_pk=object.pk %}">Create Documentation</a>{% endif %}</div>
                         </div>
                         <div class="row mx-0 custom-table-data">
                             <div class="{{ class_col_left }}">Staff</div>

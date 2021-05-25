@@ -175,7 +175,7 @@ class EmployerDocListView(
         else:
             return HttpResponseRedirect(
                 reverse(
-                    'employerdoc_create_route',
+                    'ed_create_route',
                     kwargs={'level_0_pk': self.object.pk}
                 )
             )
@@ -360,16 +360,22 @@ class DocServiceFeeScheduleCreateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
-class DocServiceAgreementCreateView(
+class DocServAgmtEmpCtrCreateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
     CreateView
 ):
-    model = models.DocServiceAgreement
-    form_class = forms.DocServiceAgreementForm
+    model = models.DocServAgmtEmpCtr
+    form_class = forms.DocServAgmtEmpCtrForm
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
@@ -382,30 +388,42 @@ class DocServiceAgreementCreateView(
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
-    def get_success_url(self):
-        return reverse_lazy('employer_list_route')
-
-class DocEmploymentContractCreateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
-    CreateView
-):
-    model = models.DocEmploymentContract
-    form_class = forms.DocEmploymentContractForm
-    pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
-
-    def get_object(self, *args, **kwargs):
-        return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
-        return kwargs
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
+
+# class DocEmploymentContractCreateView(
+#     CheckAgencyEmployeePermissionsMixin,
+#     CheckEmployerDocRelationshipsMixin,
+#     CreateView
+# ):
+#     model = models.DocEmploymentContract
+#     form_class = forms.DocEmploymentContractForm
+#     pk_url_kwarg = 'level_1_pk'
+#     template_name = 'employer_documentation/crispy_form.html'
+
+#     def get_object(self, *args, **kwargs):
+#         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user_pk'] = self.request.user.pk
+#         kwargs['agency_user_group'] = self.agency_user_group
+#         return kwargs
+
+#     def form_valid(self, form):
+#         form.instance.employer_doc = models.EmployerDoc.objects.get(
+#             pk = self.kwargs.get(self.pk_url_kwarg)
+#         )
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse_lazy('employer_list_route')
 
 class DocSafetyAgreementCreateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -425,6 +443,12 @@ class DocSafetyAgreementCreateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
@@ -528,7 +552,7 @@ class EmployerDocUpdateView(
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
-    
+
 class DocServiceFeeScheduleUpdateView(
     CheckAgencyEmployeePermissionsMixin,
     CheckEmployerDocRelationshipsMixin,
@@ -538,6 +562,69 @@ class DocServiceFeeScheduleUpdateView(
     form_class = forms.DocServiceFeeScheduleForm
     pk_url_kwarg = 'level_2_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
+
+class DocServAgmtEmpCtrUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.DocServAgmtEmpCtr
+    form_class = forms.DocServAgmtEmpCtrForm
+    pk_url_kwarg = 'level_2_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
+
+# class DocEmploymentContractUpdateView(
+#     CheckAgencyEmployeePermissionsMixin,
+#     CheckEmployerDocRelationshipsMixin,
+#     UpdateView
+# ):
+#     model = models.DocEmploymentContract
+#     form_class = forms.DocEmploymentContractForm
+#     pk_url_kwarg = 'level_2_pk'
+#     template_name = 'employer_documentation/crispy_form.html'
+
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user_pk'] = self.request.user.pk
+#         kwargs['agency_user_group'] = self.agency_user_group
+#         return kwargs
+
+#     def get_success_url(self):
+#         return reverse_lazy('employer_list_route')
+
+class DocSafetyAgreementUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.DocSafetyAgreement
+    form_class = forms.DocSafetyAgreementForm
+    pk_url_kwarg = 'level_2_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
@@ -585,7 +672,7 @@ class DocServiceFeeScheduleUpdateView(
 #         return kwargs
 
 #     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
+#         return reverse_lazy('ed_detail_route', kwargs={
 #             'level_0_pk': self.object.employer_doc.employer.pk,
 #             'level_1_pk': self.object.employer_doc.pk,
 #         })
@@ -623,7 +710,7 @@ class DocServiceFeeScheduleUpdateView(
 #         return kwargs
 
 #     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
+#         return reverse_lazy('ed_detail_route', kwargs={
 #             'level_0_pk': self.object.employer_doc.employer.pk,
 #             'level_1_pk': self.object.employer_doc.pk,
 #         })
@@ -692,7 +779,7 @@ class EmployerDeleteView(
 #         return context
 
 #     def get_success_url(self):
-#         return reverse_lazy('employerdoc_detail_route', kwargs={
+#         return reverse_lazy('ed_detail_route', kwargs={
 #             'level_0_pk': self.object.employer_doc.employer.pk,
 #             'level_1_pk': self.object.employer_doc.pk,
 #         })
