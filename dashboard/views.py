@@ -45,7 +45,7 @@ from maid.models import (
     MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
 )
 from payment.models import Customer, Subscription
-from onlinemaid.constants import AG_OWNERS, AG_ADMINS
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from local app
 from .filters import (
@@ -282,6 +282,20 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
     
     def get_queryset(self):
         order_by = self.request.GET.get('order-by')
+        qs = Employer.objects.filter(
+            agency_employee__agency__pk = self.agency_id
+        )
+
+        if self.authority == AG_MANAGERS:
+            qs = qs.filter(
+                agency_employee__branch = self.request.user.agency_employee.branch
+            )
+        
+        if self.authority == AG_SALES:
+            qs = qs.filter(
+                agency_employee = self.request.user.agency_employee
+            )
+        
         if order_by:
             if order_by == 'serialNo':
                 order_by = 'id'
@@ -299,13 +313,9 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
                 order_by = 'agency_employee__ea_personnel_number'
             elif order_by == '-eaPersonnel':
                 order_by = '-agency_employee__ea_personnel_number'
-            return Employer.objects.filter(
+            return qs.filter(
                 agency_employee__agency__pk = self.agency_id
             ).order_by(order_by)
-        else:
-            return Employer.objects.filter(
-                agency_employee__agency__pk = self.agency_id
-            )
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
