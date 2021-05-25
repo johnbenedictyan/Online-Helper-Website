@@ -47,7 +47,7 @@ def dashboard_side_nav(request):
         'dashboard_agency_opening_hours_update',
         
         #Agency Employees
-        'dashboard_employee_create',
+        'dashboard_agency_employee_create',
         'dashboard_agency_employee_update',
         
         #Maid
