@@ -131,7 +131,7 @@ urlpatterns = [
             path(
                 'employee/',
                 DashboardAgencyEmployeeCreate.as_view(),
-                name='dashboard_employee_create'
+                name='dashboard_agency_employee_create'
             )
         ])
     ),
