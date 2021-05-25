@@ -1,5 +1,4 @@
 # Python
-import re
 import secrets
 import uuid
 
@@ -22,7 +21,7 @@ from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, Une
 # Imports from local apps
 from . import models
 from onlinemaid import constants as om_constants
-from onlinemaid.helper_functions import encrypt_string
+from onlinemaid import helper_functions
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
@@ -51,8 +50,6 @@ class EmployerForm(forms.ModelForm):
         self.user_obj = get_user_model().objects.get(pk=self.user_pk)
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         # Decryption
         self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
@@ -403,43 +400,75 @@ class EmployerForm(forms.ModelForm):
 
     def clean_employer_nric_num(self):
         cleaned_field = self.cleaned_data.get('employer_nric_num')
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.employer_nric_nonce, self.instance.employer_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
+    def clean_employer_fin_num(self):
+        cleaned_field = self.cleaned_data.get('employer_fin_num')
+        error_msg = helper_functions.validate_fin(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.employer_fin_nonce, self.instance.employer_fin_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
+    def clean_employer_passport_num(self):
+        cleaned_field = self.cleaned_data.get('employer_passport_num')
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.employer_passport_nonce, self.instance.employer_passport_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.employer_nric_nonce, self.instance.employer_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        
-        return ciphertext
-
-    # Employer Spouse
     def clean_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
+    def clean_spouse_fin_num(self):
+        cleaned_field = self.cleaned_data.get('spouse_fin_num')
+        error_msg = helper_functions.validate_fin(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.spouse_fin_nonce, self.instance.spouse_fin_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+    def clean_spouse_passport_num(self):
+        cleaned_field = self.cleaned_data.get('spouse_passport_num')
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.spouse_passport_nonce, self.instance.spouse_passport_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
 class EmployerSponsorForm(forms.ModelForm):
     class Meta:
@@ -468,8 +497,6 @@ class EmployerSponsorForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         self.initial.update({'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full()})
         self.initial.update({'sponsor_1_spouse_nric_num': self.instance.get_sponsor_1_spouse_nric_full()})
@@ -884,155 +911,99 @@ class EmployerSponsorForm(forms.ModelForm):
     
     def clean_sponsor_1_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_1_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_1_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_fin_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_fin(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_1_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_2_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_2_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_2_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_fin_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_fin(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_sponsor_2_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
 class EmployerJointApplicantForm(forms.ModelForm):
     class Meta:
@@ -1053,8 +1024,6 @@ class EmployerJointApplicantForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         self.initial.update({'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full()})
         self.initial.update({'joint_applicant_spouse_nric_num': self.instance.get_joint_applicant_spouse_nric_full()})
@@ -1251,79 +1220,51 @@ class EmployerJointApplicantForm(forms.ModelForm):
     
     def clean_joint_applicant_nric_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_nric_nonce, self.instance.joint_applicant_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.joint_applicant_nric_nonce, self.instance.joint_applicant_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_joint_applicant_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_nric_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_nric(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_joint_applicant_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_fin_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_fin(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_joint_applicant_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
 class EmployerDocForm(forms.ModelForm):
     class Meta:
@@ -1334,8 +1275,6 @@ class EmployerDocForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         if self.agency_user_group==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
@@ -1428,8 +1367,6 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         self.initial.update({'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()})
 
@@ -1689,22 +1626,15 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
     def clean_fdw_replaced_passport_num(self):
         cleaned_field = self.cleaned_data.get('fdw_replaced_passport_num')
-
-        if not isinstance(cleaned_field, str):
-            raise ValidationError('Must be a string')
-
-        if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-            raise ValidationError('Can only enter letters or numbers')
-
-        if len(cleaned_field)>self.FIELD_MAXLENGTH:
-            raise ValidationError(f'Must not exceed {self.FIELD_MAXLENGTH} characters')
-
-        # Encryption
-        ciphertext, self.instance.fdw_replaced_passport_nonce, self.instance.fdw_replaced_passport_tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        return ciphertext
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.fdw_replaced_passport_nonce, self.instance.fdw_replaced_passport_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
     def clean_b4_loan_transferred(self):
         is_new_case = self.cleaned_data.get('is_new_case')
@@ -1727,8 +1657,6 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -1928,8 +1856,6 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
 #         self.agency_user_group = kwargs.pop('agency_user_group')
 #         super().__init__(*args, **kwargs)
 
-#         self.FIELD_MAXLENGTH = 20
-
 #         self.helper = FormHelper()
 #         self.helper.layout = Layout(
 #             HTML(
@@ -1971,8 +1897,6 @@ class DocSafetyAgreementForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
-
-        self.FIELD_MAXLENGTH = 20
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
