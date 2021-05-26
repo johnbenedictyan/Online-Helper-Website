@@ -1,33 +1,28 @@
 # Imports from django
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic.edit import (
-    CreateView, UpdateView, DeleteView, FormView
-)
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Imports from foreign installed apps
-import stripe
-# from extra_views import InlineFormSetView, InlineFormSetFactory, UpdateWithInlinesView
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
-from crispy_forms.layout import Submit
 
 # Imports from local app
 from .filters import AgencyFilter
 
 from .forms import (
     AgencyForm, AgencyBranchForm, AgencyEmployeeForm,
-    AgencyOpeningHoursForm, AgencyPlanForm, AgencyOwnerCreationForm,
+    AgencyOpeningHoursForm, AgencyOwnerCreationForm,
     AgencyEmployeeForm, PotentialAgencyForm, AgencyUpdateForm
 )
+# from .forms import AgencyPlanForm
 
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
-    AgencyOwner, PotentialAgency
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner, PotentialAgency
 )
+# from .models import AgencyPlan
 
 from .mixins import (
     OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin, 
@@ -265,66 +260,66 @@ class AgencyBranchUpdate(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
 #             )
 #         )
         
-class AgencyOpeningHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
-                                 SuccessMessageMixin, UpdateView):
-    context_object_name = 'agency_opening_hours'
-    form_class = AgencyOpeningHoursForm
-    http_method_names = ['get','post']
-    model = AgencyOpeningHours
-    template_name = 'update/agency-operating-hours-update.html'
-    success_url = reverse_lazy('dashboard_agency_detail')
-    authority = ''
-    agency_id = ''
-    success_message = 'Agency operating hours updated'
+# class AgencyOpeningHoursUpdate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
+#                                  SuccessMessageMixin, UpdateView):
+#     context_object_name = 'agency_opening_hours'
+#     form_class = AgencyOpeningHoursForm
+#     http_method_names = ['get','post']
+#     model = AgencyOpeningHours
+#     template_name = 'update/agency-operating-hours-update.html'
+#     success_url = reverse_lazy('dashboard_agency_detail')
+#     authority = ''
+#     agency_id = ''
+#     success_message = 'Agency operating hours updated'
 
-    def get_object(self, queryset=None):
-        return AgencyOpeningHours.objects.get(
-            agency__pk = self.agency_id
-        )
+#     def get_object(self, queryset=None):
+#         return AgencyOpeningHours.objects.get(
+#             agency__pk = self.agency_id
+#         )
 
-class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin,
-                           SuccessMessageMixin, UpdateView):
-    context_object_name = 'agency_employee'
-    form_class = AgencyEmployeeForm
-    http_method_names = ['get','post']
-    model = AgencyEmployee
-    template_name = 'update/agency-employee-update.html'
-    success_url = reverse_lazy('dashboard_account_list')
-    success_message = 'Employee details updated'
+# class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin,
+#                            SuccessMessageMixin, UpdateView):
+#     context_object_name = 'agency_employee'
+#     form_class = AgencyEmployeeForm
+#     http_method_names = ['get','post']
+#     model = AgencyEmployee
+#     template_name = 'update/agency-employee-update.html'
+#     success_url = reverse_lazy('dashboard_account_list')
+#     success_message = 'Employee details updated'
 
-    def get_agency_id(self):
-        if self.request.user.groups.filter(name='Agency Owners').exists():
-            return self.request.user.agency_owner.agency.pk
-        else:
-            return self.request.user.agency_employee.agency.pk
+#     def get_agency_id(self):
+#         if self.request.user.groups.filter(name='Agency Owners').exists():
+#             return self.request.user.agency_owner.agency.pk
+#         else:
+#             return self.request.user.agency_employee.agency.pk
 
-    def get_initial(self):
-        initial = super().get_initial()
-        employee = AgencyEmployee.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
-        initial['email'] = employee.user.email
+#     def get_initial(self):
+#         initial = super().get_initial()
+#         employee = AgencyEmployee.objects.get(
+#             pk = self.kwargs.get(
+#                 self.pk_url_kwarg
+#             )
+#         )
+#         initial['email'] = employee.user.email
 
-        return initial
+#         return initial
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        if not self.request.user.groups.filter(name='Agency Owners').exists():
-            authority = 'employee'
-        else:
-            authority = 'owner'
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         if not self.request.user.groups.filter(name='Agency Owners').exists():
+#             authority = 'employee'
+#         else:
+#             authority = 'owner'
 
-        kwargs.update({
-            'agency_id': self.get_agency_id(),
-            'pk': self.kwargs.get(
-                self.pk_url_kwarg
-            ),
-            'authority':authority,
-            'form_type': 'update'
-        })
-        return kwargs
+#         kwargs.update({
+#             'agency_id': self.get_agency_id(),
+#             'pk': self.kwargs.get(
+#                 self.pk_url_kwarg
+#             ),
+#             'authority':authority,
+#             'form_type': 'update'
+#         })
+#         return kwargs
 
 
 
@@ -334,9 +329,9 @@ class AgencyEmployeeUpdate(SpecificAgencyEmployeeLoginRequiredMixin,
 
 
 # Views that are going to be deprecated
-class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
-                         SuccessMessageMixin, CreateView):
-    pass
+# class AgencyBranchCreate(AgencyOwnerRequiredMixin, GetAuthorityMixin,
+#                          SuccessMessageMixin, CreateView):
+#     pass
     # context_object_name = 'agency_branch'
     # form_class = AgencyBranchForm
     # http_method_names = ['get','post']
@@ -443,9 +438,9 @@ class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
 #     check_type = 'plan'
 #     success_message = 'Agency plan unsubscribed'
     
-class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
-                         SuccessMessageMixin, DeleteView):
-    pass               
+# class AgencyBranchDelete(SpecificAgencyOwnerRequiredMixin, GetAuthorityMixin,
+#                          SuccessMessageMixin, DeleteView):
+#     pass               
 #     context_object_name = 'agency_branch'
 #     http_method_names = ['post']
 #     model = AgencyBranch
