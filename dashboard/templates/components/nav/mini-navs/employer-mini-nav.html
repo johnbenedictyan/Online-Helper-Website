@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="col">
-            {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}{% url 'employer_create_route' %}{% else %}{% url 'employer_update_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %}
+            <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}{% url 'employer_create_route' %}{% else %}{% url 'employer_update_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}{% url 'employer_create_route' %}{% else %}{% url 'employer_update_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Employer Info</p>
             </a>
@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="col">
-            {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %}
+            <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Sponsor 1 Info</p>
             </a>
@@ -24,7 +24,7 @@
     </div>
     <div class="row">
         <div class="col">
-            {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %}
+            <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Sponsor 2 Info</p>
             </a>
@@ -35,6 +35,13 @@
             {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_jointapplicant_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %}
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_jointapplicant_create_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Joint Info</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_incomedetails_create_route' level_0_pk %}{% endif %}">
+                <p class="m-1 pl-2">Income Details</p>
             </a>
         </div>
     </div>
