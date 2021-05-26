@@ -313,9 +313,11 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
                 order_by = 'agency_employee__ea_personnel_number'
             elif order_by == '-eaPersonnel':
                 order_by = '-agency_employee__ea_personnel_number'
-            return qs.filter(
+            qs = qs.filter(
                 agency_employee__agency__pk = self.agency_id
             ).order_by(order_by)
+
+        return qs
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
