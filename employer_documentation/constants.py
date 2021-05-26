@@ -132,3 +132,9 @@ class MonthChoices(models.IntegerChoices):
     M22 = 22, _("22 months")
     M23 = 23, _("23 months")
     M24 = 24, _("24 months")
+
+class EmployerTypeOfApplicantChoices(models.TextChoices):
+    SINGLE = 'SINGLE', _("Employer Only")
+    SPOUSE = 'SPOUSE', _("Employer with Spouse")
+    SPONSOR = 'SPONSR', _("Employer with Sponsor(s)")
+    JOINT_APPLICANT = 'JNT_AP', _("Employer with Joint Applicant")

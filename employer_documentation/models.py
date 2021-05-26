@@ -69,8 +69,8 @@ class Employer(models.Model):
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
-        choices=APPLICANT_TYPE_CHOICES,
-        default=APPLICANT_TYPE_CHOICES[0][0],
+        choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
+        default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
     )
     household_details_required = models.BooleanField(
         verbose_name=_('Applicable for subsidised levy?'),
