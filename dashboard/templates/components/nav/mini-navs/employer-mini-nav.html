@@ -14,6 +14,7 @@
             </a>
         </div>
     </div>
+    {% if type_of_applicant == 'SPONSR' %}
     <div class="row">
         <div class="col">
             <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
@@ -30,6 +31,8 @@
             </a>
         </div>
     </div>
+    {% endif %}
+    {% if type_of_applicant == 'JNT_AP' %}
     <div class="row">
         <div class="col">
             {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_jointapplicant_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %}
@@ -38,6 +41,7 @@
             </a>
         </div>
     </div>
+    {% endif %}
     <div class="row">
         <div class="col">
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_incomedetails_create_route' level_0_pk %}{% endif %}">

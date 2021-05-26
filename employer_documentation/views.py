@@ -256,7 +256,8 @@ class EmployerSponsorCreateView(
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type,
         })
         return context
 
@@ -292,7 +293,8 @@ class EmployerJointApplicantCreateView(
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
         })
         return context
 
@@ -325,7 +327,8 @@ class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, Creat
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
         })
         return context
 
@@ -552,7 +555,8 @@ class EmployerUpdateView(
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
         })
         return context
 
@@ -577,7 +581,8 @@ class EmployerSponsorUpdateView(
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
         })
         return context
 
@@ -605,7 +610,8 @@ class EmployerDocJointApplicantUpdateView(
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
         })
         return context
 
@@ -633,7 +639,8 @@ class EmployerIncomeDetialsUpdateView(
         context.update({
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
         })
         return context
 
