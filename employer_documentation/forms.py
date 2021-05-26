@@ -875,21 +875,21 @@ class EmployerSponsorForm(forms.ModelForm):
                     ),
 
                     # Income Details
-                    HTML(
-                        """
-                        <h5 class="my-3">Income Details</h5>
-                    """),
-                    Row(
-                        Column(
-                            PrependedText(
-                                'monthly_income', '$',
-                                min='0', max='9999999',
-                            ),
-                            css_class='form-group col-md-6',
-                            id='sponsor_monthly_income',
-                        ),
-                        css_class='form-row',
-                    ),
+                    # HTML(
+                    #     """
+                    #     <h5 class="my-3">Income Details</h5>
+                    # """),
+                    # Row(
+                    #     Column(
+                    #         PrependedText(
+                    #             'monthly_income', '$',
+                    #             min='0', max='9999999',
+                    #         ),
+                    #         css_class='form-group col-md-6',
+                    #         id='sponsor_monthly_income',
+                    #     ),
+                    #     css_class='form-row',
+                    # ),
                     # id='sponsors',
                 ),
                 id='sponsors-section',
@@ -900,7 +900,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1189,27 +1189,27 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 ),
             ),
 
-            HTML(
-                """
-                <h5 class="my-3">Income Details</h5>
-            """),
-            Row(
-                Column(
-                    PrependedText(
-                        'monthly_income', '$',
-                        min='0', max='9999999',
-                    ),
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
+            # HTML(
+            #     """
+            #     <h5 class="my-3">Income Details</h5>
+            # """),
+            # Row(
+            #     Column(
+            #         PrependedText(
+            #             'monthly_income', '$',
+            #             min='0', max='9999999',
+            #         ),
+            #         css_class='form-group col-md-6',
+            #     ),
+            #     css_class='form-row',
+            # ),
             
             # Submit
             Row(
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'

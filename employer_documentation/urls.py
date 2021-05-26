@@ -79,7 +79,7 @@ urlpatterns = [
                     ),
                     path(
                         'income-details/update/',
-                        views.EmployerIncomeDetialsUpdateView.as_view(),
+                        views.EmployerIncomeDetailsUpdateView.as_view(),
                         name='employer_incomedetails_update_route'
                     ),
                     path(
