@@ -70,3 +70,17 @@ def dashboard_side_nav(request):
     return {
         'dashboard_side_nav_list' : dashboard_side_nav_list
     }
+
+def page_bar_url_helper():
+    EMPLOYER_MINI_NAV_URLS = [
+        'employer_create_route',
+        'employer_update_route',
+        'employer_spons,_create_route',
+        'employer_spons,_update_route',
+        'employer_jointapplicant_create_route',
+        'employer_jointapplicant_update_route'
+    ]
+
+    return {
+        'employer_crud_pagebar_urls': EMPLOYER_MINI_NAV_URLS
+    }

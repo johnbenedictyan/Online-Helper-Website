@@ -109,7 +109,8 @@ TEMPLATES = [
                 'onlinemaid.context_processors.authority',
                 'onlinemaid.context_processors.cartcount',
                 'onlinemaid.context_processors.enquiry_form',
-                'onlinemaid.context_processors.dashboard_side_nav'
+                'onlinemaid.context_processors.dashboard_side_nav',
+                'onlinemaid.context_processors.page_bar_url_helper'
             ],
         },
     },
