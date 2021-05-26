@@ -251,6 +251,15 @@ class EmployerSponsorCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
+
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
@@ -278,6 +287,15 @@ class EmployerJointApplicantCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
+
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
@@ -290,6 +308,45 @@ class EmployerJointApplicantCreateView(
     def form_valid(self, form):
         form.instance.employer = models.Employer.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
+
+class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, CreateView):
+    model = models.EmployerIncome
+    form_class = forms.EmployerIncomeDetailsForm
+    pk_url_kwarg = 'level_0_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
+
+    def get_object(self, *args, **kwargs):
+        return models.Employer.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+                )
+            )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # kwargs['user_pk'] = self.request.user.pk
+        # kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer = models.Employer.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
         )
         return super().form_valid(form)
 
@@ -490,6 +547,15 @@ class EmployerUpdateView(
     pk_url_kwarg = 'level_0_pk'
     success_url = reverse_lazy('employer_list_route')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
@@ -505,6 +571,15 @@ class EmployerSponsorUpdateView(
     form_class = forms.EmployerSponsorForm
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -524,6 +599,43 @@ class EmployerDocJointApplicantUpdateView(
     form_class = forms.EmployerJointApplicantForm
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
+
+class EmployerIncomeDetialsUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.EmployerIncome
+    form_class = forms.EmployerIncomeDetailsForm
+    pk_url_kwarg = 'level_0_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

@@ -1266,6 +1266,56 @@ class EmployerJointApplicantForm(forms.ModelForm):
             )
             return ciphertext
 
+class EmployerIncomeDetailsForm(forms.ModelForm):
+    class Meta:
+        model = models.EmployerIncome
+        exclude = [
+            'employer'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        # self.user_pk = kwargs.pop('user_pk')
+        # self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            # Income Details
+            Row(
+                Column(
+                    HTML(
+                        """
+                        <h5 class="my-3">Income Details</h5>
+                    """),
+                    Row(
+                        Column(
+                            'worked_in_sg',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'monthly_income',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row'
+                    ),
+                ),
+                id='income-details-section',
+            ),
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Next',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDoc
