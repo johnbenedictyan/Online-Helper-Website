@@ -21,7 +21,7 @@ EmployerHouseholdFormSet = inlineformset_factory(
     max_num=10
 )
 
-class AgencyBranchFormSetHelper(FormHelper):
+class EmployerHouseholdFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.form_method = 'post'
