@@ -67,6 +67,8 @@ def dashboard_side_nav(request):
         'employer_sponsor_update_route',
         'employer_jointapplicant_create_route',
         'employer_jointapplicant_update_route',
+        'employer_incomedetails_create_route',
+        'employer_incomedetails_update_route,'
 
         #Cases
         'dashboard_case_detail'
@@ -82,7 +84,9 @@ def page_bar_url_helper(request):
         'employer_sponsor_create_route',
         'employer_sponsor_update_route',
         'employer_jointapplicant_create_route',
-        'employer_jointapplicant_update_route'
+        'employer_jointapplicant_update_route',
+        'employer_incomedetails_create_route',
+        'employer_incomedetails_update_route,'
     ]
 
     return {
