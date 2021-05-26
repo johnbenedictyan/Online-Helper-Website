@@ -63,6 +63,10 @@ def dashboard_side_nav(request):
         'employer_create_route',
         'employer_update_route',
         # 'dashboard_employer_detail',
+        'employer_sponsor_create_route',
+        'employer_sponsor_update_route',
+        'employer_jointapplicant_create_route',
+        'employer_jointapplicant_update_route',
 
         #Cases
         'dashboard_case_detail'
@@ -71,12 +75,12 @@ def dashboard_side_nav(request):
         'dashboard_side_nav_list' : dashboard_side_nav_list
     }
 
-def page_bar_url_helper():
+def page_bar_url_helper(request):
     EMPLOYER_MINI_NAV_URLS = [
         'employer_create_route',
         'employer_update_route',
-        'employer_spons,_create_route',
-        'employer_spons,_update_route',
+        'employer_sponsor_create_route',
+        'employer_sponsor_update_route',
         'employer_jointapplicant_create_route',
         'employer_jointapplicant_update_route'
     ]
