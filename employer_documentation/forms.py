@@ -1323,9 +1323,15 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
             'employer'
         ]
 
+    def save(self, *args, **kwargs):
+        self.instance.employer = self.employer
+        return super().save(*args, **kwargs)
+
     def __init__(self, *args, **kwargs):
-        # self.user_pk = kwargs.pop('user_pk')
-        # self.agency_user_group = kwargs.pop('agency_user_group')
+        self.employer_id = kwargs.pop('employer_id')
+        self.employer = models.Employer.objects.get(
+            pk=self.employer_id
+        )
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()

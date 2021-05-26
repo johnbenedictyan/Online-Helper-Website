@@ -83,6 +83,11 @@ urlpatterns = [
                         name='employer_incomedetails_update_route'
                     ),
                     path(
+                        'household-details/',
+                        views.EmployerHouseholdDetailsFormView.as_view(),
+                        name='employer_householddetails_update_route'
+                    ),
+                    path(
                         'documentation/',
                         include([
                             path(
