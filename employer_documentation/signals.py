@@ -10,7 +10,7 @@ def employer_doc_post_save(sender, instance, created, **kwargs):
         # JobOrder, models.PdfArchive instances.
         models.EmployerDocSig.objects.create(employer_doc=instance)
         models.EmployerDocMaidStatus.objects.create(employer_doc=instance)
-        models.PdfArchive.objects.create(employer_doc=instance)
+        # models.PdfArchive.objects.create(employer_doc=instance)
     else:
         # If SQL UPDATE, create models.EmployerDocSig, models.EmployerDocMaidStatus,
         # JobOrder, models.PdfArchive instances if they don't exist.
@@ -20,8 +20,8 @@ def employer_doc_post_save(sender, instance, created, **kwargs):
             models.EmployerDocMaidStatus.objects.create(employer_doc=instance)
         if not hasattr(instance, 'rn_joborder_ed'):
             JobOrder.objects.create(employer_doc=instance)
-        if not hasattr(instance, 'rn_models.PdfArchive_ed'):
-            models.PdfArchive.objects.create(employer_doc=instance)
+        # if not hasattr(instance, 'rn_models.PdfArchive_ed'):
+        #     models.PdfArchive.objects.create(employer_doc=instance)
         
         # If SQL UPDATE, reset all e-signatures in models.EmployerDocSig instance
         doc_sig_obj = instance.rn_signatures_ed
