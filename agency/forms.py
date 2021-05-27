@@ -559,7 +559,7 @@ class AgencyEmployeeForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>Employee Information</h5>'
+                        '<h5 class="fs-2">Employee Information</h5>'
                     )
                 ),
                 css_class='row',
