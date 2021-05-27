@@ -1337,6 +1337,10 @@ class EmployerDocForm(forms.ModelForm):
                     'fdw_off_days',
                     css_class='form-group col-md-6',
                 ),
+                Column(
+                    'handover_checklist_signed',
+                    css_class='form-group col-md-6',
+                ),
                 css_class='form-row'
             ),
 
