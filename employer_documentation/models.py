@@ -394,6 +394,9 @@ class Employer(models.Model):
             self.spouse_passport_tag,
         )
 
+    def __str__(self):
+        return self.employer_name
+
 ## Sponsors
 class EmployerSponsor(models.Model):
     employer = models.OneToOneField(
