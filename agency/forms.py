@@ -134,7 +134,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>Agency Information</h5>'
+                        '<h5 class="fs-2">Agency Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -341,12 +341,14 @@ class AgencyUpdateForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['profile'].label = ""
+        self.fields['services'].label = ""
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
                 Column(
                     HTML(
-                        '<h5>Agency Information</h5>'
+                        '<h5 class="fs-2">Agency Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -373,12 +375,20 @@ class AgencyUpdateForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    HTML(
+                        '<h5 class="fs-2">Profile</h5>'
+                    ),
                     'profile',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    css_id='agencyProfileGroup'
                 ),
                 Column(
+                    HTML(
+                        '<h5 class="fs-2">Our Services</h5>'
+                    ),
                     'services',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    css_id='agencyServicesGroup'
                 ),
                 css_class='mb-xl-3'
             ),
@@ -826,60 +836,72 @@ class AgencyOpeningHoursForm(forms.ModelForm):
         model = AgencyOpeningHours
         exclude = ['agency']
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('type') == 'AO':
+            cleaned_data['monday'] = ''
+            cleaned_data['tuesday'] = ''
+            cleaned_data['wednesday'] = ''
+            cleaned_data['thursday'] = ''
+            cleaned_data['friday'] = ''
+            cleaned_data['saturday'] = ''
+            cleaned_data['sunday'] = ''
+            cleaned_data['public_holiday'] = ''
+
+        return cleaned_data
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5 class="fs-2">Opening Hours</h5>'
+                    )
+                ),
+                css_class='row'
+            ),
             Row(
                 Column(
                     'type',
-                    css_class='form-group col'
+                    css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
+                Column(
+                    css_class='form-group col-md-6'
+                ),
                 Column(
                     'monday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
                 Column(
                     'tuesday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'wednesday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
                 Column(
                     'thursday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'friday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
                 Column(
                     'saturday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'sunday',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6 openingHourInput'
                 ),
                 Column(
                     'public_holiday',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
+                    css_class='form-group col-md-6 openingHourInput'
+                )
             ),
             Row(
                 Column(
@@ -895,8 +917,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         css_class="btn btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
+                )
             )
         )
 
