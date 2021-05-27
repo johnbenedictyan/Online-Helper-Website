@@ -4,8 +4,8 @@
 <section>
     <div class="container-fluid" style="min-height: 75vh;">
         <div class="row">
-            <div class="col text-dark mb-3">
-                <h4>Account Management</h4>
+            <div class="col mb-3">
+                <h5 class="fs-3">Account Management</h5>
             </div>
         </div>
         <!-- <div class="row">
@@ -28,7 +28,7 @@
         </div> -->
         <div class="row">
             <div class="col text-right mb-3">
-                <a href="{% url 'dashboard_agency_employee_create' %}" class="btn btn-primary mr-1">Add Employee</a>
+                <a href="{% url 'dashboard_agency_employee_create' %}" class="btn btn-lg btn-primary mr-1 fs-2">Add Employee</a>
             </div>
         </div>
         <div class="row">
@@ -38,31 +38,31 @@
         </div>
         <div class="row bg-custom-light-blue text-dark mx-half py-3 border text-center">
             <div class="col-1">
-                <h6 class="mb-0">S/N</h6>
+                <h6 class="fs-2 mb-0">S/N</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Name</h6>
+                <h6 class="fs-2 mb-0">Name</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Email</h6>
+                <h6 class="fs-2 mb-0">Email</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">EA Personnel No</h6>
+                <h6 class="fs-2 mb-0">EA Personnel No</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Type</h6>
+                <h6 class="fs-2 mb-0">Type</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Branch</h6>
+                <h6 class="fs-2 mb-0">Branch</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Last Login</h6>
+                <h6 class="fs-2 mb-0">Last Login</h6>
             </div>
             <div class="col-1">
-                <h6 class="mb-0">Published</h6>
+                <h6 class="fs-2 mb-0">Published</h6>
             </div>
             <div class="col-1">
-                <h6 class="mb-0">Actions</h6>
+                <h6 class="fs-2 mb-0">Actions</h6>
             </div>
         </div>
         {% for account in accounts %}
