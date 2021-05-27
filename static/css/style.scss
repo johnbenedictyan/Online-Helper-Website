@@ -29,6 +29,50 @@ $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
 $FONT_SIZE_SMALLER_SLIGHT: .9rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
+// Custom Typography
+$FONT_SIZE_12: calc(12/12 * 1rem);
+$FONT_SIZE_14: calc(14/12 * 1rem);
+$FONT_SIZE_16: calc(16/12 * 1rem);
+$FONT_SIZE_18: calc(18/12 * 1rem);
+$FONT_SIZE_20: calc(20/12 * 1rem);
+$FONT_SIZE_22: calc(22/12 * 1rem);
+$FONT_SIZE_26: calc(26/12 * 1rem);
+$FONT_SIZE_28: calc(28/12 * 1rem);
+$FONT_SIZE_32: calc(32/12 * 1rem);
+
+.fs{
+    &-1 {
+        font-size: $FONT_SIZE_12;
+    }
+    &-2 {
+        font-size: $FONT_SIZE_14;
+    }
+    &-3 {
+        font-size: $FONT_SIZE_16;
+    }
+    &-4 {
+        font-size: $FONT_SIZE_12;
+    }
+    &-5 {
+        font-size: $FONT_SIZE_18;
+    }
+    &-6 {
+        font-size: $FONT_SIZE_20;
+    }
+    &-7 {
+        font-size: $FONT_SIZE_22;
+    }
+    &-8 {
+        font-size: $FONT_SIZE_26;
+    }
+    &-9 {
+        font-size: $FONT_SIZE_28;
+    }
+    &-10 {
+        font-size: $FONT_SIZE_32;
+    }
+}
+
 // Dashboard CSS Settings
 $DASHBOARD_FONT_SIZE_TEXT: .75rem;
 $DASHBOARD_FONT_SIZE_TABLE_HEADER: .875rem;

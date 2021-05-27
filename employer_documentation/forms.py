@@ -250,70 +250,70 @@ class EmployerForm(forms.ModelForm):
                 id='spouse-section',
             ),
 
-            # Income Details
-            Row(
-                Column(
-                    HTML(
-                        """
-                        <h5 class="my-3">Income Details</h5>
-                    """),
-                    Row(
-                        Column(
-                            'monthly_income',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row'
-                    ),
-                ),
-                id='household-section',
-            ),
+            # # Income Details
+            # Row(
+            #     Column(
+            #         HTML(
+            #             """
+            #             <h5 class="my-3">Income Details</h5>
+            #         """),
+            #         Row(
+            #             Column(
+            #                 'monthly_income',
+            #                 css_class='form-group col-md-6',
+            #             ),
+            #             css_class='form-row'
+            #         ),
+            #     ),
+            #     id='household-section',
+            # ),
 
-            # Household Details
-            Row(
-                Column(
-                    HTML(
-                        """
-                        <h5 class="my-3">Household Details</h5>
-                    """),
-                    Row(
-                        Column(
-                            'household_name',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'household_id_type',
-                            css_class='form-group col-md-6'
-                        ),
-                        css_class='form-row'
-                    ),
-                    Row(
-                        Column(
-                            'household_id_num',
-                            css_class='form-group col-md-6'
-                        ),
-                        Column(
-                            'household_date_of_birth',
-                            css_class='form-group col-md-6',
-                        ),
-                        css_class='form-row'
-                    ),
-                    Row(
-                        Column(
-                            'household_relationship',
-                            css_class='form-group col-md-6'
-                        ),
-                        css_class='form-row'
-                    ),
-                ),
-                id='household-section',
-            ),
+            # # Household Details
+            # Row(
+            #     Column(
+            #         HTML(
+            #             """
+            #             <h5 class="my-3">Household Details</h5>
+            #         """),
+            #         Row(
+            #             Column(
+            #                 'household_name',
+            #                 css_class='form-group col-md-6',
+            #             ),
+            #             Column(
+            #                 'household_id_type',
+            #                 css_class='form-group col-md-6'
+            #             ),
+            #             css_class='form-row'
+            #         ),
+            #         Row(
+            #             Column(
+            #                 'household_id_num',
+            #                 css_class='form-group col-md-6'
+            #             ),
+            #             Column(
+            #                 'household_date_of_birth',
+            #                 css_class='form-group col-md-6',
+            #             ),
+            #             css_class='form-row'
+            #         ),
+            #         Row(
+            #             Column(
+            #                 'household_relationship',
+            #                 css_class='form-group col-md-6'
+            #             ),
+            #             css_class='form-row'
+            #         ),
+            #     ),
+            #     id='household-section',
+            # ),
 
             # Submit
             Row(
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -875,21 +875,21 @@ class EmployerSponsorForm(forms.ModelForm):
                     ),
 
                     # Income Details
-                    HTML(
-                        """
-                        <h5 class="my-3">Income Details</h5>
-                    """),
-                    Row(
-                        Column(
-                            PrependedText(
-                                'monthly_income', '$',
-                                min='0', max='9999999',
-                            ),
-                            css_class='form-group col-md-6',
-                            id='sponsor_monthly_income',
-                        ),
-                        css_class='form-row',
-                    ),
+                    # HTML(
+                    #     """
+                    #     <h5 class="my-3">Income Details</h5>
+                    # """),
+                    # Row(
+                    #     Column(
+                    #         PrependedText(
+                    #             'monthly_income', '$',
+                    #             min='0', max='9999999',
+                    #         ),
+                    #         css_class='form-group col-md-6',
+                    #         id='sponsor_monthly_income',
+                    #     ),
+                    #     css_class='form-row',
+                    # ),
                     # id='sponsors',
                 ),
                 id='sponsors-section',
@@ -900,7 +900,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1189,27 +1189,27 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 ),
             ),
 
-            HTML(
-                """
-                <h5 class="my-3">Income Details</h5>
-            """),
-            Row(
-                Column(
-                    PrependedText(
-                        'monthly_income', '$',
-                        min='0', max='9999999',
-                    ),
-                    css_class='form-group col-md-6',
-                ),
-                css_class='form-row',
-            ),
+            # HTML(
+            #     """
+            #     <h5 class="my-3">Income Details</h5>
+            # """),
+            # Row(
+            #     Column(
+            #         PrependedText(
+            #             'monthly_income', '$',
+            #             min='0', max='9999999',
+            #         ),
+            #         css_class='form-group col-md-6',
+            #     ),
+            #     css_class='form-row',
+            # ),
             
             # Submit
             Row(
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1265,6 +1265,124 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 settings.ENCRYPTION_KEY
             )
             return ciphertext
+
+class EmployerIncomeDetailsForm(forms.ModelForm):
+    class Meta:
+        model = models.EmployerIncome
+        exclude = [
+            'employer'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        # self.user_pk = kwargs.pop('user_pk')
+        # self.agency_user_group = kwargs.pop('agency_user_group')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            # Income Details
+            Row(
+                Column(
+                    HTML(
+                        """
+                        <h5 class="my-3">Income Details</h5>
+                    """),
+                    Row(
+                        Column(
+                            'worked_in_sg',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'monthly_income',
+                            css_class='form-group col-md-6',
+                        ),
+                        css_class='form-row'
+                    ),
+                ),
+                id='income-details-section',
+            ),
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Next',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class EmployerHouseholdDetailsForm(forms.ModelForm):
+    class Meta:
+        model = models.EmployerHousehold
+        exclude = [
+            'employer'
+        ]
+
+    def save(self, *args, **kwargs):
+        self.instance.employer = self.employer
+        return super().save(*args, **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        self.employer_id = kwargs.pop('employer_id')
+        self.employer = models.Employer.objects.get(
+            pk=self.employer_id
+        )
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            # Household Details
+            Row(
+                Column(
+                    HTML(
+                        """
+                        <h5 class="my-3">Household Details</h5>
+                    """),
+                    Row(
+                        Column(
+                            'household_name',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'household_id_type',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'household_id_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'household_date_of_birth',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'household_relationship',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row'
+                    ),
+                ),
+                id='household-section',
+            ),
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
 
 class EmployerDocForm(forms.ModelForm):
     class Meta:

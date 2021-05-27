@@ -45,7 +45,7 @@ from maid.models import (
     MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
 )
 from payment.models import Customer, Subscription
-from onlinemaid.constants import AG_OWNERS, AG_ADMINS
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 # Imports from local app
 from .filters import (
@@ -284,6 +284,20 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
     
     def get_queryset(self):
         order_by = self.request.GET.get('order-by')
+        qs = Employer.objects.filter(
+            agency_employee__agency__pk = self.agency_id
+        )
+
+        if self.authority == AG_MANAGERS:
+            qs = qs.filter(
+                agency_employee__branch = self.request.user.agency_employee.branch
+            )
+        
+        if self.authority == AG_SALES:
+            qs = qs.filter(
+                agency_employee = self.request.user.agency_employee
+            )
+        
         if order_by:
             if order_by == 'serialNo':
                 order_by = 'id'
@@ -301,13 +315,11 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
                 order_by = 'agency_employee__ea_personnel_number'
             elif order_by == '-eaPersonnel':
                 order_by = '-agency_employee__ea_personnel_number'
-            return Employer.objects.filter(
+            qs = qs.filter(
                 agency_employee__agency__pk = self.agency_id
             ).order_by(order_by)
-        else:
-            return Employer.objects.filter(
-                agency_employee__agency__pk = self.agency_id
-            )
+
+        return qs
 
 # Detail Views
 class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
@@ -625,31 +637,31 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_cok = {}
 
         initial.update({
-            'cfi_assessment': maid_cfi.assessment,
-            'cfi_willingness': maid_cfi.willingness,
-            'cfi_experience': maid_cfi.experience,
-            'cfi_remarks': maid_cfi.remarks,
-            'cfi_other_remarks': maid_cfi.other_remarks,
-            'cfe_assessment': maid_cfe.assessment,
-            'cfe_willingness': maid_cfe.willingness,
-            'cfe_experience': maid_cfe.experience,
-            'cfe_remarks': maid_cfe.remarks,
-            'cfe_other_remarks': maid_cfe.other_remarks,
-            'cfd_assessment': maid_cfd.assessment,
-            'cfd_willingness': maid_cfd.willingness,
-            'cfd_experience': maid_cfd.experience,
-            'cfd_remarks': maid_cfd.remarks,
-            'cfd_other_remarks': maid_cfd.other_remarks,
-            'geh_assessment': maid_geh.assessment,
-            'geh_willingness': maid_geh.willingness,
-            'geh_experience': maid_geh.experience,
-            'geh_remarks': maid_geh.remarks,
-            'geh_other_remarks': maid_geh.other_remarks,
-            'cok_assessment': maid_cok.assessment,
-            'cok_willingness': maid_cok.willingness,
-            'cok_experience': maid_cok.experience,
-            'cok_remarks': maid_cok.remarks,
-            'cok_other_remarks': maid_cok.other_remarks
+            'cfi_assessment': maid_cfi.get('assessment', None),
+            'cfi_willingness': maid_cfi.get('willingness', None),
+            'cfi_experience': maid_cfi.get('experience', None),
+            'cfi_remarks': maid_cfi.get('remarks', None),
+            'cfi_other_remarks': maid_cfi.get('other_remarks', None),
+            'cfe_assessment': maid_cfe.get('assessment', None),
+            'cfe_willingness': maid_cfe.get('willingness', None),
+            'cfe_experience': maid_cfe.get('experience', None),
+            'cfe_remarks': maid_cfe.get('remarks', None),
+            'cfe_other_remarks': maid_cfe.get('other_remarks', None),
+            'cfd_assessment': maid_cfd.get('assessment', None),
+            'cfd_willingness': maid_cfd.get('willingness', None),
+            'cfd_experience': maid_cfd.get('experience', None),
+            'cfd_remarks': maid_cfd.get('remarks', None),
+            'cfd_other_remarks': maid_cfd.get('other_remarks', None),
+            'geh_assessment': maid_geh.get('assessment', None),
+            'geh_willingness': maid_geh.get('willingness', None),
+            'geh_experience': maid_geh.get('experience', None),
+            'geh_remarks': maid_geh.get('remarks', None),
+            'geh_other_remarks': maid_geh.get('other_remarks', None),
+            'cok_assessment': maid_cok.get('assessment', None),
+            'cok_willingness': maid_cok.get('willingness', None),
+            'cok_experience': maid_cok.get('experience', None),
+            'cok_remarks': maid_cok.get('remarks', None),
+            'cok_other_remarks': maid_cok.get('other_remarks', None)
         })
         return initial
     
@@ -988,7 +1000,7 @@ class DashboardMaidInformationCreate(DashboardCreateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy(
-            'dashboard_maid_language_spoken_update',
+            'dashboard_maid_languages_and_fhpdr_update',
             kwargs={
                 'pk':self.object.pk
             }

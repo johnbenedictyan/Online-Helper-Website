@@ -73,6 +73,21 @@ urlpatterns = [
                         name='employer_jointapplicant_update_route'
                     ),
                     path(
+                        'income-details/create/',
+                        views.EmployerIncomeDetailsCreateView.as_view(),
+                        name='employer_incomedetails_create_route'
+                    ),
+                    path(
+                        'income-details/update/',
+                        views.EmployerIncomeDetailsUpdateView.as_view(),
+                        name='employer_incomedetails_update_route'
+                    ),
+                    path(
+                        'household-details/',
+                        views.EmployerHouseholdDetailsFormView.as_view(),
+                        name='employer_householddetails_update_route'
+                    ),
+                    path(
                         'documentation/',
                         include([
                             path(

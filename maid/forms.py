@@ -64,7 +64,8 @@ class MaidForm(forms.ModelForm):
     
     passport_expiry = forms.DateField(
         widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
+        input_formats=['%d %b %Y'],
+        required=False
     )
     
     class Meta:
@@ -604,12 +605,12 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
         return maid
 
 class MaidExperienceForm(forms.Form):
-    skills_evaluation_method = forms.ChoiceField(
-        label=_('Skills evaluation method'),
-        required=True,
-        choices=MaidSkillsEvaluationMethod.choices,
-        initial=MaidSkillsEvaluationMethod.DECLARATION
-    )
+    # skills_evaluation_method = forms.ChoiceField(
+    #     label=_('Skills evaluation method'),
+    #     required=True,
+    #     choices=MaidSkillsEvaluationMethod.choices,
+    #     initial=MaidSkillsEvaluationMethod.DECLARATION
+    # )
     
     cfi_assessment = forms.ChoiceField(
         label=_('Assessment'),
@@ -753,6 +754,18 @@ class MaidExperienceForm(forms.Form):
         label=_('Experience '),
         required=True,
         choices=TrueFalseChoices('Experience', 'No experience'),
+    )
+
+    cok_remarks = forms.ChoiceField(
+        label=_('Remarks'),
+        required=True,
+        choices=MaidCareRemarksChoices.choices
+    )
+
+    cok_other_remarks = forms.CharField(
+        label=_('Other remarks'),
+        widget=forms.Textarea,
+        required=False
     )
 
     def __init__(self, *args, **kwargs):

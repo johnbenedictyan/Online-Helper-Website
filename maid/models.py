@@ -118,7 +118,8 @@ class Maid(models.Model):
     
     passport_expiry = models.DateField(
         verbose_name=_('Passport Expiry Date'),
-        blank=False
+        null=True,
+        blank=True
     )
     
     # remarks = models.CharField(
@@ -136,14 +137,14 @@ class Maid(models.Model):
         MaidResponsibility
     )
     
-    skills_evaluation_method = models.CharField(
-        verbose_name=_('Skills evaluation method'),
-        max_length=4,
-        blank=True,
-        null=True,
-        choices=MaidSkillsEvaluationMethod.choices,
-        default=MaidSkillsEvaluationMethod.DECLARATION
-    )
+    # skills_evaluation_method = models.CharField(
+    #     verbose_name=_('Skills evaluation method'),
+    #     max_length=4,
+    #     blank=True,
+    #     null=True,
+    #     choices=MaidSkillsEvaluationMethod.choices,
+    #     default=MaidSkillsEvaluationMethod.DECLARATION
+    # )
 
     created_on = models.DateTimeField(
         verbose_name=_('Created On'),
@@ -309,7 +310,8 @@ class Maid(models.Model):
     work_permit = models.CharField(
         verbose_name=_('Work Permit'),
         max_length=255,
-        null=True
+        null=True,
+        blank=True
     )
 
     def __str__(self):

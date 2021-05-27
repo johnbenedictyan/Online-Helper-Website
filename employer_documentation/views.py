@@ -1,17 +1,20 @@
 # Django
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse, reverse_lazy
 from django.http import FileResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 # From our apps
-from . import models, forms
+from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
+from . import models, forms, constants
+from .formset import EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper
 from .mixins import *
 from onlinemaid import constants as om_constants
 
@@ -240,7 +243,25 @@ class EmployerCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        if (
+            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SINGLE or 
+            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
+        ):
+            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
+        
+        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
+        
+        else:
+            success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
+
+        return success_url
 
 class EmployerSponsorCreateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -250,6 +271,16 @@ class EmployerSponsorCreateView(
     form_class = forms.EmployerSponsorForm
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type,
+        })
+        return context
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
@@ -278,6 +309,16 @@ class EmployerJointApplicantCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
+        })
+        return context
+
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
@@ -290,6 +331,46 @@ class EmployerJointApplicantCreateView(
     def form_valid(self, form):
         form.instance.employer = models.Employer.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('employer_list_route')
+
+class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, CreateView):
+    model = models.EmployerIncome
+    form_class = forms.EmployerIncomeDetailsForm
+    pk_url_kwarg = 'level_0_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
+        })
+        return context
+
+    def get_object(self, *args, **kwargs):
+        return models.Employer.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+                )
+            )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # kwargs['user_pk'] = self.request.user.pk
+        # kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer = models.Employer.objects.get(
+            pk = self.kwargs.get(
+                self.pk_url_kwarg
+            )
         )
         return super().form_valid(form)
 
@@ -490,11 +571,91 @@ class EmployerUpdateView(
     pk_url_kwarg = 'level_0_pk'
     success_url = reverse_lazy('employer_list_route')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ), 
+            'type_of_applicant': models.Employer.objects.get(
+                pk=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            ).applicant_type
+        })
+
+        try:
+            sponsor_pk = models.Employer.objects.get(
+                pk=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            ).rn_sponsor_employer.pk
+        except ObjectDoesNotExist:
+            pass
+        else:
+            context.update({
+                'sponsor_pk': sponsor_pk
+            })
+        
+        try:
+           joint_application_pk = models.Employer.objects.get(
+                pk=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            ).rn_ja_employer.pk
+        except ObjectDoesNotExist:
+            pass
+        else:
+            context.update({
+                'joint_application_pk': joint_application_pk
+            })
+
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
+
+    def get_success_url(self):
+        if (
+            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SINGLE or 
+            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
+        ):
+            income_obj = self.object.has_income_obj()
+            if not income_obj:
+                success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
+                    'level_0_pk': self.object.pk
+                })
+            else:
+                success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+                    'level_0_pk': self.object.pk
+                })
+        
+        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            sponsor_obj = self.object.has_sponsor_obj()
+            if not sponsor_obj:
+                success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
+                    'level_0_pk': self.object.pk
+                })
+            else:
+                success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+                    'level_1_pk': sponsor_obj.pk
+                })
+        
+        else:
+            joint_applicant_obj = self.object.has_joint_applicant_obj()
+            if not joint_applicant_obj:
+                success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
+                    'level_0_pk': self.object.pk
+                })
+            else:
+                success_url = reverse_lazy('employer_jointapplicant_update_route', kwargs={
+                    'level_1_pk': joint_applicant_obj.pk
+                })
+
+        return success_url
 
 class EmployerSponsorUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -506,6 +667,15 @@ class EmployerSponsorUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.object.employer.pk, 
+            'type_of_applicant': self.object.employer.applicant_type,
+            'sponsor_pk': self.object.pk
+        })
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
@@ -513,7 +683,17 @@ class EmployerSponsorUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        income_obj = self.object.has_income_obj()
+        if not income_obj:
+            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
+                'level_0_pk': self.object.employer.pk
+            })
+        else:
+            success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+                'level_0_pk': self.object.employer.pk
+            })
+
+        return success_url
 
 class EmployerDocJointApplicantUpdateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -524,6 +704,60 @@ class EmployerDocJointApplicantUpdateView(
     form_class = forms.EmployerJointApplicantForm
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ), 
+            'type_of_applicant': models.Employer.objects.get(
+                pk=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            ).applicant_type,
+            'joint_application_pk': self.object.pk
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
+        return kwargs
+
+    def get_success_url(self):
+        income_obj = self.object.has_income_obj()
+        if not income_obj:
+            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
+                'level_0_pk': self.object.employer.pk
+            })
+        else:
+            success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+                'level_0_pk': self.object.employer.pk
+            })
+        
+        return success_url
+
+class EmployerIncomeDetailsUpdateView(
+    CheckAgencyEmployeePermissionsMixin,
+    CheckEmployerDocRelationshipsMixin,
+    UpdateView
+):
+    model = models.EmployerIncome
+    form_class = forms.EmployerIncomeDetailsForm
+    pk_url_kwarg = 'level_0_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ), 
+            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -1069,3 +1303,93 @@ class EmployerDeleteView(
 #     model = models.EmployerDoc
 #     pk_url_kwarg = 'level_1_pk'
 #     template_name = 'employer_documentation/pdfarchive_detail.html'
+
+# Form Views
+class EmployerHouseholdDetailsFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
+                                       SuccessMessageMixin, FormView):
+    form_class = EmployerHouseholdFormSet
+    http_method_names = ['get', 'post']
+    template_name = 'employer_documentation/crispy_form.html'
+    pk_url_kwarg = 'level_0_pk'
+    authority = ''
+    agency_id = ''
+    employer_id = ''
+    success_message = 'Maid employment history updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employer_id': self.employer_id,
+            'level_0_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            'type_of_applicant':models.Employer.objects.get(
+                pk=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            ).applicant_type
+        })
+        income_obj = models.Employer.objects.get(
+            pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        ).has_income_obj()
+        if income_obj:
+            context.update({
+                'income_obj': income_obj
+            })
+        helper = EmployerHouseholdFormSetHelper()
+        helper.form_tag = False
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        self.employer_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        kwargs = {
+            'employer_id': self.employer_id
+        }
+        return kwargs
+    
+    def get_instance_object(self):
+        return models.Employer.objects.get(
+            pk=self.employer_id
+        )
+        
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+        
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'employer_householddetails_update_route',
+                    kwargs={
+                        'level_0_pk':self.employer_id
+                    }
+                )
+            )
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_employers_list'
+        )

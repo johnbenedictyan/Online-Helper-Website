@@ -6,13 +6,14 @@ import uuid
 from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import (
     FileExtensionValidator,
     MinValueValidator,
     MaxValueValidator,
 )
+from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
 from onlinemaid.constants import TrueFalseChoices
@@ -69,8 +70,8 @@ class Employer(models.Model):
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
-        choices=APPLICANT_TYPE_CHOICES,
-        default=APPLICANT_TYPE_CHOICES[0][0],
+        choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
+        default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
     )
     household_details_required = models.BooleanField(
         verbose_name=_('Applicable for subsidised levy?'),
@@ -393,6 +394,31 @@ class Employer(models.Model):
             self.spouse_passport_nonce,
             self.spouse_passport_tag,
         )
+
+    #Utility Functions
+    def has_income_obj(self):
+        try:
+            income_obj = self.rn_income_employer
+        except ObjectDoesNotExist:
+            pass
+        else:
+            return income_obj
+
+    def has_sponsor_obj(self):
+        try:
+            sponsor_obj = self.rn_sponsor_employer
+        except ObjectDoesNotExist:
+            pass
+        else:
+            return sponsor_obj
+
+    def has_joint_applicant_obj(self):
+        try:
+            joint_applicant_obj = self.rn_ja_employer
+        except ObjectDoesNotExist:
+            pass
+        else:
+            return joint_applicant_obj
 
     def __str__(self):
         return self.employer_name

@@ -70,7 +70,7 @@ const maidProfileUrlGen = (id) => {
     return location.origin + maidProfileUrl
 }
 
-const maidDetialUrlGen = (id) => {
+const maidDetailUrlGen = (id) => {
     const maidDetailUrl = `/maids/view/${id}/`
     return location.origin + maidDetailUrl
 }
@@ -172,7 +172,7 @@ const tippy_initialisation = function () {
 }
 
 const maidProfileRedirect = (pk) => {
-    location.replace(maidDetialUrlGen(pk));
+    location.replace(maidDetailUrlGen(pk));
 }
 
 // Featured Maids
