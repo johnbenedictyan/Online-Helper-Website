@@ -1211,6 +1211,14 @@ class EmployerDoc(models.Model):
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
+    handover_checklist_signed = models.BooleanField(
+        verbose_name=_("Has handover checklist been signed?"),
+        choices=TrueFalseChoices(
+            _('Yes'),
+            _('No'),
+        ),
+        default=False,
+    )
 
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
@@ -1846,26 +1854,26 @@ class EmployerDocSig(models.Model):
     )
 
     # Optional signatures
-    spouse_signature = models.TextField(
-        verbose_name=_('Spouse Signature'),
-        blank=True,
-        null=True
-    )
-    sponsor_1_signature = models.TextField(
-        verbose_name=_('Sponsor 1 Signature'),
-        blank=True,
-        null=True
-    )
-    sponsor_2_signature = models.TextField(
-        verbose_name=_('Sponsor 2 Signature'),
-        blank=True,
-        null=True
-    )
-    joint_applicant_signature = models.TextField(
-        verbose_name=_('Joint Applicant Signature'),
-        blank=True,
-        null=True
-    )
+    # spouse_signature = models.TextField(
+    #     verbose_name=_('Spouse Signature'),
+    #     blank=True,
+    #     null=True
+    # )
+    # sponsor_1_signature = models.TextField(
+    #     verbose_name=_('Sponsor 1 Signature'),
+    #     blank=True,
+    #     null=True
+    # )
+    # sponsor_2_signature = models.TextField(
+    #     verbose_name=_('Sponsor 2 Signature'),
+    #     blank=True,
+    #     null=True
+    # )
+    # joint_applicant_signature = models.TextField(
+    #     verbose_name=_('Joint Applicant Signature'),
+    #     blank=True,
+    #     null=True
+    # )
 
     # Verification Tokens
     employer_slug = models.SlugField(
@@ -1880,78 +1888,78 @@ class EmployerDocSig(models.Model):
     )
 
     # Witnesses
-    employer_witness_signature = models.TextField(
-        verbose_name=_('Signature of Witness for Employer'),
-        blank=True,
-        null=True
-    )
-    employer_witness_name = models.CharField(
-        verbose_name=_('Employer Witness Name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    employer_witness_nric = models.CharField(
-        verbose_name=_('Last 4 characters of NRIC/FIN'),
-        max_length=4,
-        blank=True,
-        null=True
-    )
-    employer_witness_address_1 = models.CharField(
-        verbose_name=_('Employer Witness Address Line 1'),
-        max_length=100,
-        blank=True,
-        null=True
-    )
+    # employer_witness_signature = models.TextField(
+    #     verbose_name=_('Signature of Witness for Employer'),
+    #     blank=True,
+    #     null=True
+    # )
+    # employer_witness_name = models.CharField(
+    #     verbose_name=_('Employer Witness Name'),
+    #     max_length=40,
+    #     blank=True,
+    #     null=True
+    # )
+    # employer_witness_nric = models.CharField(
+    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
+    #     max_length=4,
+    #     blank=True,
+    #     null=True
+    # )
+    # employer_witness_address_1 = models.CharField(
+    #     verbose_name=_('Employer Witness Address Line 1'),
+    #     max_length=100,
+    #     blank=True,
+    #     null=True
+    # )
 
-    employer_witness_address_2 = models.CharField(
-        verbose_name=_('Employer Witness Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
-    )
+    # employer_witness_address_2 = models.CharField(
+    #     verbose_name=_('Employer Witness Address Line 2'),
+    #     max_length=50,
+    #     blank=True,
+    #     null=True
+    # )
 
-    employer_witness_post_code = models.CharField(
-        verbose_name=_('Employer Witness Postal Code'),
-        max_length=25,
-        blank=True,
-        null=True
-    )
+    # employer_witness_post_code = models.CharField(
+    #     verbose_name=_('Employer Witness Postal Code'),
+    #     max_length=25,
+    #     blank=True,
+    #     null=True
+    # )
 
-    fdw_witness_signature = models.TextField(
-        verbose_name=_('Signature of Witness for FDW'),
-        blank=True,
-        null=True
-    )
-    fdw_witness_name = models.CharField(
-        verbose_name=_('FDW Witness Name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    fdw_witness_nric = models.CharField(
-        verbose_name=_('Last 4 characters of NRIC/FIN'),
-        max_length=4,
-        blank=True,
-        null=True
-    )
-    agency_staff_witness_signature = models.TextField(
-        verbose_name=_('Signature of Witness for Agency Staff Member'),
-        blank=True,
-        null=True
-    )
-    agency_staff_witness_name = models.CharField(
-        verbose_name=_('Agency Staff Memeber Witness Name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    agency_staff_witness_nric = models.CharField(
-        verbose_name=_('Last 4 characters of NRIC/FIN'),
-        max_length=4,
-        blank=True,
-        null=True
-    )
+    # fdw_witness_signature = models.TextField(
+    #     verbose_name=_('Signature of Witness for FDW'),
+    #     blank=True,
+    #     null=True
+    # )
+    # fdw_witness_name = models.CharField(
+    #     verbose_name=_('FDW Witness Name'),
+    #     max_length=40,
+    #     blank=True,
+    #     null=True
+    # )
+    # fdw_witness_nric = models.CharField(
+    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
+    #     max_length=4,
+    #     blank=True,
+    #     null=True
+    # )
+    # agency_staff_witness_signature = models.TextField(
+    #     verbose_name=_('Signature of Witness for Agency Staff Member'),
+    #     blank=True,
+    #     null=True
+    # )
+    # agency_staff_witness_name = models.CharField(
+    #     verbose_name=_('Agency Staff Memeber Witness Name'),
+    #     max_length=40,
+    #     blank=True,
+    #     null=True
+    # )
+    # agency_staff_witness_nric = models.CharField(
+    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
+    #     max_length=4,
+    #     blank=True,
+    #     null=True
+    # )
 
 class EmployerDocMaidStatus(models.Model):
     employer_doc = models.OneToOneField(
@@ -3664,26 +3672,26 @@ class ArchivedDoc(models.Model):
     )
 
     # Optional signatures
-    spouse_signature = models.TextField(
-        verbose_name=_('Spouse Signature'),
-        blank=True,
-        null=True
-    )
-    sponsor_1_signature = models.TextField(
-        verbose_name=_('Sponsor 1 Signature'),
-        blank=True,
-        null=True
-    )
-    sponsor_2_signature = models.TextField(
-        verbose_name=_('Sponsor 2 Signature'),
-        blank=True,
-        null=True
-    )
-    joint_applicant_signature = models.TextField(
-        verbose_name=_('Joint Applicant Signature'),
-        blank=True,
-        null=True
-    )
+    # spouse_signature = models.TextField(
+    #     verbose_name=_('Spouse Signature'),
+    #     blank=True,
+    #     null=True
+    # )
+    # sponsor_1_signature = models.TextField(
+    #     verbose_name=_('Sponsor 1 Signature'),
+    #     blank=True,
+    #     null=True
+    # )
+    # sponsor_2_signature = models.TextField(
+    #     verbose_name=_('Sponsor 2 Signature'),
+    #     blank=True,
+    #     null=True
+    # )
+    # joint_applicant_signature = models.TextField(
+    #     verbose_name=_('Joint Applicant Signature'),
+    #     blank=True,
+    #     null=True
+    # )
 
     # Witnesses
     # employer_witness_signature = models.TextField(
@@ -3809,14 +3817,14 @@ class ArchivedDoc(models.Model):
         upload_to=generate_archive_path,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
     )
-    f11_security_bond = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f12_fdw_work_permit = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
+    # f11_security_bond = models.FileField(
+    #     upload_to=generate_archive_path,
+    #     storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
+    # )
+    # f12_fdw_work_permit = models.FileField(
+    #     upload_to=generate_archive_path,
+    #     storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
+    # )
     f13_income_tax_declaration = models.FileField(
         upload_to=generate_archive_path,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
