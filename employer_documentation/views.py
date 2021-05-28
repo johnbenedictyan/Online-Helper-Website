@@ -647,7 +647,7 @@ class EmployerUpdateView(
                 })
             else:
                 success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
-                    'level_1_pk': sponsor_obj.pk
+                    'level_0_pk': self.object.pk
                 })
         
         else:
@@ -658,7 +658,7 @@ class EmployerUpdateView(
                 })
             else:
                 success_url = reverse_lazy('employer_jointapplicant_update_route', kwargs={
-                    'level_1_pk': joint_applicant_obj.pk
+                    'level_0_pk': self.object.pk
                 })
 
         return success_url
@@ -670,8 +670,13 @@ class EmployerSponsorUpdateView(
 ):
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
-    pk_url_kwarg = 'level_1_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.Employer.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_sponsor_employer
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -708,8 +713,13 @@ class EmployerDocJointApplicantUpdateView(
 ):
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
-    pk_url_kwarg = 'level_1_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.Employer.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_ja_employer
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -754,6 +764,11 @@ class EmployerIncomeDetailsUpdateView(
     form_class = forms.EmployerIncomeDetailsForm
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.Employer.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_income_employer
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
