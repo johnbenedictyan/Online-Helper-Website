@@ -157,9 +157,19 @@ class Employer(models.Model):
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
         editable=True,
+        blank=True,
+        null=True,
     )
-    employer_nric_nonce = models.BinaryField(editable=True)
-    employer_nric_tag = models.BinaryField(editable=True)
+    employer_nric_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_nric_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
     employer_fin_num = models.BinaryField(
         verbose_name=_('Employer FIN'),
         editable=True,
