@@ -136,7 +136,9 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 # level 1
                 isinstance(self.object, models.EmployerDoc) or
                 isinstance(self.object, models.EmployerSponsor) or
-                isinstance(self.object, models.EmployerJointApplicant)
+                isinstance(self.object, models.EmployerJointApplicant) or
+                isinstance(self.object, models.EmployerIncome) or
+                isinstance(self.object, models.EmployerHousehold)
             ):
                 self.employer_doc_obj = self.object
             elif (
