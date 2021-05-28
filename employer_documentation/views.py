@@ -243,21 +243,18 @@ class EmployerCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        if (
-            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SINGLE or 
-            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
-        ):
-            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
-        
-        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
             success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
                 'level_0_pk': self.object.pk
             })
         
-        else:
+        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
+        
+        else:
+            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
                 'level_0_pk': self.object.pk
             })
 
@@ -298,7 +295,9 @@ class EmployerSponsorCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        return reverse_lazy('employer_incomedetails_create_route', kwargs={
+            'level_0_pk': self.object.employer.pk
+        })
 
 class EmployerJointApplicantCreateView(
     CheckAgencyEmployeePermissionsMixin,
@@ -335,7 +334,9 @@ class EmployerJointApplicantCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        return reverse_lazy('employer_incomedetails_create_route', kwargs={
+            'level_0_pk': self.object.employer.pk
+        })
 
 class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, CreateView):
     model = models.EmployerIncome
@@ -362,8 +363,8 @@ class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, Creat
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        # kwargs['user_pk'] = self.request.user.pk
-        # kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['agency_user_group'] = self.agency_user_group
         return kwargs
 
     def form_valid(self, form):
@@ -375,7 +376,12 @@ class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, Creat
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        if self.object.employer.household_details_required:
+            return reverse_lazy('employer_householddetails_update_route', kwargs={
+                'level_0_pk': self.object.employer.pk,
+            })
+        else:
+            return reverse_lazy('employer_list_route')
 
 class EmployerDocCreateView(
     CheckAgencyEmployeePermissionsMixin,
