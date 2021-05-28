@@ -18,6 +18,34 @@
 
 {% block js %}
     <script>
+        let applicantType = document.getElementById('id_applicant_type');
+        let employerMaritalStatus = document.getElementById('id_employer_marital_status');
+        if (applicantType && employerMaritalStatus) {
+            // On page load
+            if (employerMaritalStatus=='MARRIED') {
+                document.getElementById('spouse-section').hidden = false; // show
+            } else {
+                document.getElementById('spouse-section').hidden = true; // hide
+            }
+
+            // On employerMaritalStatus change
+            employerMaritalStatus.addEventListener('change', function() {
+                if (this.value=='MARRIED') {
+                    document.getElementById('spouse-section').hidden = false; // show
+                } else {
+                    document.getElementById('spouse-section').hidden = true; // hide
+                }
+            })
+
+            // On applicantType change
+            applicantType.addEventListener('change', function() {
+                if (this.value=='SPOUSE') {
+                    document.getElementById('spouse-section').hidden = false; // show
+                    employerMaritalStatus.value = 'MARRIED';
+                }
+            })
+        }
+
         
         // Token URL copy
         let copyBtn = document.querySelector('#copy-button');
