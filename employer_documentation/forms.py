@@ -1274,8 +1274,8 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        # self.user_pk = kwargs.pop('user_pk')
-        # self.agency_user_group = kwargs.pop('agency_user_group')
+        self.user_pk = kwargs.pop('user_pk')
+        self.agency_user_group = kwargs.pop('agency_user_group')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -1320,7 +1320,9 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
     class Meta:
         model = models.EmployerHousehold
         exclude = [
-            'employer'
+            'employer',
+            'household_id_nonce',
+            'household_id_tag',
         ]
 
     def save(self, *args, **kwargs):
@@ -1383,6 +1385,18 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+
+    def clean_household_id_num(self):
+        cleaned_field = self.cleaned_data.get('household_id_num')
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.household_id_nonce, self.instance.household_id_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
 
 class EmployerDocForm(forms.ModelForm):
     class Meta:
