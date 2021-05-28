@@ -1165,6 +1165,12 @@ class EmployerHousehold(models.Model):
         verbose_name=_("Household member's ID number"),
         editable=True,
     )
+    household_id_nonce = models.BinaryField(
+        editable=True,
+    )
+    household_id_tag = models.BinaryField(
+        editable=True,
+    )
     household_date_of_birth = models.DateField(
         verbose_name=_("Household member's date of birth"),
     )
