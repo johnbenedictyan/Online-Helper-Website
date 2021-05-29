@@ -157,9 +157,19 @@ class Employer(models.Model):
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
         editable=True,
+        blank=True,
+        null=True,
     )
-    employer_nric_nonce = models.BinaryField(editable=True)
-    employer_nric_tag = models.BinaryField(editable=True)
+    employer_nric_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+    employer_nric_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
     employer_fin_num = models.BinaryField(
         verbose_name=_('Employer FIN'),
         editable=True,
@@ -438,14 +448,6 @@ class EmployerSponsor(models.Model):
         choices=ed_constants.RelationshipChoices.choices,
         default=ed_constants.RelationshipChoices.DAUGHTER,
     )
-    sponsor_1_worked_in_sg = models.BooleanField(
-        verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-    )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
         max_length=40,
@@ -634,16 +636,6 @@ class EmployerSponsor(models.Model):
         max_length=30,
         choices=ed_constants.RelationshipChoices.choices,
         default=ed_constants.RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True,
-    )
-    sponsor_2_worked_in_sg = models.BooleanField(
-        verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
         blank=True,
         null=True,
     )
@@ -1163,6 +1155,12 @@ class EmployerHousehold(models.Model):
     )
     household_id_num = models.BinaryField(
         verbose_name=_("Household member's ID number"),
+        editable=True,
+    )
+    household_id_nonce = models.BinaryField(
+        editable=True,
+    )
+    household_id_tag = models.BinaryField(
         editable=True,
     )
     household_date_of_birth = models.DateField(
@@ -2406,14 +2404,6 @@ class ArchivedDoc(models.Model):
         choices=ed_constants.RelationshipChoices.choices,
         default=ed_constants.RelationshipChoices.DAUGHTER,
     )
-    sponsor_1_worked_in_sg = models.BooleanField(
-        verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-    )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
         max_length=40,
@@ -2602,16 +2592,6 @@ class ArchivedDoc(models.Model):
         max_length=30,
         choices=ed_constants.RelationshipChoices.choices,
         default=ed_constants.RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True,
-    )
-    sponsor_2_worked_in_sg = models.BooleanField(
-        verbose_name=_('Sponsor 1 worked in SG for last 2 years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
         blank=True,
         null=True,
     )

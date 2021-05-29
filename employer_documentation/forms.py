@@ -48,7 +48,7 @@ class EmployerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.user_obj = get_user_model().objects.get(pk=self.user_pk)
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         # Decryption
@@ -106,12 +106,16 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'employer_mobile_number',
-                    css_class='form-group col-md-6'
+                    PrependedText(
+                        'employer_mobile_number', '+65',
+                    ),
+                    css_class='form-group col-md-6',
                 ),
                 Column(
-                    'employer_home_number',
-                    css_class='form-group col-md-6'
+                    PrependedText(
+                        'employer_home_number', '+65',
+                    ),
+                    css_class='form-group col-md-6',
                 ),
                 css_class='form-row'
             ),
@@ -155,7 +159,8 @@ class EmployerForm(forms.ModelForm):
                 ),
                 Column(
                     'employer_nric_num',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    id='employer_id_nric',
                 ),
                 css_class='form-row'
             ),
@@ -168,7 +173,8 @@ class EmployerForm(forms.ModelForm):
                     'employer_passport_num',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                css_class='form-row',
+                id='employer_id_other',
             ),
             Row(
                 Column(
@@ -220,7 +226,8 @@ class EmployerForm(forms.ModelForm):
                         ),
                         Column(
                             'spouse_nric_num',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-6',
+                            id='spouse_id_nric',
                         ),
                         css_class='form-row'
                     ),
@@ -233,7 +240,8 @@ class EmployerForm(forms.ModelForm):
                             'spouse_passport_num',
                             css_class='form-group col-md-6'
                         ),
-                        css_class='form-row'
+                        css_class='form-row',
+                        id='spouse_id_other',
                     ),
                     Row(
                         Column(
@@ -250,64 +258,6 @@ class EmployerForm(forms.ModelForm):
                 id='spouse-section',
             ),
 
-            # # Income Details
-            # Row(
-            #     Column(
-            #         HTML(
-            #             """
-            #             <h5 class="my-3">Income Details</h5>
-            #         """),
-            #         Row(
-            #             Column(
-            #                 'monthly_income',
-            #                 css_class='form-group col-md-6',
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #     ),
-            #     id='household-section',
-            # ),
-
-            # # Household Details
-            # Row(
-            #     Column(
-            #         HTML(
-            #             """
-            #             <h5 class="my-3">Household Details</h5>
-            #         """),
-            #         Row(
-            #             Column(
-            #                 'household_name',
-            #                 css_class='form-group col-md-6',
-            #             ),
-            #             Column(
-            #                 'household_id_type',
-            #                 css_class='form-group col-md-6'
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #         Row(
-            #             Column(
-            #                 'household_id_num',
-            #                 css_class='form-group col-md-6'
-            #             ),
-            #             Column(
-            #                 'household_date_of_birth',
-            #                 css_class='form-group col-md-6',
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #         Row(
-            #             Column(
-            #                 'household_relationship',
-            #                 css_class='form-group col-md-6'
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #     ),
-            #     id='household-section',
-            # ),
-
             # Submit
             Row(
                 Column(
@@ -322,19 +272,19 @@ class EmployerForm(forms.ModelForm):
             )
         )
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
+        if self.authority==om_constants.AG_OWNERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_owner.agency
                 )
             )
-        elif self.agency_user_group==om_constants.AG_ADMINS:
+        elif self.authority==om_constants.AG_ADMINS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_employee.agency
                 )
             )
-        elif self.agency_user_group==om_constants.AG_MANAGERS:
+        elif self.authority==om_constants.AG_MANAGERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     branch=self.user_obj.agency_employee.branch
@@ -348,7 +298,7 @@ class EmployerForm(forms.ModelForm):
         for employer_obj in queryset:
             if not employer_obj==self.instance:
                 # Check if it belongs to current user's agency
-                if self.agency_user_group==om_constants.AG_OWNERS:
+                if self.authority==om_constants.AG_OWNERS:
                     if (
                         employer_obj.agency_employee.agency
                         == self.user_obj.agency_owner.agency
@@ -495,7 +445,7 @@ class EmployerSponsorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full()})
@@ -531,18 +481,18 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_worked_in_sg',
+                                    'sponsor_1_name',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
                                 Column(
-                                    'sponsor_1_name',
+                                    'sponsor_1_gender',
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_gender',
+                                    'sponsor_1_nric_num',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
@@ -558,49 +508,47 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_nric_num',
+                                    'sponsor_1_nationality',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_1_nationality',
-                                    css_class='form-group col-md-6',
-                                ),
                                 Column(
                                     'sponsor_1_residential_status',
                                     css_class='form-group col-md-6',
                                 ),
+                                Column(
+                                    PrependedText(
+                                        'sponsor_1_mobile_number', '+65',
+                                    ),
+                                    css_class='form-group col-md-6',
+                                ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_1_mobile_number',
-                                    css_class='form-group col-md-6',
-                                ),
                                 Column(
                                     'sponsor_1_email',
                                     css_class='form-group col-md-6',
                                 ),
-                                css_class='form-row',
-                            ),
-                            Row(
                                 Column(
                                     'sponsor_1_address_1',
                                     css_class='form-group col-md-6',
                                 ),
+                                css_class='form-row',
+                            ),
+                            Row(
                                 Column(
                                     'sponsor_1_address_2',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_post_code',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_1_post_code',
-                                    css_class='form-group col-md-6',
-                                ),
                                 Column(
                                     'sponsor_1_marital_status',
                                     css_class='form-group col-md-6',
@@ -717,18 +665,18 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 Column(
-                                    'sponsor_2_worked_in_sg',
-                                    css_class='form-group col-md-6',
+                                    'sponsor_2_name',
+                                    css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
                                 Column(
-                                    'sponsor_2_name',
+                                    'sponsor_2_gender',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 Column(
-                                    'sponsor_2_gender',
+                                    'sponsor_2_nric_num',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
@@ -744,49 +692,47 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 Column(
-                                    'sponsor_2_nric_num',
+                                    'sponsor_2_nationality',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_2_nationality',
-                                    css_class='form-group col-md-6 sponsor-2',
-                                ),
                                 Column(
                                     'sponsor_2_residential_status',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
+                                Column(
+                                    PrependedText(
+                                        'sponsor_2_mobile_number', '+65',
+                                    ),
+                                    css_class='form-group col-md-6',
+                                ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_2_mobile_number',
-                                    css_class='form-group col-md-6 sponsor-2',
-                                ),
                                 Column(
                                     'sponsor_2_email',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
-                                css_class='form-row',
-                            ),
-                            Row(
                                 Column(
                                     'sponsor_2_address_1',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
+                                css_class='form-row',
+                            ),
+                            Row(
                                 Column(
                                     'sponsor_2_address_2',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_post_code',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_2_post_code',
-                                    css_class='form-group col-md-6 sponsor-2',
-                                ),
                                 Column(
                                     'sponsor_2_marital_status',
                                     css_class='form-group col-md-6 sponsor-2',
@@ -873,24 +819,6 @@ class EmployerSponsorForm(forms.ModelForm):
                         id="sponsor_2",
                         # hidden="true",
                     ),
-
-                    # Income Details
-                    # HTML(
-                    #     """
-                    #     <h5 class="my-3">Income Details</h5>
-                    # """),
-                    # Row(
-                    #     Column(
-                    #         PrependedText(
-                    #             'monthly_income', '$',
-                    #             min='0', max='9999999',
-                    #         ),
-                    #         css_class='form-group col-md-6',
-                    #         id='sponsor_monthly_income',
-                    #     ),
-                    #     css_class='form-row',
-                    # ),
-                    # id='sponsors',
                 ),
                 id='sponsors-section',
             ),
@@ -903,7 +831,7 @@ class EmployerSponsorForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-md-6 text-center'
                 ),
                 css_class='form-row'
             )
@@ -1022,7 +950,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full()})
@@ -1045,23 +973,16 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             css_class='form-group col-md-6',
                         ),
                         Column(
-                            'joint_applicant_worked_in_sg',
+                            'joint_applicant_name',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
                     Row(
-                        Column(
-                            'joint_applicant_name',
-                            css_class='form-group col-md-6',
-                        ),
                         Column(
                             'joint_applicant_gender',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             Field(
                                 'joint_applicant_date_of_birth',
@@ -1071,45 +992,49 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             ),
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_nric_num',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             'joint_applicant_nationality',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_residential_status',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             'joint_applicant_address_1',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_address_2',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_post_code',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
                     Row(
-                        Column(
-                            'joint_applicant_post_code',
-                            css_class='form-group col-md-6',
-                        ),
                         Column(
                             'joint_applicant_marital_status',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
+                    
                     # Joint applicant spouse
                     Row(
                         Column(
@@ -1189,21 +1114,6 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 ),
             ),
 
-            # HTML(
-            #     """
-            #     <h5 class="my-3">Income Details</h5>
-            # """),
-            # Row(
-            #     Column(
-            #         PrependedText(
-            #             'monthly_income', '$',
-            #             min='0', max='9999999',
-            #         ),
-            #         css_class='form-group col-md-6',
-            #     ),
-            #     css_class='form-row',
-            # ),
-            
             # Submit
             Row(
                 Column(
@@ -1274,8 +1184,8 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        # self.user_pk = kwargs.pop('user_pk')
-        # self.agency_user_group = kwargs.pop('agency_user_group')
+        self.user_pk = kwargs.pop('user_pk')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -1320,7 +1230,9 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
     class Meta:
         model = models.EmployerHousehold
         exclude = [
-            'employer'
+            'employer',
+            'household_id_nonce',
+            'household_id_tag',
         ]
 
     def save(self, *args, **kwargs):
@@ -1384,6 +1296,18 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
             )
         )
 
+    def clean_household_id_num(self):
+        cleaned_field = self.cleaned_data.get('household_id_num')
+        error_msg = helper_functions.validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            ciphertext, self.instance.household_id_nonce, self.instance.household_id_tag = helper_functions.encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            return ciphertext
+
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDoc
@@ -1391,10 +1315,17 @@ class EmployerDocForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
+        self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
+        self.fields['employer'].queryset = (
+            models.Employer.objects.filter(
+                agency_employee__agency__pk=self.agency_id,
+            )
+        )
+
+        if self.authority==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -1487,7 +1418,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()})
@@ -1777,7 +1708,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -1968,48 +1899,6 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             )
         )
 
-# class DocEmploymentContractForm(forms.ModelForm):
-#     class Meta:
-#         model = models.DocEmploymentContract
-#         exclude = ['employer_doc']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             HTML(
-#                 """
-#                 <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
-#             """),
-#             Row(
-#                 Column(
-#                     'c3_5_fdw_sleeping_arrangement',
-#                     css_class='form-group col-md-6'
-#                 ),
-#                 Column(
-#                     'c4_1_termination_notice',
-#                     css_class='form-group col-md-6'
-#                 ),
-#                 css_class='form-row'
-#             ),
-            
-#             # Submit
-#             Row(
-#                 Column(
-#                     Submit(
-#                         'submit',
-#                         'Submit',
-#                         css_class="btn btn-primary w-50"
-#                     ),
-#                     css_class='form-group col-12 text-center'
-#                 ),
-#                 css_class='form-row'
-#             )
-#         )
-
 class DocSafetyAgreementForm(forms.ModelForm):
     class Meta:
         model = models.DocSafetyAgreement
@@ -2017,7 +1906,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2224,7 +2113,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2321,7 +2210,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
 #     def __init__(self, *args, **kwargs):
 #         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         self.authority = kwargs.pop('authority')
 #         super().__init__(*args, **kwargs)
 
 #         self.helper = FormHelper()
@@ -2360,7 +2249,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
 #     def __init__(self, *args, **kwargs):
 #         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         self.authority = kwargs.pop('authority')
 #         super().__init__(*args, **kwargs)
 
 #         self.helper = FormHelper()
