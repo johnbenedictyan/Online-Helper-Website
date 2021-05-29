@@ -8,7 +8,6 @@
     </div>
     <div class="row">
         <div class="col">
-            <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}{% url 'employer_create_route' %}{% else %}{% url 'employer_update_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}{% url 'employer_create_route' %}{% else %}{% url 'employer_update_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Employer Info</p>
             </a>
@@ -17,37 +16,22 @@
     {% if type_of_applicant == 'SPONSR' %}
     <div class="row">
         <div class="col">
-            <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
-            {% if not sponsor_pk %}
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk %}{% endif %}">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'employer_sponsor_update_route' level_0_pk %}">
                 <p class="m-1 pl-2">Sponsor 1 Info</p>
             </a>
-            {% else %}
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'employer_sponsor_update_route' level_0_pk=level_0_pk %}">
-                <p class="m-1 pl-2">Sponsor 1 Info</p>
-            </a>
-            {% endif %}
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <!-- {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %} -->
-            {% if not sponsor_pk %}
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_sponsor_create_route' level_0_pk %}{% endif %}">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'employer_sponsor_update_route' level_0_pk %}">
                 <p class="m-1 pl-2">Sponsor 2 Info</p>
             </a>
-            {% else %}
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'employer_sponsor_update_route' level_0_pk=level_0_pk %}">
-                <p class="m-1 pl-2">Sponsor 2 Info</p>
-            </a>
-            {% endif %}
         </div>
     </div>
     {% endif %}
     {% if type_of_applicant == 'JNT_AP' %}
     <div class="row">
         <div class="col">
-            {% comment %}<a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_jointapplicant_create_route' level_0_pk=object.pk %}{% endif %}">{% endcomment %}
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_jointapplicant_create_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Joint Info</p>
             </a>
@@ -56,7 +40,7 @@
     {% endif %}
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_incomedetails_create_route' level_0_pk %}{% endif %}">
+            <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% if url_name == 'employer_create_route' %}#{% else %}{% url 'employer_incomedetails_update_route' level_0_pk %}{% endif %}">
                 <p class="m-1 pl-2">Income Details</p>
             </a>
         </div>
