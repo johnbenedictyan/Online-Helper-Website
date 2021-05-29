@@ -1077,12 +1077,25 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             ),
                             Row(
                                 Column(
+                                    'joint_applicant_spouse_nationality',
+                                    css_class='form-group col-md-6 spouse-1',
+                                ),
+                                Column(
+                                    'joint_applicant_spouse_residential_status',
+                                    css_class='form-group col-md-6 spouse-1',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
                                     'joint_applicant_spouse_nric_num',
                                     css_class='form-group col-md-6 spouse-1',
+                                    id='ja_spouse_id_nric',
                                 ),
                                 Column(
                                     'joint_applicant_spouse_fin_num',
                                     css_class='form-group col-md-6 spouse-1',
+                                    id='ja_spouse_id_fin',
                                 ),
                                 css_class='form-row',
                             ),
@@ -1101,17 +1114,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                     css_class='form-group col-md-6 spouse-1',
                                 ),
                                 css_class='form-row',
-                            ),
-                            Row(
-                                Column(
-                                    'joint_applicant_spouse_nationality',
-                                    css_class='form-group col-md-6 spouse-1',
-                                ),
-                                Column(
-                                    'joint_applicant_spouse_residential_status',
-                                    css_class='form-group col-md-6 spouse-1',
-                                ),
-                                css_class='form-row',
+                                id='ja_spouse_id_passport',
                             ),
                         ),
                         id="joint_applicant_spouse",
