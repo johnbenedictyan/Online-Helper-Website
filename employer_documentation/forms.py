@@ -815,24 +815,6 @@ class EmployerSponsorForm(forms.ModelForm):
                         id="sponsor_2",
                         # hidden="true",
                     ),
-
-                    # Income Details
-                    # HTML(
-                    #     """
-                    #     <h5 class="my-3">Income Details</h5>
-                    # """),
-                    # Row(
-                    #     Column(
-                    #         PrependedText(
-                    #             'monthly_income', '$',
-                    #             min='0', max='9999999',
-                    #         ),
-                    #         css_class='form-group col-md-6',
-                    #         id='sponsor_monthly_income',
-                    #     ),
-                    #     css_class='form-row',
-                    # ),
-                    # id='sponsors',
                 ),
                 id='sponsors-section',
             ),
@@ -845,7 +827,7 @@ class EmployerSponsorForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-md-6 text-center'
                 ),
                 css_class='form-row'
             )
@@ -1128,21 +1110,6 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 ),
             ),
 
-            # HTML(
-            #     """
-            #     <h5 class="my-3">Income Details</h5>
-            # """),
-            # Row(
-            #     Column(
-            #         PrependedText(
-            #             'monthly_income', '$',
-            #             min='0', max='9999999',
-            #         ),
-            #         css_class='form-group col-md-6',
-            #     ),
-            #     css_class='form-row',
-            # ),
-            
             # Submit
             Row(
                 Column(
@@ -1927,48 +1894,6 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-# class DocEmploymentContractForm(forms.ModelForm):
-#     class Meta:
-#         model = models.DocEmploymentContract
-#         exclude = ['employer_doc']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.authority = kwargs.pop('authority')
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             HTML(
-#                 """
-#                 <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
-#             """),
-#             Row(
-#                 Column(
-#                     'c3_5_fdw_sleeping_arrangement',
-#                     css_class='form-group col-md-6'
-#                 ),
-#                 Column(
-#                     'c4_1_termination_notice',
-#                     css_class='form-group col-md-6'
-#                 ),
-#                 css_class='form-row'
-#             ),
-            
-#             # Submit
-#             Row(
-#                 Column(
-#                     Submit(
-#                         'submit',
-#                         'Submit',
-#                         css_class="btn btn-primary w-50"
-#                     ),
-#                     css_class='form-group col-12 text-center'
-#                 ),
-#                 css_class='form-row'
-#             )
-#         )
 
 class DocSafetyAgreementForm(forms.ModelForm):
     class Meta:

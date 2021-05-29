@@ -378,17 +378,7 @@ class EmployerDocCreateView(
 ):
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
-    # pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
-
-    # def get_object(self, *args, **kwargs):
-    #     return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     self.object = self.get_object()
-    #     context['object'] = self.object
-    #     return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -507,7 +497,6 @@ class EmployerUpdateView(
     form_class = forms.EmployerForm
     template_name = 'employer_documentation/crispy_form.html'
     pk_url_kwarg = 'level_0_pk'
-    success_url = reverse_lazy('employer_list_route')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -557,42 +546,18 @@ class EmployerUpdateView(
         return kwargs
 
     def get_success_url(self):
-        if (
-            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SINGLE or 
-            self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
-        ):
-            income_obj = self.object.has_income_obj()
-            if not income_obj:
-                success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-                    'level_0_pk': self.object.pk
-                })
-            else:
-                success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
-                    'level_0_pk': self.object.pk
-                })
-        
-        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
-            sponsor_obj = self.object.has_sponsor_obj()
-            if not sponsor_obj:
-                success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
-                    'level_0_pk': self.object.pk
-                })
-            else:
-                success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
-                    'level_0_pk': self.object.pk
-                })
-        
+        if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            success_url = reverse_lazy('employer_sponsor_update_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
+        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            success_url = reverse_lazy('employer_jointapplicant_update_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
         else:
-            joint_applicant_obj = self.object.has_joint_applicant_obj()
-            if not joint_applicant_obj:
-                success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
-                    'level_0_pk': self.object.pk
-                })
-            else:
-                success_url = reverse_lazy('employer_jointapplicant_update_route', kwargs={
-                    'level_0_pk': self.object.pk
-                })
-
+            success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
         return success_url
 
 class EmployerSponsorUpdateView(
@@ -637,16 +602,9 @@ class EmployerSponsorUpdateView(
         return kwargs
 
     def get_success_url(self):
-        income_obj = self.object.has_income_obj()
-        if not income_obj:
-            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-                'level_0_pk': self.object.employer.pk
-            })
-        else:
-            success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
-                'level_0_pk': self.object.employer.pk
-            })
-
+        success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+            'level_0_pk': self.object.employer.pk
+        })
         return success_url
 
 class EmployerDocJointApplicantUpdateView(
@@ -697,16 +655,9 @@ class EmployerDocJointApplicantUpdateView(
         return kwargs
 
     def get_success_url(self):
-        income_obj = self.object.has_income_obj()
-        if not income_obj:
-            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-                'level_0_pk': self.object.employer.pk
-            })
-        else:
-            success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
-                'level_0_pk': self.object.employer.pk
-            })
-        
+        success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+            'level_0_pk': self.object.employer.pk
+        })
         return success_url
 
 class EmployerIncomeDetailsUpdateView(
@@ -752,7 +703,13 @@ class EmployerIncomeDetailsUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        if self.object.employer.household_details_required:
+            success_url = reverse_lazy('employer_householddetails_update_route', kwargs={
+                'level_0_pk': self.object.pk
+            })
+        else:
+            success_url = reverse_lazy('dashboard_employers_list')
+        return success_url
 
 class EmployerDocUpdateView(
     AgencyLoginRequiredMixin,
