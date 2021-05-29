@@ -30,6 +30,7 @@ $FONT_SIZE_SMALLER_SLIGHT: .9rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
 // Custom Typography
+$FONT_SIZE_10: calc(10/12 * 1rem);
 $FONT_SIZE_12: calc(12/12 * 1rem);
 $FONT_SIZE_14: calc(14/12 * 1rem);
 $FONT_SIZE_16: calc(16/12 * 1rem);
@@ -41,6 +42,9 @@ $FONT_SIZE_28: calc(28/12 * 1rem);
 $FONT_SIZE_32: calc(32/12 * 1rem);
 
 .fs{
+    &-05 {
+        font-size: $FONT_SIZE_10;
+    }
     &-1 {
         font-size: $FONT_SIZE_12;
     }
@@ -51,24 +55,21 @@ $FONT_SIZE_32: calc(32/12 * 1rem);
         font-size: $FONT_SIZE_16;
     }
     &-4 {
-        font-size: $FONT_SIZE_12;
-    }
-    &-5 {
         font-size: $FONT_SIZE_18;
     }
-    &-6 {
+    &-5 {
         font-size: $FONT_SIZE_20;
     }
-    &-7 {
+    &-6 {
         font-size: $FONT_SIZE_22;
     }
-    &-8 {
+    &-7 {
         font-size: $FONT_SIZE_26;
     }
-    &-9 {
+    &-8 {
         font-size: $FONT_SIZE_28;
     }
-    &-10 {
+    &-9 {
         font-size: $FONT_SIZE_32;
     }
 }

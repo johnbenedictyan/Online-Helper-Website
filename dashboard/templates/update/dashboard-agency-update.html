@@ -9,3 +9,16 @@
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $('#id_type').change(function(){
+            if($(this).val() == 'AO' ){
+                $('.openingHourGroup').hide();
+            } else {
+                $('.openingHourGroup').show();
+            }
+        });
+    });
+</script>
+{% endblock js %}

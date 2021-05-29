@@ -13,7 +13,7 @@ from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
 from .constants import (
-    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursChoices
+    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices, OpeningHoursChoices
 )
 from .validators import validate_postcode
 
@@ -154,56 +154,184 @@ class AgencyOpeningHours(models.Model):
         verbose_name=_('Agency\'s operating hours type'),
         max_length=2,
         blank=False,
+        choices=OpeningHoursTypeChoices.choices,
+        default=OpeningHoursTypeChoices.OPENING_HOURS
+    )
+
+    monday_start = models.CharField(
+        verbose_name=_('Monday\'s opening time'),
+        max_length=8,
+        blank=False,
         choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.OPENING_HOURS
+        default=OpeningHoursChoices.TIME0000
     )
 
-    monday = models.CharField(
-        verbose_name=_('Monday\'s opening hours'),
-        max_length=30,
-        blank=True
+    monday_end = models.CharField(
+        verbose_name=_('Monday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
     )
 
-    tuesday = models.CharField(
-        verbose_name=_('Tuesday\'s opening hours'),
-        max_length=30,
-        blank=True
+    monday_closed = models.BooleanField(
+        verbose_name=_('Monday opening status'),
+        blank=False,
+        default=False
     )
 
-    wednesday = models.CharField(
-        verbose_name=_('Wednesday\'s opening hours'),
-        max_length=30,
-        blank=True
+    tuesday_start = models.CharField(
+        verbose_name=_('Tuesday\'s opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
     )
 
-    thursday = models.CharField(
-        verbose_name=_('Thursday\'s opening hours'),
-        max_length=30,
-        blank=True
+    tuesday_end = models.CharField(
+        verbose_name=_('Tuesday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
     )
 
-    friday = models.CharField(
-        verbose_name=_('Friday\'s opening hours'),
-        max_length=30,
-        blank=True
+    tuesday_closed = models.BooleanField(
+        verbose_name=_('Tuesday opening status'),
+        blank=False,
+        default=False
     )
 
-    saturday = models.CharField(
-        verbose_name=_('Saturday\'s opening hours'),
-        max_length=30,
-        blank=True
+    wednesday_start = models.CharField(
+        verbose_name=_('Wednesday\'s opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
     )
 
-    sunday = models.CharField(
-        verbose_name=_('Sunday\'s opening hours'),
-        max_length=30,
-        blank=True
+    wednesday_end = models.CharField(
+        verbose_name=_('Wednesday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
     )
 
-    public_holiday = models.CharField(
-        verbose_name=_('Public holiday opening hours'),
-        max_length=30,
-        blank=True
+    wednesday_closed = models.BooleanField(
+        verbose_name=_('Wednesday opening status'),
+        blank=False,
+        default=False
+    )
+
+    thursday_start = models.CharField(
+        verbose_name=_('Thursday\'s opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    thursday_end = models.CharField(
+        verbose_name=_('Thursday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    thursday_closed = models.BooleanField(
+        verbose_name=_('Thursday opening status'),
+        blank=False,
+        default=False
+    )
+
+    friday_start = models.CharField(
+        verbose_name=_('Friday\'s opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    friday_end = models.CharField(
+        verbose_name=_('Friday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    friday_closed = models.BooleanField(
+        verbose_name=_('Friday opening status'),
+        blank=False,
+        default=False
+    )
+
+    saturday_start = models.CharField(
+        verbose_name=_('Saturday\'s opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    saturday_end = models.CharField(
+        verbose_name=_('Saturday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    saturday_closed = models.BooleanField(
+        verbose_name=_('Saturday opening status'),
+        blank=False,
+        default=False
+    )
+
+    sunday_start = models.CharField(
+        verbose_name=_('Sunday\'s opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+    
+    sunday_end = models.CharField(
+        verbose_name=_('Sunday\'s closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    sunday_closed = models.BooleanField(
+        verbose_name=_('Sunday opening status'),
+        blank=False,
+        default=False
+    )
+
+    public_holiday_start = models.CharField(
+        verbose_name=_('Public holiday opening time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    public_holiday_end = models.CharField(
+        verbose_name=_('Public holiday closing time'),
+        max_length=8,
+        blank=False,
+        choices=OpeningHoursChoices.choices,
+        default=OpeningHoursChoices.TIME0000
+    )
+
+    public_holiday_closed = models.BooleanField(
+        verbose_name=_('Public Holiday opening status'),
+        blank=False,
+        default=False
     )
 
 
