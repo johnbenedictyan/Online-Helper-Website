@@ -48,7 +48,7 @@ class EmployerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.user_obj = get_user_model().objects.get(pk=self.user_pk)
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         # Decryption
@@ -322,19 +322,19 @@ class EmployerForm(forms.ModelForm):
             )
         )
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
+        if self.authority==om_constants.AG_OWNERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_owner.agency
                 )
             )
-        elif self.agency_user_group==om_constants.AG_ADMINS:
+        elif self.authority==om_constants.AG_ADMINS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     agency=self.user_obj.agency_employee.agency
                 )
             )
-        elif self.agency_user_group==om_constants.AG_MANAGERS:
+        elif self.authority==om_constants.AG_MANAGERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
                     branch=self.user_obj.agency_employee.branch
@@ -348,7 +348,7 @@ class EmployerForm(forms.ModelForm):
         for employer_obj in queryset:
             if not employer_obj==self.instance:
                 # Check if it belongs to current user's agency
-                if self.agency_user_group==om_constants.AG_OWNERS:
+                if self.authority==om_constants.AG_OWNERS:
                     if (
                         employer_obj.agency_employee.agency
                         == self.user_obj.agency_owner.agency
@@ -495,7 +495,7 @@ class EmployerSponsorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full()})
@@ -1022,7 +1022,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full()})
@@ -1275,7 +1275,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -1405,10 +1405,17 @@ class EmployerDocForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
+        self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
 
-        if self.agency_user_group==om_constants.AG_OWNERS:
+        self.fields['employer'].queryset = (
+            models.Employer.objects.filter(
+                agency_employee__agency__pk=self.agency_id,
+            )
+        )
+
+        if self.authority==om_constants.AG_OWNERS:
             self.fields['fdw'].queryset = (
                 Maid.objects.filter(agency=get_user_model().objects.get(
                     pk=self.user_pk).agency_owner.agency)
@@ -1501,7 +1508,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()})
@@ -1791,7 +1798,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -1989,7 +1996,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
 
 #     def __init__(self, *args, **kwargs):
 #         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         self.authority = kwargs.pop('authority')
 #         super().__init__(*args, **kwargs)
 
 #         self.helper = FormHelper()
@@ -2031,7 +2038,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2238,7 +2245,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
-        self.agency_user_group = kwargs.pop('agency_user_group')
+        self.authority = kwargs.pop('authority')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2335,7 +2342,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
 #     def __init__(self, *args, **kwargs):
 #         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         self.authority = kwargs.pop('authority')
 #         super().__init__(*args, **kwargs)
 
 #         self.helper = FormHelper()
@@ -2374,7 +2381,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
 #     def __init__(self, *args, **kwargs):
 #         self.user_pk = kwargs.pop('user_pk')
-#         self.agency_user_group = kwargs.pop('agency_user_group')
+#         self.authority = kwargs.pop('authority')
 #         super().__init__(*args, **kwargs)
 
 #         self.helper = FormHelper()
