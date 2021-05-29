@@ -148,7 +148,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 isinstance(self.object, models.EmployerDocMaidStatus) or
                 isinstance(self.object, models.EmployerDocSig) or
                 isinstance(self.object, models.JobOrder) or
-                isinstance(self.object, models.PdfArchive) or
+                isinstance(self.object, models.ArchivedDoc) or
                 isinstance(self.object, models.EmployerPaymentTransaction)
             ):
                 self.employer_subdoc_obj = self.object

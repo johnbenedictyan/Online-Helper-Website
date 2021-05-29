@@ -36,29 +36,29 @@
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
-        {% for x in x %}
+        {% for object in object_list %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
             <div class="col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ forloop.counter }}</p>
             </div>
             <div class="col-2">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ object.agreement_date }}</p>
             </div>
             <div class="col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ object.case_ref_no }}</p>
             </div>
             <div class="col">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ object.employer }}</p>
             </div>
             <div class="col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ object.employer.get_applicant_type_display }}</p>
             </div>
             <div class="col-2">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ object.employer.agency_employee }}</p>
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="#"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
