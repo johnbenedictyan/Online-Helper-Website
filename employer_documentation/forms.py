@@ -561,15 +561,15 @@ class EmployerSponsorForm(forms.ModelForm):
                                     'sponsor_1_nationality',
                                     css_class='form-group col-md-6',
                                 ),
-                                Column(
-                                    'sponsor_1_mobile_number',
-                                    css_class='form-group col-md-6',
-                                ),
                                 css_class='form-row',
                             ),
                             Row(
                                 Column(
                                     'sponsor_1_residential_status',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_mobile_number',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
@@ -737,10 +737,10 @@ class EmployerSponsorForm(forms.ModelForm):
                                         onfocus="(this.type='date')",
                                         placeholder='Sponsor 2 date of birth',
                                     ),
-                                Column(
-                                    'sponsor_2_nationality',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
+                                Column(
+                                    'sponsor_2_nationality',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
