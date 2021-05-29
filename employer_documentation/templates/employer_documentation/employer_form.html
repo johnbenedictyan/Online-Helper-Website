@@ -18,35 +18,90 @@
 
 {% block js %}
     <script>
+        // Employer create/update
         let applicantType = document.getElementById('id_applicant_type');
         let employerMaritalStatus = document.getElementById('id_employer_marital_status');
         if (applicantType && employerMaritalStatus) {
+            let spouseSection = document.getElementById('spouse-section');
             // On page load
-            if (employerMaritalStatus=='MARRIED') {
-                document.getElementById('spouse-section').hidden = false; // show
+            if (employerMaritalStatus.value=='MARRIED') {
+                spouseSection.hidden = false; // show
             } else {
-                document.getElementById('spouse-section').hidden = true; // hide
+                spouseSection.hidden = true; // hide
             }
 
             // On employerMaritalStatus change
             employerMaritalStatus.addEventListener('change', function() {
                 if (this.value=='MARRIED') {
-                    document.getElementById('spouse-section').hidden = false; // show
+                    spouseSection.hidden = false; // show
                 } else {
-                    document.getElementById('spouse-section').hidden = true; // hide
+                    spouseSection.hidden = true; // hide
                 }
             })
 
             // On applicantType change
             applicantType.addEventListener('change', function() {
                 if (this.value=='SPOUSE') {
-                    document.getElementById('spouse-section').hidden = false; // show
+                    spouseSection.hidden = false; // show
                     employerMaritalStatus.value = 'MARRIED';
                 }
             })
         }
+        let employerResidentialStatus = document.getElementById('id_employer_residential_status');
+        if (employerResidentialStatus) {
+            let employerIdNric = document.getElementById('employer_id_nric');
+            let employerIdOther = document.getElementById('employer_id_other');
+            // On page load
+            if (employerResidentialStatus.value=='SC' || employerResidentialStatus.value=='PR' ) {
+                employerIdNric.hidden = false; // show
+                employerIdOther.hidden = true; // hide
+            } else {
+                employerIdNric.hidden = true; // hide
+                employerIdOther.hidden = false; // show
+            }
 
-        
+            // On employerResidentialStatus change
+            employerResidentialStatus.addEventListener('change', function() {
+                if (this.value=='SC' || this.value=='PR') {
+                    employerIdNric.hidden = false; // show
+                    employerIdOther.hidden = true; // hide
+                } else {
+                    employerIdNric.hidden = true; // hide
+                    employerIdOther.hidden = false; // show
+                }
+            })
+
+        }
+        let spouseResidentialStatus = document.getElementById('id_spouse_residential_status');
+        if (spouseResidentialStatus) {
+            let spouseIdNric = document.getElementById('spouse_id_nric');
+            let spouseIdOther = document.getElementById('spouse_id_other');
+            // On page load
+            if (spouseResidentialStatus.value=='SC' || spouseResidentialStatus.value=='PR' ) {
+                spouseIdNric.hidden = false; // show
+                spouseIdOther.hidden = true; // hide
+            } else {
+                spouseIdNric.hidden = true; // hide
+                spouseIdOther.hidden = false; // show
+            }
+
+            // On spouseResidentialStatus change
+            spouseResidentialStatus.addEventListener('change', function() {
+                if (this.value=='SC' || this.value=='PR') {
+                    spouseIdNric.hidden = false; // show
+                    spouseIdOther.hidden = true; // hide
+                } else {
+                    spouseIdNric.hidden = true; // hide
+                    spouseIdOther.hidden = false; // show
+                }
+            })
+
+        }
+
+        // Sponsor create/update
+
+        // Joint Applicant create/update
+
         // Token URL copy
         let copyBtn = document.querySelector('#copy-button');
         if (copyBtn) {

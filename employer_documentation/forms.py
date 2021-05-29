@@ -159,7 +159,8 @@ class EmployerForm(forms.ModelForm):
                 ),
                 Column(
                     'employer_nric_num',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    id='employer_id_nric',
                 ),
                 css_class='form-row'
             ),
@@ -172,7 +173,8 @@ class EmployerForm(forms.ModelForm):
                     'employer_passport_num',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
+                css_class='form-row',
+                id='employer_id_other',
             ),
             Row(
                 Column(
@@ -224,7 +226,8 @@ class EmployerForm(forms.ModelForm):
                         ),
                         Column(
                             'spouse_nric_num',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-6',
+                            id='spouse_id_nric',
                         ),
                         css_class='form-row'
                     ),
@@ -237,7 +240,8 @@ class EmployerForm(forms.ModelForm):
                             'spouse_passport_num',
                             css_class='form-group col-md-6'
                         ),
-                        css_class='form-row'
+                        css_class='form-row',
+                        id='spouse_id_other',
                     ),
                     Row(
                         Column(
