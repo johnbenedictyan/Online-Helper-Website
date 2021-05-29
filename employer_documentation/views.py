@@ -181,7 +181,7 @@ class EmployerDocListView(
         else:
             return HttpResponseRedirect(
                 reverse(
-                    'ed_create_route',
+                    'case_create_route',
                     kwargs={'level_0_pk': self.object.pk}
                 )
             )
