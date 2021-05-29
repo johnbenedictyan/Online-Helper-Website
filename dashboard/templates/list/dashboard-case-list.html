@@ -10,7 +10,7 @@
         </div>
         <div class="row">
             <div class="col text-right mb-3">
-                <a href="#" class="btn btn-dashboard-primary mr-1">Create Case</a>
+                <a href="{% url 'ed_create_route' %}" class="btn btn-dashboard-primary mr-1">Create Case</a>
             </div>
         </div>
         <div class="row bg-dashboard-primary text-light mx-half py-3 border">
@@ -58,7 +58,7 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="#"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'ed_update_route' level_1_pk=object.pk %}"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
