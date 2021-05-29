@@ -610,6 +610,17 @@ class EmployerSponsorUpdateView(
             pk=self.kwargs.get(self.pk_url_kwarg)
         ).rn_sponsor_employer
 
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('employer_sponsor_create_route', kwargs={
+                    'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
@@ -652,6 +663,17 @@ class EmployerDocJointApplicantUpdateView(
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         ).rn_ja_employer
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('employer_jointapplicant_create_route', kwargs={
+                    'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -701,6 +723,17 @@ class EmployerIncomeDetailsUpdateView(
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         ).rn_income_employer
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('employer_incomedetails_create_route', kwargs={
+                    'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
