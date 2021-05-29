@@ -98,7 +98,18 @@ def page_bar_url_helper(request):
         'employer_incomedetails_update_route',
         'employer_householddetails_update_route'
     ]
+    CASE_MINI_NAV_URLS = [
+        'case_create_route',
+        'case_update_route',
+        'servicefee_create_route',
+        'servicefee_update_route',
+        'serviceagreement_create_route',
+        'serviceagreement_update_route',
+        'safetyagreement_create_route',
+        'safetyagreement_update_route',
+    ]
 
     return {
-        'employer_crud_pagebar_urls': EMPLOYER_MINI_NAV_URLS
+        'employer_crud_pagebar_urls': EMPLOYER_MINI_NAV_URLS,
+        'case_crud_pagebar_urls': CASE_MINI_NAV_URLS,
     }

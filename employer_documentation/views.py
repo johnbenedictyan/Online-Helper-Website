@@ -397,11 +397,20 @@ class DocServiceFeeScheduleCreateView(
 ):
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
-    pk_url_kwarg = 'level_0_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -425,11 +434,20 @@ class DocServAgmtEmpCtrCreateView(
 ):
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
-    pk_url_kwarg = 'level_0_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -453,11 +471,20 @@ class DocSafetyAgreementCreateView(
 ):
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
-    pk_url_kwarg = 'level_0_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -721,6 +748,15 @@ class EmployerDocUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
@@ -746,6 +782,26 @@ class DocServiceFeeScheduleUpdateView(
             pk=self.kwargs.get(self.pk_url_kwarg)
         ).rn_servicefeeschedule_ed
 
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('servicefee_create_route', kwargs={
+                    'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
@@ -770,6 +826,26 @@ class DocServAgmtEmpCtrUpdateView(
             pk=self.kwargs.get(self.pk_url_kwarg)
         ).rn_serviceagreement_ed
 
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('serviceagreement_create_route', kwargs={
+                    'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
@@ -793,6 +869,26 @@ class DocSafetyAgreementUpdateView(
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         ).rn_safetyagreement_ed
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('safetyagreement_create_route', kwargs={
+                    'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

@@ -134,7 +134,7 @@
                                     {% include 'components/nav/mini-navs/employer-mini-nav.html' %}
                                     </div>
                                 {% endif %}
-                                {% if url_name == 'case_create_route' or url_name == 'case_update_route' %}
+                                {% if url_name in case_crud_pagebar_urls %}
                                     <div class="col">   
                                     {% include 'components/nav/mini-navs/case-mini-nav.html' %}
                                     </div>
