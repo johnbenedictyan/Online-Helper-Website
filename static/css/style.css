@@ -11,30 +11,26 @@
 }
 
 .fs-4 {
-  font-size: calc(12/12 * 1rem);
-}
-
-.fs-5 {
   font-size: calc(18/12 * 1rem);
 }
 
-.fs-6 {
+.fs-5 {
   font-size: calc(20/12 * 1rem);
 }
 
-.fs-7 {
+.fs-6 {
   font-size: calc(22/12 * 1rem);
 }
 
-.fs-8 {
+.fs-7 {
   font-size: calc(26/12 * 1rem);
 }
 
-.fs-9 {
+.fs-8 {
   font-size: calc(28/12 * 1rem);
 }
 
-.fs-10 {
+.fs-9 {
   font-size: calc(32/12 * 1rem);
 }
 

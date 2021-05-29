@@ -10,11 +10,11 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML, Field
 
 # Imports from local apps
 from onlinemaid.constants import TrueFalseChoices
-from .constants import OpeningHoursChoices
+from .constants import OpeningHoursTypeChoices, OpeningHoursChoices
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
     AgencyOwner, PotentialAgency
@@ -71,7 +71,7 @@ class AgencyForm(forms.ModelForm):
     opening_hours_type = forms.ChoiceField(
         label=_('Agency\'s operating hours type'),
         required=True,
-        choices=OpeningHoursChoices.choices,
+        choices=OpeningHoursTypeChoices.choices,
     )
 
     opening_hours_monday = forms.CharField(
@@ -134,7 +134,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>Agency Information</h5>'
+                        '<h5 class="fs-2">Agency Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -341,12 +341,14 @@ class AgencyUpdateForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['profile'].label = ""
+        self.fields['services'].label = ""
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
                 Column(
                     HTML(
-                        '<h5>Agency Information</h5>'
+                        '<h5 class="fs-2">Agency Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -373,12 +375,20 @@ class AgencyUpdateForm(forms.ModelForm):
             ),
             Row(
                 Column(
+                    HTML(
+                        '<h5 class="fs-2">Profile</h5>'
+                    ),
                     'profile',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    css_id='agencyProfileGroup'
                 ),
                 Column(
+                    HTML(
+                        '<h5 class="fs-2">Our Services</h5>'
+                    ),
                     'services',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    css_id='agencyServicesGroup'
                 ),
                 css_class='mb-xl-3'
             ),
@@ -549,7 +559,7 @@ class AgencyEmployeeForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>Employee Information</h5>'
+                        '<h5 class="fs-2">Employee Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -826,60 +836,243 @@ class AgencyOpeningHoursForm(forms.ModelForm):
         model = AgencyOpeningHours
         exclude = ['agency']
 
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['monday_start'].label = ""
+        self.fields['monday_end'].label = ""
+        self.fields['monday_closed'].label = "Closed"
+        self.fields['tuesday_start'].label = ""
+        self.fields['tuesday_end'].label = ""
+        self.fields['tuesday_closed'].label = "Closed"
+        self.fields['wednesday_start'].label = ""
+        self.fields['wednesday_end'].label = ""
+        self.fields['wednesday_closed'].label = "Closed"
+        self.fields['thursday_start'].label = ""
+        self.fields['thursday_end'].label = ""
+        self.fields['thursday_closed'].label = "Closed"
+        self.fields['friday_start'].label = ""
+        self.fields['friday_end'].label = ""
+        self.fields['friday_closed'].label = "Closed"
+        self.fields['saturday_start'].label = ""
+        self.fields['saturday_end'].label = ""
+        self.fields['saturday_closed'].label = "Closed"
+        self.fields['sunday_start'].label = ""
+        self.fields['sunday_end'].label = ""
+        self.fields['sunday_closed'].label = "Closed"
+        self.fields['public_holiday_start'].label = ""
+        self.fields['public_holiday_end'].label = ""
+        self.fields['public_holiday_closed'].label = "Closed"
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Column(
+                    HTML(
+                        '<h5 class="fs-2">Opening Hours</h5>'
+                    )
+                ),
+                css_class='row'
+            ),
             Row(
                 Column(
                     'type',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
+                    css_class='form-group col-md-6'
+                )
             ),
-            Row(
-                Column(
-                    'monday',
-                    css_class='form-group col-md-6'
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Monday</label>'
                 ),
-                Column(
-                    'tuesday',
-                    css_class='form-group col-md-6'
+                Div(
+                    'monday_start',
+                    css_class='col-sm-4'
                 ),
-                css_class='form-row'
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'monday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'monday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
             ),
-            Row(
-                Column(
-                    'wednesday',
-                    css_class='form-group col-md-6'
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Tuesday</label>'
                 ),
-                Column(
-                    'thursday',
-                    css_class='form-group col-md-6'
+                Div(
+                    'tuesday_start',
+                    css_class='col-sm-4'
                 ),
-                css_class='form-row'
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'tuesday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'tuesday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
             ),
-            Row(
-                Column(
-                    'friday',
-                    css_class='form-group col-md-6'
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Wednesday</label>'
                 ),
-                Column(
-                    'saturday',
-                    css_class='form-group col-md-6'
+                Div(
+                    'wednesday_start',
+                    css_class='col-sm-4'
                 ),
-                css_class='form-row'
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'wednesday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'wednesday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
             ),
-            Row(
-                Column(
-                    'sunday',
-                    css_class='form-group col-md-6'
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Thursday</label>'
                 ),
-                Column(
-                    'public_holiday',
-                    css_class='form-group col-md-6'
+                Div(
+                    'thursday_start',
+                    css_class='col-sm-4'
                 ),
-                css_class='form-row'
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'thursday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'thursday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
+            ),
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Friday</label>'
+                ),
+                Div(
+                    'friday_start',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'friday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'friday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
+            ),
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Saturday</label>'
+                ),
+                Div(
+                    'saturday_start',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'saturday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'saturday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
+            ),
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Sunday</label>'
+                ),
+                Div(
+                    'sunday_start',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'sunday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'sunday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
+            ),
+            Div(
+                HTML(
+                    '<label class="col-sm col-form-label">Public Holidays</label>'
+                ),
+                Div(
+                    'public_holiday_start',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    HTML(
+                        '-',
+                    ),
+                    css_class='col-0-5 form-group text-center align-self-center'
+                ),
+                Div(
+                    'public_holiday_end',
+                    css_class='col-sm-4'
+                ),
+                Div(
+                    'public_holiday_closed',
+                    css_class='col-sm-2'
+                ),
+                css_class="row form-group openingHourGroup"
             ),
             Row(
                 Column(
@@ -895,8 +1088,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         css_class="btn btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
+                )
             )
         )
 
