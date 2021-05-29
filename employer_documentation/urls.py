@@ -81,12 +81,12 @@ urlpatterns = [
             # path(
             #     '',
             #     views.EmployerDocListView.as_view(),
-            #     name='ed_list_route'
+            #     name='case_list_route'
             # ),
             path(
                 'create/',
                 views.EmployerDocCreateView.as_view(),
-                name='ed_create_route'
+                name='case_create_route'
             ),
             path(
                 '<uuid:level_1_pk>/',
@@ -94,12 +94,12 @@ urlpatterns = [
                     path(
                         'detail/',
                         views.EmployerDocDetailView.as_view(),
-                        name='ed_detail_route'
+                        name='case_detail_route'
                     ),
                     path(
                         'update/',
                         views.EmployerDocUpdateView.as_view(),
-                        name='ed_update_route'
+                        name='case_update_route'
                     ),
                     path(
                         'service-fee/create/',
@@ -134,17 +134,17 @@ urlpatterns = [
     #                 path(
     #                     'delete/',
     #                     views.EmployerDocDeleteView.as_view(),
-    #                     name='ed_delete_route'
+    #                     name='case_delete_route'
     #                 ),
     #                 path(
     #                     'status/<int:level_2_pk>/update/',
     #                     views.EmployerDocMaidStatusUpdateView.as_view(),
-    #                     name='ed_status_update_route'
+    #                     name='case_status_update_route'
     #                 ),
     #                 path(
     #                     'deployment/<int:level_2_pk>/update/',
     #                     views.EmployerDocMaidDeploymentUpdateView.as_view(),
-    #                     name='ed_deployment_update_route'
+    #                     name='case_deployment_update_route'
     #                 ),
     #                 path(
     #                     'job-order/<int:level_2_pk>/update/',
