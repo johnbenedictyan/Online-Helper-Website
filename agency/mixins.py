@@ -157,6 +157,9 @@ class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
         return res
 
 class GetAuthorityMixin:
+    authority = ''
+    agency_id = ''
+    
     def get_authority(self):
         authority = agency_id = ''
         for auth_name in AUTHORITY_GROUPS:
