@@ -604,10 +604,12 @@ class EmployerSponsorForm(forms.ModelForm):
                                         Column(
                                             'sponsor_1_spouse_nric_num',
                                             css_class='form-group col-md-6 spouse-1',
+                                            id='sponsor1spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_fin_num',
                                             css_class='form-group col-md-6 spouse-1',
+                                            id='sponsor1spouse_id_fin',
                                         ),
                                         css_class='form-row',
                                     ),
@@ -626,6 +628,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                             css_class='form-group col-md-6 spouse-1',
                                         ),
                                         css_class='form-row',
+                                        id='sponsor1spouse_id_passport',
                                     ),
                                 ),
                                 id="sponsor_1_spouse",
@@ -788,10 +791,12 @@ class EmployerSponsorForm(forms.ModelForm):
                                         Column(
                                             'sponsor_2_spouse_nric_num',
                                             css_class='form-group col-md-6 spouse-2',
+                                            id='sponsor2spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_fin_num',
                                             css_class='form-group col-md-6 spouse-2',
+                                            id='sponsor2spouse_id_fin',
                                         ),
                                         css_class='form-row'
                                     ),
@@ -810,6 +815,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                             css_class='form-group col-md-6 spouse-2',
                                         ),
                                         css_class='form-row',
+                                        id='sponsor2spouse_id_passport',
                                     ),
                                 ),
                                 id="sponsor_2_spouse",

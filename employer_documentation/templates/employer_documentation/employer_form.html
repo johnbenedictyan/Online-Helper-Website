@@ -70,7 +70,6 @@
                     employerIdOther.hidden = false; // show
                 }
             })
-
         }
         let spouseResidentialStatus = document.getElementById('id_spouse_residential_status');
         if (spouseResidentialStatus) {
@@ -95,10 +94,86 @@
                     spouseIdOther.hidden = false; // show
                 }
             })
-
         }
 
         // Sponsor create/update
+        let toggleSponsor2 = document.getElementById('id_sponsor_2_required');
+        if (toggleSponsor2) {
+            let sponsor2 = document.getElementById('sponsor_2');
+            // On page load
+            if (toggleSponsor2.value=='True') {
+                sponsor2.hidden = false; // show
+            } else {
+                sponsor2.hidden = true; // hide
+            }
+
+            // On employerMaritalStatus change
+            toggleSponsor2.addEventListener('change', function() {
+                if (this.value=='True') {
+                    sponsor2.hidden = false; // show
+                } else {
+                    sponsor2.hidden = true; // hide
+                }
+            })
+        }
+        let sponsor1spouseResidentialStatus = document.getElementById('id_sponsor_1_spouse_residential_status');
+        if (sponsor1spouseResidentialStatus) {
+            let sponsor1spouseIdNric = document.getElementById('sponsor1spouse_id_nric');
+            let sponsor1spouseIdFin = document.getElementById('sponsor1spouse_id_fin');
+            let sponsor1spouseIdPassport = document.getElementById('sponsor1spouse_id_passport');
+            // On page load
+            if (sponsor1spouseResidentialStatus.value=='SC' || sponsor1spouseResidentialStatus.value=='PR' ) {
+                sponsor1spouseIdNric.hidden = false; // show
+                sponsor1spouseIdFin.hidden = true; // hide
+                sponsor1spouseIdPassport.hidden = true; // hide
+            } else {
+                sponsor1spouseIdNric.hidden = true; // hide
+                sponsor1spouseIdFin.hidden = false; // show
+                sponsor1spouseIdPassport.hidden = false; // show
+            }
+
+            // On sponsor1spouseResidentialStatus change
+            sponsor1spouseResidentialStatus.addEventListener('change', function() {
+                if (this.value=='SC' || this.value=='PR') {
+                    sponsor1spouseIdNric.hidden = false; // show
+                    sponsor1spouseIdFin.hidden = true; // hide
+                    sponsor1spouseIdPassport.hidden = true; // hide
+                } else {
+                    sponsor1spouseIdNric.hidden = true; // hide
+                    sponsor1spouseIdFin.hidden = false; // show
+                    sponsor1spouseIdPassport.hidden = false; // show
+                }
+            })
+        }
+        let sponsor2spouseResidentialStatus = document.getElementById('id_sponsor_2_spouse_residential_status');
+        if (sponsor2spouseResidentialStatus) {
+            let sponsor2spouseIdNric = document.getElementById('sponsor2spouse_id_nric');
+            let sponsor2spouseIdFin = document.getElementById('sponsor2spouse_id_fin');
+            let sponsor2spouseIdPassport = document.getElementById('sponsor2spouse_id_passport');
+            // On page load
+            if (sponsor2spouseResidentialStatus.value=='SC' || sponsor2spouseResidentialStatus.value=='PR' ) {
+                sponsor2spouseIdNric.hidden = false; // show
+                sponsor2spouseIdFin.hidden = true; // hide
+                sponsor2spouseIdPassport.hidden = true; // hide
+            } else {
+                sponsor2spouseIdNric.hidden = true; // hide
+                sponsor2spouseIdFin.hidden = false; // show
+                sponsor2spouseIdPassport.hidden = false; // show
+            }
+
+            // On sponsor2spouseResidentialStatus change
+            sponsor2spouseResidentialStatus.addEventListener('change', function() {
+                if (this.value=='SC' || this.value=='PR') {
+                    sponsor2spouseIdNric.hidden = false; // show
+                    sponsor2spouseIdFin.hidden = true; // hide
+                    sponsor2spouseIdPassport.hidden = true; // hide
+                } else {
+                    sponsor2spouseIdNric.hidden = true; // hide
+                    sponsor2spouseIdFin.hidden = false; // show
+                    sponsor2spouseIdPassport.hidden = false; // show
+                }
+            })
+        }
 
         // Joint Applicant create/update
 
