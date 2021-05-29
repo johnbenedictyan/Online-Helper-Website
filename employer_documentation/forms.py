@@ -106,12 +106,16 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'employer_mobile_number',
-                    css_class='form-group col-md-6'
+                    PrependedText(
+                        'employer_mobile_number', '+65',
+                    ),
+                    css_class='form-group col-md-6',
                 ),
                 Column(
-                    'employer_home_number',
-                    css_class='form-group col-md-6'
+                    PrependedText(
+                        'employer_home_number', '+65',
+                    ),
+                    css_class='form-group col-md-6',
                 ),
                 css_class='form-row'
             ),
@@ -249,64 +253,6 @@ class EmployerForm(forms.ModelForm):
                 ),
                 id='spouse-section',
             ),
-
-            # # Income Details
-            # Row(
-            #     Column(
-            #         HTML(
-            #             """
-            #             <h5 class="my-3">Income Details</h5>
-            #         """),
-            #         Row(
-            #             Column(
-            #                 'monthly_income',
-            #                 css_class='form-group col-md-6',
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #     ),
-            #     id='household-section',
-            # ),
-
-            # # Household Details
-            # Row(
-            #     Column(
-            #         HTML(
-            #             """
-            #             <h5 class="my-3">Household Details</h5>
-            #         """),
-            #         Row(
-            #             Column(
-            #                 'household_name',
-            #                 css_class='form-group col-md-6',
-            #             ),
-            #             Column(
-            #                 'household_id_type',
-            #                 css_class='form-group col-md-6'
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #         Row(
-            #             Column(
-            #                 'household_id_num',
-            #                 css_class='form-group col-md-6'
-            #             ),
-            #             Column(
-            #                 'household_date_of_birth',
-            #                 css_class='form-group col-md-6',
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #         Row(
-            #             Column(
-            #                 'household_relationship',
-            #                 css_class='form-group col-md-6'
-            #             ),
-            #             css_class='form-row'
-            #         ),
-            #     ),
-            #     id='household-section',
-            # ),
 
             # Submit
             Row(
@@ -569,7 +515,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_mobile_number',
+                                    PrependedText(
+                                        'sponsor_1_mobile_number', '+65',
+                                    ),
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
@@ -751,8 +699,10 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 Column(
-                                    'sponsor_2_mobile_number',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    PrependedText(
+                                        'sponsor_2_mobile_number', '+65',
+                                    ),
+                                    css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
