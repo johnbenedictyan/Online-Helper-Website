@@ -1044,10 +1044,10 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             'joint_applicant_relationship',
                             css_class='form-group col-md-6',
                         ),
-                        Column(
-                            'joint_applicant_worked_in_sg',
-                            css_class='form-group col-md-6',
-                        ),
+                        # Column(
+                        #     'joint_applicant_worked_in_sg',
+                        #     css_class='form-group col-md-6',
+                        # ),
                         css_class='form-row',
                     ),
                     Row(
