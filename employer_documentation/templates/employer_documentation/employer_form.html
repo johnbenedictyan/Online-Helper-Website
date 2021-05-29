@@ -107,12 +107,31 @@
                 sponsor2.hidden = true; // hide
             }
 
-            // On employerMaritalStatus change
+            // On toggleSponsor2 change
             toggleSponsor2.addEventListener('change', function() {
                 if (this.value=='True') {
                     sponsor2.hidden = false; // show
                 } else {
                     sponsor2.hidden = true; // hide
+                }
+            })
+        }
+        let sponsor1MaritalStatus = document.getElementById('id_sponsor_1_marital_status');
+        if (sponsor1MaritalStatus) {
+            let sponsor1spouseSection = document.getElementById('sponsor_1_spouse');
+            // On page load
+            if (sponsor1MaritalStatus.value=='MARRIED') {
+                sponsor1spouseSection.hidden = false; // show
+            } else {
+                sponsor1spouseSection.hidden = true; // hide
+            }
+
+            // On sponsor1MaritalStatus change
+            sponsor1MaritalStatus.addEventListener('change', function() {
+                if (this.value=='MARRIED') {
+                    sponsor1spouseSection.hidden = false; // show
+                } else {
+                    sponsor1spouseSection.hidden = true; // hide
                 }
             })
         }
@@ -142,6 +161,25 @@
                     sponsor1spouseIdNric.hidden = true; // hide
                     sponsor1spouseIdFin.hidden = false; // show
                     sponsor1spouseIdPassport.hidden = false; // show
+                }
+            })
+        }
+        let sponsor2MaritalStatus = document.getElementById('id_sponsor_2_marital_status');
+        if (sponsor2MaritalStatus) {
+            let sponsor2spouseSection = document.getElementById('sponsor_2_spouse');
+            // On page load
+            if (sponsor2MaritalStatus.value=='MARRIED') {
+                sponsor2spouseSection.hidden = false; // show
+            } else {
+                sponsor2spouseSection.hidden = true; // hide
+            }
+
+            // On sponsor2MaritalStatus change
+            sponsor2MaritalStatus.addEventListener('change', function() {
+                if (this.value=='MARRIED') {
+                    sponsor2spouseSection.hidden = false; // show
+                } else {
+                    sponsor2spouseSection.hidden = true; // hide
                 }
             })
         }
