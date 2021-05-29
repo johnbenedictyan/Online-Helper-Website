@@ -8,11 +8,11 @@ urlpatterns = [
     path(
         'employers/',
         include([
-            path(
-                '',
-                views.EmployerListView.as_view(),
-                name='employer_list_route'
-            ),
+            # path(
+            #     '',
+            #     views.EmployerListView.as_view(),
+            #     name='employer_list_route'
+            # ),
             path(
                 'create/',
                 views.EmployerCreateView.as_view(),
@@ -78,11 +78,11 @@ urlpatterns = [
     path(
         'cases/',
         include([
-            path(
-                '',
-                views.EmployerDocListView.as_view(),
-                name='ed_list_route'
-            ),
+            # path(
+            #     '',
+            #     views.EmployerDocListView.as_view(),
+            #     name='ed_list_route'
+            # ),
             path(
                 'create/',
                 views.EmployerDocCreateView.as_view(),
