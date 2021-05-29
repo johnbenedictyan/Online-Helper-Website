@@ -725,6 +725,7 @@ class EmployerDocUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['agency_id'] = self.agency_id
         return kwargs
 
     def get_success_url(self):
