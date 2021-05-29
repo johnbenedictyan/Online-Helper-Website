@@ -72,7 +72,15 @@ def dashboard_side_nav(request):
         'employer_householddetails_update_route',
 
         #Cases
-        'dashboard_case_detail'
+        'dashboard_case_detail',
+        'case_create_route',
+        'case_update_route',
+        'servicefee_create_route',
+        'servicefee_update_route',
+        'serviceagreement_create_route',
+        'serviceagreement_update_route',
+        'safetyagreement_create_route',
+        'safetyagreement_update_route',
     ]
     return {
         'dashboard_side_nav_list' : dashboard_side_nav_list
