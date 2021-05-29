@@ -26,3 +26,19 @@
     </div>
     {% endif %}
 {% endblock form %}
+{% if url_name == 'employer_householddetails_update_route' %}
+{% block js %}
+<script>
+    $(function(){
+        $("#addButton").on('click', function(e){
+            this.form.submit();
+        })
+        $("#submitButton").on('click', function(e){
+            e.preventDefault();
+            $("#submitFlag").val('True');
+            this.form.submit();
+        })
+    })
+</script>
+{% endblock js %}
+{% endif %}
