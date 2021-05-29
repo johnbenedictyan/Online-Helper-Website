@@ -22,7 +22,8 @@ from onlinemaid import constants as om_constants
 
 # List Views
 class EmployerListView(
-    LoginByAgencyUserGroupRequiredMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     ListView
 ):
     model = models.Employer
@@ -44,25 +45,25 @@ class EmployerListView(
 
         # Further filter queryset to only show the employers that current user
         # has necessary permission to access
-        if self.agency_user_group==om_constants.AG_OWNERS:
+        if self.authority==om_constants.AG_OWNERS:
             # If agency owner, return all employers belonging to agency
             return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_owner.agency
             )
-        elif self.agency_user_group==om_constants.AG_ADMINS:
+        elif self.authority==om_constants.AG_ADMINS:
             # If agency administrator, return all employers belonging to agency
             return queryset.filter(
                 agency_employee__agency
                 = self.request.user.agency_employee.agency
             )
-        elif self.agency_user_group==om_constants.AG_MANAGERS:
+        elif self.authority==om_constants.AG_MANAGERS:
             # If agency manager, return all employers belonging to branch
             return queryset.filter(
                 agency_employee__branch
                 = self.request.user.agency_employee.branch
             )
-        elif self.agency_user_group==om_constants.AG_SALES:
+        elif self.authority==om_constants.AG_SALES:
             # If agency owner, return all employers belonging to self
             return queryset.filter(
                 agency_employee = self.request.user.agency_employee
@@ -71,7 +72,8 @@ class EmployerListView(
             return self.handle_no_permission()
 
 class DocListView(
-    LoginByAgencyUserGroupRequiredMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     ListView
 ):
     model = models.EmployerDoc
@@ -120,25 +122,25 @@ class DocListView(
         
         # Further filter queryset to only show the employers that current user
         # has necessary permission to access
-        if self.agency_user_group==om_constants.AG_OWNERS:
+        if self.authority==om_constants.AG_OWNERS:
             # If agency owner, return all employers belonging to agency
             queryset = queryset.filter(
                 employer__agency_employee__agency
                 = self.request.user.agency_owner.agency
             )
-        elif self.agency_user_group==om_constants.AG_ADMINS:
+        elif self.authority==om_constants.AG_ADMINS:
             # If agency administrator, return all employers belonging to agency
             queryset = queryset.filter(
                 employer__agency_employee__agency
                 = self.request.user.agency_employee.agency
             )
-        elif self.agency_user_group==om_constants.AG_MANAGERS:
+        elif self.authority==om_constants.AG_MANAGERS:
             # If agency manager, return all employers belonging to branch
             queryset = queryset.filter(
                 employer__agency_employee__branch
                 = self.request.user.agency_employee.branch
             )
-        elif self.agency_user_group==om_constants.AG_SALES:
+        elif self.authority==om_constants.AG_SALES:
             # If agency owner, return all employers belonging to self
             queryset = queryset.filter(
                 employer__agency_employee = self.request.user.agency_employee
@@ -157,7 +159,8 @@ class DocListView(
         return queryset
 
 class EmployerDocListView(
-    CheckAgencyEmployeePermissionsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     ListView
 ):
     model = models.EmployerDoc
@@ -183,40 +186,18 @@ class EmployerDocListView(
                 )
             )
 
-# class EmployerPaymentTransactionListView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     ListView
-# ):
-#     model = EmployerPaymentTransaction
-#     pk_url_kwarg = 'level_1_pk'
-#     ordering = ['transaction_date']
-
-#     def get_object(self, *args, **kwargs):
-#         self.object = models.EmployerDoc.objects.get(
-#             pk=self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return self.object
-
-#     def get_queryset(self):
-#         return super().get_queryset().filter(employer_doc=self.kwargs.get(
-#             self.pk_url_kwarg))
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['object'] = self.object
-#         return context
-
 # Detail Views
 class EmployerDetailView(
-    CheckAgencyEmployeePermissionsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     DetailView,
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
 
 class EmployerDocDetailView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     DetailView
 ):
     model = models.EmployerDoc
@@ -224,7 +205,8 @@ class EmployerDocDetailView(
 
 # Create Views
 class EmployerCreateView(
-    LoginByAgencyUserGroupRequiredMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     CreateView
 ):
     model = models.Employer
@@ -234,11 +216,11 @@ class EmployerCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
-        if self.agency_user_group==om_constants.AG_SALES:
+        if self.authority==om_constants.AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
@@ -261,7 +243,8 @@ class EmployerCreateView(
         return success_url
 
 class EmployerSponsorCreateView(
-    CheckAgencyEmployeePermissionsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     CreateView
 ):
     model = models.EmployerSponsor
@@ -285,7 +268,7 @@ class EmployerSponsorCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
@@ -300,7 +283,8 @@ class EmployerSponsorCreateView(
         })
 
 class EmployerJointApplicantCreateView(
-    CheckAgencyEmployeePermissionsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     CreateView
 ):
     model = models.EmployerJointApplicant
@@ -324,7 +308,7 @@ class EmployerJointApplicantCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
@@ -338,7 +322,11 @@ class EmployerJointApplicantCreateView(
             'level_0_pk': self.object.employer.pk
         })
 
-class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, CreateView):
+class EmployerIncomeDetailsCreateView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    CreateView
+):
     model = models.EmployerIncome
     form_class = forms.EmployerIncomeDetailsForm
     pk_url_kwarg = 'level_0_pk'
@@ -364,7 +352,7 @@ class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, Creat
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
@@ -384,58 +372,42 @@ class EmployerIncomeDetailsCreateView(CheckAgencyEmployeePermissionsMixin, Creat
             return reverse_lazy('employer_list_route')
 
 class EmployerDocCreateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CreateView
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    CreateView,
 ):
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
-    pk_url_kwarg = 'level_0_pk'
+    # pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
-        return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+    # def get_object(self, *args, **kwargs):
+    #     return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        self.object = self.get_object()
-        context['object'] = self.object
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     self.object = self.get_object()
+    #     context['object'] = self.object
+    #     return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
+        kwargs['agency_id'] = self.agency_id
         return kwargs
-
-    # def form_valid(self, form):
-    #     form.instance.employer = models.Employer.objects.get(
-    #         pk = self.kwargs.get(self.pk_url_kwarg)
-    #     )
-    #     if form.instance.fdw_clean_window_exterior==False:
-    #         form.instance.window_exterior_location = None
-    #         form.instance.grilles_installed_require_cleaning = None
-    #         form.instance.adult_supervision = None
-
-    #     elif not form.instance.window_exterior_location=='OTHER':
-    #         form.instance.grilles_installed_require_cleaning = None
-    #         form.instance.adult_supervision = None
-
-    #     elif not form.instance.grilles_installed_require_cleaning:
-    #         form.instance.adult_supervision = None
-
-    #     return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
 class DocServiceFeeScheduleCreateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     CreateView
 ):
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
-    pk_url_kwarg = 'level_1_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
@@ -444,7 +416,7 @@ class DocServiceFeeScheduleCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
@@ -457,13 +429,13 @@ class DocServiceFeeScheduleCreateView(
         return reverse_lazy('employer_list_route')
 
 class DocServAgmtEmpCtrCreateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     CreateView
 ):
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
-    pk_url_kwarg = 'level_1_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
@@ -472,7 +444,7 @@ class DocServAgmtEmpCtrCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
@@ -484,42 +456,14 @@ class DocServAgmtEmpCtrCreateView(
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
-# class DocEmploymentContractCreateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     CreateView
-# ):
-#     model = models.DocEmploymentContract
-#     form_class = forms.DocEmploymentContractForm
-#     pk_url_kwarg = 'level_1_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-
-#     def get_object(self, *args, **kwargs):
-#         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
-
-#     def form_valid(self, form):
-#         form.instance.employer_doc = models.EmployerDoc.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
-
-#     def get_success_url(self):
-#         return reverse_lazy('employer_list_route')
-
 class DocSafetyAgreementCreateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     CreateView
 ):
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
-    pk_url_kwarg = 'level_1_pk'
+    pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
     def get_object(self, *args, **kwargs):
@@ -528,47 +472,35 @@ class DocSafetyAgreementCreateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def form_valid(self, form):
         form.instance.employer_doc = models.EmployerDoc.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
+
+    #     if form.instance.fdw_clean_window_exterior==False:
+    #         form.instance.window_exterior_location = None
+    #         form.instance.grilles_installed_require_cleaning = None
+    #         form.instance.adult_supervision = None
+
+    #     elif not form.instance.window_exterior_location=='OTHER':
+    #         form.instance.grilles_installed_require_cleaning = None
+    #         form.instance.adult_supervision = None
+
+    #     elif not form.instance.grilles_installed_require_cleaning:
+    #         form.instance.adult_supervision = None
+
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
-# class EmployerPaymentTransactionCreateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     CreateView
-# ):
-#     model = EmployerPaymentTransaction
-#     form_class = EmployerPaymentTransactionForm
-#     pk_url_kwarg = 'level_1_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-#     success_url = reverse_lazy('sales_list_route')
-
-#     def get_object(self, *args, **kwargs):
-#         return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
-
-#     def form_valid(self, form):
-#         form.instance.employer_doc = models.EmployerDoc.objects.get(
-#             pk = self.kwargs.get(self.pk_url_kwarg)
-#         )
-#         return super().form_valid(form)
-
 # Update Views
 class EmployerUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.Employer
@@ -621,7 +553,7 @@ class EmployerUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
@@ -664,8 +596,8 @@ class EmployerUpdateView(
         return success_url
 
 class EmployerSponsorUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.EmployerSponsor
@@ -690,7 +622,7 @@ class EmployerSponsorUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
@@ -707,8 +639,8 @@ class EmployerSponsorUpdateView(
         return success_url
 
 class EmployerDocJointApplicantUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.EmployerJointApplicant
@@ -739,7 +671,7 @@ class EmployerDocJointApplicantUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
@@ -756,8 +688,8 @@ class EmployerDocJointApplicantUpdateView(
         return success_url
 
 class EmployerIncomeDetailsUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.EmployerIncome
@@ -783,15 +715,15 @@ class EmployerIncomeDetailsUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
 class EmployerDocUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.EmployerDoc
@@ -802,83 +734,79 @@ class EmployerDocUpdateView(
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
 class DocServiceFeeScheduleUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
-    pk_url_kwarg = 'level_2_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_servicefeeschedule_ed
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
 class DocServAgmtEmpCtrUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
-    pk_url_kwarg = 'level_2_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_serviceagreement_ed
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
         return reverse_lazy('employer_list_route')
 
-# class DocEmploymentContractUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
-#     UpdateView
-# ):
-#     model = models.DocEmploymentContract
-#     form_class = forms.DocEmploymentContractForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse_lazy('employer_list_route')
-
 class DocSafetyAgreementUpdateView(
-    CheckAgencyEmployeePermissionsMixin,
-    CheckEmployerDocRelationshipsMixin,
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
     UpdateView
 ):
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
-    pk_url_kwarg = 'level_2_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_safetyagreement_ed
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
-        kwargs['agency_user_group'] = self.agency_user_group
+        kwargs['authority'] = self.authority
         return kwargs
 
     def get_success_url(self):
@@ -886,7 +814,6 @@ class DocSafetyAgreementUpdateView(
 
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocSig
@@ -912,7 +839,6 @@ class DocSafetyAgreementUpdateView(
 
 # class EmployerDocMaidStatusUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocMaidStatus
@@ -923,7 +849,7 @@ class DocSafetyAgreementUpdateView(
 #     def get_form_kwargs(self):
 #         kwargs = super().get_form_kwargs()
 #         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
+#         kwargs['authority'] = self.authority
 #         return kwargs
 
 #     def get_success_url(self):
@@ -934,7 +860,6 @@ class DocSafetyAgreementUpdateView(
 
 # class EmployerDocMaidDeploymentUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocMaidStatus
@@ -949,7 +874,6 @@ class DocSafetyAgreementUpdateView(
 
 # class JobOrderUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     UpdateView
 # ):
 #     model = JobOrder
@@ -961,7 +885,7 @@ class DocSafetyAgreementUpdateView(
 #     def get_form_kwargs(self):
 #         kwargs = super().get_form_kwargs()
 #         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
+#         kwargs['authority'] = self.authority
 #         return kwargs
 
 #     def get_success_url(self):
@@ -972,7 +896,6 @@ class DocSafetyAgreementUpdateView(
 
 # class EmployerPaymentTransactionUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     UpdateView
 # ):
 #     model = EmployerPaymentTransaction
@@ -984,7 +907,7 @@ class DocSafetyAgreementUpdateView(
 #     def get_form_kwargs(self):
 #         kwargs = super().get_form_kwargs()
 #         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['agency_user_group'] = self.agency_user_group
+#         kwargs['authority'] = self.authority
 #         return kwargs
 
 
@@ -999,7 +922,6 @@ class EmployerDeleteView(
 
 # class EmployerDocDeleteView(
 #     CheckUserIsAgencyOwnerMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     DeleteView
 # ):
 #     model = models.EmployerDoc
@@ -1011,7 +933,6 @@ class EmployerDeleteView(
 # Signature Views
 # class SignatureUpdateByAgentView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocSig
@@ -1123,7 +1044,6 @@ class EmployerDeleteView(
 # PDF Views
 # class PdfGenericAgencyView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     PdfHtmlViewMixin,
 #     DetailView
 # ):
@@ -1142,7 +1062,6 @@ class EmployerDeleteView(
 
 # class PdfFileAgencyView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     DetailView
 # ):
 #     # model = None # To be passed as parameter in urls.py
@@ -1226,7 +1145,6 @@ class EmployerDeleteView(
 
 # class PdfArchiveSaveView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     PdfHtmlViewMixin,
 #     DetailView
 # ):
@@ -1318,7 +1236,6 @@ class EmployerDeleteView(
 
 # class PdfArchiveDetailView(
 #     CheckAgencyEmployeePermissionsMixin,
-#     CheckEmployerDocRelationshipsMixin,
 #     DetailView
 # ):
 #     model = models.EmployerDoc
@@ -1326,8 +1243,12 @@ class EmployerDeleteView(
 #     template_name = 'employer_documentation/pdfarchive_detail.html'
 
 # Form Views
-class EmployerHouseholdDetailsFormView(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                                       SuccessMessageMixin, FormView):
+class EmployerHouseholdDetailsFormView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    SuccessMessageMixin,
+    FormView
+):
     form_class = EmployerHouseholdFormSet
     http_method_names = ['get', 'post']
     template_name = 'employer_documentation/crispy_form.html'
