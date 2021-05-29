@@ -531,18 +531,18 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_worked_in_sg',
+                                    'sponsor_1_name',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
                                 Column(
-                                    'sponsor_1_name',
+                                    'sponsor_1_gender',
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_gender',
+                                    'sponsor_1_nric_num',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
@@ -558,16 +558,16 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6',
                                 ),
                                 Column(
-                                    'sponsor_1_nric_num',
+                                    'sponsor_1_nationality',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_mobile_number',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_1_nationality',
-                                    css_class='form-group col-md-6',
-                                ),
                                 Column(
                                     'sponsor_1_residential_status',
                                     css_class='form-group col-md-6',
@@ -576,31 +576,27 @@ class EmployerSponsorForm(forms.ModelForm):
                             ),
                             Row(
                                 Column(
-                                    'sponsor_1_mobile_number',
-                                    css_class='form-group col-md-6',
-                                ),
-                                Column(
                                     'sponsor_1_email',
                                     css_class='form-group col-md-6',
                                 ),
-                                css_class='form-row',
-                            ),
-                            Row(
                                 Column(
                                     'sponsor_1_address_1',
                                     css_class='form-group col-md-6',
                                 ),
+                                css_class='form-row',
+                            ),
+                            Row(
                                 Column(
                                     'sponsor_1_address_2',
+                                    css_class='form-group col-md-6',
+                                ),
+                                Column(
+                                    'sponsor_1_post_code',
                                     css_class='form-group col-md-6',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_1_post_code',
-                                    css_class='form-group col-md-6',
-                                ),
                                 Column(
                                     'sponsor_1_marital_status',
                                     css_class='form-group col-md-6',
@@ -717,18 +713,18 @@ class EmployerSponsorForm(forms.ModelForm):
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 Column(
-                                    'sponsor_2_worked_in_sg',
-                                    css_class='form-group col-md-6',
+                                    'sponsor_2_name',
+                                    css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
                                 Column(
-                                    'sponsor_2_name',
+                                    'sponsor_2_gender',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 Column(
-                                    'sponsor_2_gender',
+                                    'sponsor_2_nric_num',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
@@ -741,52 +737,48 @@ class EmployerSponsorForm(forms.ModelForm):
                                         onfocus="(this.type='date')",
                                         placeholder='Sponsor 2 date of birth',
                                     ),
-                                    css_class='form-group col-md-6 sponsor-2',
-                                ),
-                                Column(
-                                    'sponsor_2_nric_num',
-                                    css_class='form-group col-md-6 sponsor-2',
-                                ),
-                                css_class='form-row',
-                            ),
-                            Row(
                                 Column(
                                     'sponsor_2_nationality',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
                                 Column(
                                     'sponsor_2_residential_status',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
-                                css_class='form-row',
-                            ),
-                            Row(
                                 Column(
                                     'sponsor_2_mobile_number',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
+                                css_class='form-row',
+                            ),
+                            Row(
                                 Column(
                                     'sponsor_2_email',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
-                                css_class='form-row',
-                            ),
-                            Row(
                                 Column(
                                     'sponsor_2_address_1',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
+                                css_class='form-row',
+                            ),
+                            Row(
                                 Column(
                                     'sponsor_2_address_2',
+                                    css_class='form-group col-md-6 sponsor-2',
+                                ),
+                                Column(
+                                    'sponsor_2_post_code',
                                     css_class='form-group col-md-6 sponsor-2',
                                 ),
                                 css_class='form-row',
                             ),
                             Row(
-                                Column(
-                                    'sponsor_2_post_code',
-                                    css_class='form-group col-md-6 sponsor-2',
-                                ),
                                 Column(
                                     'sponsor_2_marital_status',
                                     css_class='form-group col-md-6 sponsor-2',
@@ -1044,24 +1036,17 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             'joint_applicant_relationship',
                             css_class='form-group col-md-6',
                         ),
-                        # Column(
-                        #     'joint_applicant_worked_in_sg',
-                        #     css_class='form-group col-md-6',
-                        # ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             'joint_applicant_name',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_gender',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             Field(
                                 'joint_applicant_date_of_birth',
@@ -1071,45 +1056,49 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             ),
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_nric_num',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             'joint_applicant_nationality',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_residential_status',
                             css_class='form-group col-md-6',
                         ),
-                        css_class='form-row',
-                    ),
-                    Row(
                         Column(
                             'joint_applicant_address_1',
                             css_class='form-group col-md-6',
                         ),
+                        css_class='form-row',
+                    ),
+                    Row(
                         Column(
                             'joint_applicant_address_2',
+                            css_class='form-group col-md-6',
+                        ),
+                        Column(
+                            'joint_applicant_post_code',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
                     Row(
-                        Column(
-                            'joint_applicant_post_code',
-                            css_class='form-group col-md-6',
-                        ),
                         Column(
                             'joint_applicant_marital_status',
                             css_class='form-group col-md-6',
                         ),
                         css_class='form-row',
                     ),
+                    
                     # Joint applicant spouse
                     Row(
                         Column(
