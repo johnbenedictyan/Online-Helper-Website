@@ -615,7 +615,7 @@ class EmployerCreateViewTestCase(SetUp, TestCase):
         test_sales_access(self)
 
 class EmployerListViewTestCase(SetUp, TestCase):
-    url_route = 'employer_list_route'
+    url_route = 'dashboard_employers_list'
     test_view = EmployerListView
 
     def test_anon_redirect(self):
