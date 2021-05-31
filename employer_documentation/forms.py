@@ -2029,7 +2029,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
 
     def clean(self):
-        window_exterior_location_verbose_name = models.EmployerDoc._meta.get_field('window_exterior_location').verbose_name
+        window_exterior_location_verbose_name = models.DocSafetyAgreement._meta.get_field('window_exterior_location').verbose_name
         window_exterior_error_msg = window_exterior_location_verbose_name + ' field cannot be blank'
         if self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('window_exterior_location'):
             self.add_error(
@@ -2043,7 +2043,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        grilles_installed_verbose_name = models.EmployerDoc._meta.get_field('grilles_installed_require_cleaning').verbose_name
+        grilles_installed_verbose_name = models.DocSafetyAgreement._meta.get_field('grilles_installed_require_cleaning').verbose_name
         grilles_installed_error_msg = grilles_installed_verbose_name + ' field cannot be blank'
         if self.cleaned_data.get('window_exterior_location')=='OTHER' and self.cleaned_data.get('grilles_installed_require_cleaning')==None:
             self.add_error(
@@ -2057,7 +2057,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        adult_supervision_verbose_name = models.EmployerDoc._meta.get_field('adult_supervision').verbose_name
+        adult_supervision_verbose_name = models.DocSafetyAgreement._meta.get_field('adult_supervision').verbose_name
         adult_supervision_error_msg = 'Adult supervision is required if grilles installed on windows are to be cleaned by FDW'
         if self.cleaned_data.get('grilles_installed_require_cleaning') and not self.cleaned_data.get('adult_supervision'):
             self.add_error(
@@ -2071,7 +2071,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        verifiy_employer_understands_verbose_name = models.EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
+        verifiy_employer_understands_verbose_name = models.DocSafetyAgreement._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
         verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
         if (
             (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1)
