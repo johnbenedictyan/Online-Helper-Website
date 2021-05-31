@@ -17,7 +17,7 @@ EmployerHouseholdFormSet = inlineformset_factory(
     form=EmployerHouseholdDetailsForm,
     model=EmployerHousehold,
     extra=1,
-    min_num=1,
+    min_num=0,
     max_num=10
 )
 

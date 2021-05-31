@@ -141,7 +141,7 @@
                 <div class="row new-side-nav-link {% if url_name == 'dashboard_case_list' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_case_list' %}active{% endif %}" href="{% url 'dashboard_case_list' %}">
-                            <p class="m-1 pl-2">Case</p>
+                            <p class="m-1 pl-2">Cases</p>
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
@@ -152,7 +152,7 @@
                 </div>
                 <div class="collapse row" id="caseManagementDropdownNav">
                     <div class="col-12">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'ed_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight">
                             <p class="m-1 pl-5">Add Case</p>
                         </a>
                     </div>
