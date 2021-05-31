@@ -102,6 +102,11 @@ urlpatterns = [
                         name='case_update_route'
                     ),
                     path(
+                        'delete/',
+                        views.EmployerDocDeleteView.as_view(),
+                        name='case_delete_route'
+                    ),
+                    path(
                         'service-fee/create/',
                         views.DocServiceFeeScheduleCreateView.as_view(),
                         name='servicefee_create_route'
@@ -141,11 +146,6 @@ urlpatterns = [
                         views.DocUploadUpdateView.as_view(),
                         name='docupload_update_route'
                     ),
-    #                 path(
-    #                     'delete/',
-    #                     views.EmployerDocDeleteView.as_view(),
-    #                     name='case_delete_route'
-    #                 ),
     #                 path(
     #                     '<int:level_2_pk>/employer-url/',
     #                     views.EmployerDocSigSlugUpdateView.as_view(

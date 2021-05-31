@@ -1120,14 +1120,14 @@ class EmployerDeleteView(
     pk_url_kwarg = 'level_0_pk'
     success_url = reverse_lazy('dashboard_employers_list')
 
-# class EmployerDocDeleteView(
-#     CheckUserIsAgencyOwnerMixin,
-#     DeleteView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'level_1_pk'
-#     template_name = 'employer_documentation/employer_confirm_delete.html'
-#     success_url = reverse_lazy('dashboard_employers_list')
+class EmployerDocDeleteView(
+    CheckUserIsAgencyOwnerMixin,
+    DeleteView
+):
+    model = models.EmployerDoc
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/employer_confirm_delete.html'
+    success_url = reverse_lazy('dashboard_case_list')
 
 
 # Signature Views

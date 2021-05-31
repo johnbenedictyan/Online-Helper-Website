@@ -1,13 +1,10 @@
-{% extends 'employer_documentation/base-ed-template.html' %}
+{% extends 'dashboard-base.html' %}
 {% load crispy_forms_tags %}
 
-{% block sidenav_extra %}
-{% endblock sidenav_extra %}
-
-{% block ed_section %}
+{% block dashboard_section %}
     <form method="post">
         {% csrf_token %}
         <p>Confirm deletion of {{ object }}</p>
         <input type="submit" value="Delete">
     </form>
-{% endblock ed_section %}
+{% endblock dashboard_section %}
