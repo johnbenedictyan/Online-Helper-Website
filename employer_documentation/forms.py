@@ -604,10 +604,12 @@ class EmployerSponsorForm(forms.ModelForm):
                                         Column(
                                             'sponsor_1_spouse_nric_num',
                                             css_class='form-group col-md-6 spouse-1',
+                                            id='sponsor1spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_fin_num',
                                             css_class='form-group col-md-6 spouse-1',
+                                            id='sponsor1spouse_id_fin',
                                         ),
                                         css_class='form-row',
                                     ),
@@ -626,6 +628,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                             css_class='form-group col-md-6 spouse-1',
                                         ),
                                         css_class='form-row',
+                                        id='sponsor1spouse_id_passport',
                                     ),
                                 ),
                                 id="sponsor_1_spouse",
@@ -788,10 +791,12 @@ class EmployerSponsorForm(forms.ModelForm):
                                         Column(
                                             'sponsor_2_spouse_nric_num',
                                             css_class='form-group col-md-6 spouse-2',
+                                            id='sponsor2spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_fin_num',
                                             css_class='form-group col-md-6 spouse-2',
+                                            id='sponsor2spouse_id_fin',
                                         ),
                                         css_class='form-row'
                                     ),
@@ -810,6 +815,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                             css_class='form-group col-md-6 spouse-2',
                                         ),
                                         css_class='form-row',
+                                        id='sponsor2spouse_id_passport',
                                     ),
                                 ),
                                 id="sponsor_2_spouse",
@@ -1071,12 +1077,25 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             ),
                             Row(
                                 Column(
+                                    'joint_applicant_spouse_nationality',
+                                    css_class='form-group col-md-6 spouse-1',
+                                ),
+                                Column(
+                                    'joint_applicant_spouse_residential_status',
+                                    css_class='form-group col-md-6 spouse-1',
+                                ),
+                                css_class='form-row',
+                            ),
+                            Row(
+                                Column(
                                     'joint_applicant_spouse_nric_num',
                                     css_class='form-group col-md-6 spouse-1',
+                                    id='ja_spouse_id_nric',
                                 ),
                                 Column(
                                     'joint_applicant_spouse_fin_num',
                                     css_class='form-group col-md-6 spouse-1',
+                                    id='ja_spouse_id_fin',
                                 ),
                                 css_class='form-row',
                             ),
@@ -1095,17 +1114,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                     css_class='form-group col-md-6 spouse-1',
                                 ),
                                 css_class='form-row',
-                            ),
-                            Row(
-                                Column(
-                                    'joint_applicant_spouse_nationality',
-                                    css_class='form-group col-md-6 spouse-1',
-                                ),
-                                Column(
-                                    'joint_applicant_spouse_residential_status',
-                                    css_class='form-group col-md-6 spouse-1',
-                                ),
-                                css_class='form-row',
+                                id='ja_spouse_id_passport',
                             ),
                         ),
                         id="joint_applicant_spouse",
@@ -1398,7 +1407,7 @@ class EmployerDocForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1441,25 +1450,28 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             # Form B
             Row(
                 Column(
-                    'fdw_replaced_name',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'fdw_replaced_passport_num',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row',
-                id="form_b",
-            ),
-            Row(
-                Column(
-                    PrependedText(
-                        'b4_loan_transferred', '$',
-                        min='0', max='1000',
+                    Row(
+                        Column(
+                            'fdw_replaced_name',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'fdw_replaced_passport_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row',
                     ),
-                    css_class='form-group col-md-6'
+                    Row(
+                        Column(
+                            PrependedText(
+                                'b4_loan_transferred', '$',
+                                min='0', max='1000',
+                            ),
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row',
+                    ),
                 ),
-                css_class='form-row',
                 id="form_b",
             ),
 
@@ -1668,7 +1680,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1890,7 +1902,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1954,7 +1966,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1964,7 +1976,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
 
     def clean(self):
-        window_exterior_location_verbose_name = models.EmployerDoc._meta.get_field('window_exterior_location').verbose_name
+        window_exterior_location_verbose_name = models.DocSafetyAgreement._meta.get_field('window_exterior_location').verbose_name
         window_exterior_error_msg = window_exterior_location_verbose_name + ' field cannot be blank'
         if self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('window_exterior_location'):
             self.add_error(
@@ -1978,7 +1990,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        grilles_installed_verbose_name = models.EmployerDoc._meta.get_field('grilles_installed_require_cleaning').verbose_name
+        grilles_installed_verbose_name = models.DocSafetyAgreement._meta.get_field('grilles_installed_require_cleaning').verbose_name
         grilles_installed_error_msg = grilles_installed_verbose_name + ' field cannot be blank'
         if self.cleaned_data.get('window_exterior_location')=='OTHER' and self.cleaned_data.get('grilles_installed_require_cleaning')==None:
             self.add_error(
@@ -1992,7 +2004,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        adult_supervision_verbose_name = models.EmployerDoc._meta.get_field('adult_supervision').verbose_name
+        adult_supervision_verbose_name = models.DocSafetyAgreement._meta.get_field('adult_supervision').verbose_name
         adult_supervision_error_msg = 'Adult supervision is required if grilles installed on windows are to be cleaned by FDW'
         if self.cleaned_data.get('grilles_installed_require_cleaning') and not self.cleaned_data.get('adult_supervision'):
             self.add_error(
@@ -2006,7 +2018,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        verifiy_employer_understands_verbose_name = models.EmployerDoc._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
+        verifiy_employer_understands_verbose_name = models.DocSafetyAgreement._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
         verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
         if (
             (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1)
@@ -2039,6 +2051,59 @@ class DocSafetyAgreementForm(forms.ModelForm):
             )
         
         return self.cleaned_data
+
+class DocUploadForm(forms.ModelForm):
+    class Meta:
+        model = models.DocUpload
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.authority = kwargs.pop('authority')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-upload">Upload Documents</h5>
+            """),
+            Row(
+                Column(
+                    'job_order_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'ipa_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'e_issuance_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'medical_report_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
 
 class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
@@ -2106,9 +2171,9 @@ class EmployerDocSigSlugForm(forms.ModelForm):
     def clean_employer_slug(self):
         return uuid.uuid4()
 
-class EmployerDocMaidStatusForm(forms.ModelForm):
+class CaseStatusForm(forms.ModelForm):
     class Meta:
-        model = models.EmployerDocMaidStatus
+        model = models.CaseStatus
         exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
@@ -2119,7 +2184,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML('''
-                <h3>FDW Status</h3>
+                <h3>Case Status</h3>
                 '''
             ),
             Row(
@@ -2202,63 +2267,6 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
                     check_field_not_empty(field)
 
         return self.cleaned_data
-
-# class EmployerPaymentTransactionForm(forms.ModelForm):
-#     class Meta:
-#         model = models.EmployerPaymentTransaction
-#         exclude = ['employer_doc']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.authority = kwargs.pop('authority')
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             Row(
-#                 Column(
-#                     Field(
-#                         'transaction_date',
-#                         type='text',
-#                         onfocus="(this.type='date')",
-#                         placeholder='Transaction date'
-#                     ),
-#                     css_class='form-group col-md-4'
-#                 ),
-#                 Column(
-#                     PrependedText(
-#                         'amount', '$',
-#                         min='0', max='10000',
-#                     ),
-#                     css_class='form-group col-md-4'
-#                 ),
-#                 Column(
-#                     'transaction_type',
-#                     css_class='form-group col-md-4'
-#                 ),
-#                 css_class='form-row'
-#             ),
-#             Submit('submit', 'Submit')
-#         )
-
-# class JobOrderForm(forms.ModelForm):
-#     class Meta:
-#         model = models.JobOrder
-#         widgets = {'job_order_pdf': forms.FileInput(attrs={'accept': 'application/pdf'})}
-#         exclude = ['employer_doc']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.authority = kwargs.pop('authority')
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             Field(
-#                 'job_order_pdf',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
 
 # Signature Forms
 class SignatureForm(forms.ModelForm):
@@ -2427,8 +2435,8 @@ class VerifyUserTokenForm(forms.ModelForm):
         fields_copy = list(self.fields)
         for field in fields_copy:
             if (
-                self.is_employer
-                and (field=='nric' or field=='mobile')
+                self.is_employer and
+                (field=='nric' or field=='mobile')
             ):
                 continue
             else:
@@ -2437,27 +2445,10 @@ class VerifyUserTokenForm(forms.ModelForm):
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
         plaintext = self.object.employer_doc.employer.get_nric_full()
-        if (
-            self.is_employer
-                and (
-                    input_nric.lower() ==
-                    plaintext.lower()
-                    and
-                    int(self.cleaned_data.get('mobile', 0)) ==
-                    int(self.object.employer_doc.employer.employer_mobile_number)
-                )
-            or (
-                False
-            # self.is_fdw
-            #     and ( ############################################## TO BE UPDATED
-            #         self.cleaned_data.get('validation_1', '') ==
-            #         '1'
-            #         and
-            #         int(self.cleaned_data.get('validation_2', 0)) ==
-            #         int(1)
-            #     ) ############################################## TO BE UPDATED
-            )
-        ):
+        if (self.is_employer and (
+            input_nric.lower() == plaintext.lower() and
+            int(self.cleaned_data.get('mobile', 0)) == int(self.object.employer_doc.employer.employer_mobile_number)
+        )):
             verification_token = secrets.token_urlsafe(128)
             self.cleaned_data[self.token_field_name] = verification_token
             self.session['signature_token'] = verification_token

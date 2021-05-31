@@ -141,11 +141,7 @@
                 <div class="row new-side-nav-link {% if url_name == 'dashboard_case_list' %}active{% endif %}">
                     <div class="col-10">
                         <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_case_list' %}active{% endif %}" href="{% url 'dashboard_case_list' %}">
-<<<<<<< HEAD
-                            <p class="m-1 pl-2">Cases</p>
-=======
                             <p class="m-1 pl-2">Case</p>
->>>>>>> 504ea053f7523a7365fdfc9a372bab25c2bd7fdf
                         </a>
                     </div>
                     <div class="col d-flex flex-column justify-content-center px-0">
@@ -175,14 +171,14 @@
         </div>
         <div class="row">
             <div class="col">
-                <a class="nav-link new-side-nav-link {% if url_name == 'sales_list_route' %}active{% endif %}" href="{% url 'sales_list_route' %}" class="">
+                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_sales_list' %}active{% endif %}" href="{% url 'dashboard_sales_list' %}" class="">
                 <p class="m-1 pl-2">Sales Summary</p>
                 </a>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <a class="nav-link new-side-nav-link {% if url_name == 'status_list_route' %}active{% endif %}" href="{% url 'status_list_route' %}" class="">
+                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_status_list' %}active{% endif %}" href="{% url 'dashboard_status_list' %}" class="">
                 <p class="m-1 pl-2">Status Summary</p>
                 </a>
             </div>
