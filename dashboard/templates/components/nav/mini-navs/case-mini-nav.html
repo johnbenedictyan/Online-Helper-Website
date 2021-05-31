@@ -35,6 +35,7 @@
             </a>
         </div>
     </div>
+    {% if maid_type == 'NEW' %}
     <div class="row">
         <div class="col">
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'safetyagreement_update_route' level_1_pk=level_1_pk %}">
@@ -42,6 +43,7 @@
             </a>
         </div>
     </div>
+    {% endif %}
     <div class="row">
         <div class="col">
             <a class="nav-link mini-side-nav-link text-smaller-slight" href="{% url 'docupload_update_route' level_1_pk=level_1_pk %}">

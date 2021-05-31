@@ -413,6 +413,7 @@ class DocServiceFeeScheduleCreateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.get_object().fdw.maid_type,
         })
         return context
 
@@ -453,6 +454,7 @@ class DocServAgmtEmpCtrCreateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.get_object().fdw.maid_type,
         })
         return context
 
@@ -498,6 +500,7 @@ class DocSafetyAgreementCreateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.get_object().fdw.maid_type,
         })
         return context
 
@@ -551,6 +554,7 @@ class DocUploadCreateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.get_object().fdw.maid_type,
         })
         return context
 
@@ -809,6 +813,7 @@ class EmployerDocUpdateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.object.fdw.maid_type,
         })
         return context
 
@@ -857,6 +862,7 @@ class DocServiceFeeScheduleUpdateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.object.employer_doc.fdw.maid_type,
         })
         return context
 
@@ -904,6 +910,7 @@ class DocServAgmtEmpCtrUpdateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.object.employer_doc.fdw.maid_type,
         })
         return context
 
@@ -956,6 +963,7 @@ class DocSafetyAgreementUpdateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.object.employer_doc.fdw.maid_type,
         })
         return context
 
@@ -1003,6 +1011,7 @@ class DocUploadUpdateView(
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
+            'maid_type': self.object.employer_doc.fdw.maid_type,
         })
         return context
 
