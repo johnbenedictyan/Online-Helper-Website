@@ -1450,25 +1450,28 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             # Form B
             Row(
                 Column(
-                    'fdw_replaced_name',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'fdw_replaced_passport_num',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row',
-                id="form_b",
-            ),
-            Row(
-                Column(
-                    PrependedText(
-                        'b4_loan_transferred', '$',
-                        min='0', max='1000',
+                    Row(
+                        Column(
+                            'fdw_replaced_name',
+                            css_class='form-group col-md-6'
+                        ),
+                        Column(
+                            'fdw_replaced_passport_num',
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row',
                     ),
-                    css_class='form-group col-md-6'
+                    Row(
+                        Column(
+                            PrependedText(
+                                'b4_loan_transferred', '$',
+                                min='0', max='1000',
+                            ),
+                            css_class='form-group col-md-6'
+                        ),
+                        css_class='form-row',
+                    ),
                 ),
-                css_class='form-row',
                 id="form_b",
             ),
 
