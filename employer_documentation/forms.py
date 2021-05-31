@@ -1911,59 +1911,6 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             )
         )
 
-class DocUploadForm(forms.ModelForm):
-    class Meta:
-        model = models.DocUpload
-        exclude = ['employer_doc']
-
-    def __init__(self, *args, **kwargs):
-        self.user_pk = kwargs.pop('user_pk')
-        self.authority = kwargs.pop('authority')
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            HTML(
-                """
-                <h5 class="doc-section-header" id="id-doc-upload">Upload Documents</h5>
-            """),
-            Row(
-                Column(
-                    'job_order_pdf',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'ipa_pdf',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'e_issuance_pdf',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'medical_report_pdf',
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            
-            # Submit
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
 class DocSafetyAgreementForm(forms.ModelForm):
     class Meta:
         model = models.DocSafetyAgreement
@@ -2104,6 +2051,59 @@ class DocSafetyAgreementForm(forms.ModelForm):
             )
         
         return self.cleaned_data
+
+class DocUploadForm(forms.ModelForm):
+    class Meta:
+        model = models.DocUpload
+        exclude = ['employer_doc']
+
+    def __init__(self, *args, **kwargs):
+        self.user_pk = kwargs.pop('user_pk')
+        self.authority = kwargs.pop('authority')
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML(
+                """
+                <h5 class="doc-section-header" id="id-doc-upload">Upload Documents</h5>
+            """),
+            Row(
+                Column(
+                    'job_order_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'ipa_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'e_issuance_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                Column(
+                    'medical_report_pdf',
+                    css_class='form-group col-md-6'
+                ),
+                css_class='form-row'
+            ),
+            
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
 
 class EmployerDocSigSlugForm(forms.ModelForm):
     class Meta:
