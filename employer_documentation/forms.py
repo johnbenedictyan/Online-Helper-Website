@@ -1407,7 +1407,7 @@ class EmployerDocForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1677,7 +1677,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1899,7 +1899,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -1963,7 +1963,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
+                        'Next',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
@@ -2212,63 +2212,6 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
 
         return self.cleaned_data
 
-# class EmployerPaymentTransactionForm(forms.ModelForm):
-#     class Meta:
-#         model = models.EmployerPaymentTransaction
-#         exclude = ['employer_doc']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.authority = kwargs.pop('authority')
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             Row(
-#                 Column(
-#                     Field(
-#                         'transaction_date',
-#                         type='text',
-#                         onfocus="(this.type='date')",
-#                         placeholder='Transaction date'
-#                     ),
-#                     css_class='form-group col-md-4'
-#                 ),
-#                 Column(
-#                     PrependedText(
-#                         'amount', '$',
-#                         min='0', max='10000',
-#                     ),
-#                     css_class='form-group col-md-4'
-#                 ),
-#                 Column(
-#                     'transaction_type',
-#                     css_class='form-group col-md-4'
-#                 ),
-#                 css_class='form-row'
-#             ),
-#             Submit('submit', 'Submit')
-#         )
-
-# class JobOrderForm(forms.ModelForm):
-#     class Meta:
-#         model = models.JobOrder
-#         widgets = {'job_order_pdf': forms.FileInput(attrs={'accept': 'application/pdf'})}
-#         exclude = ['employer_doc']
-
-#     def __init__(self, *args, **kwargs):
-#         self.user_pk = kwargs.pop('user_pk')
-#         self.authority = kwargs.pop('authority')
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             Field(
-#                 'job_order_pdf',
-#             ),
-#             Submit('submit', 'Submit')
-#         )
-
 # Signature Forms
 class SignatureForm(forms.ModelForm):
     class Meta:
@@ -2436,8 +2379,8 @@ class VerifyUserTokenForm(forms.ModelForm):
         fields_copy = list(self.fields)
         for field in fields_copy:
             if (
-                self.is_employer
-                and (field=='nric' or field=='mobile')
+                self.is_employer and
+                (field=='nric' or field=='mobile')
             ):
                 continue
             else:
@@ -2446,27 +2389,10 @@ class VerifyUserTokenForm(forms.ModelForm):
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
         plaintext = self.object.employer_doc.employer.get_nric_full()
-        if (
-            self.is_employer
-                and (
-                    input_nric.lower() ==
-                    plaintext.lower()
-                    and
-                    int(self.cleaned_data.get('mobile', 0)) ==
-                    int(self.object.employer_doc.employer.employer_mobile_number)
-                )
-            or (
-                False
-            # self.is_fdw
-            #     and ( ############################################## TO BE UPDATED
-            #         self.cleaned_data.get('validation_1', '') ==
-            #         '1'
-            #         and
-            #         int(self.cleaned_data.get('validation_2', 0)) ==
-            #         int(1)
-            #     ) ############################################## TO BE UPDATED
-            )
-        ):
+        if (self.is_employer and (
+            input_nric.lower() == plaintext.lower() and
+            int(self.cleaned_data.get('mobile', 0)) == int(self.object.employer_doc.employer.employer_mobile_number)
+        )):
             verification_token = secrets.token_urlsafe(128)
             self.cleaned_data[self.token_field_name] = verification_token
             self.session['signature_token'] = verification_token
