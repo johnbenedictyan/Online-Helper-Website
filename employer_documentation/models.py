@@ -1824,7 +1824,7 @@ class DocUpload(models.Model):
         related_name='rn_docupload_ed'
     )
     job_order_pdf = models.FileField(
-        verbose_name=_('Upload Job Order (PDF)'),
+        verbose_name=_('Job Order (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
@@ -1832,7 +1832,7 @@ class DocUpload(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
     ipa_pdf = models.FileField(
-        verbose_name=_('Upload IPA (PDF)'),
+        verbose_name=_('IPA (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
@@ -1840,7 +1840,7 @@ class DocUpload(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
     e_issuance_pdf = models.FileField(
-        verbose_name=_('Upload E-Issuance Document (PDF)'),
+        verbose_name=_('E-Issuance Document (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
@@ -1848,7 +1848,7 @@ class DocUpload(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
     medical_report_pdf = models.FileField(
-        verbose_name=_('Upload Medical Report (PDF)'),
+        verbose_name=_('Medical Report (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
