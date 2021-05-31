@@ -66,14 +66,14 @@
                     </div>  
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_agency_employee_create' or url_name == 'dashboard_agency_employee_update' %}show{% endif %}" id="accountManagementDropdownNav">
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="{% url 'dashboard_agency_employee_create' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_create' %}active{% endif %}">
-                            <p class="m-1 pl-5">Add Employee</p>
+                            <p class="m-1 pl-4">Add Employee</p>
                         </a>
                     </div>
                     <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_agency_employee_update' %}active{% endif %}">
                         <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_update' %}active{% else %}d-none{% endif %}">
-                            <p class="m-1 pl-5">Update Employees</p>
+                            <p class="m-1 pl-4">Update Employees</p>
                         </a>
                     </div>
                 </div>
@@ -118,19 +118,19 @@
                     </div>  
                 </div>
                 <div class="collapse row" id="employersManagementDropdownNav">
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="{% url 'employer_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Employer</p>
+                            <p class="m-1 pl-4">Add Employer</p>
                         </a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
-                            <p class="m-1 pl-5">Employer Profile</p>
+                            <p class="m-1 pl-4">Employer Profile</p>
                         </a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
-                            <p class="m-1 pl-5">Update Employer</p>
+                            <p class="m-1 pl-4">Update Employer</p>
                         </a>
                     </div>
                 </div>
@@ -151,53 +151,53 @@
                     </div>  
                 </div>
                 <div class="collapse row" id="caseManagementDropdownNav">
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="{% url 'case_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight">
-                            <p class="m-1 pl-5">Add Case</p>
+                            <p class="m-1 pl-4">Add Case</p>
                         </a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
-                            <p class="m-1 pl-5">Case Profile</p>
+                            <p class="m-1 pl-4">Case Profile</p>
                         </a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 new-side-nav-link">
                         <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
-                            <p class="m-1 pl-5">Update Case</p>
+                            <p class="m-1 pl-4">Update Case</p>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row new-side-nav-link">
             <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_sales_list' %}active{% endif %}" href="{% url 'dashboard_sales_list' %}" class="">
                 <p class="m-1 pl-2">Sales Summary</p>
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row new-side-nav-link">
             <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_status_list' %}active{% endif %}" href="{% url 'dashboard_status_list' %}" class="">
                 <p class="m-1 pl-2">Status Summary</p>
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row new-side-nav-link">
             <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}" href="{% url 'dashboard_enquiries_list' %}" class="">
                 <p class="m-1 pl-2">Enquiries</p>
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row new-side-nav-link">
             <div class="col">
                 <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}" href="{% url 'dashboard_agency_plan_list' %}" class="">
                 <p class="m-1 pl-2">Subscriptions</p>
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row new-side-nav-link">
             <div class="col">
                 <a class="nav-link new-side-nav-link" href="{% url 'stripe_customer_portal' %}" class="">
                 <p class="m-1 pl-2">Billing History</p>
