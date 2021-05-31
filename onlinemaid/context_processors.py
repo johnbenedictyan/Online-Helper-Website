@@ -81,6 +81,8 @@ def dashboard_side_nav(request):
         'serviceagreement_update_route',
         'safetyagreement_create_route',
         'safetyagreement_update_route',
+        'docupload_create_route',
+        'docupload_update_route',
     ]
     return {
         'dashboard_side_nav_list' : dashboard_side_nav_list
@@ -107,6 +109,8 @@ def page_bar_url_helper(request):
         'serviceagreement_update_route',
         'safetyagreement_create_route',
         'safetyagreement_update_route',
+        'docupload_create_route',
+        'docupload_update_route',
     ]
 
     return {
