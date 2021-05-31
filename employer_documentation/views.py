@@ -370,7 +370,7 @@ class EmployerIncomeDetailsCreateView(
                 'level_0_pk': self.object.employer.pk,
             })
         else:
-            return reverse_lazy('employer_list_route')
+            return reverse_lazy('dashboard_employers_list')
 
 class EmployerDocCreateView(
     AgencyLoginRequiredMixin,
@@ -1080,7 +1080,7 @@ class DocUploadUpdateView(
 #     form_class = JobOrderForm
 #     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/joborder_form.html'
-#     success_url = reverse_lazy('employer_list_route')
+#     success_url = reverse_lazy('dashboard_employers_list')
 
 #     def get_form_kwargs(self):
 #         kwargs = super().get_form_kwargs()
@@ -1118,7 +1118,7 @@ class EmployerDeleteView(
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
-    success_url = reverse_lazy('employer_list_route')
+    success_url = reverse_lazy('dashboard_employers_list')
 
 # class EmployerDocDeleteView(
 #     CheckUserIsAgencyOwnerMixin,
@@ -1127,7 +1127,7 @@ class EmployerDeleteView(
 #     model = models.EmployerDoc
 #     pk_url_kwarg = 'level_1_pk'
 #     template_name = 'employer_documentation/employer_confirm_delete.html'
-#     success_url = reverse_lazy('employer_list_route')
+#     success_url = reverse_lazy('dashboard_employers_list')
 
 
 # Signature Views
