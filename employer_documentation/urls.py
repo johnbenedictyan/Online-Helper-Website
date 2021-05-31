@@ -131,40 +131,20 @@ urlpatterns = [
                         views.DocSafetyAgreementUpdateView.as_view(),
                         name='safetyagreement_update_route'
                     ),
+                    path(
+                        'upload-doc/create/',
+                        views.DocUploadCreateView.as_view(),
+                        name='docupload_create_route'
+                    ),
+                    path(
+                        'upload-doc/update/',
+                        views.DocUploadUpdateView.as_view(),
+                        name='docupload_update_route'
+                    ),
     #                 path(
     #                     'delete/',
     #                     views.EmployerDocDeleteView.as_view(),
     #                     name='case_delete_route'
-    #                 ),
-    #                 path(
-    #                     'status/<int:level_2_pk>/update/',
-    #                     views.EmployerDocMaidStatusUpdateView.as_view(),
-    #                     name='case_status_update_route'
-    #                 ),
-    #                 path(
-    #                     'deployment/<int:level_2_pk>/update/',
-    #                     views.EmployerDocMaidDeploymentUpdateView.as_view(),
-    #                     name='case_deployment_update_route'
-    #                 ),
-    #                 path(
-    #                     'job-order/<int:level_2_pk>/update/',
-    #                     views.JobOrderUpdateView.as_view(),
-    #                     name='joborder_update_route'
-    #                 ),
-    #                 path(
-    #                     'payment/list/',
-    #                     views.EmployerPaymentTransactionListView.as_view(),
-    #                     name='employer_payment_list_route'
-    #                 ),
-    #                 path(
-    #                     'payment/create/',
-    #                     views.EmployerPaymentTransactionCreateView.as_view(),
-    #                     name='employer_payment_create_route'
-    #                 ),
-    #                 path(
-    #                     'payment/<int:level_2_pk>/update/',
-    #                     views.EmployerPaymentTransactionUpdateView.as_view(),
-    #                     name='employer_payment_update_route'
     #                 ),
     #                 path(
     #                     '<int:level_2_pk>/employer-url/',

@@ -17,6 +17,7 @@ from . import models, forms, constants
 from .formset import EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper
 from .mixins import *
 from onlinemaid import constants as om_constants
+from maid import constants as maid_constants
 
 # Start of Views
 
@@ -388,7 +389,10 @@ class EmployerDocCreateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        success_url = reverse_lazy('servicefee_update_route', kwargs={
+            'level_1_pk': self.object.pk
+        })
+        return success_url
 
 class DocServiceFeeScheduleCreateView(
     AgencyLoginRequiredMixin,
@@ -425,7 +429,10 @@ class DocServiceFeeScheduleCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        success_url = reverse_lazy('serviceagreement_update_route', kwargs={
+            'level_1_pk': self.object.pk
+        })
+        return success_url
 
 class DocServAgmtEmpCtrCreateView(
     AgencyLoginRequiredMixin,
@@ -462,7 +469,15 @@ class DocServAgmtEmpCtrCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        if self.object.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
+            success_url = reverse_lazy('safetyagreement_update_route', kwargs={
+                'level_1_pk': self.object.pk
+            })
+        else:
+            success_url = reverse_lazy('docupload_update_route', kwargs={
+                'level_1_pk': self.object.pk
+            })
+        return success_url
 
 class DocSafetyAgreementCreateView(
     AgencyLoginRequiredMixin,
@@ -512,7 +527,47 @@ class DocSafetyAgreementCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        success_url = reverse_lazy('docupload_update_route', kwargs={
+            'level_1_pk': self.object.pk
+        })
+        return success_url
+
+class DocUploadCreateView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    CreateView
+):
+    model = models.DocUpload
+    form_class = forms.DocUploadForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self, *args, **kwargs):
+        return models.EmployerDoc.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['authority'] = self.authority
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.employer_doc = models.EmployerDoc.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard_case_list')
 
 # Update Views
 class EmployerUpdateView(
@@ -765,7 +820,10 @@ class EmployerDocUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        success_url = reverse_lazy('servicefee_update_route', kwargs={
+            'level_1_pk': self.object.pk
+        })
+        return success_url
 
 class DocServiceFeeScheduleUpdateView(
     AgencyLoginRequiredMixin,
@@ -809,7 +867,10 @@ class DocServiceFeeScheduleUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        success_url = reverse_lazy('serviceagreement_update_route', kwargs={
+            'level_1_pk': self.object.pk
+        })
+        return success_url
 
 class DocServAgmtEmpCtrUpdateView(
     AgencyLoginRequiredMixin,
@@ -853,7 +914,15 @@ class DocServAgmtEmpCtrUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        if self.object.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
+            success_url = reverse_lazy('safetyagreement_update_route', kwargs={
+                'level_1_pk': self.object.pk
+            })
+        else:
+            success_url = reverse_lazy('docupload_update_route', kwargs={
+                'level_1_pk': self.object.pk
+            })
+        return success_url
 
 class DocSafetyAgreementUpdateView(
     AgencyLoginRequiredMixin,
@@ -897,7 +966,54 @@ class DocSafetyAgreementUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('employer_list_route')
+        success_url = reverse_lazy('docupload_update_route', kwargs={
+            'level_1_pk': self.object.pk
+        })
+        return success_url
+
+class DocUploadUpdateView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    UpdateView
+):
+    model = models.DocUpload
+    form_class = forms.DocUploadForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_docupload_ed
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('docupload_create_route', kwargs={
+                    'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['authority'] = self.authority
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard_case_list')
 
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
