@@ -471,9 +471,9 @@ class DocServAgmtEmpCtrCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        if self.object.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
+        if self.object.employer_doc.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
             success_url = reverse_lazy('safetyagreement_update_route', kwargs={
-                'level_1_pk': self.object.pk
+                'level_1_pk': self.object.employer_doc.pk
             })
         else:
             success_url = reverse_lazy('docupload_update_route', kwargs={
@@ -921,9 +921,9 @@ class DocServAgmtEmpCtrUpdateView(
         return kwargs
 
     def get_success_url(self):
-        if self.object.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
+        if self.object.employer_doc.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
             success_url = reverse_lazy('safetyagreement_update_route', kwargs={
-                'level_1_pk': self.object.pk
+                'level_1_pk': self.object.employer_doc.pk
             })
         else:
             success_url = reverse_lazy('docupload_update_route', kwargs={
