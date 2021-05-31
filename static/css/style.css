@@ -1,3 +1,7 @@
+.fs-05 {
+  font-size: calc(10/12 * 1rem);
+}
+
 .fs-1 {
   font-size: calc(12/12 * 1rem);
 }
