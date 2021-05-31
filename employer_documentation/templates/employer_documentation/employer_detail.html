@@ -1,30 +1,6 @@
-{% extends 'employer_documentation/base-ed-template.html' %}
+{% extends 'dashboard-base.html' %}
 
-{% block sidenav_extra %}
-<div class="row">
-    <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}" href="{% url 'employer_update_route' level_0_pk=object.pk %}">
-        <p class="m-1 pl-2">Edit Employer</p>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'ed_list_route' %}active{% endif %}" href="{% url 'ed_list_route' level_0_pk=object.pk %}">
-        <p class="m-1 pl-2">Documents Summary</p>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col px-0">
-        <a class="nav-link side-nav-link {% if url_name == 'ed_create_route' %}active{% endif %}" href="{% url 'ed_create_route' level_0_pk=object.pk %}">
-        <p class="m-1 pl-2">Add Document</p>
-        </a>
-    </div>
-</div>
-{% endblock sidenav_extra %}
-
-{% block ed_section %}
+{% block dashboard_section %}
     <h1>Employer: {{ object.employer_name }}</h1>
 
     <table class="table">
@@ -55,4 +31,4 @@
             </tr>
         </tbody>
     </table>
-{% endblock ed_section %}
+{% endblock dashboard_section %}
