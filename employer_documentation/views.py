@@ -430,7 +430,7 @@ class DocServiceFeeScheduleCreateView(
 
     def get_success_url(self):
         success_url = reverse_lazy('serviceagreement_update_route', kwargs={
-            'level_1_pk': self.object.pk
+            'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
 
@@ -475,7 +475,7 @@ class DocServAgmtEmpCtrCreateView(
             })
         else:
             success_url = reverse_lazy('docupload_update_route', kwargs={
-                'level_1_pk': self.object.pk
+                'level_1_pk': self.object.employer_doc.pk
             })
         return success_url
 
@@ -528,7 +528,7 @@ class DocSafetyAgreementCreateView(
 
     def get_success_url(self):
         success_url = reverse_lazy('docupload_update_route', kwargs={
-            'level_1_pk': self.object.pk
+            'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
 
@@ -787,7 +787,7 @@ class EmployerIncomeDetailsUpdateView(
     def get_success_url(self):
         if self.object.employer.household_details_required:
             success_url = reverse_lazy('employer_householddetails_update_route', kwargs={
-                'level_0_pk': self.object.pk
+                'level_0_pk': self.object.employer.pk
             })
         else:
             success_url = reverse_lazy('dashboard_employers_list')
@@ -868,7 +868,7 @@ class DocServiceFeeScheduleUpdateView(
 
     def get_success_url(self):
         success_url = reverse_lazy('serviceagreement_update_route', kwargs={
-            'level_1_pk': self.object.pk
+            'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
 
@@ -920,7 +920,7 @@ class DocServAgmtEmpCtrUpdateView(
             })
         else:
             success_url = reverse_lazy('docupload_update_route', kwargs={
-                'level_1_pk': self.object.pk
+                'level_1_pk': self.object.employer_doc.pk
             })
         return success_url
 
@@ -967,7 +967,7 @@ class DocSafetyAgreementUpdateView(
 
     def get_success_url(self):
         success_url = reverse_lazy('docupload_update_route', kwargs={
-            'level_1_pk': self.object.pk
+            'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
 
