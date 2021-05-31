@@ -726,7 +726,7 @@ urlpatterns = [
     #                 template_name = 'employer_documentation/sales_list.html',
     #                 is_deployed=True,
     #             ),
-    #             name='sales_list_route'
+    #             name='dashboard_sales_list'
     #         ),
     #     ]),
     # ),
@@ -738,7 +738,7 @@ urlpatterns = [
     #                 template_name = 'employer_documentation/status_list.html',
     #                 is_deployed=False,
     #             ),
-    #             name='status_list_route'
+    #             name='dashboard_status_list'
     #         ),
     #     ]),
     # ),

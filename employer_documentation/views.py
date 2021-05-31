@@ -1068,9 +1068,9 @@ class DocUploadUpdateView(
 
 #     def get_success_url(self):
 #         if self.object.is_deployed:
-#             return reverse_lazy('status_list_route')
+#             return reverse_lazy('dashboard_status_list')
 #         else:
-#             return reverse_lazy('sales_list_route')
+#             return reverse_lazy('dashboard_sales_list')
 
 # class JobOrderUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
@@ -1102,7 +1102,7 @@ class DocUploadUpdateView(
 #     form_class = EmployerPaymentTransactionForm
 #     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/crispy_form.html'
-#     success_url = reverse_lazy('sales_list_route')
+#     success_url = reverse_lazy('dashboard_sales_list')
 
 #     def get_form_kwargs(self):
 #         kwargs = super().get_form_kwargs()
@@ -1401,7 +1401,7 @@ class EmployerDeleteView(
 #                 messages.WARNING,
 #                 'Could not save documents. ' + signatures_check
 #             )
-#             return HttpResponseRedirect(reverse_lazy('sales_list_route'))
+#             return HttpResponseRedirect(reverse_lazy('dashboard_sales_list'))
 
 #         instance = PdfArchive.objects.get(employer_doc=self.object)
 #         folder = 'employer_documentation/pdf/'
@@ -1432,7 +1432,7 @@ class EmployerDeleteView(
 #             setattr(instance, field_name, file_wrapper)
 #         instance.save()
 
-#         return HttpResponseRedirect(reverse_lazy('sales_list_route'))
+#         return HttpResponseRedirect(reverse_lazy('dashboard_sales_list'))
 
 # class PdfArchiveDetailView(
 #     CheckAgencyEmployeePermissionsMixin,

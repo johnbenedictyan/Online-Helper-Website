@@ -637,7 +637,7 @@ class EmployerListViewTestCase(SetUp, TestCase):
         test_sales_access(self)
 
 class StatusListViewTestCase(SetUp, TestCase):
-    url_route = 'status_list_route'
+    url_route = 'dashboard_status_list'
     test_view = DocListView
 
     def test_anon_redirect(self):
@@ -659,7 +659,7 @@ class StatusListViewTestCase(SetUp, TestCase):
         test_sales_access(self)
 
 class SalesListViewTestCase(SetUp, TestCase):
-    url_route = 'sales_list_route'
+    url_route = 'dashboard_sales_list'
     test_view = DocListView
 
     def test_anon_redirect(self):

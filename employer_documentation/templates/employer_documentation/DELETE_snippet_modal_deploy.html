@@ -3,15 +3,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deployFdwModalLabel-{{ object.rn_maidstatus_ed.pk }}">Confirm {% if request.resolver_match.url_name == 'sales_list_route' %}Undo{% endif %} FDW Deployment</h5>
+                <h5 class="modal-title" id="deployFdwModalLabel-{{ object.rn_maidstatus_ed.pk }}">Confirm {% if request.resolver_match.url_name == 'dashboard_sales_list' %}Undo{% endif %} FDW Deployment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                {% if request.resolver_match.url_name == 'status_list_route' or request.resolver_match.url_name == 'ed_list_route' %}
+                {% if request.resolver_match.url_name == 'dashboard_status_list' or request.resolver_match.url_name == 'ed_list_route' %}
                     <p>Please confirm FDW has been deployed to employer.</p>
                     <br>
                     <p>After deployment confirmation, case #: <strong>{{ object.case_ref_no }}</strong> will be moved to sales summary.</p>
-                {% elif request.resolver_match.url_name == 'sales_list_route' %}
+                {% elif request.resolver_match.url_name == 'dashboard_sales_list' %}
                     <p>Undo deployment?</p>
                     <br>
                     <p>After confirmation, case #: <strong>{{ object.case_ref_no }}</strong> will be moved back to status summary.</p>
@@ -20,11 +20,11 @@
             <div class="modal-footer">
                 <form action="{% url 'ed_deployment_update_route' level_0_pk=object.employer.pk level_1_pk=object.pk level_2_pk=object.rn_maidstatus_ed.pk %}" method="post">
                     {% csrf_token %}
-                    <input type="text" name="is_deployed" id="is-deployed-{{ object.rn_maidstatus_ed.pk }}" hidden="True" {% if request.resolver_match.url_name == 'status_list_route' %}value="True"{% elif request.resolver_match.url_name == 'sales_list_route' %}value="False"{% endif %}>
+                    <input type="text" name="is_deployed" id="is-deployed-{{ object.rn_maidstatus_ed.pk }}" hidden="True" {% if request.resolver_match.url_name == 'dashboard_status_list' %}value="True"{% elif request.resolver_match.url_name == 'dashboard_sales_list' %}value="False"{% endif %}>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    {% if request.resolver_match.url_name == 'status_list_route' or request.resolver_match.url_name == 'ed_list_route' %}
+                    {% if request.resolver_match.url_name == 'dashboard_status_list' or request.resolver_match.url_name == 'ed_list_route' %}
                         <input type="submit" class="btn btn-primary" value="Deploy">
-                    {% elif request.resolver_match.url_name == 'sales_list_route' %}
+                    {% elif request.resolver_match.url_name == 'dashboard_sales_list' %}
                         <input type="submit" class="btn btn-danger" value="Undo Deploy">
                     {% endif %}
                 </form>
