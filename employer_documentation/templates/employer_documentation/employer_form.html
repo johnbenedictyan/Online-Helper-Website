@@ -263,6 +263,32 @@
             })
         }
 
+        // Service Fee Schedule
+        let caseType = document.getElementById('id_is_new_case');
+        if (caseType) {
+            let formB = document.getElementById('form_b');
+            let b2j_b2k = document.getElementById('b2j_b2k');
+            // On page load
+            if (caseType.value=='False') {
+                formB.hidden = false; // show
+                b2j_b2k.hidden = false; // show
+            } else {
+                formB.hidden = true; // hide
+                b2j_b2k.hidden = true; // hide
+            }
+
+            // On caseType change
+            caseType.addEventListener('change', function() {
+                if (this.value=='False') {
+                    formB.hidden = false; // show
+                    b2j_b2k.hidden = false; // show
+                } else {
+                    formB.hidden = true; // hide
+                    b2j_b2k.hidden = true; // hide
+                }
+            })
+        }
+
         // Token URL copy
         let copyBtn = document.querySelector('#copy-button');
         if (copyBtn) {
