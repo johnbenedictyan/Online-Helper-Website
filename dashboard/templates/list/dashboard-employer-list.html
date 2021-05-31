@@ -9,19 +9,28 @@
                 <h4>Employers</h4>
             </div>
         </div>
-        <form action="" method="get">
-            <div class="row">
-                <div class="col-4">
-                    {{filter.form.employer_name|as_crispy_field}}
-                </div>
-                <div class="col-4 offset-2">
-                    {{filter.form.agency_employee|as_crispy_field}}
-                </div>
+        <div class="row mb-2">
+            <div class="col-md-9">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-5">
+                            {{filter.form.employer_name|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-1">
+                            {{filter.form.agency_employee|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-6">
+                            {{filter.form.employer_birthday_month|as_crispy_field}}
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-        <div class="row">
-            <div class="col text-right pb-3">
-                <a href="{% url 'employer_create_route' %}" class="btn btn-primary mr-1">Add Employer</a>
+            <div class="col-md-3">
+                <div class="row h-100">
+                    <div class="col text-right mt-auto mb-3">
+                        <a href="{% url 'employer_create_route' %}" class="btn btn-primary mr-1">Add Employer</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
