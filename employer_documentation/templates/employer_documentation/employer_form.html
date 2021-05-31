@@ -271,20 +271,20 @@
             // On page load
             if (caseType.value=='False') {
                 formB.hidden = false; // show
-                b2j_b2k.hidden = false; // show
+                b2j_b2k.hidden = true; // hide
             } else {
                 formB.hidden = true; // hide
-                b2j_b2k.hidden = true; // hide
+                b2j_b2k.hidden = false; // show
             }
 
             // On caseType change
             caseType.addEventListener('change', function() {
                 if (this.value=='False') {
                     formB.hidden = false; // show
-                    b2j_b2k.hidden = false; // show
+                    b2j_b2k.hidden = true; // hide
                 } else {
                     formB.hidden = true; // hide
-                    b2j_b2k.hidden = true; // hide
+                    b2j_b2k.hidden = false; // show
                 }
             })
         }
