@@ -1988,11 +1988,11 @@ class EmployerDocSig(models.Model):
     #     null=True
     # )
 
-class EmployerDocMaidStatus(models.Model):
+class CaseStatus(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
         on_delete=models.CASCADE,
-        related_name='rn_maidstatus_ed'
+        related_name='rn_casestatus_ed'
     )
     ipa_approval_date = models.DateField(
         verbose_name=_('In Principle Approval (IPA) Date'),
@@ -3394,16 +3394,6 @@ class ArchivedDoc(models.Model):
             - self.ca_deposit_amount
         )
 
-        # subsequent_transactions = EmployerPaymentTransaction.objects.filter(
-        #     employer_doc=self
-        # )
-
-        # for transaction in subsequent_transactions:
-        #     if transaction.transaction_type == 'ADD':
-        #         balance += transaction.amount
-        #     elif transaction.transaction_type == 'SUB':
-        #         balance -= transaction.amount
-        
         return balance
 
     def get_fdw_replaced_passport_full(self):
@@ -3680,102 +3670,6 @@ class ArchivedDoc(models.Model):
         null=True
     )
 
-    # Optional signatures
-    # spouse_signature = models.TextField(
-    #     verbose_name=_('Spouse Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-    # sponsor_1_signature = models.TextField(
-    #     verbose_name=_('Sponsor 1 Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-    # sponsor_2_signature = models.TextField(
-    #     verbose_name=_('Sponsor 2 Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-    # joint_applicant_signature = models.TextField(
-    #     verbose_name=_('Joint Applicant Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-
-    # Witnesses
-    # employer_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for Employer'),
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_name = models.CharField(
-    #     verbose_name=_('Employer Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_address_1 = models.CharField(
-    #     verbose_name=_('Employer Witness Address Line 1'),
-    #     max_length=100,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # employer_witness_address_2 = models.CharField(
-    #     verbose_name=_('Employer Witness Address Line 2'),
-    #     max_length=50,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # employer_witness_post_code = models.CharField(
-    #     verbose_name=_('Employer Witness Postal Code'),
-    #     max_length=25,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # fdw_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for FDW'),
-    #     blank=True,
-    #     null=True
-    # )
-    # fdw_witness_name = models.CharField(
-    #     verbose_name=_('FDW Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # fdw_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for Agency Staff Member'),
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_name = models.CharField(
-    #     verbose_name=_('Agency Staff Memeber Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-
     # Status dates
     ipa_approval_date = models.DateField(
         verbose_name=_('In Principle Approval (IPA) Date'),
@@ -3918,31 +3812,3 @@ class ArchivedEmployerHousehold(models.Model):
             self.household_id_nonce,
             self.household_id_tag,
         )
-
-# class EmployerPaymentTransaction(models.Model):
-#     TRANSACTION_CHOICES = (
-#         ('SUB', _('Repayment')),
-#         ('ADD', _('New charge')),
-#     )
-#     employer_doc = models.ForeignKey(
-#         EmployerDoc,
-#         on_delete=models.CASCADE,
-#         related_name='rn_repayment_ed'
-#     )
-#     amount = models.DecimalField(
-#         verbose_name=_("Amount"),
-#         max_digits=7,
-#         decimal_places=2,
-#         validators=[
-#             MinValueValidator(0),
-#             MaxValueValidator(10000),
-#         ],
-#     )
-#     transaction_type = models.CharField(
-#         verbose_name=_("Type of transaction"),
-#         max_length=3,
-#         blank=False,
-#         choices=TRANSACTION_CHOICES,
-#         default=TRANSACTION_CHOICES[0][0]
-#     )
-#     transaction_date = models.DateField()

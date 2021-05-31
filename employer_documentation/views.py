@@ -22,170 +22,170 @@ from maid import constants as maid_constants
 # Start of Views
 
 # List Views
-class EmployerListView(
-    AgencyLoginRequiredMixin,
-    GetAuthorityMixin,
-    ListView
-):
-    model = models.Employer
-    ordering = ['employer_name']
-    paginate_by = 20
+# class EmployerListView(
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
+#     ListView
+# ):
+#     model = models.Employer
+#     ordering = ['employer_name']
+#     paginate_by = 20
 
-    def get_queryset(self):
-        search_terms = self.request.GET.get('search')
+#     def get_queryset(self):
+#         search_terms = self.request.GET.get('search')
 
-        # Filter results by user's search terms
-        if search_terms:
-            queryset = super().get_queryset().filter(
-                Q(employer_name__icontains=search_terms) |
-                Q(employer_email__icontains=search_terms) |
-                Q(employer_mobile_number__icontains=search_terms)
-            )
-        else:
-            queryset = super().get_queryset()
+#         # Filter results by user's search terms
+#         if search_terms:
+#             queryset = super().get_queryset().filter(
+#                 Q(employer_name__icontains=search_terms) |
+#                 Q(employer_email__icontains=search_terms) |
+#                 Q(employer_mobile_number__icontains=search_terms)
+#             )
+#         else:
+#             queryset = super().get_queryset()
 
-        # Further filter queryset to only show the employers that current user
-        # has necessary permission to access
-        if self.authority==om_constants.AG_OWNERS:
-            # If agency owner, return all employers belonging to agency
-            return queryset.filter(
-                agency_employee__agency
-                = self.request.user.agency_owner.agency
-            )
-        elif self.authority==om_constants.AG_ADMINS:
-            # If agency administrator, return all employers belonging to agency
-            return queryset.filter(
-                agency_employee__agency
-                = self.request.user.agency_employee.agency
-            )
-        elif self.authority==om_constants.AG_MANAGERS:
-            # If agency manager, return all employers belonging to branch
-            return queryset.filter(
-                agency_employee__branch
-                = self.request.user.agency_employee.branch
-            )
-        elif self.authority==om_constants.AG_SALES:
-            # If agency owner, return all employers belonging to self
-            return queryset.filter(
-                agency_employee = self.request.user.agency_employee
-            )
-        else:
-            return self.handle_no_permission()
+#         # Further filter queryset to only show the employers that current user
+#         # has necessary permission to access
+#         if self.authority==om_constants.AG_OWNERS:
+#             # If agency owner, return all employers belonging to agency
+#             return queryset.filter(
+#                 agency_employee__agency
+#                 = self.request.user.agency_owner.agency
+#             )
+#         elif self.authority==om_constants.AG_ADMINS:
+#             # If agency administrator, return all employers belonging to agency
+#             return queryset.filter(
+#                 agency_employee__agency
+#                 = self.request.user.agency_employee.agency
+#             )
+#         elif self.authority==om_constants.AG_MANAGERS:
+#             # If agency manager, return all employers belonging to branch
+#             return queryset.filter(
+#                 agency_employee__branch
+#                 = self.request.user.agency_employee.branch
+#             )
+#         elif self.authority==om_constants.AG_SALES:
+#             # If agency owner, return all employers belonging to self
+#             return queryset.filter(
+#                 agency_employee = self.request.user.agency_employee
+#             )
+#         else:
+#             return self.handle_no_permission()
 
-class DocListView(
-    AgencyLoginRequiredMixin,
-    GetAuthorityMixin,
-    ListView
-):
-    model = models.EmployerDoc
-    # template_name = 'employer_documentation/sales_list.html'
-    ordering = ['-agreement_date']
-    paginate_by = 20
-    is_deployed = None
+# class DocListView(
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
+#     ListView
+# ):
+#     model = models.EmployerDoc
+#     # template_name = 'employer_documentation/sales_list.html'
+#     ordering = ['-agreement_date']
+#     paginate_by = 20
+#     is_deployed = None
 
-    def get_queryset(self):
-        search_terms = self.request.GET.get('search')
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-        sort_by = self.request.GET.get('sort_by')
+#     def get_queryset(self):
+#         search_terms = self.request.GET.get('search')
+#         start_date = self.request.GET.get('start_date')
+#         end_date = self.request.GET.get('end_date')
+#         sort_by = self.request.GET.get('sort_by')
 
-        # Sort by dates
-        if sort_by:
-            # Get field to sort by
-            if 'agreement_date' in sort_by:
-                sort_field_name = 'agreement_date'
-            elif 'fdw_work_commencement_date' in sort_by:
-                sort_field_name = 'rn_maidstatus_ed__fdw_work_commencement_date'
-            elif 'ipa_date' in sort_by:
-                sort_field_name = 'rn_maidstatus_ed__ipa_approval_date'
+#         # Sort by dates
+#         if sort_by:
+#             # Get field to sort by
+#             if 'agreement_date' in sort_by:
+#                 sort_field_name = 'agreement_date'
+#             elif 'fdw_work_commencement_date' in sort_by:
+#                 sort_field_name = 'rn_casestatus_ed__fdw_work_commencement_date'
+#             elif 'ipa_date' in sort_by:
+#                 sort_field_name = 'rn_casestatus_ed__ipa_approval_date'
         
-            # Get ascending or descending user selection
-            if sort_by.endswith('asc'):
-                self.ordering = [sort_field_name]
-            elif sort_by.endswith('des'):
-                self.ordering = ['-' + sort_field_name]
-        else:
-            sort_field_name = self.ordering[0].replace('-', '')
+#             # Get ascending or descending user selection
+#             if sort_by.endswith('asc'):
+#                 self.ordering = [sort_field_name]
+#             elif sort_by.endswith('des'):
+#                 self.ordering = ['-' + sort_field_name]
+#         else:
+#             sort_field_name = self.ordering[0].replace('-', '')
 
-        # Get queryset
-        queryset = super().get_queryset().filter(
-            rn_maidstatus_ed__is_deployed=self.is_deployed
-        )
+#         # Get queryset
+#         queryset = super().get_queryset().filter(
+#             rn_casestatus_ed__is_deployed=self.is_deployed
+#         )
 
-        # Filter results by user's search terms
-        if search_terms:
-            queryset = queryset.filter(
-                Q(case_ref_no__icontains=search_terms) |
-                Q(employer__employer_name__icontains=search_terms) |
-                Q(employer__employer_email__icontains=search_terms) |
-                Q(employer__employer_mobile_number__icontains=search_terms)
-            )
+#         # Filter results by user's search terms
+#         if search_terms:
+#             queryset = queryset.filter(
+#                 Q(case_ref_no__icontains=search_terms) |
+#                 Q(employer__employer_name__icontains=search_terms) |
+#                 Q(employer__employer_email__icontains=search_terms) |
+#                 Q(employer__employer_mobile_number__icontains=search_terms)
+#             )
         
-        # Further filter queryset to only show the employers that current user
-        # has necessary permission to access
-        if self.authority==om_constants.AG_OWNERS:
-            # If agency owner, return all employers belonging to agency
-            queryset = queryset.filter(
-                employer__agency_employee__agency
-                = self.request.user.agency_owner.agency
-            )
-        elif self.authority==om_constants.AG_ADMINS:
-            # If agency administrator, return all employers belonging to agency
-            queryset = queryset.filter(
-                employer__agency_employee__agency
-                = self.request.user.agency_employee.agency
-            )
-        elif self.authority==om_constants.AG_MANAGERS:
-            # If agency manager, return all employers belonging to branch
-            queryset = queryset.filter(
-                employer__agency_employee__branch
-                = self.request.user.agency_employee.branch
-            )
-        elif self.authority==om_constants.AG_SALES:
-            # If agency owner, return all employers belonging to self
-            queryset = queryset.filter(
-                employer__agency_employee = self.request.user.agency_employee
-            )
-        else:
-            return self.handle_no_permission()
+#         # Further filter queryset to only show the employers that current user
+#         # has necessary permission to access
+#         if self.authority==om_constants.AG_OWNERS:
+#             # If agency owner, return all employers belonging to agency
+#             queryset = queryset.filter(
+#                 employer__agency_employee__agency
+#                 = self.request.user.agency_owner.agency
+#             )
+#         elif self.authority==om_constants.AG_ADMINS:
+#             # If agency administrator, return all employers belonging to agency
+#             queryset = queryset.filter(
+#                 employer__agency_employee__agency
+#                 = self.request.user.agency_employee.agency
+#             )
+#         elif self.authority==om_constants.AG_MANAGERS:
+#             # If agency manager, return all employers belonging to branch
+#             queryset = queryset.filter(
+#                 employer__agency_employee__branch
+#                 = self.request.user.agency_employee.branch
+#             )
+#         elif self.authority==om_constants.AG_SALES:
+#             # If agency owner, return all employers belonging to self
+#             queryset = queryset.filter(
+#                 employer__agency_employee = self.request.user.agency_employee
+#             )
+#         else:
+#             return self.handle_no_permission()
 
-        # Filter by start and end dates from user input
-        if start_date:
-            start_date_kwargs = {sort_field_name+'__gte': start_date}
-            queryset = queryset.filter(**start_date_kwargs)
-        if end_date:
-            end_date_kwargs = {sort_field_name+'__lte': end_date}
-            queryset = queryset.filter(**end_date_kwargs)
+#         # Filter by start and end dates from user input
+#         if start_date:
+#             start_date_kwargs = {sort_field_name+'__gte': start_date}
+#             queryset = queryset.filter(**start_date_kwargs)
+#         if end_date:
+#             end_date_kwargs = {sort_field_name+'__lte': end_date}
+#             queryset = queryset.filter(**end_date_kwargs)
 
-        return queryset
+#         return queryset
 
-class EmployerDocListView(
-    AgencyLoginRequiredMixin,
-    GetAuthorityMixin,
-    ListView
-):
-    model = models.EmployerDoc
-    pk_url_kwarg = 'level_0_pk'
-    ordering = ['-agreement_date']
+# class EmployerDocListView(
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
+#     ListView
+# ):
+#     model = models.EmployerDoc
+#     pk_url_kwarg = 'level_0_pk'
+#     ordering = ['-agreement_date']
 
-    def get_object(self, *args, **kwargs):
-        return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
+#     def get_object(self, *args, **kwargs):
+#         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
 
-    def get_queryset(self):
-        return super().get_queryset().filter(employer=self.kwargs.get(
-            self.pk_url_kwarg))
+#     def get_queryset(self):
+#         return super().get_queryset().filter(employer=self.kwargs.get(
+#             self.pk_url_kwarg))
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object(*args, **kwargs)
-        if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
-            return super().get(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect(
-                reverse(
-                    'case_create_route',
-                    kwargs={'level_0_pk': self.object.pk}
-                )
-            )
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object(*args, **kwargs)
+#         if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
+#             return super().get(request, *args, **kwargs)
+#         else:
+#             return HttpResponseRedirect(
+#                 reverse(
+#                     'case_create_route',
+#                     kwargs={'level_0_pk': self.object.pk}
+#                 )
+#             )
 
 # Detail Views
 class EmployerDetailView(
@@ -514,18 +514,6 @@ class DocSafetyAgreementCreateView(
         form.instance.employer_doc = models.EmployerDoc.objects.get(
             pk = self.kwargs.get(self.pk_url_kwarg)
         )
-
-    #     if form.instance.fdw_clean_window_exterior==False:
-    #         form.instance.window_exterior_location = None
-    #         form.instance.grilles_installed_require_cleaning = None
-    #         form.instance.adult_supervision = None
-
-    #     elif not form.instance.window_exterior_location=='OTHER':
-    #         form.instance.grilles_installed_require_cleaning = None
-    #         form.instance.adult_supervision = None
-
-    #     elif not form.instance.grilles_installed_require_cleaning:
-    #         form.instance.adult_supervision = None
 
         return super().form_valid(form)
 

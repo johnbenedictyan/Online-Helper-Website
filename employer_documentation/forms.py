@@ -2171,9 +2171,9 @@ class EmployerDocSigSlugForm(forms.ModelForm):
     def clean_employer_slug(self):
         return uuid.uuid4()
 
-class EmployerDocMaidStatusForm(forms.ModelForm):
+class CaseStatusForm(forms.ModelForm):
     class Meta:
-        model = models.EmployerDocMaidStatus
+        model = models.CaseStatus
         exclude = ['employer_doc']
 
     def __init__(self, *args, **kwargs):
@@ -2184,7 +2184,7 @@ class EmployerDocMaidStatusForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML('''
-                <h3>FDW Status</h3>
+                <h3>Case Status</h3>
                 '''
             ),
             Row(

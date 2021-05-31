@@ -718,28 +718,28 @@ urlpatterns = [
     #         ),
     #     ]),
     # ),
-    path('sales/',
-        include([
-            path(
-                'sales-list/',
-                views.DocListView.as_view(
-                    template_name = 'employer_documentation/sales_list.html',
-                    is_deployed=True,
-                ),
-                name='sales_list_route'
-            ),
-        ]),
-    ),
-    path('status/',
-        include([
-            path(
-                '',
-                views.DocListView.as_view(
-                    template_name = 'employer_documentation/status_list.html',
-                    is_deployed=False,
-                ),
-                name='status_list_route'
-            ),
-        ]),
-    ),
+    # path('sales/',
+    #     include([
+    #         path(
+    #             'sales-list/',
+    #             views.DocListView.as_view(
+    #                 template_name = 'employer_documentation/sales_list.html',
+    #                 is_deployed=True,
+    #             ),
+    #             name='sales_list_route'
+    #         ),
+    #     ]),
+    # ),
+    # path('status/',
+    #     include([
+    #         path(
+    #             '',
+    #             views.DocListView.as_view(
+    #                 template_name = 'employer_documentation/status_list.html',
+    #                 is_deployed=False,
+    #             ),
+    #             name='status_list_route'
+    #         ),
+    #     ]),
+    # ),
 ]
