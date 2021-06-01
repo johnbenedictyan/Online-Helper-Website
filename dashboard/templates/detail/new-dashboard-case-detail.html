@@ -14,7 +14,7 @@
                     <h5 class="fs-3 mb-0">FDW Information</h5>
                 </div>
                 <div class="col-2-5">
-                    <a href="#" class="btn btn-primary btn-dashboard-primary w-100">Edit FDW Info</a>
+                    <a href="{% url 'dashboard_maid_information_update' object.fdw.pk %}" class="btn btn-primary btn-dashboard-primary w-100">Edit FDW Info</a>
                 </div>
             </div>
             <div class="row">
@@ -46,7 +46,7 @@
                     <h5 class="fs-3 mb-0">Employer Information</h5>
                 </div>
                 <div class="col-2-5">
-                    <a href="#" class="btn btn-primary btn-dashboard-primary w-100">Edit Employer Info</a>
+                    <a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}" class="btn btn-primary btn-dashboard-primary w-100">Edit Employer Info</a>
                 </div>
             </div>
             <div class="row">
@@ -84,7 +84,7 @@
                     <h5 class="fs-3 mb-0">Case Information</h5>
                 </div>
                 <div class="col-2-5">
-                    <a href="#" class="btn btn-primary btn-dashboard-primary w-100">Edit Case Info</a>
+                    <a href="{% url 'case_update_route' level_1_pk=object.pk %}" class="btn btn-primary btn-dashboard-primary w-100">Edit Case Info</a>
                 </div>
             </div>
             <div class="row">
@@ -414,7 +414,7 @@
                             <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c6_4_per_day_food_accommodation_cost|intcomma }}</h6>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">'6.6 Counselling cost per day</p>
+                            <p class="mb-1">6.6 Counselling cost per day</p>
                             <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c6_6_per_session_counselling_cost|intcomma }}</h6>
                         </div>
                     </div>
@@ -433,7 +433,7 @@
                             <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_1_independent_mediator_1 }}</h6>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">'9.2 Independent Mediator #2</p>
+                            <p class="mb-1">9.2 Independent Mediator #2</p>
                             <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_2_independent_mediator_2 }}</h6>
                         </div>
                     </div>
@@ -520,10 +520,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 my-2"><a href=""><p class="mb-1">Service Fee Schedule (Form A/ Form B)</p></a></div>
-                <div class="col-md-6 my-2"><a href=""><p class="mb-1">Handover Checklist</p></a></div>
-                <div class="col-md-6 my-2"><a href=""><p class="mb-1">Service Agreement</p></a></div>
-                <div class="col-md-6 my-2"><a href=""><p class="mb-1">Transfer Consent</p></a></div>
+                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Service Fee Schedule (Form A/ Form B)</p></a></div>
+                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Handover Checklist</p></a></div>
+                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Service Agreement</p></a></div>
+                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Transfer Consent</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employment Contract</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Work Pass Authorisation</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Loan Repayment Schedule</p></a></div>
