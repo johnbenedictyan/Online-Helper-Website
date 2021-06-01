@@ -1021,7 +1021,8 @@ class DocUploadUpdateView(
         return reverse_lazy('dashboard_case_list')
 
 # class EmployerDocSigSlugUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocSig
@@ -1046,7 +1047,8 @@ class DocUploadUpdateView(
 #         })
 
 # class EmployerDocMaidStatusUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocMaidStatus
@@ -1067,7 +1069,8 @@ class DocUploadUpdateView(
 #         })
 
 # class EmployerDocMaidDeploymentUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocMaidStatus
@@ -1081,7 +1084,8 @@ class DocUploadUpdateView(
 #             return reverse_lazy('dashboard_sales_list')
 
 # class JobOrderUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = JobOrder
@@ -1103,7 +1107,8 @@ class DocUploadUpdateView(
 #         })
 
 # class EmployerPaymentTransactionUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = EmployerPaymentTransaction
@@ -1140,7 +1145,8 @@ class EmployerDocDeleteView(
 
 # Signature Views
 # class SignatureUpdateByAgentView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocSig
@@ -1251,7 +1257,8 @@ class EmployerDocDeleteView(
 
 # PDF Views
 # class PdfGenericAgencyView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     PdfHtmlViewMixin,
 #     DetailView
 # ):
@@ -1269,7 +1276,8 @@ class EmployerDocDeleteView(
 #         return self.generate_pdf_response(request, context)
 
 # class PdfFileAgencyView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     DetailView
 # ):
 #     # model = None # To be passed as parameter in urls.py
@@ -1352,7 +1360,8 @@ class EmployerDocDeleteView(
 #             return HttpResponseRedirect(reverse('home'))
 
 # class PdfArchiveSaveView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     PdfHtmlViewMixin,
 #     DetailView
 # ):
@@ -1443,7 +1452,8 @@ class EmployerDocDeleteView(
 #         return HttpResponseRedirect(reverse_lazy('dashboard_sales_list'))
 
 # class PdfArchiveDetailView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     DetailView
 # ):
 #     model = models.EmployerDoc
