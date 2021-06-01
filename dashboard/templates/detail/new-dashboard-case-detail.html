@@ -1,4 +1,5 @@
 {% extends 'dashboard-base.html' %}
+{% load humanize %}
 {% block dashboard_section %}
 <div class="container-fluid">
     <!-- <div class="row">
@@ -19,21 +20,21 @@
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Name of FDW</p>
-                    <h6 class="text-dark mb-3">Raymond</h6>
+                    <h6 class="text-dark mb-3">{{ object.fdw.name }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">Nationality</p>
-                    <h6 class="text-dark mb-3">Male</h6>
+                    <h6 class="text-dark mb-3">{{ object.fdw.get_country_of_origin_display }}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Passport No</p>
-                    <h6 class="text-dark mb-3">81234567</h6>
+                    <h6 class="text-dark mb-3">{{ object.fdw.get_passport_number }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">Work Permit No</p>
-                    <h6 class="text-dark mb-3">61234567</h6>
+                    <h6 class="text-dark mb-3">{{ object.fdw.work_permit }}</h6>
                 </div>
             </div>
         </div>
@@ -51,27 +52,27 @@
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Name of Employer</p>
-                    <h6 class="text-dark mb-3">12 Jan 1946</h6>
+                    <h6 class="text-dark mb-3">{{ object.employer.employer_name }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">NRIC / FIN No</p>
-                    <h6 class="text-dark mb-3">Singaporean</h6>
+                    <h6 class="text-dark mb-3">{{ object.employer.get_employer_nric_full }}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Address Line 1</p>
-                    <h6 class="text-dark mb-3">S Pass Holder</h6>
+                    <h6 class="text-dark mb-3">{{ object.employer.employer_address_1 }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">Address Line 2</p>
-                    <h6 class="text-dark mb-3">S1234567A</h6>
+                    <h6 class="text-dark mb-3">{% if object.employer.employer_address_2 %}{{ object.employer.employer_address_2 }}{% endif %}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Postal Code</p>
-                    <h6 class="text-dark mb-3">F1234 5678</h6>
+                    <h6 class="text-dark mb-3">{{ object.employer.employer_post_code }}</h6>
                 </div>
             </div>
         </div>
@@ -89,41 +90,41 @@
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Case Reference Number</p>
-                    <h6 class="text-dark mb-3">Raymond</h6>
+                    <h6 class="text-dark mb-3">{{ object.case_ref_no }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">Contract Date</p>
-                    <h6 class="text-dark mb-3">Male</h6>
+                    <h6 class="text-dark mb-3">{{ object.agreement_date }}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <p class="mb-1">Type of Application</p>
-                    <h6 class="text-dark mb-3"></h6>
+                    <h6 class="text-dark mb-3">{{ object.employer.get_applicant_type_display }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">Assigned EA Personnel</p>
-                    <h6 class="text-dark mb-3">61234567</h6>
+                    <h6 class="text-dark mb-3">{{ object.employer.agency_employee.name }}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <p class="mb-1">FDW Basic Salary</p>
-                    <h6 class="text-dark mb-3">Raymond@example.com</h6>
+                    <h6 class="text-dark mb-3">S$ {{ object.fdw_salary|intcomma }}</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">FDW Loan Amount</p>
-                    <h6 class="text-dark mb-3">Blk 123 fake street</h6>
+                    <h6 class="text-dark mb-3">S$ {{ object.fdw_loan|intcomma }}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <p class="mb-1">FDW No of Off Days Per Month</p>
-                    <h6 class="text-dark mb-3">#12-34</h6>
+                    <h6 class="text-dark mb-3">{{ object.fdw_off_days }} days</h6>
                 </div>
                 <div class="col">
                     <p class="mb-1">FDW Per Off Day Compensation</p>
-                    <h6 class="text-dark mb-3">123456</h6>
+                    <h6 class="text-dark mb-3">S$ {{ off_day_compensation|intcomma }}</h6>
                 </div>
             </div>
         </div>

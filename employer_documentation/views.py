@@ -203,6 +203,14 @@ class EmployerDocDetailView(
 ):
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
+    template_name = 'detail/new-dashboard-case-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'off_day_compensation': round(self.object.fdw_salary/26, 2),
+        })
+        return context
 
 # Create Views
 class EmployerCreateView(
