@@ -25,6 +25,7 @@ from maid.constants import FullNationsChoices
 
 # Same app
 from . import constants as ed_constants
+from .fields import CustomMoneyDecimalField
 
 # Utiliy Classes and Functions
 class OverwriteStorage(FileSystemStorage):
@@ -3853,3 +3854,259 @@ class ArchivedEmployerHousehold(models.Model):
             self.household_id_nonce,
             self.household_id_tag,
         )
+
+class ArchivedCase(models.Model):
+    agency_name = models.CharField(
+        verbose_name=_('Agency Name'),
+        max_length=255
+    )
+
+    agency_license_no = models.CharField(
+        verbose_name=_('Agency License Number'),
+        max_length=255
+    )
+
+    service_and_fees_schedule_date = models.CharField(
+        verbose_name=_('Service and Fees Schedule Date'),
+        max_length=255
+    )
+
+    service_fee = CustomMoneyDecimalField(
+        verbose_name=_("Service Fee"),
+    )
+
+    work_permit_application_collection_fee = CustomMoneyDecimalField(
+        verbose_name=_("Application / Collection of Work Permit Fee"),
+    )
+
+    medical_examination_fee = CustomMoneyDecimalField(
+        verbose_name=_("Medical Examination Fee"),
+    )
+
+    security_bond_accident_insurance_fee = CustomMoneyDecimalField(
+        verbose_name=_("Security Bond and Personal Accident Insurance Fee"),
+    )
+
+    indemnity_policy_reimbursement_fee = CustomMoneyDecimalField(
+        verbose_name=_("Reimbursement of Indemnity Policy Fee"),
+    )
+
+    home_service_fee = CustomMoneyDecimalField(
+        verbose_name=_("Home Service Fee"),
+    )
+    
+    counselling_fee = CustomMoneyDecimalField(
+        verbose_name=_("Each Counselling Session Fee"),
+    )
+
+    sip_fee = CustomMoneyDecimalField(
+        verbose_name=_("Settling-In-Programme (SIP) Fee"),
+    )
+
+    food_lodging_fee = CustomMoneyDecimalField(
+        verbose_name=_("Food and Lodging Fee"),
+    )
+
+    other_services_1_description = models.CharField(
+        verbose_name=_("Other services provided (1) Description"),
+        max_length=40,
+        blank=True,
+        null=True
+    )
+
+    other_services_1_fee = CustomMoneyDecimalField(
+        verbose_name=_("Other services provided (1) Fee"),
+        blank=True,
+        null=True
+    )
+
+    other_services_2_description = models.CharField(
+        verbose_name=_("Other services provided (2) Description"),
+        max_length=40,
+        blank=True,
+        null=True
+    )
+
+    other_services_2_fee = CustomMoneyDecimalField(
+        verbose_name=_("Other services provided (2) Fee"),
+        blank=True,
+        null=True
+    )
+
+    other_services_3_description = models.CharField(
+        verbose_name=_("Other services provided (3) Description"),
+        max_length=40,
+        blank=True,
+        null=True
+    )
+
+    other_services_3_fee = CustomMoneyDecimalField(
+        verbose_name=_("Other services provided (3) Fee"),
+        blank=True,
+        null=True
+    )
+
+    cost_of_replacement_months = models.PositiveSmallIntegerField(
+        # months
+        verbose_name=_("Cost for replacement within __ month(s)"),
+        choices=ed_constants.MonthChoices.choices,
+        blank=True,
+        null=True,
+    )
+    
+    replacement_cost = CustomMoneyDecimalField(
+        verbose_name=_("Cost for replacement"),
+        blank=True,
+        null=True
+    )
+
+    work_permit_renewal_fee = CustomMoneyDecimalField(
+        verbose_name=_("Renewal of Work Permit"),
+        blank=True,
+        null=True
+    )
+
+    total_administrative_cost = CustomMoneyDecimalField(
+        verbose_name=_('Total Administrative Cost')
+    )
+
+    placement_fee_agency = CustomMoneyDecimalField(
+        verbose_name=_("Placement Fee - Agency")
+    )
+
+    placement_fee_fdw = CustomMoneyDecimalField(
+        verbose_name=_("Placement Fee - FDW Loan")
+    )
+
+    total_placement_fee = CustomMoneyDecimalField(
+        verbose_name=_("Total Placement Fee")
+    )
+
+    transfer_fdw_loan_amount = CustomMoneyDecimalField(
+        verbose_name=_("Loan transfer from previous FDW")
+    )
+
+    total_fee_amount = CustomMoneyDecimalField(
+        verbose_name=_('Total Fee Amount')
+    )
+
+    fee_deposit_amount = CustomMoneyDecimalField(
+        verbose_name=_("Deposit - upon confirmation of FDW")
+    )
+
+    fee_balance_amount = CustomMoneyDecimalField(
+        verbose_name=_("Balance payment")
+    )
+
+    service_agreement_date = models.DateField()
+    
+
+    maid_name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
+        blank=False
+    )
+
+    maid_nationality = models.CharField(
+        verbose_name=_('Nationality'),
+        max_length=255,
+        blank=False
+    )
+
+    maid_passport_number = models.BinaryField(
+        editable=True,
+        blank=True
+    )
+
+    maid_passport_number_nonce = models.BinaryField(
+        editable=True,
+        blank=True
+    )
+
+    maid_passport_number_tag = models.BinaryField(
+        editable=True,
+        blank=True
+    )
+
+    maid_work_permit_number = models.CharField(
+        verbose_name=_('Work Permit Number'),
+        max_length=255,
+        blank=False
+    )
+
+    employer_name = models.CharField(
+        verbose_name=_('Employer Name'),
+        max_length=40,
+        blank=False
+    )
+
+    employer_nric_num = models.BinaryField(
+        verbose_name=_('Employer NRIC'),
+        editable=True
+    )
+
+    employer_nric_nonce = models.BinaryField(
+        editable=True
+    )
+
+    employer_nric_tag = models.BinaryField(
+        editable=True
+    )
+
+    employer_fin_num = models.BinaryField(
+        verbose_name=_('Employer FIN'),
+        editable=True,
+        blank=True,
+        null=True,
+    )
+
+    employer_fin_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+
+    employer_fin_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True,
+    )
+
+    employer_address_1 = models.CharField(
+        verbose_name=_('Address Line 1'),
+        max_length=100,
+    )
+
+    employer_address_2 = models.CharField(
+        verbose_name=_('Address Line 2'),
+        max_length=50,
+        blank=True,
+        null=True,
+    )
+
+    employer_postal_code = models.CharField(
+        verbose_name=_('Postal Code'),
+        max_length=25,
+    )
+
+    case_reference_no = models.UUIDField(
+        editable=False,
+        unique=True
+    )
+
+    applicant_type = models.CharField(
+        verbose_name=_("Type of Applicant"),
+        max_length=6,
+        choices=APPLICANT_TYPE_CHOICES,
+        default=APPLICANT_TYPE_CHOICES[0][0],
+    )
+    
+    agency_employee_name = models.CharField(
+        verbose_name=_('Assigned EA Personnel Name'),
+        max_length=255
+    )
+
+    agency_employee_reg_no = models.CharField(
+        verbose_name=_('Assigned EA Regristration Number'),
+        max_length=255
+    )
