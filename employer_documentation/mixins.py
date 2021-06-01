@@ -312,8 +312,8 @@ class PdfHtmlViewMixin:
             base_url=request.build_absolute_uri()
             ).write_pdf(
                 # Load separate CSS stylesheet from static folder
-                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
+                stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                # stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:
@@ -333,8 +333,8 @@ class PdfHtmlViewMixin:
             ).write_pdf(
                 # target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
                 # Load separate CSS stylesheet from static folder
-                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
+                stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                # stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
 
     def calc_repayment_schedule(self):
@@ -522,19 +522,17 @@ class PdfHtmlViewMixin:
         return repayment_table
 
     def get_context_data(self, **kwargs):
-        version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
+        version_explainer_text = 'This document version supersedes all previous versions with the same Case #, if any.'
+        context = super().get_context_data()
 
         def get_preferred_language():
             from maid.constants import country_language
             # MoM Safety Agreements are available in different languages.
             # Relevant language template snippet is selected based on FDW's
             # country of origin.
-
-            return country_language.get(context['object'].fdw.personal_details.country_of_origin, 'ENG')
+            return country_language.get(context['object'].fdw.country_of_origin, 'ENG')
 
         if isinstance(self.object, models.EmployerDoc):
-            context = super().get_context_data(object=self.object)
-
             # Document version number formatting
             context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
 
@@ -542,21 +540,18 @@ class PdfHtmlViewMixin:
             for i in range(1,4):
                 context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
-        elif isinstance(self.object, models.EmployerDocSig):
-            '''
-            context['object'] set as EmployerDoc object instead of
-            EmployerDocSig so that same PDF templates can be re-used
-            '''
-            context = super().get_context_data(object=self.object.employer_doc)
+        # elif isinstance(self.object, models.EmployerDocSig):
+        #     '''
+        #     context['object'] set as EmployerDoc object instead of
+        #     EmployerDocSig so that same PDF templates can be re-used
+        #     '''
+        #     context = super().get_context_data(object=self.object.employer_doc)
 
-            # Document version number formatting
-            context['object'].version = f'[{self.object.employer_doc.get_version()}] - {version_explainer_text}'
+        #     # Document version number formatting
+        #     context['object'].version = f'[{self.object.employer_doc.get_version()}] - {version_explainer_text}'
         
-            preferred_language = get_preferred_language()
-            for i in range(1,4):
-                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
-
-        else:
-            context = super().get_context_data(object=self.object)
+        #     preferred_language = get_preferred_language()
+        #     for i in range(1,4):
+        #         context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
 
         return context

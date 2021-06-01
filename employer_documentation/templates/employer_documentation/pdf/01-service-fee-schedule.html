@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td>Nationality</td>
-            <td>: {{ object.fdw.personal_details.get_country_of_origin_display }}</td>
+            <td>: {{ object.fdw.get_country_of_origin_display }}</td>
         </tr>
         <tr>
             <td>Passport No.</td>
@@ -40,7 +40,7 @@
         </tr>
         <tr>
             <td>Basic Salary</td>
-            <td>: S$ {{ object.fdw.financial_details.salary }}</td>
+            <td>: S$ {{ object.fdw_salary }}</td>
         </tr>
         <tr>
             <td></td>
@@ -220,13 +220,13 @@
             <td></td>
             <td width="2%">a.</td>
             <td>Deposit – upon confirmation of FDW</td>
-            <td class="text-align-right">{{ object.ca_deposit }}</td>
+            <td class="text-align-right">{{ object.ca_deposit_amount }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td>Balance payment</td>
-            <td class="text-align-right">{{ object.calc_total_fee|sub:object.ca_deposit }}</td>
+            <td class="text-align-right">{{ object.calc_bal }}</td>
         </tr>
     </table>
     <br>

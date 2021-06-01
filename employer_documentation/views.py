@@ -1256,24 +1256,24 @@ class EmployerDocDeleteView(
 
 
 # PDF Views
-# class PdfGenericAgencyView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     PdfHtmlViewMixin,
-#     DetailView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'level_1_pk'
+class PdfGenericAgencyView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    PdfHtmlViewMixin,
+    DetailView
+):
+    model = models.EmployerDoc
+    pk_url_kwarg = 'level_1_pk'
 
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         context = self.get_context_data()
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
 
-#         if self.use_repayment_table:
-#             context['repayment_table'] = self.calc_repayment_schedule()
+        if self.use_repayment_table:
+            context['repayment_table'] = self.calc_repayment_schedule()
         
-#         context['url_name'] = request.resolver_match.url_name
-#         return self.generate_pdf_response(request, context)
+        context['url_name'] = request.resolver_match.url_name
+        return self.generate_pdf_response(request, context)
 
 # class PdfFileAgencyView(
 #     AgencyLoginRequiredMixin,
