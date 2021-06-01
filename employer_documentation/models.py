@@ -3866,6 +3866,18 @@ class ArchivedCase(models.Model):
         max_length=255
     )
 
+    agency_address_line_1 = models.CharField(
+        verbose_name=_('Agency Registered Business Address Line 1')
+    )
+
+    agency_address_line_2 = models.CharField(
+        verbose_name=_('Agency Registered Business Address Line 2')
+    )
+
+    agency_postal_code = models.CharField(
+        verbose_name=_('Agency Registered Business Postal Code')
+    )
+
     service_and_fees_schedule_date = models.CharField(
         verbose_name=_('Service and Fees Schedule Date'),
         max_length=255
@@ -4000,6 +4012,238 @@ class ArchivedCase(models.Model):
 
     service_agreement_date = models.DateField()
     
+    # Service Agreement
+    c1_3_handover_days = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
+        choices=ed_constants.DayChoices.choices
+    )
+
+    c3_2_no_replacement_criteria_1 = models.CharField(
+        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
+            if any of following circumstances (i)"),
+        max_length=100
+    )
+
+    c3_2_no_replacement_criteria_2 = models.CharField(
+        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
+            if any of following circumstances (ii)"),
+        max_length=100
+    )
+
+    c3_2_no_replacement_criteria_3 = models.CharField(
+        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
+            if any of following circumstances (iii)"),
+        max_length=100
+    )
+
+    c3_4_no_replacement_refund = CustomMoneyDecimalField(
+        verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
+            3.1"),
+    )
+
+    c4_1_number_of_replacements = models.PositiveSmallIntegerField(
+        verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
+            to"),
+        choices=[
+            (0, _("0 replacements")),
+            (1, _("1 replacement")),
+            (2, _("2 replacements")),
+            (3, _("3 replacements")),
+            (4, _("4 replacements")),
+            (5, _("5 replacements")),
+            (6, _("6 replacements")),
+            (7, _("7 replacements")),
+            (8, _("8 replacements")),
+            (9, _("9 replacements")),
+            (10, _("10 replacements")),
+        ]
+    )
+
+    c4_1_replacement_period = models.PositiveSmallIntegerField(
+        # months
+        verbose_name=_("4.1 Replacement FDW period validity (months)"),
+        choices=ed_constants.MonthChoices.choices
+    )
+
+    c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
+            __ day(s)"),
+        choices=ed_constants.DayChoices.choices
+    )
+
+    c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
+        # months
+        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
+            date FDW returned"),
+        choices=ed_constants.MonthChoices.choices
+    )
+
+    c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
+            Service Agreement"),
+        choices=ed_constants.DayChoices.choices
+    )
+
+    c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
+        verbose_name=_("5.1.1 Failed FDW deployment refund amount"),
+    )
+
+    c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
+            to Service Fee refund within __ day(s)"),
+        choices=ed_constants.DayChoices.choices
+    )
+
+    c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
+        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
+            Singapore"),
+    )
+
+    c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
+        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
+            Singapore"),
+    )
+
+    c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
+        # weeks
+        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
+            be transferred to new employer, refund within __ week(s)"),
+        choices=ed_constants.WeekChoices.choices
+    )
+
+    c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
+        # weeks
+        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
+            be transferred to new employer, refund within __ week(s)"),
+        choices=ed_constants.WeekChoices.choices
+    )
+
+    c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
+        verbose_name=_("6.4 Accommodation cost per day"),
+    )
+
+    c6_6_per_session_counselling_cost = CustomMoneyDecimalField(
+        verbose_name=_("6.6 Counselling cost per day"),
+    )
+
+    c9_1_independent_mediator_1 = models.CharField(
+        verbose_name=_("9.1 Independent mediator #1"),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+
+    c9_2_independent_mediator_2 = models.CharField(
+        verbose_name=_("9.2 Independent mediator #2"),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+
+    c13_termination_notice = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("13. Service Agreement termination notice (days)"),
+        choices=ed_constants.DayChoices.choices
+    )
+    
+    # Employment Contract
+    c3_5_fdw_sleeping_arrangement = models.CharField(
+        verbose_name=_("3.5 FDW sleeping arrangement"),
+        max_length=6,
+        choices=[
+            ("OWN", _("have her own room")),
+            ("SHARE", _("sharing room with someone")),
+            ("COMMON", _("sleeping in common area")),
+        ],
+        default='OWN',
+    )
+    c4_1_termination_notice = models.PositiveSmallIntegerField(
+        # days
+        verbose_name=_("4.1 Employment Contract termination notice (days)"),
+        choices=ed_constants.DayChoices.choices
+    )
+
+    # Safety Agreement
+    residential_dwelling_type = models.CharField(
+        max_length=6,
+        choices=[
+            ("HDB", _("HDB Apartment")),
+            ("CONDO", _("Private Apartment/Condominium")),
+            ("LANDED", _("Landed Property")),
+        ],
+        blank=True,
+        null=True,
+        default='HDB',
+    )
+    fdw_clean_window_exterior = models.BooleanField(
+        verbose_name=_('Does Employer require FDW to clean window exterior?'),
+        choices=TrueFalseChoices(
+            _('Yes, clean window exterior'),
+            _('No, not required'),
+        ),
+        blank=True,
+        null=True,
+        default=False,
+        help_text=_('If yes, must complete field (i).'),
+    )
+    window_exterior_location = models.CharField(
+        verbose_name=_("(i) Location of window exterior"),
+        max_length=6,
+        choices=[
+            ("GROUND", _("On the ground floor")),
+            ("COMMON", _("Facing common corridor")),
+            ("OTHER", _("Other")),
+        ],
+        blank=True,
+        null=True,
+        help_text=_("If 'Other' is selected, must complete field (ii)."),
+    )
+    grilles_installed_require_cleaning = models.BooleanField(
+        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        choices=TrueFalseChoices(
+            _('Yes, grilles installed require cleaning'),
+            _('No, not required'),
+        ),
+        blank=True,
+        null=True,
+        help_text=_('If yes, must complete field (iii).'),
+    )
+    adult_supervision = models.BooleanField(
+        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        choices=TrueFalseChoices(
+            _('Yes, adult supervision'),
+            _('No supervision'),
+        ),
+        blank=True,
+        null=True,
+    )
+    received_sip_assessment_checklist = models.BooleanField(
+        verbose_name=_('Employer has received advisory letter and assessment checklist from SIP?'),
+        choices=TrueFalseChoices(
+            _('Yes, received'),
+            _('Not received'),
+        ),
+        default=True,
+        blank=True,
+        null=True,
+        help_text=_('For employers of first-time FDWs only')
+    )
+    verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
+        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        choices=[
+            (1, _("FDW not required to clean window exterior")),
+            (2, _("FDW to clean only window exterior on ground floor")),
+            (3, _("FDW to clean only window exterior along common corridor")),
+            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
+        ],
+        blank=True,
+        null=True,
+        default='not_required_to_clean_window_exterior',
+    )
 
     maid_name = models.CharField(
         verbose_name=_('Name'),
