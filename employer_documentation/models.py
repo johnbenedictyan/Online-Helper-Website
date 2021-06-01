@@ -61,18 +61,21 @@ class Employer(models.Model):
         ('SPONSR', _("Employer with Sponsor(s)")),
         ('JNT_AP', _("Employer with Joint Applicant")),
     ]
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
         unique=True,
     )
+
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
         choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
         default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
     )
+
     household_details_required = models.BooleanField(
         verbose_name=_('Applicable for subsidised levy?'),
         default=True,
@@ -84,6 +87,7 @@ class Employer(models.Model):
             If yes, please fill in household details section
         '''),
     )
+
     agency_employee = models.ForeignKey(
         AgencyEmployee,
         verbose_name=_('Assigned EA Personnel'),
@@ -95,12 +99,14 @@ class Employer(models.Model):
         verbose_name=_('Employer Name'),
         max_length=40,
     )
+
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
         max_length=1,
         choices=ed_constants.GenderChoices.choices,
         default=ed_constants.GenderChoices.F,
     )
+
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
@@ -111,6 +117,7 @@ class Employer(models.Model):
             )
         ],
     )
+
     employer_home_number = models.CharField(
         verbose_name=_('Home Tel Number'),
         max_length=10,
@@ -121,17 +128,23 @@ class Employer(models.Model):
             )
         ],
     )
-    employer_email = models.EmailField(verbose_name=_('Email Address'))
+
+    employer_email = models.EmailField(
+        verbose_name=_('Email Address')
+    )
+
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
         max_length=100,
     )
+
     employer_address_2 = models.CharField(
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
         null=True,
     )
+
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
@@ -140,6 +153,7 @@ class Employer(models.Model):
     employer_date_of_birth = models.DateField(
         verbose_name=_('Employer date of birth'),
     )
+
     employer_nationality = models.CharField(
         verbose_name=_("Employer nationality/citizenship"),
         max_length=3,
@@ -148,65 +162,77 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
         choices=ed_constants.ResidentialStatusFullChoices.choices,
         default=ed_constants.ResidentialStatusFullChoices.SC,
     )
+
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_fin_num = models.BinaryField(
         verbose_name=_('Employer FIN'),
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_num = models.BinaryField(
         verbose_name=_('Employer passport'),
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
         blank=True,
         null=True,
     )
+
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
@@ -215,6 +241,7 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+
     employer_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
@@ -298,6 +325,7 @@ class Employer(models.Model):
         null=True,
         default=None,
     )
+    
     spouse_gender = models.CharField(
         verbose_name=_("Spouse's gender"),
         max_length=1,
@@ -306,11 +334,13 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    
     spouse_date_of_birth = models.DateField(
         verbose_name=_("Spouse's date of birth"),
         blank=True,
         null=True,
     )
+    
     spouse_nationality = models.CharField(
         verbose_name=_("Spouse's nationality/citizenship"),
         max_length=3,
@@ -319,6 +349,7 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    
     spouse_residential_status = models.CharField(
         verbose_name=_("Spouse's residential status"),
         max_length=5,
@@ -327,54 +358,64 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    
     spouse_nric_num = models.BinaryField(
         verbose_name=_("Spouse's NRIC"),
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_fin_num = models.BinaryField(
         verbose_name=_("Spouse's FIN"),
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_num = models.BinaryField(
         verbose_name=_("Spouse's Passport No"),
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
         blank=True,
