@@ -1,5 +1,4 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
-{% load mathfilters %}
 
 {% block title %}Service Agreement{% endblock %}
 
@@ -99,7 +98,7 @@
     </tr>
     <tr>
         <td>1.3</td>
-        <td colspan="2">The Agency shall handover the FDW to the Employer within {{ object.c1_3_handover_days }} day(s) after obtaining the In Principle Approval to bring FDW into Singapore by the Ministry of Manpower, subject to the conditions under Clause 3.1, Table 1. The Agency and Employer shall check against the “Handing and Taking-Over Form” during the handing/taking-over process.</td>
+        <td colspan="2">The Agency shall handover the FDW to the Employer within {{ object.rn_serviceagreement_ed.c1_3_handover_days }} day(s) after obtaining the In Principle Approval to bring FDW into Singapore by the Ministry of Manpower, subject to the conditions under Clause 3.1, Table 1. The Agency and Employer shall check against the “Handing and Taking-Over Form” during the handing/taking-over process.</td>
     </tr>
     <tr>
         <td colspan="3"></td>
@@ -130,7 +129,7 @@
     </tr>
     <tr>
         <td colspan="2"></td>
-        <td>Total service fee and administrative costs of <u>&nbsp;S${{ object.calc_placement_fee|add:object.calc_admin_cost }}&nbsp;</u> shall be paid to the Agency for the services rendered in the following manner.</td>
+        <td>Total service fee and administrative costs of <u>&nbsp;S${{ object.rn_servicefeeschedule_ed.calc_total_fee }}&nbsp;</u> shall be paid to the Agency for the services rendered in the following manner.</td>
     </tr>
 </table>
 
@@ -146,7 +145,7 @@
         </tr>
         <tr>
             <td colspan="2"></td>
-            <td colspan="2">The placement Fee of <u>&nbsp;S${{ object.calc_placement_fee }}&nbsp;</u> comprises of (a) agency fee charged on the FDW by the Agency and (b) personal loan incurred by FDW overseas.</td>
+            <td colspan="2">The placement Fee of <u>&nbsp;S${{ object.rn_servicefeeschedule_ed.calc_placement_fee }}&nbsp;</u> comprises of (a) agency fee charged on the FDW by the Agency and (b) personal loan incurred by FDW overseas.</td>
         </tr>
         <tr>
             <td></td>
@@ -154,7 +153,7 @@
         <tr>
             <td colspan="2"></td>
             <td width="2%">a.</td>
-            <td>Agency fee charged on the FDW by the Agency amounting to S${{ object.b3_agency_fee }}.</td>
+            <td>Agency fee charged on the FDW by the Agency amounting to S${{ object.rn_servicefeeschedule_ed.b3_agency_fee }}.</td>
         </tr>
         <tr>
             <td></td>
@@ -162,14 +161,14 @@
         <tr>
             <td colspan="2"></td>
             <td>b.</td>
-            <td>Personal loan incurred by FDW overseas amounting to S${{ object.b3_fdw_loan }}.</td>
+            <td>Personal loan incurred by FDW overseas amounting to S${{ object.fdw_loan }}.</td>
         </tr>
         <tr>
             <td></td>
         </tr>
         <tr>
             <td colspan="2"></td>
-            <td colspan="2">The Employer agrees to pay the placement fee of S${{ object.calc_placement_fee }} on behalf of the FDW which the Employer may recover from the FDW as determined in the employment contract.</td>
+            <td colspan="2">The Employer agrees to pay the placement fee of S${{ object.rn_servicefeeschedule_ed.calc_placement_fee }} on behalf of the FDW which the Employer may recover from the FDW as determined in the employment contract.</td>
         </tr>
         <tr>
             <td colspan="4"><br></td>
@@ -185,7 +184,7 @@
         <tr>
             <td colspan="2"></td>
             <td>a.</td>
-            <td>A deposit of S${{ object.ca_deposit }} (if any), shall be paid in full before the Agency submits the Employer’s application to the Ministry of Manpower (MOM).</td>
+            <td>A deposit of S${{ object.rn_servicefeeschedule_ed.ca_deposit_amount }} (if any), shall be paid in full before the Agency submits the Employer’s application to the Ministry of Manpower (MOM).</td>
         </tr>
         <tr>
             <td></td>
@@ -193,7 +192,7 @@
         <tr>
             <td colspan="2"></td>
             <td>b.</td>
-            <td>The balance of S${{ object.calc_placement_fee|add:object.calc_admin_cost|sub:object.ca_deposit }} when the FDW reports for work/ duty.</td>
+            <td>The balance of S${{ object.rn_servicefeeschedule_ed.calc_bal }} when the FDW reports for work/ duty.</td>
         </tr>
         <tr>
             <td></td>
@@ -235,21 +234,21 @@
         </tr>
         <tr>
             <td><br></td>
-            <td colspan="3" class="border--bottom">{{ object.c3_2_no_replacement_criteria_1 }}</td>
+            <td colspan="3" class="border--bottom">{{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1 }}</td>
         </tr>
         <tr>
             <td></td>
         </tr>
         <tr>
             <td><br></td>
-            <td colspan="3" class="border--bottom">{{ object.c3_2_no_replacement_criteria_2 }}</td>
+            <td colspan="3" class="border--bottom">{{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2 }}</td>
         </tr>
         <tr>
             <td></td>
         </tr>
         <tr>
             <td><br></td>
-            <td colspan="3" class="border--bottom">{{ object.c3_2_no_replacement_criteria_3 }}</td>
+            <td colspan="3" class="border--bottom">{{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_3 }}</td>
         </tr>
         <tr>
             <td><br></td>
@@ -266,7 +265,7 @@
     <table>
         <tr>
             <td width="2%">3.4</td>
-            <td colspan="2">In the event that the Employer opts not to have a replacement FDW in the circumstances stated in clause 3.1 when the FDW(s) who matches the Employer’s selection criteria is available, the Employer shall be entitled to a refund of S${{ object.c3_4_no_replacement_refund }}.</td>
+            <td colspan="2">In the event that the Employer opts not to have a replacement FDW in the circumstances stated in clause 3.1 when the FDW(s) who matches the Employer’s selection criteria is available, the Employer shall be entitled to a refund of S${{ object.rn_serviceagreement_ed.c3_4_no_replacement_refund }}.</td>
         </tr>
         <tr>
             <td></td>
@@ -287,9 +286,9 @@
         </tr>
         <tr>
             <td>4.1</td>
-            <td colspan="2">According to the Services & Fees Schedule, the Employer is entitled to <u>&nbsp;{{ object.c4_1_number_of_replacements }}&nbsp;</u> (e.g. one) FDW replacement(s) from the Agency within a period of <u>&nbsp;{{ object.c4_1_replacement_period }}&nbsp;</u> month(s) (‘replacement period’) over and above the Employer’s
+            <td colspan="2">According to the Services & Fees Schedule, the Employer is entitled to <u>&nbsp;{{ object.rn_serviceagreement_ed.c4_1_number_of_replacements }}&nbsp;</u> (e.g. one) FDW replacement(s) from the Agency within a period of <u>&nbsp;{{ object.rn_serviceagreement_ed.c4_1_replacement_period }}&nbsp;</u> month(s) (‘replacement period’) over and above the Employer’s
                 entitlement as stated in clause 3.1. A new fees schedule for replacement (Form B) contained within this Agreement shall be signed. However, the Employer may request for a replacement only after the FDW has worked for the Employer for
-                a minimum of <u>&nbsp;{{ object.c4_1_replacement_after_min_working_days }}&nbsp;</u> days (which should be before the expiry of the replacement period). This replacement period shall be applicable to all subsequent replacements, if the Employer is entitled to more than 1 replacement.
+                a minimum of <u>&nbsp;{{ object.rn_serviceagreement_ed.c4_1_replacement_after_min_working_days }}&nbsp;</u> days (which should be before the expiry of the replacement period). This replacement period shall be applicable to all subsequent replacements, if the Employer is entitled to more than 1 replacement.
                 The grant of replacement is subject to the following:</td>
         </tr>
         <tr>
@@ -334,7 +333,7 @@
         <tr>
             <td></td>
             <td>4.1.5</td>
-            <td>The replacement shall take effect within {{ object.c4_1_5_replacement_deadline }} month(s) from the date the Employer returns the FDW back to the Agency. After which time, if the Agency fails to provide a replacement, the Employer may choose to terminate this Agreement, subject to the clauses under Section 5 on Refund Policy.</td>
+            <td>The replacement shall take effect within {{ object.rn_serviceagreement_ed.c4_1_5_replacement_deadline }} month(s) from the date the Employer returns the FDW back to the Agency. After which time, if the Agency fails to provide a replacement, the Employer may choose to terminate this Agreement, subject to the clauses under Section 5 on Refund Policy.</td>
         </tr>
         <tr>
             <td></td>
@@ -381,7 +380,7 @@
         <tr>
             <td></td>
             <td width="2%">5.1.1</td>
-            <td colspan="2">The Agency agrees to deploy the FDW to the Employer within {{ object.c5_1_1_deployment_deadline }} days of the date of this contract, failing which the Employer is entitled to a S${{ object.c5_1_1_failed_deployment_refund }} refund of the service fee and all of placement fee paid to the Agency.</td>
+            <td colspan="2">The Agency agrees to deploy the FDW to the Employer within {{ object.rn_serviceagreement_ed.c5_1_1_deployment_deadline }} days of the date of this contract, failing which the Employer is entitled to a S${{ object.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund }} refund of the service fee and all of placement fee paid to the Agency.</td>
         </tr>
         <tr>
             <td></td>
@@ -389,7 +388,7 @@
         <tr>
             <td></td>
             <td>5.1.2</td>
-            <td colspan="2">If the Employer terminates the agreement in writing with the Agency, the Employer shall be entitled to a refund of the service fee (if any) less the administrative charge (as stipulated in table below) from the Agency within {{ object.c5_1_2_refund_within_days }} days.</td>
+            <td colspan="2">If the Employer terminates the agreement in writing with the Agency, the Employer shall be entitled to a refund of the service fee (if any) less the administrative charge (as stipulated in table below) from the Agency within {{ object.rn_serviceagreement_ed.c5_1_2_refund_within_days }} days.</td>
         </tr>
         <tr>
             <td></td>
@@ -406,12 +405,12 @@
                     <tr>
                         <td>i</td>
                         <td><b><i>Before</i></b> FDW arrives in Singapore</td>
-                        <td><b>S${{ object.c5_1_2_before_fdw_arrives_charge }}</b></td>
+                        <td><b>S${{ object.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge }}</b></td>
                     </tr>
                     <tr>
                         <td>ii</td>
                         <td><b><i>After</i></b> FDW arrives in Singapore</td>
-                        <td><b>S${{ object.c5_1_2_after_fdw_arrives_charge }}</b></td>
+                        <td><b>S${{ object.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge }}</b></td>
                     </tr>
                 </table>
             </td>
@@ -437,7 +436,7 @@
         <tr>
             <td></td>
             <td>5.2.2</td>
-            <td colspan="2">The refund shall be within {{ object.c5_2_2_can_transfer_refund_within }} week(s) (not exceeding 4 weeks) from the date of termination of the FDW or the date the FDW was transferred, whichever is later.</td>
+            <td colspan="2">The refund shall be within {{ object.rn_serviceagreement_ed.c5_2_2_can_transfer_refund_within }} week(s) (not exceeding 4 weeks) from the date of termination of the FDW or the date the FDW was transferred, whichever is later.</td>
         </tr>
         <tr>
             <td></td>
@@ -475,7 +474,7 @@
         <tr>
             <td></td>
             <td>5.3.2</td>
-            <td colspan="2">The refund shall be within {{ object.c5_3_2_cannot_transfer_refund_within }} week(s) (not exceeding 4 weeks) from</td>
+            <td colspan="2">The refund shall be within {{ object.rn_serviceagreement_ed.c5_3_2_cannot_transfer_refund_within }} week(s) (not exceeding 4 weeks) from</td>
         </tr>
         <tr>
             <td colspan="2"></td>
@@ -538,7 +537,7 @@
         </tr>
         <tr>
             <td>6.4</td>
-            <td colspan="2">If the Employer requests for the Agency to provide food and accommodation, and should the Agency agree to do so, the Employer shall pay S${{ object.c6_4_per_day_food_accommodation_cost }} per day to the Agency for provision of this service. These costs cannot be recovered from the FDW.</td>
+            <td colspan="2">If the Employer requests for the Agency to provide food and accommodation, and should the Agency agree to do so, the Employer shall pay S${{ object.rn_serviceagreement_ed.c6_4_per_day_food_accommodation_cost }} per day to the Agency for provision of this service. These costs cannot be recovered from the FDW.</td>
         </tr>
         <tr>
             <td></td>
@@ -552,7 +551,7 @@
         </tr>
         <tr>
             <td>6.6</td>
-            <td colspan="2">If the Agency provides counselling services, the Employer shall be liable to pay the Agency a sum of S${{ object.c6_6_per_session_counselling_cost }} for each counselling session at the Agency’s premises. However, this sum is not payable if the Employer was already charged for counselling services under the service fee as set out in the Services & Fees Schedule.</td>
+            <td colspan="2">If the Agency provides counselling services, the Employer shall be liable to pay the Agency a sum of S${{ object.rn_serviceagreement_ed.c6_6_per_session_counselling_cost }} for each counselling session at the Agency’s premises. However, this sum is not payable if the Employer was already charged for counselling services under the service fee as set out in the Services & Fees Schedule.</td>
         </tr>
         <tr>
             <td></td>
@@ -621,14 +620,14 @@
         </tr>
         <tr>
             <td>9.1</td>
-            <td>If the Agency is unable to resolve any grievance(s) of the Employer or if the parties are unable to resolve any dispute between them with respect to this Agreement, the parties shall refer the grievance(s) or dispute to {{ object.c9_1_independent_mediator_1 }}<sup>2</sup>.</td>
+            <td>If the Agency is unable to resolve any grievance(s) of the Employer or if the parties are unable to resolve any dispute between them with respect to this Agreement, the parties shall refer the grievance(s) or dispute to {{ object.rn_serviceagreement_ed.c9_1_independent_mediator_1 }}<sup>2</sup>.</td>
         </tr>
         <tr>
             <td></td>
         </tr>
         <tr>
             <td>9.2</td>
-            <td>If the dispute arising from this Agreement cannot be settled by the above mediation stated in clause 9.1, the parties shall refer the grievance(s) or dispute to {{ object.c9_2_independent_mediator_2 }}.</td>
+            <td>If the dispute arising from this Agreement cannot be settled by the above mediation stated in clause 9.1, the parties shall refer the grievance(s) or dispute to {{ object.rn_serviceagreement_ed.c9_2_independent_mediator_2 }}.</td>
         </tr>
         <tr>
             <td><br></td>
@@ -686,7 +685,7 @@
         </tr>
         <tr>
             <td></td>
-            <td>Any party intending to terminate this agreement shall provide at least {{ object.c13_termination_notice }} day(s) prior notice to the other party.</td>
+            <td>Any party intending to terminate this agreement shall provide at least {{ object.rn_serviceagreement_ed.c13_termination_notice }} day(s) prior notice to the other party.</td>
         </tr>
         <tr>
             <td></td>
