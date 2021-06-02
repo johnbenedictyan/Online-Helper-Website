@@ -168,6 +168,11 @@
                     break;
             }
         })
+        $('#id_employer_name,#id_agency_employee,#id_employer_birthday_month').on(
+            'change', function(){
+                this.form.submit();
+            }
+        )
     })
 </script>
 {% endblock js%}
