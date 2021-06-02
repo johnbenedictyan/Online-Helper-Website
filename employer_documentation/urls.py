@@ -146,6 +146,11 @@ urlpatterns = [
                         views.DocUploadUpdateView.as_view(),
                         name='docupload_update_route'
                     ),
+                    path(
+                        'archive',
+                        views.ArchiveCase.as_view(),
+                        name='doc_archive'
+                    ),
     #                 path(
     #                     '<int:level_2_pk>/employer-url/',
     #                     views.EmployerDocSigSlugUpdateView.as_view(
