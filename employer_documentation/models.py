@@ -3352,22 +3352,27 @@ class ArchivedDoc(models.Model):
 
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
-        return (
-            self.b1_service_fee
-            + self.b2a_work_permit_application_collection
-            + self.b2b_medical_examination_fee
-            + self.b2c_security_bond_accident_insurance
-            + self.b2d_indemnity_policy_reimbursement
-            + self.b2e_home_service
-            + self.b2f_counselling
-            + self.b2g_sip
-            + self.b2h_food_lodging
-            + self.b2i1_other_services_fee
-            + self.b2i2_other_services_fee
-            + self.b2i3_other_services_fee
-            + self.b2j_replacement_cost
-            + self.b2k_work_permit_renewal
-        )
+        total = 0
+        fields = [
+            self.b1_service_fee,
+            self.b2a_work_permit_application_collection,
+            self.b2b_medical_examination_fee,
+            self.b2c_security_bond_accident_insurance,
+            self.b2d_indemnity_policy_reimbursement,
+            self.b2e_home_service,
+            self.b2f_counselling,
+            self.b2g_sip,
+            self.b2h_food_lodging,
+            self.b2i1_other_services_fee,
+            self.b2i2_other_services_fee,
+            self.b2i3_other_services_fee,
+            self.b2j_replacement_cost,
+            self.b2k_work_permit_renewal,
+        ]
+        for field in fields:
+            # Sum this way because some fields may be null
+            total += field if field else 0
+        return total
 
     def calc_placement_fee(self):
         # Method to calculate placement fee
@@ -3622,17 +3627,6 @@ class ArchivedDoc(models.Model):
         ),
         blank=True,
         null=True,
-    )
-    received_sip_assessment_checklist = models.BooleanField(
-        verbose_name=_('Employer has received advisory letter and assessment checklist from SIP?'),
-        choices=TrueFalseChoices(
-            _('Yes, received'),
-            _('Not received'),
-        ),
-        default=True,
-        blank=True,
-        null=True,
-        help_text=_('For employers of first-time FDWs only')
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_("Verifiy employer understands window cleaning conditions"),
