@@ -165,14 +165,14 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_service_agreement'
                             ),
-            #                 path(
-            #                     'employment-contract/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/04-employment-contract.html',
-            #                         content_disposition = 'inline; filename="employment-contract.pdf"',
-            #                     ),
-            #                     name='pdf_agency_employment_contract'
-            #                 ),
+                            path(
+                                'employment-contract/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/04-employment-contract.html',
+                                    content_disposition = 'inline; filename="employment-contract.pdf"',
+                                ),
+                                name='pdf_agency_employment_contract'
+                            ),
             #                 path(
             #                     'repayment-schedule/',
             #                     views.PdfGenericAgencyView.as_view(

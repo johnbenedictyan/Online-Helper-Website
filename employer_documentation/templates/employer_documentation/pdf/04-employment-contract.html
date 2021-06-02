@@ -1,9 +1,8 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
+{% load humanize %}
 
 {% block title %}Employment Contract{% endblock %}
-
 {% block pdf_content %}
-
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <div class="text-align-center">
@@ -72,7 +71,7 @@
         <tr>
             <td></td>
             <td>Work Permit No.</td>
-            <td>: {{ object.rn_maidstatus_ed.work_permit_no }} </td>
+            <td>: {{ object.fdw.work_permit_no }} </td>
         </tr>
         {% endcomment %}
         <tr>
@@ -140,7 +139,7 @@
     </tr>
     <tr>
         <td>3.1</td>
-        <td>The Employer shall pay the FDW wages of S${{ object.c3_1_fdw_salary }} per month.</td>
+        <td>The Employer shall pay the FDW wages of S${{ object.fdw_salary|intcomma }} per month.</td>
     </tr>
     <tr>
         <td></td>
@@ -169,7 +168,7 @@
         </tr>
         <tr>
             <td>3.5</td>
-            <td>The Employer shall provide the FDW with suitable accommodation <u>in accordance with MOM's guidelines</u>, with a reasonable amount of privacy. The helper will {{ object.c3_5_fdw_sleeping_arrangement }}.
+            <td>The Employer shall provide the FDW with suitable accommodation <u>in accordance with MOM's guidelines</u>, with a reasonable amount of privacy. The helper will {{ object.rn_serviceagreement_ed.get_c3_5_fdw_sleeping_arrangement_display }}.
             </td>
         </tr>
         <tr>
@@ -237,7 +236,7 @@
         </tr>
         <tr>
             <td>4.1</td>
-            <td>Either party may terminate this Contract by giving {{ object.c4_1_termination_notice }} days’ [recommended at least one week] notice.</td>
+            <td>Either party may terminate this Contract by giving {{ object.rn_serviceagreement_ed.c4_1_termination_notice }} days’ [recommended at least one week] notice.</td>
         </tr>
         <tr>
             <td></td>
