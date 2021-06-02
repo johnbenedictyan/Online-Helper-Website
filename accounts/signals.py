@@ -21,7 +21,7 @@ from .models import User
 #     user.is_online = False
 #     user.save()
 
-@receiver(user_logged_in)
-def set_last_login(sender, user, request, **kwargs):    
-    user.last_login = timezone.now()
-    user.save()
+# @receiver(user_logged_in)
+# def set_last_login(sender, user, request, **kwargs):    
+#     user.last_login = timezone.now()
+#     user.save()
