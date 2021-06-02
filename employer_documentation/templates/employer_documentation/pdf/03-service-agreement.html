@@ -1,9 +1,8 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
+{% load humanize %}
 
 {% block title %}Service Agreement{% endblock %}
-
 {% block pdf_content %}
-
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <div class="text-align-center">
@@ -129,7 +128,7 @@
     </tr>
     <tr>
         <td colspan="2"></td>
-        <td>Total service fee and administrative costs of <u>&nbsp;S${{ object.rn_servicefeeschedule_ed.calc_total_fee }}&nbsp;</u> shall be paid to the Agency for the services rendered in the following manner.</td>
+        <td>Total service fee and administrative costs of <u>&nbsp;S${{ object.rn_servicefeeschedule_ed.calc_total_fee|intcomma }}&nbsp;</u> shall be paid to the Agency for the services rendered in the following manner.</td>
     </tr>
 </table>
 
@@ -145,7 +144,7 @@
         </tr>
         <tr>
             <td colspan="2"></td>
-            <td colspan="2">The placement Fee of <u>&nbsp;S${{ object.rn_servicefeeschedule_ed.calc_placement_fee }}&nbsp;</u> comprises of (a) agency fee charged on the FDW by the Agency and (b) personal loan incurred by FDW overseas.</td>
+            <td colspan="2">The placement Fee of <u>&nbsp;S${{ object.rn_servicefeeschedule_ed.calc_placement_fee|intcomma }}&nbsp;</u> comprises of (a) agency fee charged on the FDW by the Agency and (b) personal loan incurred by FDW overseas.</td>
         </tr>
         <tr>
             <td></td>
@@ -153,7 +152,7 @@
         <tr>
             <td colspan="2"></td>
             <td width="2%">a.</td>
-            <td>Agency fee charged on the FDW by the Agency amounting to S${{ object.rn_servicefeeschedule_ed.b3_agency_fee }}.</td>
+            <td>Agency fee charged on the FDW by the Agency amounting to S${{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}.</td>
         </tr>
         <tr>
             <td></td>
@@ -161,14 +160,14 @@
         <tr>
             <td colspan="2"></td>
             <td>b.</td>
-            <td>Personal loan incurred by FDW overseas amounting to S${{ object.fdw_loan }}.</td>
+            <td>Personal loan incurred by FDW overseas amounting to S${{ object.fdw_loan|intcomma }}.</td>
         </tr>
         <tr>
             <td></td>
         </tr>
         <tr>
             <td colspan="2"></td>
-            <td colspan="2">The Employer agrees to pay the placement fee of S${{ object.rn_servicefeeschedule_ed.calc_placement_fee }} on behalf of the FDW which the Employer may recover from the FDW as determined in the employment contract.</td>
+            <td colspan="2">The Employer agrees to pay the placement fee of S${{ object.rn_servicefeeschedule_ed.calc_placement_fee|intcomma }} on behalf of the FDW which the Employer may recover from the FDW as determined in the employment contract.</td>
         </tr>
         <tr>
             <td colspan="4"><br></td>
@@ -184,7 +183,7 @@
         <tr>
             <td colspan="2"></td>
             <td>a.</td>
-            <td>A deposit of S${{ object.rn_servicefeeschedule_ed.ca_deposit_amount }} (if any), shall be paid in full before the Agency submits the Employer’s application to the Ministry of Manpower (MOM).</td>
+            <td>A deposit of S${{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }} (if any), shall be paid in full before the Agency submits the Employer’s application to the Ministry of Manpower (MOM).</td>
         </tr>
         <tr>
             <td></td>
@@ -192,7 +191,7 @@
         <tr>
             <td colspan="2"></td>
             <td>b.</td>
-            <td>The balance of S${{ object.rn_servicefeeschedule_ed.calc_bal }} when the FDW reports for work/ duty.</td>
+            <td>The balance of S${{ object.rn_servicefeeschedule_ed.calc_bal|intcomma }} when the FDW reports for work/ duty.</td>
         </tr>
         <tr>
             <td></td>
@@ -265,7 +264,7 @@
     <table>
         <tr>
             <td width="2%">3.4</td>
-            <td colspan="2">In the event that the Employer opts not to have a replacement FDW in the circumstances stated in clause 3.1 when the FDW(s) who matches the Employer’s selection criteria is available, the Employer shall be entitled to a refund of S${{ object.rn_serviceagreement_ed.c3_4_no_replacement_refund }}.</td>
+            <td colspan="2">In the event that the Employer opts not to have a replacement FDW in the circumstances stated in clause 3.1 when the FDW(s) who matches the Employer’s selection criteria is available, the Employer shall be entitled to a refund of S${{ object.rn_serviceagreement_ed.c3_4_no_replacement_refund|intcomma }}.</td>
         </tr>
         <tr>
             <td></td>
@@ -380,7 +379,7 @@
         <tr>
             <td></td>
             <td width="2%">5.1.1</td>
-            <td colspan="2">The Agency agrees to deploy the FDW to the Employer within {{ object.rn_serviceagreement_ed.c5_1_1_deployment_deadline }} days of the date of this contract, failing which the Employer is entitled to a S${{ object.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund }} refund of the service fee and all of placement fee paid to the Agency.</td>
+            <td colspan="2">The Agency agrees to deploy the FDW to the Employer within {{ object.rn_serviceagreement_ed.c5_1_1_deployment_deadline }} days of the date of this contract, failing which the Employer is entitled to a S${{ object.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund|intcomma }} refund of the service fee and all of placement fee paid to the Agency.</td>
         </tr>
         <tr>
             <td></td>
@@ -405,12 +404,12 @@
                     <tr>
                         <td>i</td>
                         <td><b><i>Before</i></b> FDW arrives in Singapore</td>
-                        <td><b>S${{ object.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge }}</b></td>
+                        <td><b>S${{ object.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge|intcomma }}</b></td>
                     </tr>
                     <tr>
                         <td>ii</td>
                         <td><b><i>After</i></b> FDW arrives in Singapore</td>
-                        <td><b>S${{ object.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge }}</b></td>
+                        <td><b>S${{ object.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge|intcomma }}</b></td>
                     </tr>
                 </table>
             </td>
