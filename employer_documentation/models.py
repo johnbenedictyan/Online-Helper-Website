@@ -1282,7 +1282,8 @@ class EmployerDoc(models.Model):
     )
     fdw_off_day_of_week = models.CharField(
         verbose_name=_("FDW Off Day Day of Week"),
-        choices=ed_constants.DayOfWeekChoices,
+        max_length=9,
+        choices=ed_constants.DayOfWeekChoices.choices,
         default=ed_constants.DayOfWeekChoices.SUNDAY
     )
     handover_checklist_signed = models.BooleanField(
@@ -2079,15 +2080,18 @@ class ArchivedAgencyDetails(models.Model):
     )
 
     address_line_1 = models.CharField(
-        verbose_name=_('Agency Registered Business Address Line 1')
+        verbose_name=_('Agency Registered Business Address Line 1'),
+        max_length=255
     )
 
     address_line_2 = models.CharField(
-        verbose_name=_('Agency Registered Business Address Line 2')
+        verbose_name=_('Agency Registered Business Address Line 2'),
+        max_length=255
     )
 
     postal_code = models.CharField(
-        verbose_name=_('Agency Registered Business Postal Code')
+        verbose_name=_('Agency Registered Business Postal Code'),
+        max_length=20
     )
 
     agency_employee_name = models.CharField(
