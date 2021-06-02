@@ -173,7 +173,7 @@
     <br>
     <p>
         I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: 
-        <u>&nbsp;{{ object.employer.get_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}
+        <u>&nbsp;{{ object.employer.get_employer_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}
         <u>&nbsp;{{ object.rn_signatures_ed.spouse_name }}&nbsp;</u>{% else %}________________{% endif %}, 
         NRIC/ WP No/FIN: {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>
         {% else %}________________{% endif %},
@@ -245,7 +245,7 @@
             {% if object.application_scheme == 'SPONS' %}
                 {{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}
             {% else %}
-                {{ object.employer.get_nric_full }}
+                {{ object.employer.get_employer_nric_full }}
             {% endif %}
             </td>
         <td class="border--bottom">Income Tax Notice of Assessment No:<br>

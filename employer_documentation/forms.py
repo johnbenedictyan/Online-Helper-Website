@@ -2444,7 +2444,7 @@ class VerifyUserTokenForm(forms.ModelForm):
 
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
-        plaintext = self.object.employer_doc.employer.get_nric_full()
+        plaintext = self.object.employer_doc.employer.get_employer_nric_full()
         if (self.is_employer and (
             input_nric.lower() == plaintext.lower() and
             int(self.cleaned_data.get('mobile', 0)) == int(self.object.employer_doc.employer.employer_mobile_number)

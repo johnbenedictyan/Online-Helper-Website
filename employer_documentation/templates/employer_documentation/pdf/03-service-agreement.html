@@ -58,7 +58,7 @@
     <tr>
         <td></td>
         <td>NRIC/Passport Number</td>
-        <td>: {{ object.employer.get_nric_full }} </td>
+        <td>: {{ object.employer.get_employer_nric_full }} </td>
     </tr>
     <tr>
         <td></td>
@@ -780,7 +780,7 @@
             <td>{{ object.employer.agency_employee.name}}</td>
         </tr>
         <tr>
-            <td>{{ object.employer.get_nric_full }}</td>
+            <td>{{ object.employer.get_employer_nric_full }}</td>
             <td></td>
             <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
         </tr>
