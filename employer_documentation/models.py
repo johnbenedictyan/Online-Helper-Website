@@ -1280,6 +1280,11 @@ class EmployerDoc(models.Model):
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
+    fdw_off_day_of_week = models.CharField(
+        verbose_name=_("FDW Off Day Day of Week"),
+        choices=ed_constants.DayOfWeekChoices,
+        default=ed_constants.DayOfWeekChoices.SUNDAY
+    )
     handover_checklist_signed = models.BooleanField(
         verbose_name=_("Has handover checklist been signed?"),
         choices=TrueFalseChoices(
