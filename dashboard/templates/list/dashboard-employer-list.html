@@ -9,22 +9,31 @@
                 <h4>Employers</h4>
             </div>
         </div>
-        <form action="" method="get">
-            <div class="row">
-                <div class="col-4">
-                    {{filter.form.employer_name|as_crispy_field}}
-                </div>
-                <div class="col-4 offset-2">
-                    {{filter.form.agency_employee|as_crispy_field}}
-                </div>
+        <div class="row mb-2">
+            <div class="col-md-9">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-5">
+                            {{filter.form.employer_name|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-1">
+                            {{filter.form.agency_employee|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-6">
+                            {{filter.form.employer_birthday_month|as_crispy_field}}
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-        <div class="row">
-            <div class="col text-right pb-3">
-                <a href="{% url 'employer_create_route' %}" class="btn btn-primary mr-1">Add Employer</a>
+            <div class="col-md-3">
+                <div class="row h-100">
+                    <div class="col text-right mt-auto mb-3">
+                        <a href="{% url 'employer_create_route' %}" class="btn btn-primary mr-1">Add Employer</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
+        <div class="row bg-dashboard-table-background-dark text-dark mx-half py-3 border">
             <div class="col-1">
                 <h6 class="mb-0">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
             </div>
@@ -159,6 +168,11 @@
                     break;
             }
         })
+        $('#id_employer_name,#id_agency_employee,#id_employer_birthday_month').on(
+            'change', function(){
+                this.form.submit();
+            }
+        )
     })
 </script>
 {% endblock js%}

@@ -130,7 +130,9 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFiltere
         return kwargs
     
     def get_queryset(self):
+        qs = super().get_queryset()
         order_by = self.request.GET.get('order-by')
+
         if order_by:
             if order_by == 'serialNo':
                 order_by = 'id'
@@ -152,16 +154,15 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFiltere
                 order_by = 'created_on'
             elif order_by == '-dateCreated':
                 order_by = '-created_on'
-            return Maid.objects.filter(
+            return qs.filter(
                 agency__pk = self.agency_id
             ).order_by(order_by)
         else:
-            return Maid.objects.filter(
+            return qs.filter(
                 agency__pk = self.agency_id
             ).order_by('passport_expiry')
 
-class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, 
-                           ListView):
+class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
@@ -284,7 +285,8 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFil
     
     def get_queryset(self):
         order_by = self.request.GET.get('order-by')
-        qs = Employer.objects.filter(
+        qs = super().get_queryset()
+        qs = qs.filter(
             agency_employee__agency__pk = self.agency_id
         )
 

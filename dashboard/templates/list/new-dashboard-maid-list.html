@@ -229,6 +229,9 @@
                     break;
             }
         })
+        $('#id_name').on('change', function(){
+            this.form.submit();
+        });
     })
 </script>
 {% endblock js%}

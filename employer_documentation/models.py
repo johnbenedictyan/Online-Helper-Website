@@ -25,6 +25,7 @@ from maid.constants import FullNationsChoices
 
 # Same app
 from . import constants as ed_constants
+from .fields import CustomMoneyDecimalField
 
 # Utiliy Classes and Functions
 class OverwriteStorage(FileSystemStorage):
@@ -61,18 +62,21 @@ class Employer(models.Model):
         ('SPONSR', _("Employer with Sponsor(s)")),
         ('JNT_AP', _("Employer with Joint Applicant")),
     ]
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
         unique=True,
     )
+
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
         choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
         default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
     )
+
     household_details_required = models.BooleanField(
         verbose_name=_('Applicable for subsidised levy?'),
         default=True,
@@ -84,6 +88,7 @@ class Employer(models.Model):
             If yes, please fill in household details section
         '''),
     )
+
     agency_employee = models.ForeignKey(
         AgencyEmployee,
         verbose_name=_('Assigned EA Personnel'),
@@ -95,12 +100,14 @@ class Employer(models.Model):
         verbose_name=_('Employer Name'),
         max_length=40,
     )
+
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
         max_length=1,
         choices=ed_constants.GenderChoices.choices,
         default=ed_constants.GenderChoices.F,
     )
+
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
@@ -111,6 +118,7 @@ class Employer(models.Model):
             )
         ],
     )
+
     employer_home_number = models.CharField(
         verbose_name=_('Home Tel Number'),
         max_length=10,
@@ -121,17 +129,23 @@ class Employer(models.Model):
             )
         ],
     )
-    employer_email = models.EmailField(verbose_name=_('Email Address'))
+
+    employer_email = models.EmailField(
+        verbose_name=_('Email Address')
+    )
+
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
         max_length=100,
     )
+
     employer_address_2 = models.CharField(
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
         null=True,
     )
+
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
@@ -140,6 +154,7 @@ class Employer(models.Model):
     employer_date_of_birth = models.DateField(
         verbose_name=_('Employer date of birth'),
     )
+
     employer_nationality = models.CharField(
         verbose_name=_("Employer nationality/citizenship"),
         max_length=3,
@@ -148,65 +163,77 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
         choices=ed_constants.ResidentialStatusFullChoices.choices,
         default=ed_constants.ResidentialStatusFullChoices.SC,
     )
+
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_fin_num = models.BinaryField(
         verbose_name=_('Employer FIN'),
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_num = models.BinaryField(
         verbose_name=_('Employer passport'),
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
         blank=True,
         null=True,
     )
+
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
@@ -215,6 +242,7 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+
     employer_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
@@ -298,6 +326,7 @@ class Employer(models.Model):
         null=True,
         default=None,
     )
+    
     spouse_gender = models.CharField(
         verbose_name=_("Spouse's gender"),
         max_length=1,
@@ -306,11 +335,13 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    
     spouse_date_of_birth = models.DateField(
         verbose_name=_("Spouse's date of birth"),
         blank=True,
         null=True,
     )
+    
     spouse_nationality = models.CharField(
         verbose_name=_("Spouse's nationality/citizenship"),
         max_length=3,
@@ -319,6 +350,7 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    
     spouse_residential_status = models.CharField(
         verbose_name=_("Spouse's residential status"),
         max_length=5,
@@ -327,54 +359,64 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
+    
     spouse_nric_num = models.BinaryField(
         verbose_name=_("Spouse's NRIC"),
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_fin_num = models.BinaryField(
         verbose_name=_("Spouse's FIN"),
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_num = models.BinaryField(
         verbose_name=_("Spouse's Passport No"),
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
         blank=True,
@@ -1238,6 +1280,12 @@ class EmployerDoc(models.Model):
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
+    fdw_off_day_of_week = models.CharField(
+        verbose_name=_("FDW Off Day Day of Week"),
+        max_length=9,
+        choices=ed_constants.DayOfWeekChoices.choices,
+        default=ed_constants.DayOfWeekChoices.SUNDAY
+    )
     handover_checklist_signed = models.BooleanField(
         verbose_name=_("Has handover checklist been signed?"),
         choices=TrueFalseChoices(
@@ -2020,13 +2068,39 @@ class CaseStatus(models.Model):
         null=True
     )
 
-class ArchivedAgencyEmployee(models.Model):
+class ArchivedAgencyDetails(models.Model):
     name = models.CharField(
+        verbose_name=_('Agency Name'),
+        max_length=255
+    )
+
+    license_no = models.CharField(
+        verbose_name=_('Agency License Number'),
+        max_length=255
+    )
+
+    address_line_1 = models.CharField(
+        verbose_name=_('Agency Registered Business Address Line 1'),
+        max_length=255
+    )
+
+    address_line_2 = models.CharField(
+        verbose_name=_('Agency Registered Business Address Line 2'),
+        max_length=255
+    )
+
+    postal_code = models.CharField(
+        verbose_name=_('Agency Registered Business Postal Code'),
+        max_length=20
+    )
+
+    agency_employee_name = models.CharField(
         verbose_name=_('Name'),
         max_length=255,
         blank=False
     )
-    ea_personnel_number = models.CharField(
+
+    agency_employee_ea_personnel_number = models.CharField(
         verbose_name=_('EA personnel number'),
         max_length=50,
         default='NA',
@@ -2038,21 +2112,34 @@ class ArchivedMaid(models.Model):
     name = models.CharField(
         verbose_name=_('Name'),
         max_length=255,
-        blank=False,
-        null=True
+        blank=False
     )
+
+    nationality = models.CharField(
+        verbose_name=_('Nationality'),
+        max_length=255,
+        blank=False
+    )
+
     passport_number = models.BinaryField(
         editable=True,
-        blank=True,
-        null=True
+        blank=True
     )
-    nonce = models.BinaryField(
+
+    passport_number_nonce = models.BinaryField(
         editable=True,
         blank=True
     )
-    tag = models.BinaryField(
+
+    passport_number_tag = models.BinaryField(
         editable=True,
         blank=True
+    )
+
+    work_permit_number = models.CharField(
+        verbose_name=_('Work Permit Number'),
+        max_length=255,
+        blank=False
     )
 
 class ArchivedDoc(models.Model):
@@ -2062,33 +2149,19 @@ class ArchivedDoc(models.Model):
         ('SPONSR', _("Employer with Sponsor(s)")),
         ('JNT_AP', _("Employer with Joint Applicant")),
     ]
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
         unique=True,
     )
+
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
         choices=APPLICANT_TYPE_CHOICES,
         default=APPLICANT_TYPE_CHOICES[0][0],
-    )
-    household_details_required = models.BooleanField(
-        verbose_name=_('Applicable for subsidised levy?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            If yes, please fill in household details section
-        '''),
-    )
-    agency_employee = models.OneToOneField(
-        ArchivedAgencyEmployee,
-        verbose_name=_('Assigned EA Personnel'),
-        on_delete=models.RESTRICT,
     )
 
     # Employer Information
@@ -2096,12 +2169,14 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Employer Name'),
         max_length=40,
     )
+    
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
         max_length=1,
         choices=ed_constants.GenderChoices.choices,
         default=ed_constants.GenderChoices.F,
     )
+    
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
@@ -2112,6 +2187,7 @@ class ArchivedDoc(models.Model):
             )
         ],
     )
+    
     employer_home_number = models.CharField(
         verbose_name=_('Home Tel Number'),
         max_length=10,
@@ -2122,17 +2198,23 @@ class ArchivedDoc(models.Model):
             )
         ],
     )
-    employer_email = models.EmailField(verbose_name=_('Email Address'))
+    
+    employer_email = models.EmailField(
+        verbose_name=_('Email Address')
+    )
+
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
         max_length=100,
     )
+    
     employer_address_2 = models.CharField(
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
         null=True,
     )
+    
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
@@ -2141,6 +2223,7 @@ class ArchivedDoc(models.Model):
     employer_date_of_birth = models.DateField(
         verbose_name=_('Employer date of birth'),
     )
+
     employer_nationality = models.CharField(
         verbose_name=_("Employer nationality/citizenship"),
         max_length=3,
@@ -2149,55 +2232,75 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True,
     )
+
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
         choices=ed_constants.ResidentialStatusFullChoices.choices,
         default=ed_constants.ResidentialStatusFullChoices.SC,
     )
+
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
         editable=True,
     )
-    employer_nric_nonce = models.BinaryField(editable=True)
-    employer_nric_tag = models.BinaryField(editable=True)
+
+    employer_nric_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True
+    )
+
+    employer_nric_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True
+    )
+
     employer_fin_num = models.BinaryField(
         verbose_name=_('Employer FIN'),
         editable=True,
         blank=True,
         null=True,
     )
+    
     employer_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     employer_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     employer_passport_num = models.BinaryField(
         verbose_name=_('Employer passport'),
         editable=True,
         blank=True,
         null=True,
     )
+    
     employer_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     employer_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
+    
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
         blank=True,
         null=True,
     )
+    
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
@@ -2206,6 +2309,7 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True,
     )
+    
     employer_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
@@ -3773,42 +3877,42 @@ class ArchivedDoc(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
 
-class ArchivedEmployerHousehold(models.Model):
-    employer = models.ForeignKey(
-        ArchivedDoc,
-        verbose_name=_("Name of Employer"),
-        on_delete=models.CASCADE,
-        related_name="rn_archivedhousehold_employer",
-    )
-    # Household Details
-    household_name = models.CharField(
-        verbose_name=_("Household member's name"),
-        max_length=40,
-    )
-    household_id_type = models.CharField(
-        verbose_name=_("Household member ID type"),
-        max_length=8,
-        choices=ed_constants.HouseholdIdTypeChoices.choices,
-        # default=ed_constants.HouseholdIdTypeChoices.NRIC,
-    )
-    household_id_num = models.BinaryField(
-        verbose_name=_("Household member's ID number"),
-        editable=True,
-    )
-    household_date_of_birth = models.DateField(
-        verbose_name=_("Household member's date of birth"),
-    )
-    household_relationship = models.CharField(
-        verbose_name=_("Household member's relationship with Employer"),
-        max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        # default=ed_constants.RelationshipChoices.DAUGHTER,
-    )
+# class ArchivedEmployerHousehold(models.Model):
+#     employer = models.ForeignKey(
+#         ArchivedDoc,
+#         verbose_name=_("Name of Employer"),
+#         on_delete=models.CASCADE,
+#         related_name="rn_archivedhousehold_employer",
+#     )
+#     # Household Details
+#     household_name = models.CharField(
+#         verbose_name=_("Household member's name"),
+#         max_length=40,
+#     )
+#     household_id_type = models.CharField(
+#         verbose_name=_("Household member ID type"),
+#         max_length=8,
+#         choices=ed_constants.HouseholdIdTypeChoices.choices,
+#         # default=ed_constants.HouseholdIdTypeChoices.NRIC,
+#     )
+#     household_id_num = models.BinaryField(
+#         verbose_name=_("Household member's ID number"),
+#         editable=True,
+#     )
+#     household_date_of_birth = models.DateField(
+#         verbose_name=_("Household member's date of birth"),
+#     )
+#     household_relationship = models.CharField(
+#         verbose_name=_("Household member's relationship with Employer"),
+#         max_length=30,
+#         choices=ed_constants.RelationshipChoices.choices,
+#         # default=ed_constants.RelationshipChoices.DAUGHTER,
+#     )
 
-    def get_household_id_full(self):
-        return decrypt_string(
-            self.household_id_num,
-            settings.ENCRYPTION_KEY,
-            self.household_id_nonce,
-            self.household_id_tag,
-        )
+#     def get_household_id_full(self):
+#         return decrypt_string(
+#             self.household_id_num,
+#             settings.ENCRYPTION_KEY,
+#             self.household_id_nonce,
+#             self.household_id_tag,
+#         )
