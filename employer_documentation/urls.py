@@ -178,15 +178,15 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_employment_contract'
                             ),
-            #                 path(
-            #                     'repayment-schedule/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/05-repayment-schedule.html',
-            #                         content_disposition = 'inline; filename="repayment-schedule.pdf"',
-            #                         use_repayment_table = True,
-            #                     ),
-            #                     name='pdf_agency_repayment_schedule'
-            #                 ),
+                            path(
+                                'repayment-schedule/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/05-repayment-schedule.html',
+                                    content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                    use_repayment_table = True,
+                                ),
+                                name='pdf_agency_repayment_schedule'
+                            ),
                             path(
                                 'rest-day-agreement/',
                                 views.PdfGenericAgencyView.as_view(

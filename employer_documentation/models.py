@@ -1,6 +1,7 @@
 # Imports from python
 import os
 import uuid
+from decimal import Decimal, ROUND_HALF_UP
 
 # Imports from django
 from django.db import models
@@ -1304,7 +1305,7 @@ class EmployerDoc(models.Model):
         return str(self.version).zfill(4)
 
     def get_off_day_compensation(self):
-        return round(self.fdw_salary/26, 2)
+        return Decimal(self.fdw_salary/26).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
