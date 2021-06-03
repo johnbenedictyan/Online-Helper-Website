@@ -521,7 +521,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_service_fee_schedule' level_1_pk=object.pk %}"><p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form A{% else %}Form B{% endif %})</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Handover Checklist</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_handover_checklist' level_1_pk=object.pk %}"><p class="mb-1">Handover Checklist</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_service_agreement' level_1_pk=object.pk %}"><p class="mb-1">Service Agreement</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_transfer_consent' level_1_pk=object.pk %}"><p class="mb-1">Transfer Consent</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_employment_contract' level_1_pk=object.pk %}"><p class="mb-1">Employment Contract</p></a></div>

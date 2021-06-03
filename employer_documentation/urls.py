@@ -227,14 +227,16 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_safety_agreement'
                             ),
-            #                 path(
-            #                     'handover-checklist/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/08-handover-checklist.html',
-            #                         content_disposition = 'inline; filename="handover-checklist.pdf"',
-            #                     ),
-            #                     name='pdf_agency_handover_checklist'
-            #                 ),
+                            # Second signing event
+                            path(
+                                'handover-checklist/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/08-handover-checklist.html',
+                                    content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                ),
+                                name='pdf_agency_handover_checklist'
+                            ),
+                            ################################## Deprecated
                             # path(
                             #     'pdf/security-bond/',
                             #     views.PdfGenericAgencyView.as_view(
@@ -267,6 +269,7 @@ urlpatterns = [
                             #     ),
                             #     name='pdf_agency_joint_applicants'
                             # ),
+                            ################################## Deprecated
             #                 path(
             #                     'job-order/<slug:slug>/',
             #                     views.PdfFileAgencyView.as_view(
