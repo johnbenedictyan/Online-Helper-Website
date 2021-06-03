@@ -1012,6 +1012,16 @@ class DocUploadUpdateView(
     def get_success_url(self):
         return reverse_lazy('dashboard_case_list')
 
+class CaseStatusUpdateView(UpdateView):
+    model = models.CaseStatus
+    form_class = forms.CaseStatusForm
+    pk_url_kwarg = 'level_1_pk'
+
+    def get(self, request, *args, **kwargs):
+        res = super().get(request, *args, **kwargs)
+        print(self.object)
+        return res
+
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
 #     UpdateView

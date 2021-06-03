@@ -71,6 +71,11 @@ urlpatterns = [
                         views.EmployerHouseholdDetailsFormView.as_view(),
                         name='employer_householddetails_update_route'
                     ),
+                    path(
+                        'status/update/',
+                        views.CaseStatusUpdateView.as_view(),
+                        name='case_status_update_route'
+                    ),
                 ]),
             ),
         ]),
