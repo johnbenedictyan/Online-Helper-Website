@@ -2,19 +2,19 @@
 {% load static %}
 
 {% block title %}
-    {% if object.application_scheme == 'SINGL' or object.application_scheme == 'SPOUS' %}
+    {% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
         Employer and Spouse Income Tax Declaration
-    {% elif object.application_scheme == 'JOINT' %}
+    {% elif object.employer.applicant_type == 'JNT_AP' %}
         Joint Applicant Income Tax Declaration
-    {% elif object.application_scheme == 'SPONS' %}
+    {% elif object.employer.applicant_type == 'SPONSR' %}
         Sponsor Income Tax Declaration
     {% else %}
         Income Tax Declaration
     {% endif %}
-{% endblock %}
+{% endblock title %}
 
 {% block pdf_content %}
-{% if object.application_scheme == 'SINGL' or object.application_scheme == 'SPOUS' %}
+{% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
 <div>
     <span><img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"></span>
     <h3 style="margin: 0;">Work Pass Division</h3>
@@ -27,11 +27,11 @@
 {% endif %}
 <div class="text-align-center">
     <h1>Annex A</h1>
-    {% if object.application_scheme == 'SINGL' or object.application_scheme == 'SPOUS' %}
+    {% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
         <h1>Employer and Spouse Income Tax Declaration</h1>
-    {% elif object.application_scheme == 'JOINT' %}
+    {% elif object.employer.applicant_type == 'JNT_AP' %}
         <h1>Joint Applicant Income Tax Declaration</h1>
-    {% elif object.application_scheme == 'SPONS' %}
+    {% elif object.employer.applicant_type == 'SPONSR' %}
         <h1>Sponsor Income Tax Declaration</h1>
     {% else %}
         <h1>Income Tax Declaration</h1>
@@ -48,7 +48,7 @@
 <br>
 <p class="text-bold--600">Please complete this form only if you do not wish to submit your Income Tax Notice of Assessment when applying for a Work Permit (WP) for a foreign domestic worker.</p>
 <br>
-{% if object.application_scheme == 'SINGL' or object.application_scheme == 'SPOUS' %}
+{% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
     <p class="text-bold--600">Part I – Monthly Combined Income of Employer and Spouse</p>
 {% else %}
     <p class="text-bold--600">Monthly Combined Income</p>
@@ -56,113 +56,34 @@
 <br>
 <p class="text-bold--600">Please tick the appropriate box.</p>
 <table>
-    {% if object.application_scheme == 'JOINT' %}
-        <tr>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499</td>
-        </tr>
-        <tr>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999</td>
-        </tr>
-        <tr>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999</td>
-        </tr>
-        <tr>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999</td>
-            <td>{% if object.rn_jointapplicant_ed.combined_monthly_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above</td>
-            <td></td>
-            <td></td>
-        </tr>
-    {% elif object.application_scheme == 'SPONS' %}
-        {% if object.rn_sponsor_ed.number_of_sponsors == 1 %}
-            <tr>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499</td>
-            </tr>
-            <tr>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999</td>
-            </tr>
-            <tr>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999</td>
-            </tr>
-            <tr>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999</td>
-                <td>{% if object.rn_sponsor_ed.single_monthly_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above</td>
-                <td></td>
-                <td></td>
-            </tr>
-        {% else %}
-            <tr>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499</td>
-            </tr>
-            <tr>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999</td>
-            </tr>
-            <tr>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999</td>
-            </tr>
-            <tr>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999</td>
-                <td>{% if object.rn_sponsor_ed.combined_monthly_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above</td>
-                <td></td>
-                <td></td>
-            </tr>
-        {% endif %}
-    {% else %}
-        <tr>
-            <td>{% if object.monthly_combined_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000</td>
-            <td>{% if object.monthly_combined_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499</td>
-            <td>{% if object.monthly_combined_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999</td>
-            <td>{% if object.monthly_combined_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499</td>
-        </tr>
-        <tr>
-            <td>{% if object.monthly_combined_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999</td>
-            <td>{% if object.monthly_combined_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999</td>
-            <td>{% if object.monthly_combined_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999</td>
-            <td>{% if object.monthly_combined_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999</td>
-        </tr>
-        <tr>
-            <td>{% if object.monthly_combined_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999</td>
-            <td>{% if object.monthly_combined_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499</td>
-            <td>{% if object.monthly_combined_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999</td>
-            <td>{% if object.monthly_combined_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999</td>
-        </tr>
-        <tr>
-            <td>{% if object.monthly_combined_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999</td>
-            <td>{% if object.monthly_combined_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above</td>
-            <td></td>
-            <td></td>
-        </tr>
-    {% endif %}
+    <tr>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 0 %}&#9745;{% else %}&#9744;{% endif %} Below $2,000</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 1 %}&#9745;{% else %}&#9744;{% endif %} $2,000 to $2,499</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 2 %}&#9745;{% else %}&#9744;{% endif %} $2,500 to $2,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 3 %}&#9745;{% else %}&#9744;{% endif %} $3,000 to $3,499</td>
+    </tr>
+    <tr>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 4 %}&#9745;{% else %}&#9744;{% endif %} $3,500 to $3,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 5 %}&#9745;{% else %}&#9744;{% endif %} $4,000 to $4,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 6 %}&#9745;{% else %}&#9744;{% endif %} $5,000 to $5,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 7 %}&#9745;{% else %}&#9744;{% endif %} $6,000 to $7,999</td>
+    </tr>
+    <tr>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 8 %}&#9745;{% else %}&#9744;{% endif %} $8,000 to $9,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 9 %}&#9745;{% else %}&#9744;{% endif %} $10,000 to $12,499</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 10 %}&#9745;{% else %}&#9744;{% endif %} $12,500 to $14,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 11 %}&#9745;{% else %}&#9744;{% endif %} $15,000 to $19,999</td>
+    </tr>
+    <tr>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 12 %}&#9745;{% else %}&#9744;{% endif %} $20,000 to $24,999</td>
+        <td>{% if object.employer.rn_income_employer.monthly_income == 13 %}&#9745;{% else %}&#9744;{% endif %} $25,000 and above</td>
+        <td></td>
+        <td></td>
+    </tr>
 </table>
 <br>
 
-{% if object.application_scheme == 'SINGL' or object.application_scheme == 'SPOUS' %}
+{% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
     <p class="text-bold--600">Part II – Authorisation by Employer and His/Her Spouse</p>
     <br>
     <p>
@@ -173,13 +94,13 @@
     <br>
     <p>
         I, <u>&nbsp;{{ object.employer.employer_name }}&nbsp;</u>, NRIC/WP No/FIN: 
-        <u>&nbsp;{{ object.employer.get_employer_nric_full }}&nbsp;</u> and/ or I, {% if object.spouse_required %}
+        <u>&nbsp;{{ object.employer.get_employer_nric_full }}&nbsp;</u> and/ or I, {% if object.employer.applicant_type == 'SPOUSE' %}
         <u>&nbsp;{{ object.rn_signatures_ed.spouse_name }}&nbsp;</u>{% else %}________________{% endif %}, 
-        NRIC/ WP No/FIN: {% if object.spouse_required %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>
+        NRIC/ WP No/FIN: {% if object.employer.applicant_type == 'SPOUSE' %}<u>&nbsp;{{ object.rn_signatures_ed.spouse_nric }}&nbsp;</u>
         {% else %}________________{% endif %},
     </p>
     <br>
-    {% if object.spouse_required %}
+    {% if object.employer.applicant_type == 'SPOUSE' %}
         {% with my_or_our='<span style="text-decoration: line-through;">my</span>/our' i_or_we='<span style="text-decoration: line-through;">I</span>/we' %}
         <p>
             authorise the Controller of Income Tax to verify 
@@ -222,18 +143,18 @@
     </tr>
     <tr>
         <td class="text-bold--600 text-align-center border--bottom border--right" width="50%">
-            {% if object.application_scheme == 'JOINT' %}
+            {% if object.employer.applicant_type == 'JNT_AP' %}
                 Employer (Joint Applicant 1)
-            {% elif object.application_scheme == 'SPONS' %}
+            {% elif object.employer.applicant_type == 'SPONSR' %}
                 Sponsor 1
             {% else %}
                 Employer
             {% endif %}
         </td>
         <td class="text-bold--600 text-align-center border--bottom">
-            {% if object.application_scheme == 'JOINT' %}
+            {% if object.employer.applicant_type == 'JNT_AP' %}
                 Joint Applicant 2
-            {% elif object.application_scheme == 'SPONS' %}
+            {% elif object.employer.applicant_type == 'SPONSR' %}
                 Sponsor 2
             {% else %}
                 Employer's Spouse
@@ -242,36 +163,36 @@
     </tr>
     <tr>
         <td class="border--bottom border--right">Income Tax Notice of Assessment No:<br>
-            {% if object.application_scheme == 'SPONS' %}
-                {{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}
+            {% if object.employer.applicant_type == 'SPONSR' %}
+                {{ object.rn_sponsor_employer.get_sponsor_1_nric_full }}
             {% else %}
                 {{ object.employer.get_employer_nric_full }}
             {% endif %}
             </td>
         <td class="border--bottom">Income Tax Notice of Assessment No:<br>
-            {% if object.application_scheme == 'JOINT' %}
-                {{ object.rn_jointapplicant_ed.get_joint_applicant_nric_full }}
-            {% elif object.application_scheme == 'SPONS' %}
-                {{ object.rn_sponsor_ed.get_sponsor_2_nric_full }}
-            {% elif object.application_scheme == 'SPOUS' %}
+            {% if object.employer.applicant_type == 'JNT_AP' %}
+                {{ object.rn_ja_employer.get_joint_applicant_nric_full }}
+            {% elif object.employer.applicant_type == 'SPONSR' %}
+                {{ object.rn_sponsor_employer.get_sponsor_2_nric_full }}
+            {% elif object.employer.applicant_type == 'SPOUSE' %}
                 {{ object.rn_signatures_ed.spouse_nric }}
             {% endif %}
         </td>
     </tr>
     <tr>
         <td class="border--bottom border--right">Signature: 
-            {% if object.application_scheme == 'SPONS' %}
+            {% if object.employer.applicant_type == 'SPONSR' %}
                 <img class="signature__img" src="">
             {% else %}
                 <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
             {% endif %}
         </td>
         <td class="border--bottom">Signature: 
-            {% if object.application_scheme == 'JOINT' %}
+            {% if object.employer.applicant_type == 'JNT_AP' %}
                 <img class="signature__img" src="">
-            {% elif object.application_scheme == 'SPONS' %}
+            {% elif object.employer.applicant_type == 'SPONSR' %}
                 <img class="signature__img" src="">
-            {% elif object.application_scheme == 'SPOUS' %}
+            {% elif object.employer.applicant_type == 'SPOUSE' %}
                 <img class="signature__img" src="{{ object.rn_signatures_ed.spouse_signature }}">
             {% endif %}
         </td>
@@ -279,17 +200,17 @@
     <tr>
         <td class="border--bottom border--right">Date: {{ object.agreement_date|date:"d M Y" }}</td>
         <td class="border--bottom">Date: 
-            {% if object.application_scheme == 'JOINT' %}
+            {% if object.employer.applicant_type == 'JNT_AP' %}
                 {{ object.agreement_date|date:"d M Y" }}
-            {% elif object.application_scheme == 'SPONS' %}
+            {% elif object.employer.applicant_type == 'SPONSR' %}
                 {{ object.agreement_date|date:"d M Y" }}
-            {% elif object.application_scheme == 'SPOUS' %}
+            {% elif object.employer.applicant_type == 'SPOUSE' %}
                 {{ object.agreement_date|date:"d M Y" }}
             {% endif %}
         </td>
     </tr>
 </table>
-{% if object.application_scheme == 'SINGL' or object.application_scheme == 'SPOUS' %}
+{% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
 <p class="text--xsmall">*Delete where inapplicable</p>
 <br>
 <br>

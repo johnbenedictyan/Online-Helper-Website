@@ -520,19 +520,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Service Fee Schedule (Form A/ Form B)</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_service_fee_schedule' level_1_pk=object.pk %}"><p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form A{% else %}Form B{% endif %})</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Handover Checklist</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Service Agreement</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Transfer Consent</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employment Contract</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Work Pass Authorisation</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_service_agreement' level_1_pk=object.pk %}"><p class="mb-1">Service Agreement</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_transfer_consent' level_1_pk=object.pk %}"><p class="mb-1">Transfer Consent</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_employment_contract' level_1_pk=object.pk %}"><p class="mb-1">Employment Contract</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}"><p class="mb-1">Work Pass Authorisation</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Loan Repayment Schedule</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Job Order</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Rest Day Agreement</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_rest_day_agreement' level_1_pk=object.pk %}"><p class="mb-1">Rest Day Agreement</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">IPA</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Safety Agreement</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">E-Issuance</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Income Tax Declaration</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_income_tax_declaration' level_1_pk=object.pk %}"><p class="mb-1">Income Tax Declaration</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Medical Report</p></a></div>
             </div>
         </div>

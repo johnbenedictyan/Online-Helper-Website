@@ -211,6 +211,30 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_work_pass_authorisation'
                             ),
+                            path(
+                                'income-tax-declaration/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/13-income-tax-declaration.html',
+                                    content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                ),
+                                name='pdf_agency_income_tax_declaration'
+                            ),
+            #                 path(
+            #                     'safety-agreement/',
+            #                     views.PdfGenericAgencyView.as_view(
+            #                         template_name='employer_documentation/pdf/14-safety-agreement.html',
+            #                         content_disposition = 'inline; filename="safety-agreement.pdf"',
+            #                     ),
+            #                     name='pdf_agency_safety_agreement'
+            #                 ),
+            #                 path(
+            #                     'handover-checklist/',
+            #                     views.PdfGenericAgencyView.as_view(
+            #                         template_name='employer_documentation/pdf/08-handover-checklist.html',
+            #                         content_disposition = 'inline; filename="handover-checklist.pdf"',
+            #                     ),
+            #                     name='pdf_agency_handover_checklist'
+            #                 ),
                             # path(
                             #     'pdf/security-bond/',
                             #     views.PdfGenericAgencyView.as_view(
@@ -227,46 +251,22 @@ urlpatterns = [
                             #     ),
                             #     name='pdf_agency_fdw_work_permit_12b'
                             # ),
-            #                 path(
-            #                     'income-tax-declaration/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/13-income-tax-declaration.html',
-            #                         content_disposition = 'inline; filename="income-tax-declaration.pdf"',
-            #                     ),
-            #                     name='pdf_agency_income_tax_declaration'
-            #                 ),
-            #                 path(
-            #                     'safety-agreement/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/14-safety-agreement.html',
-            #                         content_disposition = 'inline; filename="safety-agreement.pdf"',
-            #                     ),
-            #                     name='pdf_agency_safety_agreement'
-            #                 ),
-            #                 path(
-            #                     'sponsor-details/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/15-MoM-work-permit-sponsors.html',
-            #                         content_disposition = 'inline; filename="sponsor-details.pdf"',
-            #                     ),
-            #                     name='pdf_agency_sponsor_details'
-            #                 ),
-            #                 path(
-            #                     'joint-applicant/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicant.html',
-            #                         content_disposition = 'inline; filename="joint-applicant-details.pdf"',
-            #                     ),
-            #                     name='pdf_agency_joint_applicants'
-            #                 ),
-            #                 path(
-            #                     'handover-checklist/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/08-handover-checklist.html',
-            #                         content_disposition = 'inline; filename="handover-checklist.pdf"',
-            #                     ),
-            #                     name='pdf_agency_handover_checklist'
-            #                 ),
+                            # path(
+                            #     'sponsor-details/',
+                            #     views.PdfGenericAgencyView.as_view(
+                            #         template_name='employer_documentation/pdf/15-MoM-work-permit-sponsors.html',
+                            #         content_disposition = 'inline; filename="sponsor-details.pdf"',
+                            #     ),
+                            #     name='pdf_agency_sponsor_details'
+                            # ),
+                            # path(
+                            #     'joint-applicant/',
+                            #     views.PdfGenericAgencyView.as_view(
+                            #         template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicant.html',
+                            #         content_disposition = 'inline; filename="joint-applicant-details.pdf"',
+                            #     ),
+                            #     name='pdf_agency_joint_applicants'
+                            # ),
             #                 path(
             #                     'job-order/<slug:slug>/',
             #                     views.PdfFileAgencyView.as_view(
