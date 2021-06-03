@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <td colspan="2">Hand Over Date</td>
-            <td>: {{ object.fdw_work_commencement_date|date:"d M Y" }}</td>
+            <td>: {{ object.rn_casestatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
         </tr>
         <tr>
             <td></td>
@@ -31,7 +31,7 @@
         <tr>
             <td></td>
             <td>NRIC/ Passport</td>
-            <td>: {{ object.employer.get_nric_full }}</td>
+            <td>: {{ object.employer.get_employer_nric_full }}</td>
         </tr>
         <tr>
             <td></td>
@@ -127,7 +127,7 @@
     <br>
     <table>
         <tr>
-            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.name }} is the FDW selected by me and I take custody and responsibility of the FDW from the this date.</td>
+            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.name }} is the FDW selected by me and I take custody and responsibility of the FDW from this date.</td>
         </tr>
         
         {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
