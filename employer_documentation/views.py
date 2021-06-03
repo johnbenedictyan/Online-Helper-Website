@@ -208,9 +208,9 @@ class EmployerDocDetailView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            'off_day_compensation': round(self.object.fdw_salary/26, 2),
-        })
+        # context.update({
+        #     'off_day_compensation': round(self.object.fdw_salary/26, 2),
+        # })
         return context
 
 # Create Views

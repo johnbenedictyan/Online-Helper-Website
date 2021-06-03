@@ -1,10 +1,8 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
-{% load mathfilters %}
+{% load humanize %}
 
 {% block title %}Rest Day Agreement{% endblock %}
-
 {% block pdf_content %}
-
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">REST DAY AGREEMENT BETWEEN EMPLOYER AND FDW</h2>
@@ -58,7 +56,7 @@
         <td colspan="3">This agreement is made between (a) the FDW and (b) the Employer in accordance with the Ministry of Manpower’s regulations on the provision of a weekly rest day for FDWs. Please refer to the Employment of Foreign Manpower (Work Passes) Regulations. of the Employment of Foreign Manpower Act (CHAPTER 91A).</td>
     </tr>
     <tr>
-        <td colspan="3">It was agreed between the contracting parties that the abovementioned FDW will have 4 rest day(s) per month,{% comment %}on {{ object.fdw }}{% endcomment %} with compensation of S${{ object.fdw.financial_details.salary|div:26|floatformat:2 }} for each rest day forgone.</td>
+        <td colspan="3">It was agreed between the contracting parties that the abovementioned FDW will have 4 rest day(s) per month, on {{ object.get_fdw_off_day_of_week_display }} with compensation of S${{ object.get_off_day_compensation|intcomma }} for each rest day forgone.</td>
     </tr>
     
     {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}

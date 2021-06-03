@@ -147,7 +147,7 @@ urlpatterns = [
                         name='docupload_update_route'
                     ),
                     path(
-                        'archive',
+                        'archive/',
                         views.ArchiveCase.as_view(),
                         name='doc_archive'
                     ),
@@ -187,14 +187,14 @@ urlpatterns = [
             #                     ),
             #                     name='pdf_agency_repayment_schedule'
             #                 ),
-            #                 path(
-            #                     'rest-day-agreement/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/06-rest-day-agreement.html',
-            #                         content_disposition = 'inline; filename="rest-day-agreement.pdf"',
-            #                     ),
-            #                     name='pdf_agency_rest_day_agreement'
-            #                 ),
+                            path(
+                                'rest-day-agreement/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/06-rest-day-agreement.html',
+                                    content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                ),
+                                name='pdf_agency_rest_day_agreement'
+                            ),
             #                 path(
             #                     'job-order/<slug:slug>/',
             #                     views.PdfFileAgencyView.as_view(
