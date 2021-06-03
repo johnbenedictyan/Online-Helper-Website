@@ -219,14 +219,14 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_income_tax_declaration'
                             ),
-            #                 path(
-            #                     'safety-agreement/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/14-safety-agreement.html',
-            #                         content_disposition = 'inline; filename="safety-agreement.pdf"',
-            #                     ),
-            #                     name='pdf_agency_safety_agreement'
-            #                 ),
+                            path(
+                                'safety-agreement/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/14-safety-agreement.html',
+                                    content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                ),
+                                name='pdf_agency_safety_agreement'
+                            ),
             #                 path(
             #                     'handover-checklist/',
             #                     views.PdfGenericAgencyView.as_view(

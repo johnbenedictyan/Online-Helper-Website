@@ -90,28 +90,28 @@
     <tr>
         <td>Residential Dwelling Type</td>
         <td colspan="2">
-            {% if object.residential_dwelling_type == 'HDB' %}&#9745;{% else %}&#9744;{% endif %} HDB Apartment
+            {% if object.rn_safetyagreement_ed.residential_dwelling_type == 'HDB' %}&#9745;{% else %}&#9744;{% endif %} HDB Apartment
             <br>
-            {% if object.residential_dwelling_type == 'CONDO' %}&#9745;{% else %}&#9744;{% endif %} Private Apartment/Condominium
+            {% if object.rn_safetyagreement_ed.residential_dwelling_type == 'CONDO' %}&#9745;{% else %}&#9744;{% endif %} Private Apartment/Condominium
             <br>
-            {% if object.residential_dwelling_type == 'LANDED' %}&#9745;{% else %}&#9744;{% endif %} Landed Property
+            {% if object.rn_safetyagreement_ed.residential_dwelling_type == 'LANDED' %}&#9745;{% else %}&#9744;{% endif %} Landed Property
         </td>
     </tr>
     <tr>
         <td colspan="3" class="main-safety-ag--bg-black main-safety-ag--text-white text-align-center">Do I require my FDW to clean window exterior?</td>
     </tr>
     <tr>
-        <td colspan="2" class="text-align-center">{% if object.fdw_clean_window_exterior %}&#9745;{% else %}&#9744;{% endif %} Yes</td>
-        <td>{% if not object.fdw_clean_window_exterior %}&#9745;{% else %}&#9744;{% endif %} No</td>
+        <td colspan="2" class="text-align-center">{% if object.rn_safetyagreement_ed.fdw_clean_window_exterior %}&#9745;{% else %}&#9744;{% endif %} Yes</td>
+        <td>{% if not object.rn_safetyagreement_ed.fdw_clean_window_exterior %}&#9745;{% else %}&#9744;{% endif %} No</td>
     </tr>
     <tr>
         <td width="24%">(i) Location of window exterior</td>
         <td>
-            {% if object.window_exterior_location == 'GROUND' %}&#9745;{% else %}&#9744;{% endif %} On the ground
+            {% if object.rn_safetyagreement_ed.window_exterior_location == 'GROUND' %}&#9745;{% else %}&#9744;{% endif %} On the ground
             <br>
-            {% if object.window_exterior_location == 'COMMON' %}&#9745;{% else %}&#9744;{% endif %} Facing common corridor
+            {% if object.rn_safetyagreement_ed.window_exterior_location == 'COMMON' %}&#9745;{% else %}&#9744;{% endif %} Facing common corridor
             <br>
-            {% if object.window_exterior_location == 'OTHER' %}&#9745;{% else %}&#9744;{% endif %} Others
+            {% if object.rn_safetyagreement_ed.window_exterior_location == 'OTHER' %}&#9745;{% else %}&#9744;{% endif %} Others
             <br> If "Others" is selected, proceed to (ii)
         </td>
         <td rowspan="3" class="main-safety-ag--bg-black"></td>
@@ -121,8 +121,8 @@
             (ii) Grilles installed on windows required to be cleaned by FDW
         </td>
         <td>
-            {% if object.grilles_installed_require_cleaning %}&#9745;{% else %}&#9744;{% endif %} Yes
-            <span style="margin-left:30px;">{% if object.grilles_installed_require_cleaning == False %}&#9745;{% else %}&#9744;{% endif %} No</span>
+            {% if object.rn_safetyagreement_ed.grilles_installed_require_cleaning %}&#9745;{% else %}&#9744;{% endif %} Yes
+            <span style="margin-left:30px;">{% if object.rn_safetyagreement_ed.grilles_installed_require_cleaning == False %}&#9745;{% else %}&#9744;{% endif %} No</span>
             <br> If "Yes" is selected, proceed to (iii)
         </td>
     </tr>
@@ -132,8 +132,8 @@
         </td>
         <td>
             <br>
-            {% if object.adult_supervision %}&#9745;{% else %}&#9744;{% endif %} Yes
-            <span style="margin-left:30px;">{% if object.adult_supervision == False %}&#9745;{% else %}&#9744;{% endif %} No</span>
+            {% if object.rn_safetyagreement_ed.adult_supervision %}&#9745;{% else %}&#9744;{% endif %} Yes
+            <span style="margin-left:30px;">{% if object.rn_safetyagreement_ed.adult_supervision == False %}&#9745;{% else %}&#9744;{% endif %} No</span>
         </td>
     </tr>
 </table>
@@ -153,13 +153,13 @@
             <td colspan="3">
                 <p>[The Employer is required to choose only <b><u>one</u></b> of the following options]</p>
                 <br>
-                {% if object.verifiy_employer_understands_window_cleaning == 1 %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I will not require my FDW to clean the window exterior of my home.
+                {% if object.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning == 1 %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I will not require my FDW to clean the window exterior of my home.
                 <br><br>
-                {% if object.verifiy_employer_understands_window_cleaning == 2 %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I require my FDW to clean only the window exterior on the ground floor of my home.
+                {% if object.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning == 2 %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I require my FDW to clean only the window exterior on the ground floor of my home.
                 <br><br>
-                {% if object.verifiy_employer_understands_window_cleaning == 3 %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I require my FDW to clean only the window exterior along the common corridor of my home.
+                {% if object.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning == 3 %}&#9745;{% else %}&#9744;{% endif %} I understand the Conditions and I require my FDW to clean only the window exterior along the common corridor of my home.
                 <br><br>
-                {% if object.verifiy_employer_understands_window_cleaning == 4 %}&#9745;{% else %}&#9744;{% endif %} I require my FDW to clean the window exterior of my home, and I shall ensure that the grilles are locked when cleaning the window exterior and cleaned only when supervised by myself or my adult
+                {% if object.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning == 4 %}&#9745;{% else %}&#9744;{% endif %} I require my FDW to clean the window exterior of my home, and I shall ensure that the grilles are locked when cleaning the window exterior and cleaned only when supervised by myself or my adult
                 representative.
             </td>
         </tr>
@@ -188,7 +188,7 @@
         </tr>
         <tr>
             <td colspan="3">
-                I have explained the Conditions to the Employer and advised the Employer that he <b>* can / cannot</b> require the FDW to clean the window exterior of his home based on the information presented in Part A [* to delete accordingly]
+                I have explained the Conditions to the Employer and advised the Employer that he <b>{% if object.rn_safetyagreement_ed.fdw_clean_window_exterior %}* can <s>/ cannot</s>{% else %}* <s>can /</s> cannot{% endif %}</b> require the FDW to clean the window exterior of his home based on the information presented in Part A [* to delete accordingly]
             </td>
         </tr>
         <tr>
@@ -212,7 +212,7 @@
         </tr>
         <tr>
             <td>WP No.</td>
-            <td colspan="2">{{ object.rn_maidstatus_ed.work_permit_no }}</td>
+            <td colspan="2">{{ object.fdw.work_permit }}</td>
         </tr>
         <tr>
             <td colspan="3">
@@ -240,7 +240,7 @@
             <td colspan="3">
                 <table>
                     <tr>
-                        <td style="border:none;">{% if object.verifiy_employer_understands_window_cleaning == 4 %}&#9745;{% else %}&#9744;{% endif %}</td>
+                        <td style="border:none;">{% if object.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning == 4 %}&#9745;{% else %}&#9744;{% endif %}</td>
                         <td style="border:none;">I understand that I am required to clean the window exterior of my employer’s home, and I shall ensure that I clean the window exterior only when the grilles are locked and only when supervised by my employer or his adult representative.
                         </td>
                     </tr>
@@ -269,7 +269,7 @@
         </tr>
         <tr>
             <td colspan="3">
-                I have explained the Conditions to the FDW and advised the FDW that she <b>* can / cannot</b> clean the window exterior of the residential address based on the employer’s declaration in Part A [* to delete accordingly]
+                I have explained the Conditions to the FDW and advised the FDW that she <b>{% if object.rn_safetyagreement_ed.fdw_clean_window_exterior %}* can <s>/ cannot</s>{% else %}* <s>can /</s> cannot{% endif %}</b> clean the window exterior of the residential address based on the employer’s declaration in Part A [* to delete accordingly]
             </td>
         </tr>
         <tr>
