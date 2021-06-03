@@ -9,29 +9,35 @@
                 <h5 class="fs-5">FDW Biodata</h5>
             </div>
         </div>
-        <form action="" method="get">
-            <div class="row">
-                <div class="col-4">
-                    {{filter.form.name|as_crispy_field}}
+        <div class="row">
+            <div class="col-9">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-5">
+                            {{filter.form.name|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-1">
+                            {{filter.form.status|as_crispy_field}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col text-right pb-2">
+                        <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-lg btn-primary mr-1 fs-2">Add Biodata</a>
+                    </div>
                 </div>
-                <div class="col-4 offset-2">
-                    {{filter.form.status|as_crispy_field}}
+                <div class="row">
+                    <div class="col text-right pb-2">
+                        <p class="mb-0 mr-1">Biodata Limit: 0/100</p>
+                    </div>
                 </div>
-            </div>
-        </form>
-        <div class="row">
-            <div class="col text-right pb-3">
-                <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-lg btn-primary mr-1 fs-2">Add Biodata</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col text-right pb-3">
-                <p class="mb-0 mr-1">Biodata Limit: 0/100</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col text-right pb-3">
-                <p class="mb-0 mr-1">Featured Limit: 0/100</p>
+                <div class="row">
+                    <div class="col text-right pb-3">
+                        <p class="mb-0 mr-1">Featured Limit: 0/100</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row bg-custom-light-blue text-dark mx-half py-3 border">
