@@ -111,12 +111,12 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
                         Column(
                             Row(
                                 Column(
-                                    'employer'
+                                    'country'
                                 )
                             ),
                             Row(
                                 Column(
-                                    'country'
+                                    'race_of_employer'
                                 )
                             ),
                             css_class='col-md-6'

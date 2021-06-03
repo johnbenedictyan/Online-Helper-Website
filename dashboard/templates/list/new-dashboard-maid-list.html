@@ -10,23 +10,26 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-9">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-5">
                             {{filter.form.name|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-1">
+                            {{filter.form.status|as_crispy_field}}
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="col">
+            <div class="col-3">
                 <div class="row">
-                    <div class="col text-right pb-3">
+                    <div class="col text-right pb-2">
                         <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-lg btn-primary mr-1 fs-2">Add Biodata</a>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col text-right pb-3">
+                    <div class="col text-right pb-2">
                         <p class="mb-0 mr-1">Biodata Limit: 0/100</p>
                     </div>
                 </div>
