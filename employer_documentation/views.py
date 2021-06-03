@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse, reverse_lazy
 from django.http import FileResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.views.generic import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -1553,3 +1554,10 @@ class EmployerHouseholdDetailsFormView(
         return reverse_lazy(
             'dashboard_employers_list'
         )
+
+class ArchiveCase(RedirectView):
+    http_method_names = ['get']
+    pattern_name = 'dashboard_case_list'
+
+    def get_redirect_url(self, *args, **kwargs):
+        return super().get_redirect_url(*args, **kwargs)

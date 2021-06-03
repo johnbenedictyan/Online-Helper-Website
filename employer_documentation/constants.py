@@ -138,3 +138,12 @@ class EmployerTypeOfApplicantChoices(models.TextChoices):
     SPOUSE = 'SPOUSE', _("Employer with Spouse")
     SPONSOR = 'SPONSR', _("Employer with Sponsor(s)")
     JOINT_APPLICANT = 'JNT_AP', _("Employer with Joint Applicant")
+
+class DayOfWeekChoices(models.TextChoices):
+    MONDAY = 'MONDAY', _('MONDAY')
+    TUESDAY = 'TUESDAY', _('TUESDAY')
+    WEDNESDAY = 'WEDNESDAY', _('WEDNESDAY')
+    THURSDAY = 'THURSDAY', _('THURSDAY')
+    FRIDAY = 'FRIDAY', _('FRIDAY')
+    SATURDAY = 'SATURDAY', _('SATURDAY')
+    SUNDAY = 'SUNDAY', _('SUNDAY')

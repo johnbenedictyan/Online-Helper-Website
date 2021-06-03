@@ -147,6 +147,11 @@ urlpatterns = [
                         name='docupload_update_route'
                     ),
                     path(
+                        'archive',
+                        views.ArchiveCase.as_view(),
+                        name='doc_archive'
+                    ),
+                    path(
                         'pdf/',
                         include([
                             path(

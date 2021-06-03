@@ -104,10 +104,6 @@ urlpatterns = [
                 name='dashboard_case_list'
             ),
             path(
-                'case/',
-                DashboardCaseDetail.as_view(),
-            ),
-            path(
                 'sales/',
                 DashboardSalesList.as_view(),
                 name='dashboard_sales_list'
