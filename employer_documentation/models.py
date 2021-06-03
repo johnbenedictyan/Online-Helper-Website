@@ -1303,6 +1303,9 @@ class EmployerDoc(models.Model):
     def get_version(self):
         return str(self.version).zfill(4)
 
+    def get_off_day_compensation(self):
+        return round(self.fdw_salary/26, 2)
+
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
