@@ -195,55 +195,38 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_rest_day_agreement'
                             ),
-            #                 path(
-            #                     'job-order/<slug:slug>/',
-            #                     views.PdfFileAgencyView.as_view(
-            #                         model=models.JobOrder,
-            #                         slug_url_kwarg='slug',
-            #                         filename='job-order.pdf',
-            #                     ),
-            #                     name='pdf_agency_job_order_route'
-            #                 ),
-            #                 path(
-            #                     'handover-checklist/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/08-handover-checklist.html',
-            #                         content_disposition = 'inline; filename="handover-checklist.pdf"',
-            #                     ),
-            #                     name='pdf_agency_handover_checklist'
-            #                 ),
-            #                 path(
-            #                     'transfer-consent/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/09-transfer-consent.html',
-            #                         content_disposition = 'inline; filename="transfer-consent.pdf"',
-            #                     ),
-            #                     name='pdf_agency_transfer_consent'
-            #                 ),
-            #                 path(
-            #                     'work-pass-authorisation/',
-            #                     views.PdfGenericAgencyView.as_view(
-            #                         template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
-            #                         content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
-            #                     ),
-            #                     name='pdf_agency_work_pass_authorisation'
-            #                 ),
-            #                 # path(
-            #                 #     'pdf/security-bond/',
-            #                 #     views.PdfGenericAgencyView.as_view(
-            #                 #         template_name='employer_documentation/pdf/11-security-bond.html',
-            #                 #         content_disposition = 'inline; filename="security-bond.pdf"',
-            #                 #     ),
-            #                 #     name='pdf_agency_security_bond'
-            #                 # ),
-            #                 # path(
-            #                 #     'pdf/fdw-work-permit-12b/',
-            #                 #     views.PdfGenericAgencyView.as_view(
-            #                 #         template_name='employer_documentation/pdf/12-fdw-work-permit.html',
-            #                 #         content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
-            #                 #     ),
-            #                 #     name='pdf_agency_fdw_work_permit_12b'
-            #                 # ),
+                            path(
+                                'transfer-consent/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/09-transfer-consent.html',
+                                    content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                ),
+                                name='pdf_agency_transfer_consent'
+                            ),
+                            path(
+                                'work-pass-authorisation/',
+                                views.PdfGenericAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
+                                    content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                ),
+                                name='pdf_agency_work_pass_authorisation'
+                            ),
+                            # path(
+                            #     'pdf/security-bond/',
+                            #     views.PdfGenericAgencyView.as_view(
+                            #         template_name='employer_documentation/pdf/11-security-bond.html',
+                            #         content_disposition = 'inline; filename="security-bond.pdf"',
+                            #     ),
+                            #     name='pdf_agency_security_bond'
+                            # ),
+                            # path(
+                            #     'pdf/fdw-work-permit-12b/',
+                            #     views.PdfGenericAgencyView.as_view(
+                            #         template_name='employer_documentation/pdf/12-fdw-work-permit.html',
+                            #         content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
+                            #     ),
+                            #     name='pdf_agency_fdw_work_permit_12b'
+                            # ),
             #                 path(
             #                     'income-tax-declaration/',
             #                     views.PdfGenericAgencyView.as_view(
@@ -275,6 +258,23 @@ urlpatterns = [
             #                         content_disposition = 'inline; filename="joint-applicant-details.pdf"',
             #                     ),
             #                     name='pdf_agency_joint_applicants'
+            #                 ),
+            #                 path(
+            #                     'handover-checklist/',
+            #                     views.PdfGenericAgencyView.as_view(
+            #                         template_name='employer_documentation/pdf/08-handover-checklist.html',
+            #                         content_disposition = 'inline; filename="handover-checklist.pdf"',
+            #                     ),
+            #                     name='pdf_agency_handover_checklist'
+            #                 ),
+            #                 path(
+            #                     'job-order/<slug:slug>/',
+            #                     views.PdfFileAgencyView.as_view(
+            #                         model=models.JobOrder,
+            #                         slug_url_kwarg='slug',
+            #                         filename='job-order.pdf',
+            #                     ),
+            #                     name='pdf_agency_job_order_route'
             #                 ),
                         ]),
                     ),
