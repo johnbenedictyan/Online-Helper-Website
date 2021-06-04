@@ -49,9 +49,6 @@ def generate_archive_path(instance, filename):
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 
-def get_mobile_format_sg(mobile):
-    return '+65 ' + mobile[:4] + ' ' + mobile[4:]
-
 
 # Start of Models
 
@@ -309,9 +306,6 @@ class Employer(models.Model):
             self.spouse_passport_nonce,
             self.spouse_passport_tag,
         )
-
-    def mobile_format_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
 
     def mobile_partial_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
@@ -944,12 +938,6 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_tag,
         )
 
-    def get_sponsor_1_mobile(self):
-        return get_mobile_format_sg(self.sponsor_1_mobile_number)
-
-    def get_sponsor_2_mobile(self):
-        return get_mobile_format_sg(self.sponsor_2_mobile_number) if self.sponsor_2_mobile_number else None
-
 ## Joint Applicants
 class EmployerJointApplicant(models.Model):
     employer = models.OneToOneField(
@@ -1299,6 +1287,11 @@ class EmployerDoc(models.Model):
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         self.version += 1
+
+        # Create related CaseStatus object if it does not exist
+        if not hasattr(self, 'rn_casestatus_ed'):
+            CaseStatus.objects.create(employer_doc=self)
+        
         super().save(*args, **kwargs)
 
     def get_version(self):
@@ -1583,17 +1576,6 @@ class DocServiceFeeSchedule(models.Model):
             + self.calc_placement_fee()
             - self.ca_deposit_amount
         )
-
-        # subsequent_transactions = EmployerPaymentTransaction.objects.filter(
-        #     employer_doc=self
-        # )
-
-        # for transaction in subsequent_transactions:
-        #     if transaction.transaction_type == 'ADD':
-        #         balance += transaction.amount
-        #     elif transaction.transaction_type == 'SUB':
-        #         balance -= transaction.amount
-        
         return balance
 
     def get_fdw_replaced_passport_full(self):
@@ -2374,9 +2356,6 @@ class ArchivedDoc(models.Model):
             self.spouse_passport_tag,
         )
 
-    def mobile_format_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + self.employer_mobile_number[4:]
-
     def mobile_partial_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
 
@@ -2958,12 +2937,6 @@ class ArchivedDoc(models.Model):
             self.sponsor_2_spouse_passport_nonce,
             self.sponsor_2_spouse_passport_tag,
         )
-
-    def get_sponsor_1_mobile(self):
-        return get_mobile_format_sg(self.sponsor_1_mobile_number)
-
-    def get_sponsor_2_mobile(self):
-        return get_mobile_format_sg(self.sponsor_2_mobile_number) if self.sponsor_2_mobile_number else None
 
     # Joint Applicants
     joint_applicant_relationship = models.CharField(

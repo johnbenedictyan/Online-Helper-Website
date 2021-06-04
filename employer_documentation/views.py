@@ -28,6 +28,7 @@ class EmployerDetailView(
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
+    template_name = 'detail/new-dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
     AgencyLoginRequiredMixin,
@@ -844,7 +845,33 @@ class DocUploadUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('dashboard_case_list')
+        return reverse('dashboard_case_list')
+
+class CaseStatusUpdateView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    UpdateView
+):
+    model = models.CaseStatus
+    form_class = forms.CaseStatusForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_casestatus_ed
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['authority'] = self.authority
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('ed_detail_route', kwargs={
+            'level_1_pk': self.object.employer_doc.pk,
+        })
 
 class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
@@ -924,83 +951,6 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
 #             'level_1_pk': self.object.employer_doc.pk,
 #             'level_2_pk': self.object.pk,
 #         })
-
-# class EmployerDocMaidStatusUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocMaidStatus
-#     form_class = EmployerDocMaidStatusForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse_lazy('ed_detail_route', kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
-
-# class EmployerDocMaidDeploymentUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocMaidStatus
-#     form_class = EmployerDocMaidDeploymentForm
-#     pk_url_kwarg = 'level_2_pk'
-
-#     def get_success_url(self):
-#         if self.object.is_deployed:
-#             return reverse_lazy('dashboard_status_list')
-#         else:
-#             return reverse_lazy('dashboard_sales_list')
-
-# class JobOrderUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = JobOrder
-#     form_class = JobOrderForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/joborder_form.html'
-#     success_url = reverse_lazy('dashboard_employers_list')
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse_lazy('ed_detail_route', kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
-
-# class EmployerPaymentTransactionUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = EmployerPaymentTransaction
-#     form_class = EmployerPaymentTransactionForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-#     success_url = reverse_lazy('dashboard_sales_list')
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
 
 
 # Delete Views
@@ -1135,7 +1085,7 @@ class EmployerDocDeleteView(
 
 
 # PDF Views
-class PdfGenericAgencyView(
+class HtmlToRenderPdfAgencyView(
     AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     PdfHtmlViewMixin,
@@ -1154,49 +1104,37 @@ class PdfGenericAgencyView(
         context['url_name'] = request.resolver_match.url_name
         return self.generate_pdf_response(request, context)
 
-# class PdfFileAgencyView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     DetailView
-# ):
-#     # model = None # To be passed as parameter in urls.py
-#     # pk_url_kwarg = None # To be passed as parameter in urls.py
-#     # slug_url_kwarg = None # To be passed as parameter in urls.py
-#     as_attachment=False
-#     filename='document.pdf'
-#     field_name = None
+class UploadedPdfAgencyView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    DetailView
+):
+    # model = None # To be passed as parameter in urls.py
+    # pk_url_kwarg = None # To be passed as parameter in urls.py
+    # slug_url_kwarg = None # To be passed as parameter in urls.py
+    as_attachment=False
+    filename='document.pdf'
+    field_name = None
 
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         if isinstance(self.object, JobOrder):
-#             try:
-#                 return FileResponse(
-#                     self.object.job_order_pdf.open(),
-#                     as_attachment=self.as_attachment,
-#                     filename=self.filename,
-#                     content_type='application/pdf'
-#                 )
-#             except Exception:
-#                 return HttpResponseRedirect(
-#                     reverse('joborder_update_route', kwargs={
-#                         'level_0_pk': self.object.employer_doc.employer.pk,
-#                         'level_1_pk': self.object.employer_doc.pk,
-#                         'level_2_pk': self.object.pk,
-#                 }))
-#         elif isinstance(self.object, EmployerDoc):
-#             try:
-#                 return FileResponse(
-#                     getattr(self.object.rn_pdfarchive_ed, self.field_name).open(),
-#                     as_attachment=self.as_attachment,
-#                     filename=self.filename,
-#                     content_type='application/pdf'
-#                 )
-#             except Exception:
-#                 return HttpResponseRedirect(
-#                     reverse('pdf_archive_detail', kwargs={
-#                         'level_0_pk': self.object.employer.pk,
-#                         'level_1_pk': self.object.pk,
-#                 }))
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_docupload_ed
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            return FileResponse(
+                getattr(self.object, self.field_name).open(),
+                as_attachment=self.as_attachment,
+                filename=self.filename,
+                content_type='application/pdf'
+            )
+        except Exception:
+            return HttpResponseRedirect(
+                reverse('docupload_update_route', kwargs={
+                    'level_1_pk': self.object.employer_doc.pk,
+            }))
 
 # class PdfGenericTokenView(
 #     CheckSignatureSessionTokenMixin,
