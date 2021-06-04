@@ -69,30 +69,82 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a class="showModalLink"><i class="far fa-edit"></i></a>
+                    <a class="showModalLink" data-case-pk="{{status.employer_doc.pk}}"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>
         {% endfor %}
          <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="modal fade" id="caseStatusFormModal" tabindex="-1" aria-labelledby="caseStatusFormModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="caseStatusFormModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form action="" method="post" id="caseStatusForm">
+                                {% csrf_token %}
+                                <div class="form-row"> 
+                                    <div class="form-group col-md-6 pr-3"> 
+                                        <div id="div_id_ipa_approval_date" class="form-group"> 
+                                            <label for="id_ipa_approval_date" class="">
+                                                In Principle Approval (IPA) Date
+                                            </label> 
+                                            <div class="">
+                                                <input type="text" id="ipaApprovalDateInput" name="ipa_approval_date" value="2021-06-10" type="text" onfocus="(this.type=&#x27;date&#x27;)" placeholder="IPA approval date" class="dateinput form-control" id="id_ipa_approval_date"> 
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="form-group col-md-6 pl-3"> 
+                                        <div id="div_id_arrival_date" class="form-group"> 
+                                            <label for="id_arrival_date" class="">
+                                                FDW Arrival Date
+                                            </label> 
+                                            <div class="">
+                                                <input type="text" id="fdwArrivalDateInput" name="arrival_date" value="2021-06-10" type="text" onfocus="(this.type=&#x27;date&#x27;)" placeholder="FDW arrival date" class="dateinput form-control" id="id_arrival_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 pr-3">
+                                        <div id="div_id_shn_end_date" class="form-group"> 
+                                            <label for="id_shn_end_date" class="">SHN End Date</label>
+                                            <div class="">
+                                                <input type="text" id="fdwShnEndDateInput" name="shn_end_date" value="2021-06-10" type="text" onfocus="(this.type=&#x27;date&#x27;)" placeholder="Security bond approval date" class="dateinput form-control" id="id_shn_end_date"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 pl-3"> 
+                                        <div id="div_id_thumb_print_date" class="form-group"> 
+                                            <label for="id_thumb_print_date" class="">
+                                                FDW Thumb Print Date
+                                            </label> 
+                                            <div class=""> 
+                                                <input type="text" id="fdwThumbprintDateInput" name="thumb_print_date" value="2021-06-10" type="text" onfocus="(this.type=&#x27;date&#x27;)" placeholder="Thumb print date" class="dateinput form-control" id="id_thumb_print_date"> 
+                                            </div> 
+                                        </div>
+                                    </div> 
+                                    <div class="form-group col-md-6 pr-3">
+                                        <div id="div_id_fdw_work_commencement_date" class="form-group">
+                                            <label for="id_fdw_work_commencement_date" class="">Deployment Date</label>
+                                            <div class="">
+                                                <input type="text" id="fdwWorkCommencementDateInput" name="fdw_work_commencement_date" value="2021-06-10" type="text" onfocus="(this.type=&#x27;date&#x27;)" placeholder="FDW work commencement date" class="dateinput form-control" id="id_fdw_work_commencement_date">
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary w-25" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary w-25" id="caseStatusFormModalSubmitButton">Save changes</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                ...
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
             </div>
         </div>
     </div>
@@ -101,8 +153,38 @@
 {% block js %}
 <script>
     $(function(){
+        let currentCasePK = null;
         $('.showModalLink').on('click', function(){
-            $('#exampleModal').modal({'show': true})
+            currentCasePK = $(this).data('case-pk');
+            axios({
+                method: 'get',
+                mode: 'same-origin',
+                url: "{% url 'case_status_api_route' level_1_pk='172d14e4-7894-4857-9360-4b1fcd91f1f9' %}".replace(
+                    '172d14e4-7894-4857-9360-4b1fcd91f1f9',
+                    $(this).data('case-pk')
+                ),
+                params: {
+                    casePK: $(this).data('case-pk')
+                }
+            }).then((res)=>{
+                $('#ipaApprovalDateInput').val(res.data.ipaApprovalDateInput);
+                $('#fdwArrivalDateInput').val(res.data.fdwArrivalDateInput);
+                $('#fdwShnEndDateInput').val(res.data.fdwShnEndDateInput);
+                $('#fdwThumbprintDateInput').val(res.data.fdwThumbprintDateInput);
+                $('#fdwWorkCommencementDateInput').val(res.data.fdwWorkCommencementDateInput);
+                $('#caseStatusFormModal').modal({'show': true})
+            });
+        });
+        $('#caseStatusFormModalSubmitButton').on('click', function(){
+            console.log(currentCasePK);
+            $('#caseStatusForm').attr(
+                'action', 
+                "{% url 'case_status_update_route' level_1_pk='172d14e4-7894-4857-9360-4b1fcd91f1f9' %}".replace(
+                    '172d14e4-7894-4857-9360-4b1fcd91f1f9',
+                    currentCasePK
+                )
+            );
+            $('#caseStatusForm').submit();
         });
     });
 </script>
