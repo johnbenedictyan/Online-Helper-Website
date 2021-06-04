@@ -1307,6 +1307,9 @@ class EmployerDoc(models.Model):
     def get_off_day_compensation(self):
         return Decimal(self.fdw_salary/26).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
+    def archive(self):
+        pass
+
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
