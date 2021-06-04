@@ -844,7 +844,33 @@ class DocUploadUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('dashboard_case_list')
+        return reverse('dashboard_case_list')
+
+class CaseStatusUpdateView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    UpdateView
+):
+    model = models.CaseStatus
+    form_class = forms.CaseStatusForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_casestatus_ed
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['authority'] = self.authority
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('ed_detail_route', kwargs={
+            'level_1_pk': self.object.employer_doc.pk,
+        })
 
 # class EmployerDocSigSlugUpdateView(
 #     AgencyLoginRequiredMixin,
@@ -871,83 +897,6 @@ class DocUploadUpdateView(
 #             'level_1_pk': self.object.employer_doc.pk,
 #             'level_2_pk': self.object.pk,
 #         })
-
-# class EmployerDocMaidStatusUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocMaidStatus
-#     form_class = EmployerDocMaidStatusForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse_lazy('ed_detail_route', kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
-
-# class EmployerDocMaidDeploymentUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocMaidStatus
-#     form_class = EmployerDocMaidDeploymentForm
-#     pk_url_kwarg = 'level_2_pk'
-
-#     def get_success_url(self):
-#         if self.object.is_deployed:
-#             return reverse_lazy('dashboard_status_list')
-#         else:
-#             return reverse_lazy('dashboard_sales_list')
-
-# class JobOrderUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = JobOrder
-#     form_class = JobOrderForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/joborder_form.html'
-#     success_url = reverse_lazy('dashboard_employers_list')
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse_lazy('ed_detail_route', kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
-
-# class EmployerPaymentTransactionUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = EmployerPaymentTransaction
-#     form_class = EmployerPaymentTransactionForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-#     success_url = reverse_lazy('dashboard_sales_list')
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
 
 
 # Delete Views

@@ -2251,29 +2251,29 @@ class CaseStatusForm(forms.ModelForm):
             Submit('submit', 'Submit')
         )
 
-    def clean(self):
-        error_msg = _('%(field)s field must not be empty.')
+    # def clean(self):
+    #     error_msg = _('%(field)s field must not be empty.')
         
-        def check_field_not_empty(field):
-            if not self.cleaned_data.get(field):
-                self.add_error(
-                    field,
-                    ValidationError(
-                        error_msg,
-                        code= 'error_' + field,
-                        params= {
-                            'field': EmployerDocMaidStatus._meta.get_field(
-                                field).verbose_name
-                        },
-                    )
-                )
+    #     def check_field_not_empty(field):
+    #         if not self.cleaned_data.get(field):
+    #             self.add_error(
+    #                 field,
+    #                 ValidationError(
+    #                     error_msg,
+    #                     code= 'error_' + field,
+    #                     params= {
+    #                         'field': models.CaseStatus._meta.get_field(
+    #                             field).verbose_name
+    #                     },
+    #                 )
+    #             )
 
-        if self.cleaned_data.get('is_deployed'):
-            for field in self.fields:
-                if field!='work_permit_no' and field!='is_deployed':
-                    check_field_not_empty(field)
+    #     if self.cleaned_data.get('is_deployed'):
+    #         for field in self.fields:
+    #             if field!='work_permit_no' and field!='is_deployed':
+    #                 check_field_not_empty(field)
 
-        return self.cleaned_data
+    #     return self.cleaned_data
 
 # Signature Forms
 class SignatureForm(forms.ModelForm):

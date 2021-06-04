@@ -766,16 +766,18 @@ urlpatterns = [
     #         ),
     #     ]),
     # ),
-    # path('status/',
-    #     include([
-    #         path(
-    #             '',
-    #             views.DocListView.as_view(
-    #                 template_name = 'employer_documentation/status_list.html',
-    #                 is_deployed=False,
-    #             ),
-    #             name='dashboard_status_list'
-    #         ),
-    #     ]),
-    # ),
+    path('status/',
+        include([
+            path(
+                '<uuid:level_1_pk>/',
+                include([
+                    path(
+                        'update/',
+                        views.CaseStatusUpdateView.as_view(),
+                        name='status_update_route'
+                    ),
+                ]),
+            ),
+        ]),
+    ),
 ]
