@@ -234,9 +234,39 @@ urlpatterns = [
                                     model=models.DocUpload,
                                     pk_url_kwarg = 'level_1_pk',
                                     field_name = 'job_order_pdf',
-                                    filename='f07_job_order.pdf',
+                                    filename='job_order.pdf',
                                 ),
                                 name='pdf_agency_job_order_route'
+                            ),
+                            path(
+                                'ipa/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    model=models.DocUpload,
+                                    pk_url_kwarg = 'level_1_pk',
+                                    field_name = 'ipa_pdf',
+                                    filename='ipa.pdf',
+                                ),
+                                name='pdf_agency_ipa_route'
+                            ),
+                            path(
+                                'e-issuance/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    model=models.DocUpload,
+                                    pk_url_kwarg = 'level_1_pk',
+                                    field_name = 'e_issuance_pdf',
+                                    filename='e_issuance.pdf',
+                                ),
+                                name='pdf_agency_e_issuance_route'
+                            ),
+                            path(
+                                'medical-report/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    model=models.DocUpload,
+                                    pk_url_kwarg = 'level_1_pk',
+                                    field_name = 'medical_report_pdf',
+                                    filename='medical_report.pdf',
+                                ),
+                                name='pdf_agency_medical_report_route'
                             ),
                             ################################## Deprecated
                             # path(
