@@ -1299,6 +1299,11 @@ class EmployerDoc(models.Model):
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         self.version += 1
+
+        # Create related CaseStatus object if it does not exist
+        if not hasattr(self, 'rn_casestatus_ed'):
+            CaseStatus.objects.create(employer_doc=self)
+        
         super().save(*args, **kwargs)
 
     def get_version(self):
@@ -1583,17 +1588,6 @@ class DocServiceFeeSchedule(models.Model):
             + self.calc_placement_fee()
             - self.ca_deposit_amount
         )
-
-        # subsequent_transactions = EmployerPaymentTransaction.objects.filter(
-        #     employer_doc=self
-        # )
-
-        # for transaction in subsequent_transactions:
-        #     if transaction.transaction_type == 'ADD':
-        #         balance += transaction.amount
-        #     elif transaction.transaction_type == 'SUB':
-        #         balance -= transaction.amount
-        
         return balance
 
     def get_fdw_replaced_passport_full(self):
