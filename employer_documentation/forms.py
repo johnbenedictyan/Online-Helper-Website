@@ -2204,9 +2204,6 @@ class CaseStatusForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     Field(
                         'arrival_date',
@@ -2225,9 +2222,6 @@ class CaseStatusForm(forms.ModelForm):
                     ),
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     Field(
                         'thumb_print_date',
@@ -2245,10 +2239,19 @@ class CaseStatusForm(forms.ModelForm):
                         placeholder='FDW work commencement date'
                     ),
                     css_class='form-group col-md-6'
+                )
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Next',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
                 ),
                 css_class='form-row'
-            ),
-            Submit('submit', 'Submit')
+            )
         )
 
     def clean(self):
