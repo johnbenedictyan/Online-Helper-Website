@@ -44,10 +44,10 @@
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
-        {% for x in x %}
+        {% for status in statuses %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
             <div class="col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{status.pk}}</p>
             </div>
             <div class="col-2">
                 <p class="mb-0"></p>
@@ -69,12 +69,41 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                    <a class="showModalLink"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>
         {% endfor %}
+         <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $('.showModalLink').on('click', function(){
+            $('#exampleModal').modal({'show': true})
+        });
+    });
+</script>
+{% endblock js%}

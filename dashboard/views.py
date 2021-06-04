@@ -26,7 +26,7 @@ from agency.models import (
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
-from employer_documentation.models import Employer, EmployerDoc
+from employer_documentation.models import Employer, EmployerDoc, CaseStatus
 from enquiry.models import GeneralEnquiry
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
@@ -257,15 +257,16 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilte
 
 class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, # ListFilteredMixin, 
                         ListView):
-    context_object_name = 'status'
+    context_object_name = 'statuses'
     http_method_names = ['get']
+    model = CaseStatus
     template_name = 'list/dashboard-status-list.html'
     # filter_set = DashboardStatusFilter
     authority = ''
     agency_id = ''
 
-    def get_queryset(self):
-        return Maid.objects.all()
+    # def get_queryset(self):
+    #     return Maid.objects.all()
 
 class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     # context_object_name = 'employers'
