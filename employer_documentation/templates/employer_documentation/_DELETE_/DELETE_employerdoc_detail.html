@@ -1,4 +1,5 @@
 {% extends 'employer_documentation/base-ed-template.html' %}
+{% load agency_tags %}
 
 {% block sidenav_extra %}
     {% include 'employer_documentation/sidenav_document_snippet.html' %}
@@ -26,7 +27,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Mobile</th>
-                    <td><a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}">{{ object.employer.mobile_format_sg }}</a></td>
+                    <td><a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}">{{ object.employer.employer_mobile|fcn }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">Case #</th>

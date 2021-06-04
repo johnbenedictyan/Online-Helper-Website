@@ -1,5 +1,6 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
+{% load agency_tags %}
 
 {% block title %}Safety Agreement{% endblock %}
 
@@ -81,7 +82,7 @@
     </tr>
     <tr>
         <td>Contact No.</td>
-        <td colspan="2">{{ object.employer.mobile_format_sg }}</td>
+        <td colspan="2">{{ object.employer.employer_mobile|fcn }}</td>
     </tr>
     <tr>
         <td>Residential Address</td>

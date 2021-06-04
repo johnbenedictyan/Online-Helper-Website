@@ -1,5 +1,6 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
 {% load static %}
+{% load agency_tags %}
 
 {% block title %}Authorisation Form for Foreign Domestic Worker Work Pass Transactions{% endblock %}
 
@@ -37,7 +38,7 @@
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Contact No.</td>
-            <td colspan="3">{{ object.employer.mobile_format_sg }}</td>
+            <td colspan="3">{{ object.employer.employer_mobile|fcn }}</td>
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Signature and Date</td>

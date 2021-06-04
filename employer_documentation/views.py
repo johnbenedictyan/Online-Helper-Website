@@ -28,6 +28,7 @@ class EmployerDetailView(
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
+    template_name = 'detail/new-dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
     AgencyLoginRequiredMixin,
