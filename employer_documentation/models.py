@@ -1308,7 +1308,240 @@ class EmployerDoc(models.Model):
         return Decimal(self.fdw_salary/26).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
     def archive(self):
-        pass
+        ArchivedDoc.objects.get_or_create(
+            id=self.id,
+            defaults={
+                'applicant_type':self.applicant_type,
+                'agency_name':self.agency_name,
+                'agency_license_no':self.agency_license_no,
+                'agency_address_line_1':self.agency_address_line_1,
+                'agency_address_line_2':self.agency_address_line_2,
+                'agency_postal_code':self.agency_postal_code,
+                'agency_employee_name':self.agency_employee_name,
+                'agency_employee_ea_personnel_number':self.agency_employee_ea_personnel_number,
+                'maid_name':self.maid_name,
+                'maid_nationality':self.maid_nationality,
+                'maid_passport_number':self.maid_passport_number,
+                'maid_passport_number_nonce':self.maid_passport_number_nonce,
+                'maid_passport_number_tag':self.maid_passport_number_tag,
+                'maid_work_permit_number':self.maid_work_permit_number,
+                'employer_name':self.employer_name,
+                'employer_gender':self.employer_gender,
+                'employer_mobile_number':self.employer_mobile_number,
+                'employer_home_number':self.employer_home_number,
+                'employer_email':self.employer_email,
+                'employer_address_1':self.employer_address_1,
+                'employer_address_2':self.employer_address_2,
+                'employer_post_code':self.employer_post_code,
+                'employer_date_of_birth':self.employer_date_of_birth,
+                'employer_nationality':self.employer_nationality,
+                'employer_residential_status':self.employer_residential_status,
+                'employer_nric_num':self.employer_nric_num,
+                'employer_nric_nonce':self.employer_nric_nonce,
+                'employer_nric_tag':self.employer_nric_tag,
+                'employer_fin_num':self.employer_fin_num,
+                'employer_fin_nonce':self.employer_fin_nonce,
+                'employer_fin_tag':self.employer_fin_tag,
+                'employer_passport_num':self.employer_passport_num,
+                'employer_passport_nonce':self.employer_passport_nonce,
+                'employer_passport_tag':self.employer_passport_tag,
+                'employer_passport_date':self.employer_passport_date,
+                'employer_marital_status':self.employer_marital_status,
+                'employer_marriage_sg_registered':self.employer_marriage_sg_registered,
+                'spouse_name':self.spouse_name,
+                'spouse_gender':self.spouse_gender,
+                'spouse_date_of_birth':self.spouse_date_of_birth,
+                'spouse_nationality':self.spouse_nationality,
+                'spouse_residential_status':self.spouse_residential_status,
+                'spouse_nric_num':self.spouse_nric_num,
+                'spouse_nric_nonce':self.spouse_nric_nonce,
+                'spouse_nric_tag':self.spouse_nric_tag,
+                'spouse_fin_num':self.spouse_fin_num,
+                'spouse_fin_nonce':self.spouse_fin_nonce,
+                'spouse_fin_tag':self.spouse_fin_tag,
+                'spouse_passport_num':self.spouse_passport_num,
+                'spouse_passport_nonce':self.spouse_passport_nonce,
+                'spouse_passport_tag':self.spouse_passport_tag,
+                'spouse_passport_date':self.spouse_passport_date,
+                'sponsor_1_relationship':self.sponsor_1_relationship,
+                'sponsor_1_name':self.sponsor_1_name,
+                'sponsor_1_gender':self.sponsor_1_gender,
+                'sponsor_1_date_of_birth':self.sponsor_1_date_of_birth,
+                'sponsor_1_nric_num':self.sponsor_1_nric_num,
+                'sponsor_1_nric_nonce':self.sponsor_1_nric_nonce,
+                'sponsor_1_nric_tag':self.sponsor_1_nric_tag,
+                'sponsor_1_nationality':self.sponsor_1_nationality,
+                'sponsor_1_residential_status':self.sponsor_1_residential_status,
+                'sponsor_1_mobile_number':self.sponsor_1_mobile_number,
+                'sponsor_1_email':self.sponsor_1_email,
+                'sponsor_1_address_1':self.sponsor_1_address_1,
+                'sponsor_1_address_2':self.sponsor_1_address_2,
+                'sponsor_1_post_code':self.sponsor_1_post_code,
+                'sponsor_1_marital_status':self.sponsor_1_marital_status,
+                'sponsor_1_marriage_sg_registered':self.sponsor_1_marriage_sg_registered,
+                'sponsor_1_spouse_name':self.sponsor_1_spouse_name,
+                'sponsor_1_spouse_gender':self.sponsor_1_spouse_gender,
+                'sponsor_1_spouse_date_of_birth':self.sponsor_1_spouse_date_of_birth,
+                'sponsor_1_spouse_nationality':self.sponsor_1_spouse_nationality,
+                'sponsor_1_spouse_residential_status':self.sponsor_1_spouse_residential_status,
+                'sponsor_1_spouse_nric_num':self.sponsor_1_spouse_nric_num,
+                'sponsor_1_spouse_nric_nonce':self.sponsor_1_spouse_nric_nonce,
+                'sponsor_1_spouse_nric_tag':self.sponsor_1_spouse_nric_tag,
+                'sponsor_1_spouse_fin_num':self.sponsor_1_spouse_fin_num,
+                'sponsor_1_spouse_fin_nonce':self.sponsor_1_spouse_fin_nonce,
+                'sponsor_1_spouse_fin_tag':self.sponsor_1_spouse_fin_tag,
+                'sponsor_1_spouse_passport_num':self.sponsor_1_spouse_passport_num,
+                'sponsor_1_spouse_passport_nonce':self.sponsor_1_spouse_passport_nonce,
+                'sponsor_1_spouse_passport_tag':self.sponsor_1_spouse_passport_tag,
+                'sponsor_1_spouse_passport_date':self.sponsor_1_spouse_passport_date,
+                'sponsor_2_required':self.sponsor_2_required,
+                'sponsor_2_relationship':self.sponsor_2_relationship,
+                'sponsor_2_name':self.sponsor_2_name,
+                'sponsor_2_gender':self.sponsor_2_gender,
+                'sponsor_2_date_of_birth':self.sponsor_2_date_of_birth,
+                'sponsor_2_nric_num':self.sponsor_2_nric_num,
+                'sponsor_2_nric_nonce':self.sponsor_2_nric_nonce,
+                'sponsor_2_nric_tag':self.sponsor_2_nric_tag,
+                'sponsor_2_nationality':self.sponsor_2_nationality,
+                'sponsor_2_residential_status':self.sponsor_2_residential_status,
+                'sponsor_2_mobile_number':self.sponsor_2_mobile_number,
+                'sponsor_2_email':self.sponsor_2_email,
+                'sponsor_2_address_1':self.sponsor_2_address_1,
+                'sponsor_2_address_2':self.sponsor_2_address_2,
+                'sponsor_2_post_code':self.sponsor_2_post_code,
+                'sponsor_2_marital_status':self.sponsor_2_marital_status,
+                'sponsor_2_marriage_sg_registered':self.sponsor_2_marriage_sg_registered,
+                'sponsor_2_spouse_name':self.sponsor_2_spouse_name,
+                'sponsor_2_spouse_gender':self.sponsor_2_spouse_gender,
+                'sponsor_2_spouse_date_of_birth':self.sponsor_2_spouse_date_of_birth,
+                'sponsor_2_spouse_nationality':self.sponsor_2_spouse_nationality,
+                'sponsor_2_spouse_residential_status':self.sponsor_2_spouse_residential_status,
+                'sponsor_2_spouse_nric_num':self.sponsor_2_spouse_nric_num,
+                'sponsor_2_spouse_nric_nonce':self.sponsor_2_spouse_nric_nonce,
+                'sponsor_2_spouse_nric_tag':self.sponsor_2_spouse_nric_tag,
+                'sponsor_2_spouse_fin_num':self.sponsor_2_spouse_fin_num,
+                'sponsor_2_spouse_fin_nonce':self.sponsor_2_spouse_fin_nonce,
+                'sponsor_2_spouse_fin_tag':self.sponsor_2_spouse_fin_tag,
+                'sponsor_2_spouse_passport_num':self.sponsor_2_spouse_passport_num,
+                'sponsor_2_spouse_passport_nonce':self.sponsor_2_spouse_passport_nonce,
+                'sponsor_2_spouse_passport_tag':self.sponsor_2_spouse_passport_tag,
+                'sponsor_2_spouse_passport_date':self.sponsor_2_spouse_passport_date,
+                'joint_applicant_relationship':self.joint_applicant_relationship,
+                'joint_applicant_name':self.joint_applicant_name,
+                'joint_applicant_gender':self.joint_applicant_gender,
+                'joint_applicant_date_of_birth':self.joint_applicant_date_of_birth,
+                'joint_applicant_nric_num':self.joint_applicant_nric_num,
+                'joint_applicant_nric_nonce':self.joint_applicant_nric_nonce,
+                'joint_applicant_nric_tag':self.joint_applicant_nric_tag,
+                'joint_applicant_nationality':self.joint_applicant_nationality,
+                'joint_applicant_residential_status':self.joint_applicant_residential_status,
+                'joint_applicant_address_1':self.joint_applicant_address_1,
+                'joint_applicant_address_2':self.joint_applicant_address_2,
+                'joint_applicant_post_code':self.joint_applicant_post_code,
+                'joint_applicant_marital_status':self.joint_applicant_marital_status,
+                'joint_applicant_marriage_sg_registered':self.joint_applicant_marriage_sg_registered,
+                'joint_applicant_spouse_name':self.joint_applicant_spouse_name,
+                'joint_applicant_spouse_gender':self.joint_applicant_spouse_gender,
+                'joint_applicant_spouse_date_of_birth':self.joint_applicant_spouse_date_of_birth,
+                'joint_applicant_spouse_nationality':self.joint_applicant_spouse_nationality,
+                'joint_applicant_spouse_residential_status':self.joint_applicant_spouse_residential_status,
+                'joint_applicant_spouse_nric_num':self.joint_applicant_spouse_nric_num,
+                'joint_applicant_spouse_nric_nonce':self.joint_applicant_spouse_nric_nonce,
+                'joint_applicant_spouse_nric_tag':self.joint_applicant_spouse_nric_tag,
+                'joint_applicant_spouse_fin_num':self.joint_applicant_spouse_fin_num,
+                'joint_applicant_spouse_fin_nonce':self.joint_applicant_spouse_fin_nonce,
+                'joint_applicant_spouse_fin_tag':self.joint_applicant_spouse_fin_tag,
+                'joint_applicant_spouse_passport_num':self.joint_applicant_spouse_passport_num,
+                'joint_applicant_spouse_passport_nonce':self.joint_applicant_spouse_passport_nonce,
+                'joint_applicant_spouse_passport_tag':self.joint_applicant_spouse_passport_tag,
+                'joint_applicant_spouse_passport_date':self.joint_applicant_spouse_passport_date,
+                'worked_in_sg':self.worked_in_sg,
+                'monthly_income':self.monthly_income,
+                'version':self.version,
+                'case_ref_no':self.case_ref_no,
+                'agreement_date':self.agreement_date,
+                'fdw_salary':self.fdw_salary,
+                'fdw_loan':self.fdw_loan,
+                'fdw_off_days':self.fdw_off_days,
+                'is_new_case':self.is_new_case,
+                'fdw_replaced_name':self.fdw_replaced_name,
+                'fdw_replaced_passport_num':self.fdw_replaced_passport_num,
+                'fdw_replaced_passport_nonce':self.fdw_replaced_passport_nonce,
+                'fdw_replaced_passport_tag':self.fdw_replaced_passport_tag,
+                'b4_loan_transferred':self.b4_loan_transferred,
+                'b1_service_fee':self.b1_service_fee,
+                'b2a_work_permit_application_collection':self.b2a_work_permit_application_collection,
+                'b2b_medical_examination_fee':self.b2b_medical_examination_fee,
+                'b2c_security_bond_accident_insurance':self.b2c_security_bond_accident_insurance,
+                'b2d_indemnity_policy_reimbursement':self.b2d_indemnity_policy_reimbursement,
+                'b2e_home_service':self.b2e_home_service,
+                'b2f_counselling':self.b2f_counselling,
+                'b2g_sip':self.b2g_sip,
+                'b2h_food_lodging':self.b2h_food_lodging,
+                'b2i1_other_services_description':self.b2i1_other_services_description,
+                'b2i1_other_services_fee':self.b2i1_other_services_fee,
+                'b2i2_other_services_description':self.b2i2_other_services_description,
+                'b2i2_other_services_fee':self.b2i2_other_services_fee,
+                'b2i3_other_services_description':self.b2i3_other_services_description,
+                'b2i3_other_services_fee':self.b2i3_other_services_fee,
+                'b2j_replacement_months':self.b2j_replacement_months,
+                'b2j_replacement_cost':self.b2j_replacement_cost,
+                'b2k_work_permit_renewal':self.b2k_work_permit_renewal,
+                'b3_agency_fee':self.b3_agency_fee,
+                'ca_deposit_amount':self.ca_deposit_amount,
+                'ca_deposit_date':self.ca_deposit_date,
+                'c1_3_handover_days':self.c1_3_handover_days,
+                'c3_2_no_replacement_criteria_1':self.c3_2_no_replacement_criteria_1,
+                'c3_2_no_replacement_criteria_2':self.c3_2_no_replacement_criteria_2,
+                'c3_2_no_replacement_criteria_3':self.c3_2_no_replacement_criteria_3,
+                'c3_4_no_replacement_refund':self.c3_4_no_replacement_refund,
+                'c4_1_number_of_replacements':self.c4_1_number_of_replacements,
+                'c4_1_replacement_period':self.c4_1_replacement_period,
+                'c4_1_replacement_after_min_working_days':self.c4_1_replacement_after_min_working_days,
+                'c4_1_5_replacement_deadline':self.c4_1_5_replacement_deadline,
+                'c5_1_1_deployment_deadline':self.c5_1_1_deployment_deadline,
+                'c5_1_1_failed_deployment_refund':self.c5_1_1_failed_deployment_refund,
+                'c5_1_2_refund_within_days':self.c5_1_2_refund_within_days,
+                'c5_1_2_before_fdw_arrives_charge':self.c5_1_2_before_fdw_arrives_charge,
+                'c5_1_2_after_fdw_arrives_charge':self.c5_1_2_after_fdw_arrives_charge,
+                'c5_2_2_can_transfer_refund_within':self.c5_2_2_can_transfer_refund_within,
+                'c5_3_2_cannot_transfer_refund_within':self.c5_3_2_cannot_transfer_refund_within,
+                'c6_4_per_day_food_accommodation_cost':self.c6_4_per_day_food_accommodation_cost,
+                'c6_6_per_session_counselling_cost':self.c6_6_per_session_counselling_cost,
+                'c9_1_independent_mediator_1':self.c9_1_independent_mediator_1,
+                'c9_2_independent_mediator_2':self.c9_2_independent_mediator_2,
+                'c13_termination_notice':self.c13_termination_notice,
+                'c3_5_fdw_sleeping_arrangement':self.c3_5_fdw_sleeping_arrangement,
+                'c4_1_termination_notice':self.c4_1_termination_notice,
+                'residential_dwelling_type':self.residential_dwelling_type,
+                'fdw_clean_window_exterior':self.fdw_clean_window_exterior,
+                'window_exterior_location':self.window_exterior_location,
+                'grilles_installed_require_cleaning':self.grilles_installed_require_cleaning,
+                'adult_supervision':self.adult_supervision,
+                'verifiy_employer_understands_window_cleaning':self.verifiy_employer_understands_window_cleaning,
+                'employer_signature':self.employer_signature,
+                'fdw_signature':self.fdw_signature,
+                'agency_staff_signature':self.agency_staff_signature,
+                'ipa_approval_date':self.ipa_approval_date,
+                'arrival_date':self.arrival_date,
+                'shn_end_date':self.shn_end_date,
+                'thumb_print_date':self.thumb_print_date,
+                'fdw_work_commencement_date':self.fdw_work_commencement_date,
+                'f01_service_fee_schedule':self.f01_service_fee_schedule,
+                'f03_service_agreement':self.f03_service_agreement,
+                'f04_employment_contract':self.f04_employment_contract,
+                'f05_repayment_schedule':self.f05_repayment_schedule,
+                'f06_rest_day_agreement':self.f06_rest_day_agreement,
+                'f08_handover_checklist':self.f08_handover_checklist,
+                'f09_transfer_consent':self.f09_transfer_consent,
+                'f10_work_pass_authorisation':self.f10_work_pass_authorisation,
+                'f14_safety_agreement':self.f14_safety_agreement,
+                'job_order_pdf':self.job_order_pdf,
+                'ipa_pdf':self.ipa_pdf,
+                'e_issuance_pdf':self.e_issuance_pdf,
+                'medical_report_pdf':self.medical_report_pdf
+            }
+        )
 
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
@@ -2163,6 +2396,80 @@ class ArchivedDoc(models.Model):
         max_length=6,
         choices=APPLICANT_TYPE_CHOICES,
         default=APPLICANT_TYPE_CHOICES[0][0],
+    )
+
+    # Agency Informtaion
+    agency_name = models.CharField(
+        verbose_name=_('Agency Name'),
+        max_length=255
+    )
+
+    agency_license_no = models.CharField(
+        verbose_name=_('Agency License Number'),
+        max_length=255
+    )
+
+    agency_address_line_1 = models.CharField(
+        verbose_name=_('Agency Registered Business Address Line 1'),
+        max_length=255
+    )
+
+    agency_address_line_2 = models.CharField(
+        verbose_name=_('Agency Registered Business Address Line 2'),
+        max_length=255
+    )
+
+    agency_postal_code = models.CharField(
+        verbose_name=_('Agency Registered Business Postal Code'),
+        max_length=20
+    )
+
+    agency_employee_name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
+        blank=False
+    )
+
+    agency_employee_ea_personnel_number = models.CharField(
+        verbose_name=_('EA personnel number'),
+        max_length=50,
+        default='NA',
+        blank=True,
+        help_text=_('Optional for non-personnel')
+    )
+    
+    # Maid Information
+    maid_name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=255,
+        blank=False
+    )
+
+    maid_nationality = models.CharField(
+        verbose_name=_('Nationality'),
+        max_length=255,
+        blank=False
+    )
+
+    maid_passport_number = models.BinaryField(
+        editable=True,
+        blank=True
+    )
+
+    maid_passport_number_nonce = models.BinaryField(
+        editable=True,
+        blank=True
+    )
+
+    maid_passport_number_tag = models.BinaryField(
+        editable=True,
+        blank=True
+    )
+
+    maid_work_permit_number = models.CharField(
+        verbose_name=_('Work Permit Number'),
+        max_length=255,
+        blank=False
     )
 
     # Employer Information
