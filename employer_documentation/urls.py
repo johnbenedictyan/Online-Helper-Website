@@ -70,12 +70,7 @@ urlpatterns = [
                         'household-details/',
                         views.EmployerHouseholdDetailsFormView.as_view(),
                         name='employer_householddetails_update_route'
-                    ),
-                    path(
-                        'status/update/',
-                        views.CaseStatusUpdateView.as_view(),
-                        name='case_status_update_route'
-                    ),
+                    )
                 ]),
             ),
         ]),
@@ -150,6 +145,11 @@ urlpatterns = [
                         'upload-doc/update/',
                         views.DocUploadUpdateView.as_view(),
                         name='docupload_update_route'
+                    ),
+                    path(
+                        'status/update/',
+                        views.CaseStatusUpdateView.as_view(),
+                        name='case_status_update_route'
                     ),
                     path(
                         'archive',

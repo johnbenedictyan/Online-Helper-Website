@@ -1013,15 +1013,46 @@ class DocUploadUpdateView(
     def get_success_url(self):
         return reverse_lazy('dashboard_case_list')
 
-class CaseStatusUpdateView(UpdateView):
+class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
     form_class = forms.CaseStatusForm
     pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/crispy_form.html'
+
+    def get_object(self):
+        return models.CaseStatus.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
 
     def get(self, request, *args, **kwargs):
-        res = super().get(request, *args, **kwargs)
-        print(self.object)
-        return res
+        try:
+            self.object = self.get_object()
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(
+                reverse('docupload_create_route', kwargs={
+                    'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            'maid_type': self.object.employer_doc.fdw.maid_type,
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_pk'] = self.request.user.pk
+        kwargs['authority'] = self.authority
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard_case_list')
 
 # class EmployerDocSigSlugUpdateView(
 #     CheckAgencyEmployeePermissionsMixin,
