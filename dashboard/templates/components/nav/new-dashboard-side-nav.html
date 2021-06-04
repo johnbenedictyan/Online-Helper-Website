@@ -169,31 +169,31 @@
                 </div>
             </div>
         </div>
-        <div class="row new-side-nav-link">
+        <div class="row new-side-nav-link {% if url_name == 'dashboard_sales_list' %}active{% endif %}">
             <div class="col">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_sales_list' %}active{% endif %}" href="{% url 'dashboard_sales_list' %}" class="">
-                <p class="m-1 pl-2">Sales Summary</p>
+                <a class="nav-link new-side-nav-link" href="{% url 'dashboard_sales_list' %}" class="">
+                    <p class="m-1 pl-2">Sales Summary</p>
                 </a>
             </div>
         </div>
-        <div class="row new-side-nav-link">
+        <div class="row new-side-nav-link {% if url_name == 'dashboard_status_list' %}active{% endif %}">
             <div class="col">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_status_list' %}active{% endif %}" href="{% url 'dashboard_status_list' %}" class="">
-                <p class="m-1 pl-2">Status Summary</p>
+                <a class="nav-link new-side-nav-link" href="{% url 'dashboard_status_list' %}" class="">
+                    <p class="m-1 pl-2">Status Summary</p>
                 </a>
             </div>
         </div>
-        <div class="row new-side-nav-link">
+        <div class="row new-side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}">
             <div class="col">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}" href="{% url 'dashboard_enquiries_list' %}" class="">
-                <p class="m-1 pl-2">Enquiries</p>
+                <a class="nav-link new-side-nav-link" href="{% url 'dashboard_enquiries_list' %}" class="">
+                    <p class="m-1 pl-2">Enquiries</p>
                 </a>
             </div>
         </div>
-        <div class="row new-side-nav-link">
+        <div class="row new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}">
             <div class="col">
-                <a class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}" href="{% url 'dashboard_agency_plan_list' %}" class="">
-                <p class="m-1 pl-2">Subscriptions</p>
+                <a class="nav-link new-side-nav-link" href="{% url 'dashboard_agency_plan_list' %}" class="">
+                    <p class="m-1 pl-2">Subscriptions</p>
                 </a>
             </div>
         </div>
