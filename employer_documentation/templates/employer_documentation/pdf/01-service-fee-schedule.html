@@ -1,5 +1,5 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
-{% load mathfilters %}
+{% load humanize %}
 
 {% block title %}{% if object.fdw_is_replacement %}Form B – Service & Fees Schedule For Replacement FDW{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
 
@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td>Nationality</td>
-            <td>: {{ object.fdw.personal_details.get_country_of_origin_display }}</td>
+            <td>: {{ object.fdw.get_country_of_origin_display }}</td>
         </tr>
         <tr>
             <td>Passport No.</td>
@@ -40,7 +40,7 @@
         </tr>
         <tr>
             <td>Basic Salary</td>
-            <td>: S$ {{ object.fdw.financial_details.salary }}</td>
+            <td>: S$ {{ object.fdw_salary|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
@@ -52,13 +52,13 @@
             <th class="text-bold--600" width="2%">B.</th>
             <th class="text-bold--600" colspan="3">Fees</th>
             <th width="10%"></th>
-            <th class="text-bold--600 text-align-center">S$</th>
+            <th class="text-bold--600 text-align-right">S$</th>
         </tr>
         <tr>
             <td>1.</td>
             <td colspan="3">Service Fee</td>
             <td></td>
-            <td class="text-align-right">{{ object.b1_service_fee }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b1_service_fee|intcomma }}</td>
         </tr>
         <tr>
             <td colspan="5"></td>
@@ -72,67 +72,60 @@
             <td width="2%">a.</td>
             <td colspan="2">Application / Collection of Work Permit</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2a_work_permit_application_collection }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2a_work_permit_application_collection|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td colspan="2">Medical Examination Fee</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2b_medical_examination_fee }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2b_medical_examination_fee|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>c.</td>
             <td colspan="2">Security Bond and the Personal Accident Insurance</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2c_security_bond_accident_insurance }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>d.</td>
             <td colspan="2">Reimbursement of Indemnity Policy</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2d_indemnity_policy_reimbursement }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>e.</td>
             <td colspan="2">Home Service</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2e_home_service }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2e_home_service|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>f.</td>
             <td colspan="2">Counselling Services at Agency’s premise / Employer’s residence</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2f_counselling }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2f_counselling|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>g.</td>
             <td colspan="2">Settling-In-Programme (SIP)</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2g_sip }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2g_sip|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>h.</td>
-            <td colspan="2">Cost for replacement within {{ object.b2h_replacement_months }} months</td>
+            <td colspan="2">Food and Lodging</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2h_replacement_cost }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2h_food_lodging|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>i.</td>
-            <td colspan="2">Renewal of Work Permit</td>
-            <td></td>
-            <td class="text-align-right">{{ object.b2i_work_permit_renewal }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>j.</td>
             <td colspan="2">Other services provided</td>
             <td></td>
             <td class="text-align-right"></td>
@@ -140,28 +133,44 @@
         <tr>
             <td colspan="2"></td>
             <td width="2%">i.</td>
-            <td class="border--bottom" width="70%">{{ object.b2j1_other_services_description }}</td>
+            <td class="border--bottom" width="70%">{% if object.rn_servicefeeschedule_ed.b2i1_other_services_description %}{{ object.rn_servicefeeschedule_ed.b2i1_other_services_description }}{% endif %}</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2j1_other_services_fee }}</td>
+            <td class="text-align-right">{% if object.rn_servicefeeschedule_ed.b2i1_other_services_fee %}{{ object.rn_servicefeeschedule_ed.b2i1_other_services_fee|intcomma }}{% endif %}</td>
         </tr>
         <tr>
             <td colspan="2"></td>
             <td>ii.</td>
-            <td class="border--bottom">{{ object.b2j2_other_services_description }}</td>
+            <td class="border--bottom">{% if object.rn_servicefeeschedule_ed.b2i2_other_services_description %}{{ object.rn_servicefeeschedule_ed.b2i2_other_services_description }}{% endif %}</td>
             <td></td>
-            <td class="text-align-right">{{ object.b2j2_other_services_fee }}</td>
+            <td class="text-align-right">{% if object.rn_servicefeeschedule_ed.b2i2_other_services_fee %}{{ object.rn_servicefeeschedule_ed.b2i2_other_services_fee|intcomma }}{% endif %}</td>
         </tr>
         <tr>
             <td colspan="2"></td>
             <td>iii.</td>
-            <td class="border--bottom">{{ object.b2j3_other_services_description }}</td>
+            <td class="border--bottom">{% if object.rn_servicefeeschedule_ed.b2i3_other_services_description %}{{ object.rn_servicefeeschedule_ed.b2i3_other_services_description }}{% endif %}</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.b2j3_other_services_fee }}</td>
+            <td class="text-align-right {% if object.fdw_is_replacement %} border--bottom{% endif %}">{% if object.rn_servicefeeschedule_ed.b2i3_other_services_fee %}{{ object.rn_servicefeeschedule_ed.b2i3_other_services_fee|intcomma }}{% endif %}</td>
         </tr>
+        {% if not object.fdw_is_replacement %}
+        <tr>
+            <td></td>
+            <td>j.</td>
+            <td colspan="2">Cost for replacement within {% if object.rn_servicefeeschedule_ed.b2j_replacement_months %}{{ object.rn_servicefeeschedule_ed.b2j_replacement_months }}{% else %}___{% endif %} months</td>
+            <td></td>
+            <td class="text-align-right">{% if object.rn_servicefeeschedule_ed.b2j_replacement_cost %}{{ object.rn_servicefeeschedule_ed.b2j_replacement_cost|intcomma }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>k.</td>
+            <td colspan="2">Renewal of Work Permit</td>
+            <td></td>
+            <td class="text-align-right border--bottom">{% if object.rn_servicefeeschedule_ed.b2k_work_permit_renewal %}{{ object.rn_servicefeeschedule_ed.b2k_work_permit_renewal|intcomma }}{% endif %}</td>
+        </tr>
+        {% endif %}
         <tr>
             <td colspan="4">Total Administrative Cost</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.calc_admin_cost }}</td>
+            <td class="text-align-right border--bottom">{{ object.rn_servicefeeschedule_ed.calc_admin_cost|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
@@ -175,21 +184,21 @@
             <td>a.</td>
             <td colspan="2">Agency fee charged on the FDW by the Agency</td>
             <td></td>
-            <td class="text-align-right">{{ object.b3_agency_fee }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td colspan="2">Personal loan incurred by FDW in overseas</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.b3_fdw_loan }}</td>
+            <td class="text-align-right border--bottom">{{ object.fdw_loan|intcomma }}</td>
         </tr>
         <tr>
             <td colspan="4">Total Placement Fee</td>
             <td></td>
-            <td class="text-align-right border--bottom">{{ object.calc_placement_fee }}</td>
+            <td class="text-align-right border--bottom">{{ object.rn_servicefeeschedule_ed.calc_placement_fee|intcomma }}</td>
         </tr>
-        {% if object.fdw_is_replacement %}
+        {% if object.rn_servicefeeschedule_ed.fdw_is_replacement %}
             <tr>
                 <td></td>
             </tr>
@@ -197,7 +206,7 @@
                 <td>4.</td>
                 <td colspan="3">Loan Transfer from previous FDW</td>
                 <td></td>
-                <td class="text-align-right">{% if object.b4_loan_transferred %}{{ object.b4_loan_transferred }}{% else %}0.00{% endif %}</td>
+                <td class="text-align-right">{% if object.rn_servicefeeschedule_ed.b4_loan_transferred %}{{ object.rn_servicefeeschedule_ed.b4_loan_transferred|intcomma }}{% else %}0.00{% endif %}</td>
             </tr>
         {% endif %}
     </table>
@@ -214,19 +223,19 @@
         </tr>
         <tr>
             <td colspan="3" width="85%">Total Amount</td>
-            <td class="text-align-right">{{ object.calc_total_fee }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.calc_total_fee|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td width="2%">a.</td>
             <td>Deposit – upon confirmation of FDW</td>
-            <td class="text-align-right">{{ object.ca_deposit }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
             <td>Balance payment</td>
-            <td class="text-align-right">{{ object.calc_total_fee|sub:object.ca_deposit }}</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.calc_bal|intcomma }}</td>
         </tr>
     </table>
     <br>
@@ -247,7 +256,7 @@
             <td>{{ object.employer.agency_employee.name}}</td>
         </tr>
         <tr>
-            <td>{{ object.employer.get_nric_full }}</td>
+            <td>{{ object.employer.get_employer_nric_full }}</td>
             <td></td>
             <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
         </tr>

@@ -1396,6 +1396,13 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6',
                 ),
                 Column(
+                    'fdw_off_day_of_week',
+                    css_class='form-group col-md-6',
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
                     'handover_checklist_signed',
                     css_class='form-group col-md-6',
                 ),
@@ -2454,7 +2461,7 @@ class VerifyUserTokenForm(forms.ModelForm):
 
     def clean(self):
         input_nric = self.cleaned_data.get('nric', '')
-        plaintext = self.object.employer_doc.employer.get_nric_full()
+        plaintext = self.object.employer_doc.employer.get_employer_nric_full()
         if (self.is_employer and (
             input_nric.lower() == plaintext.lower() and
             int(self.cleaned_data.get('mobile', 0)) == int(self.object.employer_doc.employer.employer_mobile_number)

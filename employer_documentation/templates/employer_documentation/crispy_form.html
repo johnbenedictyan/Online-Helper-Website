@@ -29,7 +29,7 @@
     {% endif %}
 {% endblock form %}
 {% if url_name == 'employer_householddetails_update_route' %}
-{% block js %}
+{% block extra_js %}
 <script>
     $(function(){
         $("#addButton").on('click', function(e){
@@ -42,5 +42,5 @@
         })
     })
 </script>
-{% endblock js %}
+{% endblock extra_js %}
 {% endif %}
