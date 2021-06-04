@@ -1082,7 +1082,7 @@ class EmployerDocDeleteView(
 
 
 # PDF Views
-class PdfGenericAgencyView(
+class HtmlToRenderPdfAgencyView(
     AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     PdfHtmlViewMixin,
@@ -1101,49 +1101,37 @@ class PdfGenericAgencyView(
         context['url_name'] = request.resolver_match.url_name
         return self.generate_pdf_response(request, context)
 
-# class PdfFileAgencyView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     DetailView
-# ):
-#     # model = None # To be passed as parameter in urls.py
-#     # pk_url_kwarg = None # To be passed as parameter in urls.py
-#     # slug_url_kwarg = None # To be passed as parameter in urls.py
-#     as_attachment=False
-#     filename='document.pdf'
-#     field_name = None
+class UploadedPdfAgencyView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    DetailView
+):
+    # model = None # To be passed as parameter in urls.py
+    # pk_url_kwarg = None # To be passed as parameter in urls.py
+    # slug_url_kwarg = None # To be passed as parameter in urls.py
+    as_attachment=False
+    filename='document.pdf'
+    field_name = None
 
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         if isinstance(self.object, JobOrder):
-#             try:
-#                 return FileResponse(
-#                     self.object.job_order_pdf.open(),
-#                     as_attachment=self.as_attachment,
-#                     filename=self.filename,
-#                     content_type='application/pdf'
-#                 )
-#             except Exception:
-#                 return HttpResponseRedirect(
-#                     reverse('joborder_update_route', kwargs={
-#                         'level_0_pk': self.object.employer_doc.employer.pk,
-#                         'level_1_pk': self.object.employer_doc.pk,
-#                         'level_2_pk': self.object.pk,
-#                 }))
-#         elif isinstance(self.object, EmployerDoc):
-#             try:
-#                 return FileResponse(
-#                     getattr(self.object.rn_pdfarchive_ed, self.field_name).open(),
-#                     as_attachment=self.as_attachment,
-#                     filename=self.filename,
-#                     content_type='application/pdf'
-#                 )
-#             except Exception:
-#                 return HttpResponseRedirect(
-#                     reverse('pdf_archive_detail', kwargs={
-#                         'level_0_pk': self.object.employer.pk,
-#                         'level_1_pk': self.object.pk,
-#                 }))
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        ).rn_docupload_ed
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            return FileResponse(
+                getattr(self.object, self.field_name).open(),
+                as_attachment=self.as_attachment,
+                filename=self.filename,
+                content_type='application/pdf'
+            )
+        except Exception:
+            return HttpResponseRedirect(
+                reverse('docupload_update_route', kwargs={
+                    'level_1_pk': self.object.employer_doc.pk,
+            }))
 
 # class PdfGenericTokenView(
 #     CheckSignatureSessionTokenMixin,

@@ -527,7 +527,7 @@
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_employment_contract' level_1_pk=object.pk %}"><p class="mb-1">Employment Contract</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}"><p class="mb-1">Work Pass Authorisation</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_repayment_schedule' level_1_pk=object.pk %}"><p class="mb-1">Loan Repayment Schedule</p></a></div>
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Job Order</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_job_order_route' level_1_pk=object.pk %}"><p class="mb-1">Job Order</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_rest_day_agreement' level_1_pk=object.pk %}"><p class="mb-1">Rest Day Agreement</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">IPA</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_safety_agreement' level_1_pk=object.pk %}"><p class="mb-1">Safety Agreement</p></a></div>

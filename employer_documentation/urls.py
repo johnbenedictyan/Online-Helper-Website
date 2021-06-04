@@ -8,11 +8,6 @@ urlpatterns = [
     path(
         'employers/',
         include([
-            # path(
-            #     '',
-            #     views.EmployerListView.as_view(),
-            #     name='employer_list_route'
-            # ),
             path(
                 'create/',
                 views.EmployerCreateView.as_view(),
@@ -78,11 +73,6 @@ urlpatterns = [
     path(
         'cases/',
         include([
-            # path(
-            #     '',
-            #     views.EmployerDocListView.as_view(),
-            #     name='case_list_route'
-            # ),
             path(
                 'create/',
                 views.EmployerDocCreateView.as_view(),
@@ -154,9 +144,10 @@ urlpatterns = [
                     path(
                         'pdf/',
                         include([
+                            # HTML to PDF - First signing event
                             path(
                                 'service-fees/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/01-service-fee-schedule.html',
                                     content_disposition = 'inline; filename="service_fee_schedule.pdf"',
                                 ),
@@ -164,7 +155,7 @@ urlpatterns = [
                             ),
                             path(
                                 'service-agreement/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/03-service-agreement.html',
                                     content_disposition = 'inline; filename="service_agreement.pdf"',
                                 ),
@@ -172,7 +163,7 @@ urlpatterns = [
                             ),
                             path(
                                 'employment-contract/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/04-employment-contract.html',
                                     content_disposition = 'inline; filename="employment-contract.pdf"',
                                 ),
@@ -180,7 +171,7 @@ urlpatterns = [
                             ),
                             path(
                                 'repayment-schedule/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/05-repayment-schedule.html',
                                     content_disposition = 'inline; filename="repayment-schedule.pdf"',
                                     use_repayment_table = True,
@@ -189,7 +180,7 @@ urlpatterns = [
                             ),
                             path(
                                 'rest-day-agreement/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/06-rest-day-agreement.html',
                                     content_disposition = 'inline; filename="rest-day-agreement.pdf"',
                                 ),
@@ -197,7 +188,7 @@ urlpatterns = [
                             ),
                             path(
                                 'transfer-consent/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/09-transfer-consent.html',
                                     content_disposition = 'inline; filename="transfer-consent.pdf"',
                                 ),
@@ -205,7 +196,7 @@ urlpatterns = [
                             ),
                             path(
                                 'work-pass-authorisation/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
                                     content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
                                 ),
@@ -213,7 +204,7 @@ urlpatterns = [
                             ),
                             path(
                                 'income-tax-declaration/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/13-income-tax-declaration.html',
                                     content_disposition = 'inline; filename="income-tax-declaration.pdf"',
                                 ),
@@ -221,25 +212,36 @@ urlpatterns = [
                             ),
                             path(
                                 'safety-agreement/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/14-safety-agreement.html',
                                     content_disposition = 'inline; filename="safety-agreement.pdf"',
                                 ),
                                 name='pdf_agency_safety_agreement'
                             ),
-                            # Second signing event
+                            # HTML to PDF - Second signing event
                             path(
                                 'handover-checklist/',
-                                views.PdfGenericAgencyView.as_view(
+                                views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/08-handover-checklist.html',
                                     content_disposition = 'inline; filename="handover-checklist.pdf"',
                                 ),
                                 name='pdf_agency_handover_checklist'
                             ),
+                            # File to PDF
+                            path(
+                                'job-order/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    model=models.DocUpload,
+                                    pk_url_kwarg = 'level_1_pk',
+                                    field_name = 'job_order_pdf',
+                                    filename='f07_job_order.pdf',
+                                ),
+                                name='pdf_agency_job_order_route'
+                            ),
                             ################################## Deprecated
                             # path(
                             #     'pdf/security-bond/',
-                            #     views.PdfGenericAgencyView.as_view(
+                            #     views.HtmlToRenderPdfAgencyView.as_view(
                             #         template_name='employer_documentation/pdf/11-security-bond.html',
                             #         content_disposition = 'inline; filename="security-bond.pdf"',
                             #     ),
@@ -247,7 +249,7 @@ urlpatterns = [
                             # ),
                             # path(
                             #     'pdf/fdw-work-permit-12b/',
-                            #     views.PdfGenericAgencyView.as_view(
+                            #     views.HtmlToRenderPdfAgencyView.as_view(
                             #         template_name='employer_documentation/pdf/12-fdw-work-permit.html',
                             #         content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
                             #     ),
@@ -255,7 +257,7 @@ urlpatterns = [
                             # ),
                             # path(
                             #     'sponsor-details/',
-                            #     views.PdfGenericAgencyView.as_view(
+                            #     views.HtmlToRenderPdfAgencyView.as_view(
                             #         template_name='employer_documentation/pdf/15-MoM-work-permit-sponsors.html',
                             #         content_disposition = 'inline; filename="sponsor-details.pdf"',
                             #     ),
@@ -263,22 +265,13 @@ urlpatterns = [
                             # ),
                             # path(
                             #     'joint-applicant/',
-                            #     views.PdfGenericAgencyView.as_view(
+                            #     views.HtmlToRenderPdfAgencyView.as_view(
                             #         template_name='employer_documentation/pdf/16-MoM-work-permit-joint-applicant.html',
                             #         content_disposition = 'inline; filename="joint-applicant-details.pdf"',
                             #     ),
                             #     name='pdf_agency_joint_applicants'
                             # ),
                             ################################## Deprecated
-            #                 path(
-            #                     'job-order/<slug:slug>/',
-            #                     views.PdfFileAgencyView.as_view(
-            #                         model=models.JobOrder,
-            #                         slug_url_kwarg='slug',
-            #                         filename='job-order.pdf',
-            #                     ),
-            #                     name='pdf_agency_job_order_route'
-            #                 ),
                         ]),
                     ),
     #                 path(
@@ -418,7 +411,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'service-fees/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f01_service_fee_schedule',
@@ -427,7 +420,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'service-agreement/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f03_service_agreement',
@@ -436,7 +429,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'employment-contract/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f04_employment_contract',
@@ -445,7 +438,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'repayment-schedule/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f05_repayment_schedule',
@@ -454,7 +447,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'rest-day-agreement/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f06_rest_day_agreement',
@@ -463,7 +456,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'handover-checklist/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f08_handover_checklist',
@@ -472,7 +465,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'transfer-consent/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f09_transfer_consent',
@@ -481,7 +474,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'work-pass-authorisation/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f10_work_pass_authorisation',
@@ -490,7 +483,7 @@ urlpatterns = [
     #                         ),
     #                         # path(
     #                         #     'security-bond/',
-    #                         #     views.PdfFileAgencyView.as_view(
+    #                         #     views.UploadedPdfAgencyView.as_view(
     #                         #         model=models.EmployerDoc,
     #                         #         pk_url_kwarg='level_1_pk',
     #                         #         field_name='f11_security_bond',
@@ -499,7 +492,7 @@ urlpatterns = [
     #                         # ),
     #                         # path(
     #                         #     'fdw-work-permit-12b/',
-    #                         #     views.PdfFileAgencyView.as_view(
+    #                         #     views.UploadedPdfAgencyView.as_view(
     #                         #         model=models.EmployerDoc,
     #                         #         pk_url_kwarg='level_1_pk',
     #                         #         field_name='f12_fdw_work_permit',
@@ -508,7 +501,7 @@ urlpatterns = [
     #                         # ),
     #                         path(
     #                             'income-tax-declaration/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f13_income_tax_declaration',
@@ -517,7 +510,7 @@ urlpatterns = [
     #                         ),
     #                         path(
     #                             'safety-agreement/',
-    #                             views.PdfFileAgencyView.as_view(
+    #                             views.UploadedPdfAgencyView.as_view(
     #                                 model=models.EmployerDoc,
     #                                 pk_url_kwarg='level_1_pk',
     #                                 field_name='f14_safety_agreement',
