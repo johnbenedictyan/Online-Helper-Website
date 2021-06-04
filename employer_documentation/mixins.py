@@ -1,6 +1,7 @@
 # Python
 import base64
 import calendar
+from decimal import Decimal, ROUND_HALF_UP
 
 # Django
 from django.conf import settings
@@ -21,7 +22,7 @@ from onlinemaid.constants import (
     AG_SALES,
 )
 from accounts.models import User
-
+from maid.constants import country_language
 
 # Start of mixins
 class CheckEmployerDocRelationshipsMixin(UserPassesTestMixin):
@@ -304,6 +305,26 @@ class PdfHtmlViewMixin:
     content_disposition = None
     use_repayment_table = False
 
+    def get_context_data(self, **kwargs):
+        version_explainer_text = 'This document version supersedes all previous versions with the same Case #, if any.'
+        context = super().get_context_data()
+
+        def get_preferred_language():
+            # MoM Safety Agreements are available in different languages.
+            # Relevant language template snippet is selected based on FDW's
+            # country of origin.
+            return country_language.get(context['object'].fdw.country_of_origin, 'ENG')
+
+        if isinstance(self.object, models.EmployerDoc):
+            # Document version number formatting
+            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
+
+            preferred_language = get_preferred_language()
+            for i in range(1,4):
+                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
+
+        return context
+
     def generate_pdf_response(self, request, context):
         # Render PDF
         html_template = render_to_string(self.template_name, context)
@@ -312,8 +333,8 @@ class PdfHtmlViewMixin:
             base_url=request.build_absolute_uri()
             ).write_pdf(
                 # Load separate CSS stylesheet from static folder
-                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
+                stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                # stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:
@@ -333,59 +354,57 @@ class PdfHtmlViewMixin:
             ).write_pdf(
                 # target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
                 # Load separate CSS stylesheet from static folder
-                # stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-                stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
+                stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+                # stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
 
     def calc_repayment_schedule(self):
         repayment_table = {}
-        
-        work_commencement_date = (
-            self.object.rn_maidstatus_ed.fdw_work_commencement_date
-        ) if self.object.rn_maidstatus_ed.fdw_work_commencement_date else None
+
+        if hasattr(self.object, 'rn_casestatus_ed') and self.object.rn_casestatus_ed.fdw_work_commencement_date:
+            work_commencement_date = self.object.rn_casestatus_ed.fdw_work_commencement_date
+        else:
+            work_commencement_date = None
+            # from datetime import date
+            # work_commencement_date = date(2021, 7, 31)
 
         if work_commencement_date:
+            WORK_DAYS_IN_MONTH = 26
+            LOAN_REPAID_OVER_MONTHS = 6
+
             payment_month = work_commencement_date.month
             payment_year = work_commencement_date.year
-            placement_fee = (
-                self.object.b3_agency_fee +
-                self.object.b3_fdw_loan
-            )
-            placement_fee_per_month = round(placement_fee/6, 0)
-            work_days_in_month = 26
-            off_day_compensation = round(
-                self.object.fdw.financial_details.salary*self.object.fdw.days_off/work_days_in_month, 0
-            )
-            salary_per_month = self.object.fdw.financial_details.salary + off_day_compensation
+            fdw_loan = self.object.fdw_loan
+            fdw_loan_per_month = Decimal(fdw_loan/LOAN_REPAID_OVER_MONTHS).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+            basic_salary = self.object.fdw_salary
+            off_day_compensation = self.object.get_off_day_compensation()
+            total_salary = basic_salary + off_day_compensation
             
             # If work start date is 1st of month, then payment does not need to be pro-rated
-            if work_commencement_date and work_commencement_date.day==1:
+            if work_commencement_date.day==1:
                 for i in range(1,25):
-                    month_current = (
-                        12 if payment_month%12==0 else payment_month%12
-                    )
+                    month_current = 12 if payment_month%12==0 else payment_month%12
                     loan_repaid = min(
-                        placement_fee,
-                        placement_fee_per_month,
-                        salary_per_month
+                        fdw_loan,
+                        fdw_loan_per_month,
+                        basic_salary,
                     )
 
                     repayment_table[i] = {
                         'salary_date': '{day}/{month}/{year}'.format(
-                            day = calendar.monthrange(
-                                payment_year, month_current)[1],
+                            day = calendar.monthrange(payment_year, month_current)[1],
                             month = month_current,
                             year = payment_year,
                         ),
-                        'basic_salary': self.object.fdw.financial_details.salary,
+                        'basic_salary': self.object.fdw_salary,
                         'off_day_compensation': off_day_compensation,
-                        'salary_per_month': salary_per_month,
-                        'salary_received': salary_per_month-loan_repaid,
-                        'loan_repaid': loan_repaid
+                        'total_salary': total_salary,
+                        'loan_repaid': loan_repaid,
+                        'salary_received': total_salary - loan_repaid,
                     }
-                    placement_fee = (
-                        placement_fee-loan_repaid
-                        if placement_fee-loan_repaid>=0
+                    fdw_loan = (
+                        fdw_loan-loan_repaid
+                        if fdw_loan-loan_repaid>=0
                         else 0
                     )
                     payment_month += 1
@@ -393,49 +412,39 @@ class PdfHtmlViewMixin:
                         payment_year += 1
 
             # Pro-rated payments
-            if work_commencement_date and not work_commencement_date.day==1:
-                month_current = (
-                    12 if payment_month%12==0 else payment_month%12
-                )
+            else:
+                month_current = 12 if payment_month%12==0 else payment_month%12
                 first_month_days = (
                     calendar.monthrange(
                         payment_year,
-                        month_current)[1] - work_commencement_date.day + 1
+                        month_current
+                    )[1] - work_commencement_date.day + 1
                 )
-                first_month_salary = round(salary_per_month*first_month_days/
-                    calendar.monthrange(payment_year, month_current)[1], 0)
+                first_month_basic_salary = Decimal(basic_salary*first_month_days/calendar.monthrange(payment_year, month_current)[1]).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+                first_month_off_day_compensation = Decimal(off_day_compensation*first_month_days/calendar.monthrange(payment_year, month_current)[1]).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
                 loan_repaid = min(
-                    placement_fee,
-                    placement_fee_per_month,
-                    round(salary_per_month*first_month_days/calendar.monthrange(
-                        payment_year, month_current)[1], 0)
+                    fdw_loan,
+                    fdw_loan_per_month,
+                    first_month_basic_salary,
                 )
-
+                first_month_total_salary = first_month_basic_salary + first_month_off_day_compensation
+                
                 # 1st month pro-rated
                 repayment_table[1] = {
                     'salary_date': '{day}/{month}/{year}'.format(
-                        day = calendar.monthrange(
-                            payment_year, month_current)[1],
+                        day = calendar.monthrange(payment_year, month_current)[1],
                         month = month_current,
                         year = payment_year,
-                        ),
-                    'basic_salary': round(
-                        self.object.fdw.financial_details.salary*first_month_days/
-                        calendar.monthrange(
-                            payment_year, month_current)[1], 0
                     ),
-                    'off_day_compensation': round(
-                        off_day_compensation*first_month_days/
-                        calendar.monthrange(
-                            payment_year, month_current)[1], 0
-                    ),
-                    'salary_per_month': first_month_salary,
-                    'salary_received': first_month_salary - loan_repaid,
-                    'loan_repaid': loan_repaid
+                    'basic_salary': first_month_basic_salary,
+                    'off_day_compensation': first_month_off_day_compensation,
+                    'total_salary': first_month_total_salary,
+                    'loan_repaid': loan_repaid,
+                    'salary_received': first_month_total_salary - loan_repaid,
                 }
-                placement_fee = (
-                    placement_fee-loan_repaid
-                    if placement_fee-loan_repaid>=0
+                fdw_loan = (
+                    fdw_loan-loan_repaid
+                    if fdw_loan-loan_repaid>=0
                     else 0
                 )
                 payment_month += 1
@@ -444,31 +453,28 @@ class PdfHtmlViewMixin:
 
                 # 2nd-23rd months of full month payments
                 for i in range(2,25):
-                    month_current = (
-                        12 if payment_month%12==0 else payment_month%12
-                    )
+                    month_current = (12 if payment_month%12==0 else payment_month%12)
                     loan_repaid = min(
-                        placement_fee,
-                        placement_fee_per_month,
-                        salary_per_month
+                        fdw_loan,
+                        fdw_loan_per_month,
+                        basic_salary,
                     )
 
                     repayment_table[i] = {
                         'salary_date': '{day}/{month}/{year}'.format(
-                            day = calendar.monthrange(
-                                payment_year, month_current)[1],
+                            day = calendar.monthrange(payment_year, month_current)[1],
                             month = month_current,
                             year = payment_year,
                         ),
-                        'basic_salary': self.object.fdw.financial_details.salary,
+                        'basic_salary': self.object.fdw_salary,
                         'off_day_compensation': off_day_compensation,
-                        'salary_per_month': salary_per_month,
-                        'salary_received': salary_per_month-loan_repaid,
-                        'loan_repaid': loan_repaid
+                        'total_salary': basic_salary,
+                        'loan_repaid': loan_repaid,
+                        'salary_received': basic_salary + off_day_compensation - loan_repaid,
                     }
-                    placement_fee = (
-                        placement_fee-loan_repaid
-                        if placement_fee-loan_repaid>=0
+                    fdw_loan = (
+                        fdw_loan-loan_repaid
+                        if fdw_loan-loan_repaid>=0
                         else 0
                     )
                     payment_month += 1
@@ -476,23 +482,18 @@ class PdfHtmlViewMixin:
                         payment_year += 1
 
                 # 25th month pro-rated
+                month_current = (12 if payment_month%12==0 else payment_month%12)
+                last_month_days = calendar.monthrange(payment_year, month_current)[1]
                 final_payment_day = min(
                     work_commencement_date.day-1,
                     calendar.monthrange(payment_year, month_current)[1]
                 )
-                basic_salary = round(
-                    self.object.fdw.financial_details.salary*final_payment_day/calendar.monthrange(
-                        payment_year, month_current)[1]
-                )
-                off_day_compensation = round(
-                    off_day_compensation*final_payment_day/calendar.monthrange(
-                        payment_year, month_current)[1]
-                )
-                month_current = 12 if payment_month%12==0 else payment_month%12
+                basic_salary = Decimal(basic_salary*final_payment_day/last_month_days).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+                off_day_compensation = Decimal(off_day_compensation*final_payment_day/last_month_days).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
                 loan_repaid = min(
-                    placement_fee,
-                    placement_fee_per_month,
-                    salary_per_month
+                    fdw_loan,
+                    fdw_loan_per_month,
+                    basic_salary,
                 )
                 repayment_table[25] = {
                     'salary_date': '{day}/{month}/{year}'.format(
@@ -502,61 +503,20 @@ class PdfHtmlViewMixin:
                     ),
                     'basic_salary': basic_salary,
                     'off_day_compensation': off_day_compensation,
-                    'salary_per_month': basic_salary + off_day_compensation,
-                    'salary_received': (
-                        basic_salary + off_day_compensation - loan_repaid
-                    ),
-                    'loan_repaid': loan_repaid
+                    'total_salary': basic_salary + off_day_compensation,
+                    'loan_repaid': loan_repaid,
+                    'salary_received': basic_salary + off_day_compensation - loan_repaid,
                 }
         
         else:
+            # if work commencement date not set, then generate empty table
             for i in range(1,25):
                 repayment_table[i] = {
                     'salary_date': '',
                     'basic_salary': '',
                     'off_day_compensation': '',
-                    'salary_per_month': '',
-                    'salary_received': '',
+                    'total_salary': '',
                     'loan_repaid': '',
+                    'salary_received': '',
                 }
         return repayment_table
-
-    def get_context_data(self, **kwargs):
-        version_explainer_text = 'This document version supersedes all previous versions with the same case #, if any.'
-
-        def get_preferred_language():
-            from maid.constants import country_language
-            # MoM Safety Agreements are available in different languages.
-            # Relevant language template snippet is selected based on FDW's
-            # country of origin.
-
-            return country_language.get(context['object'].fdw.personal_details.country_of_origin, 'ENG')
-
-        if isinstance(self.object, models.EmployerDoc):
-            context = super().get_context_data(object=self.object)
-
-            # Document version number formatting
-            context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
-
-            preferred_language = get_preferred_language()
-            for i in range(1,4):
-                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
-
-        elif isinstance(self.object, models.EmployerDocSig):
-            '''
-            context['object'] set as EmployerDoc object instead of
-            EmployerDocSig so that same PDF templates can be re-used
-            '''
-            context = super().get_context_data(object=self.object.employer_doc)
-
-            # Document version number formatting
-            context['object'].version = f'[{self.object.employer_doc.get_version()}] - {version_explainer_text}'
-        
-            preferred_language = get_preferred_language()
-            for i in range(1,4):
-                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
-
-        else:
-            context = super().get_context_data(object=self.object)
-
-        return context

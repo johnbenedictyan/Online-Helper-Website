@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'django_filters',
     'django_otp',
     'django_otp.plugins.otp_totp',
-    'mathfilters',
     'social_django',
     'storages',
 

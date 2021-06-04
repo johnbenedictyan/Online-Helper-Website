@@ -1,9 +1,8 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
+{% load humanize %}
 
 {% block title %}Repayment Schedule{% endblock %}
-
 {% block pdf_content %}
-
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
@@ -26,17 +25,17 @@
     </tr>
     <tr>
         <td>Placement Fee</td>
-        <td>{{ object.calc_placement_fee }}</td>
+        <td>S$ {{ object.fdw_loan|intcomma }}</td>
         <td></td>
         <td>Work Commencement Date</td>
         <td>{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
     </tr>
     <tr>
         <td>Monthly Basic Salary</td>
-        <td>{{ object.fdw.financial_details.salary }}</td>
+        <td>S$ {{ object.fdw_salary|intcomma }}</td>
         <td></td>
         <td>Balance Off Day Compensation</td>
-        <td>{{ object.fdw }}</td>
+        <td>S$ {{ object.get_off_day_compensation|intcomma }}</td>
     </tr>
 </table>
 <br>
@@ -57,12 +56,12 @@
     <tr>
         <td>{{ k }}</td>
         <td>{{ v.salary_date }}</td>
-        <td>{{ v.basic_salary }}</td>
-        <td>{{ v.off_day_compensation }}</td>
-        <td>{{ v.salary_per_month }}</td>
+        <td>{{ v.basic_salary|intcomma }}</td>
+        <td>{{ v.off_day_compensation|intcomma }}</td>
+        <td>{{ v.total_salary|intcomma }}</td>
         <td></td>
-        <td>{% if v.loan_repaid %}({{ v.loan_repaid }}){% else %}{{ v.loan_repaid }}{% endif %}</td>
-        <td>{{ v.salary_received }}</td>
+        <td>{% if v.loan_repaid %}({{ v.loan_repaid|intcomma }}){% else %}{{ v.loan_repaid|intcomma }}{% endif %}</td>
+        <td>{{ v.salary_received|intcomma }}</td>
         <td>{% comment %}Employer's Signature{% endcomment %}</td>
         <td>{% comment %}FDW's Signature{% endcomment %}</td>
     </tr>

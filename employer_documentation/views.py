@@ -20,174 +20,6 @@ from .mixins import *
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
 
-# Start of Views
-
-# List Views
-# class EmployerListView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     ListView
-# ):
-#     model = models.Employer
-#     ordering = ['employer_name']
-#     paginate_by = 20
-
-#     def get_queryset(self):
-#         search_terms = self.request.GET.get('search')
-
-#         # Filter results by user's search terms
-#         if search_terms:
-#             queryset = super().get_queryset().filter(
-#                 Q(employer_name__icontains=search_terms) |
-#                 Q(employer_email__icontains=search_terms) |
-#                 Q(employer_mobile_number__icontains=search_terms)
-#             )
-#         else:
-#             queryset = super().get_queryset()
-
-#         # Further filter queryset to only show the employers that current user
-#         # has necessary permission to access
-#         if self.authority==om_constants.AG_OWNERS:
-#             # If agency owner, return all employers belonging to agency
-#             return queryset.filter(
-#                 agency_employee__agency
-#                 = self.request.user.agency_owner.agency
-#             )
-#         elif self.authority==om_constants.AG_ADMINS:
-#             # If agency administrator, return all employers belonging to agency
-#             return queryset.filter(
-#                 agency_employee__agency
-#                 = self.request.user.agency_employee.agency
-#             )
-#         elif self.authority==om_constants.AG_MANAGERS:
-#             # If agency manager, return all employers belonging to branch
-#             return queryset.filter(
-#                 agency_employee__branch
-#                 = self.request.user.agency_employee.branch
-#             )
-#         elif self.authority==om_constants.AG_SALES:
-#             # If agency owner, return all employers belonging to self
-#             return queryset.filter(
-#                 agency_employee = self.request.user.agency_employee
-#             )
-#         else:
-#             return self.handle_no_permission()
-
-# class DocListView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     ListView
-# ):
-#     model = models.EmployerDoc
-#     # template_name = 'employer_documentation/sales_list.html'
-#     ordering = ['-agreement_date']
-#     paginate_by = 20
-#     is_deployed = None
-
-#     def get_queryset(self):
-#         search_terms = self.request.GET.get('search')
-#         start_date = self.request.GET.get('start_date')
-#         end_date = self.request.GET.get('end_date')
-#         sort_by = self.request.GET.get('sort_by')
-
-#         # Sort by dates
-#         if sort_by:
-#             # Get field to sort by
-#             if 'agreement_date' in sort_by:
-#                 sort_field_name = 'agreement_date'
-#             elif 'fdw_work_commencement_date' in sort_by:
-#                 sort_field_name = 'rn_casestatus_ed__fdw_work_commencement_date'
-#             elif 'ipa_date' in sort_by:
-#                 sort_field_name = 'rn_casestatus_ed__ipa_approval_date'
-        
-#             # Get ascending or descending user selection
-#             if sort_by.endswith('asc'):
-#                 self.ordering = [sort_field_name]
-#             elif sort_by.endswith('des'):
-#                 self.ordering = ['-' + sort_field_name]
-#         else:
-#             sort_field_name = self.ordering[0].replace('-', '')
-
-#         # Get queryset
-#         queryset = super().get_queryset().filter(
-#             rn_casestatus_ed__is_deployed=self.is_deployed
-#         )
-
-#         # Filter results by user's search terms
-#         if search_terms:
-#             queryset = queryset.filter(
-#                 Q(case_ref_no__icontains=search_terms) |
-#                 Q(employer__employer_name__icontains=search_terms) |
-#                 Q(employer__employer_email__icontains=search_terms) |
-#                 Q(employer__employer_mobile_number__icontains=search_terms)
-#             )
-        
-#         # Further filter queryset to only show the employers that current user
-#         # has necessary permission to access
-#         if self.authority==om_constants.AG_OWNERS:
-#             # If agency owner, return all employers belonging to agency
-#             queryset = queryset.filter(
-#                 employer__agency_employee__agency
-#                 = self.request.user.agency_owner.agency
-#             )
-#         elif self.authority==om_constants.AG_ADMINS:
-#             # If agency administrator, return all employers belonging to agency
-#             queryset = queryset.filter(
-#                 employer__agency_employee__agency
-#                 = self.request.user.agency_employee.agency
-#             )
-#         elif self.authority==om_constants.AG_MANAGERS:
-#             # If agency manager, return all employers belonging to branch
-#             queryset = queryset.filter(
-#                 employer__agency_employee__branch
-#                 = self.request.user.agency_employee.branch
-#             )
-#         elif self.authority==om_constants.AG_SALES:
-#             # If agency owner, return all employers belonging to self
-#             queryset = queryset.filter(
-#                 employer__agency_employee = self.request.user.agency_employee
-#             )
-#         else:
-#             return self.handle_no_permission()
-
-#         # Filter by start and end dates from user input
-#         if start_date:
-#             start_date_kwargs = {sort_field_name+'__gte': start_date}
-#             queryset = queryset.filter(**start_date_kwargs)
-#         if end_date:
-#             end_date_kwargs = {sort_field_name+'__lte': end_date}
-#             queryset = queryset.filter(**end_date_kwargs)
-
-#         return queryset
-
-# class EmployerDocListView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     ListView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'level_0_pk'
-#     ordering = ['-agreement_date']
-
-#     def get_object(self, *args, **kwargs):
-#         return models.Employer.objects.get(pk = self.kwargs.get(self.pk_url_kwarg))
-
-#     def get_queryset(self):
-#         return super().get_queryset().filter(employer=self.kwargs.get(
-#             self.pk_url_kwarg))
-
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object(*args, **kwargs)
-#         if self.object.rn_ed_employer.filter(employer=self.object.pk).count():
-#             return super().get(request, *args, **kwargs)
-#         else:
-#             return HttpResponseRedirect(
-#                 reverse(
-#                     'case_create_route',
-#                     kwargs={'level_0_pk': self.object.pk}
-#                 )
-#             )
-
 # Detail Views
 class EmployerDetailView(
     AgencyLoginRequiredMixin,
@@ -204,6 +36,7 @@ class EmployerDocDetailView(
 ):
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
+    template_name = 'detail/new-dashboard-case-detail.html'
 
 # Create Views
 class EmployerCreateView(
@@ -1055,7 +888,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
         return reverse_lazy('dashboard_case_list')
 
 # class EmployerDocSigSlugUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocSig
@@ -1080,7 +914,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
 #         })
 
 # class EmployerDocMaidStatusUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocMaidStatus
@@ -1101,7 +936,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
 #         })
 
 # class EmployerDocMaidDeploymentUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocMaidStatus
@@ -1115,7 +951,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
 #             return reverse_lazy('dashboard_sales_list')
 
 # class JobOrderUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = JobOrder
@@ -1137,7 +974,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
 #         })
 
 # class EmployerPaymentTransactionUpdateView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = EmployerPaymentTransaction
@@ -1174,7 +1012,8 @@ class EmployerDocDeleteView(
 
 # Signature Views
 # class SignatureUpdateByAgentView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     UpdateView
 # ):
 #     model = models.EmployerDocSig
@@ -1284,26 +1123,28 @@ class EmployerDocDeleteView(
 
 
 # PDF Views
-# class PdfGenericAgencyView(
-#     CheckAgencyEmployeePermissionsMixin,
-#     PdfHtmlViewMixin,
-#     DetailView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'level_1_pk'
+class PdfGenericAgencyView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    PdfHtmlViewMixin,
+    DetailView
+):
+    model = models.EmployerDoc
+    pk_url_kwarg = 'level_1_pk'
 
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         context = self.get_context_data()
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
 
-#         if self.use_repayment_table:
-#             context['repayment_table'] = self.calc_repayment_schedule()
+        if self.use_repayment_table:
+            context['repayment_table'] = self.calc_repayment_schedule()
         
-#         context['url_name'] = request.resolver_match.url_name
-#         return self.generate_pdf_response(request, context)
+        context['url_name'] = request.resolver_match.url_name
+        return self.generate_pdf_response(request, context)
 
 # class PdfFileAgencyView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     DetailView
 # ):
 #     # model = None # To be passed as parameter in urls.py
@@ -1386,7 +1227,8 @@ class EmployerDocDeleteView(
 #             return HttpResponseRedirect(reverse('home'))
 
 # class PdfArchiveSaveView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     PdfHtmlViewMixin,
 #     DetailView
 # ):
@@ -1477,7 +1319,8 @@ class EmployerDocDeleteView(
 #         return HttpResponseRedirect(reverse_lazy('dashboard_sales_list'))
 
 # class PdfArchiveDetailView(
-#     CheckAgencyEmployeePermissionsMixin,
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
 #     DetailView
 # ):
 #     model = models.EmployerDoc
