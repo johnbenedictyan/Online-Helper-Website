@@ -1,11 +1,11 @@
 # Django
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.urls import reverse, reverse_lazy
-from django.http import FileResponse, HttpResponseRedirect
+from django.urls import reverse, reverse_lazy, resolve
+from django.http import FileResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.views.generic import RedirectView
-from django.views.generic.list import ListView
+from django.views.generic.list import ListView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -885,7 +885,19 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('dashboard_case_list')
+        referer_url = self.request.headers['Referer'].replace(
+            self.request.headers['Origin'],
+            ''
+        )
+        match = resolve(referer_url)
+        if match.url_name == 'dashboard_status_list':
+            return reverse_lazy('dashboard_status_list')
+        else:
+            return reverse_lazy('safetyagreement_update_route', kwargs={
+                'level_1_pk': self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            })
 
 # class EmployerDocSigSlugUpdateView(
 #     AgencyLoginRequiredMixin,
@@ -1427,3 +1439,22 @@ class ArchiveCase(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         return super().get_redirect_url(*args, **kwargs)
+
+class CaseStatusAPIView(View):
+    def get(self, request, *args, **kwargs):
+        data = {}
+        try:
+            case_status = models.CaseStatus.objects.get(
+                employer_doc__pk=request.GET.get('casePK')
+            )
+        except ObjectDoesNotExist:
+            return JsonResponse(data, status=404)
+        else:
+            data = {
+                'ipaApprovalDateInput': case_status.ipa_approval_date,
+                'fdwArrivalDateInput': case_status.arrival_date,
+                'fdwShnEndDateInput': case_status.shn_end_date,
+                'fdwThumbprintDateInput': case_status.thumb_print_date,
+                'fdwWorkCommencementDateInput': case_status.fdw_work_commencement_date
+            }
+        return JsonResponse(data, status=200)
