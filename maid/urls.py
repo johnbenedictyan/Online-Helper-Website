@@ -6,7 +6,6 @@ from django.urls import include, path
 # Imports from local app
 
 ## Form Views
-from .views import MaidExperienceUpdate
 
 ## Redirect Views
 from .views import MaidTogglePublished, MaidToggleFeatured
@@ -32,16 +31,6 @@ from .views import MaidProfileView, FeaturedMaidListView
 
 urlpatterns = [
     path(
-        'create/',
-        include([
-            # path(
-            #     '',
-            #     MaidCreateFormView.as_view(),
-            #     name='maid_create'
-            # ),
-        ])
-    ),
-    path(
         'delete/',
         include([
             path(
@@ -54,11 +43,6 @@ urlpatterns = [
     path(
         'update/<int:pk>/',
         include([
-            path(
-                'experience/',
-                MaidExperienceUpdate.as_view(),
-                name='maid_care_details_update'
-            ),
             path(
                 'aft/<int:loan_transaction_pk>/',
                 MaidLoanTransactionUpdate.as_view(),
