@@ -1,4 +1,5 @@
 {% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
 {% load dashboard_tags %}
 {% block dashboard_section %}
 <section>
@@ -8,8 +9,19 @@
                 <h4>Sales Summary</h4>
             </div>
         </div>
+        <div class="row">
+            <div class="col mb-4 ml-2">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{filter.form.employer_fdw_search|as_crispy_field}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="row bg-dashboard-general-background-color text-light mx-half py-3 border">
-            <div class="col-1">
+            <div class="col-0-5 text-center">
                 <h6 class="mb-0">S/N</h6>
             </div>
             <div class="col-1-5">
@@ -21,10 +33,10 @@
             <div class="col">
                 <h6 class="mb-0">Employer & FDW</h6>
             </div>
-            <div class="col-1">
+            <div class="col-1-5">
                 <h6 class="mb-0">Type</h6>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <h6 class="mb-0">Amount</h6>
             </div>
             <div class="col-1-5">
@@ -34,35 +46,65 @@
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
-        {% for x in x %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
-            <div class="col-1">
+        {% for sale in sales %}
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
+            {% if not sales.agency_name %}
+            <div class="col-0-5">
                 <p class="mb-0"></p>
             </div>
-            <div class="col-2">
-                <p class="mb-0"></p>
+            <div class="col-1-5">
+                <p class="mb-0">{{sale.agreement_date}}</p>
             </div>
-            <div class="col-1">
-                <p class="mb-0"></p>
+            <div class="col-1-5">
+                <p class="mb-0">{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
-                <p class="mb-0"></p>
+                <p class="mb-0">Employer: {{sale.employer.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.employer.agency_employee.name}}</p>
             </div>
-            <div class="col-1">
-                <p class="mb-0"></p>
-            </div>
-            <div class="col-1">
-                <p class="mb-0"></p>
+            <div class="col-1-5">
+                <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
             </div>
             <div class="col-2">
-                <p class="mb-0"></p>
+                <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br/>Balance:$ {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
+            </div>
+            <div class="col-1-5">
+                <p class="mb-0">{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
+            {% else %}
+            <div class="col-0-5">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col-1-5">
+                <p class="mb-0">{{sale.agreement_date}}</p>
+            </div>
+            <div class="col-1-5">
+                <p class="mb-0">{{sale.fdw_work_commencement_date}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">Employer: {{sale.employer_name}}<br/>FDW: {{sale.maid_name}}<br/>Personnel: {{sale.agency_employee_name}}</p>
+            </div>
+            <div class="col-1-5">
+                <p class="mb-0">{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
+            </div>
+            <div class="col-2">
+                <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br/>Balance:$ {{sale.calc_bal}}</p>
+            </div>
+            <div class="col-1-5">
+                <p class="mb-0">{{sale.ca_deposit_date}}</p>
+            </div>
+            <div class="col-1">
+                <div class="row justify-content-evenly">
+                    <a><i class="far fa-unlink"></i></a>
+                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                </div>
+            </div>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
