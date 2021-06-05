@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 # from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
-from maid.constants import MaidReligionChoices
+from maid.constants import MaidReligionChoices, MaidLanguageChoices
 from maid.models import MaidResponsibility, MaidLanguage
 
 # Imports from local apps
@@ -45,7 +45,7 @@ class GeneralEnquiryForm(forms.ModelForm):
 
     class Meta:
         model = GeneralEnquiry
-        exclude = ['potential_employer']
+        exclude = ['potential_employer', 'last_modified']
         widgets = {
             'name': forms.TextInput(
                 attrs={

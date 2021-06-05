@@ -115,6 +115,23 @@ class GeneralEnquiry(models.Model):
         related_name='last_modified_general_enquiries',
         null=True
     )
+
+    # date_published = models.DateField(
+    #     auto_created=True,
+    #     editable=False
+    # )
+
+    def display_languages(self):
+        txt = ''
+        for i in self.languages_spoken.all():
+            txt+=str(i)
+        return txt
+
+    def display_duties(self):
+        txt = ''
+        for i in self.maid_responsibility.all():
+            txt+=str(i)
+        return txt
  
 class AgencyEnquiry(models.Model):
     agency = models.ForeignKey(

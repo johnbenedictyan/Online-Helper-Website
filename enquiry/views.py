@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
+from django.utils import timezone
 
 # Imports from project-wide files
 
@@ -36,6 +37,7 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
             form.instance.potential_employer = PotentialEmployer.objects.get(
                 user = self.request.user
             )
+            form.instance.last_modified = self.request.user
         return super().form_valid(form)
 
 class AgencyEnquiryView(SuccessMessageMixin, CreateView):
@@ -146,8 +148,8 @@ class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
 
     def get_queryset(self):
         return GeneralEnquiry.objects.filter(
-            employer__user = self.request.user,
-            active = True
+            potential_employer__user = self.request.user,
+            # active = True
         )
 
 # Detail Views
