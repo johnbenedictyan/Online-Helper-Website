@@ -1,11 +1,6 @@
 <nav class="row sticky-top">
     {% with request.resolver_match.url_name as url_name %}
     <div class="col">
-        <!-- <div class="row">
-            <div class="col" style="height: 2.5rem;">
-                &nbsp;
-            </div>
-        </div> -->
         <div class="row">
             <div class="col">
                 <div class="row new-side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}">

@@ -118,13 +118,6 @@ class Maid(models.Model):
         blank=True
     )
     
-    # remarks = models.CharField(
-    #     verbose_name=_('Remarks'),
-    #     max_length=255,
-    #     null=True,
-    #     blank=True
-    # )
-    
     languages = models.ManyToManyField(
         MaidLanguage
     )
@@ -133,15 +126,6 @@ class Maid(models.Model):
         MaidResponsibility
     )
     
-    # skills_evaluation_method = models.CharField(
-    #     verbose_name=_('Skills evaluation method'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True,
-    #     choices=MaidSkillsEvaluationMethod.choices,
-    #     default=MaidSkillsEvaluationMethod.DECLARATION
-    # )
-
     created_on = models.DateTimeField(
         verbose_name=_('Created On'),
         auto_now_add=True,
@@ -213,12 +197,6 @@ class Maid(models.Model):
         null=True
     )
     
-    # age = models.IntegerField(
-    #     verbose_name=_('Age'),
-    #     blank=False,
-    #     null=True
-    # )
-
     height = models.DecimalField(
         verbose_name=_('Height'),
         max_digits=5,

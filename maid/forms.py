@@ -581,13 +581,6 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
         return maid
 
 class MaidExperienceForm(forms.Form):
-    # skills_evaluation_method = forms.ChoiceField(
-    #     label=_('Skills evaluation method'),
-    #     required=True,
-    #     choices=MaidSkillsEvaluationMethod.choices,
-    #     initial=MaidSkillsEvaluationMethod.DECLARATION
-    # )
-    
     cfi_assessment = forms.ChoiceField(
         label=_('Assessment'),
         required=True,
@@ -724,7 +717,6 @@ class MaidExperienceForm(forms.Form):
         required=True,
         choices=TrueFalseChoices('Willing', 'Not willing'),
     )
-
 
     cok_experience = forms.ChoiceField(
         label=_('Experience '),
