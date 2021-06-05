@@ -40,28 +40,6 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
             form.instance.last_modified = self.request.user
         return super().form_valid(form)
 
-class ShortlistedEnquiryView(SuccessMessageMixin, CreateView):
-    context_object_name = 'shortlisted_enquiry'
-    form_class = ShortlistedEnquiryForm
-    http_method_names = ['post']
-    model = ShortlistedEnquiry
-    template_name = 'general_enquiry.html'
-    success_url = reverse_lazy('home')
-    success_message = 'Enquiry created'
-
-    def form_valid(self, form):
-        if self.request.user:
-            form.instance.potential_employer = PotentialEmployer.objects.get(
-                user = self.request.user
-            )
-            form.instance.maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        return super().form_valid(form)
-
-
 # Redirect Views
 class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
                                    RedirectView):
