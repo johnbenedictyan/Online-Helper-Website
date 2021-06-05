@@ -40,24 +40,6 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
             form.instance.last_modified = self.request.user
         return super().form_valid(form)
 
-class AgencyEnquiryView(SuccessMessageMixin, CreateView):
-    context_object_name = 'agency_enquiry'
-    form_class = AgencyEnquiryForm
-    http_method_names = ['post']
-    model = AgencyEnquiry
-    template_name = 'general_enquiry.html'
-    success_url = reverse_lazy('home')
-    success_message = 'Enquiry created'
-
-    def form_valid(self, form):
-        if self.request.user:
-            form.instance.agency = Agency.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        return super().form_valid(form)
-
 class MaidEnquiryView(SuccessMessageMixin, CreateView):
     context_object_name = 'general_enquiry'
     form_class = GeneralEnquiryForm
