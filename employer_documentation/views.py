@@ -28,7 +28,7 @@ class EmployerDetailView(
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'detail/new-dashboard-employer-detail.html'
+    template_name = 'detail/dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
     AgencyLoginRequiredMixin,
@@ -37,7 +37,7 @@ class EmployerDocDetailView(
 ):
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'detail/new-dashboard-case-detail.html'
+    template_name = 'detail/dashboard-case-detail.html'
 
 # Create Views
 class EmployerCreateView(

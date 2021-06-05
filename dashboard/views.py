@@ -114,7 +114,7 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFiltere
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
-    template_name = 'list/new-dashboard-maid-list.html'
+    template_name = 'list/dashboard-maid-list.html'
     filter_set = DashboardMaidFilter
     authority = ''
     agency_id = ''
@@ -163,7 +163,7 @@ class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
-    template_name = 'list/new-dashboard-account-list.html'
+    template_name = 'list/dashboard-account-list.html'
     authority = ''
     agency_id = ''
 
@@ -224,7 +224,7 @@ class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
     context_object_name = 'branches'
     http_method_names = ['get']
     model = AgencyBranch
-    template_name = 'list/new-dashboard-agency-branch-list.html'
+    template_name = 'list/dashboard-agency-branch-list.html'
     authority = ''
     agency_id = ''
 
@@ -349,7 +349,7 @@ class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
 class DashboardAgencyDetail(DashboardDetailView):
     context_object_name = 'agency'
     model = Agency
-    template_name = 'detail/new-dashboard-agency-detail.html'
+    template_name = 'detail/dashboard-agency-detail.html'
 
     def get_object(self):
         agency = get_object_or_404(
@@ -361,7 +361,7 @@ class DashboardAgencyDetail(DashboardDetailView):
 class DashboardMaidDetail(DashboardDetailView):
     context_object_name = 'maid'
     model = Maid
-    template_name = 'detail/new-dashboard-maid-detail.html'
+    template_name = 'detail/dashboard-maid-detail.html'
 
     def get_object(self):
         return Maid.objects.get(
@@ -374,7 +374,7 @@ class DashboardMaidDetail(DashboardDetailView):
 class DashboardEmployerDetail(DashboardDetailView):
     context_object_name = 'employer'
     # model = Maid
-    template_name = 'detail/new-dashboard-employer-detail.html'
+    template_name = 'detail/dashboard-employer-detail.html'
 
     def get_object(self):
         pass
@@ -388,7 +388,7 @@ class DashboardEmployerDetail(DashboardDetailView):
 class DashboardCaseDetail(DashboardDetailView):
     context_object_name = 'case'
     # model = Maid
-    template_name = 'detail/new-dashboard-case-detail.html'
+    template_name = 'detail/dashboard-case-detail.html'
 
     def get_object(self):
         pass
