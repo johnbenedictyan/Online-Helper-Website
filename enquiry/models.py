@@ -207,3 +207,8 @@ class ShortlistedEnquiry(models.Model):
         related_name='last_modified_maid_enquiries',
         null=True
     )
+
+    # date_published = models.DateField(
+    #     auto_created=True,
+    #     editable=False
+    # )
