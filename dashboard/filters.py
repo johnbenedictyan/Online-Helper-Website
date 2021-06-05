@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 import django_filters
 
 # Imports from local apps
-from employer_documentation.models import Employer, CaseStatus
+from employer_documentation.models import Employer, CaseStatus, EmployerDoc
 from maid.models import Maid
 
 # Start of Filters
@@ -85,7 +85,28 @@ class DashboardCaseFilter(django_filters.FilterSet):
     pass
 
 class DashboardSalesFilter(django_filters.FilterSet):
-    pass
+    employer_fdw_search = django_filters.CharFilter(
+        label='Search By',
+        method='custom_employer_fdw_filter',
+        widget=TextInput(
+            attrs={
+                'placeholder': 'Employer / FDW'
+            }
+        )
+    )
+
+    class Meta:
+        model = EmployerDoc
+        fields = [
+            'employer__employer_name',
+            'fdw__name'
+        ]
+
+    def custom_employer_fdw_filter(self, queryset, name, value):
+        return queryset.filter(
+            Q(employer__employer_name__icontains=value) |
+            Q(fdw__name__icontains=value)
+        )
 
 class DashboardStatusFilter(django_filters.FilterSet):
     employer_fdw_search = django_filters.CharFilter(

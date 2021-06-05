@@ -243,17 +243,18 @@ class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilter
             employer__agency_employee__agency__pk = self.agency_id
         )
 
-class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilteredMixin, 
-                        ListView):
+class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'sales'
     http_method_names = ['get']
+    model = EmployerDoc
     template_name = 'list/dashboard-sales-list.html'
-    # filter_set = DashboardSalesFilter
+    filter_set = DashboardSalesFilter
     authority = ''
     agency_id = ''
 
     def get_queryset(self):
-        return Maid.objects.all()
+        qs = super().get_queryset()
+        return qs
 
 class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'statuses'
