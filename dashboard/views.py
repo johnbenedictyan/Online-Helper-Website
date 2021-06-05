@@ -214,7 +214,7 @@ class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
     model = GeneralEnquiry
-    template_name = 'list/dashboard-enquiry-list.html'
+    template_name = 'list/dashboard-general-enquiries-list.html'
 
 class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
                                 ListView):
