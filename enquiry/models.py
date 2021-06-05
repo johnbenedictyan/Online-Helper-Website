@@ -116,10 +116,10 @@ class GeneralEnquiry(models.Model):
         null=True
     )
 
-    # date_published = models.DateField(
-    #     auto_created=True,
-    #     editable=False
-    # )
+    date_published = models.DateField(
+        auto_created=True,
+        editable=False
+    )
 
     def display_languages(self):
         txt = ''
@@ -208,7 +208,7 @@ class ShortlistedEnquiry(models.Model):
         null=True
     )
 
-    # date_published = models.DateField(
-    #     auto_created=True,
-    #     editable=False
-    # )
+    date_published = models.DateField(
+        auto_created=True,
+        editable=False
+    )
