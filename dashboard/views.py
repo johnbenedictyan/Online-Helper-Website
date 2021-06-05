@@ -31,9 +31,9 @@ from employer_documentation.models import Employer, EmployerDoc, CaseStatus, Arc
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
-    MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
+    MaidForm, MaidLanguageSpokenForm, 
     MaidLanguagesAndFHPDRForm, MaidExperienceForm,
-    MaidAboutFDWForm, MaidEmploymentHistoryForm
+    MaidAboutFDWForm
 )
 from maid.formsets import (
     MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
@@ -404,49 +404,49 @@ class DashboardCaseDetail(DashboardDetailView):
         # )
 
 # Form Views
-class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          FDWLimitMixin, SuccessMessageMixin, FormView):
-    form_class = MainMaidCreationForm
-    http_method_names = ['get','post']
-    success_url = reverse_lazy('dashboard_maid_detail')
-    template_name = 'form/maid-create-form.html'
-    authority = ''
-    agency_id = ''
+# class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
+#                           FDWLimitMixin, SuccessMessageMixin, FormView):
+#     form_class = MainMaidCreationForm
+#     http_method_names = ['get','post']
+#     success_url = reverse_lazy('dashboard_maid_detail')
+#     template_name = 'form/maid-create-form.html'
+#     authority = ''
+#     agency_id = ''
     
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            'update': False
-        })
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs.update({
+#             'agency_id': self.agency_id,
+#             'update': False
+#         })
+#         return kwargs
 
-    def get_success_url(self):
-        return reverse_lazy(
-            super().get_success_url(),
-            kwargs={
-                'pk':self.object.pk
-            }
-        )
+#     def get_success_url(self):
+#         return reverse_lazy(
+#             super().get_success_url(),
+#             kwargs={
+#                 'pk':self.object.pk
+#             }
+#         )
     
-    # def form_valid(self, form):
-        # try:
-        #     self.object = form.save()
-        # except Exception as e:
-        #     messages.warning(
-        #         self.request,
-        #         'Please try again',
-        #         extra_tags='warning'
-        #     )
-        #     return super().form_invalid(form)
-        # else:
-        #     return super().form_valid(form)
+#     # def form_valid(self, form):
+#         # try:
+#         #     self.object = form.save()
+#         # except Exception as e:
+#         #     messages.warning(
+#         #         self.request,
+#         #         'Please try again',
+#         #         extra_tags='warning'
+#         #     )
+#         #     return super().form_invalid(form)
+#         # else:
+#         #     return super().form_valid(form)
 
 class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin, 
                                                   GetAuthorityMixin,
                                                   SuccessMessageMixin, 
                                                   FormView):
-    form_class = MainMaidCreationForm
+    form_class = None
     http_method_names = ['get','post']
     success_url = reverse_lazy('dashboard_maid_detail')
     template_name = 'form/maid-create-form.html'

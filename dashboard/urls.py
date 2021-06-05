@@ -23,10 +23,8 @@ from .views import (
 
 ## Form Views
 from .views import (
-    DashboardMaidCreation, DashboardAgencyUpdate,
-    DashboardMaidLanguageSpokenFormView, DashboardMaidLanguagesAndFHPDRFormView,
-    DashboardMaidExperienceFormView, DashboardMaidAboutFDWFormView,
-    DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
+    DashboardAgencyUpdate,DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView, 
+    DashboardMaidAboutFDWFormView, DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
     DashboardMaidEmploymentHistoryFormView
 )
 ## Create Views
