@@ -7,12 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 # from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
-from maid.constants import MaidReligionChoices, MaidLanguageChoices
 from maid.models import MaidResponsibility, MaidLanguage
 
 # Imports from local apps
 from .fields import MaidResponsibilityChoiceField
-from .models import GeneralEnquiry, AgencyEnquiry, MaidEnquiry
+from .models import GeneralEnquiry, ShortlistedEnquiry
 
 # Start of Forms
 
@@ -198,84 +197,7 @@ class GeneralEnquiryForm(forms.ModelForm):
             )
         )
         
-class AgencyEnquiryForm(forms.ModelForm):
-    maid_responsibility = MaidResponsibilityChoiceField(
-        queryset=MaidResponsibility.objects.all(),
-        widget=forms.CheckboxSelectMultiple()
-    )
-
-    class Meta:
-        model = AgencyEnquiry
-        fields = '__all__'
-        widgets = {
-            'agency': forms.HiddenInput(),
-            'remarks': forms.Textarea(
-                attrs={
-                    'rows': 20,
-                    'cols': 15
-                }
-            )
-        }
-
-    def __init__(self, *args, **kwargs):
-        agency = kwargs.pop('agency')
-        super().__init__(*args, **kwargs)
-        self.fields['agency'].initial = agency
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'agency',
-                    css_class='form-group'
-                ),
-                Column(
-                    'name',
-                    css_class='form-group'
-                ),
-                Column(
-                    'mobile_number',
-                    css_class='form-group'
-                ),
-                Column(
-                    'email',
-                    css_class='form-group'
-                ),
-                Column(
-                    'maid_nationality',
-                    css_class='form-group'
-                ),
-                Column(
-                    'maid_type',
-                    css_class='form-group'
-                ),
-                Column(
-                    'maid_age_group',
-                    css_class='form-group'
-                ),
-                Column(
-                    'maid_responsibility',
-                    css_class='form-group'
-                ),
-                Column(
-                    'remarks',
-                    css_class='form-group'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-100"
-                    ),
-                    css_class='form-group col text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class MaidEnquiryForm(forms.ModelForm):
+class ShortlistedEnquiryForm(forms.ModelForm):
     consent = forms.BooleanField(
         label="""
             By submitting this enquiry form, I consent to the collection, 
@@ -285,7 +207,7 @@ class MaidEnquiryForm(forms.ModelForm):
     )
 
     class Meta:
-        model = MaidEnquiry
+        model = ShortlistedEnquiry
         exclude = ['potential_employer', 'maids', 'last_modified']
     
     def __init__(self, *args, **kwargs):

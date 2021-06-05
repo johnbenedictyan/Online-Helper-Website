@@ -17,8 +17,8 @@ from maid.models import Maid
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import GeneralEnquiryForm, AgencyEnquiryForm
-from .models import GeneralEnquiry, AgencyEnquiry
+from .forms import GeneralEnquiryForm, ShortlistedEnquiryForm
+from .models import GeneralEnquiry, ShortlistedEnquiry
 
 # Start of Views
 
@@ -40,11 +40,11 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
             form.instance.last_modified = self.request.user
         return super().form_valid(form)
 
-class MaidEnquiryView(SuccessMessageMixin, CreateView):
-    context_object_name = 'general_enquiry'
-    form_class = GeneralEnquiryForm
+class ShortlistedEnquiryView(SuccessMessageMixin, CreateView):
+    context_object_name = 'shortlisted_enquiry'
+    form_class = ShortlistedEnquiryForm
     http_method_names = ['post']
-    model = GeneralEnquiry
+    model = ShortlistedEnquiry
     template_name = 'general_enquiry.html'
     success_url = reverse_lazy('home')
     success_message = 'Enquiry created'

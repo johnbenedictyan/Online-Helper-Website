@@ -8,8 +8,8 @@ from django.views.generic.base import RedirectView, TemplateView
 
 # Imports from foreign installed apps
 from accounts.models import PotentialEmployer
-from enquiry.forms import MaidEnquiryForm
-from enquiry.models import MaidEnquiry
+from enquiry.forms import ShortlistedEnquiryForm
+from enquiry.models import ShortlistedEnquiry
 from maid.models import Maid
 
 # Imports from local apps
@@ -80,9 +80,9 @@ class RemoveFrom(RedirectView):
 
 ## Template Views
 class ViewShortlist(CreateView):
-    form_class = MaidEnquiryForm
+    form_class = ShortlistedEnquiryForm
     http_method_names = ['get', 'post']
-    model = MaidEnquiry
+    model = ShortlistedEnquiry
     success_url = reverse_lazy('successful_enquiry')
     template_name = "shortlist.html"
     current_shortlist = []

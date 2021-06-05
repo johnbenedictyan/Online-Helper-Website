@@ -17,7 +17,7 @@ from .views import EnquiryListView
 ## Detail Views
 
 ## Create Views
-from .views import GeneralEnquiryView, AgencyEnquiryView, MaidEnquiryView
+from .views import GeneralEnquiryView, ShortlistedEnquiryView
 
 ## Update Views
 
@@ -32,13 +32,8 @@ urlpatterns = [
         name='general_enquiry'
     ),
     path(
-        'agency/<int:pk/',
-        AgencyEnquiryView.as_view(),
-        name='agency_enquiry'
-    ),
-    path(
-        'maid/<int:pk/',
-        MaidEnquiryView.as_view(),
+        'shortlisted/',
+        ShortlistedEnquiryView.as_view(),
         name='maid_enquiry'
     ),
     path(
