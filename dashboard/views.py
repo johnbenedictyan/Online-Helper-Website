@@ -1,6 +1,7 @@
 # Imports from python
 import json
 from datetime import datetime, timedelta
+from itertools import chain
 
 # Imports from django
 from django.contrib import messages
@@ -26,7 +27,7 @@ from agency.models import (
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
-from employer_documentation.models import Employer, EmployerDoc, CaseStatus
+from employer_documentation.models import Employer, EmployerDoc, CaseStatus, ArchivedDoc
 from enquiry.models import GeneralEnquiry
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
@@ -253,8 +254,19 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        qs = super().get_queryset()
-        return qs
+        qs = EmployerDoc.objects.filter(
+            employer__agency_employee__agency__pk=self.agency_id
+        )	
+        return list(
+            chain(
+                qs,
+                ArchivedDoc.objects.filter(
+                    agency_license_no=Agency.objects.get(
+                        pk=self.agency_id
+                    ).license_number
+                )
+            )
+        )
 
 class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'statuses'
