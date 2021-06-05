@@ -1389,6 +1389,7 @@ class CaseStatusAPIView(View):
             return JsonResponse(data, status=404)
         else:
             data = {
+                'fdwNameInput': case_status.employer_doc.fdw.name,
                 'ipaApprovalDateInput': case_status.ipa_approval_date,
                 'fdwArrivalDateInput': case_status.arrival_date,
                 'fdwShnEndDateInput': case_status.shn_end_date,
