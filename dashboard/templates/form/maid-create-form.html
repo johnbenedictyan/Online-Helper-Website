@@ -1,15 +1,1 @@
-{% extends 'components/crispy-form.html' %}
-{% block js %}
-<script>
-    $(function(){
-        $('#maidEmploymentHistoryAdditionButton').on('click', function(e){
-            e.preventDefault();
-            $(`#eh_entry_section_${$(this).data('rownumber') + 1}`).removeClass('d-none');
-        });
-        $('#maidLoanAdditionButton').on('click', function(e){
-            e.preventDefault();
-            $(`#ml_entry_section_${$(this).data('rownumber') + 1}`).removeClass('d-none');
-        });
-    })
-</script>
-{% endblock js %}
+{% extends 'components/dashboard-crispy-form.html' %}
