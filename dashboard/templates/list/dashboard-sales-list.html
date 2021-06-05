@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="row bg-dashboard-general-background-color text-light mx-half py-3 border">
-            <div class="col-1">
+            <div class="col-0-5 text-center">
                 <h6 class="mb-0">S/N</h6>
             </div>
             <div class="col-1-5">
@@ -49,7 +49,7 @@
         {% for sale in sales %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
             {% if not sales.agency_name %}
-            <div class="col-1">
+            <div class="col-0-5">
                 <p class="mb-0"></p>
             </div>
             <div class="col-1-5">
@@ -59,7 +59,7 @@
                 <p class="mb-0">{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{sale.employer.employer_name}}<br/>{{sale.fdw.name}}</p>
+                <p class="mb-0">Employer: {{sale.employer.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.employer.agency_employee.name}}</p>
             </div>
             <div class="col-1-5">
                 <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
@@ -72,12 +72,12 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="#"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
             {% else %}
-            <div class="col-1">
+            <div class="col-0-5">
                 <p class="mb-0"></p>
             </div>
             <div class="col-1-5">
@@ -87,7 +87,7 @@
                 <p class="mb-0">{{sale.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{sale.employer_name}}<br/>{{sale.maid_name}}</p>
+                <p class="mb-0">Employer: {{sale.employer_name}}<br/>FDW: {{sale.maid_name}}<br/>Personnel: {{sale.agency_employee_name}}</p>
             </div>
             <div class="col-1-5">
                 <p class="mb-0">{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
@@ -100,7 +100,7 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="#"><i class="far fa-edit"></i></a>
+                    <a><i class="far fa-unlink"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
