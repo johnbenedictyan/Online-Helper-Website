@@ -295,16 +295,11 @@ country_language = {
 }
 
 class MaidLanguageChoices(models.TextChoices):
-    ENGLISH     = 'ENG', _('English')
-    BENGALI     = 'BEN', _('Bengali')
-    BURMESE     = 'BUR', _('Burmese')
-    CHINESE     = 'CHI', _('Mandarin / Dialect')
-    INDONESIAN  = 'IND', _('Bahasa Indonesia')
-    KHMER       = 'KHM', _('Khmer')
-    SINHALA     = 'SIN', _('Sinhala')
-    TAGALOG     = 'TAG', _('Tagalog')
-    TAMIL       = 'TAM', _('Tamil')
-    THAI        = 'THA', _('Thai')
+    ENGLISH         = 'ENG', _('English')
+    MANDARIN        = 'MAN', _('Mandarin')
+    CHINESE_DIALECT = 'CHD', _('Chinese Dialect')
+    MALAY           = 'MAL', _('Malay / Bahasa Indonesia')
+    HINDI_TAMIL     = 'H_T', _('Hindi / Tamil')
 
 class MaidReligionChoices(models.TextChoices):
         BUDDHIST = 'B', _('Buddhist')

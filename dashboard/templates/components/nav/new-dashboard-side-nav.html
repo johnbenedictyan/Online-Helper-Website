@@ -183,11 +183,32 @@
                 </a>
             </div>
         </div>
-        <div class="row new-side-nav-link {% if url_name == 'dashboard_enquiries_list' %}active{% endif %}">
+        <div class="row">
             <div class="col">
-                <a class="nav-link new-side-nav-link" href="{% url 'dashboard_enquiries_list' %}" class="">
-                    <p class="m-1 pl-2">Enquiries</p>
-                </a>
+                <div class="row new-side-nav-link">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link" href="{% url 'dashboard_general_enquiries_list' %}">
+                            <p class="m-1 pl-2">Enquiries</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#enquiriesDropdownNav" role="button" aria-expanded="true" aria-controls="enquiriesDropdownNav">
+                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_general_enquiries_list' or url_name == 'dashboard_shortlisted_enquiries_list' %}down{% else %}right{% endif %}"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse row {% if url_name == 'dashboard_general_enquiries_list' or url_name == 'dashboard_shortlisted_enquiries_list' %}show{% endif %}" id="enquiriesDropdownNav">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_general_enquiries_list' %}active{% endif %}">
+                        <a href="{% url 'dashboard_general_enquiries_list' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">General Enquiries</p>
+                        </a>
+                    </div>
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_shortlisted_enquiries_list' %}active{% endif %}">
+                        <a href="{% url 'dashboard_shortlisted_enquiries_list' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">Shortlisted Enquiries</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}">

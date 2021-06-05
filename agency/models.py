@@ -128,8 +128,8 @@ class Agency(models.Model):
     def get_branches(self):
         return self.branches.filter(main_branch=False)
     
-    def get_enquiries(self):
-        return self.enquiries.all()
+    # def get_enquiries(self):
+    #     return self.enquiries.all()
     
     def get_biodata_limit_status(self):
         return (

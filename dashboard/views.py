@@ -28,7 +28,7 @@ from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
 from employer_documentation.models import Employer, EmployerDoc, CaseStatus, ArchivedDoc
-from enquiry.models import GeneralEnquiry
+from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
     MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
@@ -104,7 +104,7 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
                 'max': None
             },
             'enquiries': {
-                'current': agency.get_enquiries().count(),
+                'current': 0,
                 'max': None
             }
         }
@@ -210,11 +210,18 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
         kwargs.update(dashboard_agency_plan_kwargs)
         return kwargs
 
-class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
+class DashboardGeneralEnquiriesList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
     model = GeneralEnquiry
-    template_name = 'list/dashboard-enquiry-list.html'
+    template_name = 'list/dashboard-general-enquiries-list.html'
+
+class DashboardShortlistedEnquiriesList(AgencyLoginRequiredMixin, ListView):
+    context_object_name = 'enquiries'
+    http_method_names = ['get']
+    model = ShortlistedEnquiry
+    template_name = 'list/dashboard-shortlisted-enquiries-list.html'
+    queryset = ShortlistedEnquiry.objects.filter()
 
 class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
                                 ListView):

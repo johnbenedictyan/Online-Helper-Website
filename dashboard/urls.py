@@ -10,8 +10,9 @@ from django.urls import include, path
 ## List Views
 from .views import (
     DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
-    DashboardEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
-    DashboardSalesList, DashboardEmployerList, DashboardStatusList
+    DashboardGeneralEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
+    DashboardSalesList, DashboardEmployerList, DashboardStatusList, 
+    DashboardShortlistedEnquiriesList
 )
 
 ## Detail Views
@@ -89,9 +90,14 @@ urlpatterns = [
                 name='dashboard_agency_plan_list'
             ),
             path(
-                'enquiries/',
-                DashboardEnquiriesList.as_view(),
-                name='dashboard_enquiries_list'
+                'general-enquiries/',
+                DashboardGeneralEnquiriesList.as_view(),
+                name='dashboard_general_enquiries_list'
+            ),
+            path(
+                'shortlisted-enquiries/',
+                DashboardShortlistedEnquiriesList.as_view(),
+                name='dashboard_shortlisted_enquiries_list'
             ),
             path(
                 'branches/',
