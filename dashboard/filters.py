@@ -1,5 +1,5 @@
 # Imports from django
-import django
+from django.db.models import Q, fields
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 import django_filters
 
 # Imports from local apps
-from employer_documentation.models import Employer
+from employer_documentation.models import Employer, CaseStatus
 from maid.models import Maid
 
 # Start of Filters
@@ -88,4 +88,23 @@ class DashboardSalesFilter(django_filters.FilterSet):
     pass
 
 class DashboardStatusFilter(django_filters.FilterSet):
-    pass
+    employer_fdw_search = django_filters.CharFilter(
+        label='Search By',
+        method='custom_employer_fdw_filter',
+        widget=TextInput(
+            attrs={
+                'placeholder': 'Employer / FDW'
+            }
+        )
+    )
+    class Meta:
+        model = CaseStatus
+        fields = [
+            'employer_doc'
+        ]
+
+    def custom_employer_fdw_filter(self, queryset, name, value):
+        return queryset.filter(
+            Q(employer_doc__employer__employer_name__icontains=value) |
+            Q(employer_doc__fdw__name__icontains=value)
+        )

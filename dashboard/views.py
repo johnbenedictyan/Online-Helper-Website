@@ -255,13 +255,12 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilte
     def get_queryset(self):
         return Maid.objects.all()
 
-class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, # ListFilteredMixin, 
-                        ListView):
+class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'statuses'
     http_method_names = ['get']
     model = CaseStatus
     template_name = 'list/dashboard-status-list.html'
-    # filter_set = DashboardStatusFilter
+    filter_set = DashboardStatusFilter
     authority = ''
     agency_id = ''
 
