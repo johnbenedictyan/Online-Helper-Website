@@ -10,9 +10,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import (
-    calculate_age, decrypt_string, humanise_time_duration
-)
+from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from other apps
@@ -20,12 +18,10 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, MaidAssessmentChoices, 
-    MaidPassportStatusChoices, MaidLanguageChoices, MaidResponsibilityChoices,
-    MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
-    MaidSkillsEvaluationMethod, MaidLoanDescriptionChoices, MaidStatusChoices,
-    MaidFoodPreferenceChoices, MaidDietaryRestrictionChoices,
-    MaidNationalityChoices, MaidLanguageProficiencyChoices,
+    TypeOfMaidChoices, MaidAssessmentChoices, MaidPassportStatusChoices, MaidLanguageChoices, 
+    MaidResponsibilityChoices, MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
+    MaidLoanDescriptionChoices, MaidStatusChoices, MaidFoodPreferenceChoices, 
+    MaidDietaryRestrictionChoices, MaidNationalityChoices, MaidLanguageProficiencyChoices,
     MaidExperienceChoices
 )
 
@@ -891,26 +887,4 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-    
-# TODO: Need to change Maid Employment History to be a 1-M instead of 1-1.
-# class MaidOtherCare(models.Model):
-#     maid = models.OneToOneField(
-#         Maid,
-#         on_delete=models.CASCADE,
-#         related_name='other_care'
-#     )
-
-#     care_for_pets = models.BooleanField(
-#         verbose_name=_('Care for pets'),
-#         blank=False,
-#         choices=TrueFalseChoices('Able', 'Unable'),
-#         default=False
-#     )
-
-#     gardening = models.BooleanField(
-#         verbose_name=_('Gardening'),
-#         blank=False,
-#         choices=TrueFalseChoices('Able', 'Unable'),
-#         default=False
-#     )
-    
+  
