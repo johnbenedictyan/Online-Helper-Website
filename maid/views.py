@@ -229,7 +229,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
-    template_name = 'detail/new-maid-detail.html'
+    template_name = 'detail/maid-detail.html'
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
