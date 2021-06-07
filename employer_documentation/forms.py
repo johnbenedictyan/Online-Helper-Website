@@ -179,7 +179,8 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'employer_passport_date',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    id='employer_id_other_2',
                 ),
                 Column(
                     'employer_marital_status',
@@ -246,7 +247,8 @@ class EmployerForm(forms.ModelForm):
                     Row(
                         Column(
                             'spouse_passport_date',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-6',
+                            id='spouse_id_other_2',
                         ),
                         Column(
                             'employer_marriage_sg_registered',
