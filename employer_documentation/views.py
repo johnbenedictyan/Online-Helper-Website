@@ -871,7 +871,7 @@ class CaseStatusUpdateView(
         return kwargs
 
     def get_success_url(self):
-        return reverse('ed_detail_route', kwargs={
+        return reverse('case_detail_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk,
         })
 
@@ -975,35 +975,39 @@ class EmployerDocDeleteView(
 
 
 # Signature Views
-# class SignatureUpdateByAgentView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocSig
-#     form_class = SignatureForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/signature_form_agency.html'
-#     model_field_name = None
-#     form_fields = None
+class SignatureUpdateByAgentView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    UpdateView
+):
+    model = models.EmployerDocSig
+    form_class = forms.SignatureForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/signature_form_agency.html'
+    model_field_name = None
+    form_fields = None
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['model_field_name'] = self.model_field_name
-#         kwargs['form_fields'] = self.form_fields
-#         return kwargs
+    def get_object(self):
+        return models.EmployerDocSig.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
-#             self.model_field_name).verbose_name
-#         return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
+        return kwargs
 
-#     def get_success_url(self):
-#         return reverse_lazy('ed_detail_route', kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_field_verbose_name'] = models.EmployerDocSig._meta.get_field(
+            self.model_field_name).verbose_name
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('case_detail_route', kwargs={
+            'level_1_pk': self.object.employer_doc.pk,
+        })
 
 # class VerifyUserTokenView(
 #     SuccessMessageMixin,

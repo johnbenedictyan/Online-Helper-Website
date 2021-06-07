@@ -1283,6 +1283,10 @@ class EmployerDoc(models.Model):
         if not hasattr(self, 'rn_casestatus_ed'):
             CaseStatus.objects.create(employer_doc=self)
         
+        # Create related EmployerDocSig object if it does not exist
+        if not hasattr(self, 'rn_signatures_ed'):
+            EmployerDocSig.objects.create(employer_doc=self)
+        
         super().save(*args, **kwargs)
 
     def get_version(self):

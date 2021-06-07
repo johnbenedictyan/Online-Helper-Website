@@ -1,13 +1,9 @@
-{% extends 'employer_documentation/base-ed-template.html' %}
+{% extends 'dashboard-base.html' %}
 
-{% block sidenav_extra %}
-    {% include 'employer_documentation/sidenav_subdocument_snippet.html' %}
-{% endblock sidenav_extra %}
-
-{% block ed_section %}
-    {% include 'employer_documentation/signature_snippet_form.html' %}
-{% endblock ed_section %}
+{% block dashboard_section %}
+    {% include 'employer_documentation/snippets/signature_snippet_form.html' %}
+{% endblock dashboard_section %}
 
 {% block js %}
-    {% include 'employer_documentation/signature_snippet_js.html' %}
+    {% include 'employer_documentation/snippets/signature_snippet_js.html' %}
 {% endblock js %}
