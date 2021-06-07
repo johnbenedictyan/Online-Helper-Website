@@ -849,31 +849,31 @@ class DocUploadUpdateView(
     def get_success_url(self):
         return reverse('dashboard_case_list')
 
-class CaseStatusUpdateView(
-    AgencyLoginRequiredMixin,
-    GetAuthorityMixin,
-    UpdateView
-):
-    model = models.CaseStatus
-    form_class = forms.CaseStatusForm
-    pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+# class CaseStatusUpdateView(
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
+#     UpdateView
+# ):
+#     model = models.CaseStatus
+#     form_class = forms.CaseStatusForm
+#     pk_url_kwarg = 'level_1_pk'
+#     template_name = 'employer_documentation/crispy_form.html'
 
-    def get_object(self):
-        return models.EmployerDoc.objects.get(
-            pk=self.kwargs.get(self.pk_url_kwarg)
-        ).rn_casestatus_ed
+#     def get_object(self):
+#         return models.EmployerDoc.objects.get(
+#             pk=self.kwargs.get(self.pk_url_kwarg)
+#         ).rn_casestatus_ed
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user_pk'] = self.request.user.pk
-        kwargs['authority'] = self.authority
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user_pk'] = self.request.user.pk
+#         kwargs['authority'] = self.authority
+#         return kwargs
 
-    def get_success_url(self):
-        return reverse('case_detail_route', kwargs={
-            'level_1_pk': self.object.employer_doc.pk,
-        })
+#     def get_success_url(self):
+#         return reverse('case_detail_route', kwargs={
+#             'level_1_pk': self.object.employer_doc.pk,
+#         })
 
 class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
