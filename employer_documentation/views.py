@@ -168,35 +168,32 @@ class EmployerIncomeDetailsCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_object(self, *args, **kwargs):
+        return models.Employer.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'level_0_pk': self.kwargs.get(
-                self.pk_url_kwarg
-            ), 
-            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
+            'type_of_applicant': self.get_object().applicant_type,
         })
         return context
-
-    def get_object(self, *args, **kwargs):
-        return models.Employer.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-                )
-            )
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        type_of_applicant = self.get_object().applicant_type
+        monthly_income_label = constants.monthly_income_label.get(
+            type_of_applicant
+        )
+        kwargs['monthly_income_label'] = monthly_income_label
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer = models.Employer.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
+        form.instance.employer = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -609,6 +606,11 @@ class EmployerIncomeDetailsUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        type_of_applicant = self.object.employer.applicant_type
+        monthly_income_label = constants.monthly_income_label.get(
+            type_of_applicant
+        )
+        kwargs['monthly_income_label'] = monthly_income_label
         return kwargs
 
     def get_success_url(self):

@@ -1197,7 +1197,11 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.monthly_income_label = kwargs.pop('monthly_income_label')
         super().__init__(*args, **kwargs)
+
+        # Set form field label based on applicant type
+        self.fields['monthly_income'].label = self.monthly_income_label
 
         self.helper = FormHelper()
         self.helper.layout = Layout(

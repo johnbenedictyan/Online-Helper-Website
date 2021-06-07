@@ -139,6 +139,13 @@ class EmployerTypeOfApplicantChoices(models.TextChoices):
     SPONSOR = 'SPONSR', _("Employer with Sponsor(s)")
     JOINT_APPLICANT = 'JNT_AP', _("Employer with Joint Applicant")
 
+monthly_income_label = {
+    EmployerTypeOfApplicantChoices.SINGLE: 'Employer Monthly Income',
+    EmployerTypeOfApplicantChoices.SPOUSE: 'Employer and Spouse Combined Monthly Income',
+    EmployerTypeOfApplicantChoices.SPONSOR: 'Sponsor(s) Monthly Income',
+    EmployerTypeOfApplicantChoices.JOINT_APPLICANT: 'Employer and Joint Applicant Combined Monthly Income',
+}
+
 class DayOfWeekChoices(models.TextChoices):
     MONDAY = 'MONDAY', _('MONDAY')
     TUESDAY = 'TUESDAY', _('TUESDAY')
