@@ -140,10 +140,10 @@ class EmployerTypeOfApplicantChoices(models.TextChoices):
     JOINT_APPLICANT = 'JNT_AP', _("Employer with Joint Applicant")
 
 monthly_income_label = {
-    EmployerTypeOfApplicantChoices.SINGLE: 'Employer Monthly Income',
-    EmployerTypeOfApplicantChoices.SPOUSE: 'Employer and Spouse Combined Monthly Income',
-    EmployerTypeOfApplicantChoices.SPONSOR: 'Sponsor(s) Monthly Income',
-    EmployerTypeOfApplicantChoices.JOINT_APPLICANT: 'Employer and Joint Applicant Combined Monthly Income',
+    EmployerTypeOfApplicantChoices.SINGLE: ['Employer Monthly Income', 'Have you worked in Singapore for the last 2 Years?'],
+    EmployerTypeOfApplicantChoices.SPOUSE: ['Employer and Spouse Combined Monthly Income', 'Have you worked in Singapore for the last 2 Years?'],
+    EmployerTypeOfApplicantChoices.SPONSOR: ['Sponsor(s) Monthly Income', 'Have you worked in Singapore for the last 2 Years?'],
+    EmployerTypeOfApplicantChoices.JOINT_APPLICANT: ['Employer and Joint Applicant Combined Monthly Income', 'Have you worked in Singapore for the last 2 Years?'],
 }
 
 class DayOfWeekChoices(models.TextChoices):

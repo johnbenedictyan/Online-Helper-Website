@@ -1201,7 +1201,8 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         # Set form field label based on applicant type
-        self.fields['monthly_income'].label = self.monthly_income_label
+        self.fields['monthly_income'].label = self.monthly_income_label[0]
+        self.fields['worked_in_sg'].label = self.monthly_income_label[1]
 
         self.helper = FormHelper()
         self.helper.layout = Layout(

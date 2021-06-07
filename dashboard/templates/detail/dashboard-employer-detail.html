@@ -601,22 +601,6 @@
             <div class="row">
                 <div class="col">
                     {% if object.applicant_type == 'SINGLE' %}
-                    <p class="mb-1">Employer's Monthly Income</p>
-                    {% elif object.applicant_type == 'SPOUSE' %}
-                    <p class="mb-1">Employer's & Spouse's Combined Monthly Income</p>
-                    {% elif object.applicant_type == 'JNT_AP' %}
-                    <p class="mb-1">Employer's & Joint Combined Monthly Income</p>
-                    {% else %}
-                        {% if not object.rn_sponsor_employer.sponsor_2_required %}
-                    <p class="mb-1">Sponsor's Monthly Income</p>
-                        {% else %}
-                    <p class="mb-1">Sponsors' Combined Monthly Income</p>
-                        {% endif %}
-                    {% endif %}
-                    <h6 class="text-dark mb-3">{{ object.rn_income_employer.get_monthly_income_display }}</h6>
-                </div>
-                <div class="col">
-                    {% if object.applicant_type == 'SINGLE' %}
                     <p class="mb-1">Has Employer worked in SG for last 2 years?</p>
                     {% elif object.applicant_type == 'SPOUSE' %}
                     <p class="mb-1">Have Employer & Spouse worked in SG for last 2 years?</p>
@@ -630,6 +614,22 @@
                         {% endif %}
                     {% endif %}
                     <h6 class="text-dark mb-3">{{ object.rn_income_employer.get_worked_in_sg_display }}</h6>
+                </div>
+                <div class="col">
+                    {% if object.applicant_type == 'SINGLE' %}
+                    <p class="mb-1">Employer's Monthly Income</p>
+                    {% elif object.applicant_type == 'SPOUSE' %}
+                    <p class="mb-1">Employer's & Spouse's Combined Monthly Income</p>
+                    {% elif object.applicant_type == 'JNT_AP' %}
+                    <p class="mb-1">Employer's & Joint Combined Monthly Income</p>
+                    {% else %}
+                        {% if not object.rn_sponsor_employer.sponsor_2_required %}
+                    <p class="mb-1">Sponsor's Monthly Income</p>
+                        {% else %}
+                    <p class="mb-1">Sponsors' Combined Monthly Income</p>
+                        {% endif %}
+                    {% endif %}
+                    <h6 class="text-dark mb-3">{{ object.rn_income_employer.get_monthly_income_display }}</h6>
                 </div>
             </div>
         </div>

@@ -1144,7 +1144,7 @@ class EmployerIncome(models.Model):
     )
     # Income Details
     worked_in_sg = models.BooleanField(
-        verbose_name=_('Has employer worked in SG for last 2 years?'),
+        verbose_name=_('Have you worked in Singapore for the last 2 Years?'),
         default=True,
         choices=TrueFalseChoices(
             _('Yes'),
@@ -1152,11 +1152,9 @@ class EmployerIncome(models.Model):
         ),
     )
     monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Employer monthly income / combined income with spouse"),
+        verbose_name=_("Monthly Income"),
         choices=ed_constants.IncomeChoices.choices,
         default=ed_constants.IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
     )
 
 class EmployerHousehold(models.Model):
@@ -3436,7 +3434,7 @@ class ArchivedDoc(models.Model):
 
     # Income Details
     worked_in_sg = models.BooleanField(
-        verbose_name=_('Has employer worked in SG for last 2 years?'),
+        verbose_name=_('Have you worked in Singapore for the last 2 Years?'),
         default=True,
         choices=TrueFalseChoices(
             _('Yes'),
@@ -3444,11 +3442,9 @@ class ArchivedDoc(models.Model):
         ),
     )
     monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Monthly income"),
+        verbose_name=_("Monthly Income"),
         choices=ed_constants.IncomeChoices.choices,
         default=ed_constants.IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
     )
 
     # Doc Base
