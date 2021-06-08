@@ -54,13 +54,6 @@ def generate_archive_path(instance, filename):
 
 # Employer e-Documentation Models
 class Employer(models.Model):
-    APPLICANT_TYPE_CHOICES = [
-        ('SINGLE', _("Employer Only")),
-        ('SPOUSE', _("Employer with Spouse")),
-        ('SPONSR', _("Employer with Sponsor(s)")),
-        ('JNT_AP', _("Employer with Joint Applicant")),
-    ]
-
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -1151,7 +1144,7 @@ class EmployerIncome(models.Model):
     )
     # Income Details
     worked_in_sg = models.BooleanField(
-        verbose_name=_('Has employer worked in SG for last 2 years?'),
+        verbose_name=_('Have you worked in Singapore for the last 2 Years?'),
         default=True,
         choices=TrueFalseChoices(
             _('Yes'),
@@ -1159,11 +1152,9 @@ class EmployerIncome(models.Model):
         ),
     )
     monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Employer monthly income / combined income with spouse"),
+        verbose_name=_("Monthly Income"),
         choices=ed_constants.IncomeChoices.choices,
         default=ed_constants.IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
     )
 
 class EmployerHousehold(models.Model):
@@ -1291,6 +1282,10 @@ class EmployerDoc(models.Model):
         # Create related CaseStatus object if it does not exist
         if not hasattr(self, 'rn_casestatus_ed'):
             CaseStatus.objects.create(employer_doc=self)
+        
+        # Create related EmployerDocSig object if it does not exist
+        if not hasattr(self, 'rn_signatures_ed'):
+            EmployerDocSig.objects.create(employer_doc=self)
         
         super().save(*args, **kwargs)
 
@@ -1641,8 +1636,8 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
     )
-    b2f_counselling = models.DecimalField(
-        verbose_name=_("2f. Each Counselling Session"),
+    b2f_sip = models.DecimalField(
+        verbose_name=_("2f. Settling-In-Programme (SIP)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1650,32 +1645,14 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
     )
-    b2g_sip = models.DecimalField(
-        verbose_name=_("2g. Settling-In-Programme (SIP)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-    )
-    b2h_food_lodging = models.DecimalField(
-        verbose_name=_("2h. Food and Lodging"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-    )
-    b2i1_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (i)"),
+    b2g1_other_services_description = models.CharField(
+        verbose_name=_("2g. Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2i1_other_services_fee = models.DecimalField(
-        verbose_name=_("2i. Other services fee (i)"),
+    b2g1_other_services_fee = models.DecimalField(
+        verbose_name=_("2g. Other services fee (i)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1685,14 +1662,14 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2i2_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (ii)"),
+    b2g2_other_services_description = models.CharField(
+        verbose_name=_("2g. Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2i2_other_services_fee = models.DecimalField(
-        verbose_name=_("2i. Other services fee (ii)"),
+    b2g2_other_services_fee = models.DecimalField(
+        verbose_name=_("2g. Other services fee (ii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1702,14 +1679,14 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2i3_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (iii)"),
+    b2g3_other_services_description = models.CharField(
+        verbose_name=_("2g. Other services provided (iii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2i3_other_services_fee = models.DecimalField(
-        verbose_name=_("2i. Other services fee (iii)"),
+    b2g3_other_services_fee = models.DecimalField(
+        verbose_name=_("2g. Other services fee (iii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1719,15 +1696,15 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2j_replacement_months = models.PositiveSmallIntegerField(
+    b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("2j. Cost for replacement within __ month(s)"),
+        verbose_name=_("2h. Cost for replacement within __ month(s)"),
         choices=ed_constants.MonthChoices.choices,
         blank=True,
         null=True,
     )
-    b2j_replacement_cost = models.DecimalField(
-        verbose_name=_("2j. Cost for replacement"),
+    b2h_replacement_cost = models.DecimalField(
+        verbose_name=_("2h. Cost for replacement"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1737,8 +1714,8 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2k_work_permit_renewal = models.DecimalField(
-        verbose_name=_("2k. Renewal of Work Permit"),
+    b2i_work_permit_renewal = models.DecimalField(
+        verbose_name=_("2i. Renewal of Work Permit"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1782,14 +1759,12 @@ class DocServiceFeeSchedule(models.Model):
             self.b2c_security_bond_accident_insurance,
             self.b2d_indemnity_policy_reimbursement,
             self.b2e_home_service,
-            self.b2f_counselling,
-            self.b2g_sip,
-            self.b2h_food_lodging,
-            self.b2i1_other_services_fee,
-            self.b2i2_other_services_fee,
-            self.b2i3_other_services_fee,
-            self.b2j_replacement_cost,
-            self.b2k_work_permit_renewal,
+            self.b2f_sip,
+            self.b2g1_other_services_fee,
+            self.b2g2_other_services_fee,
+            self.b2g3_other_services_fee,
+            self.b2h_replacement_cost,
+            self.b2i_work_permit_renewal,
         ]
         for field in fields:
             # Sum this way because some fields may be null
@@ -1950,7 +1925,7 @@ class DocServAgmtEmpCtr(models.Model):
         choices=ed_constants.WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("6.4 Accommodation cost per day"),
+        verbose_name=_("6.4 Food and Accommodation cost per day"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -2180,80 +2155,6 @@ class EmployerDocSig(models.Model):
         null=True
     )
 
-    # Witnesses
-    # employer_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for Employer'),
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_name = models.CharField(
-    #     verbose_name=_('Employer Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_address_1 = models.CharField(
-    #     verbose_name=_('Employer Witness Address Line 1'),
-    #     max_length=100,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # employer_witness_address_2 = models.CharField(
-    #     verbose_name=_('Employer Witness Address Line 2'),
-    #     max_length=50,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # employer_witness_post_code = models.CharField(
-    #     verbose_name=_('Employer Witness Postal Code'),
-    #     max_length=25,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # fdw_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for FDW'),
-    #     blank=True,
-    #     null=True
-    # )
-    # fdw_witness_name = models.CharField(
-    #     verbose_name=_('FDW Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # fdw_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for Agency Staff Member'),
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_name = models.CharField(
-    #     verbose_name=_('Agency Staff Memeber Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-
 class CaseStatus(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
@@ -2361,13 +2262,6 @@ class ArchivedMaid(models.Model):
     )
 
 class ArchivedDoc(models.Model):
-    APPLICANT_TYPE_CHOICES = [
-        ('SINGLE', _("Employer Only")),
-        ('SPOUSE', _("Employer with Spouse")),
-        ('SPONSR', _("Employer with Sponsor(s)")),
-        ('JNT_AP', _("Employer with Joint Applicant")),
-    ]
-
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -2378,8 +2272,8 @@ class ArchivedDoc(models.Model):
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
-        choices=APPLICANT_TYPE_CHOICES,
-        default=APPLICANT_TYPE_CHOICES[0][0],
+        choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
+        default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
     )
 
     # Agency Informtaion
@@ -3450,7 +3344,7 @@ class ArchivedDoc(models.Model):
 
     # Income Details
     worked_in_sg = models.BooleanField(
-        verbose_name=_('Has employer worked in SG for last 2 years?'),
+        verbose_name=_('Have you worked in Singapore for the last 2 Years?'),
         default=True,
         choices=TrueFalseChoices(
             _('Yes'),
@@ -3458,11 +3352,9 @@ class ArchivedDoc(models.Model):
         ),
     )
     monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Employer monthly income / combined income with spouse"),
+        verbose_name=_("Monthly Income"),
         choices=ed_constants.IncomeChoices.choices,
         default=ed_constants.IncomeChoices.INCOME_3,
-        blank=True,
-        null=True,
     )
 
     # Doc Base
@@ -3915,7 +3807,7 @@ class ArchivedDoc(models.Model):
         choices=ed_constants.WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("6.4 Accommodation cost per day"),
+        verbose_name=_("6.4 Food and Accommodation cost per day"),
         max_digits=7,
         decimal_places=2,
         validators=[

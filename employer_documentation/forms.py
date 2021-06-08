@@ -179,7 +179,8 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'employer_passport_date',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-6',
+                    id='employer_id_other_2',
                 ),
                 Column(
                     'employer_marital_status',
@@ -246,7 +247,8 @@ class EmployerForm(forms.ModelForm):
                     Row(
                         Column(
                             'spouse_passport_date',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-6',
+                            id='spouse_id_other_2',
                         ),
                         Column(
                             'employer_marriage_sg_registered',
@@ -1195,7 +1197,12 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.monthly_income_label = kwargs.pop('monthly_income_label')
         super().__init__(*args, **kwargs)
+
+        # Set form field label based on applicant type
+        self.fields['monthly_income'].label = self.monthly_income_label[0]
+        self.fields['worked_in_sg'].label = self.monthly_income_label[1]
 
         self.helper = FormHelper()
         self.helper.layout = Layout(

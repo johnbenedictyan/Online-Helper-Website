@@ -5,7 +5,7 @@
     {% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
         Employer and Spouse Income Tax Declaration
     {% elif object.employer.applicant_type == 'JNT_AP' %}
-        Joint Applicant Income Tax Declaration
+        Employer and Joint Applicant Income Tax Declaration
     {% elif object.employer.applicant_type == 'SPONSR' %}
         Sponsor Income Tax Declaration
     {% else %}
@@ -30,7 +30,7 @@
     {% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
         <h1>Employer and Spouse Income Tax Declaration</h1>
     {% elif object.employer.applicant_type == 'JNT_AP' %}
-        <h1>Joint Applicant Income Tax Declaration</h1>
+        <h1>Employer and Joint Applicant Income Tax Declaration</h1>
     {% elif object.employer.applicant_type == 'SPONSR' %}
         <h1>Sponsor Income Tax Declaration</h1>
     {% else %}
@@ -162,18 +162,26 @@
         </td>
     </tr>
     <tr>
-        <td class="border--bottom border--right">Income Tax Notice of Assessment No:<br>
+        <td class="border--bottom border--right">Income Tax Notice of Assessment No: 
             {% if object.employer.applicant_type == 'SPONSR' %}
-                {{ object.rn_sponsor_employer.get_sponsor_1_nric_full }}
+                {{ object.employer.rn_sponsor_employer.get_sponsor_1_nric_full }}
+                <br>
+                {{ object.employer.rn_sponsor_employer.sponsor_1_name }}
             {% else %}
                 {{ object.employer.get_employer_nric_full }}
+                <br>
+                {{ object.employer.employer_name }}
             {% endif %}
-            </td>
-        <td class="border--bottom">Income Tax Notice of Assessment No:<br>
+        </td>
+        <td class="border--bottom">Income Tax Notice of Assessment No: 
             {% if object.employer.applicant_type == 'JNT_AP' %}
-                {{ object.rn_ja_employer.get_joint_applicant_nric_full }}
+                {{ object.employer.rn_ja_employer.get_joint_applicant_nric_full }}
+                <br>
+                {{ object.employer.rn_ja_employer.joint_applicant_name }}
             {% elif object.employer.applicant_type == 'SPONSR' %}
-                {{ object.rn_sponsor_employer.get_sponsor_2_nric_full }}
+                {{ object.employer.rn_sponsor_employer.get_sponsor_2_nric_full }}
+                <br>
+                {{ object.employer.rn_sponsor_employer.sponsor_2_name }}
             {% elif object.employer.applicant_type == 'SPOUSE' %}
                 {{ object.rn_signatures_ed.spouse_nric }}
             {% endif %}
@@ -186,6 +194,10 @@
             {% else %}
                 <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
             {% endif %}
+            <br>
+            <br>
+            <br>
+            <br>
         </td>
         <td class="border--bottom">Signature: 
             {% if object.employer.applicant_type == 'JNT_AP' %}

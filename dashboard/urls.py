@@ -10,8 +10,9 @@ from django.urls import include, path
 ## List Views
 from .views import (
     DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
-    DashboardEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
-    DashboardSalesList, DashboardEmployerList, DashboardStatusList
+    DashboardGeneralEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
+    DashboardSalesList, DashboardEmployerList, DashboardStatusList, 
+    DashboardShortlistedEnquiriesList
 )
 
 ## Detail Views
@@ -22,10 +23,8 @@ from .views import (
 
 ## Form Views
 from .views import (
-    DashboardMaidCreation, DashboardAgencyUpdate,
-    DashboardMaidLanguageSpokenFormView, DashboardMaidLanguagesAndFHPDRFormView,
-    DashboardMaidExperienceFormView, DashboardMaidAboutFDWFormView,
-    DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
+    DashboardAgencyUpdate,DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView, 
+    DashboardMaidAboutFDWFormView, DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
     DashboardMaidEmploymentHistoryFormView
 )
 ## Create Views
@@ -89,9 +88,14 @@ urlpatterns = [
                 name='dashboard_agency_plan_list'
             ),
             path(
-                'enquiries/',
-                DashboardEnquiriesList.as_view(),
-                name='dashboard_enquiries_list'
+                'general-enquiries/',
+                DashboardGeneralEnquiriesList.as_view(),
+                name='dashboard_general_enquiries_list'
+            ),
+            path(
+                'shortlisted-enquiries/',
+                DashboardShortlistedEnquiriesList.as_view(),
+                name='dashboard_shortlisted_enquiries_list'
             ),
             path(
                 'branches/',
@@ -171,11 +175,6 @@ urlpatterns = [
                         DashboardMaidInformationUpdate.as_view(),
                         name='dashboard_maid_information_update'
                     ),
-                    # path(
-                    #     'language-spoken/',
-                    #     DashboardMaidLanguageSpokenFormView.as_view(),
-                    #     name='dashboard_maid_language_spoken_update'
-                    # ),
                     path(
                         'languages-and-food-handling-dietary-restriction/',
                         DashboardMaidLanguagesAndFHPDRFormView.as_view(),

@@ -5,14 +5,14 @@
     <div class="container-fluid" style="min-height: 75vh;">
         <div class="row">
             <div class="col text-dark mb-3">
-                <h4>Shorlisted Enquiries</h4>
+                <h4 class="fs-5">Shortlisted Enquiries</h4>
             </div>
         </div>
-        <div class="row bg-custom-light-blue text-dark mx-half py-3 border text-center">
-            <div class="col-1">
+        <div class="row bg-dashboard-general-background-color text-light mx-half py-3 border">
+            <div class="col-0-5 text-center">
                 <h6 class="mb-0">S/N</h6>
             </div>
-            <div class="col">
+            <div class="col-2">
                 <h6 class="mb-0">Employer</h6>
             </div>
             <div class="col">
@@ -21,33 +21,37 @@
             <div class="col">
                 <h6 class="mb-0">Remarks</h6>
             </div>
-            <div class="col">
+            <div class="col-1">
                 <h6 class="mb-0">Date</h6>
             </div>
             <div class="col-1">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
-        {% for account in accounts %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
+        {% for enquiry in enquiries %}
+        <div class="row {% cycle '' 'bg-light ' %} mx-half py-3 border border-top-0">
+            <div class="col-0-5 text-center">
+                <p class="mb-0">{{enquiry.pk}}</p>
+            </div>
+            <div class="col-2">
+                <p class="mb-1">Name: {{enquiry.name}}</p>
+                <p class="mb-1">Mobile: {{enquiry.mobile_number}}</p>
+                <p class="mb-0">Email: {{enquiry.email}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">Name: {{enquiry}}</p>
+                <p class="mb-0">Nationality: {{enquiry}}</p>
+                <p class="mb-0">Type: {{enquiry}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{enquiry.remarks}}</p>
+            </div>
             <div class="col-1">
-                <p class="mb-0"></p>
-            </div>
-            <div class="col">
-                <p class="mb-0"></p>
-            </div>
-            <div class="col">
-                <p class="mb-0"></p>
-            </div>
-            <div class="col">
-                <p class="mb-0"></p>
-            </div>
-            <div class="col">
                 <p class="mb-0"></p>
             </div>
             <div class="col-1">
                 <div class="row justify-content-evenly">
-                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="#"><i class="far fa-edit"></i></a>
                     <a href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
