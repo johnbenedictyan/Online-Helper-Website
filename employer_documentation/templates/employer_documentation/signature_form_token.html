@@ -1,81 +1,144 @@
 {% extends 'base.html' %}
 {% load static %}
-
-{% block css %}
-{% endblock css %}
-
+{% load crispy_forms_tags %}
 {% block main_content %}
 <div class="container">
-    <h5>Review Agreements</h5>
-    <dl class="row">
-        <!-- {% comment %} Only Employers {% endcomment %} -->
-        {% if request.resolver_match.url_name == 'token_signature_employer_route' %}
-            <dd class="col-sm-8 text-truncate">Service Fee Schedule</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_service_fee_schedule' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-            
-            <dd class="col-sm-8 text-truncate">Service Agreement</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_service_agreement' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="row">
+                <div class="col my-2">
+                    <div class="row bg-dashboard-pagebar-color">
+                        <div class="col">
+                            <h5 class="my-1">Case Information</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <h6>Name of Employer</h6>
+                            <p>Raymond</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Name of FDW</h6>
+                            <p>Siti</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Name of Agency Employee</h6>
+                            <p>Sam</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Case Ref No</h6>
+                            <p>123</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% with request.resolver_match.url_name as url_name %}
+            <div class="row">
+                <div class="col my-2">
+                    <div class="row bg-dashboard-pagebar-color">
+                        <div class="col">
+                            <h5 class="my-1">View Documents</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        {% if url_name == 'token_signature_employer_route' %}
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_service_fee_schedule' slug=object.employer_slug %}" target="_blank">Service Fee Schedule</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_service_agreement' slug=object.employer_slug %}" target="_blank">Service Agreement</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_transfer_consent' slug=object.employer_slug %}" target="_blank">Transfer Consent</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_work_pass_authorisation' slug=object.employer_slug %}" target="_blank">Work Pass Authorisation</a>
+                            </div>
+                            <!-- {% comment %}
+                            Security Bond
+                            <a href="{% url 'pdf_token_employer_security_bond' slug=object.employer_slug %}" target="_blank">PDF</a>
+                            {% endcomment %} -->
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_income_tax_declaration' slug=object.employer_slug %}" target="_blank">Income Tax Declaration</a>
+                            </div>
+                        {% endif %}
 
-            <dd class="col-sm-8 text-truncate">Transfer Consent</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_transfer_consent' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Work Pass Authorisation</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_work_pass_authorisation' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-            <!-- {% comment %}
-            <dd class="col-sm-8 text-truncate">Security Bond</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_security_bond' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-            {% endcomment %} -->
-            <dd class="col-sm-8 text-truncate">Income Tax Declaration</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_income_tax_declaration' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-        {% endif %}
-
-        <!-- {% comment %} Employers & FDWs, but different URLs {% endcomment %} -->
-        {% if request.resolver_match.url_name == 'token_signature_employer_route' %}
-            <dd class="col-sm-8 text-truncate">Employment Contract</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_employment_contract' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Repayment Schedule</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_repayment_schedule' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Rest Day Agreement</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_rest_day_agreement' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Job Order</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_job_order_route' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Handover Checklist</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_handover_checklist' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-            <!-- {% comment %}
-            <dd class="col-sm-8 text-truncate">Work Permit Application - Form 12B</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_fdw_work_permit_12b' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-            {% endcomment %} -->
-            <dd class="col-sm-8 text-truncate">Safety Agreement</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_employer_safety_agreement' slug=object.employer_slug %}" target="_blank">PDF</a></dd>
-        {% elif request.resolver_match.url_name == 'token_signature_fdw_route' %}
-            <dd class="col-sm-8 text-truncate">Employment Contract</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_employment_contract' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Repayment Schedule</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_repayment_schedule' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Rest Day Agreement</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_rest_day_agreement' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Job Order</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_job_order_route' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-
-            <dd class="col-sm-8 text-truncate">Handover Checklist</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_handover_checklist' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-            <!-- {% comment %}
-            <dd class="col-sm-8 text-truncate">Work Permit Application - Form 12B</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_fdw_work_permit_12b' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-            {% endcomment %} -->
-            <dd class="col-sm-8 text-truncate">Safety Agreement</dd>
-            <dd class="col-sm-4"><a href="{% url 'pdf_token_fdw_safety_agreement' slug=object.fdw_slug %}" target="_blank">PDF</a></dd>
-        {% endif %}
-    </dl>
+                        <!-- {% comment %} Employers & FDWs, but different URLs {% endcomment %} -->
+                        {% if url_name == 'token_signature_employer_route' %}
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_employment_contract' slug=object.employer_slug %}" target="_blank">Employment Contract</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_repayment_schedule' slug=object.employer_slug %}" target="_blank">Repayment Schedule</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_rest_day_agreement' slug=object.employer_slug %}" target="_blank">Rest Day Agreement</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_job_order_route' slug=object.employer_slug %}" target="_blank">Job Order</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_handover_checklist' slug=object.employer_slug %}" target="_blank">Handover Checklist</a>
+                            </div>
+                            <!-- {% comment %}
+                            Work Permit Application - Form 12B
+                            <a href="{% url 'pdf_token_employer_fdw_work_permit_12b' slug=object.employer_slug %}" target="_blank">PDF</a>
+                            {% endcomment %} -->
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_employer_safety_agreement' slug=object.employer_slug %}" target="_blank">Safety Agreement</a>
+                            </div>
+                        
+                        {% elif url_name == 'token_signature_fdw_route' %}
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_fdw_employment_contract' slug=object.fdw_slug %}" target="_blank">Employment Contract</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_fdw_repayment_schedule' slug=object.fdw_slug %}" target="_blank">Repayment Schedule</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_fdw_rest_day_agreement' slug=object.fdw_slug %}" target="_blank">Rest Day Agreement</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_fdw_job_order_route' slug=object.fdw_slug %}" target="_blank">Job Order</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_fdw_handover_checklist' slug=object.fdw_slug %}" target="_blank">Handover Checklist</a>
+                            </div>
+                            <!-- {% comment %}
+                            Work Permit Application - Form 12B
+                            <a href="{% url 'pdf_token_fdw_fdw_work_permit_12b' slug=object.fdw_slug %}" target="_blank">PDF</a>
+                            {% endcomment %} -->
+                            <div class="col-md-6">
+                                <a href="{% url 'pdf_token_fdw_safety_agreement' slug=object.fdw_slug %}" target="_blank">Safety Agreement</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col my-2">
+                    <div class="row bg-dashboard-pagebar-color">
+                        <div class="col">
+                            <h5 class="my-1">Signature</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            {% crispy form %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col d-flex justify-content-center mt-4">
+                            <button type="button" class="btn btn-outline-secondary w-25 mr-2" data-dismiss="modal">Clear Signatures</button>
+                            <button type="button" class="btn btn-primary w-25 ml-2">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        </div>
+    </div>
 </div>
-{% include 'employer_documentation/signature_snippet_form.html' %}
 {% endblock main_content %}
 
 {% block js %}
