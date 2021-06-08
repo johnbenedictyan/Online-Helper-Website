@@ -1637,7 +1637,7 @@ class DocServiceFeeSchedule(models.Model):
         ],
     )
     b2f_sip = models.DecimalField(
-        verbose_name=_("2g. Settling-In-Programme (SIP)"),
+        verbose_name=_("2f. Settling-In-Programme (SIP)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1646,13 +1646,13 @@ class DocServiceFeeSchedule(models.Model):
         ],
     )
     b2g1_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (i)"),
+        verbose_name=_("2g. Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
     b2g1_other_services_fee = models.DecimalField(
-        verbose_name=_("2i. Other services fee (i)"),
+        verbose_name=_("2g. Other services fee (i)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1663,13 +1663,13 @@ class DocServiceFeeSchedule(models.Model):
         null=True,
     )
     b2g2_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (ii)"),
+        verbose_name=_("2g. Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True,
     )
     b2g2_other_services_fee = models.DecimalField(
-        verbose_name=_("2i. Other services fee (ii)"),
+        verbose_name=_("2g. Other services fee (ii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1680,13 +1680,13 @@ class DocServiceFeeSchedule(models.Model):
         null=True,
     )
     b2g3_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (iii)"),
+        verbose_name=_("2g. Other services provided (iii)"),
         max_length=40,
         blank=True,
         null=True,
     )
     b2g3_other_services_fee = models.DecimalField(
-        verbose_name=_("2i. Other services fee (iii)"),
+        verbose_name=_("2g. Other services fee (iii)"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1698,13 +1698,13 @@ class DocServiceFeeSchedule(models.Model):
     )
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("2j. Cost for replacement within __ month(s)"),
+        verbose_name=_("2h. Cost for replacement within __ month(s)"),
         choices=ed_constants.MonthChoices.choices,
         blank=True,
         null=True,
     )
     b2h_replacement_cost = models.DecimalField(
-        verbose_name=_("2j. Cost for replacement"),
+        verbose_name=_("2h. Cost for replacement"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1715,7 +1715,7 @@ class DocServiceFeeSchedule(models.Model):
         null=True,
     )
     b2i_work_permit_renewal = models.DecimalField(
-        verbose_name=_("2k. Renewal of Work Permit"),
+        verbose_name=_("2i. Renewal of Work Permit"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -1759,14 +1759,12 @@ class DocServiceFeeSchedule(models.Model):
             self.b2c_security_bond_accident_insurance,
             self.b2d_indemnity_policy_reimbursement,
             self.b2e_home_service,
-            self.b2f_counselling,
-            self.b2g_sip,
-            self.b2h_food_lodging,
-            self.b2i1_other_services_fee,
-            self.b2i2_other_services_fee,
-            self.b2i3_other_services_fee,
-            self.b2j_replacement_cost,
-            self.b2k_work_permit_renewal,
+            self.b2f_sip,
+            self.b2g1_other_services_fee,
+            self.b2g2_other_services_fee,
+            self.b2g3_other_services_fee,
+            self.b2h_replacement_cost,
+            self.b2i_work_permit_renewal,
         ]
         for field in fields:
             # Sum this way because some fields may be null
