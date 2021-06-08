@@ -114,7 +114,7 @@ class EmployerSponsorCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_incomedetails_create_route', kwargs={
+        return reverse_lazy('employer_incomedetails_update_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
 
@@ -154,7 +154,7 @@ class EmployerJointApplicantCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_incomedetails_create_route', kwargs={
+        return reverse_lazy('employer_incomedetails_update_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
 
