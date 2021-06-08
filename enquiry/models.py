@@ -115,67 +115,25 @@ class GeneralEnquiry(models.Model):
         related_name='last_modified_general_enquiries',
         null=True
     )
+
+    date_published = models.DateField(
+        auto_created=True,
+        editable=False
+    )
+
+    def display_languages(self):
+        txt = ''
+        for i in self.languages_spoken.all():
+            txt+=str(i)
+        return txt
+
+    def display_duties(self):
+        txt = ''
+        for i in self.maid_responsibility.all():
+            txt+=str(i)
+        return txt
  
-class AgencyEnquiry(models.Model):
-    agency = models.ForeignKey(
-        Agency,
-        on_delete=models.CASCADE,
-        related_name='enquiries'
-    )
-    
-    name = models.CharField(
-        verbose_name=_('Name'),
-        blank=False,
-        max_length=100
-    )
-
-    contact_number = models.CharField(
-        verbose_name=_('Contact Number'),
-        blank=False,
-        max_length=100
-    )
-
-    email = models.EmailField(
-        verbose_name=_('Email'),
-        blank=False,
-        max_length=255
-    )
-
-    maid_nationality = models.CharField(
-        verbose_name=_('Maid\'s Nationality'),
-        blank=False,
-        choices=MAID_NATIONALITY_CHOICES,
-        default=NO_PREFERENCE,
-        max_length=3
-    )
-
-    maid_responsibility = models.ManyToManyField(
-        MaidResponsibility,
-        related_name='agency_enquiries'
-    )
-
-    maid_type = models.CharField(
-        verbose_name=_('Type of maid'),
-        blank=False,
-        choices=MAID_TYPE_CHOICES,
-        default=NO_PREFERENCE,
-        max_length=3
-    )
-
-    maid_age_group = models.CharField(
-        verbose_name=_('Maid Age Group'),
-        blank=False,
-        choices=MAID_AGE_CHOICES,
-        default=MAID_AGE_23_TO_29,
-        max_length=8
-    )
-    
-    remarks = models.TextField(
-        verbose_name=_('Remarks'),
-        blank=False
-    )
-    
-class MaidEnquiry(models.Model):
+class ShortlistedEnquiry(models.Model):
     potential_employer = models.ForeignKey(
         PotentialEmployer,
         on_delete=models.CASCADE,
@@ -248,4 +206,9 @@ class MaidEnquiry(models.Model):
         on_delete=models.SET_NULL,
         related_name='last_modified_maid_enquiries',
         null=True
+    )
+
+    date_published = models.DateField(
+        auto_created=True,
+        editable=False
     )

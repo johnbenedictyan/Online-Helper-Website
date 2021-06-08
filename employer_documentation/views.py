@@ -28,7 +28,7 @@ class EmployerDetailView(
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'detail/new-dashboard-employer-detail.html'
+    template_name = 'detail/dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
     AgencyLoginRequiredMixin,
@@ -37,7 +37,7 @@ class EmployerDocDetailView(
 ):
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'detail/new-dashboard-case-detail.html'
+    template_name = 'detail/dashboard-case-detail.html'
 
 # Create Views
 class EmployerCreateView(
@@ -114,7 +114,7 @@ class EmployerSponsorCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_incomedetails_create_route', kwargs={
+        return reverse_lazy('employer_incomedetails_update_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
 
@@ -154,7 +154,7 @@ class EmployerJointApplicantCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_incomedetails_create_route', kwargs={
+        return reverse_lazy('employer_incomedetails_update_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
 
@@ -168,35 +168,32 @@ class EmployerIncomeDetailsCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'employer_documentation/crispy_form.html'
 
+    def get_object(self, *args, **kwargs):
+        return models.Employer.objects.get(
+            pk = self.kwargs.get(self.pk_url_kwarg)
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'level_0_pk': self.kwargs.get(
-                self.pk_url_kwarg
-            ), 
-            'type_of_applicant':models.Employer.objects.get(pk=self.kwargs.get(self.pk_url_kwarg)).applicant_type
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
+            'type_of_applicant': self.get_object().applicant_type,
         })
         return context
-
-    def get_object(self, *args, **kwargs):
-        return models.Employer.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-                )
-            )
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        type_of_applicant = self.get_object().applicant_type
+        monthly_income_label = constants.monthly_income_label.get(
+            type_of_applicant
+        )
+        kwargs['monthly_income_label'] = monthly_income_label
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer = models.Employer.objects.get(
-            pk = self.kwargs.get(
-                self.pk_url_kwarg
-            )
-        )
+        form.instance.employer = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -609,6 +606,11 @@ class EmployerIncomeDetailsUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        type_of_applicant = self.object.employer.applicant_type
+        monthly_income_label = constants.monthly_income_label.get(
+            type_of_applicant
+        )
+        kwargs['monthly_income_label'] = monthly_income_label
         return kwargs
 
     def get_success_url(self):
@@ -847,31 +849,31 @@ class DocUploadUpdateView(
     def get_success_url(self):
         return reverse('dashboard_case_list')
 
-class CaseStatusUpdateView(
-    AgencyLoginRequiredMixin,
-    GetAuthorityMixin,
-    UpdateView
-):
-    model = models.CaseStatus
-    form_class = forms.CaseStatusForm
-    pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+# class CaseStatusUpdateView(
+#     AgencyLoginRequiredMixin,
+#     GetAuthorityMixin,
+#     UpdateView
+# ):
+#     model = models.CaseStatus
+#     form_class = forms.CaseStatusForm
+#     pk_url_kwarg = 'level_1_pk'
+#     template_name = 'employer_documentation/crispy_form.html'
 
-    def get_object(self):
-        return models.EmployerDoc.objects.get(
-            pk=self.kwargs.get(self.pk_url_kwarg)
-        ).rn_casestatus_ed
+#     def get_object(self):
+#         return models.EmployerDoc.objects.get(
+#             pk=self.kwargs.get(self.pk_url_kwarg)
+#         ).rn_casestatus_ed
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user_pk'] = self.request.user.pk
-        kwargs['authority'] = self.authority
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user_pk'] = self.request.user.pk
+#         kwargs['authority'] = self.authority
+#         return kwargs
 
-    def get_success_url(self):
-        return reverse('ed_detail_route', kwargs={
-            'level_1_pk': self.object.employer_doc.pk,
-        })
+#     def get_success_url(self):
+#         return reverse('case_detail_route', kwargs={
+#             'level_1_pk': self.object.employer_doc.pk,
+#         })
 
 class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
@@ -973,35 +975,39 @@ class EmployerDocDeleteView(
 
 
 # Signature Views
-# class SignatureUpdateByAgentView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.EmployerDocSig
-#     form_class = SignatureForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/signature_form_agency.html'
-#     model_field_name = None
-#     form_fields = None
+class SignatureUpdateByAgentView(
+    AgencyLoginRequiredMixin,
+    GetAuthorityMixin,
+    UpdateView
+):
+    model = models.EmployerDocSig
+    form_class = forms.SignatureForm
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'employer_documentation/signature_form_agency.html'
+    model_field_name = None
+    form_fields = None
 
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['model_field_name'] = self.model_field_name
-#         kwargs['form_fields'] = self.form_fields
-#         return kwargs
+    def get_object(self):
+        return models.EmployerDocSig.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
-#             self.model_field_name).verbose_name
-#         return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['model_field_name'] = self.model_field_name
+        kwargs['form_fields'] = self.form_fields
+        return kwargs
 
-#     def get_success_url(self):
-#         return reverse_lazy('ed_detail_route', kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_field_verbose_name'] = models.EmployerDocSig._meta.get_field(
+            self.model_field_name).verbose_name
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('case_detail_route', kwargs={
+            'level_1_pk': self.object.employer_doc.pk,
+        })
 
 # class VerifyUserTokenView(
 #     SuccessMessageMixin,

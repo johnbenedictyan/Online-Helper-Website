@@ -1,6 +1,8 @@
-{% extends 'maid-base.html' %}
+{% extends 'dashboard-base.html' %}
 {% load crispy_forms_tags %}
-{% block maid_section %}
+{% block dashboard_section %}
+    {% block title_banner_section %}
+    {% endblock title_banner_section %}
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -11,9 +13,10 @@
         {% endfor %}
     {% endif %}
     <div class="container">
-        <h1>Update Elderly Care Information</h1>
         <form method="post" enctype="multipart/form-data">
             {% crispy form %}
         </form>
+        {% block post_form_section %}
+        {% endblock post_form_section %}
     </div>
-{% endblock maid_section %}
+{% endblock dashboard_section %}

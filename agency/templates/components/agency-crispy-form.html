@@ -1,6 +1,8 @@
-{% extends 'maid-base.html' %}
+{% extends 'agency-base.html' %}
 {% load crispy_forms_tags %}
-{% block maid_section %}
+{% block agency_section %}
+    {% block title_banner_section %}
+    {% endblock title_banner_section %}
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -11,9 +13,10 @@
         {% endfor %}
     {% endif %}
     <div class="container">
-        <h1>Create a new maid</h1>
         <form method="post" enctype="multipart/form-data">
             {% crispy form %}
         </form>
+        {% block post_form_section %}
+        {% endblock post_form_section %}
     </div>
-{% endblock maid_section %}
+{% endblock agency_section %}

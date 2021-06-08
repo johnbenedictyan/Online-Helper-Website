@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
+from django.utils import timezone
 
 # Imports from project-wide files
 
@@ -16,8 +17,8 @@ from maid.models import Maid
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import GeneralEnquiryForm, AgencyEnquiryForm
-from .models import GeneralEnquiry, AgencyEnquiry
+from .forms import GeneralEnquiryForm, ShortlistedEnquiryForm
+from .models import GeneralEnquiry, ShortlistedEnquiry
 
 # Start of Views
 
@@ -36,47 +37,8 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
             form.instance.potential_employer = PotentialEmployer.objects.get(
                 user = self.request.user
             )
+            form.instance.last_modified = self.request.user
         return super().form_valid(form)
-
-class AgencyEnquiryView(SuccessMessageMixin, CreateView):
-    context_object_name = 'agency_enquiry'
-    form_class = AgencyEnquiryForm
-    http_method_names = ['post']
-    model = AgencyEnquiry
-    template_name = 'general_enquiry.html'
-    success_url = reverse_lazy('home')
-    success_message = 'Enquiry created'
-
-    def form_valid(self, form):
-        if self.request.user:
-            form.instance.agency = Agency.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        return super().form_valid(form)
-
-class MaidEnquiryView(SuccessMessageMixin, CreateView):
-    context_object_name = 'general_enquiry'
-    form_class = GeneralEnquiryForm
-    http_method_names = ['post']
-    model = GeneralEnquiry
-    template_name = 'general_enquiry.html'
-    success_url = reverse_lazy('home')
-    success_message = 'Enquiry created'
-
-    def form_valid(self, form):
-        if self.request.user:
-            form.instance.potential_employer = PotentialEmployer.objects.get(
-                user = self.request.user
-            )
-            form.instance.maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        return super().form_valid(form)
-
 
 # Redirect Views
 class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
@@ -146,8 +108,8 @@ class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
 
     def get_queryset(self):
         return GeneralEnquiry.objects.filter(
-            employer__user = self.request.user,
-            active = True
+            potential_employer__user = self.request.user,
+            # active = True
         )
 
 # Detail Views

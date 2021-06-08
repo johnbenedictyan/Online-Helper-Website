@@ -12,7 +12,11 @@ from django.utils.translation import gettext_lazy as _
 
 def validate_links(value):
     url_regex = "(?P<url>https?://[^\s]+)"
-    if re.search(url_regex, value).group('url'):
+    try:
+        re.search(url_regex, value).group('url')
+    except:
+        return value
+    else:
         raise ValidationError(
             _('%(value)s contains links'),
             params={'value': value},

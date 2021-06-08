@@ -1,72 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
-        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
-
-        <!-- Manifest -->
-        <link rel="manifest" href="{% static 'site.webmanifest' %}">
-
-        <!-- Bootstrap CSS -->
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous"> -->
-
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
-
-        <!-- Hover CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.1.1/css/hover-min.css" type="text/css" />
-
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
-
-        <!-- AOS CSS -->
-        <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-        
-        <!-- Flatpickr CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-        <!-- Slick Carousel CSS -->
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-
-        <!-- Tippy CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
-
-        <!-- No Ui Slider CSS -->
-        <link rel="stylesheet" href="{% static 'css/vendor/nouislider/nouislider.min.css' %}">
-
-        <!-- Slick Carouel CSS -->
-        <link rel="stylesheet" href="{% static 'css/vendor/slick/slick.css' %}">
-        <link rel="stylesheet" href="{% static 'css/vendor/slick/slick-theme.css' %}">
-
-        <!-- Apex Charts CSS -->
-        <link rel="stylesheet" href="{% static 'css/vendor/apexcharts/apexcharts.css' %}">
-
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="{% static 'css/vendor/bootstrap/bootstrap.css' %}">
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <link rel="stylesheet" href="{% static 'css/table.css' %}">
-        <link rel="stylesheet" href="{% static 'css/icons.css' %}">
-        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
-        <link rel="stylesheet" href="{% static 'css/vendor/argon/argon_table.css' %}">
-        <link rel="stylesheet" href="{% static 'css/toast.css' %}">
-
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://js.stripe.com/v3/"></script>
-        {% block css %}{% endblock css %}
-        {% block head %}{% endblock head %}
-
-        <title>Online Maid</title>
-    </head>
+    {% include 'components/head_section.html' %}
     <body class="dashboard-body">
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dashboard-general-background-color">
@@ -101,7 +36,7 @@
                         {% with request.resolver_match.url_name as url_name %}
                             {% if url_name in dashboard_side_nav_list %}
                             <div id="dashboardSideNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
-                                {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
+                                {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                             </div>
                             <div id="dashboardPageNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-pagebar-color text-dashboard-text-color">
                                 {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
@@ -142,7 +77,7 @@
                             </div>
                             {% else %}
                             <div id="dashboardSideNavWrapper" class="col-md-3 col-lg-2 bg-dashboard-navbar-color text-dark">
-                                {% include 'components/nav/new-dashboard-side-nav.html' with authority=authority %}
+                                {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                             </div>
                             {% endif %}
                             <div id="dashboardMainContentWrapper" class="col p-6">
@@ -165,26 +100,7 @@
                 </div>
             </div>
         </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-        <script src="https://unpkg.com/@popperjs/core@2"></script>
-        <script src="https://unpkg.com/tippy.js@6"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-        <script>
-            window.onload = () => {
-                AOS.init({
-                    disable: 'mobile'
-                });
-                $(".toast").toast('show');
-            }
-        </script>
-        <script src="{% static 'js/vendor/nouislider/nouislider.min.js' %}"></script>
-        <script src="{% static 'js/vendor/nouislider/nouislider.js' %}"></script>
-        <script src="{% static 'js/vendor/slick/slick.min.js' %}"></script>
-        <script src="{% static 'js/vendor/apexcharts/apexcharts.min.js' %}"></script>
-        <script src="{% static 'js/index.js' %}"></script>
+        {% include 'components/js_section.html' %}
         <script>
             $(function(){
                 MO(

@@ -15,39 +15,35 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
-from agency.forms import (
-    AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
-)
-from agency.formsets import (
-    AgencyBranchFormSetHelper, AgencyBranchFormSet
-)
-from agency.models import (
-    Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
-)
-from agency.mixins import (
-    AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
-)
+
+from agency.forms import AgencyForm, AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+from agency.formsets import AgencyBranchFormSetHelper, AgencyBranchFormSet
+from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
+from agency.mixins import AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
+
 from employer_documentation.models import Employer, EmployerDoc, CaseStatus, ArchivedDoc
-from enquiry.models import GeneralEnquiry
+
+from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
+
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
 from maid.forms import (
-    MainMaidCreationForm, MaidForm, MaidLanguageSpokenForm, 
-    MaidLanguagesAndFHPDRForm, MaidExperienceForm,
-    MaidAboutFDWForm, MaidEmploymentHistoryForm
+    MaidForm, MaidLanguageSpokenForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm,
+    MaidAboutFDWForm
 )
 from maid.formsets import (
     MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
     MaidEmploymentHistoryFormSet, MaidEmploymentHistoryFormSetHelper
 )
-from maid.mixins import FDWLimitMixin
 from maid.models import (
-    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
-    MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
-    MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, MaidInfantChildCare, MaidElderlyCare,
+    MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
 )
+
 from payment.models import Customer, Subscription
-from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
+
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
+
 # Imports from local app
 from .filters import (
     DashboardMaidFilter, DashboardEmployerFilter, DashboardCaseFilter, DashboardSalesFilter,
@@ -104,7 +100,7 @@ class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
                 'max': None
             },
             'enquiries': {
-                'current': agency.get_enquiries().count(),
+                'current': 0,
                 'max': None
             }
         }
@@ -118,7 +114,7 @@ class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFiltere
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
-    template_name = 'list/new-dashboard-maid-list.html'
+    template_name = 'list/dashboard-maid-list.html'
     filter_set = DashboardMaidFilter
     authority = ''
     agency_id = ''
@@ -167,7 +163,7 @@ class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView
     context_object_name = 'accounts'
     http_method_names = ['get']
     model = AgencyEmployee
-    template_name = 'list/new-dashboard-account-list.html'
+    template_name = 'list/dashboard-account-list.html'
     authority = ''
     agency_id = ''
 
@@ -210,18 +206,25 @@ class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
         kwargs.update(dashboard_agency_plan_kwargs)
         return kwargs
 
-class DashboardEnquiriesList(AgencyLoginRequiredMixin, ListView):
+class DashboardGeneralEnquiriesList(AgencyLoginRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
     model = GeneralEnquiry
-    template_name = 'list/dashboard-enquiry-list.html'
+    template_name = 'list/dashboard-general-enquiries-list.html'
+
+class DashboardShortlistedEnquiriesList(AgencyLoginRequiredMixin, ListView):
+    context_object_name = 'enquiries'
+    http_method_names = ['get']
+    model = ShortlistedEnquiry
+    template_name = 'list/dashboard-shortlisted-enquiries-list.html'
+    queryset = ShortlistedEnquiry.objects.filter()
 
 class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
                                 ListView):
     context_object_name = 'branches'
     http_method_names = ['get']
     model = AgencyBranch
-    template_name = 'list/new-dashboard-agency-branch-list.html'
+    template_name = 'list/dashboard-agency-branch-list.html'
     authority = ''
     agency_id = ''
 
@@ -346,7 +349,7 @@ class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
 class DashboardAgencyDetail(DashboardDetailView):
     context_object_name = 'agency'
     model = Agency
-    template_name = 'detail/new-dashboard-agency-detail.html'
+    template_name = 'detail/dashboard-agency-detail.html'
 
     def get_object(self):
         agency = get_object_or_404(
@@ -358,7 +361,7 @@ class DashboardAgencyDetail(DashboardDetailView):
 class DashboardMaidDetail(DashboardDetailView):
     context_object_name = 'maid'
     model = Maid
-    template_name = 'detail/new-dashboard-maid-detail.html'
+    template_name = 'detail/dashboard-maid-detail.html'
 
     def get_object(self):
         return Maid.objects.get(
@@ -371,7 +374,7 @@ class DashboardMaidDetail(DashboardDetailView):
 class DashboardEmployerDetail(DashboardDetailView):
     context_object_name = 'employer'
     # model = Maid
-    template_name = 'detail/new-dashboard-employer-detail.html'
+    template_name = 'detail/dashboard-employer-detail.html'
 
     def get_object(self):
         pass
@@ -385,7 +388,7 @@ class DashboardEmployerDetail(DashboardDetailView):
 class DashboardCaseDetail(DashboardDetailView):
     context_object_name = 'case'
     # model = Maid
-    template_name = 'detail/new-dashboard-case-detail.html'
+    template_name = 'detail/dashboard-case-detail.html'
 
     def get_object(self):
         pass
@@ -397,49 +400,9 @@ class DashboardCaseDetail(DashboardDetailView):
         # )
 
 # Form Views
-class DashboardMaidCreation(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          FDWLimitMixin, SuccessMessageMixin, FormView):
-    form_class = MainMaidCreationForm
-    http_method_names = ['get','post']
-    success_url = reverse_lazy('dashboard_maid_detail')
-    template_name = 'form/maid-create-form.html'
-    authority = ''
-    agency_id = ''
-    
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            'update': False
-        })
-        return kwargs
-
-    def get_success_url(self):
-        return reverse_lazy(
-            super().get_success_url(),
-            kwargs={
-                'pk':self.object.pk
-            }
-        )
-    
-    # def form_valid(self, form):
-        # try:
-        #     self.object = form.save()
-        # except Exception as e:
-        #     messages.warning(
-        #         self.request,
-        #         'Please try again',
-        #         extra_tags='warning'
-        #     )
-        #     return super().form_invalid(form)
-        # else:
-        #     return super().form_valid(form)
-
-class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin, 
-                                                  GetAuthorityMixin,
-                                                  SuccessMessageMixin, 
-                                                  FormView):
-    form_class = MainMaidCreationForm
+class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                                                  SuccessMessageMixin, FormView):
+    form_class = None
     http_method_names = ['get','post']
     success_url = reverse_lazy('dashboard_maid_detail')
     template_name = 'form/maid-create-form.html'
