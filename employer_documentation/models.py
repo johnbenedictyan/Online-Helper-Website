@@ -1636,16 +1636,7 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
     )
-    b2f_counselling = models.DecimalField(
-        verbose_name=_("2f. Each Counselling Session"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-    )
-    b2g_sip = models.DecimalField(
+    b2f_sip = models.DecimalField(
         verbose_name=_("2g. Settling-In-Programme (SIP)"),
         max_digits=7,
         decimal_places=2,
@@ -1654,22 +1645,13 @@ class DocServiceFeeSchedule(models.Model):
             MaxValueValidator(10000),
         ],
     )
-    b2h_food_lodging = models.DecimalField(
-        verbose_name=_("2h. Food and Lodging"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-    )
-    b2i1_other_services_description = models.CharField(
+    b2g1_other_services_description = models.CharField(
         verbose_name=_("2i. Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2i1_other_services_fee = models.DecimalField(
+    b2g1_other_services_fee = models.DecimalField(
         verbose_name=_("2i. Other services fee (i)"),
         max_digits=7,
         decimal_places=2,
@@ -1680,13 +1662,13 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2i2_other_services_description = models.CharField(
+    b2g2_other_services_description = models.CharField(
         verbose_name=_("2i. Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2i2_other_services_fee = models.DecimalField(
+    b2g2_other_services_fee = models.DecimalField(
         verbose_name=_("2i. Other services fee (ii)"),
         max_digits=7,
         decimal_places=2,
@@ -1697,13 +1679,13 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2i3_other_services_description = models.CharField(
+    b2g3_other_services_description = models.CharField(
         verbose_name=_("2i. Other services provided (iii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2i3_other_services_fee = models.DecimalField(
+    b2g3_other_services_fee = models.DecimalField(
         verbose_name=_("2i. Other services fee (iii)"),
         max_digits=7,
         decimal_places=2,
@@ -1714,14 +1696,14 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2j_replacement_months = models.PositiveSmallIntegerField(
+    b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("2j. Cost for replacement within __ month(s)"),
         choices=ed_constants.MonthChoices.choices,
         blank=True,
         null=True,
     )
-    b2j_replacement_cost = models.DecimalField(
+    b2h_replacement_cost = models.DecimalField(
         verbose_name=_("2j. Cost for replacement"),
         max_digits=7,
         decimal_places=2,
@@ -1732,7 +1714,7 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2k_work_permit_renewal = models.DecimalField(
+    b2i_work_permit_renewal = models.DecimalField(
         verbose_name=_("2k. Renewal of Work Permit"),
         max_digits=7,
         decimal_places=2,
@@ -1945,7 +1927,7 @@ class DocServAgmtEmpCtr(models.Model):
         choices=ed_constants.WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("6.4 Accommodation cost per day"),
+        verbose_name=_("6.4 Food and Accommodation cost per day"),
         max_digits=7,
         decimal_places=2,
         validators=[
@@ -2174,80 +2156,6 @@ class EmployerDocSig(models.Model):
         blank=True,
         null=True
     )
-
-    # Witnesses
-    # employer_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for Employer'),
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_name = models.CharField(
-    #     verbose_name=_('Employer Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-    # employer_witness_address_1 = models.CharField(
-    #     verbose_name=_('Employer Witness Address Line 1'),
-    #     max_length=100,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # employer_witness_address_2 = models.CharField(
-    #     verbose_name=_('Employer Witness Address Line 2'),
-    #     max_length=50,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # employer_witness_post_code = models.CharField(
-    #     verbose_name=_('Employer Witness Postal Code'),
-    #     max_length=25,
-    #     blank=True,
-    #     null=True
-    # )
-
-    # fdw_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for FDW'),
-    #     blank=True,
-    #     null=True
-    # )
-    # fdw_witness_name = models.CharField(
-    #     verbose_name=_('FDW Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # fdw_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_signature = models.TextField(
-    #     verbose_name=_('Signature of Witness for Agency Staff Member'),
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_name = models.CharField(
-    #     verbose_name=_('Agency Staff Memeber Witness Name'),
-    #     max_length=40,
-    #     blank=True,
-    #     null=True
-    # )
-    # agency_staff_witness_nric = models.CharField(
-    #     verbose_name=_('Last 4 characters of NRIC/FIN'),
-    #     max_length=4,
-    #     blank=True,
-    #     null=True
-    # )
 
 class CaseStatus(models.Model):
     employer_doc = models.OneToOneField(
@@ -3901,7 +3809,7 @@ class ArchivedDoc(models.Model):
         choices=ed_constants.WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("6.4 Accommodation cost per day"),
+        verbose_name=_("6.4 Food and Accommodation cost per day"),
         max_digits=7,
         decimal_places=2,
         validators=[
