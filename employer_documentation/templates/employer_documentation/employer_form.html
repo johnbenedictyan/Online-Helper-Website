@@ -51,13 +51,16 @@
         if (employerResidentialStatus) {
             let employerIdNric = document.getElementById('employer_id_nric');
             let employerIdOther = document.getElementById('employer_id_other');
+            let employerIdOther2 = document.getElementById('employer_id_other_2');
             // On page load
             if (employerResidentialStatus.value=='SC' || employerResidentialStatus.value=='PR' ) {
                 employerIdNric.hidden = false; // show
                 employerIdOther.hidden = true; // hide
+                employerIdOther2.hidden = true; // hide
             } else {
                 employerIdNric.hidden = true; // hide
                 employerIdOther.hidden = false; // show
+                employerIdOther2.hidden = false; // show
             }
 
             // On employerResidentialStatus change
@@ -65,9 +68,11 @@
                 if (this.value=='SC' || this.value=='PR') {
                     employerIdNric.hidden = false; // show
                     employerIdOther.hidden = true; // hide
+                    employerIdOther2.hidden = true; // hide
                 } else {
                     employerIdNric.hidden = true; // hide
                     employerIdOther.hidden = false; // show
+                    employerIdOther2.hidden = false; // show
                 }
             })
         }
@@ -75,13 +80,16 @@
         if (spouseResidentialStatus) {
             let spouseIdNric = document.getElementById('spouse_id_nric');
             let spouseIdOther = document.getElementById('spouse_id_other');
+            let spouseIdOther2 = document.getElementById('spouse_id_other_2');
             // On page load
             if (spouseResidentialStatus.value=='SC' || spouseResidentialStatus.value=='PR' ) {
                 spouseIdNric.hidden = false; // show
                 spouseIdOther.hidden = true; // hide
+                spouseIdOther2.hidden = true; // hide
             } else {
                 spouseIdNric.hidden = true; // hide
                 spouseIdOther.hidden = false; // show
+                spouseIdOther2.hidden = false; // show
             }
 
             // On spouseResidentialStatus change
@@ -89,9 +97,11 @@
                 if (this.value=='SC' || this.value=='PR') {
                     spouseIdNric.hidden = false; // show
                     spouseIdOther.hidden = true; // hide
+                    spouseIdOther2.hidden = true; // hide
                 } else {
                     spouseIdNric.hidden = true; // hide
                     spouseIdOther.hidden = false; // show
+                    spouseIdOther2.hidden = false; // show
                 }
             })
         }

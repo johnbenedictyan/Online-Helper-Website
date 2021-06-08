@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-11 text-right mb-5">
-            <a href="#" class="btn btn-primary btn-dashboard-primary w-25">Edit</a>
+            <a href="{% url 'employer_update_route' level_0_pk=object.pk %}" class="btn btn-primary btn-dashboard-primary w-25">Edit</a>
         </div>
     </div>
     <div class="row mb-5">
@@ -88,26 +88,31 @@
                     <p class="mb-1">Employer Residential Status</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_residential_status_display }}</h6>
                 </div>
+                {% if object.employer_residential_status == 'SC' or object.employer_residential_status == 'PR' %}
                 <div class="col">
                     <p class="mb-1">NRIC</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_nric_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
+                {% else %}
                 <div class="col">
                     <p class="mb-1">FIN</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_fin }}</h6>
                 </div>
+                {% endif %}
+            </div>
+            {% if object.employer_residential_status != 'SC' and object.employer_residential_status != 'PR' %}
+            <div class="row">
                 <div class="col">
                     <p class="mb-1">Passport No</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_passport }}</h6>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <p class="mb-1">Passport Expiry Date</p>
                     <h6 class="text-dark mb-3">{{ object.employer_passport_date }}</h6>
                 </div>
+            </div>
+            {% endif %}
+            <div class="row">
                 <div class="col">
                     <p class="mb-1">Marital Status</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_marital_status_display }}</h6>
@@ -156,27 +161,30 @@
                     <p class="mb-1">Spouse's Residential Status</p>
                     <h6 class="text-dark mb-3">{{ object.get_spouse_residential_status_display }}</h6>
                 </div>
+                {% if object.spouse_residential_status == 'SC' or object.spouse_residential_status == 'PR' %}
                 <div class="col">
                     <p class="mb-1">Spouse's NRIC</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_spouse_nric_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
+                {% else %}
                 <div class="col">
                     <p class="mb-1">Spouse's FIN</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_spouse_fin_full }}</h6>
                 </div>
+                {% endif %}
+            </div>
+            {% if object.spouse_residential_status != 'SC' and object.spouse_residential_status != 'PR' %}
+            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport No</p>
                     <h6 class="text-dark mb-3">{{ object.get_employer_spouse_passport_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport Expiry Date</p>
                     <h6 class="text-dark mb-3">{{ object.spouse_passport_date }}</h6>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}
@@ -291,27 +299,30 @@
                     <p class="mb-1">Spouse's Residential Status</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_1_spouse_residential_status_display }}</h6>
                 </div>
+                {% if object.rn_sponsor_employer.sponsor_1_spouse_residential_status == 'SC' or object.rn_sponsor_employer.sponsor_1_spouse_residential_status == 'PR' %}
                 <div class="col">
                     <p class="mb-1">Spouse's NRIC</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_1_spouse_nric_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
+                {% else %}
                 <div class="col">
                     <p class="mb-1">Spouse's FIN</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_1_spouse_fin_full }}</h6>
                 </div>
+                {% endif %}
+            </div>
+            {% if object.rn_sponsor_employer.sponsor_1_spouse_residential_status != 'SC' and object.rn_sponsor_employer.sponsor_1_spouse_residential_status != 'PR' %}
+            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport No</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_1_spouse_passport_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport Expiry Date</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.sponsor_1_spouse_passport_date }}</h6>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}
@@ -426,27 +437,30 @@
                     <p class="mb-1">Spouse's Residential Status</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_2_spouse_residential_status_display }}</h6>
                 </div>
+                {% if object.rn_sponsor_employer.sponsor_2_spouse_residential_status == 'SC' or object.rn_sponsor_employer.sponsor_2_spouse_residential_status == 'PR' %}
                 <div class="col">
                     <p class="mb-1">Spouse's NRIC</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_2_spouse_nric_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
+                {% else %}
                 <div class="col">
                     <p class="mb-1">Spouse's FIN</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_2_spouse_fin_full }}</h6>
                 </div>
+                {% endif %}
+            </div>
+            {% if object.rn_sponsor_employer.sponsor_2_spouse_residential_status != 'SC' and object.rn_sponsor_employer.sponsor_2_spouse_residential_status != 'PR' %}
+            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport No</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.get_sponsor_2_spouse_passport_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport Expiry Date</p>
                     <h6 class="text-dark mb-3">{{ object.rn_sponsor_employer.sponsor_2_spouse_passport_date }}</h6>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}
@@ -550,27 +564,30 @@
                     <p class="mb-1">Spouse's Residential Status</p>
                     <h6 class="text-dark mb-3">{{ object.rn_ja_employer.get_joint_applicant_spouse_residential_status_display }}</h6>
                 </div>
+                {% if object.rn_ja_employer.joint_applicant_spouse_residential_status == 'SC' or object.rn_ja_employer.joint_applicant_spouse_residential_status == 'PR' %}
                 <div class="col">
                     <p class="mb-1">Spouse's NRIC</p>
                     <h6 class="text-dark mb-3">{{ object.rn_ja_employer.get_joint_applicant_spouse_nric_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
+                {% else %}
                 <div class="col">
                     <p class="mb-1">Spouse's FIN</p>
                     <h6 class="text-dark mb-3">{{ object.rn_ja_employer.get_joint_applicant_spouse_fin_full }}</h6>
                 </div>
+                {% endif %}
+            </div>
+            {% if object.rn_ja_employer.joint_applicant_spouse_residential_status != 'SC' and object.rn_ja_employer.joint_applicant_spouse_residential_status != 'PR' %}
+            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport No</p>
                     <h6 class="text-dark mb-3">{{ object.rn_ja_employer.get_joint_applicant_spouse_passport_full }}</h6>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <p class="mb-1">Spouse's Passport Expiry Date</p>
                     <h6 class="text-dark mb-3">{{ object.rn_ja_employer.joint_applicant_spouse_passport_date }}</h6>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}
@@ -582,22 +599,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    {% if object.applicant_type == 'SINGLE' %}
-                    <p class="mb-1">Employer's Monthly Income</p>
-                    {% elif object.applicant_type == 'SPOUSE' %}
-                    <p class="mb-1">Employer's & Spouse's Combined Monthly Income</p>
-                    {% elif object.applicant_type == 'JNT_AP' %}
-                    <p class="mb-1">Employer's & Joint Combined Monthly Income</p>
-                    {% else %}
-                        {% if not object.rn_sponsor_employer.sponsor_2_required %}
-                    <p class="mb-1">Sponsor's Monthly Income</p>
-                        {% else %}
-                    <p class="mb-1">Sponsors' Combined Monthly Income</p>
-                        {% endif %}
-                    {% endif %}
-                    <h6 class="text-dark mb-3">{{ object.rn_income_employer.get_monthly_income_display }}</h6>
-                </div>
                 <div class="col">
                     {% if object.applicant_type == 'SINGLE' %}
                     <p class="mb-1">Has Employer worked in SG for last 2 years?</p>
@@ -613,6 +614,22 @@
                         {% endif %}
                     {% endif %}
                     <h6 class="text-dark mb-3">{{ object.rn_income_employer.get_worked_in_sg_display }}</h6>
+                </div>
+                <div class="col">
+                    {% if object.applicant_type == 'SINGLE' %}
+                    <p class="mb-1">Employer's Monthly Income</p>
+                    {% elif object.applicant_type == 'SPOUSE' %}
+                    <p class="mb-1">Employer's & Spouse's Combined Monthly Income</p>
+                    {% elif object.applicant_type == 'JNT_AP' %}
+                    <p class="mb-1">Employer's & Joint Combined Monthly Income</p>
+                    {% else %}
+                        {% if not object.rn_sponsor_employer.sponsor_2_required %}
+                    <p class="mb-1">Sponsor's Monthly Income</p>
+                        {% else %}
+                    <p class="mb-1">Sponsors' Combined Monthly Income</p>
+                        {% endif %}
+                    {% endif %}
+                    <h6 class="text-dark mb-3">{{ object.rn_income_employer.get_monthly_income_display }}</h6>
                 </div>
             </div>
         </div>

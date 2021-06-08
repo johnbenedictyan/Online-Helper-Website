@@ -314,6 +314,20 @@ urlpatterns = [
                             ################################## Deprecated
                         ]),
                     ),
+                    path(
+                        'sign/',
+                        include([
+                            # Agency signing
+                            path(
+                                'agency-employee/',
+                                views.SignatureUpdateByAgentView.as_view(
+                                    model_field_name='agency_staff_signature',
+                                    form_fields=['agency_staff_signature'],
+                                ),
+                                name='signature_agencyemployee_route'
+                            ),
+                        ]),
+                    ),
     #                 path(
     #                     '<int:level_2_pk>/employer-url/',
     #                     views.EmployerDocSigSlugUpdateView.as_view(
