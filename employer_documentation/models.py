@@ -1236,24 +1236,12 @@ class EmployerDoc(models.Model):
         verbose_name=_("Name of FDW"),
         on_delete=models.RESTRICT,
     )
-    fdw_salary = models.DecimalField(
+    fdw_salary = CustomMoneyDecimalField(
         verbose_name=_("FDW Basic Salary"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         help_text=_("FDW monthly salary per contract"),
     )
-    fdw_loan = models.DecimalField(
+    fdw_loan = CustomMoneyDecimalField(
         verbose_name=_("FDW Loan Amount"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         help_text=_("FDW loan amount per contract"),
     )
     fdw_off_days = models.PositiveSmallIntegerField(
@@ -1263,19 +1251,12 @@ class EmployerDoc(models.Model):
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
-    fdw_monthly_loan_repayment = models.DecimalField(
+    fdw_monthly_loan_repayment = CustomMoneyDecimalField(
         verbose_name=_("FDW Monthly Loan Repayment"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         help_text=_("Should be less than basic salary"),
     )
     fdw_off_day_of_week = models.PositiveSmallIntegerField(
         verbose_name=_("FDW Off Day Day of Week"),
-        max_length=9,
         choices=ed_constants.DayOfWeekChoices.choices,
         default=ed_constants.DayOfWeekChoices.SUN
     )
@@ -1455,6 +1436,7 @@ class EmployerDoc(models.Model):
                 'fdw_salary':self.fdw_salary,
                 'fdw_loan':self.fdw_loan,
                 'fdw_off_days':self.fdw_off_days,
+                'fdw_off_day_of_week':self.fdw_off_day_of_week,
                 'is_new_case':self.rn_servicefeeschedule_ed.is_new_case,
                 'fdw_replaced_name':self.rn_servicefeeschedule_ed.fdw_replaced_name,
                 'fdw_replaced_passport_num':self.rn_servicefeeschedule_ed.fdw_replaced_passport_num,
@@ -1573,81 +1555,33 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b4_loan_transferred = models.DecimalField(
+    b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
         null=True,
         help_text=_("Loan amount brought forward from FDW replaced"),
     )
 
-    b1_service_fee = models.DecimalField(
-        verbose_name=_("1. Service Fee"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b1_service_fee = CustomMoneyDecimalField(
+        verbose_name=_("1. Service Fee")
     )
-    b2a_work_permit_application_collection = models.DecimalField(
-        verbose_name=_("2a. Application / Collection of Work Permit"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2a_work_permit_application_collection = CustomMoneyDecimalField(
+        verbose_name=_("2a. Application / Collection of Work Permit")
     )
-    b2b_medical_examination_fee = models.DecimalField(
-        verbose_name=_("2b. Medical Examination Fee"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2b_medical_examination_fee = CustomMoneyDecimalField(
+        verbose_name=_("2b. Medical Examination Fee")
     )
-    b2c_security_bond_accident_insurance = models.DecimalField(
-        verbose_name=_("2c. Security Bond and Personal Accident Insurance"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2c_security_bond_accident_insurance = CustomMoneyDecimalField(
+        verbose_name=_("2c. Security Bond and Personal Accident Insurance")
     )
-    b2d_indemnity_policy_reimbursement = models.DecimalField(
-        verbose_name=_("2d. Reimbursement of Indemnity Policy"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2d_indemnity_policy_reimbursement = CustomMoneyDecimalField(
+        verbose_name=_("2d. Reimbursement of Indemnity Policy")
     )
-    b2e_home_service = models.DecimalField(
-        verbose_name=_("2e. Home Service"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2e_home_service = CustomMoneyDecimalField(
+        verbose_name=_("2e. Home Service")
     )
-    b2f_sip = models.DecimalField(
-        verbose_name=_("2f. Settling-In-Programme (SIP)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2f_sip = CustomMoneyDecimalField(
+        verbose_name=_("2f. Settling-In-Programme (SIP)")
     )
     b2g1_other_services_description = models.CharField(
         verbose_name=_("2g. Other services provided (i)"),
@@ -1655,16 +1589,10 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True
     )
-    b2g1_other_services_fee = models.DecimalField(
+    b2g1_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (i)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
     b2g2_other_services_description = models.CharField(
         verbose_name=_("2g. Other services provided (ii)"),
@@ -1672,16 +1600,10 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2g2_other_services_fee = models.DecimalField(
+    b2g2_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (ii)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
     b2g3_other_services_description = models.CharField(
         verbose_name=_("2g. Other services provided (iii)"),
@@ -1689,16 +1611,10 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2g3_other_services_fee = models.DecimalField(
+    b2g3_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (iii)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
@@ -1707,47 +1623,23 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True,
     )
-    b2h_replacement_cost = models.DecimalField(
+    b2h_replacement_cost = CustomMoneyDecimalField(
         verbose_name=_("2h. Cost for replacement"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
-    b2i_work_permit_renewal = models.DecimalField(
+    b2i_work_permit_renewal = CustomMoneyDecimalField(
         verbose_name=_("2i. Renewal of Work Permit"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
-    b3_agency_fee = models.DecimalField(
+    b3_agency_fee = CustomMoneyDecimalField(
         verbose_name=_("3a. Agency fee"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_('Agency fee charged on the FDW by the Agency'),
+        help_text=_('Agency fee charged on the FDW by the Agency')
     )
-    ca_deposit_amount = models.DecimalField(
+    ca_deposit_amount = CustomMoneyDecimalField(
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_('Deposit paid by Employer'),
+        help_text=_('Deposit paid by Employer')
     )
     ca_deposit_date = models.DateField(
         verbose_name=_('Deposit Paid Date'),
@@ -1831,15 +1723,9 @@ class DocServAgmtEmpCtr(models.Model):
             if any of following circumstances (iii)"),
         max_length=100
     )
-    c3_4_no_replacement_refund = models.DecimalField(
+    c3_4_no_replacement_refund = CustomMoneyDecimalField(
         verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
-            3.1"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+            3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
         verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
@@ -1881,14 +1767,8 @@ class DocServAgmtEmpCtr(models.Model):
             Service Agreement"),
         choices=ed_constants.DayChoices.choices
     )
-    c5_1_1_failed_deployment_refund = models.DecimalField(
-        verbose_name=_("5.1.1 Failed FDW deployment refund amount"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
+        verbose_name=_("5.1.1 Failed FDW deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
@@ -1896,25 +1776,13 @@ class DocServAgmtEmpCtr(models.Model):
             to Service Fee refund within __ day(s)"),
         choices=ed_constants.DayChoices.choices
     )
-    c5_1_2_before_fdw_arrives_charge = models.DecimalField(
+    c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
         verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
-            Singapore"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+            Singapore")
     )
-    c5_1_2_after_fdw_arrives_charge = models.DecimalField(
+    c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
         verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
-            Singapore"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+            Singapore")
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
@@ -1928,23 +1796,11 @@ class DocServAgmtEmpCtr(models.Model):
             be transferred to new employer, refund within __ week(s)"),
         choices=ed_constants.WeekChoices.choices
     )
-    c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("6.4 Food and Accommodation cost per day"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
+        verbose_name=_("6.4 Food and Accommodation cost per day")
     )
-    c6_6_per_session_counselling_cost = models.DecimalField(
-        verbose_name=_("6.6 Counselling cost per day"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    c6_6_per_session_counselling_cost = CustomMoneyDecimalField(
+        verbose_name=_("6.6 Counselling cost per day")
     )
     c9_1_independent_mediator_1 = models.CharField(
         verbose_name=_("9.1 Independent mediator #1"),
@@ -3386,25 +3242,13 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Name of FDW"),
         on_delete=models.RESTRICT,
     )
-    fdw_salary = models.DecimalField(
+    fdw_salary = CustomMoneyDecimalField(
         verbose_name=_("FDW Basic Salary"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_("FDW monthly salary per contract"),
+        help_text=_("FDW monthly salary per contract")
     )
-    fdw_loan = models.DecimalField(
+    fdw_loan = CustomMoneyDecimalField(
         verbose_name=_("FDW Loan Amount"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_("FDW loan amount per contract"),
+        help_text=_("FDW loan amount per contract")
     )
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
@@ -3412,6 +3256,11 @@ class ArchivedDoc(models.Model):
         choices=ed_constants.DayChoices.choices[0:5],
         default=4,
         help_text=_("FDW off-days a month per contract"),
+    )
+    fdw_off_day_of_week = models.PositiveSmallIntegerField(
+        verbose_name=_("FDW Off Day Day of Week"),
+        choices=ed_constants.DayOfWeekChoices.choices,
+        default=ed_constants.DayOfWeekChoices.SUN
     )
 
     def get_version(self):
@@ -3448,99 +3297,39 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True,
     )
-    b4_loan_transferred = models.DecimalField(
+    b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
         null=True,
-        help_text=_("Loan amount brought forward from FDW replaced"),
+        help_text=_("Loan amount brought forward from FDW replaced")
     )
 
-    b1_service_fee = models.DecimalField(
-        verbose_name=_("1. Service Fee"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b1_service_fee = CustomMoneyDecimalField(
+        verbose_name=_("1. Service Fee")
     )
-    b2a_work_permit_application_collection = models.DecimalField(
-        verbose_name=_("2a. Application / Collection of Work Permit"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2a_work_permit_application_collection = CustomMoneyDecimalField(
+        verbose_name=_("2a. Application / Collection of Work Permit")
     )
-    b2b_medical_examination_fee = models.DecimalField(
-        verbose_name=_("2b. Medical Examination Fee"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2b_medical_examination_fee = CustomMoneyDecimalField(
+        verbose_name=_("2b. Medical Examination Fee")
     )
-    b2c_security_bond_accident_insurance = models.DecimalField(
-        verbose_name=_("2c. Security Bond and Personal Accident Insurance"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2c_security_bond_accident_insurance = CustomMoneyDecimalField(
+        verbose_name=_("2c. Security Bond and Personal Accident Insurance")
     )
-    b2d_indemnity_policy_reimbursement = models.DecimalField(
-        verbose_name=_("2d. Reimbursement of Indemnity Policy"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2d_indemnity_policy_reimbursement = CustomMoneyDecimalField(
+        verbose_name=_("2d. Reimbursement of Indemnity Policy")
     )
-    b2e_home_service = models.DecimalField(
-        verbose_name=_("2e. Home Service"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2e_home_service = CustomMoneyDecimalField(
+        verbose_name=_("2e. Home Service")
     )
-    b2f_counselling = models.DecimalField(
-        verbose_name=_("2f. Each Counselling Session"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2f_counselling = CustomMoneyDecimalField(
+        verbose_name=_("2f. Each Counselling Session")
     )
-    b2g_sip = models.DecimalField(
-        verbose_name=_("2g. Settling-In-Programme (SIP)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2g_sip = CustomMoneyDecimalField(
+        verbose_name=_("2g. Settling-In-Programme (SIP)")
     )
-    b2h_food_lodging = models.DecimalField(
-        verbose_name=_("2h. Food and Lodging"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    b2h_food_lodging = CustomMoneyDecimalField(
+        verbose_name=_("2h. Food and Lodging")
     )
     b2i1_other_services_description = models.CharField(
         verbose_name=_("2i. Other services provided (i)"),
@@ -3548,33 +3337,21 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    b2i1_other_services_fee = models.DecimalField(
+    b2i1_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2i. Other services fee (i)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
     b2i2_other_services_description = models.CharField(
         verbose_name=_("2i. Other services provided (ii)"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
-    b2i2_other_services_fee = models.DecimalField(
+    b2i2_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2i. Other services fee (ii)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
     b2i3_other_services_description = models.CharField(
         verbose_name=_("2i. Other services provided (iii)"),
@@ -3582,16 +3359,10 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True,
     )
-    b2i3_other_services_fee = models.DecimalField(
+    b2i3_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2i. Other services fee (iii)"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
     b2j_replacement_months = models.PositiveSmallIntegerField(
         # months
@@ -3600,47 +3371,23 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True,
     )
-    b2j_replacement_cost = models.DecimalField(
+    b2j_replacement_cost = CustomMoneyDecimalField(
         verbose_name=_("2j. Cost for replacement"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
-    b2k_work_permit_renewal = models.DecimalField(
+    b2k_work_permit_renewal = CustomMoneyDecimalField(
         verbose_name=_("2k. Renewal of Work Permit"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
         blank=True,
-        null=True,
+        null=True
     )
-    b3_agency_fee = models.DecimalField(
+    b3_agency_fee = CustomMoneyDecimalField(
         verbose_name=_("3a. Agency fee"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_('Agency fee charged on the FDW by the Agency'),
+        help_text=_('Agency fee charged on the FDW by the Agency')
     )
-    ca_deposit_amount = models.DecimalField(
+    ca_deposit_amount = CustomMoneyDecimalField(
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
-        help_text=_('Deposit paid by Employer'),
+        help_text=_('Deposit paid by Employer')
     )
     ca_deposit_date = models.DateField(
         verbose_name=_('Deposit Paid Date'),
@@ -3720,15 +3467,9 @@ class ArchivedDoc(models.Model):
             if any of following circumstances (iii)"),
         max_length=100
     )
-    c3_4_no_replacement_refund = models.DecimalField(
+    c3_4_no_replacement_refund = CustomMoneyDecimalField(
         verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
-            3.1"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+            3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
         verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
@@ -3770,14 +3511,8 @@ class ArchivedDoc(models.Model):
             Service Agreement"),
         choices=ed_constants.DayChoices.choices
     )
-    c5_1_1_failed_deployment_refund = models.DecimalField(
-        verbose_name=_("5.1.1 Failed FDW deployment refund amount"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
+        verbose_name=_("5.1.1 Failed FDW deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
@@ -3785,25 +3520,13 @@ class ArchivedDoc(models.Model):
             to Service Fee refund within __ day(s)"),
         choices=ed_constants.DayChoices.choices
     )
-    c5_1_2_before_fdw_arrives_charge = models.DecimalField(
+    c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
         verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
-            Singapore"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+            Singapore")
     )
-    c5_1_2_after_fdw_arrives_charge = models.DecimalField(
+    c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
         verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
-            Singapore"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+            Singapore")
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
@@ -3817,23 +3540,11 @@ class ArchivedDoc(models.Model):
             be transferred to new employer, refund within __ week(s)"),
         choices=ed_constants.WeekChoices.choices
     )
-    c6_4_per_day_food_accommodation_cost = models.DecimalField(
-        verbose_name=_("6.4 Food and Accommodation cost per day"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
+        verbose_name=_("6.4 Food and Accommodation cost per day")
     )
-    c6_6_per_session_counselling_cost = models.DecimalField(
-        verbose_name=_("6.6 Counselling cost per day"),
-        max_digits=7,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(10000),
-        ],
+    c6_6_per_session_counselling_cost = CustomMoneyDecimalField(
+        verbose_name=_("6.6 Counselling cost per day")
     )
     c9_1_independent_mediator_1 = models.CharField(
         verbose_name=_("9.1 Independent mediator #1"),
