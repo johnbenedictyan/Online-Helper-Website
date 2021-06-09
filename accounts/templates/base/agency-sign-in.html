@@ -5,16 +5,16 @@
 {% include 'sections/title-banner.html' with page_name='Agency Log In' %}
 <div class="container-fluid">
     {% include 'components/crispy-form-error.html' %}
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-10 col-lg-8 col-xl-6-5 mb-md-3 mb-lg-4 mb-xl-5">
             <form method="post" enctype="multipart/form-data">
                 {% crispy form %}
             </form>
             <div class="row">
-                <div class="col text-center my-2 my-md-5">
+                <div class="col text-center my-2 mt-md-4">
                     <div class="row">
                         <div class="col">
-                            <p class="mb-0 text-dark">For agency without an account, kindly create an account via the link below.</p>
+                            <p class="text-dark">For agency without an account, kindly create an account via the link below.</p>
                         </div>
                     </div>
                     <div class="row">
