@@ -1388,11 +1388,17 @@ class EmployerDocForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'fdw_salary',
-                    css_class='form-group col-md-6',
+                    PrependedText(
+                        'fdw_salary', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
                 ),
                 Column(
-                    'fdw_loan',
+                    PrependedText(
+                        'fdw_loan', '$',
+                        min='0', max='10000',
+                    ),
                     css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
@@ -1403,14 +1409,17 @@ class EmployerDocForm(forms.ModelForm):
                     css_class='form-group col-md-6',
                 ),
                 Column(
-                    'fdw_off_day_of_week',
-                    css_class='form-group col-md-6',
+                    PrependedText(
+                        'fdw_monthly_loan_repayment', '$',
+                        min='0', max='1000',
+                    ),
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
-                    'handover_checklist_signed',
+                    'fdw_off_day_of_week',
                     css_class='form-group col-md-6',
                 ),
                 css_class='form-row'
