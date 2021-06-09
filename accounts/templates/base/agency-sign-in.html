@@ -3,22 +3,10 @@
 {% load static %}
 {% block accounts_section %}
 {% include 'sections/title-banner.html' with page_name='Agency Log In' %}
-<div class="container">
+<div class="container-fluid">
+    {% include 'components/crispy-form-error.html' %}
     <div class="row">
-        <div class="col">
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
+        <div class="col-10 col-lg-8 col-xl-6-5 mb-md-3 mb-lg-4 mb-xl-5">
             <form method="post" enctype="multipart/form-data">
                 {% crispy form %}
             </form>

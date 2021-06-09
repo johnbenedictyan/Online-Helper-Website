@@ -30,15 +30,7 @@
             {% endfor %}
         </div>
         {% if shortlist %}
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
+            {% include 'components/crispy-form-error.html' %}
             <div class="row">
                 <div class="col">
                     <form method="post" enctype="multipart/form-data">
