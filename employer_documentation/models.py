@@ -1273,11 +1273,11 @@ class EmployerDoc(models.Model):
         ],
         help_text=_("Should be less than basic salary"),
     )
-    fdw_off_day_of_week = models.CharField(
+    fdw_off_day_of_week = models.PositiveSmallIntegerField(
         verbose_name=_("FDW Off Day Day of Week"),
         max_length=9,
         choices=ed_constants.DayOfWeekChoices.choices,
-        default=ed_constants.DayOfWeekChoices.SUNDAY
+        default=ed_constants.DayOfWeekChoices.SUN
     )
 
     def save(self, *args, **kwargs):
@@ -1296,8 +1296,8 @@ class EmployerDoc(models.Model):
     def get_version(self):
         return str(self.version).zfill(4)
 
-    def get_off_day_compensation(self):
-        return Decimal(self.fdw_salary/26).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+    def per_off_day_compensation(self):
+        return Decimal(self.fdw_salary/ed_constants.NUMBER_OF_WORK_DAYS_IN_MONTH).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
     def archive(self):
         ArchivedDoc.objects.get_or_create(
