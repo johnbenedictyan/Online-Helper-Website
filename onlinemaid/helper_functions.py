@@ -4,7 +4,7 @@ import math
 import random
 import string
 import traceback
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 # Imports from django
 from django.conf import settings
@@ -112,6 +112,39 @@ def get_sg_region(post_code):
         return None
     else:
         return None
+
+def intervening_weekdays(start, end, inclusive=True, weekdays=[0, 1, 2, 3, 4]):
+    # https://stackoverflow.com/a/43693117
+    '''
+    Function to calculate number of specified days of the week within date range
+    weekdays mapping: MON==0, TUE==1, WED==2, THU==3, FRI==4, SAT==5, SUN==6
+    '''
+    if isinstance(start, datetime):
+        start = start.date()               # make a date from a datetime
+
+    if isinstance(end, datetime):
+        end = end.date()                   # make a date from a datetime
+
+    if end < start:
+        # you can opt to return 0 or swap the dates around instead
+        raise ValueError("start date must be before end date")
+
+    if inclusive:
+        end += timedelta(days=1)  # correct for inclusivity
+
+    try:
+        # collapse duplicate weekdays
+        weekdays = {weekday % 7 for weekday in weekdays}
+    except TypeError:
+        weekdays = [weekdays % 7]
+
+    ref = date.today()                    # choose a reference date
+    ref -= timedelta(days=ref.weekday())  # and normalize its weekday
+
+    # sum up all selected weekdays (max 7 iterations)
+    return sum((ref_plus - start).days // 7 - (ref_plus - end).days // 7
+        for ref_plus in
+        (ref + timedelta(days=weekday) for weekday in weekdays))
 
 def humanise_time_duration(duration):
     if duration.days == 0 and duration.seconds >= 0 and duration.seconds < 60:
