@@ -23,7 +23,7 @@ from .views import (
 
 ## Form Views
 from .views import (
-    DashboardAgencyUpdate,DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView, 
+    DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView, 
     DashboardMaidAboutFDWFormView, DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
     DashboardMaidEmploymentHistoryFormView
 )
@@ -142,11 +142,6 @@ urlpatterns = [
     path(
         'update/',
         include([
-            path(
-                'agency/',
-                DashboardAgencyUpdate.as_view(),
-                name='dashboard_agency_update'
-            ),
             path(
                 'agency-information/',
                 DashboardAgencyInformationUpdate.as_view(),

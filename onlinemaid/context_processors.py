@@ -41,7 +41,7 @@ def dashboard_side_nav(request):
     dashboard_side_nav_list = [
         #Agency
         'dashboard_agency_detail',
-        'dashboard_agency_update',
+        # 'dashboard_agency_update',
         'dashboard_agency_information_update',
         'dashboard_agency_outlet_details_update',
         'dashboard_agency_opening_hours_update',
