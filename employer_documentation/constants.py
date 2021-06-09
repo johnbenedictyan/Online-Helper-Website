@@ -147,10 +147,10 @@ monthly_income_label = {
 }
 
 class DayOfWeekChoices(models.TextChoices):
-    MONDAY = 'MONDAY', _('MONDAY')
-    TUESDAY = 'TUESDAY', _('TUESDAY')
-    WEDNESDAY = 'WEDNESDAY', _('WEDNESDAY')
-    THURSDAY = 'THURSDAY', _('THURSDAY')
-    FRIDAY = 'FRIDAY', _('FRIDAY')
-    SATURDAY = 'SATURDAY', _('SATURDAY')
-    SUNDAY = 'SUNDAY', _('SUNDAY')
+    MONDAY = 'MONDAY', _('Monday')
+    TUESDAY = 'TUESDAY', _('Tuesday')
+    WEDNESDAY = 'WEDNESDAY', _('Wednesday')
+    THURSDAY = 'THURSDAY', _('Thursday')
+    FRIDAY = 'FRIDAY', _('Friday')
+    SATURDAY = 'SATURDAY', _('Saturday')
+    SUNDAY = 'SUNDAY', _('Sunday')
