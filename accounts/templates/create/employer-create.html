@@ -3,32 +3,24 @@
 {% load static %}
 {% block accounts_section %}
 {% include 'sections/title-banner.html' with page_name='User Sign Up' %}
-<div class="container">
+<div class="container-fluid">
+    {% if form.errors %}
     <div class="row">
         <div class="col">
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                    {% endfor %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
                 {% endfor %}
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
-    <div class="row">
-        <div class="col-10 col-lg-8 col-xxxl-6 offset-1 offset-lg-2 offset-xxxl-3">
-            <!-- <div class="row">
-                <div class="col-md-8 col-xl-10 offset-md-2 offset-xl-1 text-center mb-3 py-xl-3">
-                    <h3>Log in to view biodata</h3>
-                    <p>In accordance to EA Licence Condition #17, users must sign up to view information of domestic helpers.</p>
-                    <p class="small mb-0">Alternatively, users may send in their enquiries, which does not require a sign up.</p>
-                    <p class="small">Agencies on this platform will revert within 1-2 working days.</p>
-                </div>
-            </div> -->
+    {% endif %}
+    <div class="row justify-content-center">
+        <div class="col-10 col-lg-8 col-xl-6-5">
             <div class="row">
-                <div class="col-md-5 py-md-4">
+                <div class="col-md-6 col-lg-5 py-md-4">
                     <div class="row">
                         <div class="col mb-2">
                             <h5>Sign up with email</h5>
@@ -38,12 +30,12 @@
                         {% crispy form %}
                     </form>
                 </div>
-                <div class="col-md-2">
+                <div class="col-2">
                     <div class="vertical-divider mx-auto d-none d-md-block">
                     </div>
                     <hr class="d-md-none">
                 </div>
-                <div class="col-md-5 pb-md-4 my-auto">
+                <div class="col pb-md-4 my-auto">
                     <div class="row">
                         <div class="col text-center">
                             <div class="row">
@@ -70,12 +62,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col my-4">
-                    <p class="small text-dark mb-0">
+                <div class="col text-center my-4">
+                    <p class="small text-dark mb-1">
                         In accordance to EA Licence Condition #17, users must sign up to view information of domestic helpers.
                     </p>
-                    <p class="small text-dark">
+                    <p class="small text-dark mb-1">
                         Alternatively, users may send in their enquiries, which does not require a sign up.
+                    </p>
+                    <p class="small text-dark">
                         Agencies on this platform will revert within 1-2 working days.
                     </p>
                 </div>
