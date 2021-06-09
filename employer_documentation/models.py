@@ -1299,6 +1299,22 @@ class EmployerDoc(models.Model):
     def per_off_day_compensation(self):
         return Decimal(self.fdw_salary/ed_constants.NUMBER_OF_WORK_DAYS_IN_MONTH).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
+    def fdw_off_day_of_week_display(self):
+        if self.fdw_off_day_of_week == 0:
+            return _('Monday')
+        elif self.fdw_off_day_of_week == 1:
+            return _('Tuesday')
+        elif self.fdw_off_day_of_week == 2:
+            return _('Wednesday')
+        elif self.fdw_off_day_of_week == 3:
+            return _('Thursday')
+        elif self.fdw_off_day_of_week == 4:
+            return _('Friday')
+        elif self.fdw_off_day_of_week == 5:
+            return _('Saturday')
+        else:
+            return _('Sunday')
+
     def archive(self):
         ArchivedDoc.objects.get_or_create(
             id=self.id,
