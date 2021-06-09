@@ -1204,6 +1204,7 @@ class EmployerHousehold(models.Model):
         )
 
 class EmployerDoc(models.Model):
+    # Auto fields
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -1214,6 +1215,8 @@ class EmployerDoc(models.Model):
         editable=False,
         default=0,
     )
+
+    # User input fields
     case_ref_no = models.CharField(
         verbose_name=_("Case Reference Number"),
         max_length=20,
@@ -1260,19 +1263,21 @@ class EmployerDoc(models.Model):
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
+    fdw_monthly_loan_repayment = models.DecimalField(
+        verbose_name=_("FDW Monthly Loan Repayment"),
+        max_digits=7,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(10000),
+        ],
+        help_text=_("Should be less than basic salary"),
+    )
     fdw_off_day_of_week = models.CharField(
         verbose_name=_("FDW Off Day Day of Week"),
         max_length=9,
         choices=ed_constants.DayOfWeekChoices.choices,
         default=ed_constants.DayOfWeekChoices.SUNDAY
-    )
-    handover_checklist_signed = models.BooleanField(
-        verbose_name=_("Has handover checklist been signed?"),
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        default=False,
     )
 
     def save(self, *args, **kwargs):
@@ -2105,7 +2110,14 @@ class EmployerDocSig(models.Model):
     )
 
     # Mandatory signatures
-    employer_signature = models.TextField(
+    employer_signature_1 = models.TextField(
+        # For docs excluding handover checklist
+        verbose_name=_('Employer Signature'),
+        blank=True,
+        null=True
+    )
+    employer_signature_2 = models.TextField(
+        # For handover checklist
         verbose_name=_('Employer Signature'),
         blank=True,
         null=True
@@ -2122,26 +2134,26 @@ class EmployerDocSig(models.Model):
     )
 
     # Optional signatures
-    # spouse_signature = models.TextField(
-    #     verbose_name=_('Spouse Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-    # sponsor_1_signature = models.TextField(
-    #     verbose_name=_('Sponsor 1 Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-    # sponsor_2_signature = models.TextField(
-    #     verbose_name=_('Sponsor 2 Signature'),
-    #     blank=True,
-    #     null=True
-    # )
-    # joint_applicant_signature = models.TextField(
-    #     verbose_name=_('Joint Applicant Signature'),
-    #     blank=True,
-    #     null=True
-    # )
+    employer_spouse_signature = models.TextField(
+        verbose_name=_('Employer Spouse Signature'),
+        blank=True,
+        null=True
+    )
+    sponsor_1_signature = models.TextField(
+        verbose_name=_('Sponsor 1 Signature'),
+        blank=True,
+        null=True
+    )
+    sponsor_2_signature = models.TextField(
+        verbose_name=_('Sponsor 2 Signature'),
+        blank=True,
+        null=True
+    )
+    joint_applicant_signature = models.TextField(
+        verbose_name=_('Joint Applicant Signature'),
+        blank=True,
+        null=True
+    )
 
     # Verification Tokens
     employer_slug = models.SlugField(
