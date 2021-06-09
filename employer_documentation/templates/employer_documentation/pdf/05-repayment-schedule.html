@@ -4,10 +4,8 @@
 {% block title %}Repayment Schedule{% endblock %}
 {% block pdf_content %}
 {% include 'employer_documentation/pdf/00-header.html' %}
-<br>
 <h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
 <div class="border--bottom"></div>
-<br>
 <table>
     <tr>
         <th class="text-bold--600">Employment Agency Case #</th>
@@ -34,8 +32,8 @@
         <td>Monthly Basic Salary</td>
         <td>S$ {{ object.fdw_salary|intcomma }}</td>
         <td></td>
-        <td>Balance Off Day Compensation</td>
-        <td>S$ {{ object.get_off_day_compensation|intcomma }}</td>
+        <td>Per Off Day Compensation</td>
+        <td>S$ {{ object.per_off_day_compensation|intcomma }}</td>
     </tr>
 </table>
 <br>
@@ -44,7 +42,7 @@
         <td width="5%"></td>
         <td width="10%">Salary Date</td>
         <td width="12%">Basic Salary</td>
-        <td width="10%">Off Day Compensation</td>
+        <td width="10%">Balance Off Day Compensation</td>
         <td width="12%">Total Salary</td>
         <td></td>
         <td width="10%">Loan Repayment</td>

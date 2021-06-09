@@ -1,6 +1,7 @@
 # Python
 import base64
 import calendar
+import datetime
 from decimal import Decimal, ROUND_HALF_UP
 
 # Django
@@ -14,13 +15,14 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from weasyprint import HTML, CSS
 
 # From our apps
-from . import models
+from . import models, constants
 from onlinemaid.constants import (
     AG_OWNERS,
     AG_ADMINS,
     AG_MANAGERS,
     AG_SALES,
 )
+from onlinemaid.helper_functions import intervening_weekdays
 from accounts.models import User
 from maid.constants import country_language
 
@@ -362,152 +364,69 @@ class PdfHtmlViewMixin:
         repayment_table = {}
 
         if hasattr(self.object, 'rn_casestatus_ed') and self.object.rn_casestatus_ed.fdw_work_commencement_date:
-            work_commencement_date = self.object.rn_casestatus_ed.fdw_work_commencement_date
+            DEPLOYMENT_DATE = self.object.rn_casestatus_ed.fdw_work_commencement_date
         else:
-            work_commencement_date = None
-            # from datetime import date
-            # work_commencement_date = date(2021, 7, 31)
+            DEPLOYMENT_DATE = None
+            # DEPLOYMENT_DATE = datetime.date(2021, 6, 13) # FOR TESTING ONLY - TO BE DELETED ###################
 
-        if work_commencement_date:
-            WORK_DAYS_IN_MONTH = 26
-            LOAN_REPAID_OVER_MONTHS = 6
+        if DEPLOYMENT_DATE:
+            # Initialise dates
+            payment_year = DEPLOYMENT_DATE.year
+            payment_month = DEPLOYMENT_DATE.month
+            payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
 
-            payment_month = work_commencement_date.month
-            payment_year = work_commencement_date.year
-            fdw_loan = self.object.fdw_loan
-            fdw_loan_per_month = Decimal(fdw_loan/LOAN_REPAID_OVER_MONTHS).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-            basic_salary = self.object.fdw_salary
-            off_day_compensation = self.object.get_off_day_compensation()
-            total_salary = basic_salary + off_day_compensation
-            
-            # If work start date is 1st of month, then payment does not need to be pro-rated
-            if work_commencement_date.day==1:
-                for i in range(1,25):
-                    month_current = 12 if payment_month%12==0 else payment_month%12
-                    loan_repaid = min(
-                        fdw_loan,
-                        fdw_loan_per_month,
-                        basic_salary,
-                    )
+            # Initialise loan amounts
+            MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
+            fdw_loan_balance = self.object.fdw_loan
 
-                    repayment_table[i] = {
-                        'salary_date': '{day}/{month}/{year}'.format(
-                            day = calendar.monthrange(payment_year, month_current)[1],
-                            month = month_current,
-                            year = payment_year,
-                        ),
-                        'basic_salary': self.object.fdw_salary,
-                        'off_day_compensation': off_day_compensation,
-                        'total_salary': total_salary,
-                        'loan_repaid': loan_repaid,
-                        'salary_received': total_salary - loan_repaid,
-                    }
-                    fdw_loan = (
-                        fdw_loan-loan_repaid
-                        if fdw_loan-loan_repaid>=0
-                        else 0
-                    )
-                    payment_month += 1
-                    if payment_month%12 == 1:
-                        payment_year += 1
+            # Salary constant
+            BASIC_SALARY = self.object.fdw_salary
 
-            # Pro-rated payments
-            else:
-                month_current = 12 if payment_month%12==0 else payment_month%12
-                first_month_days = (
-                    calendar.monthrange(
-                        payment_year,
-                        month_current
-                    )[1] - work_commencement_date.day + 1
-                )
-                first_month_basic_salary = Decimal(basic_salary*first_month_days/calendar.monthrange(payment_year, month_current)[1]).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-                first_month_off_day_compensation = Decimal(off_day_compensation*first_month_days/calendar.monthrange(payment_year, month_current)[1]).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-                loan_repaid = min(
-                    fdw_loan,
-                    fdw_loan_per_month,
-                    first_month_basic_salary,
-                )
-                first_month_total_salary = first_month_basic_salary + first_month_off_day_compensation
-                
-                # 1st month pro-rated
-                repayment_table[1] = {
-                    'salary_date': '{day}/{month}/{year}'.format(
-                        day = calendar.monthrange(payment_year, month_current)[1],
-                        month = month_current,
-                        year = payment_year,
-                    ),
-                    'basic_salary': first_month_basic_salary,
-                    'off_day_compensation': first_month_off_day_compensation,
-                    'total_salary': first_month_total_salary,
-                    'loan_repaid': loan_repaid,
-                    'salary_received': first_month_total_salary - loan_repaid,
-                }
-                fdw_loan = (
-                    fdw_loan-loan_repaid
-                    if fdw_loan-loan_repaid>=0
-                    else 0
-                )
+            # Off day constants
+            PER_OFF_DAY_COMPENSATION = self.object.per_off_day_compensation()
+            FDW_OFF_DAYS_PER_MONTH = self.object.fdw_off_days
+            OFF_DAY_OF_WEEK = int(self.object.fdw_off_day_of_week)
+
+            for i in range(1,25):
+                # Set start_date for calculation of potential_off_days_in_month
+                if i==1:
+                    # First salary month is inclusive of DEPLOYMENT_DATE for calculation of potential_off_days_in_month
+                    start_date = datetime.date(payment_year, payment_month, payment_day)
+                else:
+                    # Otherwise, need to increase start_date by 1 day for calculation of potential_off_days_in_month
+                    start_date = datetime.date(payment_year, payment_month, payment_day) + datetime.timedelta(days=1)
+
+                # Set payment date
                 payment_month += 1
-                if payment_month%12 == 1:
-                    payment_year += 1
+                payment_year += 1 if payment_month%12 == 1 else 0
+                payment_month = 12 if payment_month%12==0 else payment_month%12
 
-                # 2nd-23rd months of full month payments
-                for i in range(2,25):
-                    month_current = (12 if payment_month%12==0 else payment_month%12)
-                    loan_repaid = min(
-                        fdw_loan,
-                        fdw_loan_per_month,
-                        basic_salary,
-                    )
+                # Calculate potential_off_days_in_month
+                end_date = datetime.date(payment_year, payment_month, payment_day)
+                potential_off_days_in_month = intervening_weekdays(start_date, end_date, inclusive=True, weekdays=[OFF_DAY_OF_WEEK])
 
-                    repayment_table[i] = {
-                        'salary_date': '{day}/{month}/{year}'.format(
-                            day = calendar.monthrange(payment_year, month_current)[1],
-                            month = month_current,
-                            year = payment_year,
-                        ),
-                        'basic_salary': self.object.fdw_salary,
-                        'off_day_compensation': off_day_compensation,
-                        'total_salary': basic_salary,
-                        'loan_repaid': loan_repaid,
-                        'salary_received': basic_salary + off_day_compensation - loan_repaid,
-                    }
-                    fdw_loan = (
-                        fdw_loan-loan_repaid
-                        if fdw_loan-loan_repaid>=0
-                        else 0
-                    )
-                    payment_month += 1
-                    if payment_month%12 == 1:
-                        payment_year += 1
+                # Calculate salary and loan payments in month
+                balance_off_day_compensation = PER_OFF_DAY_COMPENSATION * (potential_off_days_in_month - FDW_OFF_DAYS_PER_MONTH)
+                total_salary = BASIC_SALARY + balance_off_day_compensation
+                loan_repaid = min(MONTHLY_LOAN_REPAYMENT, BASIC_SALARY, fdw_loan_balance)
 
-                # 25th month pro-rated
-                month_current = (12 if payment_month%12==0 else payment_month%12)
-                last_month_days = calendar.monthrange(payment_year, month_current)[1]
-                final_payment_day = min(
-                    work_commencement_date.day-1,
-                    calendar.monthrange(payment_year, month_current)[1]
-                )
-                basic_salary = Decimal(basic_salary*final_payment_day/last_month_days).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-                off_day_compensation = Decimal(off_day_compensation*final_payment_day/last_month_days).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-                loan_repaid = min(
-                    fdw_loan,
-                    fdw_loan_per_month,
-                    basic_salary,
-                )
-                repayment_table[25] = {
+                # Each row of repayment table
+                repayment_table[i] = {
                     'salary_date': '{day}/{month}/{year}'.format(
-                        day = final_payment_day,
-                        month = month_current,
+                        day = payment_day,
+                        month = payment_month,
                         year = payment_year,
                     ),
-                    'basic_salary': basic_salary,
-                    'off_day_compensation': off_day_compensation,
-                    'total_salary': basic_salary + off_day_compensation,
+                    'basic_salary': BASIC_SALARY,
+                    'off_day_compensation': balance_off_day_compensation,
+                    'total_salary': total_salary,
                     'loan_repaid': loan_repaid,
-                    'salary_received': basic_salary + off_day_compensation - loan_repaid,
+                    'salary_received': total_salary - loan_repaid,
                 }
-        
+
+                # Update remaining loan balance
+                fdw_loan_balance = fdw_loan_balance - loan_repaid if fdw_loan_balance-loan_repaid>=0 else 0
+
         else:
             # if work commencement date not set, then generate empty table
             for i in range(1,25):
@@ -519,4 +438,5 @@ class PdfHtmlViewMixin:
                     'loan_repaid': '',
                     'salary_received': '',
                 }
+        
         return repayment_table

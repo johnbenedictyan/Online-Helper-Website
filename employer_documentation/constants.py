@@ -146,11 +146,13 @@ monthly_income_label = {
     EmployerTypeOfApplicantChoices.JOINT_APPLICANT: ['Employer and Joint Applicant Combined Monthly Income', 'Have you worked in Singapore for the last 2 Years?'],
 }
 
-class DayOfWeekChoices(models.TextChoices):
-    MONDAY = 'MONDAY', _('MONDAY')
-    TUESDAY = 'TUESDAY', _('TUESDAY')
-    WEDNESDAY = 'WEDNESDAY', _('WEDNESDAY')
-    THURSDAY = 'THURSDAY', _('THURSDAY')
-    FRIDAY = 'FRIDAY', _('FRIDAY')
-    SATURDAY = 'SATURDAY', _('SATURDAY')
-    SUNDAY = 'SUNDAY', _('SUNDAY')
+class DayOfWeekChoices(models.IntegerChoices):
+    MON = 0, _('Monday')
+    TUE = 1, _('Tuesday')
+    WED = 2, _('Wednesday')
+    THU = 3, _('Thursday')
+    FRI = 4, _('Friday')
+    SAT = 5, _('Saturday')
+    SUN = 6, _('Sunday')
+
+NUMBER_OF_WORK_DAYS_IN_MONTH = 26
