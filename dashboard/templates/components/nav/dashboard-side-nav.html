@@ -51,7 +51,7 @@
                     </div>  
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_agency_employee_create' or url_name == 'dashboard_agency_employee_update' %}show{% endif %}" id="accountManagementDropdownNav">
-                    <div class="col-12 new-side-nav-link">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'dashboard_agency_employee_create' %}active{% endif %}">
                         <a href="{% url 'dashboard_agency_employee_create' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_create' %}active{% endif %}">
                             <p class="m-1 pl-4">Add Employee</p>
                         </a>
@@ -112,9 +112,9 @@
                         </a>
                     </div>  
                 </div>
-                <div class="collapse row" id="employersManagementDropdownNav">
-                    <div class="col-12 new-side-nav-link">
-                        <a href="{% url 'employer_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                <div class="collapse row {% if url_name == 'employer_create_route' or url_name == 'employer_update_route' %}show{% endif %}" id="employersManagementDropdownNav">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}">
+                        <a href="{% url 'employer_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'employer_create_route' %}active{% endif %}">
                             <p class="m-1 pl-4">Add Employer</p>
                         </a>
                     </div>
