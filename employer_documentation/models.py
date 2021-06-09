@@ -1275,7 +1275,6 @@ class EmployerDoc(models.Model):
     )
     fdw_off_day_of_week = models.PositiveSmallIntegerField(
         verbose_name=_("FDW Off Day Day of Week"),
-        max_length=9,
         choices=ed_constants.DayOfWeekChoices.choices,
         default=ed_constants.DayOfWeekChoices.SUN
     )
@@ -1455,6 +1454,7 @@ class EmployerDoc(models.Model):
                 'fdw_salary':self.fdw_salary,
                 'fdw_loan':self.fdw_loan,
                 'fdw_off_days':self.fdw_off_days,
+                'fdw_off_day_of_week':self.fdw_off_day_of_week,
                 'is_new_case':self.rn_servicefeeschedule_ed.is_new_case,
                 'fdw_replaced_name':self.rn_servicefeeschedule_ed.fdw_replaced_name,
                 'fdw_replaced_passport_num':self.rn_servicefeeschedule_ed.fdw_replaced_passport_num,
@@ -3412,6 +3412,11 @@ class ArchivedDoc(models.Model):
         choices=ed_constants.DayChoices.choices[0:5],
         default=4,
         help_text=_("FDW off-days a month per contract"),
+    )
+    fdw_off_day_of_week = models.PositiveSmallIntegerField(
+        verbose_name=_("FDW Off Day Day of Week"),
+        choices=ed_constants.DayOfWeekChoices.choices,
+        default=ed_constants.DayOfWeekChoices.SUN
     )
 
     def get_version(self):
