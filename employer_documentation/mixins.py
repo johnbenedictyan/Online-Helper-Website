@@ -375,10 +375,6 @@ class PdfHtmlViewMixin:
             payment_month = DEPLOYMENT_DATE.month
             payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
 
-            # Initialise loan amounts
-            MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
-            fdw_loan_balance = self.object.fdw_loan
-
             # Salary constant
             BASIC_SALARY = self.object.fdw_salary
 
@@ -386,6 +382,10 @@ class PdfHtmlViewMixin:
             PER_OFF_DAY_COMPENSATION = self.object.per_off_day_compensation()
             FDW_OFF_DAYS_PER_MONTH = self.object.fdw_off_days
             OFF_DAY_OF_WEEK = int(self.object.fdw_off_day_of_week)
+
+            # Initialise loan amounts
+            MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
+            fdw_loan_balance = self.object.fdw_loan
 
             for i in range(1,25):
                 # Set start_date for calculation of potential_off_days_in_month
@@ -414,9 +414,9 @@ class PdfHtmlViewMixin:
                 # Each row of repayment table
                 repayment_table[i] = {
                     'salary_date': '{day}/{month}/{year}'.format(
-                        day = payment_day,
-                        month = payment_month,
-                        year = payment_year,
+                        day = str(payment_day).zfill(2),
+                        month = str(payment_month).zfill(2),
+                        year = str(payment_year).zfill(4),
                     ),
                     'basic_salary': BASIC_SALARY,
                     'off_day_compensation': balance_off_day_compensation,
