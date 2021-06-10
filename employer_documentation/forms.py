@@ -1561,7 +1561,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 ),
                 Column(
                     PrependedText(
-                        'b2f_counselling', '$',
+                        'b2f_sip', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1570,29 +1570,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    PrependedText(
-                        'b2g_sip', '$',
-                        min='0', max='1000',
-                    ),
+                    'b2g1_other_services_description',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     PrependedText(
-                        'b2h_food_lodging', '$',
-                        min='0', max='1000',
-                    ),
-                    css_class='form-group col-md-6'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    'b2i1_other_services_description',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    PrependedText(
-                        'b2i1_other_services_fee', '$',
+                        'b2g1_other_services_fee', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1601,12 +1584,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'b2i2_other_services_description',
+                    'b2g2_other_services_description',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     PrependedText(
-                        'b2i2_other_services_fee', '$',
+                        'b2g2_other_services_fee', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1615,12 +1598,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'b2i3_other_services_description',
+                    'b2g3_other_services_description',
                     css_class='form-group col-md-6'
                 ),
                 Column(
                     PrependedText(
-                        'b2i3_other_services_fee', '$',
+                        'b2g3_other_services_fee', '$',
                         min='0', max='1000',
                     ),
                     css_class='form-group col-md-6'
@@ -1631,12 +1614,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 Column(
                     Row(
                         Column(
-                            'b2j_replacement_months',
+                            'b2h_replacement_months',
                             css_class='form-group col-md-6'
                         ),
                         Column(
                             PrependedText(
-                                'b2j_replacement_cost', '$',
+                                'b2h_replacement_cost', '$',
                                 min='0', max='1000',
                             ),
                             css_class='form-group col-md-6'
@@ -1646,7 +1629,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     Row(
                         Column(
                             PrependedText(
-                                'b2k_work_permit_renewal', '$',
+                                'b2i_work_permit_renewal', '$',
                                 min='0', max='1000',
                             ),
                             css_class='form-group col-md-6'
