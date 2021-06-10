@@ -1395,7 +1395,7 @@ class GenerateSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, 
         self.object = self.get_object()
         self.object.generate_sigslug_employer_1()
         kwargs={'level_1_pk': self.object.employer_doc.pk}
-        return super().get_redirect_url(*args, **kwargs)
+        return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
 
 class RevokeSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
     model = models.CaseSignature
@@ -1412,7 +1412,7 @@ class RevokeSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, Re
         self.object = self.get_object()
         self.object.revoke_sigslug_employer_1()
         kwargs={'level_1_pk': self.object.employer_doc.pk}
-        return super().get_redirect_url(*args, **kwargs)
+        return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
 
 class ArchiveCase(RedirectView):
     http_method_names = ['get']

@@ -529,7 +529,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="signatureUrlSection">
         <div class="col-12 mb-5">
             <div class="row bg-dashboard-pagebar-color mb-2">
                 <div class="col my-2">
@@ -545,8 +545,8 @@
                                 <input id="copy-value" type="text" class="form-control" value="{{ object.rn_signatures_ed.get_sigurl_employer_1 }}" disabled>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></button>
+                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -560,8 +560,8 @@
                                 <input id="copy-value" type="text" class="form-control" value="" disabled>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="fas fa-undo"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="far fa-trash-alt"></i></button>
+                                    <a class="btn btn-outline-secondary" href="#"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-outline-secondary" href="#"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -575,8 +575,8 @@
                                 <input id="copy-value" type="text" class="form-control" value="" disabled>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="fas fa-undo"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="far fa-trash-alt"></i></button>
+                                    <a class="btn btn-outline-secondary" href="#"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-outline-secondary" href="#"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -590,8 +590,8 @@
                                 <input id="copy-value" type="text" class="form-control" value="" disabled>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="fas fa-undo"></i></button>
-                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="far fa-trash-alt"></i></button>
+                                    <a class="btn btn-outline-secondary" href="#"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-outline-secondary" href="#"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
