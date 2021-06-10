@@ -537,21 +537,78 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 mt-2 ml-2">
+                <div class="col-md-6 my-2">
                     <label for="disabled_sigslug_employer_1">Employer's Signature Link (Except handover checklist)</label>
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="input-group">
+                                <input id="copy-value" type="text" class="form-control" value="{{ object.rn_signatures_ed.get_sigurl_employer_1 }}" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 mb-3 input-group">
+                <div class="col-md-6 my-2">
+                    <label for="disabled_sigslug_employer_1">Employer's Signature Link (Handover checklist)</label>
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="input-group">
+                                <input id="copy-value" type="text" class="form-control" value="" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="fas fa-undo"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 my-2">
+                    <label for="disabled_sigslug_employer_1">EA personnel's signature Link (All doc)</label>
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="input-group">
+                                <input id="copy-value" type="text" class="form-control" value="" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="fas fa-undo"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 my-2">
+                    <label for="disabled_sigslug_employer_1">FDW's Signature Link</label>
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="input-group">
+                                <input id="copy-value" type="text" class="form-control" value="" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="copy-button"><i class="far fa-copy"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="fas fa-undo"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" href="#"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-12 mb-3 input-group">
                     <input id="copy-value" type="text" class="form-control" value="{{ object.rn_signatures_ed.get_sigurl_employer_1 }}" disabled>
                     <div class="input-group-append" id="copy-button"><span class="input-group-text"><i class="far fa-copy"></i></span></div>
                     <a class="input-group-append" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><span class="input-group-text"><i class="fas fa-undo"></i></span></a>
                     <a class="input-group-append" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><span class="input-group-text"><i class="far fa-trash-alt"></i></span></a>
-                </div>
+                </div> -->
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employer's Signature Link (Handover Checklist)</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}"><p class="mb-1">EA personnel's signature Link (All doc)</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="row">
