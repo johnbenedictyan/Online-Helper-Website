@@ -537,7 +537,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employer's Signature Link (Except handover checklist)</p></a></div>
+                <div class="col-12 mt-2 ml-2">
+                    <label for="disabled_sigslug_employer_1">Employer's Signature Link (Except handover checklist)</label>
+                </div>
+                <div class="col-12 mb-3 input-group">
+                    <input id="copy-value" type="text" class="form-control" value="{{ object.rn_signatures_ed.get_sigurl_employer_1 }}" disabled>
+                    <div class="input-group-append" id="copy-button"><span class="input-group-text"><i class="far fa-copy"></i></span></div>
+                    <a class="input-group-append" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><span class="input-group-text"><i class="fas fa-undo"></i></span></a>
+                    <a class="input-group-append" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><span class="input-group-text"><i class="far fa-trash-alt"></i></span></a>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employer's Signature Link (Handover Checklist)</p></a></div>
                 <div class="col-md-6 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}"><p class="mb-1">EA personnel's signature Link (All doc)</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div>
@@ -562,3 +572,33 @@
     </div>
 </div>
 {% endblock dashboard_section %}
+
+{% block js %}
+<script>
+let copyBtn = document.querySelector('#copy-button');
+if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+        let copyElement = document.getElementById("copy-value");
+        navigator.clipboard.writeText(copyElement.value)
+            .then(() => {
+                // Animate copy button
+                copyElement.animate([
+                    { transform: 'scale(1)' },
+                    { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
+                    { transform: 'scale(1)' },
+                ], {
+                    duration: 500, //milliseconds
+                    easing: 'ease-in', //'linear', a bezier curve, etc.
+                    delay: 0, //milliseconds
+                    iterations: 1, //or a number
+                    direction: 'normal', //'normal', 'reverse', etc.
+                    fill: 'forwards' //'backwards', 'both', 'none', 'auto'
+                });
+            })
+            .catch(err => {
+                console.log('Error in copying text: ', err);
+            });
+    })
+}
+</script>
+{% endblock js %}
