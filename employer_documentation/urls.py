@@ -147,6 +147,16 @@ urlpatterns = [
                         name='case_status_update_route'
                     ),
                     path(
+                        'signature/generate-url/employer/',
+                        views.GenerateSigSlugEmployer1View.as_view(),
+                        name='sigslug_employer1_generate_route'
+                    ),
+                    path(
+                        'signature/revoke-url/employer/',
+                        views.RevokeSigSlugEmployer1View.as_view(),
+                        name='sigslug_employer1_revoke_route'
+                    ),
+                    path(
                         'archive/',
                         views.ArchiveCase.as_view(),
                         name='doc_archive'
@@ -330,16 +340,16 @@ urlpatterns = [
                     ),
     #                 path(
     #                     '<int:level_2_pk>/employer-url/',
-    #                     views.EmployerDocSigSlugUpdateView.as_view(
-    #                         model_field_name='employer_slug',
-    #                         form_fields=['employer_slug'],
+    #                     views.CaseSignatureSlugUpdateView.as_view(
+    #                         model_field_name='sigslug_employer_1',
+    #                         form_fields=['sigslug_employer_1'],
     #                         success_url_route_name='sig_slug_employer_update_route',
     #                     ),
     #                     name='sig_slug_employer_update_route'
     #                 ),
     #                 path(
     #                     '<int:level_2_pk>/fdw-url/',
-    #                     views.EmployerDocSigSlugUpdateView.as_view(
+    #                     views.CaseSignatureSlugUpdateView.as_view(
     #                         model_field_name='fdw_slug',
     #                         form_fields=['fdw_slug'],
     #                         success_url_route_name='sig_slug_fdw_update_route',
@@ -586,7 +596,7 @@ urlpatterns = [
     #                 path(
     #                     'verify/',
     #                     views.VerifyUserTokenView.as_view(
-    #                         slug_field='employer_slug',
+    #                         slug_field='sigslug_employer_1',
     #                         token_field_name='employer_token',
     #                         success_url_route_name='token_signature_employer_route',
     #                         success_message = 'Thank you for passing the verification. Please review the documents and sign below.',
@@ -596,7 +606,7 @@ urlpatterns = [
     #                 path(
     #                     'signature/',
     #                     views.SignatureUpdateByTokenView.as_view(
-    #                         slug_field='employer_slug',
+    #                         slug_field='sigslug_employer_1',
     #                         model_field_name='employer_signature',
     #                         token_field_name='employer_token',
     #                         form_fields=['employer_signature'],
@@ -608,7 +618,7 @@ urlpatterns = [
     #                 path(
     #                     'witness/',
     #                     views.SignatureUpdateByTokenView.as_view(
-    #                         slug_field='employer_slug',
+    #                         slug_field='sigslug_employer_1',
     #                         model_field_name='employer_witness_signature',
     #                         token_field_name='employer_token',
     #                         form_fields=[
@@ -627,7 +637,7 @@ urlpatterns = [
     #                 path(
     #                     'spouse/',
     #                     views.SignatureUpdateByTokenView.as_view(
-    #                         slug_field='employer_slug',
+    #                         slug_field='sigslug_employer_1',
     #                         model_field_name='spouse_signature',
     #                         token_field_name='employer_token',
     #                         form_fields=[
@@ -645,7 +655,7 @@ urlpatterns = [
     #                         path(
     #                             'service-fees/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/01-service-fee-schedule.html',
     #                                 content_disposition = 'inline; filename="service_fee_schedule.pdf"',
@@ -655,7 +665,7 @@ urlpatterns = [
     #                         path(
     #                             'service-agreement/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/03-service-agreement.html',
     #                                 content_disposition = 'inline; filename="service_agreement.pdf"',
@@ -665,7 +675,7 @@ urlpatterns = [
     #                         path(
     #                             'employment-contract/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/04-employment-contract.html',
     #                                 content_disposition = 'inline; filename="employment-contract.pdf"',
@@ -675,7 +685,7 @@ urlpatterns = [
     #                         path(
     #                             'repayment-schedule/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/05-repayment-schedule.html',
     #                                 content_disposition = 'inline; filename="repayment-schedule.pdf"',
@@ -686,7 +696,7 @@ urlpatterns = [
     #                         path(
     #                             'rest-day-agreement/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/06-rest-day-agreement.html',
     #                                 content_disposition = 'inline; filename="rest-day-agreement.pdf"',
@@ -696,7 +706,7 @@ urlpatterns = [
     #                         path(
     #                             'job-order/',
     #                             views.PdfFileTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 filename='job-order.pdf',
     #                             ),
@@ -705,7 +715,7 @@ urlpatterns = [
     #                         path(
     #                             'handover-checklist/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/08-handover-checklist.html',
     #                                 content_disposition = 'inline; filename="handover-checklist.pdf"',
@@ -715,7 +725,7 @@ urlpatterns = [
     #                         path(
     #                             'transfer-consent/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/09-transfer-consent.html',
     #                                 content_disposition = 'inline; filename="transfer-consent.pdf"',
@@ -725,7 +735,7 @@ urlpatterns = [
     #                         path(
     #                             'work-pass-authorisation/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
     #                                 content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
@@ -735,7 +745,7 @@ urlpatterns = [
     #                         # path(
     #                         #     'security-bond/',
     #                         #     views.PdfGenericTokenView.as_view(
-    #                         #         slug_field='employer_slug',
+    #                         #         slug_field='sigslug_employer_1',
     #                         #         token_field_name='employer_token',
     #                         #         template_name='employer_documentation/pdf/11-security-bond.html',
     #                         #         content_disposition = 'inline; filename="security-bond.pdf"',
@@ -745,7 +755,7 @@ urlpatterns = [
     #                         # path(
     #                         #     'fdw-work-permit-12b/',
     #                         #     views.PdfGenericTokenView.as_view(
-    #                         #         slug_field='employer_slug',
+    #                         #         slug_field='sigslug_employer_1',
     #                         #         token_field_name='employer_token',
     #                         #         template_name='employer_documentation/pdf/12-fdw-work-permit.html',
     #                         #         content_disposition = 'inline; filename="fdw-work-permit-form-12b.pdf"',
@@ -755,7 +765,7 @@ urlpatterns = [
     #                         path(
     #                             'income-tax-declaration/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/13-income-tax-declaration.html',
     #                                 content_disposition = 'inline; filename="income-tax-declaration.pdf"',
@@ -765,7 +775,7 @@ urlpatterns = [
     #                         path(
     #                             'safety-agreement/',
     #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='employer_slug',
+    #                                 slug_field='sigslug_employer_1',
     #                                 token_field_name='employer_token',
     #                                 template_name='employer_documentation/pdf/14-safety-agreement.html',
     #                                 content_disposition = 'inline; filename="safety-agreement.pdf"',

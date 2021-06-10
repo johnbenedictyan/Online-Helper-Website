@@ -123,7 +123,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             return HttpResponseRedirect(reverse_lazy('home'))
 
     # Method to get object Employer, EmployerDoc, EmployerDocMaidStatus,
-    # EmployerDocSig from database and assign to attribute of View object.
+    # CaseSignature from database and assign to attribute of View object.
     def assign_ed_object(self):
         # Try to get object from database
         try:
@@ -151,7 +151,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 isinstance(self.object, models.DocSafetyAgreement) or
                 isinstance(self.object, models.DocUpload) or
                 isinstance(self.object, models.EmployerDocMaidStatus) or
-                isinstance(self.object, models.EmployerDocSig) or
+                isinstance(self.object, models.CaseSignature) or
                 isinstance(self.object, models.JobOrder) or
                 isinstance(self.object, models.ArchivedDoc) or
                 isinstance(self.object, models.EmployerPaymentTransaction)
@@ -215,7 +215,7 @@ class CheckAgencyEmployeePermissionsMixin(
         if not self.agency_user_group:  self.assign_agency_user_group()
         if not self.agency_user_obj:    self.assign_agency_user_object()
 
-        # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
+        # Assign Employer, EmployerDoc, EmployerMaidStatus, CaseSignature
         # object, if it exists, to attribute of View object.
         self.assign_ed_object()
 
@@ -276,7 +276,7 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
         if not self.agency_user_group:  self.assign_agency_user_group()
         if not self.agency_user_obj:    self.assign_agency_user_object()
         
-        # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
+        # Assign Employer, EmployerDoc, EmployerMaidStatus, CaseSignature
         # object, if it exists, to attribute of View object.
         self.assign_ed_object()
         
@@ -367,17 +367,13 @@ class PdfHtmlViewMixin:
             DEPLOYMENT_DATE = self.object.rn_casestatus_ed.fdw_work_commencement_date
         else:
             DEPLOYMENT_DATE = None
-            # DEPLOYMENT_DATE = datetime.date(2021, 6, 13) # FOR TESTING ONLY - TO BE DELETED ###################
+            # DEPLOYMENT_DATE = datetime.date(2021, 5, 31) # FOR TESTING ONLY - TO BE DELETED ###################
 
         if DEPLOYMENT_DATE:
             # Initialise dates
             payment_year = DEPLOYMENT_DATE.year
             payment_month = DEPLOYMENT_DATE.month
             payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
-
-            # Initialise loan amounts
-            MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
-            fdw_loan_balance = self.object.fdw_loan
 
             # Salary constant
             BASIC_SALARY = self.object.fdw_salary
@@ -386,6 +382,10 @@ class PdfHtmlViewMixin:
             PER_OFF_DAY_COMPENSATION = self.object.per_off_day_compensation()
             FDW_OFF_DAYS_PER_MONTH = self.object.fdw_off_days
             OFF_DAY_OF_WEEK = int(self.object.fdw_off_day_of_week)
+
+            # Initialise loan amounts
+            MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
+            fdw_loan_balance = self.object.fdw_loan
 
             for i in range(1,25):
                 # Set start_date for calculation of potential_off_days_in_month
@@ -398,8 +398,9 @@ class PdfHtmlViewMixin:
 
                 # Set payment date
                 payment_month += 1
-                payment_year += 1 if payment_month%12 == 1 else 0
                 payment_month = 12 if payment_month%12==0 else payment_month%12
+                payment_year += 1 if payment_month%12 == 1 else 0
+                payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
 
                 # Calculate potential_off_days_in_month
                 end_date = datetime.date(payment_year, payment_month, payment_day)
@@ -413,9 +414,9 @@ class PdfHtmlViewMixin:
                 # Each row of repayment table
                 repayment_table[i] = {
                     'salary_date': '{day}/{month}/{year}'.format(
-                        day = payment_day,
-                        month = payment_month,
-                        year = payment_year,
+                        day = str(payment_day).zfill(2),
+                        month = str(payment_month).zfill(2),
+                        year = str(payment_year).zfill(4),
                     ),
                     'basic_salary': BASIC_SALARY,
                     'off_day_compensation': balance_off_day_compensation,
