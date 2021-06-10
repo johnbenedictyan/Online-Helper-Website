@@ -1,3 +1,6 @@
+# Python
+import secrets
+
 # Django
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -928,13 +931,13 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
                 )
             })
 
-# class EmployerDocSigSlugUpdateView(
+# class CaseSignatureSlugUpdateView(
 #     AgencyLoginRequiredMixin,
 #     GetAuthorityMixin,
 #     UpdateView
 # ):
-#     model = models.EmployerDocSig
-#     form_class = EmployerDocSigSlugForm
+#     model = models.CaseSignature
+#     form_class = CaseSignatureSlugForm
 #     pk_url_kwarg = 'level_2_pk'
 #     template_name = 'employer_documentation/crispy_form.html'
 #     model_field_name = None # Aslog in urls.py
@@ -980,7 +983,7 @@ class SignatureUpdateByAgentView(
     GetAuthorityMixin,
     UpdateView
 ):
-    model = models.EmployerDocSig
+    model = models.CaseSignature
     form_class = forms.SignatureForm
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_documentation/signature_form_agency.html'
@@ -988,7 +991,7 @@ class SignatureUpdateByAgentView(
     form_fields = None
 
     def get_object(self):
-        return models.EmployerDocSig.objects.get(
+        return models.CaseSignature.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
@@ -1000,7 +1003,7 @@ class SignatureUpdateByAgentView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model_field_verbose_name'] = models.EmployerDocSig._meta.get_field(
+        context['model_field_verbose_name'] = models.CaseSignature._meta.get_field(
             self.model_field_name).verbose_name
         return context
 
@@ -1013,7 +1016,7 @@ class SignatureUpdateByAgentView(
 #     SuccessMessageMixin,
 #     UpdateView
 # ):
-#     model = models.EmployerDocSig
+#     model = models.CaseSignature
 #     form_class = VerifyUserTokenForm
 #     template_name = 'employer_documentation/token_form.html'
 #     token_field_name = None # Assign this value in urls.py
@@ -1030,7 +1033,7 @@ class SignatureUpdateByAgentView(
 #     def get_success_url(self):
 #         if self.success_url_route_name:
 #             if self.token_field_name=='employer_token':
-#                 slug = self.object.employer_slug
+#                 slug = self.object.sigslug_employer_1
 #             elif self.token_field_name=='fdw_token':
 #                 slug = self.object.fdw_slug
 #         else:
@@ -1045,7 +1048,7 @@ class SignatureUpdateByAgentView(
 #     CheckSignatureSessionTokenMixin,
 #     UpdateView
 # ):
-#     model = models.EmployerDocSig
+#     model = models.CaseSignature
 #     form_class = SignatureForm
 #     template_name = 'employer_documentation/signature_form_token.html'
 #     model_field_name = None # Assign this value in urls.py
@@ -1062,14 +1065,14 @@ class SignatureUpdateByAgentView(
 
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
-#         context['model_field_verbose_name'] = EmployerDocSig._meta.get_field(
+#         context['model_field_verbose_name'] = CaseSignature._meta.get_field(
 #             self.model_field_name).verbose_name
 #         return context
 
 #     def get_success_url(self):
 #         if self.success_url_route_name:
 #             if self.token_field_name=='employer_token':
-#                 slug = self.object.employer_slug
+#                 slug = self.object.sigslug_employer_1
 #             elif self.token_field_name=='fdw_token':
 #                 slug = self.object.fdw_slug
 #         else:
@@ -1147,7 +1150,7 @@ class UploadedPdfAgencyView(
 #     PdfHtmlViewMixin,
 #     DetailView
 # ):
-#     model = models.EmployerDocSig
+#     model = models.CaseSignature
 #     slug_url_kwarg = 'slug'
 #     token_field_name = None
 
@@ -1164,7 +1167,7 @@ class UploadedPdfAgencyView(
 #     CheckSignatureSessionTokenMixin,
 #     DetailView
 # ):
-#     model = models.EmployerDocSig
+#     model = models.CaseSignature
 #     slug_url_kwarg = 'slug'
 #     token_field_name = None
 #     as_attachment=False
@@ -1376,6 +1379,40 @@ class EmployerHouseholdDetailsFormView(
         return reverse_lazy(
             'dashboard_employers_list'
         )
+
+class GenerateSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
+    model = models.CaseSignature
+    pk_url_kwarg = 'level_1_pk'
+    pattern_name = 'case_detail_route'
+
+    def get_object(self):
+        return self.model.objects.get_or_create(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg),
+            defaults={'employer_doc': models.EmployerDoc.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))},
+        )[0]
+
+    def get_redirect_url(self, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.generate_sigslug_employer_1()
+        kwargs={'level_1_pk': self.object.employer_doc.pk}
+        return super().get_redirect_url(*args, **kwargs)
+
+class RevokeSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
+    model = models.CaseSignature
+    pk_url_kwarg = 'level_1_pk'
+    pattern_name = 'case_detail_route'
+
+    def get_object(self):
+        return self.model.objects.get_or_create(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg),
+            defaults={'employer_doc': models.EmployerDoc.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))},
+        )[0]
+
+    def get_redirect_url(self, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.revoke_sigslug_employer_1()
+        kwargs={'level_1_pk': self.object.employer_doc.pk}
+        return super().get_redirect_url(*args, **kwargs)
 
 class ArchiveCase(RedirectView):
     http_method_names = ['get']
