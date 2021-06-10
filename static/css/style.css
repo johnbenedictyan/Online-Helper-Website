@@ -122,6 +122,81 @@
   max-width: 95.83333%;
 }
 
+@media (min-width: 1200px) {
+  .col-xl-0-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 4.166667%;
+            flex: 0 0 4.166667%;
+    max-width: 4.166667%;
+  }
+  .col-xl-1-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 12.5%;
+            flex: 0 0 12.5%;
+    max-width: 12.5%;
+  }
+  .col-xl-2-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 20.833333%;
+            flex: 0 0 20.833333%;
+    max-width: 20.833333%;
+  }
+  .col-xl-3-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 29.166667%;
+            flex: 0 0 29.166667%;
+    max-width: 29.166667%;
+  }
+  .col-xl-4-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 37.5%;
+            flex: 0 0 37.5%;
+    max-width: 37.5%;
+  }
+  .col-xl-5-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 41.66667%;
+            flex: 0 0 41.66667%;
+    max-width: 41.66667%;
+  }
+  .col-xl-6-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 54.16667%;
+            flex: 0 0 54.16667%;
+    max-width: 54.16667%;
+  }
+  .col-xl-7-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 62.5%;
+            flex: 0 0 62.5%;
+    max-width: 62.5%;
+  }
+  .col-xl-8-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 70.83333%;
+            flex: 0 0 70.83333%;
+    max-width: 70.83333%;
+  }
+  .col-xl-9-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 79.16667%;
+            flex: 0 0 79.16667%;
+    max-width: 79.16667%;
+  }
+  .col-xl-10-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 87.5%;
+            flex: 0 0 87.5%;
+    max-width: 87.5%;
+  }
+  .col-xl-11-5 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 95.83333%;
+            flex: 0 0 95.83333%;
+    max-width: 95.83333%;
+  }
+}
+
 .dashboard-font-size-text {
   font-size: 0.75rem;
 }

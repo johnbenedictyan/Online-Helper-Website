@@ -3,35 +3,23 @@
 {% load static %}
 {% block accounts_section %}
 {% include 'sections/title-banner.html' with page_name='User Log In' %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="row">
+<div class="container-fluid">
+    {% include 'components/crispy-form-error.html' %}
+    <div class="row justify-content-center">
+        <div class="col-10 col-lg-8 col-xl-6-5 mb-md-3 mb-lg-4 mb-xl-5">
+            <!-- <div class="row">
                 <div class="col text-center">
                     <h4>Log in to view biodata</h4>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8 offset-md-2 mb-3">
+                <div class="col mb-3">
                     <p class="small text-dark mb-0">In accordance to EA Licence Condition #17 by Ministry of Manpower, users are requested to log in to view information of FDWs.</p>
                     <p class="small text-dark">Users may send in their enquiries, which does not require a sign up. Agencies on this platform will revert within 1 -2 working days.</p>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
-                <div class="col-md-5 py-md-4">
+                <div class="col py-md-4">
                     <div class="row">
                         <div class="col">
                             <h5>Login with email</h5>
@@ -41,16 +29,16 @@
                         {% crispy form %}
                     </form>
                 </div>
-                <div class="col-md-2">
+                <div class="col-1-5">
                     <div class="vertical-divider mx-auto d-none d-md-block">
                     </div>
                     <hr class="d-md-none">
                 </div>
-                <div class="col-md-5 pb-md-4 my-auto">
+                <div class="col pb-md-4 my-auto">
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col">
+                                <div class="col mb-1">
                                     <h5>Or login with</h5>
                                 </div>
                             </div>

@@ -294,7 +294,7 @@ class EmployerCreationForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Create',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-100"
                     ),
                     css_class='col-12 text-center'
                 ),
