@@ -367,7 +367,7 @@ class PdfHtmlViewMixin:
             DEPLOYMENT_DATE = self.object.rn_casestatus_ed.fdw_work_commencement_date
         else:
             DEPLOYMENT_DATE = None
-            # DEPLOYMENT_DATE = datetime.date(2021, 6, 13) # FOR TESTING ONLY - TO BE DELETED ###################
+            # DEPLOYMENT_DATE = datetime.date(2021, 5, 31) # FOR TESTING ONLY - TO BE DELETED ###################
 
         if DEPLOYMENT_DATE:
             # Initialise dates
@@ -398,8 +398,9 @@ class PdfHtmlViewMixin:
 
                 # Set payment date
                 payment_month += 1
-                payment_year += 1 if payment_month%12 == 1 else 0
                 payment_month = 12 if payment_month%12==0 else payment_month%12
+                payment_year += 1 if payment_month%12 == 1 else 0
+                payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
 
                 # Calculate potential_off_days_in_month
                 end_date = datetime.date(payment_year, payment_month, payment_day)
