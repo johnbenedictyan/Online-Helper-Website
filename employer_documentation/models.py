@@ -1,11 +1,13 @@
 # Imports from python
 import os
 import uuid
+import secrets
 from decimal import Decimal, ROUND_HALF_UP
 
 # Imports from django
 from django.db import models
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage
@@ -1270,9 +1272,9 @@ class EmployerDoc(models.Model):
         if not hasattr(self, 'rn_casestatus_ed'):
             CaseStatus.objects.create(employer_doc=self)
         
-        # Create related EmployerDocSig object if it does not exist
+        # Create related CaseSignature object if it does not exist
         if not hasattr(self, 'rn_signatures_ed'):
-            EmployerDocSig.objects.create(employer_doc=self)
+            CaseSignature.objects.create(employer_doc=self)
 
     def get_version(self):
         return str(self.version).zfill(4)
@@ -1973,7 +1975,7 @@ class DocUpload(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
 
-class EmployerDocSig(models.Model):
+class CaseSignature(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
         on_delete=models.CASCADE,
@@ -2026,16 +2028,35 @@ class EmployerDocSig(models.Model):
         null=True
     )
 
-    # Verification Tokens
-    employer_slug = models.SlugField(
-        max_length=36,
-        default=uuid.uuid4,
-        unique=True
-    )
-    employer_token = models.CharField(
-        max_length=128,
+    # Signature URL slugs
+    sigslug_employer_1 = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
         blank=True,
-        null=True
+        null=True,
+    )
+
+    def generate_sigslug_employer_1(self):
+        self.sigslug_employer_1 = secrets.token_urlsafe(128)
+        super().save()
+
+    def revoke_sigslug_employer_1(self):
+        self.sigslug_employer_1 = None
+        super().save()
+
+    def get_sigurl_employer_1(self):
+        if self.sigslug_employer_1:
+            current_site = Site.objects.get_current()
+            return current_site.domain + '/' + self.sigslug_employer_1
+        else:
+            return ''
+
+    # Verification Tokens
+    employer_token = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
     )
 
 class CaseStatus(models.Model):
