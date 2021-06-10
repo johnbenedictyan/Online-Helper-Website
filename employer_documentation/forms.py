@@ -2110,71 +2110,71 @@ class DocUploadForm(forms.ModelForm):
             )
         )
 
-class EmployerDocSigSlugForm(forms.ModelForm):
-    class Meta:
-        model = models.EmployerDocSig
-        fields = ['employer_slug']
-        labels = {
-            'employer_slug': _('Employer signature URL'),
-        }
+# class CaseSignatureSlugForm(forms.ModelForm):
+#     class Meta:
+#         model = models.CaseSignature
+#         fields = ['sigslug_employer_1']
+#         labels = {
+#             'sigslug_employer_1': _('Employer signature URL'),
+#         }
 
-    def __init__(self, *args, **kwargs):
-        self.model_field_name = kwargs.pop('model_field_name')
-        self.form_fields = kwargs.pop('form_fields')
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         self.model_field_name = kwargs.pop('model_field_name')
+#         self.form_fields = kwargs.pop('form_fields')
+#         super().__init__(*args, **kwargs)
 
-        self.helper = FormHelper()
-        self.helper.layout = Layout()
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout()
         
-        # Insert full URL path to signature token URL
-        current_site = Site.objects.get_current()
-        self.initial.update({
-            self.model_field_name: current_site.domain + reverse(
-                'token_verification_' + self.model_field_name[:-5] + '_route',
-                kwargs={'slug':self.initial.get(self.model_field_name)}
-            )
-        })
+#         # Insert full URL path to signature token URL
+#         current_site = Site.objects.get_current()
+#         self.initial.update({
+#             self.model_field_name: current_site.domain + reverse(
+#                 'token_verification_' + self.model_field_name[:-5] + '_route',
+#                 kwargs={'slug':self.initial.get(self.model_field_name)}
+#             )
+#         })
         
-        # Make copy of all field names, then remove fields that are not in self.form_fields
-        fields_copy = list(self.fields)
-        for field in fields_copy:
-            if field!=self.model_field_name:
-                del self.fields[field]
+#         # Make copy of all field names, then remove fields that are not in self.form_fields
+#         fields_copy = list(self.fields)
+#         for field in fields_copy:
+#             if field!=self.model_field_name:
+#                 del self.fields[field]
         
-        self.helper.layout.append(
-            HTML('''
-                <h5>Unique URL</h5>
-            ''')
-        )
-        self.helper.layout.append(
-            UneditableField(
-                self.model_field_name,
-                id='copy-id',
-                css_class='col',
-            )
-        )
-        self.helper.layout.append(
-            StrictButton(
-                '<i class="fas fa-copy"></i>',
-                id="copy-button",
-                css_class="btn btn-secondary",
-            )
-        )
+#         self.helper.layout.append(
+#             HTML('''
+#                 <h5>Unique URL</h5>
+#             ''')
+#         )
+#         self.helper.layout.append(
+#             UneditableField(
+#                 self.model_field_name,
+#                 id='copy-id',
+#                 css_class='col',
+#             )
+#         )
+#         self.helper.layout.append(
+#             StrictButton(
+#                 '<i class="fas fa-copy"></i>',
+#                 id="copy-button",
+#                 css_class="btn btn-secondary",
+#             )
+#         )
         
-        # Workaround for validation always failing due to missing field.
-        # This duplicates the input field, meaning that there are 2 HTML input fields with same name.
-        # Without this duplicate, the form validation fails, saying that first field is required.
-        self.helper.layout.append(
-            Hidden(self.model_field_name, 'null',)
-        )
+#         # Workaround for validation always failing due to missing field.
+#         # This duplicates the input field, meaning that there are 2 HTML input fields with same name.
+#         # Without this duplicate, the form validation fails, saying that first field is required.
+#         self.helper.layout.append(
+#             Hidden(self.model_field_name, 'null',)
+#         )
 
-        # Submitting form will regen new slug
-        self.helper.layout.append(
-            Submit('submit', 'Renew URL')
-        )
+#         # Submitting form will regen new slug
+#         self.helper.layout.append(
+#             Submit('submit', 'Renew URL')
+#         )
 
-    def clean_employer_slug(self):
-        return uuid.uuid4()
+#     def clean_sigslug_employer_1(self):
+#         return uuid.uuid4()
 
 class CaseStatusForm(forms.ModelForm):
     class Meta:
@@ -2279,7 +2279,7 @@ class CaseStatusForm(forms.ModelForm):
 # Signature Forms
 class SignatureForm(forms.ModelForm):
     class Meta:
-        model = models.EmployerDocSig
+        model = models.CaseSignature
         fields = '__all__'
     
     def __init__(self, *args, **kwargs):
@@ -2372,96 +2372,68 @@ class SignatureForm(forms.ModelForm):
         else:
             return cleaned_data
 
-    def clean_employer_witness_name(self):
-        cleaned_field = self.cleaned_data.get('employer_witness_name')
-        if cleaned_field:
-            return cleaned_field
-        else:
-            raise ValidationError('Witness name cannot be empty')
-
-    def clean_employer_witness_nric(self):
-        cleaned_field = self.cleaned_data.get('employer_witness_nric')
-        if cleaned_field:
-            return cleaned_field
-        else:
-            raise ValidationError('NRIC cannot be empty')
-
-    def clean_fdw_witness_name(self):
-        cleaned_field = self.cleaned_data.get('fdw_witness_name')
-        if cleaned_field:
-            return cleaned_field
-        else:
-            raise ValidationError('Witness name cannot be empty')
-
-    def clean_fdw_witness_nric(self):
-        cleaned_field = self.cleaned_data.get('fdw_witness_nric')
-        if cleaned_field:
-            return cleaned_field
-        else:
-            raise ValidationError('ID cannot be empty')
-
-class VerifyUserTokenForm(forms.ModelForm):
-    class Meta:
-        model = models.EmployerDocSig
-        exclude = '__all__'
-        fields = ['employer_token']
+# class VerifyUserTokenForm(forms.ModelForm):
+#     class Meta:
+#         model = models.CaseSignature
+#         exclude = '__all__'
+#         fields = ['employer_token']
     
-    # Employer fields
-    nric = forms.CharField()
-    mobile = forms.IntegerField()
+#     # Employer fields
+#     nric = forms.CharField()
+#     mobile = forms.IntegerField()
     
-    def __init__(self, *args, **kwargs):
-        self.is_employer = False
-        self.is_fdw = False
-        self.slug = kwargs.pop('slug')
-        self.session = kwargs.pop('session')
-        self.token_field_name = kwargs.pop('token_field_name')
+#     def __init__(self, *args, **kwargs):
+#         self.is_employer = False
+#         self.is_fdw = False
+#         self.slug = kwargs.pop('slug')
+#         self.session = kwargs.pop('session')
+#         self.token_field_name = kwargs.pop('token_field_name')
         
-        if self.token_field_name=='employer_token':
-            self.is_employer = True
-            self.object = EmployerDocSig.objects.get(employer_slug=self.slug)
-            fieldset = Fieldset(
-                # Legend for form
-                'For security purposes, please enter the following details \
-                    to verify your identify:',
+#         if self.token_field_name=='employer_token':
+#             self.is_employer = True
+#             self.object = CaseSignature.objects.get(sigslug_employer_1=self.slug)
+#             fieldset = Fieldset(
+#                 # Legend for form
+#                 'For security purposes, please enter the following details \
+#                     to verify your identify:',
                 
-                # Form fields - main
-                'nric',
-                'mobile',
-            )        
-        super().__init__(*args, **kwargs)
+#                 # Form fields - main
+#                 'nric',
+#                 'mobile',
+#             )        
+#         super().__init__(*args, **kwargs)
 
-        self.fields['nric'].label = 'NRIC'
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            fieldset,
-            Submit('submit', 'Submit')
-        )
+#         self.fields['nric'].label = 'NRIC'
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout(
+#             fieldset,
+#             Submit('submit', 'Submit')
+#         )
 
-        # Make new list of all field names, then remove fields that are not
-        # token_field_name.
-        fields_copy = list(self.fields)
-        for field in fields_copy:
-            if (
-                self.is_employer and
-                (field=='nric' or field=='mobile')
-            ):
-                continue
-            else:
-                del self.fields[field]
+#         # Make new list of all field names, then remove fields that are not
+#         # token_field_name.
+#         fields_copy = list(self.fields)
+#         for field in fields_copy:
+#             if (
+#                 self.is_employer and
+#                 (field=='nric' or field=='mobile')
+#             ):
+#                 continue
+#             else:
+#                 del self.fields[field]
 
-    def clean(self):
-        input_nric = self.cleaned_data.get('nric', '')
-        plaintext = self.object.employer_doc.employer.get_employer_nric_full()
-        if (self.is_employer and (
-            input_nric.lower() == plaintext.lower() and
-            int(self.cleaned_data.get('mobile', 0)) == int(self.object.employer_doc.employer.employer_mobile_number)
-        )):
-            verification_token = secrets.token_urlsafe(128)
-            self.cleaned_data[self.token_field_name] = verification_token
-            self.session['signature_token'] = verification_token
-            self.session.set_expiry(60*30) # Session expires in 30 mins
-            return self.cleaned_data
-        else:
-            raise ValidationError(
-                'The details you entered did not match our records')
+#     def clean(self):
+#         input_nric = self.cleaned_data.get('nric', '')
+#         plaintext = self.object.employer_doc.employer.get_employer_nric_full()
+#         if (self.is_employer and (
+#             input_nric.lower() == plaintext.lower() and
+#             int(self.cleaned_data.get('mobile', 0)) == int(self.object.employer_doc.employer.employer_mobile_number)
+#         )):
+#             verification_token = secrets.token_urlsafe(128)
+#             self.cleaned_data[self.token_field_name] = verification_token
+#             self.session['signature_token'] = verification_token
+#             self.session.set_expiry(60*30) # Session expires in 30 mins
+#             return self.cleaned_data
+#         else:
+#             raise ValidationError(
+#                 'The details you entered did not match our records')
