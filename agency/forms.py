@@ -716,20 +716,22 @@ class AgencyBranchForm(forms.ModelForm):
         cleaned_data = super().clean()
         branch_name = cleaned_data.get('name')
         main_branch = cleaned_data.get("main_branch")
-        current_main_branch = AgencyBranch.objects.get(
-            agency=self.agency,
-            main_branch=True
-        )
-        if current_main_branch:
+        try:
+            current_main_branch = AgencyBranch.objects.get(
+                agency=self.agency,
+                main_branch=True
+            )
+        except AgencyBranch.DoesNotExist:
+            if main_branch == False:
+                msg = _('You must have at least one main branch')
+                self.add_error('main_branch', msg)
+        else:
             if main_branch == True and branch_name != current_main_branch.name:
                 msg = _(f"""
                     {current_main_branch} is already set as the main branch
                 """)
                 self.add_error('main_branch', msg)
 
-        elif main_branch == False:
-            msg = _('You must have at least one main branch')
-            self.add_error('main_branch', msg)
         return cleaned_data
 
     def save(self, *args, **kwargs):
