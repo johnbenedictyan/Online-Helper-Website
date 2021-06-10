@@ -1281,17 +1281,17 @@ class EmployerDoc(models.Model):
         return Decimal(self.fdw_salary/ed_constants.NUMBER_OF_WORK_DAYS_IN_MONTH).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
     def fdw_off_day_of_week_display(self):
-        if self.fdw_off_day_of_week == 0:
+        if int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.MON:
             return _('Monday')
-        elif self.fdw_off_day_of_week == 1:
+        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.TUE:
             return _('Tuesday')
-        elif self.fdw_off_day_of_week == 2:
+        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.WED:
             return _('Wednesday')
-        elif self.fdw_off_day_of_week == 3:
+        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.THU:
             return _('Thursday')
-        elif self.fdw_off_day_of_week == 4:
+        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.FRI:
             return _('Friday')
-        elif self.fdw_off_day_of_week == 5:
+        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.SAT:
             return _('Saturday')
         else:
             return _('Sunday')
