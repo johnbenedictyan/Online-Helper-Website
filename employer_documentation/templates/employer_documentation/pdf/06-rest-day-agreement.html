@@ -56,7 +56,7 @@
         <td colspan="3">This agreement is made between (a) the FDW and (b) the Employer in accordance with the Ministry of Manpower’s regulations on the provision of a weekly rest day for FDWs. Please refer to the Employment of Foreign Manpower (Work Passes) Regulations. of the Employment of Foreign Manpower Act (CHAPTER 91A).</td>
     </tr>
     <tr>
-        <td colspan="3">It was agreed between the contracting parties that the abovementioned FDW will have 4 rest day(s) per month, on {{ object.get_fdw_off_day_of_week_display }} with compensation of S${{ object.get_off_day_compensation|intcomma }} for each rest day forgone.</td>
+        <td colspan="3">It was agreed between the contracting parties that the abovementioned FDW is entitled to 1 rest day per week, on {{ object.fdw_off_day_of_week_display }}, with compensation of S${{ object.per_off_day_compensation|intcomma }} for each rest day forgone.</td>
     </tr>
     
     {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
