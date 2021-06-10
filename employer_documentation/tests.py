@@ -971,9 +971,9 @@ class EmployerDocDetailViewTestCase(SetUp, TestCase):
         }
         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
 
-# class EmployerDocSigSlugUpdateViewTestCase(SetUp, TestCase):
+# class CaseSignatureSlugUpdateViewTestCase(SetUp, TestCase):
 #     url_route = 'sig_slug_employer_update_route'
-#     test_view = EmployerDocSigSlugUpdateView
+#     test_view = CaseSignatureSlugUpdateView
     
 class SignatureUpdateByAgentViewTestCase(SetUp, TestCase):
     url_route = 'signature_employer_update_route'

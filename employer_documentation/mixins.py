@@ -123,7 +123,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
             return HttpResponseRedirect(reverse_lazy('home'))
 
     # Method to get object Employer, EmployerDoc, EmployerDocMaidStatus,
-    # EmployerDocSig from database and assign to attribute of View object.
+    # CaseSignature from database and assign to attribute of View object.
     def assign_ed_object(self):
         # Try to get object from database
         try:
@@ -151,7 +151,7 @@ class LoginByAgencyUserGroupRequiredMixin(LoginRequiredMixin):
                 isinstance(self.object, models.DocSafetyAgreement) or
                 isinstance(self.object, models.DocUpload) or
                 isinstance(self.object, models.EmployerDocMaidStatus) or
-                isinstance(self.object, models.EmployerDocSig) or
+                isinstance(self.object, models.CaseSignature) or
                 isinstance(self.object, models.JobOrder) or
                 isinstance(self.object, models.ArchivedDoc) or
                 isinstance(self.object, models.EmployerPaymentTransaction)
@@ -215,7 +215,7 @@ class CheckAgencyEmployeePermissionsMixin(
         if not self.agency_user_group:  self.assign_agency_user_group()
         if not self.agency_user_obj:    self.assign_agency_user_object()
 
-        # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
+        # Assign Employer, EmployerDoc, EmployerMaidStatus, CaseSignature
         # object, if it exists, to attribute of View object.
         self.assign_ed_object()
 
@@ -276,7 +276,7 @@ class CheckUserIsAgencyOwnerMixin(LoginByAgencyUserGroupRequiredMixin):
         if not self.agency_user_group:  self.assign_agency_user_group()
         if not self.agency_user_obj:    self.assign_agency_user_object()
         
-        # Assign Employer, EmployerDoc, EmployerMaidStatus, EmployerDocSig
+        # Assign Employer, EmployerDoc, EmployerMaidStatus, CaseSignature
         # object, if it exists, to attribute of View object.
         self.assign_ed_object()
         
