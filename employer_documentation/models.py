@@ -2051,8 +2051,7 @@ class CaseSignature(models.Model):
             return ''
 
     # Verification Tokens
-    employer_token = models.CharField(
-        max_length=255,
+    token_employer_1 = models.BinaryField(
         blank=True,
         null=True,
     )
