@@ -298,6 +298,9 @@ class DocServAgmtEmpCtrCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def form_valid(self, form):
@@ -699,6 +702,9 @@ class DocServiceFeeScheduleUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def get_success_url(self):
@@ -747,6 +753,9 @@ class DocServAgmtEmpCtrUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def get_success_url(self):
@@ -800,6 +809,9 @@ class DocSafetyAgreementUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def get_success_url(self):
@@ -1381,6 +1393,11 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
+class TokenVerificationFormView(FormView):
+    form_class=forms.TokenVerificationForm
+    http_method_names = ['get', 'post']
+
+# Redirect Views
 class GenerateSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
     model = models.CaseSignature
     pk_url_kwarg = 'level_1_pk'
