@@ -1457,6 +1457,13 @@ class TokenChallengeEmployer1View(
             kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}
         )
 
+    def get_form_kwargs(self):
+        kwargs =  super().get_form_kwargs()
+        kwargs.update({
+            'object':self.get_object()
+        })
+        return kwargs
+
 class ArchiveCase(RedirectView):
     http_method_names = ['get']
     pattern_name = 'dashboard_case_list'

@@ -53,7 +53,7 @@ class EmployerForm(forms.ModelForm):
 
         # Decryption
         self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
-        self.initial.update({'employer_fin_num': self.instance.get_employer_fin()})
+        self.initial.update({'employer_fin_num': self.instance.get_employer_fin_full()})
         self.initial.update({'employer_passport_num': self.instance.get_employer_passport()})
         self.initial.update({'spouse_nric_num': self.instance.get_spouse_nric_full()})
         self.initial.update({'spouse_fin_num': self.instance.get_spouse_fin()})
@@ -2302,36 +2302,50 @@ class TokenChallengeEmployer1Form(forms.Form):
     mobile = forms.CharField(label='Mobile Phone Number', max_length=8)
 
     def __init__(self, *args, **kwargs):
+        self.object = kwargs.pop('object')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
                     'nric_fin',
-                    css_class='form-group col-9',
+                    css_class='form-group col-9 my-2',
                 ),
                 Column(
                     'mobile',
-                    css_class='form-group col-9',
+                    css_class='form-group col-9 my-2',
                 ),
-                css_class='form-row',
-            ),
-            Row(
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50",
+                        'Confirm',
+                        css_class="btn btn-primary w-75",
                     ),
-                    css_class='form-group col-9 text-center',
-                ),
-                css_class='form-row',
-            ),
+                    css_class='form-group col-9 my-3 text-center',
+                )
+            )
         )
     
     def clean_nric_fin(self):
         cleaned_field = self.cleaned_data.get('nric_fin')
         print(cleaned_field)
+        employer = self.object.employer_doc.employer
+        if not (
+            cleaned_field == employer.get_employer_nric_partial(padded=False) or 
+            cleaned_field == employer.get_employer_fin_partial(padded=False)
+        ):
+            self.add_error(
+                _('Invalid Credentials')
+            )
+        return cleaned_field
+
+    def clean_mobile(self):
+        cleaned_field = self.cleaned_data.get('mobile')
+        employer = self.object.employer_doc.employer
+        if not cleaned_field == employer.employer_mobile_number:
+            self.add_error(
+                _('Invalid Credentials')
+            )
         return cleaned_field
 
 # class VerifyUserTokenForm(forms.ModelForm):
