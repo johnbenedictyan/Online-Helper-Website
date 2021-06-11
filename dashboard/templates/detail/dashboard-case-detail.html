@@ -542,7 +542,7 @@
                     <div class="row">
                         <div class="col-11">
                             <div class="input-group">
-                                <input id="copy-value" type="text" class="form-control" value="{% if object.rn_signatures_ed.get_sigurl_employer_1 %}object.rn_signatures_ed.get_sigurl_employer_1{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value" type="text" class="form-control" value="{% if object.rn_signatures_ed.get_sigurl_employer_1 %}{{ object.rn_signatures_ed.get_sigurl_employer_1 }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="copy-button" {% if not object.rn_signatures_ed.get_sigurl_employer_1 %}disabled{% endif %}><i class="far fa-copy"></i></button>
                                     <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
