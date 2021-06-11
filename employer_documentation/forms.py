@@ -2308,25 +2308,21 @@ class TokenChallengeEmployer1Form(forms.Form):
             Row(
                 Column(
                     'nric_fin',
-                    css_class='form-group col-9',
+                    css_class='form-group col-9 my-2',
                 ),
                 Column(
                     'mobile',
-                    css_class='form-group col-9',
+                    css_class='form-group col-9 my-2',
                 ),
-                css_class='form-row',
-            ),
-            Row(
                 Column(
                     Submit(
                         'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50",
+                        'Confirm',
+                        css_class="btn btn-primary w-75",
                     ),
-                    css_class='form-group col-9 text-center',
-                ),
-                css_class='form-row',
-            ),
+                    css_class='form-group col-9 my-3 text-center',
+                )
+            )
         )
     
     def clean_nric_fin(self):
