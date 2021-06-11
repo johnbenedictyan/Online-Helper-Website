@@ -259,17 +259,27 @@ class Employer(models.Model):
             self.employer_nric_tag,
         )
     
-    def get_employer_nric_partial(self):
+    def get_employer_nric_partial(self, padded=True):
         plaintext = self.get_employer_nric_full()
-        return 'x'*5 + plaintext[-4:] if plaintext else ''
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
 
-    def get_employer_fin(self):
+    def get_employer_fin_full(self):
         return decrypt_string(
             self.employer_fin_num,
             settings.ENCRYPTION_KEY,
             self.employer_fin_nonce,
             self.employer_fin_tag,
         )
+    
+    def get_employer_fin_partial(self, padded=True):
+        plaintext = self.get_employer_fin_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
 
     def get_employer_passport(self):
         return decrypt_string(
@@ -2428,7 +2438,7 @@ class ArchivedDoc(models.Model):
         plaintext = self.get_employer_nric_full()
         return 'x'*5 + plaintext[-4:] if plaintext else ''
 
-    def get_employer_fin(self):
+    def get_employer_fin_full(self):
         return decrypt_string(
             self.employer_fin_num,
             settings.ENCRYPTION_KEY,
