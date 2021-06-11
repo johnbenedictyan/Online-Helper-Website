@@ -14,6 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.shortcuts import get_object_or_404
 
 # From our apps
 from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
@@ -1413,6 +1414,31 @@ class RevokeSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, Re
         self.object.revoke_sigslug_employer_1()
         kwargs={'level_1_pk': self.object.employer_doc.pk}
         return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
+
+class TokenChallengeEmployer1View(
+    SuccessMessageMixin,
+    FormView,
+):
+    model = models.CaseSignature
+    form_class = forms.TokenChallengeEmployer1Form
+    slug_url_kwarg = 'slug'
+    template_name = 'employer_documentation/signature_challenge_form.html'
+
+    def get_object(self):
+        return get_object_or_404(
+            self.model,
+            sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+        )
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_success_url(self) -> str:
+        return reverse(
+            'challenge_employer1_route',
+            kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}
+        )
 
 class ArchiveCase(RedirectView):
     http_method_names = ['get']

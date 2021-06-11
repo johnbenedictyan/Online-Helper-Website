@@ -800,6 +800,26 @@ urlpatterns = [
     #         ),
     #     ]),
     # ),
+    path(
+        'token/',
+        include([
+            path(
+                '<slug:slug>/',
+                include([
+                    path(
+                        'verification/',
+                        include([
+                            path(
+                                'employer-1/',
+                                views.TokenChallengeEmployer1View.as_view(),
+                                name='challenge_employer1_route'
+                            ),
+                        ]),
+                    ),
+                ]),
+            ),
+        ]),
+    ),
     path('status/',
         include([
             path(

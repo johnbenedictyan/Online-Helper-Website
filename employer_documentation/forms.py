@@ -2372,6 +2372,43 @@ class SignatureForm(forms.ModelForm):
         else:
             return cleaned_data
 
+class TokenChallengeEmployer1Form(forms.Form):
+    nric_fin = forms.CharField(label='Last Four Characters of NRIC/FIN', max_length=4)
+    mobile = forms.CharField(label='Mobile Phone Number', max_length=8)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'nric_fin',
+                    css_class='form-group col-9',
+                ),
+                Column(
+                    'mobile',
+                    css_class='form-group col-9',
+                ),
+                css_class='form-row',
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-50",
+                    ),
+                    css_class='form-group col-9 text-center',
+                ),
+                css_class='form-row',
+            ),
+        )
+    
+    def clean_nric_fin(self):
+        cleaned_field = self.cleaned_data.get('nric_fin')
+        print(cleaned_field)
+        return cleaned_field
+
 # class VerifyUserTokenForm(forms.ModelForm):
 #     class Meta:
 #         model = models.CaseSignature

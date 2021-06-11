@@ -6,6 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 # Imports from django
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
@@ -1467,18 +1468,16 @@ class EmployerDoc(models.Model):
                 'b2c_security_bond_accident_insurance':self.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance,
                 'b2d_indemnity_policy_reimbursement':self.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement,
                 'b2e_home_service':self.rn_servicefeeschedule_ed.b2e_home_service,
-                'b2f_counselling':self.rn_servicefeeschedule_ed.b2f_counselling,
-                'b2g_sip':self.rn_servicefeeschedule_ed.b2g_sip,
-                'b2h_food_lodging':self.rn_servicefeeschedule_ed.b2h_food_lodging,
-                'b2i1_other_services_description':self.rn_servicefeeschedule_ed.b2i1_other_services_description,
-                'b2i1_other_services_fee':self.rn_servicefeeschedule_ed.b2i1_other_services_fee,
-                'b2i2_other_services_description':self.rn_servicefeeschedule_ed.b2i2_other_services_description,
-                'b2i2_other_services_fee':self.rn_servicefeeschedule_ed.b2i2_other_services_fee,
-                'b2i3_other_services_description':self.rn_servicefeeschedule_ed.b2i3_other_services_description,
-                'b2i3_other_services_fee':self.rn_servicefeeschedule_ed.b2i3_other_services_fee,
-                'b2j_replacement_months':self.rn_servicefeeschedule_ed.b2j_replacement_months,
-                'b2j_replacement_cost':self.rn_servicefeeschedule_ed.b2j_replacement_cost,
-                'b2k_work_permit_renewal':self.rn_servicefeeschedule_ed.b2k_work_permit_renewal,
+                'b2f_sip':self.rn_servicefeeschedule_ed.b2f_sip,
+                'b2g1_other_services_description':self.rn_servicefeeschedule_ed.b2g1_other_services_description,
+                'b2g1_other_services_fee':self.rn_servicefeeschedule_ed.b2g1_other_services_fee,
+                'b2g2_other_services_description':self.rn_servicefeeschedule_ed.b2g2_other_services_description,
+                'b2g2_other_services_fee':self.rn_servicefeeschedule_ed.b2g2_other_services_fee,
+                'b2g3_other_services_description':self.rn_servicefeeschedule_ed.b2g3_other_services_description,
+                'b2g3_other_services_fee':self.rn_servicefeeschedule_ed.b2g3_other_services_fee,
+                'b2h_replacement_months':self.rn_servicefeeschedule_ed.b2h_replacement_months,
+                'b2h_replacement_cost':self.rn_servicefeeschedule_ed.b2h_replacement_cost,
+                'b2i_work_permit_renewal':self.rn_servicefeeschedule_ed.b2i_work_permit_renewal,
                 'b3_agency_fee':self.rn_servicefeeschedule_ed.b3_agency_fee,
                 'ca_deposit_amount':self.rn_servicefeeschedule_ed.ca_deposit_amount,
                 'ca_deposit_date':self.rn_servicefeeschedule_ed.ca_deposit_date,
@@ -2048,13 +2047,16 @@ class CaseSignature(models.Model):
     def get_sigurl_employer_1(self):
         if self.sigslug_employer_1:
             current_site = Site.objects.get_current()
-            return current_site.domain + '/' + self.sigslug_employer_1
+            relative_url = reverse(
+                'challenge_employer1_route',
+                kwargs={'slug': self.sigslug_employer_1},
+            )
+            return current_site.domain + relative_url
         else:
             return ''
 
     # Verification Tokens
-    employer_token = models.CharField(
-        max_length=255,
+    token_employer_1 = models.BinaryField(
         blank=True,
         null=True,
     )
@@ -3359,62 +3361,56 @@ class ArchivedDoc(models.Model):
     b2e_home_service = CustomMoneyDecimalField(
         verbose_name=_("2e. Home Service")
     )
-    b2f_counselling = CustomMoneyDecimalField(
-        verbose_name=_("2f. Each Counselling Session")
+    b2f_sip = CustomMoneyDecimalField(
+        verbose_name=_("2f. Settling-In-Programme (SIP)")
     )
-    b2g_sip = CustomMoneyDecimalField(
-        verbose_name=_("2g. Settling-In-Programme (SIP)")
-    )
-    b2h_food_lodging = CustomMoneyDecimalField(
-        verbose_name=_("2h. Food and Lodging")
-    )
-    b2i1_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (i)"),
+    b2g1_other_services_description = models.CharField(
+        verbose_name=_("2g. Other services provided (i)"),
         max_length=40,
         blank=True,
         null=True
     )
-    b2i1_other_services_fee = CustomMoneyDecimalField(
-        verbose_name=_("2i. Other services fee (i)"),
+    b2g1_other_services_fee = CustomMoneyDecimalField(
+        verbose_name=_("2g. Other services fee (i)"),
         blank=True,
         null=True
     )
-    b2i2_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (ii)"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    b2i2_other_services_fee = CustomMoneyDecimalField(
-        verbose_name=_("2i. Other services fee (ii)"),
-        blank=True,
-        null=True
-    )
-    b2i3_other_services_description = models.CharField(
-        verbose_name=_("2i. Other services provided (iii)"),
+    b2g2_other_services_description = models.CharField(
+        verbose_name=_("2g. Other services provided (ii)"),
         max_length=40,
         blank=True,
         null=True,
     )
-    b2i3_other_services_fee = CustomMoneyDecimalField(
-        verbose_name=_("2i. Other services fee (iii)"),
+    b2g2_other_services_fee = CustomMoneyDecimalField(
+        verbose_name=_("2g. Other services fee (ii)"),
         blank=True,
         null=True
     )
-    b2j_replacement_months = models.PositiveSmallIntegerField(
+    b2g3_other_services_description = models.CharField(
+        verbose_name=_("2g. Other services provided (iii)"),
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+    b2g3_other_services_fee = CustomMoneyDecimalField(
+        verbose_name=_("2g. Other services fee (iii)"),
+        blank=True,
+        null=True
+    )
+    b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("2j. Cost for replacement within __ month(s)"),
+        verbose_name=_("2h. Cost for replacement within __ month(s)"),
         choices=ed_constants.MonthChoices.choices,
         blank=True,
         null=True,
     )
-    b2j_replacement_cost = CustomMoneyDecimalField(
-        verbose_name=_("2j. Cost for replacement"),
+    b2h_replacement_cost = CustomMoneyDecimalField(
+        verbose_name=_("2h. Cost for replacement"),
         blank=True,
         null=True
     )
-    b2k_work_permit_renewal = CustomMoneyDecimalField(
-        verbose_name=_("2k. Renewal of Work Permit"),
+    b2i_work_permit_renewal = CustomMoneyDecimalField(
+        verbose_name=_("2i. Renewal of Work Permit"),
         blank=True,
         null=True
     )
