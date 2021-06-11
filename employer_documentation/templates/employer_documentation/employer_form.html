@@ -291,32 +291,6 @@
             })
         }
 
-        // Token URL copy
-        let copyBtn = document.querySelector('#copy-button');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', () => {
-                let copyElement = document.getElementById("copy-id");
-                navigator.clipboard.writeText(copyElement.value)
-                    .then(() => {
-                        // Animate copy button
-                        copyElement.animate([
-                            { transform: 'scale(1)' },
-                            { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
-                            { transform: 'scale(1)' },
-                        ], {
-                            duration: 500, //milliseconds
-                            easing: 'ease-in', //'linear', a bezier curve, etc.
-                            delay: 0, //milliseconds
-                            iterations: 1, //or a number
-                            direction: 'normal', //'normal', 'reverse', etc.
-                            fill: 'forwards' //'backwards', 'both', 'none', 'auto'
-                        });
-                    })
-                    .catch(err => {
-                        console.log('Error in copying text: ', err);
-                    });
-            })
-        }
     </script>
     {% block extra_js %}{% endblock extra_js %}
 {% endblock js %}
