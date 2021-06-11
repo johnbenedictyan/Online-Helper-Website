@@ -6,6 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 # Imports from django
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
@@ -2046,7 +2047,11 @@ class CaseSignature(models.Model):
     def get_sigurl_employer_1(self):
         if self.sigslug_employer_1:
             current_site = Site.objects.get_current()
-            return current_site.domain + '/' + self.sigslug_employer_1
+            relative_url = reverse(
+                'challenge_employer1_route',
+                kwargs={'slug': self.sigslug_employer_1},
+            )
+            return current_site.domain + relative_url
         else:
             return ''
 
