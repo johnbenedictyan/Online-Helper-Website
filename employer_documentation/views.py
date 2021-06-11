@@ -297,6 +297,9 @@ class DocServAgmtEmpCtrCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def form_valid(self, form):
@@ -698,6 +701,9 @@ class DocServiceFeeScheduleUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def get_success_url(self):
@@ -746,6 +752,9 @@ class DocServAgmtEmpCtrUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def get_success_url(self):
@@ -799,6 +808,9 @@ class DocSafetyAgreementUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(
+            self.pk_url_kwarg
+        )
         return kwargs
 
     def get_success_url(self):
