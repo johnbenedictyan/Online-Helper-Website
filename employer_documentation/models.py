@@ -289,30 +289,6 @@ class Employer(models.Model):
             self.employer_passport_tag,
         )
 
-    def get_spouse_nric_full(self):
-        return decrypt_string(
-            self.spouse_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_nric_nonce,
-            self.spouse_nric_tag,
-        )
-    
-    def get_spouse_fin(self):
-        return decrypt_string(
-            self.spouse_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_fin_nonce,
-            self.spouse_fin_tag,
-        )
-
-    def get_spouse_passport(self):
-        return decrypt_string(
-            self.spouse_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_passport_nonce,
-            self.spouse_passport_tag,
-        )
-
     def mobile_partial_sg(self):
         return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
 
@@ -432,6 +408,13 @@ class Employer(models.Model):
             self.spouse_nric_tag,
         )
 
+    def get_employer_spouse_nric_partial(self, padded=True):
+        plaintext = self.get_employer_spouse_nric_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
+
     def get_employer_spouse_fin_full(self):
         return decrypt_string(
             self.spouse_fin_num,
@@ -439,6 +422,13 @@ class Employer(models.Model):
             self.spouse_fin_nonce,
             self.spouse_fin_tag,
         )
+
+    def get_employer_spouse_fin_partial(self, padded=True):
+        plaintext = self.get_employer_spouse_fin_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
 
     def get_employer_spouse_passport_full(self):
         return decrypt_string(
@@ -888,6 +878,13 @@ class EmployerSponsor(models.Model):
             self.sponsor_1_nric_tag,
         )
 
+    def get_sponsor_1_nric_partial(self, padded=True):
+        plaintext = self.get_sponsor_1_nric_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
+
     def get_sponsor_1_spouse_nric_full(self):
         return decrypt_string(
             self.sponsor_1_spouse_nric_num,
@@ -919,6 +916,13 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_nric_nonce,
             self.sponsor_2_nric_tag,
         )
+
+    def get_sponsor_2_nric_partial(self, padded=True):
+        plaintext = self.get_sponsor_2_nric_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
 
     def get_sponsor_2_spouse_nric_full(self):
         return decrypt_string(
@@ -1123,7 +1127,14 @@ class EmployerJointApplicant(models.Model):
             self.joint_applicant_nric_nonce,
             self.joint_applicant_nric_tag,
         )
-    
+
+    def get_joint_applicant_nric_partial(self, padded=True):
+        plaintext = self.get_joint_applicant_nric_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
+
     def get_joint_applicant_spouse_nric_full(self):
         return decrypt_string(
             self.joint_applicant_spouse_nric_num,
@@ -2533,7 +2544,7 @@ class ArchivedDoc(models.Model):
             self.employer_passport_tag,
         )
 
-    def get_spouse_nric_full(self):
+    def get_employer_spouse_nric_full(self):
         return decrypt_string(
             self.spouse_nric_num,
             settings.ENCRYPTION_KEY,
@@ -2541,7 +2552,7 @@ class ArchivedDoc(models.Model):
             self.spouse_nric_tag,
         )
     
-    def get_spouse_fin(self):
+    def get_employer_spouse_fin_full(self):
         return decrypt_string(
             self.spouse_fin_num,
             settings.ENCRYPTION_KEY,

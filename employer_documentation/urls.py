@@ -888,14 +888,9 @@ urlpatterns = [
                 include([
                     path(
                         'verification/',
-                        include([
-                            path(
-                                'employer-1/',
-                                views.TokenChallengeEmployer1View.as_view(),
-                                name='challenge_employer1_route'
-                            ),
-                        ]),
-                    ),
+                        views.TokenChallengeView.as_view(),
+                        name='token_challenge_route'
+                    )
                 ]),
             ),
         ]),

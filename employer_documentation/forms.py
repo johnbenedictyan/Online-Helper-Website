@@ -55,8 +55,8 @@ class EmployerForm(forms.ModelForm):
         self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
         self.initial.update({'employer_fin_num': self.instance.get_employer_fin_full()})
         self.initial.update({'employer_passport_num': self.instance.get_employer_passport()})
-        self.initial.update({'spouse_nric_num': self.instance.get_spouse_nric_full()})
-        self.initial.update({'spouse_fin_num': self.instance.get_spouse_fin()})
+        self.initial.update({'spouse_nric_num': self.instance.get_employer_spouse_nric_full()})
+        self.initial.update({'spouse_fin_num': self.instance.get_employer_spouse_fin_full()})
         self.initial.update({'spouse_passport_num': self.instance.get_spouse_passport()})
         
         # CrispyForm Helper
@@ -2297,12 +2297,13 @@ class SignatureForm(forms.ModelForm):
         else:
             return cleaned_data
 
-class TokenChallengeEmployer1Form(forms.Form):
+class TokenChallengeForm(forms.Form):
     nric_fin = forms.CharField(label='Last Four Characters of NRIC/FIN', max_length=4)
     mobile = forms.CharField(label='Mobile Phone Number', max_length=8)
 
     def __init__(self, *args, **kwargs):
         self.object = kwargs.pop('object')
+        self.stakeholder = kwargs.pop('stakeholder')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -2328,12 +2329,31 @@ class TokenChallengeEmployer1Form(forms.Form):
     
     def clean_nric_fin(self):
         cleaned_field = self.cleaned_data.get('nric_fin')
-        print(cleaned_field)
-        employer = self.object.employer_doc.employer
-        if not (
-            cleaned_field == employer.get_employer_nric_partial(padded=False) or 
-            cleaned_field == employer.get_employer_fin_partial(padded=False)
-        ):
+        valid = True
+        if self.stakeholder == 'employer_1':
+            obj = self.object.employer_doc.employer
+            if not (
+                cleaned_field == obj.get_employer_nric_partial(padded=False) or 
+                cleaned_field == obj.get_employer_fin_partial(padded=False)
+            ):
+                valid = False
+
+        elif self.stakeholder == 'sponsor_1':
+            obj = self.object.employer_doc.employer.rn_sponsor_employer
+            if not cleaned_field == obj.get_sponsor_1_nric_partial(padded=False):
+                valid = False
+
+        elif self.stakeholder == 'sponsor_2':
+            obj = self.object.employer_doc.employer.rn_sponsor_employer
+            if not cleaned_field == obj.get_sponsor_2_nric_partial(padded=False):
+                valid = False
+
+        elif self.stakeholder == 'joint_applicant':
+            obj = self.object.employer_doc.employer.rn_ja_employer
+            if not cleaned_field == obj.get_joint_applicant_nric_partial(padded=False):
+                valid = False
+        
+        if valid == False:
             self.add_error(
                 _('Invalid Credentials')
             )
@@ -2341,8 +2361,23 @@ class TokenChallengeEmployer1Form(forms.Form):
 
     def clean_mobile(self):
         cleaned_field = self.cleaned_data.get('mobile')
-        employer = self.object.employer_doc.employer
-        if not cleaned_field == employer.employer_mobile_number:
+        valid = True
+        if self.stakeholder == 'employer_1':
+            obj = self.object.employer_doc.employer
+            if not cleaned_field == obj.employer_mobile_number: 
+                valid = False
+
+        elif self.stakeholder == 'sponsor_1':
+            obj = self.object.employer_doc.employer.rn_sponsor_employer
+            if not cleaned_field == obj.sponsor_1_mobile_number:
+                valid = False
+
+        elif self.stakeholder == 'sponsor_2':
+            obj = self.object.employer_doc.employer.rn_sponsor_employer
+            if not cleaned_field == obj.sponsor_2_mobile_number:
+                valid = False
+
+        if valid == False:
             self.add_error(
                 _('Invalid Credentials')
             )

@@ -5,7 +5,7 @@ import secrets
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse, reverse_lazy, resolve
-from django.http import FileResponse, HttpResponseRedirect, JsonResponse
+from django.http import FileResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.db.models import Q
 from django.views.generic import RedirectView
 from django.views.generic.list import ListView, View
@@ -1552,35 +1552,97 @@ class RevokeSigSlugSponsor2View(RevokeSigSlugView):
 class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
     stakeholder = 'joint_applicant'
 
-class TokenChallengeEmployer1View(
+class TokenChallengeView(
     SuccessMessageMixin,
     FormView,
 ):
     model = models.CaseSignature
-    form_class = forms.TokenChallengeEmployer1Form
+    form_class = forms.TokenChallengeForm
     slug_url_kwarg = 'slug'
     template_name = 'employer_documentation/signature_challenge_form.html'
+    stakeholder = ''
 
     def get_object(self):
-        return get_object_or_404(
-            self.model,
-            sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-        )
+        try:
+            obj = self.model.get(
+                sigslug_employer_1=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            raise Http404()
+        else:
+            self.stakeholder = 'employer_1'
+            
+        try:
+            obj = self.model.get(
+                sigslug_employer_spouse=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            raise Http404()
+        else:
+            self.stakeholder = 'employer_spouse'
+            
+        try:
+            obj = self.model.get(
+                sigslug_sponsor_1=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            raise Http404()
+        else:
+            self.stakeholder = 'sponsor_1'
+
+        try:
+            obj = self.model.get(
+                sigslug_sponsor_2=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            raise Http404()
+        else:
+            self.stakeholder = 'sponsor_2'
+
+        try:
+            obj = self.model.get(
+                sigslug_joint_applicant=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            raise Http404()
+        else:
+            self.stakeholder = 'joint_applicant'
+
+        return obj
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().get(request, *args, **kwargs)
 
     def get_success_url(self) -> str:
+        signature_route_dict = {
+            # Stakeholder: View Url Name
+            'employer_1': 'employer_signature_form_view',
+            'employer_spouse': 'employer_spouse_signature_form_view',
+            'sponsor_1': 'sponsor_1_signature_form_view',
+            'sponsor_2': 'sponsor_2_signature_form_view',
+            'joint_applicant': 'joint_applicant_signature_form_view'
+        }
         return reverse(
-            'challenge_employer1_route',
+            signature_route_dict[self.stakeholder],
             kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}
         )
 
     def get_form_kwargs(self):
         kwargs =  super().get_form_kwargs()
         kwargs.update({
-            'object':self.get_object()
+            'object': self.get_object(),
+            'stakeholder': self.stakeholder
         })
         return kwargs
 
