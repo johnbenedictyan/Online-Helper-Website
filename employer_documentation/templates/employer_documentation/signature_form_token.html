@@ -143,6 +143,14 @@
 {% endblock main_content %}
 
 {% block js %}
+    {% with request.resolver_match.url_name as url_name %}  
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-    {% include 'employer_documentation/snippets/signature_snippet_js.html' with signature_pad_id="employer-signature-pad" signature_input_id="id_employer_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+    {% if url_name == 'employer_signature_form_view' %}
+        {% include 'employer_documentation/snippets/signature_snippet_js.html' with signature_pad_id="employer-signature-pad" signature_input_id="id_employer_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+    {% elif url_name == 'employer_with_spouse_signature_form_view' %}
+        {% include 'employer_documentation/snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="employer-spouse-signature-pad" signature_input_2_id="id_employer_spouse_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+    {% elif url_name == 'employer_spouse_signature_form_view' %}
+        {% include 'employer_documentation/snippets/signature_snippet_js.html' with signature_pad_id="employer-spouse-signature-pad" signature_input_id="id_employer_spouse_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+    {% endif %}
+    {% endwith %}
 {% endblock js %}

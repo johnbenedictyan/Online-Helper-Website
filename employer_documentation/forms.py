@@ -2456,7 +2456,6 @@ class TokenChallengeEmployer1Form(forms.Form):
 
 class EmployerSignatureForm(forms.Form):
     employer_signature = forms.CharField(
-        label=_('Employer Signature'),
         max_length=255,
         widget=forms.HiddenInput()
     )
@@ -2479,6 +2478,106 @@ class EmployerSignatureForm(forms.Form):
                                 <h6>Employer Signature</h6>
                                 <canvas
                                     id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class EmployerWithSpouseSignatureForm(forms.Form):
+    employer_signature = forms.CharField(
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+    employer_spouse_signature = forms.CharField(
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Spouse Signature</h6>
+                                <canvas
+                                    id="employer-spouse-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class EmployerSpouseSignatureForm(forms.Form):
+    employer_spouse_signature = forms.CharField(
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Spouse Signature</h6>
+                                <canvas
+                                    id="employer-spouse-signature-pad"
                                     class=""
                                     style="border: 1px solid #d2d2d2"
                                 >

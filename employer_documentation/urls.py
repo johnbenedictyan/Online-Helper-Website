@@ -387,9 +387,19 @@ urlpatterns = [
                                 name='signature_agencyemployee_route'
                             ),
                             path(
-                                '',
+                                'employer/',
                                 views.EmployerSignatureFormView.as_view(),
                                 name='employer_signature_form_view'
+                            ),
+                            path(
+                                'employer-with-spouse/',
+                                views.EmployerWithSpouseSignatureFormView.as_view(),
+                                name='employer_with_spouse_signature_form_view'
+                            ),
+                            path(
+                                'employer-spouse/',
+                                views.EmployerSpouseSignatureFormView.as_view(),
+                                name='employer_spouse_signature_form_view'
                             )
                         ]),
                     ),
