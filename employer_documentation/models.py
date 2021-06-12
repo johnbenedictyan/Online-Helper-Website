@@ -2104,16 +2104,45 @@ class CaseSignature(models.Model):
             self.sigslug_joint_applicant = None
         super().save()
 
-    def get_sigurl_employer_1(self):
-        if self.sigslug_employer_1:
-            current_site = Site.objects.get_current()
+    def get_sigurl(self, stakeholder):
+        current_site = Site.objects.get_current()
+        sigurl_challenge_route_dict = {
+            # Stakeholder: View Url Name
+            'employer_1': 'challenge_employer1_route',
+            'employer_spouse': 'challenge_employer1_route',
+            'sponsor_1': 'challenge_employer1_route',
+            'sponsor_2': 'challenge_employer1_route',
+            'joint_applicant': 'challenge_employer1_route'
+        }
+
+        kwargs = None
+        if stakeholder == 'employer_1' and self.sigslug_employer_1:
+            kwargs={
+                'slug': self.sigslug_employer_1
+            }
+        elif stakeholder == 'employer_spouse' and self.sigslug_employer_spouse:
+            kwargs={
+                'slug': self.sigslug_employer_spouse
+            }
+        elif stakeholder == 'sponsor_1' and self.sigslug_sponsor_1:
+            kwargs={
+                'slug': self.sigslug_sponsor_1
+            }
+        elif stakeholder == 'sponsor_2' and self.sigslug_sponsor_2:
+            kwargs={
+                'slug': self.sigslug_sponsor_2
+            }
+        elif stakeholder == 'joint_applicant' and self.sigslug_joint_applicant:
+            kwargs={
+                'slug': self.sigslug_joint_applicant
+            }
+        
+        if kwargs:
             relative_url = reverse(
-                'challenge_employer1_route',
-                kwargs={'slug': self.sigslug_employer_1},
+                sigurl_challenge_route_dict[stakeholder],
+                kwargs=kwargs
             )
             return current_site.domain + relative_url
-        else:
-            return ''
 
     # Verification Tokens
     token_employer_1 = models.BinaryField(

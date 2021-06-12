@@ -17,8 +17,8 @@ from .views import (
 
 ## Detail Views
 from .views import (
-    DashboardAgencyDetail, DashboardMaidDetail, DashboardEmployerDetail,
-    DashboardCaseDetail
+    DashboardAgencyDetail, DashboardMaidDetail, 
+    # DashboardEmployerDetail, DashboardCaseDetail
 )
 
 ## Form Views

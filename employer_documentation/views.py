@@ -43,6 +43,17 @@ class EmployerDocDetailView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'detail/dashboard-case-detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'employer_1_sigurl': self.object.rn_signatures_ed.get_sigurl('employer_1'),
+            'employer_spouse_sigurl': self.object.rn_signatures_ed.get_sigurl('employer_spouse'),
+            'sponsor_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_1'),
+            'sponsor_2_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_2'),
+            'joint_applicant_sigurl': self.object.rn_signatures_ed.get_sigurl('joint_applicant')
+        })
+        return context
+
 # Create Views
 class EmployerCreateView(
     AgencyLoginRequiredMixin,
