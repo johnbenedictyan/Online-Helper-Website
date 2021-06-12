@@ -2043,7 +2043,39 @@ class CaseSignature(models.Model):
         unique=True,
         default=None,
         blank=True,
-        null=True,
+        null=True
+    )
+
+    sigslug_employer_spouse = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    sigslug_sponsor_1 = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    sigslug_sponsor_2 = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    sigslug_joint_applicant = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
     )
 
     def generate_sigslug_employer_1(self):
