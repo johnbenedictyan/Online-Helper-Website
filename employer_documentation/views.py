@@ -1564,60 +1564,61 @@ class TokenChallengeView(
 
     def get_object(self):
         try:
-            obj = self.model.get(
+            obj = self.model.objects.get(
                 sigslug_employer_1=self.kwargs.get(
                     self.slug_url_kwarg
                 )
             )
         except self.model.DoesNotExist:
-            raise Http404()
+            pass
         else:
             self.stakeholder = 'employer_1'
             
         try:
-            obj = self.model.get(
+            obj = self.model.objects.get(
                 sigslug_employer_spouse=self.kwargs.get(
                     self.slug_url_kwarg
                 )
             )
         except self.model.DoesNotExist:
-            raise Http404()
+            pass
         else:
             self.stakeholder = 'employer_spouse'
             
         try:
-            obj = self.model.get(
+            obj = self.model.objects.get(
                 sigslug_sponsor_1=self.kwargs.get(
                     self.slug_url_kwarg
                 )
             )
         except self.model.DoesNotExist:
-            raise Http404()
+            pass
         else:
             self.stakeholder = 'sponsor_1'
 
         try:
-            obj = self.model.get(
+            obj = self.model.objects.get(
                 sigslug_sponsor_2=self.kwargs.get(
                     self.slug_url_kwarg
                 )
             )
         except self.model.DoesNotExist:
-            raise Http404()
+            pass
         else:
             self.stakeholder = 'sponsor_2'
 
         try:
-            obj = self.model.get(
+            obj = self.model.objects.get(
                 sigslug_joint_applicant=self.kwargs.get(
                     self.slug_url_kwarg
                 )
             )
         except self.model.DoesNotExist:
-            raise Http404()
+            pass
         else:
             self.stakeholder = 'joint_applicant'
 
+        self.employer_doc_pk = obj.employer_doc.pk
         return obj
 
     def get(self, request, *args, **kwargs):
@@ -1635,7 +1636,9 @@ class TokenChallengeView(
         }
         return reverse(
             signature_route_dict[self.stakeholder],
-            kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}
+            kwargs={
+                'level_1_pk': self.employer_doc_pk
+            }
         )
 
     def get_form_kwargs(self):

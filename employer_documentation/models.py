@@ -2117,15 +2117,6 @@ class CaseSignature(models.Model):
 
     def get_sigurl(self, stakeholder):
         current_site = Site.objects.get_current()
-        sigurl_challenge_route_dict = {
-            # Stakeholder: View Url Name
-            'employer_1': 'challenge_employer1_route',
-            'employer_spouse': 'challenge_employer1_route',
-            'sponsor_1': 'challenge_employer1_route',
-            'sponsor_2': 'challenge_employer1_route',
-            'joint_applicant': 'challenge_employer1_route'
-        }
-
         kwargs = None
         if stakeholder == 'employer_1' and self.sigslug_employer_1:
             kwargs={
@@ -2150,7 +2141,7 @@ class CaseSignature(models.Model):
         
         if kwargs:
             relative_url = reverse(
-                sigurl_challenge_route_dict[stakeholder],
+                'token_challenge_route',
                 kwargs=kwargs
             )
             return current_site.domain + relative_url
