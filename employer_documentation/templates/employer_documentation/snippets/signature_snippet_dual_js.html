@@ -10,6 +10,7 @@
     }
     document.getElementById("{{signature_submit_button_id}}").addEventListener("click", function(event) {
         appendImageToForm();
+        this.form.submit();
     });
     document.getElementById("{{signature_clear_button_id}}").addEventListener("click", function(event) {
         signaturePad1.clear();

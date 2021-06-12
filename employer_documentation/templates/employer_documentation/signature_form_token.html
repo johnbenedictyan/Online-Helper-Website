@@ -124,13 +124,8 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col">
+                            {% include 'components/crispy-form-error.html' %}
                             {% crispy form %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col d-flex justify-content-center mt-4">
-                            <button type="button" class="btn btn-outline-secondary w-25 mr-2" data-dismiss="modal" id="signature-form-clear-button">Clear Signatures</button>
-                            <button type="button" class="btn btn-primary w-25 ml-2" id="signature-form-submit-button">Confirm</button>
                         </div>
                     </div>
                 </div>
