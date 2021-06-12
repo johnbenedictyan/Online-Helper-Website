@@ -889,7 +889,7 @@ urlpatterns = [
                     path(
                         'verification/',
                         views.TokenChallengeView.as_view(),
-                        name='challenge_employer1_route'
+                        name='token_challenge_route'
                     )
                 ]),
             ),
