@@ -602,9 +602,9 @@
                     <div class="row">
                         <div class="col-11">
                             <div class="input-group">
-                                <input id="copy-value-sponsor-1" type="text" class="form-control" value="{% if sponsor1_sigurl %}{{ sponsor1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-sponsor-1" type="text" class="form-control" value="{% if sponsor_1_sigurl %}{{ sponsor_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-sponsor-1" {% if not sponsor1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
                                     <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
                                     <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
@@ -617,9 +617,9 @@
                     <div class="row">
                         <div class="col-11">
                             <div class="input-group">
-                                <input id="copy-value-sponsor-2" type="text" class="form-control" value="{% if sponsor2_sigurl %}{{ sponsor2_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-sponsor-2" type="text" class="form-control" value="{% if sponsor_2_sigurl %}{{ sponsor_2_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-sponsor-2" {% if not sponsor2_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
                                     <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
                                     <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>

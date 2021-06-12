@@ -48,8 +48,8 @@ class EmployerDocDetailView(
         context.update({
             'employer_1_sigurl': self.object.rn_signatures_ed.get_sigurl('employer_1'),
             'employer_spouse_sigurl': self.object.rn_signatures_ed.get_sigurl('employer_spouse'),
-            'sponsor1_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_1'),
-            'sponsor2_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_2'),
+            'sponsor_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_1'),
+            'sponsor_2_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_2'),
             'joint_applicant_sigurl': self.object.rn_signatures_ed.get_sigurl('joint_applicant')
         })
         return context
