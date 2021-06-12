@@ -1404,83 +1404,50 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
-class EmployerSignatureFormView(FormView):
+class SignatureFormView(FormView):
+    form_class = None
+    http_method_names = ['get', 'post']
+    template_name = 'employer_documentation/signature_form_token.html'
+
+    def get_object(self):
+        return models.CaseSignature.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'case_detail_route', 
+            kwargs={
+                'level_1_pk': self.object.employer_doc.pk,
+            }
+        )
+
+class EmployerSignatureFormView(SignatureFormView):
     form_class = forms.EmployerSignatureForm
-    http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_token.html'
 
-    def get_object(self):
-        return models.CaseSignature.objects.get(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
-        )
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'case_detail_route', 
-            kwargs={
-                'level_1_pk': self.object.employer_doc.pk,
-            }
-        )
-
-class EmployerWithSpouseSignatureFormView(FormView):
+class EmployerWithSpouseSignatureFormView(SignatureFormView):
     form_class = forms.EmployerWithSpouseSignatureForm
-    http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_token.html'
 
-    def get_object(self):
-        return models.CaseSignature.objects.get(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
-        )
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'case_detail_route', 
-            kwargs={
-                'level_1_pk': self.object.employer_doc.pk,
-            }
-        )
-
-class EmployerSpouseSignatureFormView(FormView):
+class EmployerSpouseSignatureFormView(SignatureFormView):
     form_class = forms.EmployerSpouseSignatureForm
-    http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_token.html'
 
-    def get_object(self):
-        return models.CaseSignature.objects.get(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
-        )
+class Sponsor1SignatureFormView(SignatureFormView):
+    form_class = forms.SponsorSignatureForm
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        return kwargs
+class Sponsor2SignatureFormView(SignatureFormView):
+    form_class = forms.SponsorSignatureForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+class JointApplicantSignatureFormView(SignatureFormView):
+    form_class = forms.JointApplicantSignatureForm
 
-    def get_success_url(self):
-        return reverse_lazy(
-            'case_detail_route', 
-            kwargs={
-                'level_1_pk': self.object.employer_doc.pk,
-            }
-        )
 # class TokenVerificationFormView(FormView):
 #     form_class=forms.TokenVerificationForm
 #     http_method_names = ['get', 'post']

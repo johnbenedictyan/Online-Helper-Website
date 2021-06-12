@@ -2590,3 +2590,77 @@ class EmployerSpouseSignatureForm(forms.Form):
                 css_class='form-group'
             )
         )
+
+class SponsorSignatureForm(forms.Form):
+    sponsor_signature = forms.CharField(
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'sponsor_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Sponsor Signature</h6>
+                                <canvas
+                                    id="sponsor-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class JointApplicantSignatureForm(forms.Form):
+    joint_applicant_signature = forms.CharField(
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'joint_applicant_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Joint Applicant Signature</h6>
+                                <canvas
+                                    id="joint-application-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )

@@ -400,6 +400,21 @@ urlpatterns = [
                                 'employer-spouse/',
                                 views.EmployerSpouseSignatureFormView.as_view(),
                                 name='employer_spouse_signature_form_view'
+                            ),
+                            path(
+                                'sponsor-1/',
+                                views.Sponsor1SignatureFormView.as_view(),
+                                name='sponsor_1_signature_form_view'
+                            ),
+                            path(
+                                'sponsor-2/',
+                                views.Sponsor2SignatureFormView.as_view(),
+                                name='sponsor_2_signature_form_view'
+                            ),
+                            path(
+                                'joint-applicant/',
+                                views.JointApplicantSignatureFormView.as_view(),
+                                name='joint_applicant_signature_form_view'
                             )
                         ]),
                     ),
