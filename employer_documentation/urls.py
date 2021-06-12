@@ -386,6 +386,11 @@ urlpatterns = [
                                 ),
                                 name='signature_agencyemployee_route'
                             ),
+                            path(
+                                '',
+                                views.EmployerSignatureFormView.as_view(),
+                                name='employer_signature_form_view'
+                            )
                         ]),
                     ),
     #                 path(

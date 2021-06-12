@@ -2453,3 +2453,41 @@ class TokenChallengeEmployer1Form(forms.Form):
 #                 css_class='form-group'
 #             )
 #         )
+
+class EmployerSignatureForm(forms.Form):
+    employer_signature = forms.CharField(
+        label=_('Employer Signature'),
+        max_length=255,
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )

@@ -1404,6 +1404,32 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
+class EmployerSignatureFormView(FormView):
+    form_class = forms.EmployerSignatureForm
+    http_method_names = ['get', 'post']
+    template_name = 'employer_documentation/signature_form_token.html'
+
+    def get_object(self):
+        return models.CaseSignature.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'case_detail_route', 
+            kwargs={
+                'level_1_pk': self.object.employer_doc.pk,
+            }
+        )
+
 # class TokenVerificationFormView(FormView):
 #     form_class=forms.TokenVerificationForm
 #     http_method_names = ['get', 'post']

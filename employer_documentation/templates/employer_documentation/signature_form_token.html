@@ -129,8 +129,8 @@
                     </div>
                     <div class="row">
                         <div class="col d-flex justify-content-center mt-4">
-                            <button type="button" class="btn btn-outline-secondary w-25 mr-2" data-dismiss="modal">Clear Signatures</button>
-                            <button type="button" class="btn btn-primary w-25 ml-2">Confirm</button>
+                            <button type="button" class="btn btn-outline-secondary w-25 mr-2" data-dismiss="modal" id="signature-form-clear-button">Clear Signatures</button>
+                            <button type="button" class="btn btn-primary w-25 ml-2" id="signature-form-submit-button">Confirm</button>
                         </div>
                     </div>
                 </div>
@@ -143,5 +143,6 @@
 {% endblock main_content %}
 
 {% block js %}
-    {% include 'employer_documentation/snippets/signature_snippet_js.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+    {% include 'employer_documentation/snippets/signature_snippet_js.html' with signature_pad_id="employer-signature-pad" signature_input_id="id_employer_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% endblock js %}
