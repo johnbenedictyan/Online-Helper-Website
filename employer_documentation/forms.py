@@ -2414,42 +2414,42 @@ class TokenChallengeEmployer1Form(forms.Form):
 #             raise ValidationError(
 #                 'The details you entered did not match our records')
 
-class TokenVerificationForm(forms.Form):
-    last_four_characters = forms.CharField(
-        label=_('Last Four Character of NRIC/FIN'),
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': '567A'
-            }
-        )
-    )
+# class TokenVerificationForm(forms.Form):
+#     last_four_characters = forms.CharField(
+#         label=_('Last Four Character of NRIC/FIN'),
+#         widget=forms.TextInput(
+#             attrs={
+#                 'placeholder': '567A'
+#             }
+#         )
+#     )
 
-    mobile_number = forms.CharField(
-        label=_('Mobile Phone Number'),
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': '81234567'
-            }
-        )
-    )
+#     mobile_number = forms.CharField(
+#         label=_('Mobile Phone Number'),
+#         widget=forms.TextInput(
+#             attrs={
+#                 'placeholder': '81234567'
+#             }
+#         )
+#     )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            'last_four_characters',
-                            css_class='col-md-7'
-                        ),
-                        Column(
-                            'mobile_number',
-                            css_class='col-md-5'
-                        ),
-                    )
-                ),
-                css_class='form-group'
-            )
-        )
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column(
+#                     Row(
+#                         Column(
+#                             'last_four_characters',
+#                             css_class='col-md-7'
+#                         ),
+#                         Column(
+#                             'mobile_number',
+#                             css_class='col-md-5'
+#                         ),
+#                     )
+#                 ),
+#                 css_class='form-group'
+#             )
+#         )

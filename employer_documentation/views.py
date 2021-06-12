@@ -1393,9 +1393,9 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
-class TokenVerificationFormView(FormView):
-    form_class=forms.TokenVerificationForm
-    http_method_names = ['get', 'post']
+# class TokenVerificationFormView(FormView):
+#     form_class=forms.TokenVerificationForm
+#     http_method_names = ['get', 'post']
 
 # Redirect Views
 class GenerateSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
