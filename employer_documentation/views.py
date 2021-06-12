@@ -1398,39 +1398,46 @@ class EmployerHouseholdDetailsFormView(
 #     http_method_names = ['get', 'post']
 
 # Redirect Views
-class GenerateSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
+
+## Base View Class for all generate and revoke signature slug redirect views
+class ModifySigSlugView(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
     model = models.CaseSignature
     pk_url_kwarg = 'level_1_pk'
     pattern_name = 'case_detail_route'
-
+    stakeholder = ''
+    view_type = ''
+    
     def get_object(self):
-        return self.model.objects.get_or_create(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg),
-            defaults={'employer_doc': models.EmployerDoc.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))},
-        )[0]
+        obj, created = self.model.objects.get_or_create(
+            employer_doc__pk=self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            defaults={
+                'employer_doc': models.EmployerDoc.objects.get(
+                    pk=self.kwargs.get(
+                        self.pk_url_kwarg
+                    )
+                )
+            }
+        )
+        return obj
 
     def get_redirect_url(self, *args, **kwargs):
         self.object = self.get_object()
-        self.object.generate_sigslug_employer_1()
+        if self.view_type == 'generate':
+            self.object.generate_sigslug(self.stakeholder)
+        elif self.view_type == 'revoke':
+            self.object.revoke_sigslug(self.stakeholder)
         kwargs={'level_1_pk': self.object.employer_doc.pk}
         return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
 
-class RevokeSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
-    model = models.CaseSignature
-    pk_url_kwarg = 'level_1_pk'
-    pattern_name = 'case_detail_route'
+class GenerateSigSlugEmployer1View(ModifySigSlugView):
+    stakeholder = 'employer_1'
+    view_type = 'generate'
 
-    def get_object(self):
-        return self.model.objects.get_or_create(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg),
-            defaults={'employer_doc': models.EmployerDoc.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))},
-        )[0]
-
-    def get_redirect_url(self, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.revoke_sigslug_employer_1()
-        kwargs={'level_1_pk': self.object.employer_doc.pk}
-        return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
+class RevokeSigSlugEmployer1View(ModifySigSlugView):
+    stakeholder = 'employer_1'
+    view_type = 'revoke'
 
 class TokenChallengeEmployer1View(
     SuccessMessageMixin,
