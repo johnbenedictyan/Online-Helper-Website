@@ -147,14 +147,64 @@ urlpatterns = [
                         name='case_status_update_route'
                     ),
                     path(
-                        'signature/generate-url/employer/',
-                        views.GenerateSigSlugEmployer1View.as_view(),
-                        name='sigslug_employer1_generate_route'
+                        'signature/generate-url/',
+                        include([
+                            path(
+                                'employer/',
+                                views.GenerateSigSlugEmployer1View.as_view(),
+                                name='sigslug_employer1_generate_route'
+                            ),
+                            path(
+                                'employer-spouse/',
+                                views.GenerateSigSlugEmployerSpouseView.as_view(),
+                                name='sigslug_employer_spouse_generate_route'
+                            ),
+                            path(
+                                'sponsor-1/',
+                                views.GenerateSigSlugSponsor1View.as_view(),
+                                name='sigslug_sponsor1_generate_route'
+                            ),
+                            path(
+                                'sponsor-2/',
+                                views.GenerateSigSlugSponsor2View.as_view(),
+                                name='sigslug_sponsor2_generate_route'
+                            ),
+                            path(
+                                'joint-applicant/',
+                                views.GenerateSigSlugJointApplicantView.as_view(),
+                                name='sigslug_joint_applicant_generate_route'
+                            )
+                        ])
                     ),
                     path(
-                        'signature/revoke-url/employer/',
-                        views.RevokeSigSlugEmployer1View.as_view(),
-                        name='sigslug_employer1_revoke_route'
+                        'signature/revoke-url/',
+                        include([
+                            path(
+                                'employer/',
+                                views.RevokeSigSlugEmployer1View.as_view(),
+                                name='sigslug_employer1_revoke_route'
+                            ),
+                            path(
+                                'employer-spouse/',
+                                views.RevokeSigSlugEmployerSpouseView.as_view(),
+                                name='sigslug_employer_spouse_revoke_route'
+                            ),
+                            path(
+                                'sponsor-1/',
+                                views.RevokeSigSlugSponsor1View.as_view(),
+                                name='sigslug_sponsor1_revoke_route'
+                            ),
+                            path(
+                                'sponsor-2/',
+                                views.RevokeSigSlugSponsor2View.as_view(),
+                                name='sigslug_sponsor2_revoke_route'
+                            ),
+                            path(
+                                'joint-applicant/',
+                                views.RevokeSigSlugJointApplicantView.as_view(),
+                                name='sigslug_joint_applicant_revoke_route'
+                            )
+                        ])
                     ),
                     path(
                         'archive/',

@@ -2043,15 +2043,65 @@ class CaseSignature(models.Model):
         unique=True,
         default=None,
         blank=True,
-        null=True,
+        null=True
     )
 
-    def generate_sigslug_employer_1(self):
-        self.sigslug_employer_1 = secrets.token_urlsafe(128)
+    sigslug_employer_spouse = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    sigslug_sponsor_1 = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    sigslug_sponsor_2 = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    sigslug_joint_applicant = models.SlugField(
+        max_length=255,
+        unique=True,
+        default=None,
+        blank=True,
+        null=True
+    )
+
+    def generate_sigslug(self, stakeholder):
+        if stakeholder == 'employer_1':
+            self.sigslug_employer_1 = secrets.token_urlsafe(128)
+        elif stakeholder == 'employer_spouse':
+            self.sigslug_employer_spouse = secrets.token_urlsafe(128)
+        elif stakeholder == 'sponsor_1':
+            self.sigslug_sponsor_1 = secrets.token_urlsafe(128)
+        elif stakeholder == 'sponsor_2':
+            self.sigslug_sponsor_2 = secrets.token_urlsafe(128)
+        elif stakeholder == 'joint_applicant':
+            self.sigslug_joint_applicant = secrets.token_urlsafe(128)
         super().save()
 
-    def revoke_sigslug_employer_1(self):
-        self.sigslug_employer_1 = None
+    def revoke_sigslug(self, stakeholder):
+        if stakeholder == 'employer_1':
+            self.sigslug_employer_1 = None
+        elif stakeholder == 'employer_spouse':
+            self.sigslug_employer_spouse = None
+        elif stakeholder == 'sponsor_1':
+            self.sigslug_sponsor_1 = None
+        elif stakeholder == 'sponsor_2':
+            self.sigslug_sponsor_2 = None
+        elif stakeholder == 'joint_applicant':
+            self.sigslug_joint_applicant = None
         super().save()
 
     def get_sigurl_employer_1(self):

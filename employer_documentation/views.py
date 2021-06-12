@@ -1393,44 +1393,79 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
-class TokenVerificationFormView(FormView):
-    form_class=forms.TokenVerificationForm
-    http_method_names = ['get', 'post']
+# class TokenVerificationFormView(FormView):
+#     form_class=forms.TokenVerificationForm
+#     http_method_names = ['get', 'post']
 
 # Redirect Views
-class GenerateSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
+
+## Base View Class for all generate and revoke signature slug redirect views
+class ModifySigSlugView(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
     model = models.CaseSignature
     pk_url_kwarg = 'level_1_pk'
     pattern_name = 'case_detail_route'
-
+    stakeholder = ''
+    view_type = ''
+    
     def get_object(self):
-        return self.model.objects.get_or_create(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg),
-            defaults={'employer_doc': models.EmployerDoc.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))},
-        )[0]
+        obj, created = self.model.objects.get_or_create(
+            employer_doc__pk=self.kwargs.get(
+                self.pk_url_kwarg
+            ),
+            defaults={
+                'employer_doc': models.EmployerDoc.objects.get(
+                    pk=self.kwargs.get(
+                        self.pk_url_kwarg
+                    )
+                )
+            }
+        )
+        return obj
 
     def get_redirect_url(self, *args, **kwargs):
         self.object = self.get_object()
-        self.object.generate_sigslug_employer_1()
+        if self.view_type == 'generate':
+            self.object.generate_sigslug(self.stakeholder)
+        elif self.view_type == 'revoke':
+            self.object.revoke_sigslug(self.stakeholder)
         kwargs={'level_1_pk': self.object.employer_doc.pk}
         return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
 
-class RevokeSigSlugEmployer1View(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
-    model = models.CaseSignature
-    pk_url_kwarg = 'level_1_pk'
-    pattern_name = 'case_detail_route'
+class GenerateSigSlugView(ModifySigSlugView):
+    view_type = 'generate'
 
-    def get_object(self):
-        return self.model.objects.get_or_create(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg),
-            defaults={'employer_doc': models.EmployerDoc.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))},
-        )[0]
+class RevokeSigSlugView(ModifySigSlugView):
+    view_type = 'revoke'
 
-    def get_redirect_url(self, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.revoke_sigslug_employer_1()
-        kwargs={'level_1_pk': self.object.employer_doc.pk}
-        return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
+class GenerateSigSlugEmployer1View(GenerateSigSlugView):
+    stakeholder = 'employer_1'
+
+class GenerateSigSlugEmployerSpouseView(GenerateSigSlugView):
+    stakeholder = 'employer_spouse'
+
+class GenerateSigSlugSponsor1View(GenerateSigSlugView):
+    stakeholder = 'sponsor_1'
+
+class GenerateSigSlugSponsor2View(GenerateSigSlugView):
+    stakeholder = 'sponsor_2'
+
+class GenerateSigSlugJointApplicantView(GenerateSigSlugView):
+    stakeholder = 'joint_applicant'
+
+class RevokeSigSlugEmployer1View(RevokeSigSlugView):
+    stakeholder = 'employer_1'
+
+class RevokeSigSlugEmployerSpouseView(RevokeSigSlugView):
+    stakeholder = 'employer_spouse'
+
+class RevokeSigSlugSponsor1View(RevokeSigSlugView):
+    stakeholder = 'sponsor_1'
+
+class RevokeSigSlugSponsor2View(RevokeSigSlugView):
+    stakeholder = 'sponsor_2'
+
+class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
+    stakeholder = 'joint_applicant'
 
 class TokenChallengeEmployer1View(
     SuccessMessageMixin,
