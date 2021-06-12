@@ -1428,9 +1428,8 @@ class EmployerSignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
-        self.object.update({
-            'employer_signature_1': form.cleaned_data.get('employer_signature')
-        })
+        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
+        self.object.save()
         return super().form_valid(form)
 
 class EmployerWithSpouseSignatureFormView(SignatureFormView):
@@ -1438,10 +1437,9 @@ class EmployerWithSpouseSignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
-        self.object.update({
-            'employer_signature_1': form.cleaned_data.get('employer_signature'),
-            'employer_spouse_signature': form.cleaned_data.get('employer_spouse_signature')
-        })
+        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
+        self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
+        self.object.save()
         return super().form_valid(form)
 
 class EmployerSpouseSignatureFormView(SignatureFormView):
@@ -1449,9 +1447,8 @@ class EmployerSpouseSignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
-        self.object.update({
-            'employer_spouse_signature': form.cleaned_data.get('employer_spouse_signature')
-        })
+        self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
+        self.object.save()
         return super().form_valid(form)
 
 class Sponsor1SignatureFormView(SignatureFormView):
@@ -1459,9 +1456,8 @@ class Sponsor1SignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
-        self.object.update({
-            'sponsor_1_signature': form.cleaned_data.get('sponsor_signature')
-        })
+        self.object.sponsor_1_signature = form.cleaned_data.get('sponsor_signature')
+        self.object.save()
         return super().form_valid(form)
 
 class Sponsor2SignatureFormView(SignatureFormView):
@@ -1469,9 +1465,8 @@ class Sponsor2SignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
-        self.object.update({
-            'sponsor_2_signature': form.cleaned_data.get('sponsor_signature')
-        })
+        self.object.sponsor_2_signature = form.cleaned_data.get('sponsor_signature')
+        self.object.save()
         return super().form_valid(form)
 
 class JointApplicantSignatureFormView(SignatureFormView):
@@ -1479,9 +1474,8 @@ class JointApplicantSignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
-        self.object.update({
-            'joint_applicant_signature': form.cleaned_data.get('joint_applicant_signature')
-        })
+        self.object.joint_applicant_signature = form.cleaned_data.get('joint_applicant_signature')
+        self.object.save()
         return super().form_valid(form)
 
 # class TokenVerificationFormView(FormView):
