@@ -1,12 +1,15 @@
 <!-- Signature Pad -->
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 <script>
-    var signaturePad = new SignaturePad(document.getElementById("signature-pad"));
+    var signaturePad = new SignaturePad(document.getElementById("{{signature_pad_id}}"));
     function appendImageToForm() {
-        document.getElementById("id_signature").value = signaturePad.toDataURL();
+        document.getElementById("{{signature_input_id}}").value = signaturePad.toDataURL();
         return true;
     }
-    document.getElementById("submit-id-submit").addEventListener("click", function(event) {
+    document.getElementById("{{signature_submit_button_id}}").addEventListener("click", function(event) {
         appendImageToForm();
+        this.form.submit();
+    });
+    document.getElementById("{{signature_clear_button_id}}").addEventListener("click", function(event) {
+        signaturePad.clear();
     });
 </script>

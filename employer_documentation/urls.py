@@ -386,6 +386,36 @@ urlpatterns = [
                                 ),
                                 name='signature_agencyemployee_route'
                             ),
+                            path(
+                                'employer/',
+                                views.EmployerSignatureFormView.as_view(),
+                                name='employer_signature_form_view'
+                            ),
+                            path(
+                                'employer-with-spouse/',
+                                views.EmployerWithSpouseSignatureFormView.as_view(),
+                                name='employer_with_spouse_signature_form_view'
+                            ),
+                            path(
+                                'employer-spouse/',
+                                views.EmployerSpouseSignatureFormView.as_view(),
+                                name='employer_spouse_signature_form_view'
+                            ),
+                            path(
+                                'sponsor-1/',
+                                views.Sponsor1SignatureFormView.as_view(),
+                                name='sponsor_1_signature_form_view'
+                            ),
+                            path(
+                                'sponsor-2/',
+                                views.Sponsor2SignatureFormView.as_view(),
+                                name='sponsor_2_signature_form_view'
+                            ),
+                            path(
+                                'joint-applicant/',
+                                views.JointApplicantSignatureFormView.as_view(),
+                                name='joint_applicant_signature_form_view'
+                            )
                         ]),
                     ),
     #                 path(

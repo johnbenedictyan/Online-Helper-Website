@@ -1404,6 +1404,80 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
+class SignatureFormView(FormView):
+    form_class = None
+    pk_url_kwarg = 'level_1_pk'
+    http_method_names = ['get', 'post']
+    template_name = 'employer_documentation/signature_form_token.html'
+
+    def get_object(self):
+        return models.CaseSignature.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'case_detail_route', 
+            kwargs={
+                'level_1_pk': self.object.employer_doc.pk,
+            }
+        )
+
+class EmployerSignatureFormView(SignatureFormView):
+    form_class = forms.EmployerSignatureForm
+
+    def form_valid(self, form):
+        self.object = super().get_object()
+        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
+        self.object.save()
+        return super().form_valid(form)
+
+class EmployerWithSpouseSignatureFormView(SignatureFormView):
+    form_class = forms.EmployerWithSpouseSignatureForm
+
+    def form_valid(self, form):
+        self.object = super().get_object()
+        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
+        self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
+        self.object.save()
+        return super().form_valid(form)
+
+class EmployerSpouseSignatureFormView(SignatureFormView):
+    form_class = forms.EmployerSpouseSignatureForm
+
+    def form_valid(self, form):
+        self.object = super().get_object()
+        self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
+        self.object.save()
+        return super().form_valid(form)
+
+class Sponsor1SignatureFormView(SignatureFormView):
+    form_class = forms.SponsorSignatureForm
+
+    def form_valid(self, form):
+        self.object = super().get_object()
+        self.object.sponsor_1_signature = form.cleaned_data.get('sponsor_signature')
+        self.object.save()
+        return super().form_valid(form)
+
+class Sponsor2SignatureFormView(SignatureFormView):
+    form_class = forms.SponsorSignatureForm
+
+    def form_valid(self, form):
+        self.object = super().get_object()
+        self.object.sponsor_2_signature = form.cleaned_data.get('sponsor_signature')
+        self.object.save()
+        return super().form_valid(form)
+
+class JointApplicantSignatureFormView(SignatureFormView):
+    form_class = forms.JointApplicantSignatureForm
+
+    def form_valid(self, form):
+        self.object = super().get_object()
+        self.object.joint_applicant_signature = form.cleaned_data.get('joint_applicant_signature')
+        self.object.save()
+        return super().form_valid(form)
+
 # class TokenVerificationFormView(FormView):
 #     form_class=forms.TokenVerificationForm
 #     http_method_names = ['get', 'post']

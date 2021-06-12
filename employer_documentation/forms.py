@@ -15,7 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden
+from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden, Button
 from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
 
 # Imports from local apps
@@ -2453,3 +2453,293 @@ class TokenChallengeEmployer1Form(forms.Form):
 #                 css_class='form-group'
 #             )
 #         )
+
+class EmployerSignatureForm(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Button(
+                            'Clear Signatures',
+                            'Clear Signatures',
+                            css_class='btn btn-outline-secondary w-25 mr-2',
+                            css_id='signature-form-clear-button'
+                            ),
+                            Button(
+                                'Confirm',
+                                'Confirm',
+                                css_class='btn btn-primary w-25 ml-2',
+                                css_id='signature-form-submit-button'
+                            ),
+                            css_class='d-flex justify-content-center mt-4'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class EmployerWithSpouseSignatureForm(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_spouse_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Spouse Signature</h6>
+                                <canvas
+                                    id="employer-spouse-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Button(
+                            'Clear Signatures',
+                            'Clear Signatures',
+                            css_class='btn btn-outline-secondary w-25 mr-2',
+                            css_id='signature-form-clear-button'
+                            ),
+                            Button(
+                                'Confirm',
+                                'Confirm',
+                                css_class='btn btn-primary w-25 ml-2',
+                                css_id='signature-form-submit-button'
+                            ),
+                            css_class='d-flex justify-content-center mt-4'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class EmployerSpouseSignatureForm(forms.Form):
+    employer_spouse_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Spouse Signature</h6>
+                                <canvas
+                                    id="employer-spouse-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Button(
+                            'Clear Signatures',
+                            'Clear Signatures',
+                            css_class='btn btn-outline-secondary w-25 mr-2',
+                            css_id='signature-form-clear-button'
+                            ),
+                            Button(
+                                'Confirm',
+                                'Confirm',
+                                css_class='btn btn-primary w-25 ml-2',
+                                css_id='signature-form-submit-button'
+                            ),
+                            css_class='d-flex justify-content-center mt-4'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class SponsorSignatureForm(forms.Form):
+    sponsor_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'sponsor_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Sponsor Signature</h6>
+                                <canvas
+                                    id="sponsor-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Button(
+                            'Clear Signatures',
+                            'Clear Signatures',
+                            css_class='btn btn-outline-secondary w-25 mr-2',
+                            css_id='signature-form-clear-button'
+                            ),
+                            Button(
+                                'Confirm',
+                                'Confirm',
+                                css_class='btn btn-primary w-25 ml-2',
+                                css_id='signature-form-submit-button'
+                            ),
+                            css_class='d-flex justify-content-center mt-4'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class JointApplicantSignatureForm(forms.Form):
+    joint_applicant_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'joint_applicant_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Joint Applicant Signature</h6>
+                                <canvas
+                                    id="joint-application-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Button(
+                            'Clear Signatures',
+                            'Clear Signatures',
+                            css_class='btn btn-outline-secondary w-25 mr-2',
+                            css_id='signature-form-clear-button'
+                            ),
+                            Button(
+                                'Confirm',
+                                'Confirm',
+                                css_class='btn btn-primary w-25 ml-2',
+                                css_id='signature-form-submit-button'
+                            ),
+                            css_class='d-flex justify-content-center mt-4'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
