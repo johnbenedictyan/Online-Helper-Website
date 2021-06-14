@@ -1169,23 +1169,99 @@ class UploadedPdfAgencyView(
                     'level_1_pk': self.object.employer_doc.pk,
             }))
 
-# class PdfGenericTokenView(
-#     CheckSignatureSessionTokenMixin,
-#     PdfHtmlViewMixin,
-#     DetailView
-# ):
-#     model = models.CaseSignature
-#     slug_url_kwarg = 'slug'
-#     token_field_name = None
+class HtmlToRenderPdfTokenView(
+    PdfHtmlViewMixin,
+    DetailView
+):
+    model = models.CaseSignature
+    slug_url_kwarg = 'slug'
+    stakeholder = None
 
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         context = self.get_context_data()
+    def get_object(self):
+        obj = None
+        try:
+            obj = self.model.objects.get(
+                sigslug_employer_1=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            pass
+        else:
+            self.stakeholder = 'employer_1'
+            
+        try:
+            obj = self.model.objects.get(
+                sigslug_employer_spouse=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            pass
+        else:
+            self.stakeholder = 'employer_spouse'
+            
+        try:
+            obj = self.model.objects.get(
+                sigslug_sponsor_1=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            pass
+        else:
+            self.stakeholder = 'sponsor_1'
 
-#         if self.use_repayment_table:
-#             context['repayment_table'] = self.calc_repayment_schedule()
+        try:
+            obj = self.model.objects.get(
+                sigslug_sponsor_2=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            pass
+        else:
+            self.stakeholder = 'sponsor_2'
 
-#         return self.generate_pdf_response(request, context)
+        try:
+            obj = self.model.objects.get(
+                sigslug_joint_applicant=self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            )
+        except self.model.DoesNotExist:
+            pass
+        else:
+            self.stakeholder = 'joint_applicant'
+
+        return obj.employer_doc if obj else None
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        stakeholder_referrer_dict = {
+            # Stakeholder: View Url Name
+            'employer_1':       'token_employer_signature_form_view',
+            'employer_spouse':  'token_employer_spouse_signature_form_view',
+            'sponsor_1':        'token_sponsor_1_signature_form_view',
+            'sponsor_2':        'token_sponsor_2_signature_form_view',
+            'joint_applicant':  'token_joint_applicant_signature_form_view'
+        }
+        # if stakeholder_referrer_dict.get('employer_1'):
+        # elif stakeholder_referrer_dict.get('employer_spouse'):
+        # elif stakeholder_referrer_dict.get('sponsor_1'):
+        # elif stakeholder_referrer_dict.get('sponsor_2'):
+        # elif stakeholder_referrer_dict.get('joint_applicant'):
+        referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
+        rev_url = reverse('token_employer_signature_form_view', kwargs={
+            'slug': self.kwargs.get(self.slug_url_kwarg)
+        })
+        if self.object and referrer == rev_url:
+            context = self.get_context_data()
+            if self.use_repayment_table:
+                context['repayment_table'] = self.calc_repayment_schedule()
+            return self.generate_pdf_response(request, context)
+        else:
+            return HttpResponseRedirect(reverse('error_404'))
 
 # class PdfFileTokenView(
 #     CheckSignatureSessionTokenMixin,
@@ -1444,6 +1520,11 @@ class SignatureFormView(FormView):
         else:
             return HttpResponseRedirect(reverse('error_404'))
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'slug': self.kwargs.get(self.slug_url_kwarg)})
+        return context
+    
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(request)
         referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
@@ -1654,7 +1735,6 @@ class TokenChallengeView(
         else:
             self.stakeholder = 'joint_applicant'
 
-        # self.employer_doc_pk = obj.employer_doc.pk if obj else None
         return obj
 
     def get(self, request, *args, **kwargs):
