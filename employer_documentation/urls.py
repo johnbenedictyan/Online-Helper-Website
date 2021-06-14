@@ -151,42 +151,27 @@ urlpatterns = [
                         include([
                             path(
                                 'employer/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'generate',
-                                    stakeholder = 'employer_1',
-                                ),
+                                views.GenerateSigSlugEmployer1View.as_view(),
                                 name='sigslug_employer1_generate_route'
                             ),
                             path(
                                 'employer-spouse/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'generate',
-                                    stakeholder = 'employer_spouse',
-                                ),
+                                views.GenerateSigSlugEmployerSpouseView.as_view(),
                                 name='sigslug_employer_spouse_generate_route'
                             ),
                             path(
                                 'sponsor-1/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'generate',
-                                    stakeholder = 'sponsor_1',
-                                ),
+                                views.GenerateSigSlugSponsor1View.as_view(),
                                 name='sigslug_sponsor1_generate_route'
                             ),
                             path(
                                 'sponsor-2/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'generate',
-                                    stakeholder = 'sponsor_2',
-                                ),
+                                views.GenerateSigSlugSponsor2View.as_view(),
                                 name='sigslug_sponsor2_generate_route'
                             ),
                             path(
                                 'joint-applicant/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'generate',
-                                    stakeholder = 'joint_applicant',
-                                ),
+                                views.GenerateSigSlugJointApplicantView.as_view(),
                                 name='sigslug_joint_applicant_generate_route'
                             )
                         ])
@@ -196,42 +181,27 @@ urlpatterns = [
                         include([
                             path(
                                 'employer/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'revoke',
-                                    stakeholder = 'employer_1',
-                                ),
+                                views.RevokeSigSlugEmployer1View.as_view(),
                                 name='sigslug_employer1_revoke_route'
                             ),
                             path(
                                 'employer-spouse/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'revoke',
-                                    stakeholder = 'employer_spouse',
-                                ),
+                                views.RevokeSigSlugEmployerSpouseView.as_view(),
                                 name='sigslug_employer_spouse_revoke_route'
                             ),
                             path(
                                 'sponsor-1/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'revoke',
-                                    stakeholder = 'sponsor_1',
-                                ),
+                                views.RevokeSigSlugSponsor1View.as_view(),
                                 name='sigslug_sponsor1_revoke_route'
                             ),
                             path(
                                 'sponsor-2/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'revoke',
-                                    stakeholder = 'sponsor_2',
-                                ),
+                                views.RevokeSigSlugSponsor2View.as_view(),
                                 name='sigslug_sponsor2_revoke_route'
                             ),
                             path(
                                 'joint-applicant/',
-                                views.ModifySigSlugView.as_view(
-                                    view_type = 'revoke',
-                                    stakeholder = 'joint_applicant',
-                                ),
+                                views.RevokeSigSlugJointApplicantView.as_view(),
                                 name='sigslug_joint_applicant_revoke_route'
                             )
                         ])

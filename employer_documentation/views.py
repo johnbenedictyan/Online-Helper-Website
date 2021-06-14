@@ -1516,41 +1516,41 @@ class ModifySigSlugView(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectVie
         kwargs={'level_1_pk': self.object.employer_doc.pk}
         return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
 
-# class GenerateSigSlugView(ModifySigSlugView):
-#     view_type = 'generate'
+class GenerateSigSlugView(ModifySigSlugView):
+    view_type = 'generate'
 
-# class RevokeSigSlugView(ModifySigSlugView):
-#     view_type = 'revoke'
+class RevokeSigSlugView(ModifySigSlugView):
+    view_type = 'revoke'
 
-# class GenerateSigSlugEmployer1View(GenerateSigSlugView):
-#     stakeholder = 'employer_1'
+class GenerateSigSlugEmployer1View(GenerateSigSlugView):
+    stakeholder = 'employer_1'
 
-# class GenerateSigSlugEmployerSpouseView(GenerateSigSlugView):
-#     stakeholder = 'employer_spouse'
+class GenerateSigSlugEmployerSpouseView(GenerateSigSlugView):
+    stakeholder = 'employer_spouse'
 
-# class GenerateSigSlugSponsor1View(GenerateSigSlugView):
-#     stakeholder = 'sponsor_1'
+class GenerateSigSlugSponsor1View(GenerateSigSlugView):
+    stakeholder = 'sponsor_1'
 
-# class GenerateSigSlugSponsor2View(GenerateSigSlugView):
-#     stakeholder = 'sponsor_2'
+class GenerateSigSlugSponsor2View(GenerateSigSlugView):
+    stakeholder = 'sponsor_2'
 
-# class GenerateSigSlugJointApplicantView(GenerateSigSlugView):
-#     stakeholder = 'joint_applicant'
+class GenerateSigSlugJointApplicantView(GenerateSigSlugView):
+    stakeholder = 'joint_applicant'
 
-# class RevokeSigSlugEmployer1View(RevokeSigSlugView):
-#     stakeholder = 'employer_1'
+class RevokeSigSlugEmployer1View(RevokeSigSlugView):
+    stakeholder = 'employer_1'
 
-# class RevokeSigSlugEmployerSpouseView(RevokeSigSlugView):
-#     stakeholder = 'employer_spouse'
+class RevokeSigSlugEmployerSpouseView(RevokeSigSlugView):
+    stakeholder = 'employer_spouse'
 
-# class RevokeSigSlugSponsor1View(RevokeSigSlugView):
-#     stakeholder = 'sponsor_1'
+class RevokeSigSlugSponsor1View(RevokeSigSlugView):
+    stakeholder = 'sponsor_1'
 
-# class RevokeSigSlugSponsor2View(RevokeSigSlugView):
-#     stakeholder = 'sponsor_2'
+class RevokeSigSlugSponsor2View(RevokeSigSlugView):
+    stakeholder = 'sponsor_2'
 
-# class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
-#     stakeholder = 'joint_applicant'
+class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
+    stakeholder = 'joint_applicant'
 
 class TokenChallengeView(
     SuccessMessageMixin,
