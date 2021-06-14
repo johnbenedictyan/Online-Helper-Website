@@ -1627,7 +1627,7 @@ class TokenChallengeView(
         if self.object:
             return super().get(request, *args, **kwargs)
         else:
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('error_404'))
 
     def get_success_url(self) -> str:
         signature_route_dict = {
