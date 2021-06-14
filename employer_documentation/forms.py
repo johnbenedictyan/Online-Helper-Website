@@ -2607,26 +2607,26 @@ class EmployerWithSpouseSignatureForm(forms.Form):
                                 """
                             )
                         )
-                    ),
-                    Row(
-                        Column(
-                            Button(
-                            'Clear Signatures',
-                            'Clear Signatures',
-                            css_class='btn btn-outline-secondary w-25 mr-2',
-                            css_id='signature-form-clear-button'
-                            ),
-                            Button(
-                                'Confirm',
-                                'Confirm',
-                                css_class='btn btn-primary w-25 ml-2',
-                                css_id='signature-form-submit-button'
-                            ),
-                            css_class='d-flex justify-content-center mt-4'
-                        )
                     )
                 ),
                 css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                    'Clear Signatures',
+                    'Clear Signatures',
+                    css_class='btn btn-outline-secondary w-25 mr-2',
+                    css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-primary w-25 ml-2',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
             )
         )
 
@@ -2736,7 +2736,11 @@ class SponsorSignatureForm(forms.Form):
             )
         )
 
-class JointApplicantSignatureForm(forms.Form):
+class EmployerWithJointApplicantSignatureForm(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
     joint_applicant_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
@@ -2746,6 +2750,28 @@ class JointApplicantSignatureForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
                 Column(
                     Row(
                         Column(
@@ -2766,25 +2792,25 @@ class JointApplicantSignatureForm(forms.Form):
                                 """
                             )
                         )
-                    ),
-                    Row(
-                        Column(
-                            Button(
-                            'Clear Signatures',
-                            'Clear Signatures',
-                            css_class='btn btn-outline-secondary w-25 mr-2',
-                            css_id='signature-form-clear-button'
-                            ),
-                            Button(
-                                'Confirm',
-                                'Confirm',
-                                css_class='btn btn-primary w-25 ml-2',
-                                css_id='signature-form-submit-button'
-                            ),
-                            css_class='d-flex justify-content-center mt-4'
-                        )
                     )
                 ),
                 css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                    'Clear Signatures',
+                    'Clear Signatures',
+                    css_class='btn btn-outline-secondary w-25 mr-2',
+                    css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-primary w-25 ml-2',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
             )
         )

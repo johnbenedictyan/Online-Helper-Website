@@ -1483,32 +1483,33 @@ class SignatureFormView(FormView):
     template_name = 'employer_documentation/signature_form_token.html'
 
     def get_object(self, request):
-        if resolve(request.path).url_name == 'token_employer_signature_form_view':
+        url_name = resolve(request.path).url_name
+        if url_name == 'token_employer_signature_form_view':
             return get_object_or_404(
                 models.CaseSignature,
                 sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
             )
-        elif resolve(request.path).url_name == 'token_employer_with_spouse_signature_form_view':
+        elif url_name == 'token_employer_with_spouse_signature_form_view':
             return get_object_or_404(
                 models.CaseSignature,
                 sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
             )
-        elif resolve(request.path).url_name == 'token_employer_spouse_signature_form_view':
+        elif url_name == 'token_employer_spouse_signature_form_view':
             return get_object_or_404(
                 models.CaseSignature,
                 sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
             )
-        elif resolve(request.path).url_name == 'token_sponsor_1_signature_form_view':
+        elif url_name == 'token_sponsor_1_signature_form_view':
             return get_object_or_404(
                 models.CaseSignature,
                 sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
             )
-        elif resolve(request.path).url_name == 'token_sponsor_2_signature_form_view':
+        elif url_name == 'token_sponsor_2_signature_form_view':
             return get_object_or_404(
                 models.CaseSignature,
                 sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
             )
-        elif resolve(request.path).url_name == 'token_joint_applicant_signature_form_view':
+        elif url_name == 'token_joint_applicant_signature_form_view':
             return get_object_or_404(
                 models.CaseSignature,
                 sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
@@ -1518,15 +1519,24 @@ class SignatureFormView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({'slug': self.kwargs.get(self.slug_url_kwarg)})
+        context.update({
+            'slug': self.kwargs.get(
+                self.slug_url_kwarg
+            )
+        })
         return context
     
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(request)
         referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
-        rev_url = reverse('token_challenge_route', kwargs={
-            'slug': self.kwargs.get(self.slug_url_kwarg)
-        })
+        rev_url = reverse(
+            'token_challenge_route', 
+            kwargs={
+                'slug': self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            }
+        )
         if referrer == rev_url:
             return super().get(request, *args, **kwargs)
         else:
@@ -1581,8 +1591,8 @@ class Sponsor2SignatureFormView(SignatureFormView):
         self.object.save()
         return super().form_valid(form)
 
-class JointApplicantSignatureFormView(SignatureFormView):
-    form_class = forms.JointApplicantSignatureForm
+class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
+    form_class = forms.EmployerWithJointApplicantSignatureForm
 
     def form_valid(self, form):
         self.object = super().get_object()
@@ -1674,29 +1684,28 @@ class TokenChallengeView(
         slug = self.kwargs.get(
             self.slug_url_kwarg
         )
-        slug_front_header = slug[0:4]
-        if self.model.reverse_sigslug_header_dict.has_key(
-            slug_front_header
-        ):
-            self.stakeholder = self.model.reverse_sigslug_header_dict[slug_front_header]
+        slug_front_header = slug[0:5]
+        if slug_front_header in self.model.reverse_sigslug_header_dict:
+            stakeholder = self.model.reverse_sigslug_header_dict[slug_front_header]
+            self.stakeholder = stakeholder
             try:
-                if slug_front_header == 'employer_1':
+                if stakeholder == 'employer_1':
                     obj = self.model.objects.get(
                         sigslug_employer_1=slug
                     )
-                elif slug_front_header == 'employer_spouse':
+                elif stakeholder == 'employer_spouse':
                     obj = self.model.objects.get(
                         sigslug_employer_spouse=slug
                     )
-                elif slug_front_header == 'sponsor_1':
+                elif stakeholder == 'sponsor_1':
                     obj = self.model.objects.get(
                         sigslug_sponsor_1=slug
                     )
-                elif slug_front_header == 'sponsor_2':
+                elif stakeholder == 'sponsor_2':
                     obj = self.model.objects.get(
                         sigslug_sponsor_2=slug
                     )
-                elif slug_front_header == 'joint_applicant':
+                elif stakeholder == 'joint_applicant':
                     obj = self.model.objects.get(
                         sigslug_joint_applicant=slug
                     )
@@ -1704,7 +1713,8 @@ class TokenChallengeView(
                     obj = None
                     return obj
             except self.model.DoesNotExist:
-                pass
+                obj = None
+                return obj
             else:
                 self.employer_doc_pk = obj.employer_doc.pk
                 return obj

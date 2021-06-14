@@ -757,7 +757,7 @@ urlpatterns = [
                             ),
                             path(
                                 'joint-applicant/',
-                                views.JointApplicantSignatureFormView.as_view(),
+                                views.EmployerWithJointApplicantSignatureFormView.as_view(),
                                 name='token_joint_applicant_signature_form_view'
                             ),
                         ]),
