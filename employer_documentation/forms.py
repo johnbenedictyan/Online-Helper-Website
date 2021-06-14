@@ -54,10 +54,10 @@ class EmployerForm(forms.ModelForm):
         # Decryption
         self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
         self.initial.update({'employer_fin_num': self.instance.get_employer_fin_full()})
-        self.initial.update({'employer_passport_num': self.instance.get_employer_passport()})
+        self.initial.update({'employer_passport_num': self.instance.get_employer_passport_full()})
         self.initial.update({'spouse_nric_num': self.instance.get_employer_spouse_nric_full()})
         self.initial.update({'spouse_fin_num': self.instance.get_employer_spouse_fin_full()})
-        self.initial.update({'spouse_passport_num': self.instance.get_spouse_passport()})
+        self.initial.update({'spouse_passport_num': self.instance.get_employer_spouse_passport_full()})
         
         # CrispyForm Helper
         self.helper = FormHelper()
