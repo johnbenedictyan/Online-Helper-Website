@@ -1704,7 +1704,8 @@ class TokenChallengeView(
                     obj = None
                     return obj
             except self.model.DoesNotExist:
-                pass
+                obj = None
+                return obj
             else:
                 self.employer_doc_pk = obj.employer_doc.pk
                 return obj
