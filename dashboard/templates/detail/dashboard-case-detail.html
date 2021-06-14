@@ -641,14 +641,11 @@
 
 {% block js %}
 <script>
-let copyBtnEmployer1 = document.querySelector('#copy-button-employer-1');
-if (copyBtnEmployer1) {
-    copyBtnEmployer1.addEventListener('click', () => {
-        let copyElement = document.getElementById("copy-value-employer-1");
-        navigator.clipboard.writeText(copyElement.value)
+function copyToClipboard(element) {
+        navigator.clipboard.writeText(element.value)
             .then(() => {
                 // Animate copy button
-                copyElement.animate([
+                element.animate([
                     { transform: 'scale(1)' },
                     { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
                     { transform: 'scale(1)' },
@@ -664,7 +661,10 @@ if (copyBtnEmployer1) {
             .catch(err => {
                 console.log('Error in copying text: ', err);
             });
-    })
+    }
+let copyBtnEmployer1 = document.querySelector('#copy-button-employer-1');
+if (copyBtnEmployer1) {
+    copyBtnEmployer1.addEventListener('click', () => copyToClipboard(document.getElementById("copy-value-employer-1")))
 }
 </script>
 {% endblock js %}
