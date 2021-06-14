@@ -642,29 +642,42 @@
 {% block js %}
 <script>
 function copyToClipboard(element) {
-        navigator.clipboard.writeText(element.value)
-            .then(() => {
-                // Animate copy button
-                element.animate([
-                    { transform: 'scale(1)' },
-                    { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
-                    { transform: 'scale(1)' },
-                ], {
-                    duration: 500, //milliseconds
-                    easing: 'ease-in', //'linear', a bezier curve, etc.
-                    delay: 0, //milliseconds
-                    iterations: 1, //or a number
-                    direction: 'normal', //'normal', 'reverse', etc.
-                    fill: 'forwards' //'backwards', 'both', 'none', 'auto'
-                });
-            })
-            .catch(err => {
-                console.log('Error in copying text: ', err);
+    navigator.clipboard.writeText(element.value)
+        .then(() => {
+            // Animate copy button
+            element.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
+                { transform: 'scale(1)' },
+            ], {
+                duration: 500, //milliseconds
+                easing: 'ease-in', //'linear', a bezier curve, etc.
+                delay: 0, //milliseconds
+                iterations: 1, //or a number
+                direction: 'normal', //'normal', 'reverse', etc.
+                fill: 'forwards' //'backwards', 'both', 'none', 'auto'
             });
+        })
+        .catch(err => {
+            console.log('Error in copying text: ', err);
+        });
+}
+
+let copyElements = {
+    'copy-button-employer-1': 'copy-value-employer-1',
+    'copy-button-employer-spouse': 'copy-value-employer-spouse',
+    'copy-button-joint-applicant': 'copy-value-joint-applicant',
+    'copy-button-sponsor-1': 'copy-value-sponsor-1',
+    'copy-button-sponsor-2': 'copy-value-sponsor-2',
+}
+
+if (copyElements) {
+    for (let button in copyElements) {
+        let valueElement = document.getElementById(copyElements[button]);
+        if (copyElements.hasOwnProperty(button)) {
+            document.getElementById(button).addEventListener('click', () => copyToClipboard(valueElement));
+        }
     }
-let copyBtnEmployer1 = document.querySelector('#copy-button-employer-1');
-if (copyBtnEmployer1) {
-    copyBtnEmployer1.addEventListener('click', () => copyToClipboard(document.getElementById("copy-value-employer-1")))
 }
 </script>
 {% endblock js %}
