@@ -1563,6 +1563,7 @@ class TokenChallengeView(
     stakeholder = ''
 
     def get_object(self):
+        obj = None
         try:
             obj = self.model.objects.get(
                 sigslug_employer_1=self.kwargs.get(
@@ -1618,12 +1619,15 @@ class TokenChallengeView(
         else:
             self.stakeholder = 'joint_applicant'
 
-        self.employer_doc_pk = obj.employer_doc.pk
+        self.employer_doc_pk = obj.employer_doc.pk if obj else None
         return obj
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
+        if self.object:
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
     def get_success_url(self) -> str:
         signature_route_dict = {
