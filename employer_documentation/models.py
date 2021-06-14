@@ -2097,6 +2097,14 @@ class CaseSignature(models.Model):
         'joint_applicant': 'JOAPP'
     }
 
+    reverse_sigslug_header_dict = {
+        'EMPL': 'employer_1',
+        'EMSP': 'employer_spouse',
+        'SPN1': 'sponsor_1',
+        'SPN2': 'sponsor_2',
+        'JOAPP': 'joint_applicant'
+    }
+
     def generate_sigslug(self, stakeholder):
         if stakeholder == 'employer_1':
             self.sigslug_employer_1 = self.sigslug_header_dict[

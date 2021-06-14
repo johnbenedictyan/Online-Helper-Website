@@ -1559,63 +1559,47 @@ class TokenChallengeView(
     stakeholder = ''
 
     def get_object(self):
-        try:
-            obj = self.model.objects.get(
-                sigslug_employer_1=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
+        slug = self.kwargs.get(
+            self.slug_url_kwarg
+        )
+        slug_front_header = slug[0:4]
+        if self.model.reverse_sigslug_header_dict.has_key(
+            slug_front_header
+        ):
+            self.stakeholder = self.model.reverse_sigslug_header_dict[slug_front_header]
+            try:
+                if slug_front_header == 'employer_1':
+                    obj = self.model.objects.get(
+                        sigslug_employer_1=slug
+                    )
+                elif slug_front_header == 'employer_spouse':
+                    obj = self.model.objects.get(
+                        sigslug_employer_spouse=slug
+                    )
+                elif slug_front_header == 'sponsor_1':
+                    obj = self.model.objects.get(
+                        sigslug_sponsor_1=slug
+                    )
+                elif slug_front_header == 'sponsor_2':
+                    obj = self.model.objects.get(
+                        sigslug_sponsor_2=slug
+                    )
+                elif slug_front_header == 'joint_applicant':
+                    obj = self.model.objects.get(
+                        sigslug_joint_applicant=slug
+                    )
+                else:
+                    # TODO: Change this from a generic exception
+                    raise Exception()
+            except self.model.DoesNotExist:
+                pass
+            else:
+                self.employer_doc_pk = obj.employer_doc.pk
+                return obj
         else:
-            self.stakeholder = 'employer_1'
-            
-        try:
-            obj = self.model.objects.get(
-                sigslug_employer_spouse=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
+            # SLUG DOES NOT HAVE FRONT HEADER
+            # TODO: Special Error Page thing
             pass
-        else:
-            self.stakeholder = 'employer_spouse'
-            
-        try:
-            obj = self.model.objects.get(
-                sigslug_sponsor_1=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
-        else:
-            self.stakeholder = 'sponsor_1'
-
-        try:
-            obj = self.model.objects.get(
-                sigslug_sponsor_2=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
-        else:
-            self.stakeholder = 'sponsor_2'
-
-        try:
-            obj = self.model.objects.get(
-                sigslug_joint_applicant=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
-        else:
-            self.stakeholder = 'joint_applicant'
-
-        self.employer_doc_pk = obj.employer_doc.pk
-        return obj
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
