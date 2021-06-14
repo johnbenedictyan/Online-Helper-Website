@@ -1478,10 +1478,6 @@ class JointApplicantSignatureFormView(SignatureFormView):
         self.object.save()
         return super().form_valid(form)
 
-# class TokenVerificationFormView(FormView):
-#     form_class=forms.TokenVerificationForm
-#     http_method_names = ['get', 'post']
-
 # Redirect Views
 
 ## Base View Class for all generate and revoke signature slug redirect views
