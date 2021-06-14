@@ -1596,6 +1596,7 @@ class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
 
     def form_valid(self, form):
         self.object = super().get_object()
+        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
         self.object.joint_applicant_signature = form.cleaned_data.get('joint_applicant_signature')
         self.object.save()
         return super().form_valid(form)
