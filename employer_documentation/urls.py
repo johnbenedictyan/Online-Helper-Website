@@ -386,36 +386,6 @@ urlpatterns = [
                                 ),
                                 name='signature_agencyemployee_route'
                             ),
-                            path(
-                                'employer/',
-                                views.EmployerSignatureFormView.as_view(),
-                                name='employer_signature_form_view'
-                            ),
-                            path(
-                                'employer-with-spouse/',
-                                views.EmployerWithSpouseSignatureFormView.as_view(),
-                                name='employer_with_spouse_signature_form_view'
-                            ),
-                            path(
-                                'employer-spouse/',
-                                views.EmployerSpouseSignatureFormView.as_view(),
-                                name='employer_spouse_signature_form_view'
-                            ),
-                            path(
-                                'sponsor-1/',
-                                views.Sponsor1SignatureFormView.as_view(),
-                                name='sponsor_1_signature_form_view'
-                            ),
-                            path(
-                                'sponsor-2/',
-                                views.Sponsor2SignatureFormView.as_view(),
-                                name='sponsor_2_signature_form_view'
-                            ),
-                            path(
-                                'joint-applicant/',
-                                views.JointApplicantSignatureFormView.as_view(),
-                                name='joint_applicant_signature_form_view'
-                            )
                         ]),
                     ),
     #                 path(
@@ -729,19 +699,80 @@ urlpatterns = [
     #                     ),
     #                     name='token_signature_employer_spouse_route'
     #                 ),
-    #                 path(
-    #                     'pdf/',
-    #                     include([
-    #                         path(
-    #                             'service-fees/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/01-service-fee-schedule.html',
-    #                                 content_disposition = 'inline; filename="service_fee_schedule.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_service_fee_schedule'
-    #                         ),
+    #                 ),
+    #             ]),
+    #         ),
+    #     ]),
+    # ),
+    # path('sales/',
+    #     include([
+    #         path(
+    #             'sales-list/',
+    #             views.DocListView.as_view(
+    #                 template_name = 'employer_documentation/sales_list.html',
+    #                 is_deployed=True,
+    #             ),
+    #             name='dashboard_sales_list'
+    #         ),
+    #     ]),
+    # ),
+    path(
+        'token/',
+        include([
+            path(
+                '<slug:slug>/',
+                include([
+                    path(
+                        'verification/',
+                        views.TokenChallengeView.as_view(),
+                        name='token_challenge_route'
+                    ),
+                    path(
+                        'sign/',
+                        include([
+                            path(
+                                'employer/',
+                                views.EmployerSignatureFormView.as_view(),
+                                name='token_employer_signature_form_view'
+                            ),
+                            path(
+                                'employer-with-spouse/',
+                                views.EmployerWithSpouseSignatureFormView.as_view(),
+                                name='token_employer_with_spouse_signature_form_view'
+                            ),
+                            path(
+                                'employer-spouse/',
+                                views.EmployerSpouseSignatureFormView.as_view(),
+                                name='token_employer_spouse_signature_form_view'
+                            ),
+                            path(
+                                'sponsor-1/',
+                                views.Sponsor1SignatureFormView.as_view(),
+                                name='token_sponsor_1_signature_form_view'
+                            ),
+                            path(
+                                'sponsor-2/',
+                                views.Sponsor2SignatureFormView.as_view(),
+                                name='token_sponsor_2_signature_form_view'
+                            ),
+                            path(
+                                'joint-applicant/',
+                                views.JointApplicantSignatureFormView.as_view(),
+                                name='token_joint_applicant_signature_form_view'
+                            ),
+                        ]),
+                    ),
+                    path(
+                        'pdf/',
+                        include([
+                            path(
+                                'service-fees/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name = 'employer_documentation/pdf/01-service-fee-schedule.html',
+                                    content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                ),
+                                name='pdf_token_employer_service_fee_schedule'
+                            ),
     #                         path(
     #                             'service-agreement/',
     #                             views.PdfGenericTokenView.as_view(
@@ -862,35 +893,8 @@ urlpatterns = [
     #                             ),
     #                             name='pdf_token_employer_safety_agreement'
     #                         ),
-    #                     ]),
-    #                 ),
-    #             ]),
-    #         ),
-    #     ]),
-    # ),
-    # path('sales/',
-    #     include([
-    #         path(
-    #             'sales-list/',
-    #             views.DocListView.as_view(
-    #                 template_name = 'employer_documentation/sales_list.html',
-    #                 is_deployed=True,
-    #             ),
-    #             name='dashboard_sales_list'
-    #         ),
-    #     ]),
-    # ),
-    path(
-        'token/',
-        include([
-            path(
-                '<slug:slug>/',
-                include([
-                    path(
-                        'verification/',
-                        views.TokenChallengeView.as_view(),
-                        name='token_challenge_route'
-                    )
+                        ]),
+                    ),
                 ]),
             ),
         ]),
