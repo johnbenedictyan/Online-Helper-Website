@@ -2089,17 +2089,35 @@ class CaseSignature(models.Model):
         null=True
     )
 
+    sigslug_header_dict = {
+        'employer_1': 'EMPL',
+        'employer_spouse': 'EMSP',
+        'sponsor_1': 'SPN1',
+        'sponsor_2': 'SPN2',
+        'joint_applicant': 'JOAPP'
+    }
+
     def generate_sigslug(self, stakeholder):
         if stakeholder == 'employer_1':
-            self.sigslug_employer_1 = secrets.token_urlsafe(128)
+            self.sigslug_employer_1 = self.sigslug_header_dict[
+                stakeholder
+            ] + secrets.token_urlsafe(128)
         elif stakeholder == 'employer_spouse':
-            self.sigslug_employer_spouse = secrets.token_urlsafe(128)
+            self.sigslug_employer_spouse = self.sigslug_header_dict[
+                stakeholder
+            ] + secrets.token_urlsafe(128)
         elif stakeholder == 'sponsor_1':
-            self.sigslug_sponsor_1 = secrets.token_urlsafe(128)
+            self.sigslug_sponsor_1 = self.sigslug_header_dict[
+                stakeholder
+            ] + secrets.token_urlsafe(128)
         elif stakeholder == 'sponsor_2':
-            self.sigslug_sponsor_2 = secrets.token_urlsafe(128)
+            self.sigslug_sponsor_2 = self.sigslug_header_dict[
+                stakeholder
+            ] + secrets.token_urlsafe(128)
         elif stakeholder == 'joint_applicant':
-            self.sigslug_joint_applicant = secrets.token_urlsafe(128)
+            self.sigslug_joint_applicant = self.sigslug_header_dict[
+                stakeholder
+            ] + secrets.token_urlsafe(128)
         super().save()
 
     def revoke_sigslug(self, stakeholder):
