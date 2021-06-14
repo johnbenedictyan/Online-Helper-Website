@@ -48,7 +48,7 @@ def create_test_user():
 
 def encrypt_string(plaintext, encryption_key):
     # Data to be encrypted formatted as bytes literal
-    bytes_literal = plaintext.encode('ascii')
+    bytes_literal = plaintext.upper().encode('ascii')
 
     # Secret encryption key set in environment variables, does not change
     key = encryption_key.encode('ascii')

@@ -281,7 +281,7 @@ class Employer(models.Model):
         else:
             return plaintext[-4:] if plaintext else ''
 
-    def get_employer_passport(self):
+    def get_employer_passport_full(self):
         return decrypt_string(
             self.employer_passport_num,
             settings.ENCRYPTION_KEY,
@@ -2527,7 +2527,7 @@ class ArchivedDoc(models.Model):
             self.employer_fin_tag,
         )
 
-    def get_employer_passport(self):
+    def get_employer_passport_full(self):
         return decrypt_string(
             self.employer_passport_num,
             settings.ENCRYPTION_KEY,
@@ -2551,7 +2551,7 @@ class ArchivedDoc(models.Model):
             self.spouse_fin_tag,
         )
 
-    def get_spouse_passport(self):
+    def get_employer_spouse_passport_full(self):
         return decrypt_string(
             self.spouse_passport_num,
             settings.ENCRYPTION_KEY,

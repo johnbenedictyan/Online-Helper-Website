@@ -19,7 +19,7 @@ from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HT
 from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
 
 # Imports from local apps
-from . import models
+from . import models, constants
 from onlinemaid import constants as om_constants
 from onlinemaid import helper_functions
 from agency.models import AgencyEmployee
@@ -54,10 +54,10 @@ class EmployerForm(forms.ModelForm):
         # Decryption
         self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
         self.initial.update({'employer_fin_num': self.instance.get_employer_fin_full()})
-        self.initial.update({'employer_passport_num': self.instance.get_employer_passport()})
+        self.initial.update({'employer_passport_num': self.instance.get_employer_passport_full()})
         self.initial.update({'spouse_nric_num': self.instance.get_employer_spouse_nric_full()})
         self.initial.update({'spouse_fin_num': self.instance.get_employer_spouse_fin_full()})
-        self.initial.update({'spouse_passport_num': self.instance.get_spouse_passport()})
+        self.initial.update({'spouse_passport_num': self.instance.get_employer_spouse_passport_full()})
         
         # CrispyForm Helper
         self.helper = FormHelper()
@@ -2328,60 +2328,70 @@ class TokenChallengeForm(forms.Form):
         )
     
     def clean_nric_fin(self):
-        cleaned_field = self.cleaned_data.get('nric_fin')
-        valid = True
+        cleaned_field = self.cleaned_data.get('nric_fin', '').upper()
+        valid = False
         if self.stakeholder == 'employer_1':
             obj = self.object.employer_doc.employer
-            if not (
-                cleaned_field == obj.get_employer_nric_partial(padded=False) or 
-                cleaned_field == obj.get_employer_fin_partial(padded=False)
+            if (
+                obj.employer_residential_status == constants.ResidentialStatusFullChoices.SC or
+                obj.employer_residential_status == constants.ResidentialStatusFullChoices.PR
             ):
-                valid = False
+                if cleaned_field == obj.get_employer_nric_partial(padded=False):
+                    valid = True
+            else:
+                if cleaned_field == obj.get_employer_fin_partial(padded=False):
+                    valid = True
 
         elif self.stakeholder == 'sponsor_1':
             obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if not cleaned_field == obj.get_sponsor_1_nric_partial(padded=False):
-                valid = False
+            if cleaned_field == obj.get_sponsor_1_nric_partial(padded=False):
+                valid = True
 
         elif self.stakeholder == 'sponsor_2':
             obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if not cleaned_field == obj.get_sponsor_2_nric_partial(padded=False):
-                valid = False
+            if cleaned_field == obj.get_sponsor_2_nric_partial(padded=False):
+                valid = True
 
         elif self.stakeholder == 'joint_applicant':
             obj = self.object.employer_doc.employer.rn_ja_employer
-            if not cleaned_field == obj.get_joint_applicant_nric_partial(padded=False):
-                valid = False
+            if cleaned_field == obj.get_joint_applicant_nric_partial(padded=False):
+                valid = True
         
-        if valid == False:
-            self.add_error(
-                _('Invalid Credentials')
-            )
-        return cleaned_field
+        return cleaned_field if valid else None
 
     def clean_mobile(self):
         cleaned_field = self.cleaned_data.get('mobile')
-        valid = True
+        valid = False
         if self.stakeholder == 'employer_1':
             obj = self.object.employer_doc.employer
-            if not cleaned_field == obj.employer_mobile_number: 
-                valid = False
+            if cleaned_field == obj.employer_mobile_number: 
+                valid = True
 
         elif self.stakeholder == 'sponsor_1':
             obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if not cleaned_field == obj.sponsor_1_mobile_number:
-                valid = False
+            if cleaned_field == obj.sponsor_1_mobile_number:
+                valid = True
 
         elif self.stakeholder == 'sponsor_2':
             obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if not cleaned_field == obj.sponsor_2_mobile_number:
-                valid = False
+            if cleaned_field == obj.sponsor_2_mobile_number:
+                valid = True
 
-        if valid == False:
-            self.add_error(
-                _('Invalid Credentials')
+        return cleaned_field if valid else None
+
+    def clean(self):
+        cleaned_data = super().clean()
+        nric_fin = cleaned_data.get('nric_fin')
+        mobile = cleaned_data.get('mobile')
+
+        if nric_fin and mobile:
+            return cleaned_data
+        else:
+            error_msg = _('Invalid Credentials')
+            raise ValidationError(
+                    error_msg,
+                    code= 'invalid',
             )
-        return cleaned_field
 
 # class VerifyUserTokenForm(forms.ModelForm):
 #     class Meta:

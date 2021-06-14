@@ -552,21 +552,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 my-2">
-                    <label for="disabled_sigslug_employer_2">Employer's Signature Link (Handover checklist)</label>
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="input-group">
-                                <input id="copy-value-employer-2" type="text" class="form-control" value="" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-employer-2"><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-outline-secondary" href="#"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="#"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employer's Signature Link (Handover checklist)</p></a></div>
                 <div class="col-md-6 my-2">
                     <label for="disabled_sigslug_employer_spouse">Employer Spouse Signature</label>
                     <div class="row">
@@ -576,7 +562,7 @@
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="copy-button-employer-spouse" {% if not employer_spouse_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
                                     <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -655,30 +641,43 @@
 
 {% block js %}
 <script>
-let copyBtnEmployer1 = document.querySelector('#copy-button-employer-1');
-if (copyBtnEmployer1) {
-    copyBtnEmployer1.addEventListener('click', () => {
-        let copyElement = document.getElementById("copy-value-employer-1");
-        navigator.clipboard.writeText(copyElement.value)
-            .then(() => {
-                // Animate copy button
-                copyElement.animate([
-                    { transform: 'scale(1)' },
-                    { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
-                    { transform: 'scale(1)' },
-                ], {
-                    duration: 500, //milliseconds
-                    easing: 'ease-in', //'linear', a bezier curve, etc.
-                    delay: 0, //milliseconds
-                    iterations: 1, //or a number
-                    direction: 'normal', //'normal', 'reverse', etc.
-                    fill: 'forwards' //'backwards', 'both', 'none', 'auto'
-                });
-            })
-            .catch(err => {
-                console.log('Error in copying text: ', err);
+function copyToClipboard(element) {
+    navigator.clipboard.writeText(element.value)
+        .then(() => {
+            // Animate copy button
+            element.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
+                { transform: 'scale(1)' },
+            ], {
+                duration: 500, //milliseconds
+                easing: 'ease-in', //'linear', a bezier curve, etc.
+                delay: 0, //milliseconds
+                iterations: 1, //or a number
+                direction: 'normal', //'normal', 'reverse', etc.
+                fill: 'forwards' //'backwards', 'both', 'none', 'auto'
             });
-    })
+        })
+        .catch(err => {
+            console.log('Error in copying text: ', err);
+        });
+}
+
+let copyElements = {
+    'copy-button-employer-1': 'copy-value-employer-1',
+    'copy-button-employer-spouse': 'copy-value-employer-spouse',
+    'copy-button-joint-applicant': 'copy-value-joint-applicant',
+    'copy-button-sponsor-1': 'copy-value-sponsor-1',
+    'copy-button-sponsor-2': 'copy-value-sponsor-2',
+}
+
+if (copyElements) {
+    for (let button in copyElements) {
+        let valueElement = document.getElementById(copyElements[button]);
+        if (copyElements.hasOwnProperty(button)) {
+            document.getElementById(button).addEventListener('click', () => copyToClipboard(valueElement));
+        }
+    }
 }
 </script>
 {% endblock js %}
