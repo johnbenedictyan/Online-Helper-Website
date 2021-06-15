@@ -1685,9 +1685,8 @@ class TokenChallengeView(
         slug = self.kwargs.get(
             self.slug_url_kwarg
         )
-        slug_front_header = slug[0:5]
-        if slug_front_header in self.model.reverse_sigslug_header_dict:
-            stakeholder = self.model.reverse_sigslug_header_dict[slug_front_header]
+        stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
+        if stakeholder:
             self.stakeholder = stakeholder
             try:
                 if stakeholder == 'employer_1':
