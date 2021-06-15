@@ -36,9 +36,13 @@ class ContactUsView(TemplateView):
     http_method_names = ['get']
     template_name = 'contact-us.html'
 
-class TermsAndConditionsView(TemplateView):
+class TermsAndConditionsAgencyView(TemplateView):
     http_method_names = ['get']
-    template_name = 'terms-of-service.html'
+    template_name = 'terms-and-conditions-agency.html'
+
+class TermsAndConditionsUserView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'terms-and-conditions-user.html'
 
 class PrivacyPolicyView(TemplateView):
     http_method_names = ['get']

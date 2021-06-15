@@ -9,8 +9,8 @@ from django.urls import include, path
 
 ## Template Views 
 from .views import (
-    HomeView, AboutUsView, ContactUsView, TermsAndConditionsView, RobotsTxt,
-    HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
+    HomeView, AboutUsView, ContactUsView, TermsAndConditionsAgencyView, RobotsTxt,
+    TermsAndConditionsUserView, HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
     AdminPanelEnquiryListView, Error403View, Error404View, Error500View
 )
 
@@ -44,8 +44,18 @@ urlpatterns = [
     ),
     path(
         'terms-and-conditions/',
-        TermsAndConditionsView.as_view(),
-        name='terms_and_conditions'
+        include([
+            path(
+                'agencies/',
+                TermsAndConditionsAgencyView.as_view(),
+                name='terms_and_conditions'
+            ),
+            path(
+                'users/',
+                TermsAndConditionsUserView.as_view(),
+                name='terms_and_conditions_user'
+            )
+        ])
     ),
     path(
         'privacy-policy/',
