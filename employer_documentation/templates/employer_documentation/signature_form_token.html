@@ -15,19 +15,19 @@
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <h6>Name of Employer</h6>
-                            <p>Raymond</p>
+                            <p>{{ object.employer_doc.employer.employer_name }}</p>
                         </div>
                         <div class="col-md-6">
                             <h6>Name of FDW</h6>
-                            <p>Siti</p>
+                            <p>{{ object.employer_doc.fdw.name }}</p>
                         </div>
                         <div class="col-md-6">
                             <h6>Name of Agency Employee</h6>
-                            <p>Sam</p>
+                            <p>{{ object.employer_doc.employer.agency_employee.name }}</p>
                         </div>
                         <div class="col-md-6">
                             <h6>Case Ref No</h6>
-                            <p>123</p>
+                            <p>{{ object.employer_doc.case_ref_no }}</p>
                         </div>
                     </div>
                 </div>

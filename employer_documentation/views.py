@@ -1520,9 +1520,8 @@ class SignatureFormView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'slug': self.kwargs.get(
-                self.slug_url_kwarg
-            )
+            'slug': self.kwargs.get(self.slug_url_kwarg),
+            'object': self.object,
         })
         return context
     
