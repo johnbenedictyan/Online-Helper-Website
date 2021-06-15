@@ -389,12 +389,7 @@ class PdfHtmlViewMixin:
 
             for i in range(1,25):
                 # Set start_date for calculation of potential_off_days_in_month
-                if i==1:
-                    # First salary month is inclusive of DEPLOYMENT_DATE for calculation of potential_off_days_in_month
-                    start_date = datetime.date(payment_year, payment_month, payment_day)
-                else:
-                    # Otherwise, need to increase start_date by 1 day for calculation of potential_off_days_in_month
-                    start_date = datetime.date(payment_year, payment_month, payment_day) + datetime.timedelta(days=1)
+                start_date = datetime.date(payment_year, payment_month, payment_day) + datetime.timedelta(days=1)
 
                 # Set payment date
                 payment_month += 1
