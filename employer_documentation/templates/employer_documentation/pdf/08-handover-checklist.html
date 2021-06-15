@@ -12,20 +12,25 @@
     <br>
 
     <table>
+        <col style="width:30%">
+        <col style="width:70%">
         <tr>
-            <td class="text-bold--600" colspan="2">Employment Agency Ref No</td>
+            <td class="text-bold--600">Employment Agency Ref No</td>
             <td>: {{ object.case_ref_no }}</td>
         </tr>
         <tr>
-            <td colspan="2">Hand Over Date</td>
+            <td>Hand Over Date</td>
             <td>: {{ object.rn_casestatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
         </tr>
+    </table>
+    <br>
+    <table>
+        <col style="width:5%">
+        <col style="width:45%">
+        <col style="width:50%">
         <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td width="2%">(A)</td>
-            <td width="48%">Full Name of Employer</td>
+            <td>(a)</td>
+            <td>Full Name of Employer</td>
             <td>: {{ object.employer.employer_name }}</td>
         </tr>
         <tr>
@@ -37,7 +42,7 @@
             <td></td>
         </tr>
         <tr>
-            <td>(B)</td>
+            <td>(b)</td>
             <td>Full Name of Foreign Domestic Worker</td>
             <td>: {{ object.fdw.name }}</td>
         </tr>
@@ -47,82 +52,112 @@
             <td>: {{ object.fdw.get_passport_number }}</td>
         </tr>
     </table>
+    <br>
     <table>
+        <col style="width:5%">
+        <col style="width:5%">
+        <col style="width:90%">
         <tr>
+            <td colspan="1" class="text-bold--600">A.</td>
             <td colspan="2" class="text-bold--600">Documents to be handed to FDW personally</td>
-            <td colspan="2" class="text-bold--600">Documents to be handed to Employer</td>
         </tr>
         <tr>
-            <td width="2%">a)</td>
-            <td width="44%">Employment Contract</td>
-            <td width="2%">a)</td>
-            <td>Form A/ B</td>
+            <td></td>
+            <td>1)</td>
+            <td>Employment Contract (Incl Salary Schedule and Rest Day Agreement)</td>
         </tr>
         <tr>
-            <td>b)</td>
-            <td>Salary Schedule</td>
-            <td>b)</td>
-            <td>Service Agreement</td>
+            <td></td>
+            <td>2)</td>
+            <td>Medical Report (third party)</td>
         </tr>
         <tr>
-            <td>c)</td>
-            <td>Rest Day Agreement</td>
-            <td>c)</td>
-            <td>Employment Contract</td>
+            <td></td>
+            <td>3)</td>
+            <td>Insurance (third party)</td>
         </tr>
         <tr>
-            <td>d)</td>
-            <td>Work Scope</td>
-            <td>d)</td>
-            <td>Salary Schedule</td>
-        </tr>
-        <tr>
-            <td>e)</td>
-            <td>Handover Checklist</td>
-            <td>e)</td>
-            <td>Rest Day Agreement</td>
-        </tr>
-        <tr>
-            <td>f)</td>
-            <td>Safety Agreement</td>
-            <td>f)</td>
-            <td>Work Scope</td>
-        </tr>
-        <tr>
-            <td>g)</td>
-            <td>FDW Biodata</td>
-            <td>g)</td>
-            <td>Handover Checklist</td>
-        </tr>
-        <tr>
-            <td>h)</td>
-            <td>Insurance</td>
-            <td>h)</td>
-            <td>Safety Agreement</td>
-        </tr>
-        <tr>
-            <td>i)</td>
-            <td>Medical Report</td>
-            <td>i)</td>
+            <td></td>
+            <td>4)</td>
             <td>FDW Biodata</td>
         </tr>
         <tr>
-            <td>j)</td>
+            <td></td>
+            <td>5)</td>
+            <td>Job Order</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>6)</td>
+            <td>Handover Checklist</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>7)</td>
             <td>FDW’s Passport</td>
-            <td>j)</td>
-            <td>Banker Guarantee</td>
         </tr>
         <tr>
-            <td>k)</td>
+            <td></td>
+            <td>8)</td>
             <td>FDW’s Work Permit</td>
-            <td>k)</td>
-            <td>Insurance</td>
+        </tr>
+        <tr><td colspan="3"><br></td></tr>
+        <tr>
+            <td colspan="1" class="text-bold--600">B.</td>
+            <td colspan="2" class="text-bold--600">Documents to be handed to employer</td>
         </tr>
         <tr>
-            <td colspan="2"></td>
-            <td>l)</td>
-            <td>Medical Report</td>
+            <td></td>
+            <td>1)</td>
+            <td>Employment Contract (Incl Salary Schedule and Rest Day Agreement)</td>
         </tr>
+        <tr>
+            <td></td>
+            <td>2)</td>
+            <td>Service Agreement (employer only)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>3)</td>
+            <td>Medical Report (third party)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>4)</td>
+            <td>Insurance (third party)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>5)</td>
+            <td>Service Fee Schedule (employer only)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>6)</td>
+            <td>FDW Biodata</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>7)</td>
+            <td>Job Order</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>8)</td>
+            <td>Handover Checklist</td>
+        </tr>
+        <tr><td colspan="3"><br></td></tr>
+        <tr>
+            <td colspan="1" class="text-bold--600">C.</td>
+            <td colspan="2" class="text-bold--600">FDW Inventory</td>
+        </tr>
+        {% for _ in '1234' %}
+        <tr>
+            <td></td>
+            <td>{{ forloop.counter }})</td>
+            <td>Item {{ forloop.counter }} Description</td>
+        </tr>
+        {% endfor %}
     </table>
     <br>
     <table>

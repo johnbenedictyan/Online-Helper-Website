@@ -2090,18 +2090,18 @@ class CaseSignature(models.Model):
     )
 
     sigslug_header_dict = {
-        'employer_1': 'EMPL',
-        'employer_spouse': 'EMSP',
-        'sponsor_1': 'SPN1',
-        'sponsor_2': 'SPN2',
-        'joint_applicant': 'JOAPP'
+        'employer_1':       'EMPLO',
+        'employer_spouse':  'EMSPO',
+        'sponsor_1':        'SPON1',
+        'sponsor_2':        'SPON2',
+        'joint_applicant':  'JOAPP'
     }
 
     reverse_sigslug_header_dict = {
-        'EMPL': 'employer_1',
-        'EMSP': 'employer_spouse',
-        'SPN1': 'sponsor_1',
-        'SPN2': 'sponsor_2',
+        'EMPLO': 'employer_1',
+        'EMSPO': 'employer_spouse',
+        'SPON1': 'sponsor_1',
+        'SPON2': 'sponsor_2',
         'JOAPP': 'joint_applicant'
     }
 
