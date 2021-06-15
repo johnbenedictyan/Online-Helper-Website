@@ -1178,63 +1178,41 @@ class HtmlToRenderPdfTokenView(
     stakeholder = None
 
     def get_object(self):
-        obj = None
-        try:
-            obj = self.model.objects.get(
-                sigslug_employer_1=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
+        slug = self.kwargs.get(self.slug_url_kwarg)
+        stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
+        if stakeholder:
+            self.stakeholder = stakeholder
+            try:
+                if stakeholder == 'employer_1':
+                    obj = self.model.objects.get(
+                        sigslug_employer_1=slug
+                    ).employer_doc
+                elif stakeholder == 'employer_spouse':
+                    obj = self.model.objects.get(
+                        sigslug_employer_spouse=slug
+                    ).employer_doc
+                elif stakeholder == 'sponsor_1':
+                    obj = self.model.objects.get(
+                        sigslug_sponsor_1=slug
+                    ).employer_doc
+                elif stakeholder == 'sponsor_2':
+                    obj = self.model.objects.get(
+                        sigslug_sponsor_2=slug
+                    ).employer_doc
+                elif stakeholder == 'joint_applicant':
+                    obj = self.model.objects.get(
+                        sigslug_joint_applicant=slug
+                    ).employer_doc
+                else:
+                    obj = None
+            except self.model.DoesNotExist:
+                return None
+            else:
+                return obj
         else:
-            self.stakeholder = 'employer_1'
-            
-        try:
-            obj = self.model.objects.get(
-                sigslug_employer_spouse=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
+            # SLUG DOES NOT HAVE FRONT HEADER
+            # TODO: Special Error Page thing
             pass
-        else:
-            self.stakeholder = 'employer_spouse'
-            
-        try:
-            obj = self.model.objects.get(
-                sigslug_sponsor_1=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
-        else:
-            self.stakeholder = 'sponsor_1'
-
-        try:
-            obj = self.model.objects.get(
-                sigslug_sponsor_2=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
-        else:
-            self.stakeholder = 'sponsor_2'
-
-        try:
-            obj = self.model.objects.get(
-                sigslug_joint_applicant=self.kwargs.get(
-                    self.slug_url_kwarg
-                )
-            )
-        except self.model.DoesNotExist:
-            pass
-        else:
-            self.stakeholder = 'joint_applicant'
-
-        return obj.employer_doc if obj else None
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
