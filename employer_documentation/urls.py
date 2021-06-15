@@ -383,11 +383,6 @@ urlpatterns = [
                                 name='token_employer_with_spouse_signature_form_view'
                             ),
                             path(
-                                'employer-spouse/',
-                                views.EmployerSpouseSignatureFormView.as_view(),
-                                name='token_employer_spouse_signature_form_view'
-                            ),
-                            path(
                                 'sponsor-1/',
                                 views.Sponsor1SignatureFormView.as_view(),
                                 name='token_sponsor_1_signature_form_view'

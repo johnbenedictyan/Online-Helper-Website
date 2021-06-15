@@ -1541,15 +1541,6 @@ class EmployerWithSpouseSignatureFormView(SignatureFormView):
         self.object.save()
         return super().form_valid(form)
 
-class EmployerSpouseSignatureFormView(SignatureFormView):
-    form_class = forms.EmployerSpouseSignatureForm
-
-    def form_valid(self, form):
-        self.object = super().get_object()
-        self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
-        self.object.save()
-        return super().form_valid(form)
-
 class Sponsor1SignatureFormView(SignatureFormView):
     form_class = forms.SponsorSignatureForm
 

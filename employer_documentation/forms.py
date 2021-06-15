@@ -2630,59 +2630,6 @@ class EmployerWithSpouseSignatureForm(forms.Form):
             )
         )
 
-class EmployerSpouseSignatureForm(forms.Form):
-    employer_spouse_signature = forms.CharField(
-        widget=forms.HiddenInput()
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            'employer_spouse_signature'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            HTML(
-                                """
-                                <h6>Employer Spouse Signature</h6>
-                                <canvas
-                                    id="employer-spouse-signature-pad"
-                                    class=""
-                                    style="border: 1px solid #d2d2d2"
-                                >
-                                </canvas>
-                                """
-                            )
-                        )
-                    ),
-                    Row(
-                        Column(
-                            Button(
-                            'Clear Signatures',
-                            'Clear Signatures',
-                            css_class='btn btn-outline-secondary w-25 mr-2',
-                            css_id='signature-form-clear-button'
-                            ),
-                            Button(
-                                'Confirm',
-                                'Confirm',
-                                css_class='btn btn-primary w-25 ml-2',
-                                css_id='signature-form-submit-button'
-                            ),
-                            css_class='d-flex justify-content-center mt-4'
-                        )
-                    )
-                ),
-                css_class='form-group'
-            )
-        )
-
 class SponsorSignatureForm(forms.Form):
     sponsor_signature = forms.CharField(
         widget=forms.HiddenInput()
