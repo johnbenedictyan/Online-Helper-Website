@@ -415,106 +415,79 @@ urlpatterns = [
                                 ),
                                 name='pdf_token_employer_service_fee_schedule'
                             ),
-    #                         path(
-    #                             'service-agreement/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/03-service-agreement.html',
-    #                                 content_disposition = 'inline; filename="service_agreement.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_service_agreement'
-    #                         ),
-    #                         path(
-    #                             'employment-contract/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/04-employment-contract.html',
-    #                                 content_disposition = 'inline; filename="employment-contract.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_employment_contract'
-    #                         ),
-    #                         path(
-    #                             'repayment-schedule/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/05-repayment-schedule.html',
-    #                                 content_disposition = 'inline; filename="repayment-schedule.pdf"',
-    #                                 use_repayment_table = True,
-    #                             ),
-    #                             name='pdf_token_employer_repayment_schedule'
-    #                         ),
-    #                         path(
-    #                             'rest-day-agreement/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/06-rest-day-agreement.html',
-    #                                 content_disposition = 'inline; filename="rest-day-agreement.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_rest_day_agreement'
-    #                         ),
-    #                         path(
-    #                             'job-order/',
-    #                             views.PdfFileTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 filename='job-order.pdf',
-    #                             ),
-    #                             name='pdf_token_employer_job_order_route'
-    #                         ),
-    #                         path(
-    #                             'handover-checklist/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/08-handover-checklist.html',
-    #                                 content_disposition = 'inline; filename="handover-checklist.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_handover_checklist'
-    #                         ),
-    #                         path(
-    #                             'transfer-consent/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/09-transfer-consent.html',
-    #                                 content_disposition = 'inline; filename="transfer-consent.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_transfer_consent'
-    #                         ),
-    #                         path(
-    #                             'work-pass-authorisation/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
-    #                                 content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_work_pass_authorisation'
-    #                         ),
-    #                         path(
-    #                             'income-tax-declaration/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/13-income-tax-declaration.html',
-    #                                 content_disposition = 'inline; filename="income-tax-declaration.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_income_tax_declaration'
-    #                         ),
-    #                         path(
-    #                             'safety-agreement/',
-    #                             views.PdfGenericTokenView.as_view(
-    #                                 slug_field='sigslug_employer_1',
-    #                                 token_field_name='employer_token',
-    #                                 template_name='employer_documentation/pdf/14-safety-agreement.html',
-    #                                 content_disposition = 'inline; filename="safety-agreement.pdf"',
-    #                             ),
-    #                             name='pdf_token_employer_safety_agreement'
-    #                         ),
+                            path(
+                                'service-agreement/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/03-service-agreement.html',
+                                    content_disposition = 'inline; filename="service_agreement.pdf"',
+                                ),
+                                name='pdf_token_employer_service_agreement'
+                            ),
+                            path(
+                                'employment-contract/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/04-employment-contract.html',
+                                    content_disposition = 'inline; filename="employment-contract.pdf"',
+                                ),
+                                name='pdf_token_employer_employment_contract'
+                            ),
+                            path(
+                                'repayment-schedule/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/05-repayment-schedule.html',
+                                    content_disposition = 'inline; filename="repayment-schedule.pdf"',
+                                    use_repayment_table = True,
+                                ),
+                                name='pdf_token_employer_repayment_schedule'
+                            ),
+                            path(
+                                'rest-day-agreement/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/06-rest-day-agreement.html',
+                                    content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                ),
+                                name='pdf_token_employer_rest_day_agreement'
+                            ),
+                            path(
+                                'handover-checklist/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/08-handover-checklist.html',
+                                    content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                ),
+                                name='pdf_token_employer_handover_checklist'
+                            ),
+                            path(
+                                'transfer-consent/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/09-transfer-consent.html',
+                                    content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                ),
+                                name='pdf_token_employer_transfer_consent'
+                            ),
+                            path(
+                                'work-pass-authorisation/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
+                                    content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                ),
+                                name='pdf_token_employer_work_pass_authorisation'
+                            ),
+                            path(
+                                'income-tax-declaration/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/13-income-tax-declaration.html',
+                                    content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                ),
+                                name='pdf_token_employer_income_tax_declaration'
+                            ),
+                            path(
+                                'safety-agreement/',
+                                views.HtmlToRenderPdfTokenView.as_view(
+                                    template_name='employer_documentation/pdf/14-safety-agreement.html',
+                                    content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                ),
+                                name='pdf_token_employer_safety_agreement'
+                            ),
                         ]),
                     ),
                 ]),
