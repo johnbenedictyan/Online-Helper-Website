@@ -198,7 +198,7 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
                         access_granted = True
                 elif self.authority == AG_SALES:
                     if employer_obj.agency_employee == agency_user_obj:
-                        access_granted == True
+                        access_granted = True
         
         # If URL does not have pk, then fall back to inherited dispatch handler
         else:
