@@ -165,40 +165,44 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
-        test_obj = self.get_object()
-        if hasattr(test_obj, 'applicant_type'):
-            employer_obj = test_obj
-        elif hasattr(test_obj, 'employer'):
-            employer_obj = test_obj.employer
-        elif hasattr(test_obj, 'employer_doc'):
-            employer_obj = test_obj.employer_doc.employer
-        else:
-            employer_obj = None
+        # If URL has pk, then check user access permissions
+        if self.kwargs.get(self.pk_url_kwarg):
+            # Set agency user object
+            test_user = User.objects.get(pk=request.user.pk)
+            if hasattr(test_user, 'agency_owner'):
+                agency_user_obj = test_user.agency_owner
+            elif hasattr(test_user, 'agency_employee'):
+                agency_user_obj = test_user.agency_employee
+            else:
+                agency_user_obj = None
+            
+            # Set employer object
+            test_obj = self.get_object()
+            if hasattr(test_obj, 'applicant_type'):
+                employer_obj = test_obj
+            elif hasattr(test_obj, 'employer'):
+                employer_obj = test_obj.employer
+            elif hasattr(test_obj, 'employer_doc'):
+                employer_obj = test_obj.employer_doc.employer
+            else:
+                employer_obj = None
 
-        test_user = User.objects.get(pk=request.user.pk)
-        if hasattr(test_user, 'agency_owner'):
-            agency_user_obj = test_user.agency_owner
-        elif hasattr(test_user, 'agency_employee'):
-            agency_user_obj = test_user.agency_employee
-        else:
-            agency_user_obj = None
-        
-        if employer_obj.agency_employee.agency == agency_user_obj.agency:
-            if self.authority == AG_OWNERS:
-                access_granted = True
-            elif self.authority == AG_ADMINS:
-                access_granted = True # TODO: Handle no permission
-            elif self.authority == AG_MANAGERS:
-                if employer_obj.agency_employee.branch == agency_user_obj.branch:
+            # Check agency user permissions vs employer object
+            if employer_obj.agency_employee.agency == agency_user_obj.agency:
+                if self.authority == AG_OWNERS:
                     access_granted = True
-            elif self.authority == AG_SALES:
-                if employer_obj.agency_employee == agency_user_obj:
-                    access_granted == True
-
-        # access_granted = True # TODO: Handle no permission
-        print(employer_obj)
-        print(agency_user_obj)
-        print(self.authority)
+                elif self.authority == AG_ADMINS:
+                    access_granted = True # TODO: Handle no permission
+                elif self.authority == AG_MANAGERS:
+                    if employer_obj.agency_employee.branch == agency_user_obj.branch:
+                        access_granted = True
+                elif self.authority == AG_SALES:
+                    if employer_obj.agency_employee == agency_user_obj:
+                        access_granted == True
+        
+        # If URL does not have pk, then fall back to inherited dispatch handler
+        else:
+            access_granted = True
         
         if access_granted:
             return handler
