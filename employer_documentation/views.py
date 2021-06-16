@@ -1,6 +1,3 @@
-# Python
-import secrets
-
 # Django
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -17,16 +14,16 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import get_object_or_404
 
 # From our apps
-from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
 from . import models, forms, constants
 from .formset import EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper
-from .mixins import *
+from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
+from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyAccessToEmployerDocAppMixin
 
 # Detail Views
 class EmployerDetailView(
-    AgencyLoginRequiredMixin,
+    AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     DetailView,
 ):
@@ -35,7 +32,7 @@ class EmployerDetailView(
     template_name = 'detail/dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
-    AgencyLoginRequiredMixin,
+    AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     DetailView
 ):
@@ -94,7 +91,7 @@ class EmployerCreateView(
         return success_url
 
 class EmployerSponsorCreateView(
-    AgencyLoginRequiredMixin,
+    AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     CreateView
 ):
