@@ -2006,6 +2006,7 @@ class MaidInventory(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_maid_inventory'
     )
+
 class CaseSignature(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,

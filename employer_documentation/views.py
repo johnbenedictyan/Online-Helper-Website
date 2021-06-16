@@ -15,7 +15,11 @@ from django.shortcuts import get_object_or_404
 
 # From our apps
 from . import models, forms, constants
-from .formset import EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper
+from .formset import (
+    EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper, 
+    MaidInventoryFormSet, MaidInventoryFormSetHelper
+)
+
 from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
@@ -1194,6 +1198,75 @@ class EmployerHouseholdDetailsFormView(
         return reverse_lazy(
             'dashboard_employers_list'
         )
+
+class MaidInventoryFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,  SuccessMessageMixin,
+                            FormView):
+    form_class = MaidInventoryFormSet
+    http_method_names = ['get', 'post']
+    template_name = 'employer_documentation/crispy_form.html'
+    pk_url_kwarg = 'level_1_pk'
+    authority = ''
+    agency_id = ''
+    employer_id = ''
+    success_message = 'Maid inventory updated'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'level_1_pk': self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        })
+        helper = MaidInventoryFormSetHelper()
+        helper.form_tag = False
+        context.update({
+            'helper': helper
+        })
+        return context
+    
+    def get_formset_form_kwargs(self):
+        self.employer_doc_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        kwargs = {
+            'employer_doc_id': self.employer_doc_id
+        }
+        return kwargs
+    
+    def get_instance_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.employer_doc_id
+        )
+        
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+        
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'docupload_create_route',
+                    kwargs={
+                        'level_1_pk':self.employer_doc_id
+                    }
+                )
+            )
 
 class SignatureFormView(FormView):
     form_class = None
