@@ -81,6 +81,7 @@ def dashboard_side_nav(request):
         'serviceagreement_update_route',
         'safetyagreement_create_route',
         'safetyagreement_update_route',
+        'maid_inventory_update_route',
         'docupload_create_route',
         'docupload_update_route',
         'case_status_update_route'
@@ -110,6 +111,7 @@ def page_bar_url_helper(request):
         'serviceagreement_update_route',
         'safetyagreement_create_route',
         'safetyagreement_update_route',
+        'maid_inventory_update_route',
         'docupload_create_route',
         'docupload_update_route',
         'case_status_update_route'

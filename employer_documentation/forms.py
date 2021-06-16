@@ -1266,6 +1266,46 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
             )
             return ciphertext
 
+class MaidInventoryForm(forms.ModelForm):
+    class Meta:
+        model = models.MaidInventory
+        exclude = [
+            'employer_doc',
+        ]
+    
+    def save(self, *args, **kwargs):
+        self.instance.employer_doc = self.employer_doc
+        return super().save(*args, **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        self.employer_doc_id = kwargs.pop('employer_doc_id')
+        self.employer_doc = models.EmployerDoc.objects.get(
+            pk=self.employer_doc_id
+        )
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Field(
+                                'DELETE'
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            'item_name',
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
 class EmployerDocForm(forms.ModelForm):
     class Meta:
         model = models.EmployerDoc

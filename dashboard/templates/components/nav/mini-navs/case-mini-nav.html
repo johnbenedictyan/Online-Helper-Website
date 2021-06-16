@@ -47,6 +47,13 @@
     {% endif %}
     <div class="row">
         <div class="col">
+            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'maid_inventory_update_route' %}active{% endif %}" href="{% url 'maid_inventory_update_route' level_1_pk=level_1_pk %}">
+                <p class="m-1 pl-2">Maid Inventory</p>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'docupload_update_route' %}active{% endif %}" href="{% url 'docupload_update_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">View PDF documents</p>
             </a>

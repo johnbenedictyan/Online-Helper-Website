@@ -127,6 +127,11 @@ urlpatterns = [
                         name='safetyagreement_update_route'
                     ),
                     path(
+                        'maid-inventory/update/',
+                        views.MaidInventoryFormView.as_view(),
+                        name='maid_inventory_update_route'
+                    ),
+                    path(
                         'upload-doc/create/',
                         views.DocUploadCreateView.as_view(),
                         name='docupload_create_route'
