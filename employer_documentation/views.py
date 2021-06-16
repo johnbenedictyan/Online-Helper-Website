@@ -1261,12 +1261,20 @@ class MaidInventoryFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,  Succes
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'docupload_create_route',
+                    'maid_inventory_update_route',
                     kwargs={
                         'level_1_pk':self.employer_doc_id
                     }
                 )
             )
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'docupload_create_route',
+            kwargs={
+                'level_1_pk':self.employer_doc_id
+            }
+        )
 
 class SignatureFormView(FormView):
     form_class = None
