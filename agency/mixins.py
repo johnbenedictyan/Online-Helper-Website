@@ -3,15 +3,17 @@
 # Imports from django
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
+from django.views.generic.detail import ContextMixin
 
 # Imports from other apps
 from onlinemaid.constants import (
-    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, P_EMPLOYERS
+    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
 )
 from onlinemaid.mixins import (
     LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
 )
 from maid.models import Maid
+from accounts.models import User
 
 # Imports from within the app
 from .models import (
@@ -155,6 +157,58 @@ class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
                 return self.handle_no_permission(request)
 
         return res
+
+class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
+    permission_denied_message = '''Access permission denied'''
+    
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        access_granted = False
+
+        # If URL has pk, then check user access permissions
+        if self.kwargs.get(self.pk_url_kwarg):
+            # Set agency user object
+            test_user = User.objects.get(pk=request.user.pk)
+            if hasattr(test_user, 'agency_owner'):
+                agency_user_obj = test_user.agency_owner
+            elif hasattr(test_user, 'agency_employee'):
+                agency_user_obj = test_user.agency_employee
+            else:
+                agency_user_obj = None
+            
+            # Set employer object
+            test_obj = self.get_object()
+            if hasattr(test_obj, 'applicant_type'):
+                employer_obj = test_obj
+            elif hasattr(test_obj, 'employer'):
+                employer_obj = test_obj.employer
+            elif hasattr(test_obj, 'employer_doc'):
+                employer_obj = test_obj.employer_doc.employer
+            else:
+                employer_obj = None
+
+            # Check agency user permissions vs employer object
+            if employer_obj.agency_employee.agency == agency_user_obj.agency:
+                if self.authority == AG_OWNERS:
+                    access_granted = True
+                elif self.authority == AG_ADMINS:
+                    access_granted = True # TODO: Handle no permission
+                elif self.authority == AG_MANAGERS:
+                    if employer_obj.agency_employee.branch == agency_user_obj.branch:
+                        access_granted = True
+                elif self.authority == AG_SALES:
+                    if employer_obj.agency_employee == agency_user_obj:
+                        access_granted == True
+        
+        # If URL does not have pk, then fall back to inherited dispatch handler
+        else:
+            access_granted = True
+        
+        if access_granted:
+            return handler
+        else:
+            # TODO: Handle no permission
+            pass
 
 class GetAuthorityMixin:
     authority = ''

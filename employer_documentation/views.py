@@ -1,6 +1,3 @@
-# Python
-import secrets
-
 # Django
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -17,16 +14,16 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import get_object_or_404
 
 # From our apps
-from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
 from . import models, forms, constants
 from .formset import EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper
-from .mixins import *
+from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
+from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyAccessToEmployerDocAppMixin
 
 # Detail Views
 class EmployerDetailView(
-    AgencyLoginRequiredMixin,
+    AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     DetailView,
 ):
@@ -35,7 +32,7 @@ class EmployerDetailView(
     template_name = 'detail/dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
-    AgencyLoginRequiredMixin,
+    AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     DetailView
 ):
@@ -94,7 +91,7 @@ class EmployerCreateView(
         return success_url
 
 class EmployerSponsorCreateView(
-    AgencyLoginRequiredMixin,
+    AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -876,32 +873,6 @@ class DocUploadUpdateView(
     def get_success_url(self):
         return reverse('dashboard_case_list')
 
-# class CaseStatusUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.CaseStatus
-#     form_class = forms.CaseStatusForm
-#     pk_url_kwarg = 'level_1_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-
-#     def get_object(self):
-#         return models.EmployerDoc.objects.get(
-#             pk=self.kwargs.get(self.pk_url_kwarg)
-#         ).rn_casestatus_ed
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user_pk'] = self.request.user.pk
-#         kwargs['authority'] = self.authority
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse('case_detail_route', kwargs={
-#             'level_1_pk': self.object.employer_doc.pk,
-#         })
-
 class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
     form_class = forms.CaseStatusForm
@@ -954,32 +925,6 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
                     self.pk_url_kwarg
                 )
             })
-
-# class CaseSignatureSlugUpdateView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     UpdateView
-# ):
-#     model = models.CaseSignature
-#     form_class = CaseSignatureSlugForm
-#     pk_url_kwarg = 'level_2_pk'
-#     template_name = 'employer_documentation/crispy_form.html'
-#     model_field_name = None # Aslog in urls.py
-#     form_fields = None # Aslog in urls.py
-#     success_url_route_name = None # Aslog in urls.py
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['model_field_name'] = self.model_field_name
-#         kwargs['form_fields'] = self.form_fields
-#         return kwargs
-
-#     def get_success_url(self):
-#         return reverse_lazy(self.success_url_route_name, kwargs={
-#             'level_0_pk': self.object.employer_doc.employer.pk,
-#             'level_1_pk': self.object.employer_doc.pk,
-#             'level_2_pk': self.object.pk,
-#         })
 
 
 # Delete Views
@@ -1036,86 +981,6 @@ class SignatureUpdateByAgentView(
             'level_1_pk': self.object.employer_doc.pk,
         })
 
-# class VerifyUserTokenView(
-#     SuccessMessageMixin,
-#     UpdateView
-# ):
-#     model = models.CaseSignature
-#     form_class = VerifyUserTokenForm
-#     template_name = 'employer_documentation/token_form.html'
-#     token_field_name = None # Assign this value in urls.py
-#     success_url_route_name = None # Assign this value in urls.py
-#     success_message = None # Assign this value in urls.py
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['slug'] = self.kwargs.get(self.slug_url_kwarg)
-#         kwargs['session'] = self.request.session
-#         kwargs['token_field_name'] = self.token_field_name
-#         return kwargs
-
-#     def get_success_url(self):
-#         if self.success_url_route_name:
-#             if self.token_field_name=='employer_token':
-#                 slug = self.object.sigslug_employer_1
-#             elif self.token_field_name=='fdw_token':
-#                 slug = self.object.fdw_slug
-#         else:
-#             return reverse_lazy('home')
-#         return reverse_lazy(self.success_url_route_name, kwargs={'slug':slug})
-
-#     def get_success_message(self, cleaned_data):
-#         return self.success_message % dict(cleaned_data,)
-
-# class SignatureUpdateByTokenView(
-#     SuccessMessageMixin,
-#     CheckSignatureSessionTokenMixin,
-#     UpdateView
-# ):
-#     model = models.CaseSignature
-#     form_class = SignatureForm
-#     template_name = 'employer_documentation/signature_form_token.html'
-#     model_field_name = None # Assign this value in urls.py
-#     token_field_name = None # Assign this value in urls.py
-#     form_fields = None # Assign this value in urls.py
-#     success_url_route_name = None # Assign this value in urls.py
-#     success_message = None # Assign this value in urls.py
-
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['model_field_name'] = self.model_field_name
-#         kwargs['form_fields'] = self.form_fields
-#         return kwargs
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['model_field_verbose_name'] = CaseSignature._meta.get_field(
-#             self.model_field_name).verbose_name
-#         return context
-
-#     def get_success_url(self):
-#         if self.success_url_route_name:
-#             if self.token_field_name=='employer_token':
-#                 slug = self.object.sigslug_employer_1
-#             elif self.token_field_name=='fdw_token':
-#                 slug = self.object.fdw_slug
-#         else:
-#             return reverse_lazy('home')
-        
-#         if (
-#             self.success_url_route_name=='token_signature_employer_spouse_route'
-#             and not self.object.employer_doc.spouse_required
-#         ):
-#             return reverse_lazy('home')
-#         else:
-#             return reverse_lazy(
-#                 self.success_url_route_name,
-#                 kwargs={'slug':slug}
-#             )
-
-#     def get_success_message(self, cleaned_data):
-#         return self.success_message % dict(cleaned_data,)
-
 
 # PDF Views
 class HtmlToRenderPdfAgencyView(
@@ -1142,9 +1007,8 @@ class UploadedPdfAgencyView(
     GetAuthorityMixin,
     DetailView
 ):
-    # model = None # To be passed as parameter in urls.py
-    # pk_url_kwarg = None # To be passed as parameter in urls.py
-    # slug_url_kwarg = None # To be passed as parameter in urls.py
+    model = None # To be passed as parameter in urls.py
+    pk_url_kwarg = None # To be passed as parameter in urls.py
     as_attachment=False
     filename='document.pdf'
     field_name = None
@@ -1236,129 +1100,6 @@ class HtmlToRenderPdfTokenView(
             return self.generate_pdf_response(request, context)
         else:
             return HttpResponseRedirect(reverse('error_404'))
-
-# class PdfFileTokenView(
-#     CheckSignatureSessionTokenMixin,
-#     DetailView
-# ):
-#     model = models.CaseSignature
-#     slug_url_kwarg = 'slug'
-#     token_field_name = None
-#     as_attachment=False
-#     filename='document.pdf'
-
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object().employer_doc.rn_joborder_ed
-#         try:
-#             return FileResponse(
-#                 open(self.object.job_order_pdf.path, 'rb'),
-#                 as_attachment=self.as_attachment,
-#                 filename=self.filename,
-#                 content_type='application/pdf'
-#             )
-#         except Exception:
-#             return HttpResponseRedirect(reverse('home'))
-
-# class PdfArchiveSaveView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     PdfHtmlViewMixin,
-#     DetailView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'level_1_pk'
-
-#     def check_signatures(self, employer_doc):
-#         if (
-#             not employer_doc.rn_signatures_ed.employer_signature or
-#             not employer_doc.rn_signatures_ed.fdw_signature or
-#             not employer_doc.rn_signatures_ed.agency_staff_signature or
-#             not employer_doc.rn_signatures_ed.employer_witness_signature or
-#             not employer_doc.rn_signatures_ed.employer_witness_name or
-#             not employer_doc.rn_signatures_ed.employer_witness_nric or
-#             not employer_doc.rn_signatures_ed.fdw_witness_signature or
-#             not employer_doc.rn_signatures_ed.fdw_witness_name or
-#             not employer_doc.rn_signatures_ed.fdw_witness_nric or
-#             not employer_doc.rn_signatures_ed.agency_staff_witness_signature or
-#             not employer_doc.rn_signatures_ed.agency_staff_witness_name or
-#             not employer_doc.rn_signatures_ed.agency_staff_witness_nric
-#         ):
-#             return 'Missing required signatures or witness details.'
-        
-#         if (
-#             employer_doc.spouse_required and (
-#                 not employer_doc.rn_signatures_ed.spouse_signature or
-#                 not employer_doc.rn_signatures_ed.spouse_name or
-#                 not employer_doc.rn_signatures_ed.spouse_nric
-#             )
-#         ):
-#             return 'Missing spouse signature and/or details.'
-
-#         if (
-#             employer_doc.sponsor_required and (
-#                 not employer_doc.rn_signatures_ed.sponsor_signature or
-#                 not employer_doc.rn_signatures_ed.sponsor_name or
-#                 not employer_doc.rn_signatures_ed.sponsor_nric
-#             )
-#         ):
-#             return 'Missing sponsor signature and/or details.'
-        
-#         return False
-
-
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         context = self.get_context_data()
-#         context['repayment_table'] = self.calc_repayment_schedule()
-
-#         signatures_check = self.check_signatures(self.object)
-#         if signatures_check:
-#             messages.add_message(
-#                 request,
-#                 messages.WARNING,
-#                 'Could not save documents. ' + signatures_check
-#             )
-#             return HttpResponseRedirect(reverse_lazy('dashboard_sales_list'))
-
-#         instance = PdfArchive.objects.get(employer_doc=self.object)
-#         folder = 'employer_documentation/pdf/'
-#         templates = {
-#             'f01_service_fee_schedule':     folder + '01-service-fee-schedule.html',
-#             'f03_service_agreement':        folder + '03-service-agreement.html',
-#             'f04_employment_contract':      folder + '04-employment-contract.html',
-#             'f05_repayment_schedule':       folder + '05-repayment-schedule.html',
-#             'f06_rest_day_agreement':       folder + '06-rest-day-agreement.html',
-#             'f08_handover_checklist':       folder + '08-handover-checklist.html',
-#             'f09_transfer_consent':         folder + '09-transfer-consent.html',
-#             'f10_work_pass_authorisation':  folder + '10-work-pass-authorisation.html',
-#             # 'f11_security_bond':            folder + '11-security-bond.html',
-#             # 'f12_fdw_work_permit':          folder + '12-fdw-work-permit.html',
-#             'f13_income_tax_declaration':   folder + '13-income-tax-declaration.html',
-#             'f14_safety_agreement':         folder + '14-safety-agreement.html',
-#         }
-#         for field_name, template_name in templates.items():
-#             # filename = template_name.split('/')[-1].split('.')[-2] + '.pdf'
-#             filename = field_name + '.pdf'
-#             relative_path = f'{self.object.pk}:{filename}'
-#             pdf_file = self.generate_pdf_file(request, context, template_name)
-#             file_wrapper = SimpleUploadedFile(
-#                 relative_path,
-#                 pdf_file,
-#                 'application/pdf'
-#             )
-#             setattr(instance, field_name, file_wrapper)
-#         instance.save()
-
-#         return HttpResponseRedirect(reverse_lazy('dashboard_sales_list'))
-
-# class PdfArchiveDetailView(
-#     AgencyLoginRequiredMixin,
-#     GetAuthorityMixin,
-#     DetailView
-# ):
-#     model = models.EmployerDoc
-#     pk_url_kwarg = 'level_1_pk'
-#     template_name = 'employer_documentation/pdfarchive_detail.html'
 
 # Form Views
 class EmployerHouseholdDetailsFormView(
