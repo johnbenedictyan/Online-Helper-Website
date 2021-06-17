@@ -332,20 +332,6 @@ class MaidResponsibilityChoices(models.TextChoices):
     MAID_RESP_CARE_FOR_ELDERLY          = 'CFE', _('Care for the Elderly')
     MAID_RESP_CARE_FOR_DISABLED         = 'CFD', _('Care for the Disabled')
 
-class MaidCareRemarksChoices(models.TextChoices):
-    OWN_COUNTRY = 'OC', _('Experience in own country')
-    OVERSEAS = 'OV', _('Experience in overseas')
-    SINGAPORE = 'SG', _('Experience in Singapore')
-    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-        'Experience in own country and Singapore'
-    )
-    OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
-    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-        'Experience in own country, overseas and Singapore'
-    )
-    NO_EXP = 'NE', _('No experience, but willing to learn')
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
-    
 class MaidGeneralHouseworkRemarksChoices(models.TextChoices):
         CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
         OTHERS = 'OTH', _('Other remarks (Please specify)')
@@ -364,17 +350,6 @@ class MaidEducationLevelChoices(models.TextChoices):
     HIGH_SCHOOL = 'HS', _('High School')
     COLLEGE = 'COL', _('College')
     OTHERS = 'OTH', _('Others')
-    
-class MaidSkillsEvaluationMethod(models.TextChoices):
-    DECLARATION = 'DEC', _('''Based on FDW’s declaration, no 
-                           evaluation/observation by Singapore EA or overseas 
-                           training centre/EA''')
-    SG_EA = 'SGEA', _('''Interviewed by Singapore EA''')
-    TEL = 'TEL', _('''Interviewed via telephone/teleconference''')
-    VID = 'VID', _('''Interviewed via videoconference''')
-    PERSON = 'PERS', _('''Interviewed in person''')
-    PERSON_OBS = 'PERO', _('''Interviewed in person and also made observation 
-                           of FDW in the areas of work listed in table''')
     
 class MaidCreatedOnChoices(models.IntegerChoices):
     THREE_DAYS = 3, _('Last 3 days')
@@ -420,7 +395,134 @@ class MaidExperienceChoices(models.TextChoices):
     THREE = 'THREE', _('3 Years')
     FOUR = 'FOUR', _('4 Years')
     O_FIVE = 'O_FIVE', _('>5 Years')
-    
+
+class MaidEmploymentCountry(models.TextChoices):
+    # https://en.wikipedia.org/wiki/ISO_3166-1
+    SINGAPORE = 'SGP', _('Singapore')
+    HONG_KONG = 'HKG', _('Hong Kong')
+    MALAYSIA = 'MYS', _('Malaysia')
+
+class InfantChildCareRemarksChoices(models.TextChoices):
+    OWN_COUNTRY = 'OC', _('Experience in own country')
+    OVERSEAS = 'OV', _('Experience in overseas')
+    SINGAPORE = 'SG', _('Experience in Singapore')
+    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
+        'Experience in own country and Singapore'
+    )
+    OWN_COUNTRY_OVERSEAS = 'OC_O', _(
+        'Experience in own country and overseas'
+    )
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+        'Experience in own country, overseas and Singapore'
+    )
+    NO_EXP = 'NE', _('No experience, but willing to learn')
+    NOT_WILLING = 'NW', _('Not willing to care for infants/children')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
+
+class ElderlyCareRemarksChoices(models.TextChoices):
+    OWN_COUNTRY = 'OC', _('Experience in own country')
+    OVERSEAS = 'OV', _('Experience in overseas')
+    SINGAPORE = 'SG', _('Experience in Singapore')
+    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
+        'Experience in own country and Singapore'
+    )
+    OWN_COUNTRY_OVERSEAS = 'OC_O', _(
+        'Experience in own country and overseas'
+    )
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+        'Experience in own country, overseas and Singapore'
+    )
+    NO_EXP = 'NE', _('No experience, but willing to learn')
+    NOT_WILLING = 'NW', _('Not willing to care for elderly')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
+
+class DisabledCareRemarksChoices(models.TextChoices):
+    OWN_COUNTRY = 'OC', _('Experience in own country')
+    OVERSEAS = 'OV', _('Experience in overseas')
+    SINGAPORE = 'SG', _('Experience in Singapore')
+    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
+        'Experience in own country and Singapore'
+    )
+    OWN_COUNTRY_OVERSEAS = 'OC_O', _(
+        'Experience in own country and overseas'
+    )
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+        'Experience in own country, overseas and Singapore'
+    )
+    NO_EXP = 'NE', _('No experience, but willing to learn')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
+
+class GeneralHouseworkRemarksChoices(models.TextChoices):
+    CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
+
+class CookingRemarksChoices(models.TextChoices):
+    OWN_COUNTRY = 'OC', _('Able to cook own country\'s cuisine')
+    CHINESE = 'C', _('Able to cook chinese cuisine')
+    INDIAN = 'I', _('Able to cook indian cuisine')
+    WESTERN = 'W', _('Able to cook western cuisine')
+    OWN_COUNTRY_CHINSE = 'OC_C', _(
+        'Able to cook own country\'s and chinese cuisine'
+    )
+    OWN_COUNTRY_INDIAN = 'OC_I', _(
+        'Able to cook own country\'s and indian cuisine'
+    )
+    OWN_COUNTRY_WESTERN = 'OC_W', _(
+        'Able to cook own country\'s and western cuisine'
+    )
+    CHINESE_INDIAN = 'C_I', _(
+        'Able to cook chinese and indian cuisine'
+    )
+    CHINESE_WESTERN = 'C_W', _(
+        'Able to cook chinese and western cuisine'
+    )
+    INDIAN_WESTERN = 'I_W', _(
+        'Able to cook indian and western cuisine'
+    )
+    OWN_COUNTRY_CHINESE_INDIAN = 'OC_C_I', _(
+        'Able to cook own country\'s, chinese and indian cuisine'
+    )
+    OWN_COUNTRY_CHINESE_WESTERN = 'OC_C_W', _(
+        'Able to cook own country\'s, chinese and western cuisine'
+    )
+    OWN_COUNTRY_INDIAN_WESTERN = 'OC_I_W', _(
+        'Able to cook own country\'s, indian and western cuisine'
+    )
+    CHINESE_INDIAN_WESTERN = 'C_I_W', _(
+        'Able to cook chinese, indian and western cuisine'
+    )
+    OWN_COUNTRY_CHINESE_INDIAN_WESTERN = 'OC_C_I_W', _(
+        'Able to cook own country\'s, chinese, indian and western cuisine'
+    )
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
+
 # The reason why we are not extending any of these classes is due to the fact
 # that python does not allow the extending of enumeration type classes
 # models.IntegerChoices and models.TextChoices are enumeration type classes
+
+## Deprecation Section
+# class MaidSkillsEvaluationMethod(models.TextChoices):
+#     DECLARATION = 'DEC', _('''Based on FDW’s declaration, no 
+#                            evaluation/observation by Singapore EA or overseas 
+#                            training centre/EA''')
+#     SG_EA = 'SGEA', _('''Interviewed by Singapore EA''')
+#     TEL = 'TEL', _('''Interviewed via telephone/teleconference''')
+#     VID = 'VID', _('''Interviewed via videoconference''')
+#     PERSON = 'PERS', _('''Interviewed in person''')
+#     PERSON_OBS = 'PERO', _('''Interviewed in person and also made observation 
+#                            of FDW in th
+
+# TODO: Deprecate after changing the helper functions which use these choices
+class MaidCareRemarksChoices(models.TextChoices):
+    OWN_COUNTRY = 'OC', _('Experience in own country')
+    OVERSEAS = 'OV', _('Experience in overseas')
+    SINGAPORE = 'SG', _('Experience in Singapore')
+    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
+        'Experience in own country and Singapore'
+    )
+    OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+        'Experience in own country, overseas and Singapore'
+    )
+    NO_EXP = 'NE', _('No experience, but willing to learn')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')

@@ -19,12 +19,10 @@ from agency.models import Agency
 
 # Imports from local apps
 from .constants import (
-    TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
-    MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
-    MaidCareRemarksChoices, MaidPassportStatusChoices, 
-    MaidEducationLevelChoices, MaidSkillsEvaluationMethod, 
-    MaidLoanDescriptionChoices, MaidFoodPreferenceChoices, 
-    MaidDietaryRestrictionChoices, MaidLanguageProficiencyChoices
+    MaidLanguageChoices, MaidAssessmentChoices, MaidFoodPreferenceChoices, 
+    MaidDietaryRestrictionChoices, MaidLanguageProficiencyChoices, InfantChildCareRemarksChoices,
+    ElderlyCareRemarksChoices, DisabledCareRemarksChoices, CookingRemarksChoices,
+    GeneralHouseworkRemarksChoices
 )
 
 from .models import (
@@ -603,7 +601,7 @@ class MaidExperienceForm(forms.Form):
     cfi_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=False,
-        choices=MaidCareRemarksChoices.choices,
+        choices=InfantChildCareRemarksChoices.choices,
     )
 
     cfi_other_remarks = forms.CharField(
@@ -634,7 +632,7 @@ class MaidExperienceForm(forms.Form):
     cfe_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=True,
-        choices=MaidCareRemarksChoices.choices
+        choices=ElderlyCareRemarksChoices.choices
     )
 
     cfe_other_remarks = forms.CharField(
@@ -665,7 +663,7 @@ class MaidExperienceForm(forms.Form):
     cfd_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=True,
-        choices=MaidCareRemarksChoices.choices,
+        choices=DisabledCareRemarksChoices.choices,
     )
 
     cfd_other_remarks = forms.CharField(
@@ -696,7 +694,7 @@ class MaidExperienceForm(forms.Form):
     geh_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=True,
-        choices=MaidCareRemarksChoices.choices
+        choices=GeneralHouseworkRemarksChoices.choices
     )
 
     geh_other_remarks = forms.CharField(
@@ -727,7 +725,7 @@ class MaidExperienceForm(forms.Form):
     cok_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=True,
-        choices=MaidCareRemarksChoices.choices
+        choices=CookingRemarksChoices.choices
     )
 
     cok_other_remarks = forms.CharField(
