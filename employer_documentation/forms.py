@@ -338,7 +338,7 @@ class EmployerForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('employer_nric_num')
         employer_residential_status = self.cleaned_data.get('employer_residential_status')
         empty_field = _("NRIC field cannot be empty")
-        error_msg = empty_field if employer_residential_status==constants.ResidentialStatusFullChoices.SC or employer_residential_status==constants.ResidentialStatusFullChoices.PR else helper_functions.validate_nric(cleaned_field)
+        error_msg = empty_field if not cleaned_field and (employer_residential_status==constants.ResidentialStatusFullChoices.SC or employer_residential_status==constants.ResidentialStatusFullChoices.PR) else helper_functions.validate_nric(cleaned_field)
         if error_msg:
             raise ValidationError(error_msg)
         else:
@@ -350,7 +350,9 @@ class EmployerForm(forms.ModelForm):
 
     def clean_employer_fin_num(self):
         cleaned_field = self.cleaned_data.get('employer_fin_num')
-        error_msg = helper_functions.validate_fin(cleaned_field)
+        employer_residential_status = self.cleaned_data.get('employer_residential_status')
+        empty_field = _("FIN field cannot be empty")
+        error_msg = empty_field if not cleaned_field and not employer_residential_status==constants.ResidentialStatusFullChoices.SC and not employer_residential_status==constants.ResidentialStatusFullChoices.PR else helper_functions.validate_fin(cleaned_field)
         if error_msg:
             raise ValidationError(error_msg)
         else:
@@ -362,7 +364,9 @@ class EmployerForm(forms.ModelForm):
 
     def clean_employer_passport_num(self):
         cleaned_field = self.cleaned_data.get('employer_passport_num')
-        error_msg = helper_functions.validate_passport(cleaned_field)
+        employer_residential_status = self.cleaned_data.get('employer_residential_status')
+        empty_field = _("Passport field cannot be empty")
+        error_msg = empty_field if not cleaned_field and not employer_residential_status==constants.ResidentialStatusFullChoices.SC and not employer_residential_status==constants.ResidentialStatusFullChoices.PR else helper_functions.validate_passport(cleaned_field)
         if error_msg:
             raise ValidationError(error_msg)
         else:
@@ -371,6 +375,16 @@ class EmployerForm(forms.ModelForm):
                 settings.ENCRYPTION_KEY
             )
             return ciphertext
+
+    def clean_employer_passport_date(self):
+        cleaned_field = self.cleaned_data.get('employer_passport_date')
+        employer_residential_status = self.cleaned_data.get('employer_residential_status')
+        empty_field = _("Passport exipiry date field cannot be empty")
+        error_msg = empty_field if not cleaned_field and not employer_residential_status==constants.ResidentialStatusFullChoices.SC and not employer_residential_status==constants.ResidentialStatusFullChoices.PR else None
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            return cleaned_field
 
     def clean_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
