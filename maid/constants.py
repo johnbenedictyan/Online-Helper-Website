@@ -360,12 +360,6 @@ class MaidPassportStatusChoices(models.IntegerChoices):
     NOT_READY = 0, _('Not Ready')
     READY = 1, _('Ready')
 
-class MaidStatusChoices(models.TextChoices):
-    FEATURED = 'FEAT', _('Featured')
-    PUBLISHED = 'PUB', _('Published')
-    UNPUBLISHED = 'UPUB', _('Unpublished')
-    EMPLOYED = 'EMPL', _('Employed')
-    
 class MaidEducationLevelChoices(models.TextChoices):
     HIGH_SCHOOL = 'HS', _('High School')
     COLLEGE = 'COL', _('College')

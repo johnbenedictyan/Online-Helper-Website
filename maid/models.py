@@ -328,31 +328,6 @@ class Maid(models.Model):
         else:
             return today.year - self.date_of_birth.year
         
-class MaidWorkDuty(models.Model):
-    class WorkDutyChoices(models.TextChoices):
-        HOUSEWORK = 'H', _('Housework')
-        HOUSEWORK_HDB = 'H_HDB', _('Housework (HDB)')
-        HOUSEWORK_CONDO = 'H_CON', _('Housework (Condo)')
-        HOUSEWORK_PRIVATE = 'H_PLP', _('Housework (Landed Property)')
-        COOKING = 'CO', _('Cooking')
-        COOKING_CHINESE = 'CO_C', _('Cooking (Chinese Food)')
-        COOKING_INDIAN = 'CO_I', _('Cooking (Indian Food)')
-        COOKING_MALAY = 'CO_M', _('Cooking (Malay Food)')
-        CARE_INFANT_CHILD = 'CA_IC', _('Infant child care')
-        CARE_ELDERLY = 'CA_E', _('Elderly care')
-        CARE_DISABLED = 'CA_D', _('Disabled care')
-        CARE_PETS = 'CA_P', _('Pet care')
-
-    name = models.CharField(
-        verbose_name=_("Maid's work duties"),
-        max_length=5,
-        blank=False,
-        choices=WorkDutyChoices.choices
-    )
-
-    def __str__(self):
-        return self.get_name_display()
-
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     maid = models.ForeignKey(
@@ -470,43 +445,6 @@ class MaidLoanTransaction(models.Model):
     )
 
 ## Models which have a one-to-one relationship with the maid model 
-class MaidEmploymentStatus(models.Model):
-    maid = models.OneToOneField(
-        Maid,
-        on_delete=models.CASCADE,
-        related_name='employment_status'
-    )
-
-    ipa_approved = models.BooleanField(
-        verbose_name=_('IPA approved'),
-        blank=False,
-        default=False
-    )
-
-    bond_date = models.DateField(
-        verbose_name=_('Bond Date'),
-        blank=False,
-        null=True
-    )
-
-    sip_date = models.DateField(
-        verbose_name=_('SIP Date'),
-        blank=False,
-        null=True
-    )
-
-    thumbprint_date = models.DateField(
-        verbose_name=_('Thumbprint Date'),
-        blank=False,
-        null=True
-    )
-
-    deployment_date = models.DateField(
-        verbose_name=_('Deployment Date'),
-        blank=False,
-        null=True
-    )
-
 class MaidInfantChildCare(models.Model):
     class InfantChildCareRemarksChoices(models.TextChoices):
         OWN_COUNTRY = 'OC', _('Experience in own country')
@@ -865,4 +803,3 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-  
