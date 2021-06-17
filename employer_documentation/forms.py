@@ -336,7 +336,9 @@ class EmployerForm(forms.ModelForm):
 
     def clean_employer_nric_num(self):
         cleaned_field = self.cleaned_data.get('employer_nric_num')
-        error_msg = helper_functions.validate_nric(cleaned_field)
+        employer_residential_status = self.cleaned_data.get('employer_residential_status')
+        empty_field = _("NRIC field cannot be empty")
+        error_msg = empty_field if employer_residential_status==constants.ResidentialStatusFullChoices.SC or employer_residential_status==constants.ResidentialStatusFullChoices.PR else helper_functions.validate_nric(cleaned_field)
         if error_msg:
             raise ValidationError(error_msg)
         else:
