@@ -23,11 +23,11 @@ from .formset import (
 from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
-from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyAccessToEmployerDocAppMixin
+from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyLoginRequiredMixin
 
 # Detail Views
 class EmployerDetailView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     DetailView,
 ):
@@ -36,7 +36,7 @@ class EmployerDetailView(
     template_name = 'detail/dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     DetailView
 ):
@@ -95,7 +95,7 @@ class EmployerCreateView(
         return success_url
 
 class EmployerSponsorCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
