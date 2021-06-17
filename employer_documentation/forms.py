@@ -416,6 +416,54 @@ class EmployerForm(forms.ModelForm):
         else:
             return None
 
+    def clean_employer_marriage_sg_registered(self):
+        cleaned_field = self.cleaned_data.get('employer_marriage_sg_registered')
+        marital_status = self.cleaned_data.get('employer_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError(_("Marriage registration field cannot be empty"))
+
+    def clean_spouse_name(self):
+        cleaned_field = self.cleaned_data.get('spouse_name')
+        marital_status = self.cleaned_data.get('employer_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError(_("Employer spouse name field cannot be empty"))
+
+    def clean_spouse_gender(self):
+        cleaned_field = self.cleaned_data.get('spouse_gender')
+        marital_status = self.cleaned_data.get('employer_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError(_("Employer spouse gender field cannot be empty"))
+
+    def clean_spouse_date_of_birth(self):
+        cleaned_field = self.cleaned_data.get('spouse_date_of_birth')
+        marital_status = self.cleaned_data.get('employer_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError(_("Employer spouse date of birth field cannot be empty"))
+
+    def clean_spouse_nationality(self):
+        cleaned_field = self.cleaned_data.get('spouse_nationality')
+        marital_status = self.cleaned_data.get('employer_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError(_("Employer spouse nationality field cannot be empty"))
+
+    def clean_spouse_residential_status(self):
+        cleaned_field = self.cleaned_data.get('spouse_residential_status')
+        marital_status = self.cleaned_data.get('employer_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
+            return cleaned_field
+        else:
+            raise ValidationError(_("Employer spouse residential status field cannot be empty"))
+
     def clean_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
