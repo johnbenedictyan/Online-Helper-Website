@@ -137,7 +137,12 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'employer_date_of_birth',
+                    Field(
+                        'employer_date_of_birth',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Employer date of birth',
+                    ),
                     css_class='form-group col-md-6'
                 ),
                 Column(
@@ -169,7 +174,12 @@ class EmployerForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'employer_passport_date',
+                    Field(
+                        'employer_passport_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Employer passport expiry date',
+                    ),
                     css_class='form-group col-md-6',
                     id='employer_id_other_2',
                 ),
@@ -200,7 +210,12 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'spouse_date_of_birth',
+                            Field(
+                                'spouse_date_of_birth',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Employer spouse date of birth',
+                            ),
                             css_class='form-group col-md-6'
                         ),
                         Column(
@@ -232,7 +247,12 @@ class EmployerForm(forms.ModelForm):
                     ),
                     Row(
                         Column(
-                            'spouse_passport_date',
+                            Field(
+                                'spouse_passport_date',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Employer spouse passport expiry date',
+                            ),
                             css_class='form-group col-md-6',
                             id='spouse_id_other_2',
                         ),
