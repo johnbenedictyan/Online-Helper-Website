@@ -23,11 +23,11 @@ from .formset import (
 from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
-from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyAccessToEmployerDocAppMixin
+from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyLoginRequiredMixin
 
 # Detail Views
 class EmployerDetailView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     DetailView,
 ):
@@ -36,7 +36,7 @@ class EmployerDetailView(
     template_name = 'detail/dashboard-employer-detail.html'
 
 class EmployerDocDetailView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     DetailView
 ):
@@ -57,7 +57,7 @@ class EmployerDocDetailView(
 
 # Create Views
 class EmployerCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -95,7 +95,7 @@ class EmployerCreateView(
         return success_url
 
 class EmployerSponsorCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -135,7 +135,7 @@ class EmployerSponsorCreateView(
         })
 
 class EmployerJointApplicantCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -175,7 +175,7 @@ class EmployerJointApplicantCreateView(
         })
 
 class EmployerIncomeDetailsCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -221,7 +221,7 @@ class EmployerIncomeDetailsCreateView(
             return reverse_lazy('dashboard_employers_list')
 
 class EmployerDocCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView,
 ):
@@ -243,7 +243,7 @@ class EmployerDocCreateView(
         return success_url
 
 class DocServiceFeeScheduleCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -284,7 +284,7 @@ class DocServiceFeeScheduleCreateView(
         return success_url
 
 class DocServAgmtEmpCtrCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -333,7 +333,7 @@ class DocServAgmtEmpCtrCreateView(
         return success_url
 
 class DocSafetyAgreementCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -375,7 +375,7 @@ class DocSafetyAgreementCreateView(
         return success_url
 
 class DocUploadCreateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     CreateView
 ):
@@ -414,7 +414,7 @@ class DocUploadCreateView(
 
 # Update Views
 class EmployerUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -486,7 +486,7 @@ class EmployerUpdateView(
         return success_url
 
 class EmployerSponsorUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -533,7 +533,7 @@ class EmployerSponsorUpdateView(
         return success_url
 
 class EmployerDocJointApplicantUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -586,7 +586,7 @@ class EmployerDocJointApplicantUpdateView(
         return success_url
 
 class EmployerIncomeDetailsUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -642,7 +642,7 @@ class EmployerIncomeDetailsUpdateView(
         return success_url
 
 class EmployerDocUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -675,7 +675,7 @@ class EmployerDocUpdateView(
         return success_url
 
 class DocServiceFeeScheduleUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -726,7 +726,7 @@ class DocServiceFeeScheduleUpdateView(
         return success_url
 
 class DocServAgmtEmpCtrUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -782,7 +782,7 @@ class DocServAgmtEmpCtrUpdateView(
         return success_url
 
 class DocSafetyAgreementUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -833,7 +833,7 @@ class DocSafetyAgreementUpdateView(
         return success_url
 
 class DocUploadUpdateView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -952,7 +952,7 @@ class EmployerDocDeleteView(
 
 # Signature Views
 class SignatureUpdateByAgentView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     UpdateView
 ):
@@ -988,7 +988,7 @@ class SignatureUpdateByAgentView(
 
 # PDF Views
 class HtmlToRenderPdfAgencyView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     PdfHtmlViewMixin,
     DetailView
@@ -1007,7 +1007,7 @@ class HtmlToRenderPdfAgencyView(
         return self.generate_pdf_response(request, context)
 
 class UploadedPdfAgencyView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     DetailView
 ):
@@ -1107,7 +1107,7 @@ class HtmlToRenderPdfTokenView(
 
 # Form Views
 class EmployerHouseholdDetailsFormView(
-    AgencyAccessToEmployerDocAppMixin,
+    AgencyLoginRequiredMixin,
     GetAuthorityMixin,
     SuccessMessageMixin,
     FormView
@@ -1199,7 +1199,7 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
-class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,  SuccessMessageMixin,
+class MaidInventoryFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,  SuccessMessageMixin,
                             FormView):
     form_class = MaidInventoryFormSet
     http_method_names = ['get', 'post']
@@ -1394,7 +1394,7 @@ class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
 # Redirect Views
 
 ## Base View Class for all generate and revoke signature slug redirect views
-class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, RedirectView):
+class ModifySigSlugView(AgencyLoginRequiredMixin, GetAuthorityMixin, RedirectView):
     model = models.CaseSignature
     pk_url_kwarg = 'level_1_pk'
     pattern_name = 'case_detail_route'

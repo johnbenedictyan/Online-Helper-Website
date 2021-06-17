@@ -3,7 +3,7 @@
 # Imports from django
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
-from django.views.generic.detail import ContextMixin
+from django.views.generic.detail import SingleObjectMixin
 
 # Imports from other apps
 from onlinemaid.constants import (
@@ -158,7 +158,7 @@ class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
 
         return res
 
-class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
+class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, SingleObjectMixin):
     permission_denied_message = '''Access permission denied'''
     
     def dispatch(self, request, *args, **kwargs):
