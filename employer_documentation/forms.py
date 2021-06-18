@@ -982,50 +982,68 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_marriage_sg_registered(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_marriage_sg_registered')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Marriage registration field cannot be empty"))
         else:
-            raise ValidationError(_("Marriage registration field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_name(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_name')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse name field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse name field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_gender')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse gender field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse gender field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_date_of_birth')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse date of birth field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse date of birth field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nationality')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse nationality field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse nationality field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_residential_status(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_residential_status')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse residential status field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse residential status field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
@@ -2363,7 +2381,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'servicefee_update_route' level_1_pk %}"
+                        <a href="{% url 'servicefee_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -2529,6 +2547,7 @@ class DocUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2563,7 +2582,7 @@ class DocUploadForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'safetyagreement_update_route' level_1_pk %}"
+                        <a href="{% url 'safetyagreement_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -2585,6 +2604,7 @@ class CaseStatusForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2644,7 +2664,7 @@ class CaseStatusForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'serviceagreement_update_route' level_1_pk %}"
+                        <a href="{% url 'serviceagreement_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
