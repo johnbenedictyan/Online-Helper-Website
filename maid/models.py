@@ -22,7 +22,9 @@ from .constants import (
     MaidResponsibilityChoices, MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
     MaidLoanDescriptionChoices, MaidStatusChoices, MaidFoodPreferenceChoices, 
     MaidDietaryRestrictionChoices, MaidNationalityChoices, MaidLanguageProficiencyChoices,
-    MaidExperienceChoices
+    MaidExperienceChoices, MaidEmploymentCountry, InfantChildCareRemarksChoices, 
+    ElderlyCareRemarksChoices, DisabledCareRemarksChoices, GeneralHouseworkRemarksChoices,
+    CookingRemarksChoices
 )
 
 # Utiliy Classes and Functions
@@ -360,12 +362,6 @@ class MaidDietaryRestriction(models.Model):
     )
 
 class MaidEmploymentHistory(models.Model):
-    class MaidEmploymentCountry(models.TextChoices):
-        # https://en.wikipedia.org/wiki/ISO_3166-1
-        SINGAPORE = 'SGP', _('Singapore')
-        HONG_KONG = 'HKG', _('Hong Kong')
-        MALAYSIA = 'MYS', _('Malaysia')
-
     maid = models.ForeignKey(
         Maid,
         on_delete=models.CASCADE,
@@ -446,23 +442,6 @@ class MaidLoanTransaction(models.Model):
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidInfantChildCare(models.Model):
-    class InfantChildCareRemarksChoices(models.TextChoices):
-        OWN_COUNTRY = 'OC', _('Experience in own country')
-        OVERSEAS = 'OV', _('Experience in overseas')
-        SINGAPORE = 'SG', _('Experience in Singapore')
-        OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-            'Experience in own country and Singapore'
-        )
-        OWN_COUNTRY_OVERSEAS = 'OC_O', _(
-            'Experience in own country and overseas'
-        )
-        OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-            'Experience in own country, overseas and Singapore'
-        )
-        NO_EXP = 'NE', _('No experience, but willing to learn')
-        NOT_WILLING = 'NW', _('Not willing to care for infants/children')
-        OTHERS = 'OTH', _('Other remarks (Please specify)')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -505,23 +484,6 @@ class MaidInfantChildCare(models.Model):
     )
 
 class MaidElderlyCare(models.Model):
-    class ElderlyCareRemarksChoices(models.TextChoices):
-        OWN_COUNTRY = 'OC', _('Experience in own country')
-        OVERSEAS = 'OV', _('Experience in overseas')
-        SINGAPORE = 'SG', _('Experience in Singapore')
-        OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-            'Experience in own country and Singapore'
-        )
-        OWN_COUNTRY_OVERSEAS = 'OC_O', _(
-            'Experience in own country and overseas'
-        )
-        OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-            'Experience in own country, overseas and Singapore'
-        )
-        NO_EXP = 'NE', _('No experience, but willing to learn')
-        NOT_WILLING = 'NW', _('Not willing to care for elderly')
-        OTHERS = 'OTH', _('Other remarks (Please specify)')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -564,22 +526,6 @@ class MaidElderlyCare(models.Model):
     )
 
 class MaidDisabledCare(models.Model):
-    class DisabledCareRemarksChoices(models.TextChoices):
-        OWN_COUNTRY = 'OC', _('Experience in own country')
-        OVERSEAS = 'OV', _('Experience in overseas')
-        SINGAPORE = 'SG', _('Experience in Singapore')
-        OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-            'Experience in own country and Singapore'
-        )
-        OWN_COUNTRY_OVERSEAS = 'OC_O', _(
-            'Experience in own country and overseas'
-        )
-        OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-            'Experience in own country, overseas and Singapore'
-        )
-        NO_EXP = 'NE', _('No experience, but willing to learn')
-        OTHERS = 'OTH', _('Other remarks (Please specify)')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -622,10 +568,6 @@ class MaidDisabledCare(models.Model):
     )
 
 class MaidGeneralHousework(models.Model):
-    class GeneralHouseworkRemarksChoices(models.TextChoices):
-        CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
-        OTHERS = 'OTH', _('Other remarks (Please specify)')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
@@ -668,46 +610,6 @@ class MaidGeneralHousework(models.Model):
     )
 
 class MaidCooking(models.Model):
-    class CookingRemarksChoices(models.TextChoices):
-        OWN_COUNTRY = 'OC', _('Able to cook own country\'s cuisine')
-        CHINESE = 'C', _('Able to cook chinese cuisine')
-        INDIAN = 'I', _('Able to cook indian cuisine')
-        WESTERN = 'W', _('Able to cook western cuisine')
-        OWN_COUNTRY_CHINSE = 'OC_C', _(
-            'Able to cook own country\'s and chinese cuisine'
-        )
-        OWN_COUNTRY_INDIAN = 'OC_I', _(
-            'Able to cook own country\'s and indian cuisine'
-        )
-        OWN_COUNTRY_WESTERN = 'OC_W', _(
-            'Able to cook own country\'s and western cuisine'
-        )
-        CHINESE_INDIAN = 'C_I', _(
-            'Able to cook chinese and indian cuisine'
-        )
-        CHINESE_WESTERN = 'C_W', _(
-            'Able to cook chinese and western cuisine'
-        )
-        INDIAN_WESTERN = 'I_W', _(
-            'Able to cook indian and western cuisine'
-        )
-        OWN_COUNTRY_CHINESE_INDIAN = 'OC_C_I', _(
-            'Able to cook own country\'s, chinese and indian cuisine'
-        )
-        OWN_COUNTRY_CHINESE_WESTERN = 'OC_C_W', _(
-            'Able to cook own country\'s, chinese and western cuisine'
-        )
-        OWN_COUNTRY_INDIAN_WESTERN = 'OC_I_W', _(
-            'Able to cook own country\'s, indian and western cuisine'
-        )
-        CHINESE_INDIAN_WESTERN = 'C_I_W', _(
-            'Able to cook chinese, indian and western cuisine'
-        )
-        OWN_COUNTRY_CHINESE_INDIAN_WESTERN = 'OC_C_I_W', _(
-            'Able to cook own country\'s, chinese, indian and western cuisine'
-        )
-        OTHERS = 'OTH', _('Other remarks (Please specify)')
-
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
