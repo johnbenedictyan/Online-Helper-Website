@@ -127,7 +127,7 @@ urlpatterns = [
                         name='safetyagreement_update_route'
                     ),
                     path(
-                        'maid-inventory/update/',
+                        'maid-inventory/',
                         views.MaidInventoryFormView.as_view(),
                         name='maid_inventory_route'
                     ),
