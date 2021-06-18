@@ -134,11 +134,11 @@ class EmployerSponsorCreateView(
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer = self.object
+        form.instance.employer = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_incomedetails_update_route', kwargs={
+        return reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
 
@@ -182,11 +182,11 @@ class EmployerJointApplicantCreateView(
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer = self.object
+        form.instance.employer = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('employer_incomedetails_update_route', kwargs={
+        return reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
 
@@ -227,7 +227,7 @@ class EmployerIncomeDetailsCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
-        type_of_applicant = self.object.applicant_type
+        type_of_applicant = self.get_object().applicant_type
         monthly_income_label = constants.monthly_income_label.get(
             type_of_applicant
         )
@@ -235,7 +235,7 @@ class EmployerIncomeDetailsCreateView(
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer = self.object
+        form.instance.employer = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -263,7 +263,7 @@ class EmployerDocCreateView(
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('servicefee_update_route', kwargs={
+        success_url = reverse_lazy('servicefee_create_route', kwargs={
             'level_1_pk': self.object.pk
         })
         return success_url
@@ -305,14 +305,15 @@ class DocServiceFeeScheduleCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer_doc = self.object
+        form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
-        success_url = reverse_lazy('serviceagreement_update_route', kwargs={
+        success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
@@ -354,22 +355,20 @@ class DocServAgmtEmpCtrCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
-        kwargs['level_1_pk'] = self.kwargs.get(
-            self.pk_url_kwarg
-        )
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer_doc = self.object
+        form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
         if self.object.employer_doc.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
-            success_url = reverse_lazy('safetyagreement_update_route', kwargs={
+            success_url = reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
             })
         else:
-            success_url = reverse_lazy('docupload_update_route', kwargs={
+            success_url = reverse_lazy('docupload_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
             })
         return success_url
@@ -411,15 +410,16 @@ class DocSafetyAgreementCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer_doc = self.object
+        form.instance.employer_doc = self.get_object()
 
         return super().form_valid(form)
 
     def get_success_url(self):
-        success_url = reverse_lazy('docupload_update_route', kwargs={
+        success_url = reverse_lazy('docupload_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
@@ -461,10 +461,11 @@ class DocUploadCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def form_valid(self, form):
-        form.instance.employer_doc = self.object
+        form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -498,15 +499,15 @@ class EmployerUpdateView(
 
     def get_success_url(self):
         if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
-            success_url = reverse_lazy('employer_sponsor_update_route', kwargs={
+            success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
                 'level_0_pk': self.object.pk
             })
         elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
-            success_url = reverse_lazy('employer_jointapplicant_update_route', kwargs={
+            success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
                 'level_0_pk': self.object.pk
             })
         else:
-            success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
                 'level_0_pk': self.object.pk
             })
         return success_url
@@ -541,7 +542,7 @@ class EmployerSponsorUpdateView(
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+        success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
         return success_url
@@ -576,7 +577,7 @@ class EmployerDocJointApplicantUpdateView(
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('employer_incomedetails_update_route', kwargs={
+        success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
         return success_url
@@ -650,7 +651,7 @@ class EmployerDocUpdateView(
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('servicefee_update_route', kwargs={
+        success_url = reverse_lazy('servicefee_create_route', kwargs={
             'level_1_pk': self.object.pk
         })
         return success_url
@@ -682,13 +683,11 @@ class DocServiceFeeScheduleUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
-        kwargs['level_1_pk'] = self.kwargs.get(
-            self.pk_url_kwarg
-        )
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('serviceagreement_update_route', kwargs={
+        success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
@@ -720,18 +719,16 @@ class DocServAgmtEmpCtrUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
-        kwargs['level_1_pk'] = self.kwargs.get(
-            self.pk_url_kwarg
-        )
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def get_success_url(self):
         if self.object.employer_doc.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
-            success_url = reverse_lazy('safetyagreement_update_route', kwargs={
+            success_url = reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
             })
         else:
-            success_url = reverse_lazy('docupload_update_route', kwargs={
+            success_url = reverse_lazy('docupload_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
             })
         return success_url
@@ -763,13 +760,11 @@ class DocSafetyAgreementUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
-        kwargs['level_1_pk'] = self.kwargs.get(
-            self.pk_url_kwarg
-        )
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('docupload_update_route', kwargs={
+        success_url = reverse_lazy('docupload_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
@@ -801,6 +796,7 @@ class DocUploadUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def get_success_url(self):
@@ -829,6 +825,7 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
     def get_success_url(self):
@@ -840,7 +837,7 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
         if match.url_name == 'dashboard_status_list':
             return reverse_lazy('dashboard_status_list')
         else:
-            return reverse_lazy('safetyagreement_update_route', kwargs={
+            return reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.kwargs.get(
                     self.pk_url_kwarg
                 )
