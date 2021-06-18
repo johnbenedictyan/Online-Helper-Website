@@ -982,50 +982,68 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_marriage_sg_registered(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_marriage_sg_registered')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Marriage registration field cannot be empty"))
         else:
-            raise ValidationError(_("Marriage registration field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_name(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_name')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse name field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse name field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_gender')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse gender field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse gender field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_date_of_birth')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse date of birth field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse date of birth field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nationality')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse nationality field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse nationality field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_residential_status(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_residential_status')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status==constants.MaritalStatusChoices.MARRIED and cleaned_field:
-            return cleaned_field
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            if cleaned_field:
+                return cleaned_field
+            else:
+                raise ValidationError(_("Sponsor 1 spouse residential status field cannot be empty"))
         else:
-            raise ValidationError(_("Sponsor 1 spouse residential status field cannot be empty"))
+            return None
 
     def clean_sponsor_1_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
