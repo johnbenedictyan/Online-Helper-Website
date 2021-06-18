@@ -51,6 +51,26 @@ class EmployerDocDetailView(
         })
         return context
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if not hasattr(self.object, 'rn_servicefeeschedule_ed'):
+            return HttpResponseRedirect(
+                reverse('servicefee_create_route', kwargs={
+                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
+            }))
+        elif not hasattr(self.object, 'rn_serviceagreement_ed'):
+            return HttpResponseRedirect(
+                reverse('serviceagreement_create_route', kwargs={
+                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
+            }))
+        elif self.object.fdw.maid_type==maid_constants.TypeOfMaidChoices.NEW and not hasattr(self.object, 'rn_safetyagreement_ed'):
+            return HttpResponseRedirect(
+                reverse('safetyagreement_create_route', kwargs={
+                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return response
+
 # Create Views
 class EmployerCreateView(
     AgencyAccessToEmployerDocAppMixin,
