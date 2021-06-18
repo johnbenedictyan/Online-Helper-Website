@@ -16,10 +16,10 @@ from .formset import (
     MaidInventoryFormSet, MaidInventoryFormSetHelper
 )
 
-from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
+from .mixins import PdfHtmlViewMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
-from agency.mixins import AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
+from agency.mixins import AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, OwnerAccessToEmployerDocAppMixin
 
 # Detail Views
 class EmployerDetailView(
@@ -842,7 +842,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
 
 # Delete Views
 class EmployerDeleteView(
-    CheckUserIsAgencyOwnerMixin,
+    OwnerAccessToEmployerDocAppMixin,
+    GetAuthorityMixin,
     DeleteView
 ):
     model = models.Employer
@@ -850,7 +851,8 @@ class EmployerDeleteView(
     success_url = reverse_lazy('dashboard_employers_list')
 
 class EmployerDocDeleteView(
-    CheckUserIsAgencyOwnerMixin,
+    OwnerAccessToEmployerDocAppMixin,
+    GetAuthorityMixin,
     DeleteView
 ):
     model = models.EmployerDoc
