@@ -56,6 +56,24 @@ $dashboard-text-color: #1F4E78 !default;
 $dashboard-table-background-light: #FFFFFF !default;
 $dashboard-table-background-dark: #F6F9FC !default;
 $forms-background: #F7F9FB !default;
+$footer-color: #2A68A2 !default;
+$cta-bg-color: #DDE6EE !default;
+
+// Sections Background Colours:
+$how-it-works-bg-color: #F7F9FB !default;
+$how-it-works-text-color: #1F4E78 !default;
+
+$preferences-bg-color: #F2F5F8 !default;
+$preferences-text-color: #1F4E78 !default;
+$preferences-find-out-text-color: #F2F5F8 !default;
+
+$featured-maid-bg-color: #F7F9FB !default;
+$featured-maid-text-color: #1F4E78 !default;
+$featured-maid-btn-bg-color: #2A68A2 !default;
+
+$cta-bg-color: #DDE6EE !default;
+$cta-text-color: #1F4E78 !default;
+$cta-btn-bg-color: #2A68A2 !default;
 
 $colors: () !default;
 $colors: map-merge(("blue": $blue,
@@ -86,7 +104,19 @@ $colors: map-merge(("blue": $blue,
         "dashboard-text-color": $dashboard-text-color,
         "dashboard-table-background-light": $dashboard-table-background-light,
         "dashboard-table-background-dark": $dashboard-table-background-dark,
-        "forms-background": $forms-background
+        "forms-background": $forms-background,
+        "footer-color": $footer-color,
+        "how-it-works-bg-color": $how-it-works-bg-color,
+        "how-it-works-text-color": $how-it-works-text-color,
+        "preferences-bg-color": $preferences-bg-color,
+        "preferences-text-color": $preferences-text-color,
+        "preferences-find-out-text-color": $preferences-find-out-text-color,
+        "featured-maid-bg-color": $featured-maid-bg-color,
+        "featured-maid-text-color": $featured-maid-text-color,
+        "featured-maid-btn-bg-color": $featured-maid-btn-bg-color,
+        "cta-bg-color": $cta-bg-color,
+        "cta-text-color": $cta-text-color,
+        "cta-btn-bg-color": $cta-btn-bg-color
 ),
     $colors);
 
@@ -123,7 +153,19 @@ $theme-colors: map-merge(
         "dashboard-text-color": $dashboard-text-color,
         "dashboard-table-background-light": $dashboard-table-background-light,
         "dashboard-table-background-dark": $dashboard-table-background-dark,
-        "forms-background": $forms-background
+        "forms-background": $forms-background,
+        "footer-color": $footer-color,
+        "how-it-works-bg-color": $how-it-works-bg-color,
+        "how-it-works-text-color": $how-it-works-text-color,
+        "preferences-bg-color": $preferences-bg-color,
+        "preferences-text-color": $preferences-text-color,
+        "preferences-find-out-text-color": $preferences-find-out-text-color,
+        "featured-maid-bg-color": $featured-maid-bg-color,
+        "featured-maid-text-color": $featured-maid-text-color,
+        "featured-maid-btn-bg-color": $featured-maid-btn-bg-color,
+        "cta-bg-color": $cta-bg-color,
+        "cta-text-color": $cta-text-color,
+        "cta-btn-bg-color": $cta-btn-bg-color
     ),
     $theme-colors);
 
