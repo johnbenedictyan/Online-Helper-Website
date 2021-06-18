@@ -209,6 +209,13 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
         else:
             return self.handle_no_permission(request)
 
+class OwnerAccessToEmployerDocAppMixin(AgencyAccessToEmployerDocAppMixin):
+    permission_denied_message = '''Access permission denied'''
+    
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        return handler if self.authority==AG_OWNERS else self.handle_no_permission(request)
+
 class GetAuthorityMixin:
     authority = ''
     agency_id = ''
