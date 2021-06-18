@@ -240,7 +240,7 @@ class EmployerIncomeDetailsCreateView(
 
     def get_success_url(self):
         if self.object.employer.household_details_required:
-            return reverse_lazy('employer_householddetails_update_route', kwargs={
+            return reverse_lazy('employer_householddetails_route', kwargs={
                 'level_0_pk': self.object.employer.pk,
             })
         else:
@@ -617,7 +617,7 @@ class EmployerIncomeDetailsUpdateView(
 
     def get_success_url(self):
         if self.object.employer.household_details_required:
-            success_url = reverse_lazy('employer_householddetails_update_route', kwargs={
+            success_url = reverse_lazy('employer_householddetails_route', kwargs={
                 'level_0_pk': self.object.employer.pk
             })
         else:
@@ -1108,7 +1108,7 @@ class EmployerHouseholdDetailsFormView(
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'employer_householddetails_update_route',
+                    'employer_householddetails_route',
                     kwargs={
                         'level_0_pk':self.employer_id
                     }
@@ -1187,7 +1187,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
-                    'maid_inventory_update_route',
+                    'maid_inventory_route',
                     kwargs={
                         'level_1_pk':self.employer_doc_id
                     }

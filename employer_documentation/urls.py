@@ -64,7 +64,7 @@ urlpatterns = [
                     path(
                         'household-details/',
                         views.EmployerHouseholdDetailsFormView.as_view(),
-                        name='employer_householddetails_update_route'
+                        name='employer_householddetails_route'
                     )
                 ]),
             ),
@@ -129,7 +129,7 @@ urlpatterns = [
                     path(
                         'maid-inventory/update/',
                         views.MaidInventoryFormView.as_view(),
-                        name='maid_inventory_update_route'
+                        name='maid_inventory_route'
                     ),
                     path(
                         'upload-doc/create/',
