@@ -2381,7 +2381,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'servicefee_update_route' level_1_pk %}"
+                        <a href="{% url 'servicefee_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -2547,6 +2547,7 @@ class DocUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2581,7 +2582,7 @@ class DocUploadForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'safetyagreement_update_route' level_1_pk %}"
+                        <a href="{% url 'safetyagreement_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -2603,6 +2604,7 @@ class CaseStatusForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -2662,7 +2664,7 @@ class CaseStatusForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'serviceagreement_update_route' level_1_pk %}"
+                        <a href="{% url 'serviceagreement_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
