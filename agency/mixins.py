@@ -158,7 +158,7 @@ class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
 
         return res
 
-class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, SingleObjectMixin):
+class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''Access permission denied'''
     
     def dispatch(self, request, *args, **kwargs):
