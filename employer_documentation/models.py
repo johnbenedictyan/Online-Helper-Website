@@ -2007,6 +2007,9 @@ class MaidInventory(models.Model):
         related_name='rn_maid_inventory'
     )
 
+    def __str__(self) -> str:
+        return self.item_name
+
 class CaseSignature(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
