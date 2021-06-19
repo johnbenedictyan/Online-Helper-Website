@@ -151,11 +151,11 @@
             <td colspan="1" class="text-bold--600">C.</td>
             <td colspan="2" class="text-bold--600">FDW Inventory</td>
         </tr>
-        {% for _ in '1234' %}
+        {% for inventory in object.rn_maid_inventory.all %}
         <tr>
             <td></td>
             <td>{{ forloop.counter }})</td>
-            <td>Item {{ forloop.counter }} Description</td>
+            <td>{{ inventory }}</td>
         </tr>
         {% endfor %}
     </table>
