@@ -85,6 +85,12 @@ $mini-faq-bg-color: #F7F9FB !default;
 $mini-faq-text-color: #1F4E78 !default;
 $mini-faq-btn-text-color: #1F4E78 !default;
 
+// Icon Colours
+$svg-cv-bg-color: #5C9833 !default;
+$svg-employee-bg-color: #2F75B5 !default;
+$svg-filter-bg-color: #FF9900 !default;
+$svg-home-bg-color: #D141BC !default;
+
 $colors: () !default;
 $colors: map-merge(("blue": $blue,
         "indigo": $indigo,
@@ -133,7 +139,11 @@ $colors: map-merge(("blue": $blue,
         "why-choose-us-text-color": $why-choose-us-text-color,
         "mini-faq-bg-color": $mini-faq-bg-color,
         "mini-faq-text-color": $mini-faq-text-color,
-        "mini-faq-btn-text-color": $mini-faq-btn-text-color
+        "mini-faq-btn-text-color": $mini-faq-btn-text-color,
+        "svg-cv-bg-color": $svg-cv-bg-color,
+        "svg-employee-bg-color": $svg-employee-bg-color,
+        "svg-filter-bg-color": $svg-filter-bg-color,
+        "svg-home-bg-color": $svg-home-bg-color
 ),
     $colors);
 
@@ -189,7 +199,11 @@ $theme-colors: map-merge(
         "why-choose-us-text-color": $why-choose-us-text-color,
         "mini-faq-bg-color": $mini-faq-bg-color,
         "mini-faq-text-color": $mini-faq-text-color,
-        "mini-faq-btn-text-color": $mini-faq-btn-text-color
+        "mini-faq-btn-text-color": $mini-faq-btn-text-color,
+        "svg-cv-bg-color": $svg-cv-bg-color,
+        "svg-employee-bg-color": $svg-employee-bg-color,
+        "svg-filter-bg-color": $svg-filter-bg-color,
+        "svg-home-bg-color": $svg-home-bg-color
     ),
     $theme-colors);
 
