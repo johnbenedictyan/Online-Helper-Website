@@ -75,6 +75,16 @@ $cta-bg-color: #DDE6EE !default;
 $cta-text-color: #1F4E78 !default;
 $cta-btn-bg-color: #2A68A2 !default;
 
+$easiest-way-banner-bg-color: #F7F9FB !default;
+$easiest-way-banner-text-color: #1F4E78 !default;
+
+$why-choose-us-bg-color: #F2F5F8 !default;
+$why-choose-us-text-color: #1F4E78 !default;
+
+$mini-faq-bg-color: #F7F9FB !default;
+$mini-faq-text-color: #1F4E78 !default;
+$mini-faq-btn-text-color: #1F4E78 !default;
+
 $colors: () !default;
 $colors: map-merge(("blue": $blue,
         "indigo": $indigo,
@@ -116,7 +126,14 @@ $colors: map-merge(("blue": $blue,
         "featured-maid-btn-bg-color": $featured-maid-btn-bg-color,
         "cta-bg-color": $cta-bg-color,
         "cta-text-color": $cta-text-color,
-        "cta-btn-bg-color": $cta-btn-bg-color
+        "cta-btn-bg-color": $cta-btn-bg-color,
+        "easiest-way-banner-bg-color": $easiest-way-banner-bg-color,
+        "easiest-way-banner-text-color": $easiest-way-banner-text-color,
+        "why-choose-us-bg-color": $why-choose-us-bg-color,
+        "why-choose-us-text-color": $why-choose-us-text-color,
+        "mini-faq-bg-color": $mini-faq-bg-color,
+        "mini-faq-text-color": $mini-faq-text-color,
+        "mini-faq-btn-text-color": $mini-faq-btn-text-color
 ),
     $colors);
 
@@ -165,7 +182,14 @@ $theme-colors: map-merge(
         "featured-maid-btn-bg-color": $featured-maid-btn-bg-color,
         "cta-bg-color": $cta-bg-color,
         "cta-text-color": $cta-text-color,
-        "cta-btn-bg-color": $cta-btn-bg-color
+        "cta-btn-bg-color": $cta-btn-bg-color,
+        "easiest-way-banner-bg-color": $easiest-way-banner-bg-color,
+        "easiest-way-banner-text-color": $easiest-way-banner-text-color,
+        "why-choose-us-bg-color": $why-choose-us-bg-color,
+        "why-choose-us-text-color": $why-choose-us-text-color,
+        "mini-faq-bg-color": $mini-faq-bg-color,
+        "mini-faq-text-color": $mini-faq-text-color,
+        "mini-faq-btn-text-color": $mini-faq-btn-text-color
     ),
     $theme-colors);
 

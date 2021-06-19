@@ -118,45 +118,53 @@
         </main>
         <footer>
             <div class="container-fluid bg-footer-color text-light">
-                <div class="row pt-4 pb-3 pt-md-5 pb-md-2 pl-2 pl-md-0">
-                    <div class="col-6 col-md-2 col-xl-2 offset-md-2 offset-xl-2 mb-4 mb-md-0">
-                        <a href="{% url 'home' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Home</p></a>
-                        <a href="{% url 'maid_list' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Search Maid</p></a>
-                        <a href="{% url 'agency_list' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Maid Agencies</p></a>
-                        <a href="{% url 'faq' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">FAQ</p></a>
-                        <a href="" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Enquire</p></a>
-                    </div>
-                    <div class="col-6 col-md-2 col-xl-2 mb-4 mb-md-0">
-                        <a href="{% url 'about_us' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">About Us</p></a>
-                        <a href="{% url 'terms_and_conditions' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
-                        <a href="{% url 'privacy_policy' %}" class="footer-link text-reset"><p class="mb-1 mb-xl-2">Privacy Policy</p></a>
-                    </div>
-                    <div class="col-10 col-md-4 col-lg-3 offset-md-1">
-                        <h5 class="mb-3">About Online Maid</h5>
-                        <p class="mb-1">
-                            Online Maid is the leading platform in Singapore with the largest foreign domesitc worker (FDW) biodata database. Biodata are listed by employment agencies that are approved by Ministry of Manpower(MOM).
-                        </p>
-                        <div class="row d-none">
-                            <div class="col-3">
-                                <a href="" class="text-reset"><i class="fab fa-lg fa-facebook"></i></a>
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="row pt-4 pb-3 pt-md-5 pb-md-2 pl-2 pl-md-0">
+                            <div class="col">
+                                <a href="{% url 'home' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Home</p></a>
+                                <a href="{% url 'maid_list' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Search FDW</p></a>
+                                <a href="{% url 'agency_list' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Agencies</p></a>
                             </div>
-                            <div class="col-3">
-                                <a href="" class="text-reset"><i class="fab fa-lg fa-linkedin"></i></a>
+                            <div class="col">
+                                <a href="{% url 'faq' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">FAQ</p></a>
+                                <a href="" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Enquiry</p></a>
+                                <a href="{% url 'about_us' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">About Us</p></a>
                             </div>
-                            <div class="col-3">
-                                <a href="" class="text-reset"><i class="fab fa-lg fa-instagram"></i></a>
+                            <div class="col">
+                                <a href="{% url 'terms_and_conditions' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
+                                <a href="{% url 'privacy_policy' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Privacy Policy</p></a>
+                            </div>
+                            <!-- <div class="col-10 col-md-4 col-lg-3 offset-md-1">
+                                <h5 class="mb-3">About Online Maid</h5>
+                                <p class="mb-1">
+                                    Online Maid is the leading platform in Singapore with the largest foreign domesitc worker (FDW) biodata database. Biodata are listed by employment agencies that are approved by Ministry of Manpower(MOM).
+                                </p>
+                                <div class="row d-none">
+                                    <div class="col-3">
+                                        <a href="" class="text-reset"><i class="fab fa-lg fa-facebook"></i></a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="" class="text-reset"><i class="fab fa-lg fa-linkedin"></i></a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="" class="text-reset"><i class="fab fa-lg fa-instagram"></i></a>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <hr class="text-light">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-8 offset-xl-2">
-                        <hr class="text-light">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mb-2 text-center">
-                        <p class="mb-0 text-smaller">© 2020 Copyright OnlineMaid</p>
-                        <p class="text-smaller">All Rights Reserved</p>
-                        <a href="https://storyset.com/web" class="text-reset small d-none">Illustration by Freepik Storyset</a>
+                        <div class="row">
+                            <div class="col mb-2 text-center">
+                                <p class="mb-0 text-smaller">© 2020 Copyright OnlineMaid</p>
+                                <p class="text-smaller">All Rights Reserved</p>
+                                <a href="https://storyset.com/web" class="text-reset small d-none">Illustration by Freepik Storyset</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
