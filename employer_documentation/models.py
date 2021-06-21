@@ -25,7 +25,7 @@ from onlinemaid.helper_functions import decrypt_string
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
-from maid.constants import FullNationsChoices
+from maid.constants import FullNationsChoices, TypeOfMaidChoices
 
 # Same app
 from . import constants as ed_constants
@@ -439,6 +439,75 @@ class Employer(models.Model):
         )
 
     #Utility Functions
+    def details_missing_spouse(self):
+        error_msg_list = []
+
+        if self.employer_marital_status==ed_constants.MaritalStatusChoices.MARRIED or self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE:
+            mandatory_fields = [
+                'spouse_name',
+                'spouse_gender',
+                'spouse_date_of_birth',
+                'spouse_nationality',
+                'spouse_residential_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_employer_spouse_nric_full():
+                    error_msg_list.append('spouse_nric_num')
+            else:
+                if not self.get_employer_spouse_fin_full():
+                    error_msg_list.append('spouse_fin_num')
+                if not self.get_employer_spouse_passport_full():
+                    error_msg_list.append('spouse_passport_num')
+                if not self.spouse_passport_date:
+                    error_msg_list.append('spouse_passport_date')
+            
+        return error_msg_list
+
+    def details_missing_employer(self):
+        # Retrieve verbose name -> self._meta.get_field('field_name_str').verbose_name
+        error_msg_list = []
+
+        if self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if not self.get_employer_nric_full():
+                error_msg_list.append('employer_nric_num')
+        else:
+            if not self.get_employer_employer_fin_full():
+                error_msg_list.append('employer_fin_num')
+            if not self.get_employer_employer_passport_full():
+                error_msg_list.append('employer_passport_num')
+            if not self.employer_passport_date:
+                error_msg_list.append('employer_passport_date')
+
+        # Check spouse details completeness
+        error_msg_list += self.details_missing_spouse()
+
+        if self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            if hasattr(self, 'rn_sponsor_employer'):
+                # TODO: check complete
+                pass
+            else:
+                error_msg_list.append('rn_sponsor_employer')
+
+        elif self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            if hasattr(self, 'rn_ja_employer'):
+                # TODO: check complete
+                pass
+            else:
+                error_msg_list.append('rn_ja_employer')
+
+        if not hasattr(self, 'rn_income_employer'):
+            error_msg_list.append('rn_income_employer')
+
+        if self.household_details_required and not self.rn_household_employer.all().count():
+            error_msg_list.append('rn_household_employer')
+
+        return error_msg_list
+
     def has_income_obj(self):
         try:
             income_obj = self.rn_income_employer
@@ -948,6 +1017,30 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_tag,
         )
 
+    def details_missing_sponsor_2(self):
+        error_msg_list = []
+
+        if self.sponsor_2_required:
+            mandatory_fields = [
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_sponsor_2_nric_full():
+                    error_msg_list.append('sponsor_2_nric_num')
+            else:
+                if not self.get_sponsor_2_fin_full():
+                    error_msg_list.append('sponsor_2_fin_num')
+                if not self.get_sponsor_2_passport_full():
+                    error_msg_list.append('sponsor_2_passport_num')
+                if not self.sponsor_2_passport_date:
+                    error_msg_list.append('sponsor_2_passport_date')
+            
+        return error_msg_list
+
 ## Joint Applicants
 class EmployerJointApplicant(models.Model):
     employer = models.OneToOneField(
@@ -1319,6 +1412,47 @@ class EmployerDoc(models.Model):
             return _('Saturday')
         else:
             return _('Sunday')
+
+    def details_missing_case_pre_signing_1(self):
+        error_msg_list = []
+
+        if not hasattr(self, 'rn_servicefeeschedule_ed'):
+            error_msg_list.append('rn_servicefeeschedule_ed')
+        
+        if not hasattr(self, 'rn_serviceagreement_ed'):
+            error_msg_list.append('rn_serviceagreement_ed')
+        
+        # if not hasattr(self, 'rn_docupload_ed'):
+        #     # TODO: any uploaded docs mandatory?
+        #     error_msg_list.append('rn_docupload_ed')
+        
+        if not hasattr(self, 'rn_signatures_ed'):
+            error_msg_list.append('rn_signatures_ed')
+        
+        if self.fdw.maid_type==TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
+            error_msg_list.append('rn_safetyagreement_ed')
+
+        if not self.fdw.get_passport_number():
+            error_msg_list.append('fdw.passport_number')
+
+        if not self.fdw.work_permit:
+            error_msg_list.append('fdw.work_permit')
+
+        return error_msg_list
+
+    def details_missing_case_pre_signing_2(self):
+        error_msg_list = self.details_missing_case_pre_signing_1()
+
+        if hasattr(self, 'rn_casestatus_ed'):
+            if not self.rn_casestatus_ed.fdw_work_commencement_date:
+                error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
+        else:
+            error_msg_list.append('rn_casestatus_ed')
+        
+        # if not self.rn_maid_inventory.objects.all().count():
+        #     error_msg_list.append('rn_maid_inventory')
+        
+        return error_msg_list
 
     def archive(self):
         ArchivedDoc.objects.get_or_create(
@@ -2156,36 +2290,17 @@ class CaseSignature(models.Model):
             self.sigslug_joint_applicant = None
         super().save()
 
-    def get_sigurl(self, stakeholder):
-        current_site = Site.objects.get_current()
-        kwargs = None
-        if stakeholder == 'employer_1' and self.sigslug_employer_1:
-            kwargs={
-                'slug': self.sigslug_employer_1
-            }
-        elif stakeholder == 'employer_spouse' and self.sigslug_employer_spouse:
-            kwargs={
-                'slug': self.sigslug_employer_spouse
-            }
-        elif stakeholder == 'sponsor_1' and self.sigslug_sponsor_1:
-            kwargs={
-                'slug': self.sigslug_sponsor_1
-            }
-        elif stakeholder == 'sponsor_2' and self.sigslug_sponsor_2:
-            kwargs={
-                'slug': self.sigslug_sponsor_2
-            }
-        elif stakeholder == 'joint_applicant' and self.sigslug_joint_applicant:
-            kwargs={
-                'slug': self.sigslug_joint_applicant
-            }
-        
-        if kwargs:
+    def get_sigurl(self, field_name):
+        slug = getattr(self, field_name, None)
+        if slug:
+            current_site = Site.objects.get_current()
             relative_url = reverse(
                 'token_challenge_route',
-                kwargs=kwargs
+                kwargs = {'slug': slug},
             )
             return current_site.domain + relative_url
+        else:
+            return None
 
     # Verification Tokens
     token_employer_1 = models.BinaryField(

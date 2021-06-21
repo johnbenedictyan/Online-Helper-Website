@@ -295,7 +295,7 @@ class EmployerForm(forms.ModelForm):
                 )
             )
         else:
-            del self.helper.layout.fields[2][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            del self.helper.layout.fields[2][0] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
     
     def check_queryset(self, queryset, error_msg):
@@ -314,6 +314,14 @@ class EmployerForm(forms.ModelForm):
                 ):
                     raise ValidationError(error_msg)
     
+    def clean_agency_employee(self):
+        cleaned_field = self.cleaned_data.get('agency_employee')
+        error_msg = helper_functions.validate_ea_personnel_number(cleaned_field.ea_personnel_number)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            return cleaned_field
+
     def clean_employer_email(self):
         cleaned_field = self.cleaned_data.get('employer_email')
 
@@ -2539,6 +2547,14 @@ class DocSafetyAgreementForm(forms.ModelForm):
         
         return self.cleaned_data
 
+# Temporary solution to blank out S3 bucket URL
+from django.forms.widgets import ClearableFileInput
+class CustomClearableFileInput(ClearableFileInput):
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['is_initial'] = False
+        return context
+
 class DocUploadForm(forms.ModelForm):
     class Meta:
         model = models.DocUpload
@@ -2549,6 +2565,12 @@ class DocUploadForm(forms.ModelForm):
         self.authority = kwargs.pop('authority')
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
+
+        # Temporary solution to blank out S3 bucket URL
+        self.fields['job_order_pdf'].widget = CustomClearableFileInput()
+        self.fields['ipa_pdf'].widget = CustomClearableFileInput()
+        self.fields['e_issuance_pdf'].widget = CustomClearableFileInput()
+        self.fields['medical_report_pdf'].widget = CustomClearableFileInput()
 
         self.helper = FormHelper()
         self.helper.layout = Layout(

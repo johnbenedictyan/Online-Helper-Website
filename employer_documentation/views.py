@@ -43,11 +43,11 @@ class EmployerDocDetailView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'employer_1_sigurl': self.object.rn_signatures_ed.get_sigurl('employer_1'),
-            'employer_spouse_sigurl': self.object.rn_signatures_ed.get_sigurl('employer_spouse'),
-            'sponsor_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_1'),
-            'sponsor_2_sigurl': self.object.rn_signatures_ed.get_sigurl('sponsor_2'),
-            'joint_applicant_sigurl': self.object.rn_signatures_ed.get_sigurl('joint_applicant')
+            'employer_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_employer_1'),
+            'employer_spouse_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_employer_spouse'),
+            'sponsor_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_sponsor_1'),
+            'sponsor_2_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_sponsor_2'),
+            'joint_applicant_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_joint_applicant')
         })
         return context
 
@@ -87,10 +87,10 @@ class EmployerCreateView(
         kwargs['authority'] = self.authority
         return kwargs
 
-    # def form_valid(self, form):
-    #     if self.authority==om_constants.AG_SALES:
-    #         form.instance.agency_employee = self.request.user.agency_employee
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        if self.authority==om_constants.AG_SALES:
+            form.instance.agency_employee = self.request.user.agency_employee
+        return super().form_valid(form)
 
     def get_success_url(self):
         if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
