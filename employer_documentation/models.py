@@ -2290,36 +2290,17 @@ class CaseSignature(models.Model):
             self.sigslug_joint_applicant = None
         super().save()
 
-    def get_sigurl(self, stakeholder):
-        current_site = Site.objects.get_current()
-        kwargs = None
-        if stakeholder == 'employer_1' and self.sigslug_employer_1:
-            kwargs={
-                'slug': self.sigslug_employer_1
-            }
-        elif stakeholder == 'employer_spouse' and self.sigslug_employer_spouse:
-            kwargs={
-                'slug': self.sigslug_employer_spouse
-            }
-        elif stakeholder == 'sponsor_1' and self.sigslug_sponsor_1:
-            kwargs={
-                'slug': self.sigslug_sponsor_1
-            }
-        elif stakeholder == 'sponsor_2' and self.sigslug_sponsor_2:
-            kwargs={
-                'slug': self.sigslug_sponsor_2
-            }
-        elif stakeholder == 'joint_applicant' and self.sigslug_joint_applicant:
-            kwargs={
-                'slug': self.sigslug_joint_applicant
-            }
-        
-        if kwargs:
+    def get_sigurl(self, field_name):
+        slug = getattr(self, field_name, None)
+        if slug:
+            current_site = Site.objects.get_current()
             relative_url = reverse(
                 'token_challenge_route',
-                kwargs=kwargs
+                kwargs = {'slug': slug},
             )
             return current_site.domain + relative_url
+        else:
+            return None
 
     # Verification Tokens
     token_employer_1 = models.BinaryField(
