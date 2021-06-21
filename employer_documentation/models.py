@@ -439,6 +439,53 @@ class Employer(models.Model):
         )
 
     #Utility Functions
+    def details_missing_spouse(self):
+        error_msg_list = []
+
+        if self.employer_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+            mandatory_fields = [
+                'spouse_name',
+                'spouse_gender',
+                'spouse_date_of_birth',
+                'spouse_nationality',
+                'spouse_residential_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_employer_spouse_nric_full():
+                    error_msg_list.append('spouse_nric_num')
+            else:
+                if not self.get_employer_spouse_fin_full():
+                    error_msg_list.append('spouse_fin_num')
+                if not self.get_employer_spouse_passport_full():
+                    error_msg_list.append('spouse_passport_num')
+                if not self.spouse_passport_date:
+                    error_msg_list.append('spouse_passport_date')
+            
+        return error_msg_list
+
+    def details_missing_employer(self):
+        # Retrieve verbose name -> self._meta.get_field('field_name_str').verbose_name
+        error_msg_list = []
+
+        if self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if not self.get_employer_nric_full():
+                error_msg_list.append('employer_nric_num')
+        else:
+            if not self.get_employer_employer_fin_full():
+                error_msg_list.append('employer_fin_num')
+            if not self.get_employer_employer_passport_full():
+                error_msg_list.append('employer_passport_num')
+            if not self.employer_passport_date:
+                error_msg_list.append('employer_passport_date')
+        
+        error_msg_list += self.details_missing_spouse()
+        return error_msg_list
+
     def has_income_obj(self):
         try:
             income_obj = self.rn_income_employer
