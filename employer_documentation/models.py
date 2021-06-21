@@ -25,7 +25,7 @@ from onlinemaid.helper_functions import decrypt_string
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
-from maid.constants import FullNationsChoices
+from maid.constants import FullNationsChoices, TypeOfMaidChoices
 
 # Same app
 from . import constants as ed_constants
@@ -1412,6 +1412,47 @@ class EmployerDoc(models.Model):
             return _('Saturday')
         else:
             return _('Sunday')
+
+    def details_missing_case_pre_signing_1(self):
+        error_msg_list = []
+
+        if not hasattr(self, 'rn_servicefeeschedule_ed'):
+            error_msg_list.append('rn_servicefeeschedule_ed')
+        
+        if not hasattr(self, 'rn_serviceagreement_ed'):
+            error_msg_list.append('rn_serviceagreement_ed')
+        
+        # if not hasattr(self, 'rn_docupload_ed'):
+        #     # TODO: any uploaded docs mandatory?
+        #     error_msg_list.append('rn_docupload_ed')
+        
+        if not hasattr(self, 'rn_signatures_ed'):
+            error_msg_list.append('rn_signatures_ed')
+        
+        if self.fdw.maid_type==TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
+            error_msg_list.append('rn_safetyagreement_ed')
+
+        if not self.fdw.get_passport_number():
+            error_msg_list.append('fdw.passport_number')
+
+        if not self.fdw.work_permit:
+            error_msg_list.append('fdw.work_permit')
+
+        return error_msg_list
+
+    def details_missing_case_pre_signing_2(self):
+        error_msg_list = self.details_missing_case_pre_signing_1()
+
+        if hasattr(self, 'rn_casestatus_ed'):
+            if not self.rn_casestatus_ed.fdw_work_commencement_date:
+                error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
+        else:
+            error_msg_list.append('rn_casestatus_ed')
+        
+        # if not self.rn_maid_inventory.objects.all().count():
+        #     error_msg_list.append('rn_maid_inventory')
+        
+        return error_msg_list
 
     def archive(self):
         ArchivedDoc.objects.get_or_create(
