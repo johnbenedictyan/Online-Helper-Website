@@ -2547,6 +2547,14 @@ class DocSafetyAgreementForm(forms.ModelForm):
         
         return self.cleaned_data
 
+# Temporary solution to blank out S3 bucket URL
+from django.forms.widgets import ClearableFileInput
+class CustomClearableFileInput(ClearableFileInput):
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['is_initial'] = False
+        return context
+
 class DocUploadForm(forms.ModelForm):
     class Meta:
         model = models.DocUpload
@@ -2557,6 +2565,12 @@ class DocUploadForm(forms.ModelForm):
         self.authority = kwargs.pop('authority')
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
+
+        # Temporary solution to blank out S3 bucket URL
+        self.fields['job_order_pdf'].widget = CustomClearableFileInput()
+        self.fields['ipa_pdf'].widget = CustomClearableFileInput()
+        self.fields['e_issuance_pdf'].widget = CustomClearableFileInput()
+        self.fields['medical_report_pdf'].widget = CustomClearableFileInput()
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
