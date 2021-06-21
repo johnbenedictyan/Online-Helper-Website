@@ -500,6 +500,12 @@ class Employer(models.Model):
             else:
                 error_msg_list.append('rn_ja_employer')
 
+        if not hasattr(self, 'rn_income_employer'):
+            error_msg_list.append('rn_income_employer')
+
+        if self.household_details_required and not self.rn_household_employer.all().count():
+            error_msg_list.append('rn_household_employer')
+
         return error_msg_list
 
     def has_income_obj(self):
