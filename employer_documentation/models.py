@@ -442,7 +442,7 @@ class Employer(models.Model):
     def details_missing_spouse(self):
         error_msg_list = []
 
-        if self.employer_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if self.employer_marital_status==ed_constants.MaritalStatusChoices.MARRIED or self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE:
             mandatory_fields = [
                 'spouse_name',
                 'spouse_gender',
@@ -482,8 +482,24 @@ class Employer(models.Model):
                 error_msg_list.append('employer_passport_num')
             if not self.employer_passport_date:
                 error_msg_list.append('employer_passport_date')
-        
+
+        # Check spouse details completeness
         error_msg_list += self.details_missing_spouse()
+
+        if self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            if hasattr(self, 'rn_sponsor_employer'):
+                # TODO: check complete
+                pass
+            else:
+                error_msg_list.append('rn_sponsor_employer')
+
+        elif self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            if hasattr(self, 'rn_ja_employer'):
+                # TODO: check complete
+                pass
+            else:
+                error_msg_list.append('rn_ja_employer')
+
         return error_msg_list
 
     def has_income_obj(self):
@@ -994,6 +1010,30 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_nonce,
             self.sponsor_2_spouse_passport_tag,
         )
+
+    def details_missing_sponsor_2(self):
+        error_msg_list = []
+
+        if self.sponsor_2_required:
+            mandatory_fields = [
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_sponsor_2_nric_full():
+                    error_msg_list.append('sponsor_2_nric_num')
+            else:
+                if not self.get_sponsor_2_fin_full():
+                    error_msg_list.append('sponsor_2_fin_num')
+                if not self.get_sponsor_2_passport_full():
+                    error_msg_list.append('sponsor_2_passport_num')
+                if not self.sponsor_2_passport_date:
+                    error_msg_list.append('sponsor_2_passport_date')
+            
+        return error_msg_list
 
 ## Joint Applicants
 class EmployerJointApplicant(models.Model):
