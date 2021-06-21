@@ -295,7 +295,7 @@ class EmployerForm(forms.ModelForm):
                 )
             )
         else:
-            del self.helper.layout.fields[2][1] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            del self.helper.layout.fields[2][0] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
     
     def check_queryset(self, queryset, error_msg):

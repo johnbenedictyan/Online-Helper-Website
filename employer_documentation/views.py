@@ -87,10 +87,10 @@ class EmployerCreateView(
         kwargs['authority'] = self.authority
         return kwargs
 
-    # def form_valid(self, form):
-    #     if self.authority==om_constants.AG_SALES:
-    #         form.instance.agency_employee = self.request.user.agency_employee
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        if self.authority==om_constants.AG_SALES:
+            form.instance.agency_employee = self.request.user.agency_employee
+        return super().form_valid(form)
 
     def get_success_url(self):
         if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
