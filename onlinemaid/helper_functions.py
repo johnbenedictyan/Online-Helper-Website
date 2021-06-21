@@ -300,33 +300,40 @@ def subscription_seed_data():
 
 def validate_nric(plaintext):
     # return error message if fail, else return False for success
-    if plaintext:
-        if not isinstance(plaintext, str):
-            return _('Must be a string')
-        if not len(plaintext)==9:
-            return _(f'Must be 9 characters in length')
-        if not re.match('^[A-Za-z0-9]*$', plaintext):
-            return _('Can only enter letters or numbers')
+    if not isinstance(plaintext, str):
+        return _('Must be a string')
+    if not len(plaintext)==9:
+        return _(f'NRIC must be 9 characters in length')
+    if not re.match('^[A-Za-z0-9]*$', plaintext):
+        return _('Can only enter letters or numbers')
     return False
 
 def validate_fin(plaintext):
     # return error message if fail, else return False for success
-    if plaintext:
-        if not isinstance(plaintext, str):
-            return _('Must be a string')
-        if not len(plaintext)==9:
-            return _(f'Must be 9 characters in length')
-        if not re.match('^[A-Za-z0-9]*$', plaintext):
-            return _('Can only enter letters or numbers')
+    if not isinstance(plaintext, str):
+        return _('Must be a string')
+    if not len(plaintext)==9:
+        return _(f'FIN must be 9 characters in length')
+    if not re.match('^[A-Za-z0-9]*$', plaintext):
+        return _('Can only enter letters or numbers')
     return False
 
 def validate_passport(plaintext):
     # return error message if fail, else return False for success
-    if plaintext:
-        if not isinstance(plaintext, str):
-            return _('Must be a string')
-        if len(plaintext)>20:
-            return _(f'Must not exceed 20 characters')
-        if not re.match('^[A-Za-z0-9]*$', plaintext):
-            return _('Can only enter letters or numbers')
+    if not isinstance(plaintext, str):
+        return _('Must be a string')
+    if len(plaintext)>20:
+        return _(f'Passport must not exceed 20 characters')
+    if not re.match('^[A-Za-z0-9]*$', plaintext):
+        return _('Can only enter letters or numbers')
+    return False
+
+def validate_ea_personnel_number(ea_personnel_number):
+    # return error message if fail, else return False for success
+    if not isinstance(ea_personnel_number, str):
+        return _('Must be a string')
+    if ea_personnel_number=='NA':
+        return _('Assigned agent must have a valid EA personnel registration number')
+    if not re.match('^R[0-9]{7}$', ea_personnel_number.upper()):
+        return _(f'"{ea_personnel_number}" is not a valid EA Personnel Registration Number')
     return False
