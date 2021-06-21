@@ -314,6 +314,14 @@ class EmployerForm(forms.ModelForm):
                 ):
                     raise ValidationError(error_msg)
     
+    def clean_agency_employee(self):
+        cleaned_field = self.cleaned_data.get('agency_employee')
+        error_msg = helper_functions.validate_ea_personnel_number(cleaned_field.ea_personnel_number)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            return cleaned_field
+
     def clean_employer_email(self):
         cleaned_field = self.cleaned_data.get('employer_email')
 
