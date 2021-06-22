@@ -1437,11 +1437,11 @@ class EmployerDoc(models.Model):
     def details_missing_case_pre_signing_2(self):
         error_msg_list = self.details_missing_case_pre_signing_1()
 
-        if hasattr(self, 'rn_casestatus_ed'):
-            if not self.rn_casestatus_ed.fdw_work_commencement_date:
-                error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
-        else:
-            error_msg_list.append('rn_casestatus_ed')
+        # if hasattr(self, 'rn_casestatus_ed'):
+        #     if not self.rn_casestatus_ed.fdw_work_commencement_date:
+        #         error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
+        # else:
+        #     error_msg_list.append('rn_casestatus_ed')
         
         # if not self.rn_maid_inventory.objects.all().count():
         #     error_msg_list.append('rn_maid_inventory')
