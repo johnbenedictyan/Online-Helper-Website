@@ -1422,9 +1422,11 @@ class EmployerDoc(models.Model):
         if not hasattr(self, 'rn_serviceagreement_ed'):
             error_msg_list.append('rn_serviceagreement_ed')
         
-        # if not hasattr(self, 'rn_docupload_ed'):
-        #     # TODO: any uploaded docs mandatory?
-        #     error_msg_list.append('rn_docupload_ed')
+        if hasattr(self, 'rn_docupload_ed'):
+            if not self.rn_docupload_ed.job_order_pdf:
+                error_msg_list.append('rn_docupload_ed.job_order_pdf')
+        else:
+            error_msg_list.append('rn_docupload_ed')
         
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
@@ -1437,6 +1439,12 @@ class EmployerDoc(models.Model):
     def details_missing_case_pre_signing_2(self):
         error_msg_list = self.details_missing_case_pre_signing_1()
 
+        if hasattr(self, 'rn_docupload_ed'):
+            if not self.rn_docupload_ed.ipa_pdf:
+                error_msg_list.append('rn_docupload_ed.ipa_pdf')
+            if not self.rn_docupload_ed.medical_report_pdf:
+                error_msg_list.append('rn_docupload_ed.medical_report_pdf')
+        
         # if hasattr(self, 'rn_casestatus_ed'):
         #     if not self.rn_casestatus_ed.fdw_work_commencement_date:
         #         error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
