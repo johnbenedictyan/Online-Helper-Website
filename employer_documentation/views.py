@@ -942,30 +942,28 @@ class UploadedPdfAgencyView(
     GetAuthorityMixin,
     DetailView
 ):
-    model = None # To be passed as parameter in urls.py
-    pk_url_kwarg = None # To be passed as parameter in urls.py
+    model= models.EmployerDoc
+    pk_url_kwarg = 'level_1_pk'
     as_attachment=False
     filename='document.pdf'
     field_name = None
 
     def get_object(self):
-        return self.model.objects.get(
-            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
-        )
+        return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         try:
             return FileResponse(
-                getattr(self.object, self.field_name).open(),
+                getattr(self.object.rn_docupload_ed, self.field_name).open(),
                 as_attachment=self.as_attachment,
                 filename=self.filename,
                 content_type='application/pdf'
             )
         except Exception:
             return HttpResponseRedirect(
-                reverse('docupload_update_route', kwargs={
-                    'level_1_pk': self.object.employer_doc.pk,
+                reverse('docupload_create_route', kwargs={
+                    'level_1_pk': self.object.pk,
             }))
 
 class HtmlToRenderPdfTokenView(

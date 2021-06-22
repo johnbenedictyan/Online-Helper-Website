@@ -306,8 +306,6 @@ urlpatterns = [
                             path(
                                 'job-order/',
                                 views.UploadedPdfAgencyView.as_view(
-                                    model=models.DocUpload,
-                                    pk_url_kwarg = 'level_1_pk',
                                     field_name = 'job_order_pdf',
                                     filename='job_order.pdf',
                                 ),
@@ -316,8 +314,6 @@ urlpatterns = [
                             path(
                                 'ipa/',
                                 views.UploadedPdfAgencyView.as_view(
-                                    model=models.DocUpload,
-                                    pk_url_kwarg = 'level_1_pk',
                                     field_name = 'ipa_pdf',
                                     filename='ipa.pdf',
                                 ),
@@ -326,8 +322,6 @@ urlpatterns = [
                             path(
                                 'medical-report/',
                                 views.UploadedPdfAgencyView.as_view(
-                                    model=models.DocUpload,
-                                    pk_url_kwarg = 'level_1_pk',
                                     field_name = 'medical_report_pdf',
                                     filename='medical_report.pdf',
                                 ),
