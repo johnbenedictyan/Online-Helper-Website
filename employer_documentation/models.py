@@ -1432,12 +1432,6 @@ class EmployerDoc(models.Model):
         if self.fdw.maid_type==TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
             error_msg_list.append('rn_safetyagreement_ed')
 
-        if not self.fdw.get_passport_number():
-            error_msg_list.append('fdw.passport_number')
-
-        if not self.fdw.work_permit:
-            error_msg_list.append('fdw.work_permit')
-
         return error_msg_list
 
     def details_missing_case_pre_signing_2(self):
@@ -1451,6 +1445,12 @@ class EmployerDoc(models.Model):
         
         # if not self.rn_maid_inventory.objects.all().count():
         #     error_msg_list.append('rn_maid_inventory')
+
+        if not self.fdw.get_passport_number():
+            error_msg_list.append('fdw.passport_number')
+
+        if not self.fdw.work_permit: # TODO: will change to FIN
+            error_msg_list.append('fdw.work_permit')
         
         return error_msg_list
 
