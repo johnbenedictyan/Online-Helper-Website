@@ -1287,8 +1287,8 @@ class EmployerDoc(models.Model):
 
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
-        self.version += 1
-        super().save(*args, **kwargs)
+        # self.version += 1
+        # super().save(*args, **kwargs)
 
         # Create related CaseStatus object if it does not exist
         if not hasattr(self, 'rn_casestatus_ed'):
@@ -1558,6 +1558,10 @@ class EmployerDoc(models.Model):
                 'medical_report_pdf':self.rn_docupload_ed.medical_report_pdf
             }
         )
+
+    def increment_version_number(self):
+        self.version += 1
+        self.save()
 
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
