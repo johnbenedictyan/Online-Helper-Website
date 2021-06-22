@@ -1686,7 +1686,6 @@ class EmployerDoc(models.Model):
                 #END OF TODO
                 'job_order_pdf':self.rn_docupload_ed.job_order_pdf,
                 'ipa_pdf':self.rn_docupload_ed.ipa_pdf,
-                'e_issuance_pdf':self.rn_docupload_ed.e_issuance_pdf,
                 'medical_report_pdf':self.rn_docupload_ed.medical_report_pdf
             }
         )
@@ -2106,14 +2105,6 @@ class DocUpload(models.Model):
     )
     ipa_pdf = models.FileField(
         verbose_name=_('IPA (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-    e_issuance_pdf = models.FileField(
-        verbose_name=_('E-Issuance Document (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
@@ -4025,14 +4016,6 @@ class ArchivedDoc(models.Model):
     )
     ipa_pdf = models.FileField(
         verbose_name=_('Upload IPA (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-    e_issuance_pdf = models.FileField(
-        verbose_name=_('Upload E-Issuance Document (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
