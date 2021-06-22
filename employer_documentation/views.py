@@ -55,6 +55,85 @@ class EmployerDocDetailView(
         })
         return context
 
+class SignedDocumentsDetailView(
+    DetailView
+):
+    model = models.CaseSignature
+    slug_url_kwarg = 'slug'
+    template_name = 'employer_documentation/signed_documents.html'
+    stakeholder = ''
+
+    def get_object(self):
+        slug = self.kwargs.get(
+            self.slug_url_kwarg
+        )
+        stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
+        if stakeholder:
+            self.stakeholder = stakeholder
+            try:
+                if stakeholder == 'employer_1':
+                    obj = self.model.objects.get(
+                        sigslug_employer_1=slug
+                    )
+                elif stakeholder == 'employer_spouse':
+                    obj = self.model.objects.get(
+                        sigslug_employer_spouse=slug
+                    )
+                elif stakeholder == 'sponsor_1':
+                    obj = self.model.objects.get(
+                        sigslug_sponsor_1=slug
+                    )
+                elif stakeholder == 'sponsor_2':
+                    obj = self.model.objects.get(
+                        sigslug_sponsor_2=slug
+                    )
+                elif stakeholder == 'joint_applicant':
+                    obj = self.model.objects.get(
+                        sigslug_joint_applicant=slug
+                    )
+                else:
+                    obj = None
+                    return obj
+            except self.model.DoesNotExist:
+                obj = None
+                return obj
+            else:
+                self.employer_doc_pk = obj.employer_doc.pk
+                return obj
+        else:
+            # SLUG DOES NOT HAVE FRONT HEADER
+            # TODO: Special Error Page thing
+            pass
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        stakeholder_referrer_dict = {
+            # Stakeholder: Referrer Url Name
+            'employer_1':       'token_employer_signature_form_view',
+            'employer_spouse':  'token_employer_spouse_signature_form_view',
+            'sponsor_1':        'token_sponsor_1_signature_form_view',
+            'sponsor_2':        'token_sponsor_2_signature_form_view',
+            'joint_applicant':  'token_joint_applicant_signature_form_view'
+        }
+        url_route_name =  stakeholder_referrer_dict.get(self.stakeholder)
+        referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
+        rev_url = reverse(url_route_name, kwargs={
+            'slug': self.kwargs.get(self.slug_url_kwarg)
+        })
+        if self.object and referrer == rev_url:
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('error_404'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'slug': self.kwargs.get(
+                self.slug_url_kwarg
+            )
+        })
+        return context
+
 # Create Views
 class EmployerCreateView(
     AgencyLoginRequiredMixin,
@@ -985,7 +1064,6 @@ class SignatureUpdateByAgentView(
             'level_1_pk': self.object.employer_doc.pk,
         })
 
-
 # PDF Views
 class HtmlToRenderPdfAgencyView(
     AgencyLoginRequiredMixin,
@@ -1094,10 +1172,16 @@ class HtmlToRenderPdfTokenView(
         }
         url_route_name =  stakeholder_referrer_dict.get(self.stakeholder)
         referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
+        signed_doc_rev_url = reverse(
+            'pdf_signed_documents', 
+            kwargs={
+                'slug': self.kwargs.get(self.slug_url_kwarg)
+            }
+        )
         rev_url = reverse(url_route_name, kwargs={
             'slug': self.kwargs.get(self.slug_url_kwarg)
         })
-        if self.object and referrer == rev_url:
+        if self.object and (referrer == rev_url or referrer == signed_doc_rev_url):
             context = self.get_context_data()
             if self.use_repayment_table:
                 context['repayment_table'] = self.calc_repayment_schedule()
@@ -1342,13 +1426,18 @@ class SignatureFormView(FormView):
             return HttpResponseRedirect(reverse('error_404'))
 
     def get_success_url(self):
-        return reverse('home')
+        return reverse(
+            'pdf_signed_documents', kwargs={
+                'slug': self.kwargs.get(
+                    self.slug_url_kwarg
+                )
+            })
 
 class EmployerSignatureFormView(SignatureFormView):
     form_class = forms.EmployerSignatureForm
 
     def form_valid(self, form):
-        self.object = super().get_object()
+        self.object = super().get_object(self.request)
         self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
         self.object.save()
         return super().form_valid(form)
@@ -1357,7 +1446,7 @@ class EmployerWithSpouseSignatureFormView(SignatureFormView):
     form_class = forms.EmployerWithSpouseSignatureForm
 
     def form_valid(self, form):
-        self.object = super().get_object()
+        self.object = super().get_object(self.request)
         self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
         self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
         self.object.save()
@@ -1367,7 +1456,7 @@ class Sponsor1SignatureFormView(SignatureFormView):
     form_class = forms.SponsorSignatureForm
 
     def form_valid(self, form):
-        self.object = super().get_object()
+        self.object = super().get_object(self.request)
         self.object.sponsor_1_signature = form.cleaned_data.get('sponsor_signature')
         self.object.save()
         return super().form_valid(form)
@@ -1376,7 +1465,7 @@ class Sponsor2SignatureFormView(SignatureFormView):
     form_class = forms.SponsorSignatureForm
 
     def form_valid(self, form):
-        self.object = super().get_object()
+        self.object = super().get_object(self.request)
         self.object.sponsor_2_signature = form.cleaned_data.get('sponsor_signature')
         self.object.save()
         return super().form_valid(form)
@@ -1385,7 +1474,7 @@ class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
     form_class = forms.EmployerWithJointApplicantSignatureForm
 
     def form_valid(self, form):
-        self.object = super().get_object()
+        self.object = super().get_object(self.request)
         self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
         self.object.joint_applicant_signature = form.cleaned_data.get('joint_applicant_signature')
         self.object.save()

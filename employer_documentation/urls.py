@@ -408,6 +408,11 @@ urlpatterns = [
                         'pdf/',
                         include([
                             path(
+                                'all/',
+                                views.SignedDocumentsDetailView.as_view(),
+                                name='pdf_signed_documents'
+                            ),
+                            path(
                                 'service-fees/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name = 'employer_documentation/pdf/01-service-fee-schedule.html',
