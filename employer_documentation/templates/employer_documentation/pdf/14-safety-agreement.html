@@ -166,7 +166,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.employer_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.get_employer_signature }}"></td>
         </tr>
     </table>
     <br>

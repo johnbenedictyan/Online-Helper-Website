@@ -115,7 +115,7 @@
     </tr>
     <tr>
         <td class="border--bottom border--right" style="text-align: left;">NRIC/ Passport No, Name, Designation & Signature
-            <img class="signature__img" src="{{ object.rn_signatures_ed.employer_signature }}">
+            <img class="signature__img" src="{{ object.rn_signatures_ed.get_employer_signature }}">
             <br>{{ object.employer.employer_name }}
             <br>{{ object.employer.get_employer_nric_full }}
             <br>

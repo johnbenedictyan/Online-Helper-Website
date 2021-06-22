@@ -2189,6 +2189,12 @@ class CaseSignature(models.Model):
             )
             return current_site.domain + relative_url
 
+    def get_employer_signature(self):
+        if self.employer_signature_2:
+            return self.employer_signature_2
+        else:
+            return self.employer_signature_1
+
     # Verification Tokens
     token_employer_1 = models.BinaryField(
         blank=True,
