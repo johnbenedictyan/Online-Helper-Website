@@ -1414,7 +1414,7 @@ class EmployerDoc(models.Model):
             return _('Sunday')
 
     def details_missing_case_pre_signing_1(self):
-        error_msg_list = []
+        error_msg_list = self.employer.details_missing_employer()
 
         if not hasattr(self, 'rn_servicefeeschedule_ed'):
             error_msg_list.append('rn_servicefeeschedule_ed')
@@ -1422,9 +1422,11 @@ class EmployerDoc(models.Model):
         if not hasattr(self, 'rn_serviceagreement_ed'):
             error_msg_list.append('rn_serviceagreement_ed')
         
-        # if not hasattr(self, 'rn_docupload_ed'):
-        #     # TODO: any uploaded docs mandatory?
-        #     error_msg_list.append('rn_docupload_ed')
+        if hasattr(self, 'rn_docupload_ed'):
+            if not self.rn_docupload_ed.job_order_pdf:
+                error_msg_list.append('rn_docupload_ed.job_order_pdf')
+        else:
+            error_msg_list.append('rn_docupload_ed')
         
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
@@ -1432,25 +1434,31 @@ class EmployerDoc(models.Model):
         if self.fdw.maid_type==TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
             error_msg_list.append('rn_safetyagreement_ed')
 
-        if not self.fdw.get_passport_number():
-            error_msg_list.append('fdw.passport_number')
-
-        if not self.fdw.work_permit:
-            error_msg_list.append('fdw.work_permit')
-
         return error_msg_list
 
     def details_missing_case_pre_signing_2(self):
         error_msg_list = self.details_missing_case_pre_signing_1()
 
-        if hasattr(self, 'rn_casestatus_ed'):
-            if not self.rn_casestatus_ed.fdw_work_commencement_date:
-                error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
-        else:
-            error_msg_list.append('rn_casestatus_ed')
+        if hasattr(self, 'rn_docupload_ed'):
+            if not self.rn_docupload_ed.ipa_pdf:
+                error_msg_list.append('rn_docupload_ed.ipa_pdf')
+            if not self.rn_docupload_ed.medical_report_pdf:
+                error_msg_list.append('rn_docupload_ed.medical_report_pdf')
+        
+        # if hasattr(self, 'rn_casestatus_ed'):
+        #     if not self.rn_casestatus_ed.fdw_work_commencement_date:
+        #         error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
+        # else:
+        #     error_msg_list.append('rn_casestatus_ed')
         
         # if not self.rn_maid_inventory.objects.all().count():
         #     error_msg_list.append('rn_maid_inventory')
+
+        if not self.fdw.get_passport_number():
+            error_msg_list.append('fdw.passport_number')
+
+        if not self.fdw.work_permit: # TODO: will change to FIN
+            error_msg_list.append('fdw.work_permit')
         
         return error_msg_list
 
@@ -1686,7 +1694,6 @@ class EmployerDoc(models.Model):
                 #END OF TODO
                 'job_order_pdf':self.rn_docupload_ed.job_order_pdf,
                 'ipa_pdf':self.rn_docupload_ed.ipa_pdf,
-                'e_issuance_pdf':self.rn_docupload_ed.e_issuance_pdf,
                 'medical_report_pdf':self.rn_docupload_ed.medical_report_pdf
             }
         )
@@ -2106,14 +2113,6 @@ class DocUpload(models.Model):
     )
     ipa_pdf = models.FileField(
         verbose_name=_('IPA (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-    e_issuance_pdf = models.FileField(
-        verbose_name=_('E-Issuance Document (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,
@@ -4025,14 +4024,6 @@ class ArchivedDoc(models.Model):
     )
     ipa_pdf = models.FileField(
         verbose_name=_('Upload IPA (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-    e_issuance_pdf = models.FileField(
-        verbose_name=_('Upload E-Issuance Document (PDF)'),
         upload_to=generate_joborder_path,
         blank=True,
         null=True,

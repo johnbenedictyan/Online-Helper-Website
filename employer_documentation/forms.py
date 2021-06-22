@@ -2569,7 +2569,6 @@ class DocUploadForm(forms.ModelForm):
         # Temporary solution to blank out S3 bucket URL
         self.fields['job_order_pdf'].widget = CustomClearableFileInput()
         self.fields['ipa_pdf'].widget = CustomClearableFileInput()
-        self.fields['e_issuance_pdf'].widget = CustomClearableFileInput()
         self.fields['medical_report_pdf'].widget = CustomClearableFileInput()
 
         self.helper = FormHelper()
@@ -2589,10 +2588,6 @@ class DocUploadForm(forms.ModelForm):
                 )
             ),
             Row(
-                Column(
-                    'e_issuance_pdf',
-                    css_class='form-group col-md-6'
-                ),
                 Column(
                     'medical_report_pdf',
                     css_class='form-group col-md-6'
