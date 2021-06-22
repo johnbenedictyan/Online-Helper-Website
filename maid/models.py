@@ -283,11 +283,23 @@ class Maid(models.Model):
         null=True
     )
     
-    work_permit = models.CharField(
-        verbose_name=_('Work Permit'),
-        max_length=255,
-        null=True,
-        blank=True
+    fin_number = models.BinaryField(
+        verbose_name=_('FDW FIN'),
+        editable=True,
+        blank=True,
+        null=True
+    )
+
+    fin_nonce = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True
+    )
+
+    fin_tag = models.BinaryField(
+        editable=True,
+        blank=True,
+        null=True
     )
 
     def __str__(self):
@@ -329,6 +341,21 @@ class Maid(models.Model):
             return today.year - self.date_of_birth.year - 1
         else:
             return today.year - self.date_of_birth.year
+
+    def get_fdw_fin_full(self):
+        return decrypt_string(
+            self.fin_number,
+            settings.ENCRYPTION_KEY,
+            self.fin_nonce,
+            self.fin_tag
+        )
+    
+    def get_fdw_fin_partial(self, padded=True):
+        plaintext = self.get_fdw_fin_full()
+        if padded == True:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
         
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):

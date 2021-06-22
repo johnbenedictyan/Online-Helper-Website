@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from project-wide files
 from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.helper_functions import validate_fin
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
@@ -235,7 +236,10 @@ class MaidForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    'work_permit',
+                    Field(
+                        'fin_number',
+                        maxlength=self.FIELD_MAXLENGTH,
+                    ),
                     css_class='form-group col-12'
                 ),
                 css_class='form-row form-group'
@@ -276,6 +280,20 @@ class MaidForm(forms.ModelForm):
 
         # If form errors then raise ValidationError, else continue
         validate_passport_number(cleaned_field, self.FIELD_MAXLENGTH)
+
+        # Encryption
+        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+            cleaned_field,
+            settings.ENCRYPTION_KEY
+        )
+
+        return ciphertext
+
+    def clean_fin_number(self):
+        cleaned_field = self.cleaned_data.get('fin_number')
+
+        # If form errors then raise ValidationError, else continue
+        validate_fin(cleaned_field, self.FIELD_MAXLENGTH)
 
         # Encryption
         ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
