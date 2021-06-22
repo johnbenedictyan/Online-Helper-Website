@@ -87,6 +87,18 @@ class PdfHtmlViewMixin:
     def calc_repayment_schedule(self):
         repayment_table = {}
 
+        # Salary constant
+        BASIC_SALARY = self.object.fdw_salary
+
+        # Off day constants
+        PER_OFF_DAY_COMPENSATION = self.object.per_off_day_compensation()
+        FDW_OFF_DAYS_PER_MONTH = self.object.fdw_off_days
+        OFF_DAY_OF_WEEK = int(self.object.fdw_off_day_of_week)
+
+        # Initialise loan amounts
+        MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
+        fdw_loan_balance = self.object.fdw_loan
+
         if hasattr(self.object, 'rn_casestatus_ed') and self.object.rn_casestatus_ed.fdw_work_commencement_date:
             DEPLOYMENT_DATE = self.object.rn_casestatus_ed.fdw_work_commencement_date
         else:
@@ -98,18 +110,6 @@ class PdfHtmlViewMixin:
             payment_year = DEPLOYMENT_DATE.year
             payment_month = DEPLOYMENT_DATE.month
             payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
-
-            # Salary constant
-            BASIC_SALARY = self.object.fdw_salary
-
-            # Off day constants
-            PER_OFF_DAY_COMPENSATION = self.object.per_off_day_compensation()
-            FDW_OFF_DAYS_PER_MONTH = self.object.fdw_off_days
-            OFF_DAY_OF_WEEK = int(self.object.fdw_off_day_of_week)
-
-            # Initialise loan amounts
-            MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
-            fdw_loan_balance = self.object.fdw_loan
 
             for i in range(1,25):
                 # Set start_date for calculation of potential_off_days_in_month
@@ -148,16 +148,25 @@ class PdfHtmlViewMixin:
                 fdw_loan_balance = fdw_loan_balance - loan_repaid if fdw_loan_balance-loan_repaid>=0 else 0
 
         else:
-            # if work commencement date not set, then generate empty table
+            # if work commencement date not set, then generate table without dates
             for i in range(1,25):
+                # Calculate salary and loan payments in month
+                balance_off_day_compensation = PER_OFF_DAY_COMPENSATION * (4 - FDW_OFF_DAYS_PER_MONTH)
+                total_salary = BASIC_SALARY + balance_off_day_compensation
+                loan_repaid = min(MONTHLY_LOAN_REPAYMENT, BASIC_SALARY, fdw_loan_balance)
+
+                # Each row of repayment table
                 repayment_table[i] = {
                     'salary_date': '',
-                    'basic_salary': '',
-                    'off_day_compensation': '',
-                    'total_salary': '',
-                    'loan_repaid': '',
-                    'salary_received': '',
+                    'basic_salary': BASIC_SALARY,
+                    'off_day_compensation': balance_off_day_compensation,
+                    'total_salary': total_salary,
+                    'loan_repaid': loan_repaid,
+                    'salary_received': total_salary - loan_repaid,
                 }
+
+                # Update remaining loan balance
+                fdw_loan_balance = fdw_loan_balance - loan_repaid if fdw_loan_balance-loan_repaid>=0 else 0
         
         return repayment_table
 
