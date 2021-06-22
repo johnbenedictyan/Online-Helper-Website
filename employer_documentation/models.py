@@ -1414,7 +1414,7 @@ class EmployerDoc(models.Model):
             return _('Sunday')
 
     def details_missing_case_pre_signing_1(self):
-        error_msg_list = []
+        error_msg_list = self.employer.details_missing_employer()
 
         if not hasattr(self, 'rn_servicefeeschedule_ed'):
             error_msg_list.append('rn_servicefeeschedule_ed')
