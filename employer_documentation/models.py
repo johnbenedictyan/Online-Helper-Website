@@ -1075,6 +1075,35 @@ class EmployerSponsor(models.Model):
 
         return error_msg_list
 
+    def details_missing_sponsor_1_spouse(self):
+        error_msg_list = []
+
+        if self.sponsor_1_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+            mandatory_fields = [
+                'sponsor_1_spouse_name',
+                'sponsor_1_spouse_gender',
+                'sponsor_1_spouse_date_of_birth',
+                'sponsor_1_spouse_nationality',
+                'sponsor_1_spouse_residential_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_sponsor_1_spouse_nric_full():
+                    error_msg_list.append('spouse_nric_num')
+            else:
+                if not self.get_sponsor_1_spouse_fin_full():
+                    error_msg_list.append('spouse_fin_num')
+                if not self.get_sponsor_1_spouse_passport_full():
+                    error_msg_list.append('spouse_passport_num')
+                if not self.sponsor_1_spouse_passport_date:
+                    error_msg_list.append('spouse_passport_date')
+            
+        return error_msg_list
+
 ## Joint Applicants
 class EmployerJointApplicant(models.Model):
     employer = models.OneToOneField(
