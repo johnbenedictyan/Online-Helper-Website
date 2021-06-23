@@ -116,6 +116,17 @@ class Agency(models.Model):
         editable=False
     )
 
+    __original_branch_address_line_1 = None
+    __original_branch_address_line_2 = None
+    __original_branch_postal_code = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        main_branch = self.get_main_branch()
+        self.__original_branch_address_line_1 = main_branch.address_1
+        self.__original_branch_address_line_2 = main_branch.address_2
+        self.__original_branch_postal_code = main_branch.postal_code
+
     def __str__(self):
         return self.name
 
