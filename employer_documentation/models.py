@@ -1560,6 +1560,7 @@ class EmployerDoc(models.Model):
         )
 
     def increment_version_number(self):
+        self.rn_signatures_ed.erase_signatures()
         self.version += 1
         self.save()
 
@@ -2199,6 +2200,16 @@ class CaseSignature(models.Model):
         else:
             return self.employer_signature_1
 
+    def erase_signatures(self):
+        self.employer_signature_1 = None if self.employer_signature_1 else self.employer_signature_1
+        self.fdw_signature = None if self.fdw_signature else self.fdw_signature
+        self.agency_staff_signature = None if self.agency_staff_signature else self.agency_staff_signature
+        self.employer_spouse_signature = None if self.employer_spouse_signature else self.employer_spouse_signature
+        self.sponsor_1_signature = None if self.sponsor_1_signature else self.sponsor_1_signature
+        self.sponsor_2_signature = None if self.sponsor_2_signature else self.sponsor_2_signature
+        self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
+        self.save()
+    
     # Verification Tokens
     token_employer_1 = models.BinaryField(
         blank=True,
