@@ -5,20 +5,17 @@ import uuid
 # Imports from django
 from django import forms
 from django.conf import settings
-from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden, Button
-from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
+from crispy_forms.layout import Layout, Field, Submit, Row, Column, HTML, Hidden, Button
+from crispy_forms.bootstrap import PrependedText, StrictButton
 
 # Imports from local apps
+from agency.constants import AgencyEmployeeRoleChoices
 from . import models, constants
 from onlinemaid import constants as om_constants
 from onlinemaid import helper_functions
@@ -261,19 +258,22 @@ class EmployerForm(forms.ModelForm):
         if self.authority==om_constants.AG_OWNERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_owner.agency
+                    agency=self.user_obj.agency_owner.agency,
+                    role=AgencyEmployeeRoleChoices.SALES_STAFF
                 )
             )
         elif self.authority==om_constants.AG_ADMINS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_employee.agency
+                    agency=self.user_obj.agency_employee.agency,
+                    role=AgencyEmployeeRoleChoices.SALES_STAFF
                 )
             )
         elif self.authority==om_constants.AG_MANAGERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
-                    branch=self.user_obj.agency_employee.branch
+                    branch=self.user_obj.agency_employee.branch,
+                    role=AgencyEmployeeRoleChoices.SALES_STAFF
                 )
             )
         else:

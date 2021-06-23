@@ -20,9 +20,10 @@ class AreaChoices(models.TextChoices):
     WEST = 'W', _('West')
 
 class AgencyEmployeeRoleChoices(models.TextChoices):
-    ADMINISTRATOR = 'AA', _('Administrator')
-    MANAGER = 'AM', _('Manager')
-    SALES_STAFF = 'AS', _('Sales Staff')
+    ADMINISTRATOR = 'AD', _('Administrator')
+    MANAGER = 'MA', _('Manager')
+    SALES_STAFF = 'SS', _('Sales Staff')
+    ADMIN_STAFF = 'AM', _('Admin Staff (No EA Personnel Number)')
 
 class OpeningHoursTypeChoices(models.TextChoices):
     OPENING_HOURS = 'OH', _('Opening Hours')

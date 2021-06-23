@@ -14,7 +14,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
 from employer_documentation.models import EmployerDoc
-from .constants import OpeningHoursTypeChoices
+from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner, PotentialAgency
 )
@@ -621,6 +621,7 @@ class AgencyEmployeeForm(forms.ModelForm):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
         password = cleaned_data.get("password")
+        role = cleaned_data.get('role')
         UserModel = get_user_model()
 
         try:
@@ -638,6 +639,12 @@ class AgencyEmployeeForm(forms.ModelForm):
             if validate_password(password):
                 msg = _('This password does not meet our requirements')
                 self.add_error('password', msg)
+                
+        ea_personnel_number = cleaned_data.get('ea_personnel_number')
+        if role == AgencyEmployeeRoleChoices.SALES_STAFF:
+            if not ea_personnel_number:
+                msg = _('EA Personnle Number is required')
+                self.add_error('ea_personnel_number', msg)
                 
             
         return cleaned_data
@@ -702,6 +709,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                     new_user
                 )
                 self.instance.user = new_user
+
         self.instance.name = cleaned_data.get('name')
         self.instance.contact_number = cleaned_data.get('contact_number')
         self.instance.ea_personnel_number = cleaned_data.get(
