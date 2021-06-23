@@ -1017,27 +1017,32 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_tag,
         )
 
-    def details_missing_sponsor_2(self):
+    def details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_2_required:
+        if self.sponsor_2_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
             mandatory_fields = [
+                'sponsor_2_spouse_name',
+                'sponsor_2_spouse_gender',
+                'sponsor_2_spouse_date_of_birth',
+                'sponsor_2_spouse_nationality',
+                'sponsor_2_spouse_residential_status',
             ]
 
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(field)
             
-            if self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
-                if not self.get_sponsor_2_nric_full():
-                    error_msg_list.append('sponsor_2_nric_num')
+            if self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_sponsor_2_spouse_nric_full():
+                    error_msg_list.append('spouse_nric_num')
             else:
-                if not self.get_sponsor_2_fin_full():
-                    error_msg_list.append('sponsor_2_fin_num')
-                if not self.get_sponsor_2_passport_full():
-                    error_msg_list.append('sponsor_2_passport_num')
-                if not self.sponsor_2_passport_date:
-                    error_msg_list.append('sponsor_2_passport_date')
+                if not self.get_sponsor_2_spouse_fin_full():
+                    error_msg_list.append('spouse_fin_num')
+                if not self.get_sponsor_2_spouse_passport_full():
+                    error_msg_list.append('spouse_passport_num')
+                if not self.sponsor_2_spouse_passport_date:
+                    error_msg_list.append('spouse_passport_date')
             
         return error_msg_list
 
