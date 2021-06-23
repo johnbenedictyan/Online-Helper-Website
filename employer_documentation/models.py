@@ -1457,8 +1457,8 @@ class EmployerDoc(models.Model):
         if not self.fdw.get_passport_number():
             error_msg_list.append('fdw.passport_number')
 
-        if not self.fdw.work_permit: # TODO: will change to FIN
-            error_msg_list.append('fdw.work_permit')
+        if not self.fdw.get_fdw_fin_full():
+            error_msg_list.append('fdw.fin_number')
         
         return error_msg_list
 
