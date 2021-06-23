@@ -1350,6 +1350,18 @@ class EmployerJointApplicant(models.Model):
 
     def details_missing_joint_applicant(self):
         error_msg_list = []
+        
+        if self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if not self.get_joint_applicant_nric_full():
+                error_msg_list.append('joint_applicant_nric_num')
+        else:
+            if not self.get_joint_applicant_fin_full():
+                error_msg_list.append('joint_applicant_fin_num')
+            if not self.get_joint_applicant_passport_full():
+                error_msg_list.append('joint_applicant_passport_num')
+            if not self.joint_applicant_passport_date:
+                error_msg_list.append('joint_applicant_passport_date')
+        
         error_msg_list += self.details_missing_joint_applicant_spouse()
         return error_msg_list
 
