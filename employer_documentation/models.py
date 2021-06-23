@@ -1104,6 +1104,12 @@ class EmployerSponsor(models.Model):
             
         return error_msg_list
 
+    def details_missing_sponsors(self):
+        error_msg_list = []
+        error_msg_list += self.details_missing_sponsor_1_spouse()
+        error_msg_list += self.details_missing_sponsor_2()
+        return error_msg_list
+
 ## Joint Applicants
 class EmployerJointApplicant(models.Model):
     employer = models.OneToOneField(
