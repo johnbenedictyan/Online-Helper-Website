@@ -606,6 +606,16 @@ class EmployerDocJointApplicantUpdateView(
         })
         return context
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            return HttpResponseRedirect(
+                reverse('employer_update_route', kwargs={
+                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
+            }))
+        else:
+            return super().get(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
