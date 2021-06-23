@@ -79,12 +79,12 @@ class Maid(models.Model):
         null=True
     )
     
-    nonce = models.BinaryField(
+    passport_nonce = models.BinaryField(
         editable=True,
         blank=True
     )
     
-    tag = models.BinaryField(
+    passport_tag = models.BinaryField(
         editable=True,
         blank=True
     )
@@ -315,8 +315,17 @@ class Maid(models.Model):
         plaintext = decrypt_string(
             self.passport_number,
             settings.ENCRYPTION_KEY,
-            self.nonce,
-            self.tag
+            self.passport_nonce,
+            self.passport_tag
+        )
+        return plaintext
+
+    def get_fin_number(self):
+        plaintext = decrypt_string(
+            self.fin_number,
+            settings.ENCRYPTION_KEY,
+            self.fin_nonce,
+            self.fin_tag
         )
         return plaintext
 
