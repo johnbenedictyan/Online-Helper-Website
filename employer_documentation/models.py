@@ -1035,14 +1035,14 @@ class EmployerSponsor(models.Model):
             
             if self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
                 if not self.get_sponsor_2_spouse_nric_full():
-                    error_msg_list.append('spouse_nric_num')
+                    error_msg_list.append('sponsor_2_spouse_nric_num')
             else:
                 if not self.get_sponsor_2_spouse_fin_full():
-                    error_msg_list.append('spouse_fin_num')
+                    error_msg_list.append('sponsor_2_spouse_fin_num')
                 if not self.get_sponsor_2_spouse_passport_full():
-                    error_msg_list.append('spouse_passport_num')
+                    error_msg_list.append('sponsor_2_spouse_passport_num')
                 if not self.sponsor_2_spouse_passport_date:
-                    error_msg_list.append('spouse_passport_date')
+                    error_msg_list.append('sponsor_2_spouse_passport_date')
             
         return error_msg_list
 
@@ -1093,14 +1093,14 @@ class EmployerSponsor(models.Model):
             
             if self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
                 if not self.get_sponsor_1_spouse_nric_full():
-                    error_msg_list.append('spouse_nric_num')
+                    error_msg_list.append('sponsor_1_spouse_nric_num')
             else:
                 if not self.get_sponsor_1_spouse_fin_full():
-                    error_msg_list.append('spouse_fin_num')
+                    error_msg_list.append('sponsor_1_spouse_fin_num')
                 if not self.get_sponsor_1_spouse_passport_full():
-                    error_msg_list.append('spouse_passport_num')
+                    error_msg_list.append('sponsor_1_spouse_passport_num')
                 if not self.sponsor_1_spouse_passport_date:
-                    error_msg_list.append('spouse_passport_date')
+                    error_msg_list.append('sponsor_1_spouse_passport_date')
             
         return error_msg_list
 
