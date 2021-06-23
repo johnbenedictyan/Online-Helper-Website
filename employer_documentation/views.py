@@ -135,7 +135,12 @@ class EmployerSponsorCreateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if hasattr(self.object, 'rn_sponsor_employer'):
+        if not self.object.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            return HttpResponseRedirect(
+                reverse('employer_update_route', kwargs={
+                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
+            }))
+        elif hasattr(self.object, 'rn_sponsor_employer'):
             return HttpResponseRedirect(
                 reverse('employer_sponsor_update_route', kwargs={
                     self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
