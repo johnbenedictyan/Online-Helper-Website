@@ -1321,6 +1321,35 @@ class EmployerJointApplicant(models.Model):
             self.joint_applicant_spouse_passport_tag,
         )
 
+    def details_missing_joint_applicant_spouse(self):
+        error_msg_list = []
+
+        if self.joint_applicant_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+            mandatory_fields = [
+                'joint_applicant_spouse_name',
+                'joint_applicant_spouse_gender',
+                'joint_applicant_spouse_date_of_birth',
+                'joint_applicant_spouse_nationality',
+                'joint_applicant_spouse_residential_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.joint_applicant_spouse_nric_full():
+                    error_msg_list.append('joint_applicant_spouse_nric_num')
+            else:
+                if not self.get_joint_applicant_spouse_fin_full():
+                    error_msg_list.append('joint_applicant_spouse_fin_num')
+                if not self.get_joint_applicant_spouse_passport_full():
+                    error_msg_list.append('joint_applicant_spouse_passport_num')
+                if not self.joint_applicant_spouse_passport_date:
+                    error_msg_list.append('joint_applicant_spouse_passport_date')
+            
+        return error_msg_list
+
 class EmployerIncome(models.Model):
     employer = models.OneToOneField(
         Employer,
