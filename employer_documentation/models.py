@@ -1350,6 +1350,11 @@ class EmployerJointApplicant(models.Model):
             
         return error_msg_list
 
+    def details_missing_joint_applicant(self):
+        error_msg_list = []
+        error_msg_list += self.details_missing_joint_applicant_spouse()
+        return error_msg_list
+
 class EmployerIncome(models.Model):
     employer = models.OneToOneField(
         Employer,
