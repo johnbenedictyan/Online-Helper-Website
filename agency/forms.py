@@ -10,14 +10,13 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML, Field
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
-from onlinemaid.constants import TrueFalseChoices
-from .constants import OpeningHoursTypeChoices, OpeningHoursChoices
+from employer_documentation.models import EmployerDoc
+from .constants import OpeningHoursTypeChoices
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
-    AgencyOwner, PotentialAgency
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner, PotentialAgency
 )
 
 # Start of Forms
@@ -678,6 +677,14 @@ class AgencyEmployeeForm(forms.ModelForm):
             if old_agency_employee_group != new_agency_employee_group:
                 old_agency_employee_group.user_set.remove(employee.user)
                 new_agency_employee_group.user_set.add(employee.user)
+
+            if self.changed_data:
+                if 'name' in self.changed_data or 'ea_personnel_number' in self.changed_data:
+                    employer_doc_qs = EmployerDoc.objects.filter(
+                        employer__agency_employee=self.instance
+                    )
+                    for employer_doc in employer_doc_qs:
+                        employer_doc.increment_version_number()
 
         else:
             try:
