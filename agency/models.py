@@ -600,6 +600,16 @@ class AgencyEmployee(models.Model):
     def get_ea_personnel_no(self):
         return self.ea_personnel_number
     
+    def get_all_ea_personnel_no_in_branch(self):
+        if self.role == AgencyEmployeeRoleChoices.MANAGER:
+            return list(
+                AgencyEmployee.objects.filter(
+                    branch=self.branch
+                ).values_list(
+                    'ea_personnel_number',
+                    flat=True
+                )
+            )
     class Meta:
         verbose_name = 'Agency Employee'
         verbose_name_plural = 'Agency Employees'

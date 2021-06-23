@@ -5,7 +5,7 @@ from itertools import chain
 
 # Imports from django
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -41,7 +41,7 @@ from maid.models import (
 
 from payment.models import Customer, Subscription
 
-from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, AG_ADMIN_STAFF
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
 # Imports from local app
@@ -53,8 +53,7 @@ from .filters import (
 # Start of Views
 
 # Template Views
-class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                        TemplateView):
+class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
     template_name = 'base/dashboard-home-page.html'
     authority = ''
     agency_id = ''
@@ -243,9 +242,21 @@ class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        return EmployerDoc.objects.filter(
+        qs = EmployerDoc.objects.filter(
             employer__agency_employee__agency__pk = self.agency_id
         )
+        queryset_dict = {
+            AG_OWNERS: qs,
+            AG_ADMINS: qs,
+            AG_MANAGERS: qs.filter(
+                employer__agency_employee__branch=self.request.user.agency_employee.branch
+            ),
+            AG_SALES: qs.filter(
+                employer__agency_employee=self.request.user.agency_employee
+            )
+        }
+        if self.authority in queryset_dict:
+            return queryset_dict[self.authority]
 
 class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'sales'
@@ -259,17 +270,44 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
     def get_queryset(self):
         qs = EmployerDoc.objects.filter(
             employer__agency_employee__agency__pk=self.agency_id
-        )	
-        return list(
-            chain(
+        )
+        queryset_dict = {
+            AG_OWNERS: chain(
                 qs,
                 ArchivedDoc.objects.filter(
                     agency_license_no=Agency.objects.get(
                         pk=self.agency_id
                     ).license_number
                 )
+            ),
+            AG_ADMINS: chain(
+                qs,
+                ArchivedDoc.objects.filter(
+                    agency_license_no=Agency.objects.get(
+                        pk=self.agency_id
+                    ).license_number
+                )
+            ),
+            AG_MANAGERS: chain(
+                qs.filter(
+                    employer__agency_employee__branch=self.request.user.agency_employee.branch
+                ),
+                ArchivedDoc.objects.filter(
+                    agency_employee_ea_personnel_number__in=self.request.user.agency_employee.get_all_ea_personnel_no_in_branch()
+                )
+            ),
+            AG_SALES: chain(
+                qs.filter(
+                    employer__agency_employee=self.request.user.agency_employee
+                ),
+                ArchivedDoc.objects.filter(
+                    agency_employee_ea_personnel_number=self.request.user.agency_employee.ea_personnel_number
+                )
             )
-        )
+        }
+        
+        if self.authority in queryset_dict:
+            return queryset_dict[self.authority]
 
 class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'statuses'
@@ -280,8 +318,22 @@ class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilte
     authority = ''
     agency_id = ''
 
-    # def get_queryset(self):
-    #     return Maid.objects.all()
+    def get_queryset(self):
+        qs = CaseStatus.objects.filter(
+            employer_doc__employer__agency_employee__agency__pk = self.agency_id
+        )
+        queryset_dict = {
+            AG_OWNERS: qs,
+            AG_ADMINS: qs,
+            AG_MANAGERS: qs.filter(
+                employer_doc__employer__agency_employee__branch=self.request.user.agency_employee.branch
+            ),
+            AG_SALES: qs.filter(
+                employer_doc__employer__agency_employee=self.request.user.agency_employee
+            )
+        }
+        if self.authority in queryset_dict:
+            return queryset_dict[self.authority]
 
 class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     # context_object_name = 'employers'

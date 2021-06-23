@@ -1,16 +1,12 @@
 # Django
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse, reverse_lazy, resolve
-from django.http import FileResponse, HttpResponseRedirect, JsonResponse, Http404
-from django.db.models import Q
+from django.http import FileResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import RedirectView
-from django.views.generic.list import ListView, View
+from django.views.generic.list import View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib import messages
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import get_object_or_404
 
 # From our apps
@@ -23,7 +19,9 @@ from .formset import (
 from .mixins import PdfHtmlViewMixin, CheckUserIsAgencyOwnerMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
-from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyAccessToEmployerDocAppMixin
+from agency.mixins import (
+    AgencyLoginRequiredMixin, GetAuthorityMixin, AgencyAccessToEmployerDocAppMixin
+)
 
 # Detail Views
 class EmployerDetailView(
