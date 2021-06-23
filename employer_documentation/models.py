@@ -488,15 +488,13 @@ class Employer(models.Model):
 
         if self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
             if hasattr(self, 'rn_sponsor_employer'):
-                # TODO: check complete
-                pass
+                error_msg_list += self.rn_sponsor_employer.details_missing_sponsors()
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
         elif self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             if hasattr(self, 'rn_ja_employer'):
-                # TODO: check complete
-                pass
+                error_msg_list += self.rn_ja_employer.details_missing_joint_applicant()
             else:
                 error_msg_list.append('rn_ja_employer')
 
