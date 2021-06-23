@@ -188,7 +188,12 @@ class EmployerJointApplicantCreateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if hasattr(self.object, 'rn_ja_employer'):
+        if not self.object.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            return HttpResponseRedirect(
+                reverse('employer_update_route', kwargs={
+                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
+            }))
+        elif hasattr(self.object, 'rn_ja_employer'):
             return HttpResponseRedirect(
                 reverse('employer_jointapplicant_update_route', kwargs={
                     self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
