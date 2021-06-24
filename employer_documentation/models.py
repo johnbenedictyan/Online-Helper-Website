@@ -1493,8 +1493,8 @@ class EmployerDoc(models.Model):
 
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
-        self.version += 1
-        super().save(*args, **kwargs)
+        # self.version += 1
+        # super().save(*args, **kwargs)
 
         # Create related CaseStatus object if it does not exist
         if not hasattr(self, 'rn_casestatus_ed'):
@@ -1812,6 +1812,11 @@ class EmployerDoc(models.Model):
                 'medical_report_pdf':self.rn_docupload_ed.medical_report_pdf
             }
         )
+
+    def increment_version_number(self):
+        self.rn_signatures_ed.erase_signatures()
+        self.version += 1
+        self.save()
 
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
@@ -2416,6 +2421,22 @@ class CaseSignature(models.Model):
         else:
             return None
 
+    def get_employer_signature(self):
+        if self.employer_signature_2:
+            return self.employer_signature_2
+        else:
+            return self.employer_signature_1
+
+    def erase_signatures(self):
+        self.employer_signature_1 = None if self.employer_signature_1 else self.employer_signature_1
+        self.fdw_signature = None if self.fdw_signature else self.fdw_signature
+        self.agency_staff_signature = None if self.agency_staff_signature else self.agency_staff_signature
+        self.employer_spouse_signature = None if self.employer_spouse_signature else self.employer_spouse_signature
+        self.sponsor_1_signature = None if self.sponsor_1_signature else self.sponsor_1_signature
+        self.sponsor_2_signature = None if self.sponsor_2_signature else self.sponsor_2_signature
+        self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
+        self.save()
+    
     # Verification Tokens
     token_employer_1 = models.BinaryField(
         blank=True,

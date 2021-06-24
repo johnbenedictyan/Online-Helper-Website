@@ -5,20 +5,17 @@ import uuid
 # Imports from django
 from django import forms
 from django.conf import settings
-from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Submit, Row, Column, HTML, Hidden, Button
-from crispy_forms.bootstrap import FormActions, PrependedText, StrictButton, UneditableField
+from crispy_forms.layout import Layout, Field, Submit, Row, Column, HTML, Hidden, Button
+from crispy_forms.bootstrap import PrependedText, StrictButton
 
 # Imports from local apps
+from agency.constants import AgencyEmployeeRoleChoices
 from . import models, constants
 from onlinemaid import constants as om_constants
 from onlinemaid import helper_functions
@@ -279,23 +276,26 @@ class EmployerForm(forms.ModelForm):
         if self.authority==om_constants.AG_OWNERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_owner.agency
+                    agency=self.user_obj.agency_owner.agency,
+                    role=AgencyEmployeeRoleChoices.SALES_STAFF
                 )
             )
         elif self.authority==om_constants.AG_ADMINS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_employee.agency
+                    agency=self.user_obj.agency_employee.agency,
+                    role=AgencyEmployeeRoleChoices.SALES_STAFF
                 )
             )
         elif self.authority==om_constants.AG_MANAGERS:
             self.fields['agency_employee'].queryset = (
                 AgencyEmployee.objects.filter(
-                    branch=self.user_obj.agency_employee.branch
+                    branch=self.user_obj.agency_employee.branch,
+                    role=AgencyEmployeeRoleChoices.SALES_STAFF
                 )
             )
         else:
-            del self.helper.layout.fields[2][0] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            del self.helper.layout.fields[2][0][0] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
     
     def check_queryset(self, queryset, error_msg):
@@ -577,6 +577,44 @@ class EmployerForm(forms.ModelForm):
                 return None
         else:
             return None
+
+    def save(self):
+        if self.changed_data:
+            employer_strict_fields = [
+                'employer_name',
+                'employer_gender',
+                'employer_mobile_number',
+                'employer_home_number',
+                'employer_email',
+                'employer_address_1',
+                'employer_address_2',
+                'employer_post_code',
+                'employer_date_of_birth',
+                'employer_nationality',
+                'employer_residential_status',
+                'employer_nric_num',
+                'employer_fin_num',
+                'employer_passport_num',
+                'employer_passport_date',
+                'employer_marital_status',
+                'employer_marriage_sg_registered',
+                'spouse_name',
+                'spouse_gender',
+                'spouse_date_of_birth',
+                'spouse_nationality',
+                'spouse_residential_status',
+                'spouse_nric_num',
+                'spouse_fin_num',
+                'spouse_passport_num',
+                'spouse_passport_date',
+            ]
+            if not set(employer_strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    employer=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
 
 class EmployerSponsorForm(forms.ModelForm):
     class Meta:
@@ -1428,6 +1466,65 @@ class EmployerSponsorForm(forms.ModelForm):
             return None
 
 
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'sponsor_1_relationship',
+                'sponsor_1_name',
+                'sponsor_1_gender',
+                'sponsor_1_date_of_birth',
+                'sponsor_1_nric_num',
+                'sponsor_1_nationality',
+                'sponsor_1_residential_status',
+                'sponsor_1_mobile_number',
+                'sponsor_1_email',
+                'sponsor_1_address_1',
+                'sponsor_1_address_2',
+                'sponsor_1_post_code',
+                'sponsor_1_marital_status',
+                'sponsor_1_marriage_sg_registered',
+                'sponsor_1_spouse_name',
+                'sponsor_1_spouse_gender',
+                'sponsor_1_spouse_date_of_birth',
+                'sponsor_1_spouse_nationality',
+                'sponsor_1_spouse_residential_status',
+                'sponsor_1_spouse_nric_num',
+                'sponsor_1_spouse_fin_num',
+                'sponsor_1_spouse_passport_num',
+                'sponsor_1_spouse_passport_date',
+                'sponsor_2_required',
+                'sponsor_2_relationship',
+                'sponsor_2_name',
+                'sponsor_2_gender',
+                'sponsor_2_date_of_birth',
+                'sponsor_2_nric_num',
+                'sponsor_2_nationality',
+                'sponsor_2_residential_status',
+                'sponsor_2_mobile_number',
+                'sponsor_2_email',
+                'sponsor_2_address_1',
+                'sponsor_2_address_2',
+                'sponsor_2_post_code',
+                'sponsor_2_marital_status',
+                'sponsor_2_marriage_sg_registered',
+                'sponsor_2_spouse_name',
+                'sponsor_2_spouse_gender',
+                'sponsor_2_spouse_date_of_birth',
+                'sponsor_2_spouse_nationality',
+                'sponsor_2_spouse_residential_status',
+                'sponsor_2_spouse_nric_num',
+                'sponsor_2_spouse_fin_num',
+                'sponsor_2_spouse_passport_num',
+                'sponsor_2_spouse_passport_date'
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    employer__rn_sponsor_employer=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
+
 class EmployerJointApplicantForm(forms.ModelForm):
     class Meta:
         model = models.EmployerJointApplicant
@@ -1709,6 +1806,39 @@ class EmployerJointApplicantForm(forms.ModelForm):
         else:
             return None
 
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'joint_applicant_relationship',
+                'joint_applicant_name',
+                'joint_applicant_gender',
+                'joint_applicant_date_of_birth',
+                'joint_applicant_nric_num',
+                'joint_applicant_nationality',
+                'joint_applicant_residential_status',
+                'joint_applicant_address_1',
+                'joint_applicant_address_2',
+                'joint_applicant_post_code',
+                'joint_applicant_marital_status',
+                'joint_applicant_marriage_sg_registered',
+                'joint_applicant_spouse_name',
+                'joint_applicant_spouse_gender',
+                'joint_applicant_spouse_date_of_birth',
+                'joint_applicant_spouse_nationality',
+                'joint_applicant_spouse_residential_status',
+                'joint_applicant_spouse_nric_num',
+                'joint_applicant_spouse_fin_num',
+                'joint_applicant_spouse_passport_num',
+                'joint_applicant_spouse_passport_date'
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    employer__rn_ja_employer=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
+
 class EmployerIncomeDetailsForm(forms.ModelForm):
     class Meta:
         model = models.EmployerIncome
@@ -1761,6 +1891,20 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                 )
             )
         )
+
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'worked_in_sg',
+                'monthly_income',
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    employer__rn_income_employer=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
 
 class EmployerHouseholdDetailsForm(forms.ModelForm):
     class Meta:
@@ -1989,6 +2133,20 @@ class EmployerDocForm(forms.ModelForm):
                 )
             )
         )
+
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'case_ref_no',
+                'agreement_date',
+                'fdw_salary',
+                'fdw_loan',
+                'fdw_off_days',
+                'fdw_off_day_of_week'
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                self.instance.increment_version_number()
+        return super().save()
 
 class DocServiceFeeScheduleForm(forms.ModelForm):
     class Meta:
@@ -2261,6 +2419,43 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         else:
             return cleaned_field
 
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'is_new_case',
+                'fdw_replaced_name',
+                'fdw_replaced_passport_num',
+                'fdw_replaced_passport_nonce',
+                'fdw_replaced_passport_tag',
+                'b4_loan_transferred',
+                'b1_service_fee',
+                'b2a_work_permit_application_collection',
+                'b2b_medical_examination_fee',
+                'b2c_security_bond_accident_insurance',
+                'b2d_indemnity_policy_reimbursement',
+                'b2e_home_service',
+                'b2f_sip',
+                'b2g1_other_services_description',
+                'b2g1_other_services_fee',
+                'b2g2_other_services_description',
+                'b2g2_other_services_fee',
+                'b2g3_other_services_description',
+                'b2g3_other_services_fee',
+                'b2h_replacement_months',
+                'b2h_replacement_cost',
+                'b2i_work_permit_renewal',
+                'b3_agency_fee',
+                'ca_deposit_amount',
+                'ca_deposit_date'
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    rn_servicefeeschedule_ed=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
+
 class DocServAgmtEmpCtrForm(forms.ModelForm):
     class Meta:
         model = models.DocServAgmtEmpCtr
@@ -2450,6 +2645,41 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             )
         )
 
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'c1_3_handover_days',
+                'c3_2_no_replacement_criteria_1',
+                'c3_2_no_replacement_criteria_2',
+                'c3_2_no_replacement_criteria_3',
+                'c3_4_no_replacement_refund',
+                'c4_1_number_of_replacements',
+                'c4_1_replacement_period',
+                'c4_1_replacement_after_min_working_days',
+                'c4_1_5_replacement_deadline',
+                'c5_1_1_deployment_deadline',
+                'c5_1_1_failed_deployment_refund',
+                'c5_1_2_refund_within_days',
+                'c5_1_2_before_fdw_arrives_charge',
+                'c5_1_2_after_fdw_arrives_charge',
+                'c5_2_2_can_transfer_refund_within',
+                'c5_3_2_cannot_transfer_refund_within',
+                'c6_4_per_day_food_accommodation_cost',
+                'c6_6_per_session_counselling_cost',
+                'c9_1_independent_mediator_1',
+                'c9_2_independent_mediator_2',
+                'c13_termination_notice',
+                'c3_5_fdw_sleeping_arrangement',
+                'c4_1_termination_notice'
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    rn_serviceagreement_ed=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
+
 class DocSafetyAgreementForm(forms.ModelForm):
     class Meta:
         model = models.DocSafetyAgreement
@@ -2593,6 +2823,24 @@ class DocSafetyAgreementForm(forms.ModelForm):
             )
         
         return self.cleaned_data
+
+    def save(self):
+        if self.changed_data:
+            strict_fields = [
+                'residential_dwelling_type',
+                'fdw_clean_window_exterior',
+                'window_exterior_location',
+                'grilles_installed_require_cleaning',
+                'adult_supervision',
+                'verifiy_employer_understands_window_cleaning'
+            ]
+            if not set(strict_fields).isdisjoint(self.changed_data):
+                employer_doc_qs = models.EmployerDoc.objects.filter(
+                    rn_safetyagreement_ed=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+        return super().save()
 
 # Temporary solution to blank out S3 bucket URL
 from django.forms.widgets import ClearableFileInput

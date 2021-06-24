@@ -3,19 +3,16 @@ import re
 
 # Imports from django
 from django import forms
-from django.forms import formset_factory, inlineformset_factory, HiddenInput
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project-wide files
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import validate_fin
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
-from crispy_forms.bootstrap import PrependedText, AppendedText, InlineCheckboxes
 from agency.models import Agency
 
 # Imports from local apps
@@ -34,6 +31,31 @@ from .models import (
     MaidEmploymentHistory, MaidLanguageProficiency
 )
 from agency.models import Agency
+from employer_documentation.models import EmployerDoc
+
+# Utility functions
+def validate_passport_number(cleaned_field, max_length=None):
+    if not isinstance(cleaned_field, str):
+        raise ValidationError('Must be a string')
+
+    if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+        raise ValidationError('Can only enter letters or numbers')
+
+    if max_length:
+        if len(cleaned_field)>max_length:
+            raise ValidationError(f'Must not exceed {max_length} characters')
+
+def validate_fin_number(cleaned_field, max_length=None):
+    if not isinstance(cleaned_field, str):
+        raise ValidationError('Must be a string')
+
+    if not re.match('^[A-Za-z0-9]*$', cleaned_field):
+        raise ValidationError('Can only enter letters or numbers')
+
+    if max_length:
+        if len(cleaned_field)>max_length:
+            raise ValidationError(f'Must not exceed {max_length} characters')
+
 from onlinemaid.helper_functions import encrypt_string, decrypt_string, validate_nric, validate_fin, validate_passport
 from .widgets import CustomDateInput
 
@@ -67,6 +89,7 @@ class MaidForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.FIELD_MAXLENGTH = 20
         self.initial.update({'passport_number': self.instance.get_passport_number()})
+        self.initial.update({'fin_number': self.instance.get_fin_number()})
                 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -219,15 +242,12 @@ class MaidForm(forms.ModelForm):
                     'passport_expiry',
                     css_class='form-group col-md-6'
                 ),
-                css_class='form-row form-group'
-            ),
-            Row(
                 Column(
                     Field(
                         'fin_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-12'
+                    css_class='form-group col-md-6'
                 ),
                 css_class='form-row form-group'
             ),
@@ -296,6 +316,18 @@ class MaidForm(forms.ModelForm):
         self.instance.agency = Agency.objects.get(
             pk=self.agency_id
         )
+        if self.changed_data:
+            if (
+                'name' in self.changed_data or 
+                'passport_number' in self.changed_data or 
+                'country_of_origin' in self.changed_data
+            ):
+                employer_doc_qs = EmployerDoc.objects.filter(
+                    fdw=self.instance
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+            #TODO: Implement version incrementing
         return super().save(*args, **kwargs)
     
 class MaidLanguageSpokenForm(forms.Form):

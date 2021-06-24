@@ -116,6 +116,17 @@ class Agency(models.Model):
         editable=False
     )
 
+    __original_branch_address_line_1 = None
+    __original_branch_address_line_2 = None
+    __original_branch_postal_code = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        main_branch = self.get_main_branch()
+        self.__original_branch_address_line_1 = main_branch.address_1
+        self.__original_branch_address_line_2 = main_branch.address_2
+        self.__original_branch_postal_code = main_branch.postal_code
+
     def __str__(self):
         return self.name
 
@@ -589,6 +600,16 @@ class AgencyEmployee(models.Model):
     def get_ea_personnel_no(self):
         return self.ea_personnel_number
     
+    def get_all_ea_personnel_no_in_branch(self):
+        if self.role == AgencyEmployeeRoleChoices.MANAGER:
+            return list(
+                AgencyEmployee.objects.filter(
+                    branch=self.branch
+                ).values_list(
+                    'ea_personnel_number',
+                    flat=True
+                )
+            )
     class Meta:
         verbose_name = 'Agency Employee'
         verbose_name_plural = 'Agency Employees'

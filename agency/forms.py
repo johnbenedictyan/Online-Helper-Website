@@ -10,14 +10,13 @@ from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML, Field
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Imports from local apps
-from onlinemaid.constants import TrueFalseChoices
-from .constants import OpeningHoursTypeChoices, OpeningHoursChoices
+from employer_documentation.models import EmployerDoc
+from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
-    AgencyOwner, PotentialAgency
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner, PotentialAgency
 )
 
 # Start of Forms
@@ -622,6 +621,7 @@ class AgencyEmployeeForm(forms.ModelForm):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
         password = cleaned_data.get("password")
+        role = cleaned_data.get('role')
         UserModel = get_user_model()
 
         try:
@@ -639,6 +639,12 @@ class AgencyEmployeeForm(forms.ModelForm):
             if validate_password(password):
                 msg = _('This password does not meet our requirements')
                 self.add_error('password', msg)
+                
+        ea_personnel_number = cleaned_data.get('ea_personnel_number')
+        if role == AgencyEmployeeRoleChoices.SALES_STAFF:
+            if not ea_personnel_number:
+                msg = _('EA Personnle Number is required')
+                self.add_error('ea_personnel_number', msg)
                 
             
         return cleaned_data
@@ -679,6 +685,14 @@ class AgencyEmployeeForm(forms.ModelForm):
                 old_agency_employee_group.user_set.remove(employee.user)
                 new_agency_employee_group.user_set.add(employee.user)
 
+            if self.changed_data:
+                if 'name' in self.changed_data or 'ea_personnel_number' in self.changed_data:
+                    employer_doc_qs = EmployerDoc.objects.filter(
+                        employer__agency_employee=self.instance
+                    )
+                    for employer_doc in employer_doc_qs:
+                        employer_doc.increment_version_number()
+
         else:
             try:
                 new_user = get_user_model().objects.create_user(
@@ -695,6 +709,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                     new_user
                 )
                 self.instance.user = new_user
+
         self.instance.name = cleaned_data.get('name')
         self.instance.contact_number = cleaned_data.get('contact_number')
         self.instance.ea_personnel_number = cleaned_data.get(
@@ -726,11 +741,14 @@ class AgencyBranchForm(forms.ModelForm):
                 msg = _('You must have at least one main branch')
                 self.add_error('main_branch', msg)
         else:
-            if main_branch == True and branch_name != current_main_branch.name:
-                msg = _(f"""
-                    {current_main_branch} is already set as the main branch
-                """)
-                self.add_error('main_branch', msg)
+            if AgencyBranch.objects.filter(
+                agency=self.agency
+            ).count() >= 2:
+                if main_branch == True and branch_name != current_main_branch.name:
+                    msg = _(f"""
+                        {current_main_branch} is already set as the main branch
+                    """)
+                    self.add_error('main_branch', msg)
 
         return cleaned_data
 
@@ -768,6 +786,19 @@ class AgencyBranchForm(forms.ModelForm):
                 self.instance.area = k
 
         self.instance.agency = self.agency
+
+        main_branch = cleaned_data.get("main_branch")
+        if main_branch == True:
+            if not (
+                self.agency.get_main_branch() == self.instance and 
+                not('address_1' in self.changed_data or 'address_2' in self.changed_data)
+            ):
+                employer_doc_qs = EmployerDoc.objects.filter(
+                    employer__agency_employee__agency=self.agency
+                )
+                for employer_doc in employer_doc_qs:
+                    employer_doc.increment_version_number()
+            
         return super().save(*args, **kwargs)
 
     def __init__(self, *args, **kwargs):
