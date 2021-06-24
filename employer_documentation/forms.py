@@ -1726,38 +1726,85 @@ class EmployerJointApplicantForm(forms.ModelForm):
     def clean_joint_applicant_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_nric_num')
         error_msg = helper_functions.validate_nric(cleaned_field)
-        if error_msg:
-            raise ValidationError(error_msg)
+        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
+            if spouse_residential_status==constants.ResidentialStatusFullChoices.SC or spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+                empty_field = _("NRIC field cannot be empty")
+                error_msg = empty_field if not cleaned_field else None
+                if error_msg:
+                    raise ValidationError(error_msg)
+                else:
+                    ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = helper_functions.encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    return ciphertext
+            else:
+                return None
         else:
-            ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = helper_functions.encrypt_string(
-                cleaned_field,
-                settings.ENCRYPTION_KEY
-            )
-            return ciphertext
+            return None
 
     def clean_joint_applicant_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_fin_num')
         error_msg = helper_functions.validate_fin(cleaned_field)
-        if error_msg:
-            raise ValidationError(error_msg)
+        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
+            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+                empty_field = _("FIN field cannot be empty")
+                error_msg = empty_field if not cleaned_field else None
+                if error_msg:
+                    raise ValidationError(error_msg)
+                else:
+                    ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = helper_functions.encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    return ciphertext
+            else:
+                return None
         else:
-            ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = helper_functions.encrypt_string(
-                cleaned_field,
-                settings.ENCRYPTION_KEY
-            )
-            return ciphertext
+            return None
 
     def clean_joint_applicant_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_num')
         error_msg = helper_functions.validate_passport(cleaned_field)
-        if error_msg:
-            raise ValidationError(error_msg)
+        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
+            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+                empty_field = _("Passport field cannot be empty")
+                error_msg = empty_field if not cleaned_field else None
+                if error_msg:
+                    raise ValidationError(error_msg)
+                else:
+                    ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = helper_functions.encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    return ciphertext
+            else:
+                return None
         else:
-            ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = helper_functions.encrypt_string(
-                cleaned_field,
-                settings.ENCRYPTION_KEY
-            )
-            return ciphertext
+            return None
+
+    def clean_joint_applicant_spouse_passport_date(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_date')
+        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
+        if marital_status==constants.MaritalStatusChoices.MARRIED:
+            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
+            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+                empty_field = _("Passport expiry date field cannot be empty")
+                error_msg = empty_field if not cleaned_field else None
+                if error_msg:
+                    raise ValidationError(error_msg)
+                else:
+                    return cleaned_field
+            else:
+                return None
+        else:
+            return None
 
     def save(self):
         if self.changed_data:
