@@ -34,20 +34,7 @@ from .models import (
     MaidEmploymentHistory, MaidLanguageProficiency
 )
 from agency.models import Agency
-from onlinemaid.helper_functions import encrypt_string, decrypt_string
-
-# Utility functions
-def validate_passport_number(cleaned_field, max_length=None):
-    if not isinstance(cleaned_field, str):
-        raise ValidationError('Must be a string')
-
-    if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-        raise ValidationError('Can only enter letters or numbers')
-
-    if max_length:
-        if len(cleaned_field)>max_length:
-            raise ValidationError(f'Must not exceed {max_length} characters')
-
+from onlinemaid.helper_functions import encrypt_string, decrypt_string, validate_nric, validate_fin, validate_passport
 from .widgets import CustomDateInput
 
 # Start of Forms
@@ -279,29 +266,31 @@ class MaidForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('passport_number')
 
         # If form errors then raise ValidationError, else continue
-        validate_passport_number(cleaned_field, self.FIELD_MAXLENGTH)
-
-        # Encryption
-        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-
-        return ciphertext
+        error_msg = validate_passport(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            # Encryption
+            ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY,
+            )
+            return ciphertext
 
     def clean_fin_number(self):
         cleaned_field = self.cleaned_data.get('fin_number')
 
         # If form errors then raise ValidationError, else continue
-        validate_fin(cleaned_field, self.FIELD_MAXLENGTH)
-
-        # Encryption
-        ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-
-        return ciphertext
+        error_msg = validate_fin(cleaned_field)
+        if error_msg:
+            raise ValidationError(error_msg)
+        else:
+            # Encryption
+            ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY,
+            )
+            return ciphertext
 
     def save(self, *args, **kwargs):
         self.instance.agency = Agency.objects.get(

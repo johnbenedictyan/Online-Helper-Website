@@ -488,15 +488,13 @@ class Employer(models.Model):
 
         if self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
             if hasattr(self, 'rn_sponsor_employer'):
-                # TODO: check complete
-                pass
+                error_msg_list += self.rn_sponsor_employer.details_missing_sponsors()
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
         elif self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             if hasattr(self, 'rn_ja_employer'):
-                # TODO: check complete
-                pass
+                error_msg_list += self.rn_ja_employer.details_missing_joint_applicant()
             else:
                 error_msg_list.append('rn_ja_employer')
 
@@ -1017,28 +1015,97 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_tag,
         )
 
-    def details_missing_sponsor_2(self):
+    def details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_2_required:
+        if self.sponsor_2_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
             mandatory_fields = [
+                'sponsor_2_spouse_name',
+                'sponsor_2_spouse_gender',
+                'sponsor_2_spouse_date_of_birth',
+                'sponsor_2_spouse_nationality',
+                'sponsor_2_spouse_residential_status',
             ]
 
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(field)
             
-            if self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
-                if not self.get_sponsor_2_nric_full():
-                    error_msg_list.append('sponsor_2_nric_num')
+            if self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_sponsor_2_spouse_nric_full():
+                    error_msg_list.append('sponsor_2_spouse_nric_num')
             else:
-                if not self.get_sponsor_2_fin_full():
-                    error_msg_list.append('sponsor_2_fin_num')
-                if not self.get_sponsor_2_passport_full():
-                    error_msg_list.append('sponsor_2_passport_num')
-                if not self.sponsor_2_passport_date:
-                    error_msg_list.append('sponsor_2_passport_date')
+                if not self.get_sponsor_2_spouse_fin_full():
+                    error_msg_list.append('sponsor_2_spouse_fin_num')
+                if not self.get_sponsor_2_spouse_passport_full():
+                    error_msg_list.append('sponsor_2_spouse_passport_num')
+                if not self.sponsor_2_spouse_passport_date:
+                    error_msg_list.append('sponsor_2_spouse_passport_date')
             
+        return error_msg_list
+
+    def details_missing_sponsor_2(self):
+        error_msg_list = []
+
+        if self.sponsor_2_required:
+            mandatory_fields = [
+                'sponsor_2_relationship',
+                'sponsor_2_name',
+                'sponsor_2_gender',
+                'sponsor_2_date_of_birth',
+                'sponsor_2_nationality',
+                'sponsor_2_residential_status',
+                'sponsor_2_mobile_number',
+                'sponsor_2_email',
+                'sponsor_2_address_1',
+                'sponsor_2_post_code',
+                'sponsor_2_marital_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(f'rn_sponsor_employer.{field}')
+            
+            if not self.get_sponsor_2_nric_full():
+                error_msg_list.append('rn_sponsor_employer.sponsor_2_nric_num')
+
+            error_msg_list += self.details_missing_sponsor_2_spouse()
+
+        return error_msg_list
+
+    def details_missing_sponsor_1_spouse(self):
+        error_msg_list = []
+
+        if self.sponsor_1_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+            mandatory_fields = [
+                'sponsor_1_spouse_name',
+                'sponsor_1_spouse_gender',
+                'sponsor_1_spouse_date_of_birth',
+                'sponsor_1_spouse_nationality',
+                'sponsor_1_spouse_residential_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.get_sponsor_1_spouse_nric_full():
+                    error_msg_list.append('sponsor_1_spouse_nric_num')
+            else:
+                if not self.get_sponsor_1_spouse_fin_full():
+                    error_msg_list.append('sponsor_1_spouse_fin_num')
+                if not self.get_sponsor_1_spouse_passport_full():
+                    error_msg_list.append('sponsor_1_spouse_passport_num')
+                if not self.sponsor_1_spouse_passport_date:
+                    error_msg_list.append('sponsor_1_spouse_passport_date')
+            
+        return error_msg_list
+
+    def details_missing_sponsors(self):
+        error_msg_list = []
+        error_msg_list += self.details_missing_sponsor_1_spouse()
+        error_msg_list += self.details_missing_sponsor_2()
         return error_msg_list
 
 ## Joint Applicants
@@ -1252,6 +1319,52 @@ class EmployerJointApplicant(models.Model):
             self.joint_applicant_spouse_passport_tag,
         )
 
+    def details_missing_joint_applicant_spouse(self):
+        error_msg_list = []
+
+        if self.joint_applicant_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+            mandatory_fields = [
+                'joint_applicant_spouse_name',
+                'joint_applicant_spouse_gender',
+                'joint_applicant_spouse_date_of_birth',
+                'joint_applicant_spouse_nationality',
+                'joint_applicant_spouse_residential_status',
+            ]
+
+            for field in mandatory_fields:
+                if not getattr(self, field):
+                    error_msg_list.append(field)
+            
+            if self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+                if not self.joint_applicant_spouse_nric_full():
+                    error_msg_list.append('joint_applicant_spouse_nric_num')
+            else:
+                if not self.get_joint_applicant_spouse_fin_full():
+                    error_msg_list.append('joint_applicant_spouse_fin_num')
+                if not self.get_joint_applicant_spouse_passport_full():
+                    error_msg_list.append('joint_applicant_spouse_passport_num')
+                if not self.joint_applicant_spouse_passport_date:
+                    error_msg_list.append('joint_applicant_spouse_passport_date')
+            
+        return error_msg_list
+
+    def details_missing_joint_applicant(self):
+        error_msg_list = []
+        
+        if self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if not self.get_joint_applicant_nric_full():
+                error_msg_list.append('joint_applicant_nric_num')
+        else:
+            if not self.get_joint_applicant_fin_full():
+                error_msg_list.append('joint_applicant_fin_num')
+            if not self.get_joint_applicant_passport_full():
+                error_msg_list.append('joint_applicant_passport_num')
+            if not self.joint_applicant_passport_date:
+                error_msg_list.append('joint_applicant_passport_date')
+        
+        error_msg_list += self.details_missing_joint_applicant_spouse()
+        return error_msg_list
+
 class EmployerIncome(models.Model):
     employer = models.OneToOneField(
         Employer,
@@ -1457,8 +1570,8 @@ class EmployerDoc(models.Model):
         if not self.fdw.get_passport_number():
             error_msg_list.append('fdw.passport_number')
 
-        if not self.fdw.work_permit: # TODO: will change to FIN
-            error_msg_list.append('fdw.work_permit')
+        if not self.fdw.get_fdw_fin_full():
+            error_msg_list.append('fdw.fin_number')
         
         return error_msg_list
 
