@@ -7,11 +7,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView, UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView
 
 # 3rd party
 
@@ -19,20 +20,15 @@ from django.views.generic.edit import FormView, UpdateView, DeleteView
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
 # Imports from foreign installed apps
-from agency.models import Agency
-from agency.mixins import AgencyLoginRequiredMixin, GetAuthorityMixin
 from employer_documentation.mixins import PdfHtmlViewMixin
 
 # Imports from local app
 from .filters import MaidFilter
 from .mixins import SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
 
-from .forms import MaidExperienceForm, MaidLoanTransactionForm
+from .forms import MaidLoanTransactionForm
 
-from .models import (
-    Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidLoanTransaction
-)
+from .models import Maid, MaidLoanTransaction
 
 from .mixins import SpecificAgencyMaidLoginRequiredMixin
 
@@ -43,65 +39,52 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 # Form Views
 
 # Redirect Views
-class MaidTogglePublished(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
+class MaidRedirectView(RedirectView):
+    pk_url_kwarg = 'pk'
+
+    def get_object(self):
+        return get_object_or_404(
+            Maid,
+            pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+
+class MaidTogglePublished(MaidRedirectView):
     pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
-        try:
-            maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        except Maid.DoesNotExist:
-            messages.error(
-                self.request,
-                'This maid does not exist'
-            )
-        else:
-            maid.published = not maid.published
-            maid.save()
-            kwargs.pop(self.pk_url_kwarg)
-        finally:
-            return reverse_lazy(
-                'dashboard_maid_list'
-            )
+        maid = super().get_object()
+        maid.published = not maid.published
+        maid.save()
+        kwargs.pop(self.pk_url_kwarg)
+        return reverse_lazy(
+            'dashboard_maid_list'
+        )
 
-class MaidToggleFeatured(SpecificAgencyMaidLoginRequiredMixin, RedirectView):
+class MaidToggleFeatured(MaidRedirectView):
     pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
-        try:
-            maid = Maid.objects.get(
-                pk = self.kwargs.get(
-                    self.pk_url_kwarg
-                )
-            )
-        except Maid.DoesNotExist:
-            messages.error(
-                self.request,
-                'This maid does not exist'
-            )
-        else:
-            if maid.featured == False:
-                amt_of_featured = maid.agency.amount_of_featured_biodata
-                amt_allowed = maid.agency.amount_of_featured_biodata_allowed
-                if amt_of_featured < amt_allowed:
-                    maid.featured = not maid.featured
-                else:
-                    messages.warning(
-                        self.request,
-                        'You have reached the limit of featured biodata',
-                        extra_tags='error'
-                    )
-            else:
+        maid = super().get_object()
+        if maid.featured == False:
+            amt_of_featured = maid.agency.amount_of_featured_biodata
+            amt_allowed = maid.agency.amount_of_featured_biodata_allowed
+            if amt_of_featured < amt_allowed:
                 maid.featured = not maid.featured
-            maid.save()
-            kwargs.pop(self.pk_url_kwarg)
-        finally:
-            return reverse_lazy(
-                'dashboard_maid_list'
-            )
+            else:
+                messages.warning(
+                    self.request,
+                    'You have reached the limit of featured biodata',
+                    extra_tags='error'
+                )
+        else:
+            maid.featured = not maid.featured
+        maid.save()
+        kwargs.pop(self.pk_url_kwarg)
+        return reverse_lazy(
+            'dashboard_maid_list'
+        )
             
 # List Views
 class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
@@ -131,7 +114,6 @@ class MaidDetail(LoginRequiredMixin, DetailView):
         ).exclude(
             pk=self.object.pk
         ).distinct()
-        print(similar_maids.count())
         kwargs.update({
             'similar_maids': similar_maids
         })

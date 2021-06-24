@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block form %}
-    {% if url_name == 'employer_householddetails_update_route' or url_name == 'maid_inventory_update_route' %}
+    {% if url_name == 'employer_householddetails_route' or url_name == 'maid_inventory_route' %}
     <form method="post" enctype="multipart/form-data">
         {% crispy form helper %}
         <div class="row form-row">
@@ -11,13 +11,13 @@
             </div>
             <div class="col-12 my-2 text-center">
                 <input type="hidden" name="submitFlag" class="form-control" id="submitFlag">
-                {% if url_name == 'employer_householddetails_update_route' %}
+                {% if url_name == 'employer_householddetails_route' %}
                     {% if income_obj %}
                     <a href="{% url 'employer_incomedetails_update_route' level_0_pk %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
                     {% else %}
                     <a href="{% url 'employer_incomedetails_create_route' level_0_pk %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
                     {% endif %}
-                {% elif url_name == 'maid_inventory_update_route' %}
+                {% elif url_name == 'maid_inventory_route' %}
                 <a href="{% url 'safetyagreement_update_route' level_1_pk %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
                 {% else %}
                 <a href="#" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
@@ -30,7 +30,7 @@
     {% crispy form %}
     {% endif %}
 {% endblock form %}
-{% if url_name == 'employer_householddetails_update_route' or url_name == 'maid_inventory_update_route' %}
+{% if url_name == 'employer_householddetails_route' or url_name == 'maid_inventory_route' %}
 {% block extra_js %}
 <script>
     $(function(){

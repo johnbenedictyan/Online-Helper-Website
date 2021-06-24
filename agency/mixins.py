@@ -3,7 +3,7 @@
 # Imports from django
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
-from django.views.generic.detail import ContextMixin
+from django.views.generic.detail import SingleObjectMixin
 
 # Imports from other apps
 from onlinemaid.constants import (
@@ -158,7 +158,7 @@ class SpecificAgencyEmployeeLoginRequiredMixin(AgencyLoginRequiredMixin):
 
         return res
 
-class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
+class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''Access permission denied'''
     
     def dispatch(self, request, *args, **kwargs):
@@ -177,18 +177,18 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
                 agency_user_obj = None
             
             # Set employer object
-            test_obj = self.get_object()
-            if hasattr(test_obj, 'applicant_type'):
-                employer_obj = test_obj
-            elif hasattr(test_obj, 'employer'):
-                employer_obj = test_obj.employer
-            elif hasattr(test_obj, 'employer_doc'):
-                employer_obj = test_obj.employer_doc.employer
-            else:
-                employer_obj = None
+            employer_obj = None
+            test_obj = self.get_object() if agency_user_obj else None
+            if test_obj:
+                if hasattr(test_obj, 'applicant_type'):
+                    employer_obj = test_obj
+                elif hasattr(test_obj, 'employer'):
+                    employer_obj = test_obj.employer
+                elif hasattr(test_obj, 'employer_doc'):
+                    employer_obj = test_obj.employer_doc.employer
 
             # Check agency user permissions vs employer object
-            if employer_obj.agency_employee.agency == agency_user_obj.agency:
+            if employer_obj and employer_obj.agency_employee.agency == agency_user_obj.agency:
                 if self.authority == AG_OWNERS:
                     access_granted = True
                 elif self.authority == AG_ADMINS:
@@ -207,8 +207,14 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin, ContextMixin):
         if access_granted:
             return handler
         else:
-            # TODO: Handle no permission
-            pass
+            return self.handle_no_permission(request)
+
+class OwnerAccessToEmployerDocAppMixin(AgencyAccessToEmployerDocAppMixin):
+    permission_denied_message = '''Access permission denied'''
+    
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        return handler if self.authority==AG_OWNERS else self.handle_no_permission(request)
 
 class GetAuthorityMixin:
     authority = ''
