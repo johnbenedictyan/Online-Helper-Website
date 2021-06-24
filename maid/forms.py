@@ -32,31 +32,7 @@ from .models import (
 )
 from agency.models import Agency
 from employer_documentation.models import EmployerDoc
-
-# Utility functions
-def validate_passport_number(cleaned_field, max_length=None):
-    if not isinstance(cleaned_field, str):
-        raise ValidationError('Must be a string')
-
-    if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-        raise ValidationError('Can only enter letters or numbers')
-
-    if max_length:
-        if len(cleaned_field)>max_length:
-            raise ValidationError(f'Must not exceed {max_length} characters')
-
-def validate_fin_number(cleaned_field, max_length=None):
-    if not isinstance(cleaned_field, str):
-        raise ValidationError('Must be a string')
-
-    if not re.match('^[A-Za-z0-9]*$', cleaned_field):
-        raise ValidationError('Can only enter letters or numbers')
-
-    if max_length:
-        if len(cleaned_field)>max_length:
-            raise ValidationError(f'Must not exceed {max_length} characters')
-
-from onlinemaid.helper_functions import encrypt_string, decrypt_string, validate_nric, validate_fin, validate_passport
+from onlinemaid.helper_functions import encrypt_string, validate_fin, validate_passport
 from .widgets import CustomDateInput
 
 # Start of Forms

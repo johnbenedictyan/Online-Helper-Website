@@ -19,7 +19,9 @@ from .formset import (
 from .mixins import PdfHtmlViewMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
-from agency.mixins import AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, OwnerAccessToEmployerDocAppMixin
+from agency.mixins import (
+    AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, OwnerAccessToEmployerDocAppMixin
+)
 
 # Detail Views
 class EmployerDetailView(
@@ -51,7 +53,7 @@ class EmployerDocDetailView(
         })
         return context
       
-    def get(self, request, *args, **kwargs):
+    # def get(self, request, *args, **kwargs):
     #     response = super().get(request, *args, **kwargs)
     #     if not hasattr(self.object, 'rn_servicefeeschedule_ed'):
     #         return HttpResponseRedirect(
