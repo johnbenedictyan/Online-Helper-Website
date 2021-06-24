@@ -18,7 +18,7 @@
         <td>Name of Employer</td>
         <td>{{ object.employer.employer_name }} </td>
         <td></td>
-        <td>Name of FDW</td>
+        <td>Name of Maid</td>
         <td>{{ object.fdw.name }}</td>
     </tr>
     <tr>
@@ -48,7 +48,7 @@
         <td width="10%">Loan Repayment</td>
         <td width="12%">Salary Received</td>
         <td width="12%">Employer's Signature</td>
-        <td width="12%">FDW's Signature</td>
+        <td width="12%">Maid's Signature</td>
     </tr>
     {% for k,v in repayment_table.items %}
     <tr>
@@ -61,7 +61,7 @@
         <td>{% if v.loan_repaid %}({{ v.loan_repaid|intcomma }}){% else %}{{ v.loan_repaid|intcomma }}{% endif %}</td>
         <td>{{ v.salary_received|intcomma }}</td>
         <td>{% comment %}Employer's Signature{% endcomment %}</td>
-        <td>{% comment %}FDW's Signature{% endcomment %}</td>
+        <td>{% comment %}Maid's Signature{% endcomment %}</td>
     </tr>
     {% endfor %}
 </table>

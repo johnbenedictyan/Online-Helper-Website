@@ -1,13 +1,13 @@
 {% extends 'employer_documentation/pdf/00-base.html' %}
 {% load humanize %}
 
-{% block title %}{% if object.fdw_is_replacement %}Form B – Service & Fees Schedule For Replacement FDW{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
+{% block title %}{% if object.fdw_is_replacement %}Form B – Service & Fees Schedule For Replacement Maid{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
 
 {% block pdf_content %}
 
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
-<h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT FDW{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
+<h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT Maid{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
 <br>
 <div class="border--bottom"></div>
 <div>
@@ -24,10 +24,10 @@
             <td colspan="2"></td>
         </tr>
         <tr>
-            <th class="text-bold--600" colspan="2">A. &nbsp;Particulars of FDW</th>
+            <th class="text-bold--600" colspan="2">A. &nbsp;Particulars of Maid</th>
         </tr>
         <tr>
-            <td>Name of FDW</td>
+            <td>Name of Maid</td>
             <td>: {{ object.fdw.name }}</td>
         </tr>
         <tr>
@@ -168,14 +168,14 @@
         <tr>
             <td></td>
             <td>a.</td>
-            <td colspan="2">Agency fee charged on the FDW by the Agency</td>
+            <td colspan="2">Agency fee charged on the Maid by the Agency</td>
             <td></td>
             <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}</td>
         </tr>
         <tr>
             <td></td>
             <td>b.</td>
-            <td colspan="2">Personal loan incurred by FDW in overseas</td>
+            <td colspan="2">Personal loan incurred by Maid in overseas</td>
             <td></td>
             <td class="text-align-right border--bottom">{{ object.fdw_loan|intcomma }}</td>
         </tr>
@@ -190,7 +190,7 @@
             </tr>
             <tr>
                 <td>4.</td>
-                <td colspan="3">Loan Transfer from previous FDW</td>
+                <td colspan="3">Loan Transfer from previous Maid</td>
                 <td></td>
                 <td class="text-align-right">{% if object.rn_servicefeeschedule_ed.b4_loan_transferred %}{{ object.rn_servicefeeschedule_ed.b4_loan_transferred|intcomma }}{% else %}0.00{% endif %}</td>
             </tr>
@@ -214,7 +214,7 @@
         <tr>
             <td></td>
             <td width="2%">a.</td>
-            <td>Deposit – upon confirmation of FDW</td>
+            <td>Deposit – upon confirmation of Maid</td>
             <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }}</td>
         </tr>
         <tr>

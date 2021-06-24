@@ -59,7 +59,7 @@
         <col style="width:90%">
         <tr>
             <td colspan="1" class="text-bold--600">A.</td>
-            <td colspan="2" class="text-bold--600">Documents to be handed to FDW personally</td>
+            <td colspan="2" class="text-bold--600">Documents to be handed to Maid personally</td>
         </tr>
         <tr>
             <td></td>
@@ -79,7 +79,7 @@
         <tr>
             <td></td>
             <td>4)</td>
-            <td>FDW Biodata</td>
+            <td>Maid Biodata</td>
         </tr>
         <tr>
             <td></td>
@@ -94,12 +94,12 @@
         <tr>
             <td></td>
             <td>7)</td>
-            <td>FDW’s Passport</td>
+            <td>Maid’s Passport</td>
         </tr>
         <tr>
             <td></td>
             <td>8)</td>
-            <td>FDW’s Work Permit</td>
+            <td>Maid’s Work Permit</td>
         </tr>
         <tr><td colspan="3"><br></td></tr>
         <tr>
@@ -134,7 +134,7 @@
         <tr>
             <td></td>
             <td>6)</td>
-            <td>FDW Biodata</td>
+            <td>Maid Biodata</td>
         </tr>
         <tr>
             <td></td>
@@ -149,7 +149,7 @@
         <tr><td colspan="3"><br></td></tr>
         <tr>
             <td colspan="1" class="text-bold--600">C.</td>
-            <td colspan="2" class="text-bold--600">FDW Inventory</td>
+            <td colspan="2" class="text-bold--600">Maid Inventory</td>
         </tr>
         {% for inventory in object.rn_maid_inventory.all %}
         <tr>
@@ -162,7 +162,7 @@
     <br>
     <table>
         <tr>
-            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.name }} is the FDW selected by me and I take custody and responsibility of the FDW from this date.</td>
+            <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.name }} is the Maid selected by me and I take custody and responsibility of the Maid from this date.</td>
         </tr>
         
         <!-- {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %} -->
@@ -175,7 +175,7 @@
         <tr>
             <td class="text-bold--600">Employer’s Signature</td>
             <td></td>
-            <td class="text-bold--600">FDW's Signature</td>
+            <td class="text-bold--600">Maid's Signature</td>
         </tr>
         <tr>
             <td>{{ object.employer.employer_name }}</td>
