@@ -5,7 +5,7 @@
 {% block pdf_content %}
 {% include 'employer_documentation/pdf/00-header.html' %}
 <br>
-<h2 class="text-align-center">REST DAY AGREEMENT BETWEEN EMPLOYER AND FDW</h2>
+<h2 class="text-align-center">REST DAY AGREEMENT BETWEEN EMPLOYER AND Maid</h2>
 <br>
 <div class="border--bottom">
 </div>
@@ -38,7 +38,7 @@
     </tr>
     <tr>
         <td>(B)</td>
-        <td>Full Name of Foreign Domestic Worker ("FDW")</td>
+        <td>Full Name of Foreign Domestic Worker ("Maid")</td>
         <td>: {{ object.fdw.name }} </td>
     </tr>
     <tr>
@@ -53,10 +53,10 @@
         <th colspan="3" class="text-bold--600">Terms of Agreement</th>
     </tr>
     <tr>
-        <td colspan="3">This agreement is made between (a) the FDW and (b) the Employer in accordance with the Ministry of Manpower’s regulations on the provision of a weekly rest day for FDWs. Please refer to the Employment of Foreign Manpower (Work Passes) Regulations. of the Employment of Foreign Manpower Act (CHAPTER 91A).</td>
+        <td colspan="3">This agreement is made between (a) the Maid and (b) the Employer in accordance with the Ministry of Manpower’s regulations on the provision of a weekly rest day for FDWs. Please refer to the Employment of Foreign Manpower (Work Passes) Regulations. of the Employment of Foreign Manpower Act (CHAPTER 91A).</td>
     </tr>
     <tr>
-        <td colspan="3">It was agreed between the contracting parties that the abovementioned FDW is entitled to 1 rest day per week, on {{ object.fdw_off_day_of_week_display }}, with compensation of S${{ object.per_off_day_compensation|intcomma }} for each rest day forgone.</td>
+        <td colspan="3">It was agreed between the contracting parties that the abovementioned Maid is entitled to 1 rest day per week, on {{ object.fdw_off_day_of_week_display }}, with compensation of S${{ object.per_off_day_compensation|intcomma }} for each rest day forgone.</td>
     </tr>
     
     {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
@@ -71,7 +71,7 @@
         <td></td>
     </tr>
     <tr>
-        <td colspan="3">[For any subsequent variations that are agreed between the employer and FDW, the following record should be maintained]</td>
+        <td colspan="3">[For any subsequent variations that are agreed between the employer and Maid, the following record should be maintained]</td>
     </tr>
     <tr>
         <td colspan="3"><input type="checkbox" class="checkbox" />Rest day on _____________ (date) in lieu of rest day forgone on ______________ (date); or</td>
