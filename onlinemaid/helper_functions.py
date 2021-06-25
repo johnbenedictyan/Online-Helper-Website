@@ -51,7 +51,17 @@ def encrypt_string(plaintext, encryption_key):
     bytes_literal = plaintext.upper().encode('ascii')
 
     # Secret encryption key set in environment variables, does not change
-    key = encryption_key.encode('ascii')
+    '''
+    E.g. to generate 32 byte (256 bit) key, run following command in bash shell:
+    python3 -c "import secrets; print(secrets.token_hex(32))"
+
+    NOTE METHOD BELOW PRODUCES WEAKER KEYS AS IT DOES NOT USE HEX VALUES ABOVE 7F
+    NOTE Replace <32_char_hex_string> with encryption key in ASCII format
+    To convert to hex string to bytes, run following command in bash shell:
+    python3 -c "print('<32_char_hex_string>'.encode('ascii').hex())"
+    '''
+    key = bytes.fromhex(encryption_key)
+    # key = encryption_key.encode('ascii')
 
     # New nonce everytime
     nonce = get_random_bytes(32)
@@ -67,8 +77,8 @@ def encrypt_string(plaintext, encryption_key):
 def decrypt_string(ciphertext, encryption_key, nonce, tag):
     if ciphertext:
         try:
-            # cipher = AES.new(bytes.fromhex(encryption_key.replace(r'\x', '')), AES.MODE_GCM, nonce=nonce)
-            cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
+            cipher = AES.new(bytes.fromhex(encryption_key), AES.MODE_GCM, nonce=nonce)
+            # cipher = AES.new(encryption_key.encode('ascii'), AES.MODE_GCM, nonce=nonce)
             plaintext = cipher.decrypt_and_verify(ciphertext, tag).decode('ascii')
         except Exception:
             traceback.print_exc()
