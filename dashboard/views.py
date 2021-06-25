@@ -327,21 +327,26 @@ class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilte
     agency_id = ''
 
     def get_queryset(self):
-        qs = CaseStatus.objects.filter(
-            employer_doc__employer__agency_employee__agency__pk = self.agency_id
-        )
-        queryset_dict = {
-            AG_OWNERS: qs,
-            AG_ADMINS: qs,
-            AG_MANAGERS: qs.filter(
+        if self.authority==AG_OWNERS:
+            qs = CaseStatus.objects.filter(
+                employer_doc__employer__agency_employee__agency__pk = self.agency_id
+            )
+        elif self.authority==AG_ADMINS:
+            qs = CaseStatus.objects.filter(
+                employer_doc__employer__agency_employee__agency__pk = self.agency_id
+            )
+        elif self.authority==AG_MANAGERS:
+            qs = CaseStatus.objects.filter(
                 employer_doc__employer__agency_employee__branch=self.request.user.agency_employee.branch
-            ),
-            AG_SALES: qs.filter(
+            )
+        elif self.authority==AG_SALES:
+            qs = CaseStatus.objects.filter(
                 employer_doc__employer__agency_employee=self.request.user.agency_employee
             )
-        }
-        if self.authority in queryset_dict:
-            return queryset_dict[self.authority]
+        else:
+            qs = None
+        
+        return qs
 
 class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     # context_object_name = 'employers'
