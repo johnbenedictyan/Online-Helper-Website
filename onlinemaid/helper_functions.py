@@ -56,9 +56,9 @@ def encrypt_string(plaintext, encryption_key):
     python3 -c "import secrets; print(secrets.token_hex(32))"
 
     NOTE METHOD BELOW PRODUCES WEAKER KEYS AS IT DOES NOT USE HEX VALUES ABOVE 7F
-    NOTE Replace <32_char_hex_string> with encryption key in ASCII format
+    NOTE Replace <32_char_string> with encryption key in ASCII format
     To convert to hex string to bytes, run following command in bash shell:
-    python3 -c "print('<32_char_hex_string>'.encode('ascii').hex())"
+    python3 -c "print('<32_char_string>'.encode('ascii').hex())"
     '''
     key = bytes.fromhex(encryption_key)
     # key = encryption_key.encode('ascii')
