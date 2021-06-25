@@ -272,46 +272,50 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        qs = EmployerDoc.objects.filter(
-            employer__agency_employee__agency__pk=self.agency_id
-        )
-        queryset_dict = {
-            AG_OWNERS: chain(
-                qs,
+        if self.authority==AG_OWNERS:
+            qs = chain(
+                EmployerDoc.objects.filter(
+                    employer__agency_employee__agency__pk = self.agency_id
+                ),
                 ArchivedDoc.objects.filter(
                     agency_license_no=Agency.objects.get(
                         pk=self.agency_id
                     ).license_number
-                )
-            ),
-            AG_ADMINS: chain(
-                qs,
+                ),
+            )
+        elif self.authority==AG_ADMINS:
+            qs = chain(
+                EmployerDoc.objects.filter(
+                    employer__agency_employee__agency__pk = self.agency_id
+                ),
                 ArchivedDoc.objects.filter(
                     agency_license_no=Agency.objects.get(
                         pk=self.agency_id
                     ).license_number
-                )
-            ),
-            AG_MANAGERS: chain(
-                qs.filter(
+                ),
+            )
+        elif self.authority==AG_MANAGERS:
+            qs = chain(
+                EmployerDoc.objects.filter(
                     employer__agency_employee__branch=self.request.user.agency_employee.branch
                 ),
                 ArchivedDoc.objects.filter(
                     agency_employee_ea_personnel_number__in=self.request.user.agency_employee.get_all_ea_personnel_no_in_branch()
-                )
-            ),
-            AG_SALES: chain(
-                qs.filter(
+                ),
+            )
+        elif self.authority==AG_SALES:
+            qs = chain(
+                EmployerDoc.objects.filter(
                     employer__agency_employee=self.request.user.agency_employee
                 ),
                 ArchivedDoc.objects.filter(
                     agency_employee_ea_personnel_number=self.request.user.agency_employee.ea_personnel_number
-                )
+                ),
             )
-        }
+        else:
+            qs = None
         
-        if self.authority in queryset_dict:
-            return queryset_dict[self.authority]
+        return qs
 
 class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'statuses'
