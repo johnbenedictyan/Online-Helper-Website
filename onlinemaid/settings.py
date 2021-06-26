@@ -325,3 +325,9 @@ handler500 = 'website.views.Error500View'
 # Django Security
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+
+if DEBUG == False:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600
