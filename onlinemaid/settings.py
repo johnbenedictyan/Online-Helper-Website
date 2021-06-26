@@ -325,3 +325,5 @@ handler500 = 'website.views.Error500View'
 # Django Security
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
