@@ -8,7 +8,7 @@ from django.core.validators import RegexValidator, URLValidator
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
-from onlinemaid.helper_functions import get_sg_region
+from onlinemaid.helper_functions import get_sg_region, validate_ea_personnel_number
 from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
@@ -599,6 +599,12 @@ class AgencyEmployee(models.Model):
 
     def get_ea_personnel_no(self):
         return self.ea_personnel_number
+    
+    def is_ea_personnel_no_valid(self):
+        if validate_ea_personnel_number(self.ea_personnel_number):
+            return False
+        else:
+            return True
     
     def get_all_ea_personnel_no_in_branch(self):
         if self.role == AgencyEmployeeRoleChoices.MANAGER:
