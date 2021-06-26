@@ -3,7 +3,6 @@
 # Imports from django
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
-from django.views.generic.detail import SingleObjectMixin
 
 # Imports from other apps
 from onlinemaid.constants import (
