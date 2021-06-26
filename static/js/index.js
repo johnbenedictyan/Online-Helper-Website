@@ -381,3 +381,7 @@ $(function () {
     //     populateFeaturedMaids(nationality);
     // })
 });
+
+window.onload = () => {
+    $(".toast").toast('show');
+}
