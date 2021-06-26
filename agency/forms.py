@@ -654,9 +654,10 @@ class AgencyEmployeeForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
         role = cleaned_data.get('role')
         role_name_dict = {
-            'AA': 'Agency Administrators',
-            'AM': 'Agency Managers',
-            'AS': 'Agency Sales Staff'
+            'AD': 'Agency Administrators',
+            'MA': 'Agency Managers',
+            'SS': 'Agency Sales Staff',
+            'AM': 'Agency Admin Staff'
         }
         email = cleaned_data.get("email")
         
