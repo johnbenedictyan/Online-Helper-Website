@@ -274,26 +274,24 @@ class EmployerForm(forms.ModelForm):
         )
 
         if self.authority==om_constants.AG_OWNERS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_owner.agency,
-                    role=AgencyEmployeeRoleChoices.SALES_STAFF
-                )
+            qs = AgencyEmployee.objects.filter(
+                agency=self.user_obj.agency_owner.agency,
             )
+            q_pks = [obj.pk for obj in qs if obj.is_ea_personnel_no_valid()]
+            self.fields['agency_employee'].queryset = qs.filter(pk__in=q_pks)
         elif self.authority==om_constants.AG_ADMINS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    agency=self.user_obj.agency_employee.agency,
-                    role=AgencyEmployeeRoleChoices.SALES_STAFF
-                )
+            qs = AgencyEmployee.objects.filter(
+                agency=self.user_obj.agency_employee.agency,
             )
+            q_pks = [obj.pk for obj in qs if obj.is_ea_personnel_no_valid()]
+            self.fields['agency_employee'].queryset = qs.filter(pk__in=q_pks)
         elif self.authority==om_constants.AG_MANAGERS:
-            self.fields['agency_employee'].queryset = (
-                AgencyEmployee.objects.filter(
-                    branch=self.user_obj.agency_employee.branch,
-                    role=AgencyEmployeeRoleChoices.SALES_STAFF
-                )
+            qs = AgencyEmployee.objects.filter(
+                agency=self.user_obj.agency_employee.agency,
+                branch=self.user_obj.agency_employee.branch,
             )
+            q_pks = [obj.pk for obj in qs if obj.is_ea_personnel_no_valid()]
+            self.fields['agency_employee'].queryset = qs.filter(pk__in=q_pks)
         else:
             del self.helper.layout.fields[2][0][0] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
             del self.fields['agency_employee']
