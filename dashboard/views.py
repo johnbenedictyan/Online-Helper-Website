@@ -241,11 +241,7 @@ class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        if self.authority==AG_OWNERS:
-            qs = EmployerDoc.objects.filter(
-                employer__agency_employee__agency__pk = self.agency_id
-            )
-        elif self.authority==AG_ADMINS:
+        if self.authority==AG_OWNERS or self.authority==AG_ADMINS:
             qs = EmployerDoc.objects.filter(
                 employer__agency_employee__agency__pk = self.agency_id
             )
@@ -272,18 +268,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        if self.authority==AG_OWNERS:
-            qs = chain(
-                EmployerDoc.objects.filter(
-                    employer__agency_employee__agency__pk = self.agency_id
-                ),
-                ArchivedDoc.objects.filter(
-                    agency_license_no=Agency.objects.get(
-                        pk=self.agency_id
-                    ).license_number
-                ),
-            )
-        elif self.authority==AG_ADMINS:
+        if self.authority==AG_OWNERS or self.authority==AG_ADMINS:
             qs = chain(
                 EmployerDoc.objects.filter(
                     employer__agency_employee__agency__pk = self.agency_id
@@ -327,11 +312,7 @@ class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilte
     agency_id = ''
 
     def get_queryset(self):
-        if self.authority==AG_OWNERS:
-            qs = CaseStatus.objects.filter(
-                employer_doc__employer__agency_employee__agency__pk = self.agency_id
-            )
-        elif self.authority==AG_ADMINS:
+        if self.authority==AG_OWNERS or self.authority==AG_ADMINS:
             qs = CaseStatus.objects.filter(
                 employer_doc__employer__agency_employee__agency__pk = self.agency_id
             )
