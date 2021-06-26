@@ -48,7 +48,7 @@ urlpatterns = [
             path(
                 'agencies/',
                 TermsAndConditionsAgencyView.as_view(),
-                name='terms_and_conditions'
+                name='terms_and_conditions_agency'
             ),
             path(
                 'users/',

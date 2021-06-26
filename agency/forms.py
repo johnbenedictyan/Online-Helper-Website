@@ -1146,7 +1146,7 @@ class PotentialAgencyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['terms_and_conditions'].label = f'''
             I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
+            <a href="{reverse_lazy('terms_and_conditions_agency')}" target="_blank">
                 terms of service
             </a> 
             as well as the 
