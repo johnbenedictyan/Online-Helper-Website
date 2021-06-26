@@ -5,7 +5,7 @@ from itertools import chain
 
 # Imports from django
 from django.contrib import messages
-from django.http import JsonResponse, request
+from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -40,7 +40,7 @@ from maid.models import (
 
 from payment.models import Customer, Subscription
 
-from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, AG_ADMIN_STAFF
+from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
 # Imports from local app
