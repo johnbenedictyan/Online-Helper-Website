@@ -5,10 +5,8 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg">
-                <a class="logo-image-wrapper" href="{% url 'home' %}">
-                    <div>
-                        &nbsp;
-                    </div>
+                <a class="logo-image-wrapper" rel="canonical" href="{% url 'home' %}">
+                    <div>&nbsp;</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -128,30 +126,13 @@
                             </div>
                             <div class="col">
                                 <a href="{% url 'faq' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">FAQ</p></a>
-                                <a href="" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Enquiry</p></a>
+                                <a href="{% url 'general_enquiry' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Enquiry</p></a>
                                 <a href="{% url 'about_us' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">About Us</p></a>
                             </div>
                             <div class="col">
-                                <a href="{% url 'terms_and_conditions' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
+                                <a href="{% url 'terms_and_conditions_user' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
                                 <a href="{% url 'privacy_policy' %}" class="footer-link text-reset"><p class="fs-1 mb-1 mb-xl-2">Privacy Policy</p></a>
                             </div>
-                            <!-- <div class="col-10 col-md-4 col-lg-3 offset-md-1">
-                                <h5 class="mb-3">About Online Maid</h5>
-                                <p class="mb-1">
-                                    Online Maid is the leading platform in Singapore with the largest foreign domesitc worker (Maid) biodata database. Biodata are listed by employment agencies that are approved by Ministry of Manpower(MOM).
-                                </p>
-                                <div class="row d-none">
-                                    <div class="col-3">
-                                        <a href="" class="text-reset"><i class="fab fa-lg fa-facebook"></i></a>
-                                    </div>
-                                    <div class="col-3">
-                                        <a href="" class="text-reset"><i class="fab fa-lg fa-linkedin"></i></a>
-                                    </div>
-                                    <div class="col-3">
-                                        <a href="" class="text-reset"><i class="fab fa-lg fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="row">
                             <div class="col">

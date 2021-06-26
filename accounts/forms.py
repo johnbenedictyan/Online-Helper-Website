@@ -261,7 +261,7 @@ class EmployerCreationForm(forms.ModelForm):
                 self.fields[k].widget.attrs['placeholder'] = v
         self.fields['terms_and_conditions'].label = f'''
             I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
+            <a href="{reverse_lazy('terms_and_conditions_user')}" target="_blank">
                 terms of service
             </a> 
             as well as the 
