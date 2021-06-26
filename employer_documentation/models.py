@@ -1576,6 +1576,9 @@ class EmployerDoc(models.Model):
         return error_msg_list
 
     def archive(self):
+        # ArchivedAgencyDetails.objects.get_or_create(
+        #     id=
+        # )
         ArchivedDoc.objects.get_or_create(
             id=self.id,
             defaults={
@@ -1588,7 +1591,7 @@ class EmployerDoc(models.Model):
                 'agency_employee_name':self.employer.agency_employee.name,
                 'agency_employee_ea_personnel_number':self.employer.agency_employee.ea_personnel_number,
                 'maid_name':self.fdw.name,
-                'maid_nationality':self.fdw.country_of_origin,
+                'maid_nationality':self.fdw.get_country_of_origin_display(),
                 'maid_passport_number':self.fdw.passport_number,
                 'maid_passport_number_nonce':self.fdw.nonce,
                 'maid_passport_number_tag':self.fdw.tag,
@@ -2564,78 +2567,18 @@ class ArchivedDoc(models.Model):
         default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
     )
 
-    # Agency Informtaion
-    agency_name = models.CharField(
-        verbose_name=_('Agency Name'),
-        max_length=255
+    # Agency Information
+    agency = models.OneToOneField(
+        ArchivedAgencyDetails,
+        verbose_name=_("Name of Agency"),
+        on_delete=models.RESTRICT
     )
 
-    agency_license_no = models.CharField(
-        verbose_name=_('Agency License Number'),
-        max_length=255
-    )
-
-    agency_address_line_1 = models.CharField(
-        verbose_name=_('Agency Registered Business Address Line 1'),
-        max_length=255
-    )
-
-    agency_address_line_2 = models.CharField(
-        verbose_name=_('Agency Registered Business Address Line 2'),
-        max_length=255
-    )
-
-    agency_postal_code = models.CharField(
-        verbose_name=_('Agency Registered Business Postal Code'),
-        max_length=20
-    )
-
-    agency_employee_name = models.CharField(
-        verbose_name=_('Name'),
-        max_length=255,
-        blank=False
-    )
-
-    agency_employee_ea_personnel_number = models.CharField(
-        verbose_name=_('EA personnel number'),
-        max_length=50,
-        default='NA',
-        blank=True,
-        help_text=_('Optional for non-personnel')
-    )
-    
     # Maid Information
-    maid_name = models.CharField(
-        verbose_name=_('Name'),
-        max_length=255,
-        blank=False
-    )
-
-    maid_nationality = models.CharField(
-        verbose_name=_('Nationality'),
-        max_length=255,
-        blank=False
-    )
-
-    maid_passport_number = models.BinaryField(
-        editable=True,
-        blank=True
-    )
-
-    maid_passport_number_nonce = models.BinaryField(
-        editable=True,
-        blank=True
-    )
-
-    maid_passport_number_tag = models.BinaryField(
-        editable=True,
-        blank=True
-    )
-
-    maid_work_permit_number = models.CharField(
-        verbose_name=_('Work Permit Number'),
-        max_length=255,
-        blank=False
+    fdw = models.OneToOneField(
+        ArchivedMaid,
+        verbose_name=_("Name of FDW"),
+        on_delete=models.RESTRICT
     )
 
     # Employer Information
@@ -3658,11 +3601,6 @@ class ArchivedDoc(models.Model):
     agreement_date = models.DateField(
         verbose_name=_("Contract Date"),
     )
-    fdw = models.OneToOneField(
-        ArchivedMaid,
-        verbose_name=_("Name of FDW"),
-        on_delete=models.RESTRICT,
-    )
     fdw_salary = CustomMoneyDecimalField(
         verbose_name=_("FDW Basic Salary"),
         help_text=_("FDW monthly salary per contract")
@@ -4130,14 +4068,6 @@ class ArchivedDoc(models.Model):
         upload_to=generate_archive_path,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
     )
-    # f11_security_bond = models.FileField(
-    #     upload_to=generate_archive_path,
-    #     storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    # )
-    # f12_fdw_work_permit = models.FileField(
-    #     upload_to=generate_archive_path,
-    #     storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    # )
     f13_income_tax_declaration = models.FileField(
         upload_to=generate_archive_path,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
@@ -4174,43 +4104,3 @@ class ArchivedDoc(models.Model):
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
-
-# class ArchivedEmployerHousehold(models.Model):
-#     employer = models.ForeignKey(
-#         ArchivedDoc,
-#         verbose_name=_("Name of Employer"),
-#         on_delete=models.CASCADE,
-#         related_name="rn_archivedhousehold_employer",
-#     )
-#     # Household Details
-#     household_name = models.CharField(
-#         verbose_name=_("Household member's name"),
-#         max_length=40,
-#     )
-#     household_id_type = models.CharField(
-#         verbose_name=_("Household member ID type"),
-#         max_length=8,
-#         choices=ed_constants.HouseholdIdTypeChoices.choices,
-#         # default=ed_constants.HouseholdIdTypeChoices.NRIC,
-#     )
-#     household_id_num = models.BinaryField(
-#         verbose_name=_("Household member's ID number"),
-#         editable=True,
-#     )
-#     household_date_of_birth = models.DateField(
-#         verbose_name=_("Household member's date of birth"),
-#     )
-#     household_relationship = models.CharField(
-#         verbose_name=_("Household member's relationship with Employer"),
-#         max_length=30,
-#         choices=ed_constants.RelationshipChoices.choices,
-#         # default=ed_constants.RelationshipChoices.DAUGHTER,
-#     )
-
-#     def get_household_id_full(self):
-#         return decrypt_string(
-#             self.household_id_num,
-#             settings.ENCRYPTION_KEY,
-#             self.household_id_nonce,
-#             self.household_id_tag,
-#         )
