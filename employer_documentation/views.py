@@ -970,7 +970,6 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
                 )
             })
 
-
 # Delete Views
 class EmployerDeleteView(
     OwnerAccessToEmployerDocAppMixin,
@@ -1249,8 +1248,8 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
-class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,  SuccessMessageMixin,
-                            FormView):
+class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,  
+                            SuccessMessageMixin, FormView):
     form_class = MaidInventoryFormSet
     http_method_names = ['get', 'post']
     template_name = 'employer_documentation/crispy_form.html'
