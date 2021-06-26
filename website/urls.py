@@ -9,7 +9,7 @@ from django.urls import include, path
 
 ## Template Views 
 from .views import (
-    HomeView, AboutUsView, ContactUsView, TermsAndConditionsAgencyView, RobotsTxt,
+    HomeView, AboutUsView, ContactUsView, SitemapView, TermsAndConditionsAgencyView, RobotsTxt,
     TermsAndConditionsUserView, HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
     AdminPanelEnquiryListView, Error403View, Error404View, Error500View
 )
@@ -111,5 +111,10 @@ urlpatterns = [
         'robots.txt',
         RobotsTxt.as_view(),
         name="robots_txt"
+    ),
+    path(
+        'sitemap.xml',
+        SitemapView.as_view(),
+        name="site_map"
     )
 ]
