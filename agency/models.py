@@ -483,9 +483,7 @@ class AgencyBranch(models.Model):
 
     def save(self, *args, **kwargs):
         sg_region = get_sg_region(self.postal_code)
-        if not sg_region:
-            sg_region = AreaChoices.choices[0][0]
-        self.area = sg_region
+        self.area = sg_region if sg_region else AreaChoices.choices[0][0]
         super().save(*args, **kwargs)
 
     class Meta:
