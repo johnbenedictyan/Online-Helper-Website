@@ -123,9 +123,10 @@ class Agency(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         main_branch = self.get_main_branch()
-        self.__original_branch_address_line_1 = main_branch.address_1
-        self.__original_branch_address_line_2 = main_branch.address_2
-        self.__original_branch_postal_code = main_branch.postal_code
+        if main_branch:
+            self.__original_branch_address_line_1 = main_branch.address_1
+            self.__original_branch_address_line_2 = main_branch.address_2
+            self.__original_branch_postal_code = main_branch.postal_code
 
     def __str__(self):
         return self.name
@@ -134,7 +135,12 @@ class Agency(models.Model):
         return self.branches.get(main_branch=True).office_number
 
     def get_main_branch(self):
-        return self.branches.get(main_branch=True)
+        try:
+            main_branch = self.branches.get(main_branch=True)
+        except self.branches.DoesNotExist:
+            pass
+        else:
+            return main_branch
     
     def get_branches(self):
         return self.branches.filter(main_branch=False)
