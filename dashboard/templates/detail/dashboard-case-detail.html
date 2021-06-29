@@ -617,6 +617,11 @@
                 <div class="col-md-6 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}"><p class="mb-1">EA personnel's signature Link (All doc)</p></a></div>
                 <div class="col-md-6 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'handover_form_view' object.pk %}" class="btn btn-dashboard-primary">Handover FDW</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
