@@ -3442,3 +3442,105 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                 )
             )
         )
+
+class HandoverSignatureForm(forms.Form):
+    agency_employee_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    fdw_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'agency_employee_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Agency Employee Signature</h6>
+                                <canvas
+                                    id="agency-employee-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'fdw_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Maid Signature</h6>
+                                <canvas
+                                    id="fdw-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                )
+            ),
+            Row(
+                Column(
+                    Button(
+                    'Clear Signatures',
+                    'Clear Signatures',
+                    css_class='btn btn-outline-secondary w-25 mr-2',
+                    css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-primary w-25 ml-2',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
+            )
+        )

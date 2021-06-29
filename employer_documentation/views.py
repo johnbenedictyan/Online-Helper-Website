@@ -1464,6 +1464,40 @@ class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
         self.object.save()
         return super().form_valid(form)
 
+class HandoverFormView(FormView):
+    model = models.CaseSignature
+    form_class = forms.HandoverSignatureForm
+    pk_url_kwarg = 'level_1_pk'
+    http_method_names = ['get', 'post']
+    template_name = 'employer_documentation/signature_form_handover.html'
+
+    def get_object(self):
+        return self.model.objects.get(
+            employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'object': self.object
+        })
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard_case_list')
+
+    def form_valid(self, form):
+        self.object = self.get_object()
+        self.object.employer_signature_2 = form.cleaned_data.get('employer_signature')
+        self.object.fdw_signature = form.cleaned_data.get('fdw_signature')
+        self.object.agency_staff_signature = form.cleaned_data.get('agency_employee_signature')
+        self.object.save()
+        return super().form_valid(form)
+
 # Redirect Views
 
 ## Base View Class for all generate and revoke signature slug redirect views
