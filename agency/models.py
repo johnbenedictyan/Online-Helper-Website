@@ -131,16 +131,19 @@ class Agency(models.Model):
     def __str__(self):
         return self.name
 
-    def get_main_branch_number(self):
-        return self.branches.get(main_branch=True).office_number
-
     def get_main_branch(self):
-        try:
-            main_branch = self.branches.get(main_branch=True)
-        except self.branches.DoesNotExist:
-            pass
+        main_branches_qs = self.branches.filter(main_branch=True)
+        if main_branches_qs.count():
+            return main_branches_qs[0]
         else:
-            return main_branch
+            return None
+
+    def get_main_branch_number(self):
+        main_branch = self.get_main_branch()
+        if main_branch:
+            return main_branch.office_number
+        else:
+            return None
     
     def get_branches(self):
         return self.branches.filter(main_branch=False)
