@@ -116,10 +116,8 @@ def get_sg_region(post_code):
     from onlinemaid.sg_regions import SG_REGIONS
 
     if isinstance(post_code, str) and len(post_code)==6:
-        for k,v in SG_REGIONS.items():
-            if post_code[:2]==k:
-                return v.get('region_code')
-        return None
+        sector = SG_REGIONS.get(post_code[:2])
+        return sector.get('region_code') if sector else None
     else:
         return None
 

@@ -3,7 +3,6 @@
 # Imports from django
 from django.db import models
 from django.dispatch import receiver
-from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.signals import user_logged_in, user_login_failed
 from django.utils.translation import ugettext_lazy as _
@@ -51,13 +50,10 @@ class User(AbstractUser):
         _('Email Address'), 
         unique=True
     )
-    is_online = models.BooleanField(
-        default=False
+    last_login = models.DateTimeField(
+        editable=False,
+        null=True
     )
-    # last_login = models.DateTimeField(
-    #     editable=False,
-    #     null=True
-    # )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

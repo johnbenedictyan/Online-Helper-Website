@@ -12,11 +12,7 @@ from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage
-from django.core.validators import (
-    FileExtensionValidator,
-    MinValueValidator,
-    MaxValueValidator,
-)
+from django.core.validators import FileExtensionValidator
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps

@@ -1,7 +1,3 @@
-# Python
-import secrets
-import uuid
-
 # Imports from django
 from django import forms
 from django.conf import settings

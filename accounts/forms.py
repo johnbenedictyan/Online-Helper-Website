@@ -1,8 +1,6 @@
 # Imports from django
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
@@ -143,15 +141,6 @@ class AgencySignInForm(AuthenticationForm):
                 ),
                 css_class='form-row'
             ),
-            # Row(
-            #     Column(
-            #         Hidden(
-            #             'next',
-            #             f"{{% url '{self.redirect_named_url}' %}}"
-            #         )
-            #     ),
-            #     css_class='form-row'
-            # ),
             Row(
                 Column(
                     Submit(
@@ -164,15 +153,6 @@ class AgencySignInForm(AuthenticationForm):
                 css_class='form-row'
             ),
         )
-
-    # def clean_username(self):
-    #     username = self.cleaned_data.get('username')
-    #     try:
-    #         validate_email(username)
-    #     except:
-    #         username = username + '@' + settings.AGENCY_EMPLOYEE_FEP
-
-    #     return username
 
     def clean(self):
         cleaned_data = super().clean()
@@ -261,7 +241,7 @@ class EmployerCreationForm(forms.ModelForm):
                 self.fields[k].widget.attrs['placeholder'] = v
         self.fields['terms_and_conditions'].label = f'''
             I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions')}" target="_blank">
+            <a href="{reverse_lazy('terms_and_conditions_user')}" target="_blank">
                 terms of service
             </a> 
             as well as the 

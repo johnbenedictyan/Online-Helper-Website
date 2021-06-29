@@ -95,6 +95,10 @@ class RobotsTxt(TemplateView):
     template_name = 'robots.txt'
     content_type='text/plain'
 
+class SitemapView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'sitemap.xml'
+
 # Redirect Views
 
 # List Views

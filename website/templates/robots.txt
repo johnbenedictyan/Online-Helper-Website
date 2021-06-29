@@ -1,3 +1,6 @@
 # Block all robots during development
 User-agent: *
-Disallow: /
+
+# Disallow: /
+
+Sitemap: https://www.onlinemaid.sg/sitemap.xml
