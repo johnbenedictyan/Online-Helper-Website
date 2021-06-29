@@ -275,18 +275,19 @@ class MaidForm(forms.ModelForm):
 
     def clean_fin_number(self):
         cleaned_field = self.cleaned_data.get('fin_number')
+        if cleaned_field:
 
-        # If form errors then raise ValidationError, else continue
-        error_msg = validate_fin(cleaned_field)
-        if error_msg:
-            raise ValidationError(error_msg)
-        else:
-            # Encryption
-            ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
-                cleaned_field,
-                settings.ENCRYPTION_KEY,
-            )
-            return ciphertext
+            # If form errors then raise ValidationError, else continue
+            error_msg = validate_fin(cleaned_field)
+            if error_msg:
+                raise ValidationError(error_msg)
+            else:
+                # Encryption
+                ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+                    cleaned_field,
+                    settings.ENCRYPTION_KEY,
+                )
+                return ciphertext
 
     def save(self, *args, **kwargs):
         self.instance.agency = Agency.objects.get(

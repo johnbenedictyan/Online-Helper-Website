@@ -42,6 +42,7 @@ class EmployerForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.user_obj = get_user_model().objects.get(pk=self.user_pk)
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
         # Decryption
@@ -573,7 +574,7 @@ class EmployerForm(forms.ModelForm):
             return None
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             employer_strict_fields = [
                 'employer_name',
                 'employer_gender',
@@ -636,6 +637,7 @@ class EmployerSponsorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full()})
@@ -1461,7 +1463,7 @@ class EmployerSponsorForm(forms.ModelForm):
 
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'sponsor_1_relationship',
                 'sponsor_1_name',
@@ -1537,6 +1539,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
         self.initial.update({'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full()})
@@ -1801,7 +1804,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
             return None
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'joint_applicant_relationship',
                 'joint_applicant_name',
@@ -1843,6 +1846,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         self.monthly_income_label = kwargs.pop('monthly_income_label')
         super().__init__(*args, **kwargs)
 
@@ -1887,7 +1891,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         )
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'worked_in_sg',
                 'monthly_income',
@@ -2028,6 +2032,7 @@ class EmployerDocForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
 
@@ -2129,7 +2134,7 @@ class EmployerDocForm(forms.ModelForm):
         )
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'case_ref_no',
                 'agreement_date',
@@ -2154,6 +2159,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
@@ -2414,7 +2420,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             return cleaned_field
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'is_new_case',
                 'fdw_replaced_name',
@@ -2458,6 +2464,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
@@ -2640,7 +2647,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
         )
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'c1_3_handover_days',
                 'c3_2_no_replacement_criteria_1',
@@ -2682,6 +2689,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
+        self.form_type = kwargs.pop('form_type')
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
@@ -2819,7 +2827,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
         return self.cleaned_data
 
     def save(self):
-        if self.changed_data:
+        if self.changed_data and self.form_type == 'UPDATE':
             strict_fields = [
                 'residential_dwelling_type',
                 'fdw_clean_window_exterior',
@@ -3415,6 +3423,108 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                     )
                 ),
                 css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                    'Clear Signatures',
+                    'Clear Signatures',
+                    css_class='btn btn-outline-secondary w-25 mr-2',
+                    css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-primary w-25 ml-2',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
+            )
+        )
+
+class HandoverSignatureForm(forms.Form):
+    agency_employee_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    fdw_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'agency_employee_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Agency Employee Signature</h6>
+                                <canvas
+                                    id="agency-employee-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'fdw_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Maid Signature</h6>
+                                <canvas
+                                    id="fdw-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                )
             ),
             Row(
                 Column(

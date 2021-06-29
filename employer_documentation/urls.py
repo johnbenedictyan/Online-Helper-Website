@@ -341,6 +341,11 @@ urlpatterns = [
                                 ),
                                 name='signature_agencyemployee_route'
                             ),
+                            path(
+                                'handover-checklist/',
+                                views.HandoverFormView.as_view(),
+                                name='handover_form_view'
+                            )
                         ]),
                     ),
                 ]),

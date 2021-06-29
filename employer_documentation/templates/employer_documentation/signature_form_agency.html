@@ -5,5 +5,6 @@
 {% endblock dashboard_section %}
 
 {% block js %}
-    {% include 'employer_documentation/snippets/signature_snippet_js.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+    {% include 'employer_documentation/snippets/signature_snippet_js.html' with signature_pad_id="signature-pad" signature_input_id="id_signature" signature_submit_button_id="submit-id-submit" %}
 {% endblock js %}
