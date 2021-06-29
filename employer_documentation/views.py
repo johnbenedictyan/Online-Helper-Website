@@ -166,6 +166,7 @@ class EmployerCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         return kwargs
 
     def form_valid(self, form):
@@ -233,6 +234,7 @@ class EmployerSponsorCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         return kwargs
 
     def form_valid(self, form):
@@ -286,6 +288,7 @@ class EmployerJointApplicantCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         return kwargs
 
     def form_valid(self, form):
@@ -366,6 +369,7 @@ class EmployerDocCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         kwargs['agency_id'] = self.agency_id
         return kwargs
 
@@ -412,6 +416,7 @@ class DocServiceFeeScheduleCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
@@ -462,6 +467,7 @@ class DocServAgmtEmpCtrCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
@@ -517,6 +523,7 @@ class DocSafetyAgreementCreateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'CREATE'
         kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
@@ -602,6 +609,7 @@ class EmployerUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         return kwargs
 
     def get_success_url(self):
@@ -656,6 +664,7 @@ class EmployerSponsorUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         return kwargs
 
     def get_success_url(self):
@@ -701,6 +710,7 @@ class EmployerDocJointApplicantUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         return kwargs
 
     def get_success_url(self):
@@ -774,6 +784,7 @@ class EmployerDocUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         kwargs['agency_id'] = self.agency_id
         return kwargs
 
@@ -810,6 +821,7 @@ class DocServiceFeeScheduleUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
@@ -846,6 +858,7 @@ class DocServAgmtEmpCtrUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 
@@ -887,6 +900,7 @@ class DocSafetyAgreementUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
+        kwargs['form_type'] = 'UPDATE'
         kwargs['level_1_pk'] = self.kwargs.get(self.pk_url_kwarg)
         return kwargs
 

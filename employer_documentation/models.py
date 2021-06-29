@@ -1490,7 +1490,7 @@ class EmployerDoc(models.Model):
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         # self.version += 1
-        # super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         # Create related CaseStatus object if it does not exist
         if not hasattr(self, 'rn_casestatus_ed'):
