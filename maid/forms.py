@@ -55,8 +55,9 @@ class MaidForm(forms.ModelForm):
     class Meta:
         model = Maid
         exclude = [
-            'agency', 'created_on', 'updated_on', 'nonce', 'tag', 'about_me',
-            'responsibilities', 'languages', 'skills_evaluation_method'
+            'agency', 'created_on', 'updated_on', 'about_me', 'responsibilities', 'languages',
+            'skills_evaluation_method', 'passport_number_nonce', 'passport_number_tag',
+            'fin_number_nonce', 'fin_number_tag', 
         ]
 
     def __init__(self, *args, **kwargs):
@@ -267,7 +268,7 @@ class MaidForm(forms.ModelForm):
             raise ValidationError(error_msg)
         else:
             # Encryption
-            ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+            ciphertext, self.instance.passport_number_nonce, self.instance.passport_number_tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY,
             )
@@ -283,7 +284,7 @@ class MaidForm(forms.ModelForm):
                 raise ValidationError(error_msg)
             else:
                 # Encryption
-                ciphertext, self.instance.nonce, self.instance.tag = encrypt_string(
+                ciphertext, self.instance.fin_number_nonce, self.instance.fin_number_tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY,
                 )

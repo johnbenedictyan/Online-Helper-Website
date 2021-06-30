@@ -81,12 +81,12 @@ class Maid(models.Model):
         null=True
     )
     
-    passport_nonce = models.BinaryField(
+    passport_number_nonce = models.BinaryField(
         editable=True,
         blank=True
     )
     
-    passport_tag = models.BinaryField(
+    passport_number_tag = models.BinaryField(
         editable=True,
         blank=True
     )
@@ -290,13 +290,13 @@ class Maid(models.Model):
         null=True
     )
 
-    fin_nonce = models.BinaryField(
+    fin_number_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True
     )
 
-    fin_tag = models.BinaryField(
+    fin_number_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True
@@ -317,8 +317,8 @@ class Maid(models.Model):
         plaintext = decrypt_string(
             self.passport_number,
             settings.ENCRYPTION_KEY,
-            self.passport_nonce,
-            self.passport_tag
+            self.passport_number_nonce,
+            self.passport_number_tag
         )
         return plaintext
 
@@ -326,8 +326,8 @@ class Maid(models.Model):
         plaintext = decrypt_string(
             self.fin_number,
             settings.ENCRYPTION_KEY,
-            self.fin_nonce,
-            self.fin_tag
+            self.fin_number_nonce,
+            self.fin_number_tag
         )
         return plaintext
 
@@ -355,8 +355,8 @@ class Maid(models.Model):
         return decrypt_string(
             self.fin_number,
             settings.ENCRYPTION_KEY,
-            self.fin_nonce,
-            self.fin_tag
+            self.fin_number_nonce,
+            self.fin_number_tag
         )
     
     def get_fdw_fin_partial(self, padded=True):
