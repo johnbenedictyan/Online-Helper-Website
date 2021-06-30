@@ -1497,7 +1497,13 @@ class HandoverFormView(FormView):
         self.object.agency_staff_signature = form.cleaned_data.get('agency_employee_signature')
         self.object.save()
 
-        self.object.employer_doc.archive()
+        try:
+            self.object.employer_doc.archive()
+        except Exception as e:
+            print(e)
+        else:
+            self.object.employer_doc.delete()
+        
         return super().form_valid(form)
 
 # Redirect Views
