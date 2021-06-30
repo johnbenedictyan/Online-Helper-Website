@@ -1485,6 +1485,10 @@ class HandoverFormView(FormView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.employer_doc.details_missing_case_pre_signing_2():
+            # TODO: Stop the user from accessing the handover checklist
+            print('uh oh')
+            
         return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
@@ -1534,7 +1538,11 @@ class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, Re
     def get_redirect_url(self, *args, **kwargs):
         self.object = self.get_object()
         if self.view_type == 'generate':
-            self.object.generate_sigslug(self.stakeholder)
+            if self.object.employer_doc.details_missing_case_pre_signing_1():
+                # TODO: Send a message to the user about the missing fields
+                print('Uh OH')
+            else:
+                self.object.generate_sigslug(self.stakeholder)
         elif self.view_type == 'revoke':
             self.object.revoke_sigslug(self.stakeholder)
         kwargs={'level_1_pk': self.object.employer_doc.pk}
