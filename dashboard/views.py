@@ -7,6 +7,7 @@ from itertools import chain
 from django.contrib import messages
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
+from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -274,7 +275,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
                     employer__agency_employee__agency__pk = self.agency_id
                 ),
                 ArchivedDoc.objects.filter(
-                    agency_license_no=Agency.objects.get(
+                    agency__agency_license_no=Agency.objects.get(
                         pk=self.agency_id
                     ).license_number
                 ),
@@ -285,7 +286,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
                     employer__agency_employee__branch=self.request.user.agency_employee.branch
                 ),
                 ArchivedDoc.objects.filter(
-                    agency_employee_ea_personnel_number__in=self.request.user.agency_employee.get_all_ea_personnel_no_in_branch()
+                    agency__agency_employee_ea_personnel_number__in=self.request.user.agency_employee.get_all_ea_personnel_no_in_branch()
                 ),
             )
         elif self.authority==AG_SALES:
@@ -294,7 +295,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
                     employer__agency_employee=self.request.user.agency_employee
                 ),
                 ArchivedDoc.objects.filter(
-                    agency_employee_ea_personnel_number=self.request.user.agency_employee.ea_personnel_number
+                    agency__agency_employee_ea_personnel_number=self.request.user.agency_employee.ea_personnel_number
                 ),
             )
         else:
@@ -601,6 +602,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_cfi = MaidInfantChildCare.objects.get(
                 maid__pk=self.maid_id
             )
+            maid_cfi = model_to_dict(maid_cfi)
         except:
             maid_cfi = {}
 
@@ -608,6 +610,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_cfe = MaidElderlyCare.objects.get(
                 maid__pk=self.maid_id
             )
+            maid_cfe = model_to_dict(maid_cfe)
         except:
             maid_cfe = {}
 
@@ -615,6 +618,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_cfd = MaidDisabledCare.objects.get(
                 maid__pk=self.maid_id
             )
+            maid_cfd = model_to_dict(maid_cfd)
         except:
             maid_cfd = {}
 
@@ -622,6 +626,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_geh = MaidGeneralHousework.objects.get(
                 maid__pk=self.maid_id
             )
+            maid_geh = model_to_dict(maid_geh)
         except:
             maid_geh = {}
 
@@ -629,6 +634,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
             maid_cok = MaidCooking.objects.get(
                 maid__pk=self.maid_id
             )
+            maid_cok = model_to_dict(maid_cok)
         except:
             maid_cok = {}
 

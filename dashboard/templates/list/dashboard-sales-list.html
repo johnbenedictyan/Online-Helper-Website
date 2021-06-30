@@ -48,7 +48,7 @@
         </div>
         {% for sale in sales %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
-            {% if not sales.agency_name %}
+            {% if sales.is_archived_doc is False %}
             <div class="col-0-5">
                 <p class="mb-0"></p>
             </div>

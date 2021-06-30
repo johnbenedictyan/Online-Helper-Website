@@ -1496,6 +1496,8 @@ class HandoverFormView(FormView):
         self.object.fdw_signature = form.cleaned_data.get('fdw_signature')
         self.object.agency_staff_signature = form.cleaned_data.get('agency_employee_signature')
         self.object.save()
+
+        self.object.employer_doc.archive()
         return super().form_valid(form)
 
 # Redirect Views

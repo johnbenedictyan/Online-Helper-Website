@@ -1576,7 +1576,7 @@ class EmployerDoc(models.Model):
             ArchivedDoc.objects.get(
                 pk=self.id
             )
-        except ArchivedDoc.DoesNotExist():
+        except ArchivedDoc.DoesNotExist:
             archived_agency_details = ArchivedAgencyDetails.objects.create(
                 agency_name=self.employer.agency_employee.agency.name,
                 agency_license_no=self.employer.agency_employee.agency.license_number,
@@ -1591,16 +1591,16 @@ class EmployerDoc(models.Model):
                 name=self.fdw.name,
                 nationality=self.fdw.get_country_of_origin_display(),
                 passport_number=self.fdw.passport_number,
-                passport_number_nonce=self.fdw.nonce,
-                passport_number_tag=self.fdw.tag,
-                fin_number_num=self.fdw.fin_number,
-                fin_number_nonce=self.fdw.fin_nonce,
-                fin_number_tag=self.fdw.fin_tag
+                passport_number_nonce=self.fdw.passport_number_nonce,
+                passport_number_tag=self.fdw.passport_number_tag,
+                fin_number=self.fdw.fin_number,
+                fin_number_nonce=self.fdw.fin_number_nonce,
+                fin_number_tag=self.fdw.fin_number_tag
             )
-            archived_doc = ArchivedDoc.objects.create(
+            archived_doc = ArchivedDoc(
                 applicant_type=self.employer.applicant_type,
                 agency=archived_agency_details,
-                maid=archived_maid,
+                fdw=archived_maid,
                 employer_name=self.employer.employer_name,
                 employer_gender=self.employer.employer_gender,
                 employer_mobile_number=self.employer.employer_mobile_number,
@@ -1623,114 +1623,6 @@ class EmployerDoc(models.Model):
                 employer_passport_tag=self.employer.employer_passport_tag,
                 employer_passport_date=self.employer.employer_passport_date,
                 employer_marital_status=self.employer.employer_marital_status,
-                employer_marriage_sg_registered=self.employer.employer_marriage_sg_registered,
-                spouse_name=self.employer.spouse_name,
-                spouse_gender=self.employer.spouse_gender,
-                spouse_date_of_birth=self.employer.spouse_date_of_birth,
-                spouse_nationality=self.employer.spouse_nationality,
-                spouse_residential_status=self.employer.spouse_residential_status,
-                spouse_nric_num=self.employer.spouse_nric_num,
-                spouse_nric_nonce=self.employer.spouse_nric_nonce,
-                spouse_nric_tag=self.employer.spouse_nric_tag,
-                spouse_fin_num=self.employer.spouse_fin_num,
-                spouse_fin_nonce=self.employer.spouse_fin_nonce,
-                spouse_fin_tag=self.employer.spouse_fin_tag,
-                spouse_passport_num=self.employer.spouse_passport_num,
-                spouse_passport_nonce=self.employer.spouse_passport_nonce,
-                spouse_passport_tag=self.employer.spouse_passport_tag,
-                spouse_passport_date=self.employer.spouse_passport_date,
-                sponsor_1_relationship=self.employer.rn_sponsor_employer.sponsor_1_relationship,
-                sponsor_1_name=self.employer.rn_sponsor_employer.sponsor_1_name,
-                sponsor_1_gender=self.employer.rn_sponsor_employer.sponsor_1_gender,
-                sponsor_1_date_of_birth=self.employer.rn_sponsor_employer.sponsor_1_date_of_birth,
-                sponsor_1_nric_num=self.employer.rn_sponsor_employer.sponsor_1_nric_num,
-                sponsor_1_nric_nonce=self.employer.rn_sponsor_employer.sponsor_1_nric_nonce,
-                sponsor_1_nric_tag=self.employer.rn_sponsor_employer.sponsor_1_nric_tag,
-                sponsor_1_nationality=self.employer.rn_sponsor_employer.sponsor_1_nationality,
-                sponsor_1_residential_status=self.employer.rn_sponsor_employer.sponsor_1_residential_status,
-                sponsor_1_mobile_number=self.employer.rn_sponsor_employer.sponsor_1_mobile_number,
-                sponsor_1_email=self.employer.rn_sponsor_employer.sponsor_1_email,
-                sponsor_1_address_1=self.employer.rn_sponsor_employer.sponsor_1_address_1,
-                sponsor_1_address_2=self.employer.rn_sponsor_employer.sponsor_1_address_2,
-                sponsor_1_post_code=self.employer.rn_sponsor_employer.sponsor_1_post_code,
-                sponsor_1_marital_status=self.employer.rn_sponsor_employer.sponsor_1_marital_status,
-                sponsor_1_marriage_sg_registered=self.employer.rn_sponsor_employer.sponsor_1_marriage_sg_registered,
-                sponsor_1_spouse_name=self.employer.rn_sponsor_employer.sponsor_1_spouse_name,
-                sponsor_1_spouse_gender=self.employer.rn_sponsor_employer.sponsor_1_spouse_gender,
-                sponsor_1_spouse_date_of_birth=self.employer.rn_sponsor_employer.sponsor_1_spouse_date_of_birth,
-                sponsor_1_spouse_nationality=self.employer.rn_sponsor_employer.sponsor_1_spouse_nationality,
-                sponsor_1_spouse_residential_status=self.employer.rn_sponsor_employer.sponsor_1_spouse_residential_status,
-                sponsor_1_spouse_nric_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_num,
-                sponsor_1_spouse_nric_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_nonce,
-                sponsor_1_spouse_nric_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_tag,
-                sponsor_1_spouse_fin_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_num,
-                sponsor_1_spouse_fin_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_nonce,
-                sponsor_1_spouse_fin_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_tag,
-                sponsor_1_spouse_passport_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_num,
-                sponsor_1_spouse_passport_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_nonce,
-                sponsor_1_spouse_passport_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_tag,
-                sponsor_1_spouse_passport_date=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_date,
-                sponsor_2_required=self.employer.rn_sponsor_employer.sponsor_2_required,
-                sponsor_2_relationship=self.employer.rn_sponsor_employer.sponsor_2_relationship,
-                sponsor_2_name=self.employer.rn_sponsor_employer.sponsor_2_name,
-                sponsor_2_gender=self.employer.rn_sponsor_employer.sponsor_2_gender,
-                sponsor_2_date_of_birth=self.employer.rn_sponsor_employer.sponsor_2_date_of_birth,
-                sponsor_2_nric_num=self.employer.rn_sponsor_employer.sponsor_2_nric_num,
-                sponsor_2_nric_nonce=self.employer.rn_sponsor_employer.sponsor_2_nric_nonce,
-                sponsor_2_nric_tag=self.employer.rn_sponsor_employer.sponsor_2_nric_tag,
-                sponsor_2_nationality=self.employer.rn_sponsor_employer.sponsor_2_nationality,
-                sponsor_2_residential_status=self.employer.rn_sponsor_employer.sponsor_2_residential_status,
-                sponsor_2_mobile_number=self.employer.rn_sponsor_employer.sponsor_2_mobile_number,
-                sponsor_2_email=self.employer.rn_sponsor_employer.sponsor_2_email,
-                sponsor_2_address_1=self.employer.rn_sponsor_employer.sponsor_2_address_1,
-                sponsor_2_address_2=self.employer.rn_sponsor_employer.sponsor_2_address_2,
-                sponsor_2_post_code=self.employer.rn_sponsor_employer.sponsor_2_post_code,
-                sponsor_2_marital_status=self.employer.rn_sponsor_employer.sponsor_2_marital_status,
-                sponsor_2_marriage_sg_registered=self.employer.rn_sponsor_employer.sponsor_2_marriage_sg_registered,
-                sponsor_2_spouse_name=self.employer.rn_sponsor_employer.sponsor_2_spouse_name,
-                sponsor_2_spouse_gender=self.employer.rn_sponsor_employer.sponsor_2_spouse_gender,
-                sponsor_2_spouse_date_of_birth=self.employer.rn_sponsor_employer.sponsor_2_spouse_date_of_birth,
-                sponsor_2_spouse_nationality=self.employer.rn_sponsor_employer.sponsor_2_spouse_nationality,
-                sponsor_2_spouse_residential_status=self.employer.rn_sponsor_employer.sponsor_2_spouse_residential_status,
-                sponsor_2_spouse_nric_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_num,
-                sponsor_2_spouse_nric_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_nonce,
-                sponsor_2_spouse_nric_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_tag,
-                sponsor_2_spouse_fin_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_num,
-                sponsor_2_spouse_fin_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_nonce,
-                sponsor_2_spouse_fin_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_tag,
-                sponsor_2_spouse_passport_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_num,
-                sponsor_2_spouse_passport_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_nonce,
-                sponsor_2_spouse_passport_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_tag,
-                sponsor_2_spouse_passport_date=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_date,
-                joint_applicant_relationship=self.employer.rn_ja_employer.joint_applicant_relationship,
-                joint_applicant_name=self.employer.rn_ja_employer.joint_applicant_name,
-                joint_applicant_gender=self.employer.rn_ja_employer.joint_applicant_gender,
-                joint_applicant_date_of_birth=self.employer.rn_ja_employer.joint_applicant_date_of_birth,
-                joint_applicant_nric_num=self.employer.rn_ja_employer.joint_applicant_nric_num,
-                joint_applicant_nric_nonce=self.employer.rn_ja_employer.joint_applicant_nric_nonce,
-                joint_applicant_nric_tag=self.employer.rn_ja_employer.joint_applicant_nric_tag,
-                joint_applicant_nationality=self.employer.rn_ja_employer.joint_applicant_nationality,
-                joint_applicant_residential_status=self.employer.rn_ja_employer.joint_applicant_residential_status,
-                joint_applicant_address_1=self.employer.rn_ja_employer.joint_applicant_address_1,
-                joint_applicant_address_2=self.employer.rn_ja_employer.joint_applicant_address_2,
-                joint_applicant_post_code=self.employer.rn_ja_employer.joint_applicant_post_code,
-                joint_applicant_marital_status=self.employer.rn_ja_employer.joint_applicant_marital_status,
-                joint_applicant_marriage_sg_registered=self.employer.rn_ja_employer.joint_applicant_marriage_sg_registered,
-                joint_applicant_spouse_name=self.employer.rn_ja_employer.joint_applicant_spouse_name,
-                joint_applicant_spouse_gender=self.employer.rn_ja_employer.joint_applicant_spouse_gender,
-                joint_applicant_spouse_date_of_birth=self.employer.rn_ja_employer.joint_applicant_spouse_date_of_birth,
-                joint_applicant_spouse_nationality=self.employer.rn_ja_employer.joint_applicant_spouse_nationality,
-                joint_applicant_spouse_residential_status=self.employer.rn_ja_employer.joint_applicant_spouse_residential_status,
-                joint_applicant_spouse_nric_num=self.employer.rn_ja_employer.joint_applicant_spouse_nric_num,
-                joint_applicant_spouse_nric_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_nric_nonce,
-                joint_applicant_spouse_nric_tag=self.employer.rn_ja_employer.joint_applicant_spouse_nric_tag,
-                joint_applicant_spouse_fin_num=self.employer.rn_ja_employer.joint_applicant_spouse_fin_num,
-                joint_applicant_spouse_fin_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_fin_nonce,
-                joint_applicant_spouse_fin_tag=self.employer.rn_ja_employer.joint_applicant_spouse_fin_tag,
-                joint_applicant_spouse_passport_num=self.employer.rn_ja_employer.joint_applicant_spouse_passport_num,
-                joint_applicant_spouse_passport_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_passport_nonce,
-                joint_applicant_spouse_passport_tag=self.employer.rn_ja_employer.joint_applicant_spouse_passport_tag,
-                joint_applicant_spouse_passport_date=self.employer.rn_ja_employer.joint_applicant_spouse_passport_date,
                 worked_in_sg=self.employer.rn_income_employer.worked_in_sg,
                 monthly_income=self.employer.rn_income_employer.monthly_income,
                 version=self.version,
@@ -1794,7 +1686,7 @@ class EmployerDoc(models.Model):
                 grilles_installed_require_cleaning=self.rn_safetyagreement_ed.grilles_installed_require_cleaning,
                 adult_supervision=self.rn_safetyagreement_ed.adult_supervision,
                 verifiy_employer_understands_window_cleaning=self.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning,
-                employer_signature=self.rn_signatures_ed.employer_signature,
+                employer_signature=self.rn_signatures_ed.employer_signature_2,
                 fdw_signature=self.rn_signatures_ed.fdw_signature,
                 agency_staff_signature=self.rn_signatures_ed.agency_staff_signature,
                 ipa_approval_date=self.rn_casestatus_ed.ipa_approval_date,
@@ -1817,6 +1709,122 @@ class EmployerDoc(models.Model):
                 ipa_pdf=self.rn_docupload_ed.ipa_pdf,
                 medical_report_pdf=self.rn_docupload_ed.medical_report_pdf
         )
+        if archived_doc.employer_marital_status == ed_constants.MaritalStatusChoices.MARRIED:
+            archived_doc.employer_marriage_sg_registered=self.employer.employer_marriage_sg_registered
+            archived_doc.spouse_name=self.employer.spouse_name
+            archived_doc.spouse_gender=self.employer.spouse_gender
+            archived_doc.spouse_date_of_birth=self.employer.spouse_date_of_birth
+            archived_doc.spouse_nationality=self.employer.spouse_nationality
+            archived_doc.spouse_residential_status=self.employer.spouse_residential_status
+            archived_doc.spouse_nric_num=self.employer.spouse_nric_num
+            archived_doc.spouse_nric_nonce=self.employer.spouse_nric_nonce
+            archived_doc.spouse_nric_tag=self.employer.spouse_nric_tag
+            archived_doc.spouse_fin_num=self.employer.spouse_fin_num
+            archived_doc.spouse_fin_nonce=self.employer.spouse_fin_nonce
+            archived_doc.spouse_fin_tag=self.employer.spouse_fin_tag
+            archived_doc.spouse_passport_num=self.employer.spouse_passport_num
+            archived_doc.spouse_passport_nonce=self.employer.spouse_passport_nonce
+            archived_doc.spouse_passport_tag=self.employer.spouse_passport_tag
+            archived_doc.spouse_passport_date=self.employer.spouse_passport_date
+
+        elif archived_doc.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            archived_doc.sponsor_1_relationship=self.employer.rn_sponsor_employer.sponsor_1_relationship
+            archived_doc.sponsor_1_name=self.employer.rn_sponsor_employer.sponsor_1_name
+            archived_doc.sponsor_1_gender=self.employer.rn_sponsor_employer.sponsor_1_gender
+            archived_doc.sponsor_1_date_of_birth=self.employer.rn_sponsor_employer.sponsor_1_date_of_birth
+            archived_doc.sponsor_1_nric_num=self.employer.rn_sponsor_employer.sponsor_1_nric_num
+            archived_doc.sponsor_1_nric_nonce=self.employer.rn_sponsor_employer.sponsor_1_nric_nonce
+            archived_doc.sponsor_1_nric_tag=self.employer.rn_sponsor_employer.sponsor_1_nric_tag
+            archived_doc.sponsor_1_nationality=self.employer.rn_sponsor_employer.sponsor_1_nationality
+            archived_doc.sponsor_1_residential_status=self.employer.rn_sponsor_employer.sponsor_1_residential_status
+            archived_doc.sponsor_1_mobile_number=self.employer.rn_sponsor_employer.sponsor_1_mobile_number
+            archived_doc.sponsor_1_email=self.employer.rn_sponsor_employer.sponsor_1_email
+            archived_doc.sponsor_1_address_1=self.employer.rn_sponsor_employer.sponsor_1_address_1
+            archived_doc.sponsor_1_address_2=self.employer.rn_sponsor_employer.sponsor_1_address_2
+            archived_doc.sponsor_1_post_code=self.employer.rn_sponsor_employer.sponsor_1_post_code
+            archived_doc.sponsor_1_marital_status=self.employer.rn_sponsor_employer.sponsor_1_marital_status
+            archived_doc.sponsor_1_marriage_sg_registered=self.employer.rn_sponsor_employer.sponsor_1_marriage_sg_registered
+            archived_doc.sponsor_1_spouse_name=self.employer.rn_sponsor_employer.sponsor_1_spouse_name
+            archived_doc.sponsor_1_spouse_gender=self.employer.rn_sponsor_employer.sponsor_1_spouse_gender
+            archived_doc.sponsor_1_spouse_date_of_birth=self.employer.rn_sponsor_employer.sponsor_1_spouse_date_of_birth
+            archived_doc.sponsor_1_spouse_nationality=self.employer.rn_sponsor_employer.sponsor_1_spouse_nationality
+            archived_doc.sponsor_1_spouse_residential_status=self.employer.rn_sponsor_employer.sponsor_1_spouse_residential_status
+            archived_doc.sponsor_1_spouse_nric_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_num
+            archived_doc.sponsor_1_spouse_nric_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_nonce
+            archived_doc.sponsor_1_spouse_nric_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_tag
+            archived_doc.sponsor_1_spouse_fin_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_num
+            archived_doc.sponsor_1_spouse_fin_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_nonce
+            archived_doc.sponsor_1_spouse_fin_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_tag
+            archived_doc.sponsor_1_spouse_passport_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_num
+            archived_doc.sponsor_1_spouse_passport_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_nonce
+            archived_doc.sponsor_1_spouse_passport_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_tag
+            archived_doc.sponsor_1_spouse_passport_date=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_date
+            archived_doc.sponsor_2_required=self.employer.rn_sponsor_employer.sponsor_2_required
+            if archived_doc.sponsor_2_required == True:
+                archived_doc.sponsor_2_relationship=self.employer.rn_sponsor_employer.sponsor_2_relationship
+                archived_doc.sponsor_2_name=self.employer.rn_sponsor_employer.sponsor_2_name
+                archived_doc.sponsor_2_gender=self.employer.rn_sponsor_employer.sponsor_2_gender
+                archived_doc.sponsor_2_date_of_birth=self.employer.rn_sponsor_employer.sponsor_2_date_of_birth
+                archived_doc.sponsor_2_nric_num=self.employer.rn_sponsor_employer.sponsor_2_nric_num
+                archived_doc.sponsor_2_nric_nonce=self.employer.rn_sponsor_employer.sponsor_2_nric_nonce
+                archived_doc.sponsor_2_nric_tag=self.employer.rn_sponsor_employer.sponsor_2_nric_tag
+                archived_doc.sponsor_2_nationality=self.employer.rn_sponsor_employer.sponsor_2_nationality
+                archived_doc.sponsor_2_residential_status=self.employer.rn_sponsor_employer.sponsor_2_residential_status
+                archived_doc.sponsor_2_mobile_number=self.employer.rn_sponsor_employer.sponsor_2_mobile_number
+                archived_doc.sponsor_2_email=self.employer.rn_sponsor_employer.sponsor_2_email
+                archived_doc.sponsor_2_address_1=self.employer.rn_sponsor_employer.sponsor_2_address_1
+                archived_doc.sponsor_2_address_2=self.employer.rn_sponsor_employer.sponsor_2_address_2
+                archived_doc.sponsor_2_post_code=self.employer.rn_sponsor_employer.sponsor_2_post_code
+                archived_doc.sponsor_2_marital_status=self.employer.rn_sponsor_employer.sponsor_2_marital_status
+                archived_doc.sponsor_2_marriage_sg_registered=self.employer.rn_sponsor_employer.sponsor_2_marriage_sg_registered
+                archived_doc.sponsor_2_spouse_name=self.employer.rn_sponsor_employer.sponsor_2_spouse_name
+                archived_doc.sponsor_2_spouse_gender=self.employer.rn_sponsor_employer.sponsor_2_spouse_gender
+                archived_doc.sponsor_2_spouse_date_of_birth=self.employer.rn_sponsor_employer.sponsor_2_spouse_date_of_birth
+                archived_doc.sponsor_2_spouse_nationality=self.employer.rn_sponsor_employer.sponsor_2_spouse_nationality
+                archived_doc.sponsor_2_spouse_residential_status=self.employer.rn_sponsor_employer.sponsor_2_spouse_residential_status
+                archived_doc.sponsor_2_spouse_nric_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_num
+                archived_doc.sponsor_2_spouse_nric_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_nonce
+                archived_doc.sponsor_2_spouse_nric_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_tag
+                archived_doc.sponsor_2_spouse_fin_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_num
+                archived_doc.sponsor_2_spouse_fin_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_nonce
+                archived_doc.sponsor_2_spouse_fin_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_tag
+                archived_doc.sponsor_2_spouse_passport_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_num
+                archived_doc.sponsor_2_spouse_passport_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_nonce
+                archived_doc.sponsor_2_spouse_passport_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_tag
+                archived_doc.sponsor_2_spouse_passport_date=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_date
+
+        elif archived_doc.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            archived_doc.joint_applicant_relationship=self.employer.rn_ja_employer.joint_applicant_relationship
+            archived_doc.joint_applicant_name=self.employer.rn_ja_employer.joint_applicant_name
+            archived_doc.joint_applicant_gender=self.employer.rn_ja_employer.joint_applicant_gender
+            archived_doc.joint_applicant_date_of_birth=self.employer.rn_ja_employer.joint_applicant_date_of_birth
+            archived_doc.joint_applicant_nric_num=self.employer.rn_ja_employer.joint_applicant_nric_num
+            archived_doc.joint_applicant_nric_nonce=self.employer.rn_ja_employer.joint_applicant_nric_nonce
+            archived_doc.joint_applicant_nric_tag=self.employer.rn_ja_employer.joint_applicant_nric_tag
+            archived_doc.joint_applicant_nationality=self.employer.rn_ja_employer.joint_applicant_nationality
+            archived_doc.joint_applicant_residential_status=self.employer.rn_ja_employer.joint_applicant_residential_status
+            archived_doc.joint_applicant_address_1=self.employer.rn_ja_employer.joint_applicant_address_1
+            archived_doc.joint_applicant_address_2=self.employer.rn_ja_employer.joint_applicant_address_2
+            archived_doc.joint_applicant_post_code=self.employer.rn_ja_employer.joint_applicant_post_code
+            archived_doc.joint_applicant_marital_status=self.employer.rn_ja_employer.joint_applicant_marital_status
+            archived_doc.joint_applicant_marriage_sg_registered=self.employer.rn_ja_employer.joint_applicant_marriage_sg_registered
+            archived_doc.joint_applicant_spouse_name=self.employer.rn_ja_employer.joint_applicant_spouse_name
+            archived_doc.joint_applicant_spouse_gender=self.employer.rn_ja_employer.joint_applicant_spouse_gender
+            archived_doc.joint_applicant_spouse_date_of_birth=self.employer.rn_ja_employer.joint_applicant_spouse_date_of_birth
+            archived_doc.joint_applicant_spouse_nationality=self.employer.rn_ja_employer.joint_applicant_spouse_nationality
+            archived_doc.joint_applicant_spouse_residential_status=self.employer.rn_ja_employer.joint_applicant_spouse_residential_status
+            archived_doc.joint_applicant_spouse_nric_num=self.employer.rn_ja_employer.joint_applicant_spouse_nric_num
+            archived_doc.joint_applicant_spouse_nric_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_nric_nonce
+            archived_doc.joint_applicant_spouse_nric_tag=self.employer.rn_ja_employer.joint_applicant_spouse_nric_tag
+            archived_doc.joint_applicant_spouse_fin_num=self.employer.rn_ja_employer.joint_applicant_spouse_fin_num
+            archived_doc.joint_applicant_spouse_fin_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_fin_nonce
+            archived_doc.joint_applicant_spouse_fin_tag=self.employer.rn_ja_employer.joint_applicant_spouse_fin_tag
+            archived_doc.joint_applicant_spouse_passport_num=self.employer.rn_ja_employer.joint_applicant_spouse_passport_num
+            archived_doc.joint_applicant_spouse_passport_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_passport_nonce
+            archived_doc.joint_applicant_spouse_passport_tag=self.employer.rn_ja_employer.joint_applicant_spouse_passport_tag
+            archived_doc.joint_applicant_spouse_passport_date=self.employer.rn_ja_employer.joint_applicant_spouse_passport_date
+
+        archived_doc.save()
 
     def increment_version_number(self):
         self.rn_signatures_ed.erase_signatures()
@@ -2481,27 +2489,27 @@ class CaseStatus(models.Model):
     )
 
 class ArchivedAgencyDetails(models.Model):
-    name = models.CharField(
+    agency_name = models.CharField(
         verbose_name=_('Agency Name'),
         max_length=255
     )
 
-    license_no = models.CharField(
+    agency_license_no = models.CharField(
         verbose_name=_('Agency License Number'),
         max_length=255
     )
 
-    address_line_1 = models.CharField(
+    agency_address_line_1 = models.CharField(
         verbose_name=_('Agency Registered Business Address Line 1'),
         max_length=255
     )
 
-    address_line_2 = models.CharField(
+    agency_address_line_2 = models.CharField(
         verbose_name=_('Agency Registered Business Address Line 2'),
         max_length=255
     )
 
-    postal_code = models.CharField(
+    agency_postal_code = models.CharField(
         verbose_name=_('Agency Registered Business Postal Code'),
         max_length=20
     )
@@ -2942,6 +2950,7 @@ class ArchivedDoc(models.Model):
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
         max_length=40,
+        null=True,
     )
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
@@ -2951,16 +2960,20 @@ class ArchivedDoc(models.Model):
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
+        null=True,
     )
     sponsor_1_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 NRIC'),
         editable=True,
+        null=True,
     )
     sponsor_1_nric_nonce = models.BinaryField(
         editable=True,
+        null=True,
     )
     sponsor_1_nric_tag = models.BinaryField(
         editable=True,
+        null=True,
     )
     sponsor_1_nationality = models.CharField(
         verbose_name=_("Sponsor 1 nationality/citizenship"),
@@ -2977,6 +2990,7 @@ class ArchivedDoc(models.Model):
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
         max_length=10,
+        null=True,
         validators=[
             RegexValidator(
                 regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
@@ -2986,10 +3000,12 @@ class ArchivedDoc(models.Model):
     )
     sponsor_1_email = models.EmailField(
         verbose_name=_('Sponsor 1 email address'),
+        null=True,
     )
     sponsor_1_address_1 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 1'),
         max_length=100,
+        null=True,
     )
     sponsor_1_address_2 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 2'),
@@ -3000,6 +3016,7 @@ class ArchivedDoc(models.Model):
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
         max_length=25,
+        null=True,
     )
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
@@ -3402,6 +3419,7 @@ class ArchivedDoc(models.Model):
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
         max_length=40,
+        null=True,
     )
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
@@ -3411,6 +3429,7 @@ class ArchivedDoc(models.Model):
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
+        null=True,
     )
     joint_applicant_nric_num = models.BinaryField(
         verbose_name=_('Joint applicant NRIC'),
@@ -3437,6 +3456,7 @@ class ArchivedDoc(models.Model):
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
         max_length=100,
+        null=True,
     )
     joint_applicant_address_2 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 2"),
@@ -3447,6 +3467,7 @@ class ArchivedDoc(models.Model):
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
         max_length=25,
+        null=True,
     )
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
@@ -3773,14 +3794,12 @@ class ArchivedDoc(models.Model):
             self.b2c_security_bond_accident_insurance,
             self.b2d_indemnity_policy_reimbursement,
             self.b2e_home_service,
-            self.b2f_counselling,
-            self.b2g_sip,
-            self.b2h_food_lodging,
-            self.b2i1_other_services_fee,
-            self.b2i2_other_services_fee,
-            self.b2i3_other_services_fee,
-            self.b2j_replacement_cost,
-            self.b2k_work_permit_renewal,
+            self.b2f_sip,
+            self.b2g1_other_services_fee,
+            self.b2g2_other_services_fee,
+            self.b2g3_other_services_fee,
+            self.b2h_replacement_cost,
+            self.b2i_work_permit_renewal,
         ]
         for field in fields:
             # Sum this way because some fields may be null
@@ -3791,7 +3810,7 @@ class ArchivedDoc(models.Model):
         # Method to calculate placement fee
         return (
             + self.b3_agency_fee
-            + self.b3_fdw_loan
+            + self.fdw_loan
         )
 
     def calc_total_fee(self):
@@ -4121,3 +4140,7 @@ class ArchivedDoc(models.Model):
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
+
+    @property
+    def is_archived_doc(self):
+        return True
