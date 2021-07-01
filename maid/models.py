@@ -391,7 +391,26 @@ class Maid(models.Model):
             self.status = MaidStatusChoices.PUBLISHED
         self.save()
         return err_msg
-            
+
+    def get_languages(self):
+        languages = []
+        if self.language_proficiency.english != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('English')
+        if self.language_proficiency.malay != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Malay')
+        if self.language_proficiency.mandarin != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Mandarin')
+        if self.language_proficiency.chinese_dialect != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Chinese Dialect')
+        if self.language_proficiency.hindi != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Hindi')
+        if self.language_proficiency.tamil != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Tamil')
+        
+        languages_string = ' '.join(languages)
+        if languages_string:
+            return languages_string
+
     @property
     def is_published(self):
         return (
