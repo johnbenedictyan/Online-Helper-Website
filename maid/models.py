@@ -365,7 +365,40 @@ class Maid(models.Model):
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
-        
+
+    def toggle_published(self):
+        if self.status == MaidStatusChoices.PUBLISHED:
+            self.status = MaidStatusChoices.UNPUBLISHED
+        elif self.status == MaidStatusChoices.UNPUBLISHED:
+            self.status = MaidStatusChoices.PUBLISHED
+        elif self.status == MaidStatusChoices.FEATURED:
+            self.status = MaidStatusChoices.UNPUBLISHED
+        self.save()
+    
+    def toggle_featured(self):
+        err_msg = None
+        amt_of_featured = self.agency.amount_of_featured_biodata
+        amt_allowed = self.agency.amount_of_featured_biodata_allowed    
+        if self.status == MaidStatusChoices.PUBLISHED:
+            if amt_of_featured < amt_allowed:
+                self.status = MaidStatusChoices.FEATURED
+            else:
+                err_msg = 'You have reached the limit of featured biodata'
+        elif self.status == MaidStatusChoices.FEATURED:
+            self.status = MaidStatusChoices.PUBLISHED
+        self.save()
+        return err_msg
+            
+    @property
+    def is_published(self):
+        return (
+            self.status == MaidStatusChoices.PUBLISHED or self.status == MaidStatusChoices.FEATURED
+        )
+    
+    @property
+    def is_featured(self):
+        return self.status == MaidStatusChoices.FEATURED
+
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     maid = models.ForeignKey(

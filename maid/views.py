@@ -55,8 +55,7 @@ class MaidTogglePublished(MaidRedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         maid = super().get_object()
-        maid.published = not maid.published
-        maid.save()
+        maid.toggle_published()
         kwargs.pop(self.pk_url_kwarg)
         return reverse_lazy(
             'dashboard_maid_list'
@@ -67,20 +66,13 @@ class MaidToggleFeatured(MaidRedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         maid = super().get_object()
-        if maid.featured == False:
-            amt_of_featured = maid.agency.amount_of_featured_biodata
-            amt_allowed = maid.agency.amount_of_featured_biodata_allowed
-            if amt_of_featured < amt_allowed:
-                maid.featured = not maid.featured
-            else:
-                messages.warning(
-                    self.request,
-                    'You have reached the limit of featured biodata',
-                    extra_tags='error'
-                )
-        else:
-            maid.featured = not maid.featured
-        maid.save()
+        err_msg = maid.toggle_featured()
+        if err_msg:
+            messages.warning(
+                self.request,
+                'You have reached the limit of featured biodata',
+                extra_tags='error'
+            )
         kwargs.pop(self.pk_url_kwarg)
         return reverse_lazy(
             'dashboard_maid_list'
