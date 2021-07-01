@@ -311,7 +311,10 @@ class Maid(models.Model):
             if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
             and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
         ]
-        return main_responsibility[0]
+        if main_responsibility != []:
+            return main_responsibility[0]
+        else:
+            return None
 
     def get_passport_number(self):
         plaintext = decrypt_string(
