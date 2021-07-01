@@ -172,7 +172,7 @@ class MaidProfileView(View):
             return JsonResponse(data, status=404)
         else:
             data = {
-                'salary': selected_maid.financial_details.salary,
+                'salary': selected_maid.expected_salary,
                 'days_off': selected_maid.days_off,
                 'employment_history': [
                     {
@@ -208,9 +208,9 @@ class FeaturedMaidListView(View):
                 'pk': maid.pk,
                 'photo_url': maid.photo.url,
                 'name': maid.name,
-                'country_of_origin': maid.personal_details.get_country_of_origin_display(),
-                'age': maid.personal_details.age,
-                'marital_status': maid.family_details.get_marital_status_display(),
+                'country_of_origin': maid.get_country_of_origin_display(),
+                'age': maid.age,
+                'marital_status': maid.get_marital_status_display(),
                 'type': maid.get_maid_type_display()
             } for maid in featured_maids
         ]

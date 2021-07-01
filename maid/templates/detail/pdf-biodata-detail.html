@@ -226,24 +226,24 @@
                 <h3>A1: Personal Information</h3>
 
                 <p class="ul mt-15"><span class="nu">1. Name: </span><span class="bold"> &nbsp; {{ object.name }}</span></p>
-                <p class="ul mt-15"><span class="nu">2. Date of Birth: </span><span class="bold"> &nbsp; {{ object.personal_details.date_of_birth|date:"d M Y" }} &nbsp; </span><span class="nu"> &nbsp; Age: </span><span class="bold">&nbsp; {{ object.personal_details.get_age }} years old</span></p>
-                <p class="ul mt-15"><span class="nu">3. Place of Birth: </span><span class="bold"> &nbsp; {{ object.personal_details.place_of_birth }}</span></p>
-                <p class="ul mt-15"><span class="nu">4. Height & Weight: </span><span class="bold"> &nbsp; {{ object.personal_details.height|floatformat }} cm &nbsp; {{ object.personal_details.weight|floatformat }} kg</span></p>
-                <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp; {{ object.personal_details.get_country_of_origin_display }}</span></p>
-                <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold"> &nbsp; {{ object.personal_details.address_1 }}, {{ object.personal_details.address_2 }}</span></p>
-                <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span class="bold"> &nbsp; {{ object.personal_details.repatriation_airport }}</span></p>
-                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; {{ object.personal_details.contact_number }}</span></p>
-                <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp; {{ object.personal_details.get_religion_display }}</span></p>
-                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; {{ object.personal_details.education_level }}</span></p>
-                <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_siblings }}</span></p>
-                <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp; {{ object.family_details.marital_status }}</span></p>
-                <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp; {{ object.family_details.number_of_children }}</span></p>
-                <p class="ul mt-15"><span class="nu">-Age(s) of children (if any): </span><span class="bold"> &nbsp;{{ object.family_details.age_of_children }}</span></p>
+                <p class="ul mt-15"><span class="nu">2. Date of Birth: </span><span class="bold"> &nbsp; {{ object.date_of_birth|date:"d M Y" }} &nbsp; </span><span class="nu"> &nbsp; Age: </span><span class="bold">&nbsp; {{ object.get_age }} years old</span></p>
+                <p class="ul mt-15"><span class="nu">3. Place of Birth: </span><span class="bold"> &nbsp; {{ object.place_of_birth }}</span></p>
+                <p class="ul mt-15"><span class="nu">4. Height & Weight: </span><span class="bold"> &nbsp; {{ object.height|floatformat }} cm &nbsp; {{ object.weight|floatformat }} kg</span></p>
+                <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp; {{ object.get_country_of_origin_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold"> &nbsp; {{ object.address_1 }}, {{ object.address_2 }}</span></p>
+                <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span class="bold"> &nbsp; {{ object.repatriation_airport }}</span></p>
+                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; {{ object.contact_number }}</span></p>
+                <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp; {{ object.get_religion_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; {{ object.get_education_level_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp; {{ object.number_of_siblings }}</span></p>
+                <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp; {{ object.marital_status }}</span></p>
+                <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp; {{ object.number_of_children }}</span></p>
+                <p class="ul mt-15"><span class="nu">-Age(s) of children (if any): </span><span class="bold"> &nbsp;{{ object.age_of_children }}</span></p>
                 <p class="ul mt-15"><span class="nu">-Passport Status: </span><span class="bold"> &nbsp; {{ object.get_passport_status_display }}</span></p>
             </div>
             <div>
-                <p class="bold">Code: {{ object.reference_number }} ({{ object.financial_details.personal_loan_amount }} 6 months) </p>
-                <p class="bold">Basic Salary: S${{ object.financial_details.salary }} with {{ object.days_off }} off day(s) per month</p>
+                <p class="bold">Code: {{ object.reference_number }} ({{ object.personal_loan_amount }} 6 months) </p>
+                <p class="bold">Basic Salary: S${{ object.expected_salary }} with {{ object.expected_days_off }} off day(s) per month</p>
                 <p class="bold">Type of Maid: {{ object.get_maid_type_display }}</p>
                 <p class="text-center"><img src="{{ object.photo }}"></p>
             </div>
@@ -427,7 +427,7 @@
                         <td class="text-center">-</td>
                         <td class="text-center">-</td>
                         <td class="text-center">
-                            {% for language in object.personal_details.languages.all %}
+                            {% for language in object.languages.all %}
                             {{ language }}
                             {% endfor %}
                         </td>
@@ -577,7 +577,7 @@
                     <td class="text-center">-</td>
                     <td class="text-center">-</td>
                     <td class="text-center">
-                        {% for language in object.personal_details.languages.all %}
+                        {% for language in object.languages.all %}
                         {{ language }}
                         {% endfor %}
                     </td>
