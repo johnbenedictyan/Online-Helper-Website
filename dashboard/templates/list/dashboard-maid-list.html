@@ -93,6 +93,11 @@
                 <div class="row justify-content-evenly">
                     <a href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
                     <a href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
+                    {% if maid.is_published is False %}
+                    <a href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"></i></a>
+                    {% else %}
+                    <a href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"></i></a>
+                    {% endif %}
                     <a href="#"><i class="far fa-trash"></i></a>
                 </div>
             </div>

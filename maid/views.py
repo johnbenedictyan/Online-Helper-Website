@@ -55,8 +55,7 @@ class MaidTogglePublished(MaidRedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         maid = super().get_object()
-        maid.published = not maid.published
-        maid.save()
+        maid.toggle_published()
         kwargs.pop(self.pk_url_kwarg)
         return reverse_lazy(
             'dashboard_maid_list'
@@ -67,20 +66,13 @@ class MaidToggleFeatured(MaidRedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         maid = super().get_object()
-        if maid.featured == False:
-            amt_of_featured = maid.agency.amount_of_featured_biodata
-            amt_allowed = maid.agency.amount_of_featured_biodata_allowed
-            if amt_of_featured < amt_allowed:
-                maid.featured = not maid.featured
-            else:
-                messages.warning(
-                    self.request,
-                    'You have reached the limit of featured biodata',
-                    extra_tags='error'
-                )
-        else:
-            maid.featured = not maid.featured
-        maid.save()
+        err_msg = maid.toggle_featured()
+        if err_msg:
+            messages.warning(
+                self.request,
+                'You have reached the limit of featured biodata',
+                extra_tags='error'
+            )
         kwargs.pop(self.pk_url_kwarg)
         return reverse_lazy(
             'dashboard_maid_list'
@@ -105,8 +97,8 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        country_of_origin = self.object.personal_details.country_of_origin
-        languages = self.object.personal_details.languages.all()
+        country_of_origin = self.object.country_of_origin
+        languages = self.object.languages.all()
         similar_maids = Maid.objects.filter(
             country_of_origin=country_of_origin,
             responsibilities=self.object.get_main_responsibility(),
@@ -180,7 +172,7 @@ class MaidProfileView(View):
             return JsonResponse(data, status=404)
         else:
             data = {
-                'salary': selected_maid.financial_details.salary,
+                'salary': selected_maid.expected_salary,
                 'days_off': selected_maid.days_off,
                 'employment_history': [
                     {
@@ -216,9 +208,9 @@ class FeaturedMaidListView(View):
                 'pk': maid.pk,
                 'photo_url': maid.photo.url,
                 'name': maid.name,
-                'country_of_origin': maid.personal_details.get_country_of_origin_display(),
-                'age': maid.personal_details.age,
-                'marital_status': maid.family_details.get_marital_status_display(),
+                'country_of_origin': maid.get_country_of_origin_display(),
+                'age': maid.age,
+                'marital_status': maid.get_marital_status_display(),
                 'type': maid.get_maid_type_display()
             } for maid in featured_maids
         ]

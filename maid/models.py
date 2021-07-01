@@ -311,7 +311,10 @@ class Maid(models.Model):
             if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
             and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
         ]
-        return main_responsibility[0]
+        if main_responsibility != []:
+            return main_responsibility[0]
+        else:
+            return None
 
     def get_passport_number(self):
         plaintext = decrypt_string(
@@ -365,7 +368,59 @@ class Maid(models.Model):
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
+
+    def toggle_published(self):
+        if self.status == MaidStatusChoices.PUBLISHED:
+            self.status = MaidStatusChoices.UNPUBLISHED
+        elif self.status == MaidStatusChoices.UNPUBLISHED:
+            self.status = MaidStatusChoices.PUBLISHED
+        elif self.status == MaidStatusChoices.FEATURED:
+            self.status = MaidStatusChoices.UNPUBLISHED
+        self.save()
+    
+    def toggle_featured(self):
+        err_msg = None
+        amt_of_featured = self.agency.amount_of_featured_biodata
+        amt_allowed = self.agency.amount_of_featured_biodata_allowed    
+        if self.status == MaidStatusChoices.PUBLISHED:
+            if amt_of_featured < amt_allowed:
+                self.status = MaidStatusChoices.FEATURED
+            else:
+                err_msg = 'You have reached the limit of featured biodata'
+        elif self.status == MaidStatusChoices.FEATURED:
+            self.status = MaidStatusChoices.PUBLISHED
+        self.save()
+        return err_msg
+
+    def get_languages(self):
+        languages = []
+        if self.language_proficiency.english != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('English')
+        if self.language_proficiency.malay != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Malay')
+        if self.language_proficiency.mandarin != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Mandarin')
+        if self.language_proficiency.chinese_dialect != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Chinese Dialect')
+        if self.language_proficiency.hindi != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Hindi')
+        if self.language_proficiency.tamil != MaidLanguageProficiencyChoices.UNABLE:
+            languages.append('Tamil')
         
+        languages_string = ' '.join(languages)
+        if languages_string:
+            return languages_string
+
+    @property
+    def is_published(self):
+        return (
+            self.status == MaidStatusChoices.PUBLISHED or self.status == MaidStatusChoices.FEATURED
+        )
+    
+    @property
+    def is_featured(self):
+        return self.status == MaidStatusChoices.FEATURED
+
 ## Models which have a one-to-many relationship with the maid model
 class MaidFoodHandlingPreference(models.Model):
     maid = models.ForeignKey(

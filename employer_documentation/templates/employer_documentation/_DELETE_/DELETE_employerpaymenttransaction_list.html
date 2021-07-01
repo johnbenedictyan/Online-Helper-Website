@@ -52,12 +52,12 @@
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
                 <td>FDW agency fee</td>
-                <td>{{ object.fdw.financial_details.agency_fee_amount|intcomma }}</td>
+                <td>{{ object.fdw.agency_fee_amount|intcomma }}</td>
             </tr>
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
                 <td>FDW personal loan</td>
-                <td>{{ object.fdw.financial_details.personal_loan_amount|intcomma }}</td>
+                <td>{{ object.fdw.personal_loan_amount|intcomma }}</td>
             </tr>
             <tr>
                 <td>{{ object.agreement_date|date:"d M Y" }}</td>
