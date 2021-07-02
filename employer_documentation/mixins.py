@@ -60,7 +60,6 @@ class PdfHtmlViewMixin:
         ).write_pdf(
             # Load separate CSS stylesheet from static folder
             stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-            # stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
         )
         response = HttpResponse(pdf_file, content_type='application/pdf')
         if self.content_disposition:
@@ -81,7 +80,6 @@ class PdfHtmlViewMixin:
                 # target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
                 # Load separate CSS stylesheet from static folder
                 stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-                # stylesheets=[CSS('static/css/pdf.css')] ##################################################### TO BE CHANGED BEFORE PRODUCTION
             )
 
     def calc_repayment_schedule(self):
