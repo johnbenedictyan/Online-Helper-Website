@@ -15,6 +15,14 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mr-auto">
                         {% with request.resolver_match.url_name as url_name %}
+                        <li class="nav-item {% if url_name == 'home' %}active{% endif %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'home' %}">
+                                <p class="mb-0">Home</p>
+                                {% if url_name == 'home' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
+                        </li>
                         <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
                             <a class="nav-link custom-nav-link" href="{% url 'maid_list' %}">
                                 <p class="mb-0">Search Maid</p>
@@ -51,6 +59,14 @@
                             <a class="nav-link custom-nav-link" href="{% url 'about_us' %}">
                                 <p class="mb-0">About Us</p>
                                 {% if url_name == 'about_us' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item {% if url_name == 'home' %}active{% endif %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'home' %}">
+                                <p class="mb-0">Useful Links</p>
+                                {% if url_name == 'home' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
                             </a>

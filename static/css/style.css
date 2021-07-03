@@ -537,6 +537,12 @@ body.dashboard-body {
   }
 }
 
+@media screen and (min-width: 2000px) {
+  .logo-image-wrapper {
+    width: 10%;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .title-banner {
     margin-bottom: 1.875rem;
