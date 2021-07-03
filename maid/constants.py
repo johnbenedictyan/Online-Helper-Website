@@ -145,59 +145,52 @@ class MaidEmploymentCountry(models.TextChoices):
     HONG_KONG = 'HKG', _('Hong Kong')
     MALAYSIA = 'MYS', _('Malaysia')
 
+CARE_OWN_COUNTRY = 'OC', _('Experience in own country')
+CARE_OVERSEAS = 'OV', _('Experience in overseas')
+CARE_SINGAPORE = 'SG', _('Experience in Singapore')
+CARE_OWN_COUNTRY_SINGAPORE = 'OC_SG', _('Experience in own country and Singapore')
+CARE_OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
+CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+    'Experience in own country, overseas and Singapore'
+)
+CARE_NO_EXP = 'NE', _('No experience, but willing to learn')
+CARE_OTHERS = 'OTH', _('Other remarks (Please specify)')
+
 class InfantChildCareRemarksChoices(models.TextChoices):
-    OWN_COUNTRY = 'OC', _('Experience in own country')
-    OVERSEAS = 'OV', _('Experience in overseas')
-    SINGAPORE = 'SG', _('Experience in Singapore')
-    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-        'Experience in own country and Singapore'
-    )
-    OWN_COUNTRY_OVERSEAS = 'OC_O', _(
-        'Experience in own country and overseas'
-    )
-    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-        'Experience in own country, overseas and Singapore'
-    )
-    NO_EXP = 'NE', _('No experience, but willing to learn')
+    OWN_COUNTRY = CARE_OWN_COUNTRY
+    OVERSEAS = CARE_OVERSEAS
+    SINGAPORE = CARE_SINGAPORE
+    OWN_COUNTRY_SINGAPORE = CARE_OWN_COUNTRY_SINGAPORE
+    OWN_COUNTRY_OVERSEAS = CARE_OWN_COUNTRY_OVERSEAS
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE
+    NO_EXP = CARE_NO_EXP
     NOT_WILLING = 'NW', _('Not willing to care for infants/children')
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
+    OTHERS = CARE_OTHERS
 
 class ElderlyCareRemarksChoices(models.TextChoices):
-    OWN_COUNTRY = 'OC', _('Experience in own country')
-    OVERSEAS = 'OV', _('Experience in overseas')
-    SINGAPORE = 'SG', _('Experience in Singapore')
-    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-        'Experience in own country and Singapore'
-    )
-    OWN_COUNTRY_OVERSEAS = 'OC_O', _(
-        'Experience in own country and overseas'
-    )
-    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-        'Experience in own country, overseas and Singapore'
-    )
-    NO_EXP = 'NE', _('No experience, but willing to learn')
+    OWN_COUNTRY = CARE_OWN_COUNTRY
+    OVERSEAS = CARE_OVERSEAS
+    SINGAPORE = CARE_SINGAPORE
+    OWN_COUNTRY_SINGAPORE = CARE_OWN_COUNTRY_SINGAPORE
+    OWN_COUNTRY_OVERSEAS = CARE_OWN_COUNTRY_OVERSEAS
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE
+    NO_EXP = CARE_NO_EXP
     NOT_WILLING = 'NW', _('Not willing to care for elderly')
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
+    OTHERS = CARE_OTHERS
 
 class DisabledCareRemarksChoices(models.TextChoices):
-    OWN_COUNTRY = 'OC', _('Experience in own country')
-    OVERSEAS = 'OV', _('Experience in overseas')
-    SINGAPORE = 'SG', _('Experience in Singapore')
-    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-        'Experience in own country and Singapore'
-    )
-    OWN_COUNTRY_OVERSEAS = 'OC_O', _(
-        'Experience in own country and overseas'
-    )
-    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-        'Experience in own country, overseas and Singapore'
-    )
-    NO_EXP = 'NE', _('No experience, but willing to learn')
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
+    OWN_COUNTRY = CARE_OWN_COUNTRY
+    OVERSEAS = CARE_OVERSEAS
+    SINGAPORE = CARE_SINGAPORE
+    OWN_COUNTRY_SINGAPORE = CARE_OWN_COUNTRY_SINGAPORE
+    OWN_COUNTRY_OVERSEAS = CARE_OWN_COUNTRY_OVERSEAS
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE
+    NO_EXP = CARE_NO_EXP
+    OTHERS = CARE_OTHERS
 
 class GeneralHouseworkRemarksChoices(models.TextChoices):
     CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
+    OTHERS = CARE_OTHERS
 
 class CookingRemarksChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Able to cook own country\'s cuisine')
@@ -237,18 +230,14 @@ class CookingRemarksChoices(models.TextChoices):
     OWN_COUNTRY_CHINESE_INDIAN_WESTERN = 'OC_C_I_W', _(
         'Able to cook own country\'s, chinese, indian and western cuisine'
     )
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
+    OTHERS = CARE_OTHERS
 
 class MaidCareRemarksChoices(models.TextChoices):
-    OWN_COUNTRY = 'OC', _('Experience in own country')
-    OVERSEAS = 'OV', _('Experience in overseas')
-    SINGAPORE = 'SG', _('Experience in Singapore')
-    OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-        'Experience in own country and Singapore'
-    )
-    OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
-    OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-        'Experience in own country, overseas and Singapore'
-    )
-    NO_EXP = 'NE', _('No experience, but willing to learn')
-    OTHERS = 'OTH', _('Other remarks (Please specify)')
+    OWN_COUNTRY = CARE_OWN_COUNTRY
+    OVERSEAS = CARE_OVERSEAS
+    SINGAPORE = CARE_SINGAPORE
+    OWN_COUNTRY_SINGAPORE = CARE_OWN_COUNTRY_SINGAPORE
+    OWN_COUNTRY_OVERSEAS = CARE_OWN_COUNTRY_OVERSEAS
+    OWN_COUNTRY_OVERSEAS_SINGPAPORE = CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE
+    NO_EXP = CARE_NO_EXP
+    OTHERS = CARE_OTHERS
