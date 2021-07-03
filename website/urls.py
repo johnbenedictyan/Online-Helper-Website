@@ -11,7 +11,7 @@ from django.urls import include, path
 from .views import (
     HomeView, AboutUsView, ContactUsView, SitemapView, TermsAndConditionsAgencyView, RobotsTxt,
     TermsAndConditionsUserView, HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
-    AdminPanelEnquiryListView, Error403View, Error404View, Error500View
+    AdminPanelEnquiryListView, Error403View, Error404View, Error500View, UsefulLinksView
 )
 
 ## List Views
@@ -71,6 +71,11 @@ urlpatterns = [
         'faq/',
         FAQView.as_view(),
         name='faq'
+    ),
+    path(
+        'useful-links/',
+        UsefulLinksView.as_view(),
+        name='useful_links'
     ),
     path(
         'admin-panel/',

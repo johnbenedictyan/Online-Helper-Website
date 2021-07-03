@@ -56,6 +56,10 @@ class FAQView(TemplateView):
     http_method_names = ['get']
     template_name = 'faq.html'
 
+class UsefulLinksView(TemplateView):
+    http_method_names = ['get']
+    template_name = 'useful-links.html'
+
 class AdminPanelView(OnlineMaidStaffRequiredMixin, ListView):
     http_method_names = ['get']
     template_name = 'admin-panel.html'
