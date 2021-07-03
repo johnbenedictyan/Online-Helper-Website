@@ -7,7 +7,6 @@ from decimal import Decimal, ROUND_HALF_UP
 from django.conf import settings
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-# from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
 # 3rd party
 from weasyprint import HTML, CSS
@@ -32,7 +31,9 @@ class PdfHtmlViewMixin:
     use_repayment_table = False
 
     def get_context_data(self, **kwargs):
-        version_explainer_text = 'This document version supersedes all previous versions with the same Case #, if any.'
+        version_explainer_text = '''
+            This document version supersedes all previous versions with the same Case #, if any.
+        '''
         context = super().get_context_data()
 
         def get_preferred_language():
@@ -46,8 +47,11 @@ class PdfHtmlViewMixin:
             context['object'].version = f'[{self.object.get_version()}] - {version_explainer_text}'
 
             preferred_language = get_preferred_language()
+            SAFETY_AGREEMENT_SNIPPETS_URI = 'employer_documentation/pdf/safety_agreement_snippets'
             for i in range(1,4):
-                context['lang_snippet_0'+str(i)] = f'employer_documentation/pdf/safety_agreement_snippets/{preferred_language}_snippet_0{str(i)}.html'
+                context['lang_snippet_0'+str(i)] = f'''
+                    {SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html
+                '''
 
         return context
 
@@ -77,7 +81,6 @@ class PdfHtmlViewMixin:
             string=html_template,
             base_url=request.build_absolute_uri()
             ).write_pdf(
-                # target=self.target, # e.g. target=settings.MEDIA_ROOT + '/employer-documentation/test.pdf', # To save file in static folder
                 # Load separate CSS stylesheet from static folder
                 stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
             )
@@ -97,7 +100,10 @@ class PdfHtmlViewMixin:
         MONTHLY_LOAN_REPAYMENT  = self.object.fdw_monthly_loan_repayment
         fdw_loan_balance = self.object.fdw_loan
 
-        if hasattr(self.object, 'rn_casestatus_ed') and self.object.rn_casestatus_ed.fdw_work_commencement_date:
+        if (
+            hasattr(self.object, 'rn_casestatus_ed') and 
+            self.object.rn_casestatus_ed.fdw_work_commencement_date
+        ):
             DEPLOYMENT_DATE = self.object.rn_casestatus_ed.fdw_work_commencement_date
         else:
             DEPLOYMENT_DATE = None
@@ -107,24 +113,39 @@ class PdfHtmlViewMixin:
             # Initialise dates
             payment_year = DEPLOYMENT_DATE.year
             payment_month = DEPLOYMENT_DATE.month
-            payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
+            payment_day = min(
+                DEPLOYMENT_DATE.day, 
+                calendar.monthrange(
+                    payment_year, 
+                    payment_month
+                )[1]
+            )
 
             for i in range(1,25):
                 # Set start_date for calculation of potential_off_days_in_month
-                start_date = datetime.date(payment_year, payment_month, payment_day) + datetime.timedelta(days=1)
+                payment_date = datetime.date(payment_year, payment_month, payment_day)
+                start_date = payment_date + datetime.timedelta(days=1)
 
                 # Set payment date
                 payment_month += 1
                 payment_month = 12 if payment_month%12==0 else payment_month%12
                 payment_year += 1 if payment_month%12 == 1 else 0
-                payment_day = min(DEPLOYMENT_DATE.day, calendar.monthrange(payment_year, payment_month)[1])
+                payment_day = min(
+                    DEPLOYMENT_DATE.day, 
+                    calendar.monthrange(payment_year, payment_month)[1]
+                )
 
                 # Calculate potential_off_days_in_month
                 end_date = datetime.date(payment_year, payment_month, payment_day)
-                potential_off_days_in_month = intervening_weekdays(start_date, end_date, inclusive=True, weekdays=[OFF_DAY_OF_WEEK])
+                potential_off_days_in_month = intervening_weekdays(
+                    start_date, end_date, 
+                    inclusive=True, 
+                    weekdays=[OFF_DAY_OF_WEEK]
+                )
 
                 # Calculate salary and loan payments in month
-                balance_off_day_compensation = PER_OFF_DAY_COMPENSATION * (potential_off_days_in_month - FDW_OFF_DAYS_PER_MONTH)
+                fdw_off_days_remaining = potential_off_days_in_month - FDW_OFF_DAYS_PER_MONTH
+                balance_off_day_compensation = PER_OFF_DAY_COMPENSATION * fdw_off_days_remaining
                 total_salary = BASIC_SALARY + balance_off_day_compensation
                 loan_repaid = min(MONTHLY_LOAN_REPAYMENT, BASIC_SALARY, fdw_loan_balance)
 
@@ -149,7 +170,8 @@ class PdfHtmlViewMixin:
             # if work commencement date not set, then generate table without dates
             for i in range(1,25):
                 # Calculate salary and loan payments in month
-                balance_off_day_compensation = PER_OFF_DAY_COMPENSATION * (4 - FDW_OFF_DAYS_PER_MONTH)
+                fdw_off_days_remaining = 4 - FDW_OFF_DAYS_PER_MONTH
+                balance_off_day_compensation = PER_OFF_DAY_COMPENSATION * fdw_off_days_remaining
                 total_salary = BASIC_SALARY + balance_off_day_compensation
                 loan_repaid = min(MONTHLY_LOAN_REPAYMENT, BASIC_SALARY, fdw_loan_balance)
 

@@ -48,7 +48,6 @@ def generate_archive_path(instance, filename):
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 
-
 # Start of Models
 
 # Employer e-Documentation Models
@@ -438,7 +437,10 @@ class Employer(models.Model):
     def details_missing_spouse(self):
         error_msg_list = []
 
-        if self.employer_marital_status==MaritalStatusChoices.MARRIED or self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE:
+        if (
+            self.employer_marital_status==MaritalStatusChoices.MARRIED or 
+            self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE
+        ):
             mandatory_fields = [
                 'spouse_name',
                 'spouse_gender',
@@ -451,7 +453,10 @@ class Employer(models.Model):
                 if not getattr(self, field):
                     error_msg_list.append(field)
             
-            if self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if (
+                self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
+                self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+            ):
                 if not self.get_employer_spouse_nric_full():
                     error_msg_list.append('spouse_nric_num')
             else:
@@ -468,7 +473,10 @@ class Employer(models.Model):
         # Retrieve verbose name -> self._meta.get_field('field_name_str').verbose_name
         error_msg_list = []
 
-        if self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+        if (
+            self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
+            self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+        ):
             if not self.get_employer_nric_full():
                 error_msg_list.append('employer_nric_num')
         else:
@@ -1027,7 +1035,10 @@ class EmployerSponsor(models.Model):
                 if not getattr(self, field):
                     error_msg_list.append(field)
             
-            if self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if (
+                self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
+                self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+            ):
                 if not self.get_sponsor_2_spouse_nric_full():
                     error_msg_list.append('sponsor_2_spouse_nric_num')
             else:
@@ -1085,7 +1096,10 @@ class EmployerSponsor(models.Model):
                 if not getattr(self, field):
                     error_msg_list.append(field)
             
-            if self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if (
+                self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
+                self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+            ):
                 if not self.get_sponsor_1_spouse_nric_full():
                     error_msg_list.append('sponsor_1_spouse_nric_num')
             else:
@@ -1331,7 +1345,10 @@ class EmployerJointApplicant(models.Model):
                 if not getattr(self, field):
                     error_msg_list.append(field)
             
-            if self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+            if (
+                self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
+                self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+            ):
                 if not self.joint_applicant_spouse_nric_full():
                     error_msg_list.append('joint_applicant_spouse_nric_num')
             else:
@@ -1347,7 +1364,10 @@ class EmployerJointApplicant(models.Model):
     def details_missing_joint_applicant(self):
         error_msg_list = []
         
-        if self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+        if (
+            self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
+            self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+        ):
             if not self.get_joint_applicant_nric_full():
                 error_msg_list.append('joint_applicant_nric_num')
         else:
@@ -1504,7 +1524,12 @@ class EmployerDoc(models.Model):
         return str(self.version).zfill(4)
 
     def per_off_day_compensation(self):
-        return Decimal(self.fdw_salary/ed_constants.NUMBER_OF_WORK_DAYS_IN_MONTH).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+        return Decimal(
+            self.fdw_salary/ed_constants.NUMBER_OF_WORK_DAYS_IN_MONTH
+        ).quantize(
+            Decimal('.01'), 
+            rounding=ROUND_HALF_UP
+        )
 
     def fdw_off_day_of_week_display(self):
         if int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.MON:

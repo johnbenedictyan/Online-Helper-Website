@@ -43,13 +43,14 @@ class EmployerDocDetailView(
     template_name = 'detail/dashboard-case-detail.html'
 
     def get_context_data(self, **kwargs):
+        sig_object = self.object.rn_signatures_ed
         context = super().get_context_data(**kwargs)
         context.update({
-            'employer_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_employer_1'),
-            'employer_spouse_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_employer_spouse'),
-            'sponsor_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_sponsor_1'),
-            'sponsor_2_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_sponsor_2'),
-            'joint_applicant_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_joint_applicant')
+            'employer_1_sigurl': sig_object.get_sigurl('sigslug_employer_1'),
+            'employer_spouse_sigurl': sig_object.get_sigurl('sigslug_employer_spouse'),
+            'sponsor_1_sigurl': sig_object.get_sigurl('sigslug_sponsor_1'),
+            'sponsor_2_sigurl': sig_object.get_sigurl('sigslug_sponsor_2'),
+            'joint_applicant_sigurl': sig_object.get_sigurl('sigslug_joint_applicant')
         })
         return context
       
@@ -105,7 +106,7 @@ class SignedDocumentsDetailView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        stakeholder_referrer_dict = {
+        stakeholder_referrer_map = {
             # Stakeholder: Referrer Url Name
             'employer_1':       'token_employer_signature_form_view',
             'employer_spouse':  'token_employer_spouse_signature_form_view',
@@ -113,7 +114,7 @@ class SignedDocumentsDetailView(
             'sponsor_2':        'token_sponsor_2_signature_form_view',
             'joint_applicant':  'token_joint_applicant_signature_form_view'
         }
-        url_route_name =  stakeholder_referrer_dict.get(self.stakeholder)
+        url_route_name =  stakeholder_referrer_map.get(self.stakeholder)
         referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
         rev_url = reverse(url_route_name, kwargs={
             'slug': self.kwargs.get(self.slug_url_kwarg)
@@ -632,7 +633,7 @@ class EmployerSponsorUpdateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if self.object.employer.applicant_type != constants.EmployerTypeOfApplicantChoices.SPONSOR:
             return HttpResponseRedirect(
                 reverse('employer_update_route', kwargs={
                     self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
@@ -678,7 +679,7 @@ class EmployerDocJointApplicantUpdateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        if self.object.employer.applicant_type != constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             return HttpResponseRedirect(
                 reverse('employer_update_route', kwargs={
                     self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
@@ -1116,7 +1117,7 @@ class HtmlToRenderPdfTokenView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        stakeholder_referrer_dict = {
+        stakeholder_referrer_map = {
             # Stakeholder: Referrer Url Name
             'employer_1':       'token_employer_signature_form_view',
             'employer_spouse':  'token_employer_spouse_signature_form_view',
@@ -1124,7 +1125,7 @@ class HtmlToRenderPdfTokenView(
             'sponsor_2':        'token_sponsor_2_signature_form_view',
             'joint_applicant':  'token_joint_applicant_signature_form_view'
         }
-        url_route_name =  stakeholder_referrer_dict.get(self.stakeholder)
+        url_route_name =  stakeholder_referrer_map.get(self.stakeholder)
         referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
         signed_doc_rev_url = reverse(
             'pdf_signed_documents', 

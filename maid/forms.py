@@ -1,5 +1,4 @@
-# Python
-import re
+# Imports from Python
 
 # Imports from django
 from django import forms
@@ -7,37 +6,32 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from project-wide files
-from onlinemaid.constants import TrueFalseChoices
-
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
+
+# Imports from project-wide files
 from agency.models import Agency
+from employer_documentation.models import EmployerDoc
+from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.helper_functions import encrypt_string
+from onlinemaid.validators import validate_fin, validate_passport
 
 # Imports from local apps
 from .constants import (
-    MaidLanguageChoices, MaidAssessmentChoices, MaidFoodPreferenceChoices, 
-    MaidDietaryRestrictionChoices, MaidLanguageProficiencyChoices, InfantChildCareRemarksChoices,
-    ElderlyCareRemarksChoices, DisabledCareRemarksChoices, CookingRemarksChoices,
-    GeneralHouseworkRemarksChoices
+    CookingRemarksChoices, DisabledCareRemarksChoices, ElderlyCareRemarksChoices,
+    GeneralHouseworkRemarksChoices, InfantChildCareRemarksChoices,
+    MaidAssessmentChoices, MaidDietaryRestrictionChoices, MaidFoodPreferenceChoices,
+    MaidLanguageProficiencyChoices
 )
-
 from .models import (
-    Maid, MaidLanguage, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, 
-    MaidGeneralHousework, MaidCooking, MaidFoodHandlingPreference, 
-    MaidDietaryRestriction, MaidLoanTransaction,
-    MaidFoodHandlingPreference, MaidDietaryRestriction,
-    MaidEmploymentHistory, MaidLanguageProficiency
+    Maid, MaidCooking, MaidDietaryRestriction, MaidDisabledCare, MaidElderlyCare, 
+    MaidEmploymentHistory, MaidFoodHandlingPreference, MaidGeneralHousework, MaidInfantChildCare,
+    MaidLanguageProficiency, MaidLoanTransaction
 )
-from agency.models import Agency
-from employer_documentation.models import EmployerDoc
-from onlinemaid.helper_functions import encrypt_string, validate_fin, validate_passport
 from .widgets import CustomDateInput
 
 # Start of Forms
-
-# Forms that inherit from inbuilt Django forms
 
 # Model Forms
 class MaidForm(forms.ModelForm):
@@ -308,6 +302,212 @@ class MaidForm(forms.ModelForm):
             #TODO: Implement version incrementing
         return super().save(*args, **kwargs)
     
+class MaidEmploymentHistoryForm(forms.ModelForm):
+    class Meta:
+        model = MaidEmploymentHistory
+        exclude = ['maid']
+        widgets = {
+            'work_duties': forms.Textarea(attrs={
+                'rows': '4',
+                'cols': '100',
+                'maxlength': '150'
+            }),
+            'reason_for_leaving': forms.Textarea(attrs={
+                'rows': '4',
+                'cols': '100',
+                'maxlength': '100'
+            })
+        }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        self.instance.maid = self.maid
+        return super().save(*args, **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        self.maid_id = kwargs.pop('maid_id')
+        self.maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            HTML(
+                                '''
+                                <button class="btn btn-outline-primary">
+                                    <i class="fas fa-times"></i>
+                                </button>'''
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'start_date'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'end_date'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'work_duties'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            Row(
+                                Column(
+                                    'employer'
+                                )
+                            ),
+                            Row(
+                                Column(
+                                    'country'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            Row(
+                                Column(
+                                    'reason_for_leaving'
+                                )
+                            ),
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+class MaidFoodHandlingPreferenceForm(forms.ModelForm):
+    class Meta:
+        model = MaidFoodHandlingPreference
+        exclude = ['maid']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'preference',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Purchase',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class MaidDietaryRestrictionForm(forms.ModelForm):
+    class Meta:
+        model = MaidDietaryRestriction
+        exclude = ['maid']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'restriction',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Purchase',
+                        css_class="btn btn-primary w-50"
+                    ),
+                    css_class='form-group col-12 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+class MaidLoanTransactionForm(forms.ModelForm):
+    class Meta:
+        model = MaidLoanTransaction
+        exclude = ['maid']
+
+    def __init__(self, *args, **kwargs):
+        self.maid_id = kwargs.pop('maid_id')
+        self.maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Row(
+                        Column(
+                            Field(
+                                'DELETE'
+                            ),
+                            css_class='col-12 text-right'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            'date',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'description',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'amount',
+                            css_class='col-md-6'
+                        ),
+                        Column(
+                            'remarks',
+                            css_class='col-md-6'
+                        )
+                    )
+                ),
+                css_class='form-group'
+            )
+        )
+
+    def save(self, *args, **kwargs):
+        self.instance.maid = self.maid
+        return super().save(*args, **kwargs)
+    
+# Generic Forms (forms.Form)
 class MaidLanguagesAndFHPDRForm(forms.Form):
     english = forms.ChoiceField(
         label=_('English'),
@@ -1051,210 +1251,3 @@ class MaidAboutFDWForm(forms.Form):
         maid.about_me=about_me
         maid.save()
         return maid
-
-class MaidEmploymentHistoryForm(forms.ModelForm):
-    class Meta:
-        model = MaidEmploymentHistory
-        exclude = ['maid']
-        widgets = {
-            'work_duties': forms.Textarea(attrs={
-                'rows': '4',
-                'cols': '100',
-                'maxlength': '150'
-            }),
-            'reason_for_leaving': forms.Textarea(attrs={
-                'rows': '4',
-                'cols': '100',
-                'maxlength': '100'
-            })
-        }
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
-
-    def save(self, *args, **kwargs):
-        self.instance.maid = self.maid
-        return super().save(*args, **kwargs)
-
-    def __init__(self, *args, **kwargs):
-        self.maid_id = kwargs.pop('maid_id')
-        self.maid = Maid.objects.get(
-            pk=self.maid_id
-        )
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            HTML(
-                                '''
-                                <button class="btn btn-outline-primary">
-                                    <i class="fas fa-times"></i>
-                                </button>'''
-                            ),
-                            css_class='col-12 text-right'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            Row(
-                                Column(
-                                    'start_date'
-                                )
-                            ),
-                            Row(
-                                Column(
-                                    'end_date'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            Row(
-                                Column(
-                                    'work_duties'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            Row(
-                                Column(
-                                    'employer'
-                                )
-                            ),
-                            Row(
-                                Column(
-                                    'country'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            Row(
-                                Column(
-                                    'reason_for_leaving'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        )
-                    )
-                ),
-                css_class='form-group'
-            )
-        )
-
-class MaidFoodHandlingPreferenceForm(forms.ModelForm):
-    class Meta:
-        model = MaidFoodHandlingPreference
-        exclude = ['maid']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'preference',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Purchase',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class MaidDietaryRestrictionForm(forms.ModelForm):
-    class Meta:
-        model = MaidDietaryRestriction
-        exclude = ['maid']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    'restriction',
-                    css_class='form-group col'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Purchase',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-
-class MaidLoanTransactionForm(forms.ModelForm):
-    class Meta:
-        model = MaidLoanTransaction
-        exclude = ['maid']
-
-    def __init__(self, *args, **kwargs):
-        self.maid_id = kwargs.pop('maid_id')
-        self.maid = Maid.objects.get(
-            pk=self.maid_id
-        )
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            Field(
-                                'DELETE'
-                            ),
-                            css_class='col-12 text-right'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            'date',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'description',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'amount',
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            'remarks',
-                            css_class='col-md-6'
-                        )
-                    )
-                ),
-                css_class='form-group'
-            )
-        )
-
-    def save(self, *args, **kwargs):
-        self.instance.maid = self.maid
-        return super().save(*args, **kwargs)
-    
-# Generic Forms (forms.Form)

@@ -8,7 +8,8 @@ from django.core.validators import RegexValidator, URLValidator
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
-from onlinemaid.helper_functions import get_sg_region, validate_ea_personnel_number
+from onlinemaid.helper_functions import get_sg_region
+from onlinemaid.validators import validate_ea_personnel_number
 from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
