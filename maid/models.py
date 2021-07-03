@@ -38,6 +38,10 @@ class MaidResponsibility(models.Model):
         choices=MaidResponsibilityChoices.choices
     )
     
+    class Meta:
+        verbose_name = _("Maid Responsibility")
+        verbose_name_plural = _("Maid Responsibilities")
+
     def __str__(self) -> str:
         return f'{self.get_name_display()}'
 
@@ -51,6 +55,10 @@ class MaidLanguage(models.Model):
         blank=False,
         choices=MaidLanguageChoices.choices
     )
+
+    class Meta:
+        verbose_name = _("Maid Language")
+        verbose_name_plural = _("Maid Languages")
 
     def __str__(self) -> str:
         return f'{self.get_language_display()}'
@@ -302,6 +310,10 @@ class Maid(models.Model):
         null=True
     )
 
+    class Meta:
+        verbose_name = _("Maid")
+        verbose_name_plural = _("Maids")
+
     def __str__(self):
         return self.reference_number + ' - ' + self.name
 
@@ -458,6 +470,10 @@ class MaidFoodHandlingPreference(models.Model):
         default=MaidFoodPreferenceChoices.PORK
     )
 
+    class Meta:
+        verbose_name = _("Maid Food Handling Preference")
+        verbose_name_plural = _("Maid Food Handling Preferences")
+
 class MaidDietaryRestriction(models.Model):
     maid = models.ForeignKey(
         Maid,
@@ -472,6 +488,10 @@ class MaidDietaryRestriction(models.Model):
         choices=MaidDietaryRestrictionChoices.choices,
         default=MaidDietaryRestrictionChoices.PORK
     )
+
+    class Meta:
+        verbose_name = _("Maid Dietary Restriction")
+        verbose_name_plural = _("Maid Dietary Restrictions")
 
 class MaidEmploymentHistory(models.Model):
     maid = models.ForeignKey(
@@ -514,6 +534,10 @@ class MaidEmploymentHistory(models.Model):
         blank=False
     )
 
+    class Meta:
+        verbose_name = _("Maid Employment History")
+        verbose_name_plural = _("Maid Employment History")
+
     def work_duration(self):
         duration = self.end_date - self.start_date
         return humanise_time_duration(duration)
@@ -551,6 +575,10 @@ class MaidLoanTransaction(models.Model):
     date = models.DateField(
         blank=False
     )
+
+    class Meta:
+        verbose_name = _("Maid Loan Transaction")
+        verbose_name_plural = _("Maid Loan Transactions")
 
 ## Models which have a one-to-one relationship with the maid model 
 class MaidInfantChildCare(models.Model):
@@ -595,6 +623,10 @@ class MaidInfantChildCare(models.Model):
         blank=True
     )
 
+    class Meta:
+        verbose_name = _("Maid Infant Child Care")
+        verbose_name_plural = _("Maid Infant Child Care")
+
 class MaidElderlyCare(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -636,6 +668,10 @@ class MaidElderlyCare(models.Model):
         verbose_name=_('Other remarks for elderly care'),
         blank=True
     )
+
+    class Meta:
+        verbose_name = _("Maid Elderly Care")
+        verbose_name_plural = _("Maid Elderly Care")
 
 class MaidDisabledCare(models.Model):
     maid = models.OneToOneField(
@@ -679,6 +715,10 @@ class MaidDisabledCare(models.Model):
         blank=True
     )
 
+    class Meta:
+        verbose_name = _("Maid Disabled Care")
+        verbose_name_plural = _("Maid Disabled Care")
+
 class MaidGeneralHousework(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -721,6 +761,10 @@ class MaidGeneralHousework(models.Model):
         blank=True
     )
 
+    class Meta:
+        verbose_name = _("Maid General Housework")
+        verbose_name_plural = _("Maid General Housework")
+
 class MaidCooking(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -762,6 +806,10 @@ class MaidCooking(models.Model):
         verbose_name=_('Other remarks for cooking'),
         blank=True
     )
+
+    class Meta:
+        verbose_name = _("Maid Cooking")
+        verbose_name_plural = _("Maid Cooking")
 
 class MaidLanguageProficiency(models.Model):
     maid = models.OneToOneField(
@@ -817,3 +865,7 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
+
+    class Meta:
+        verbose_name = _("Maid Language Proficiency")
+        verbose_name_plural = _("Maid Language Proficiencies")

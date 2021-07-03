@@ -10,12 +10,12 @@ from django.dispatch import receiver
 # Imports from within the app
 from .models import (
     Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidResponsibility, 
+    MaidResponsibility
 )
 
 # Utiliy Classes and Functions
 def maid_main_responsibility(maid):
-    care_models = [
+    care_model_list = [
         MaidInfantChildCare,
         MaidElderlyCare,
         MaidDisabledCare,
@@ -23,7 +23,7 @@ def maid_main_responsibility(maid):
         MaidCooking
     ]
 
-    maid_responsibility_translation_table = {
+    responsibility_transmap = {
         'MaidInfantChildCare': 'CFI',
         'MaidElderlyCare': 'CFE',
         'MaidDisabledCare': 'CFD',
@@ -33,7 +33,7 @@ def maid_main_responsibility(maid):
 
     responsibility_dict = {}
 
-    for i in care_models:
+    for i in care_model_list:
         for k,v in i.objects.get(maid=maid).__dict__.items():
             if k == 'assessment':
                 responsibility_dict[i.__name__] = v
@@ -48,7 +48,7 @@ def maid_main_responsibility(maid):
     for k,v in responsibility_dict.items():
         if v == main_responsibility_value:
             main_responsibilities.append(
-                maid_responsibility_translation_table[k]
+                responsibility_transmap[k]
             )
 
     for i in main_responsibilities:
