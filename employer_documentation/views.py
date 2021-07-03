@@ -16,7 +16,7 @@ from .formset import (
     MaidInventoryFormSet, MaidInventoryFormSetHelper
 )
 
-from .mixins import PdfHtmlViewMixin
+from .mixins import PdfHtmlViewMixin, GetObjFromSigSlugMixin
 from onlinemaid import constants as om_constants
 from maid import constants as maid_constants
 from agency.mixins import (
@@ -55,6 +55,7 @@ class EmployerDocDetailView(
         return context
       
 class SignedDocumentsDetailView(
+    GetObjFromSigSlugMixin,
     DetailView
 ):
     model = models.CaseSignature
@@ -69,36 +70,9 @@ class SignedDocumentsDetailView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            try:
-                if stakeholder == 'employer_1':
-                    obj = self.model.objects.get(
-                        sigslug_employer_1=slug
-                    )
-                elif stakeholder == 'employer_spouse':
-                    obj = self.model.objects.get(
-                        sigslug_employer_spouse=slug
-                    )
-                elif stakeholder == 'sponsor_1':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_1=slug
-                    )
-                elif stakeholder == 'sponsor_2':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_2=slug
-                    )
-                elif stakeholder == 'joint_applicant':
-                    obj = self.model.objects.get(
-                        sigslug_joint_applicant=slug
-                    )
-                else:
-                    obj = None
-                    return obj
-            except self.model.DoesNotExist:
-                obj = None
-                return obj
-            else:
-                self.employer_doc_pk = obj.employer_doc.pk
-                return obj
+            obj = self.get_object_from_slug(slug)
+            self.employer_doc_pk = obj.employer_doc.pk
+            return obj
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
@@ -1072,6 +1046,7 @@ class UploadedPdfAgencyView(
 
 class HtmlToRenderPdfTokenView(
     PdfHtmlViewMixin,
+    GetObjFromSigSlugMixin,
     DetailView
 ):
     model = models.CaseSignature
@@ -1083,33 +1058,7 @@ class HtmlToRenderPdfTokenView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            try:
-                if stakeholder == 'employer_1':
-                    obj = self.model.objects.get(
-                        sigslug_employer_1=slug
-                    ).employer_doc
-                elif stakeholder == 'employer_spouse':
-                    obj = self.model.objects.get(
-                        sigslug_employer_spouse=slug
-                    ).employer_doc
-                elif stakeholder == 'sponsor_1':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_1=slug
-                    ).employer_doc
-                elif stakeholder == 'sponsor_2':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_2=slug
-                    ).employer_doc
-                elif stakeholder == 'joint_applicant':
-                    obj = self.model.objects.get(
-                        sigslug_joint_applicant=slug
-                    ).employer_doc
-                else:
-                    obj = None
-            except self.model.DoesNotExist:
-                return None
-            else:
-                return obj
+            return self.get_object_from_slug(slug)
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
@@ -1567,6 +1516,7 @@ class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
 
 class TokenChallengeView(
     SuccessMessageMixin,
+    GetObjFromSigSlugMixin,
     FormView,
 ):
     model = models.CaseSignature
@@ -1582,36 +1532,9 @@ class TokenChallengeView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            try:
-                if stakeholder == 'employer_1':
-                    obj = self.model.objects.get(
-                        sigslug_employer_1=slug
-                    )
-                elif stakeholder == 'employer_spouse':
-                    obj = self.model.objects.get(
-                        sigslug_employer_spouse=slug
-                    )
-                elif stakeholder == 'sponsor_1':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_1=slug
-                    )
-                elif stakeholder == 'sponsor_2':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_2=slug
-                    )
-                elif stakeholder == 'joint_applicant':
-                    obj = self.model.objects.get(
-                        sigslug_joint_applicant=slug
-                    )
-                else:
-                    obj = None
-                    return obj
-            except self.model.DoesNotExist:
-                obj = None
-                return obj
-            else:
-                self.employer_doc_pk = obj.employer_doc.pk
-                return obj
+            obj = self.get_object_from_slug(slug)
+            self.employer_doc_pk = obj.employer_doc.pk
+            return obj
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing

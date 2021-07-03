@@ -189,3 +189,32 @@ class PdfHtmlViewMixin:
                 fdw_loan_balance = fdw_loan_balance - loan_repaid if fdw_loan_balance-loan_repaid>=0 else 0
         
         return repayment_table
+
+class GetObjFromSigSlugMixin:
+    def get_object_from_slug(self, slug):
+        obj = None
+        try:
+            if self.stakeholder == 'employer_1':
+                obj = self.model.objects.get(
+                    sigslug_employer_1=slug
+                )
+            elif self.stakeholder == 'employer_spouse':
+                obj = self.model.objects.get(
+                    sigslug_employer_spouse=slug
+                )
+            elif self.stakeholder == 'sponsor_1':
+                obj = self.model.objects.get(
+                    sigslug_sponsor_1=slug
+                )
+            elif self.stakeholder == 'sponsor_2':
+                obj = self.model.objects.get(
+                    sigslug_sponsor_2=slug
+                )
+            elif self.stakeholder == 'joint_applicant':
+                obj = self.model.objects.get(
+                    sigslug_joint_applicant=slug
+                )
+        except self.model.DoesNotExist:
+            pass
+        finally:
+            return obj
