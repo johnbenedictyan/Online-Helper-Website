@@ -532,6 +532,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                 'tamil': cleaned_data.get('tamil')
             }
         )
+        maid.set_languages()
         return maid
 
 class MaidExperienceForm(forms.Form):

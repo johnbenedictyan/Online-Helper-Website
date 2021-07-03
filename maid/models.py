@@ -392,7 +392,7 @@ class Maid(models.Model):
         self.save()
         return err_msg
 
-    def get_languages(self):
+    def get_language_list(self):
         languages = []
         if self.language_proficiency.english != MaidLanguageProficiencyChoices.UNABLE:
             languages.append('English')
@@ -407,9 +407,30 @@ class Maid(models.Model):
         if self.language_proficiency.tamil != MaidLanguageProficiencyChoices.UNABLE:
             languages.append('Tamil')
         
-        languages_string = ' '.join(languages)
+        return languages
+
+    def get_languages(self):
+        languages_string = ' '.join(self.get_language_list())
         if languages_string:
             return languages_string
+        
+    def set_languages(self):
+        lang_model_map = {
+            'English': MaidLanguageChoices.ENGLISH,
+            'Malay': MaidLanguageChoices.MALAY,
+            'Mandarin': MaidLanguageChoices.MANDARIN,
+            'Chinese Dialect': MaidLanguageChoices.CHINESE_DIALECT,
+            'Hindi': MaidLanguageChoices.HINDI_TAMIL,
+            'Tamil': MaidLanguageChoices.HINDI_TAMIL
+        }
+        if hasattr(self, 'language_proficiency'):
+            self.languages_set.clear()
+            for lang in self.get_languages():
+                self.languages.add(
+                    MaidLanguage.objects.get(
+                        language=lang_model_map[lang]
+                    )
+                )
 
     @property
     def is_published(self):
