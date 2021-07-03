@@ -17,8 +17,10 @@ from maid.filters import MiniMaidFilter
 # Start of Views
 
 # Template Views
-class HomeView(TemplateView):
+class BaseTemplateView(TemplateView):
     http_method_names = ['get']
+
+class HomeView(BaseTemplateView):
     template_name = 'home.html'
     
     def get_context_data(self, **kwargs):
@@ -28,36 +30,29 @@ class HomeView(TemplateView):
         })
         return kwargs
 
-class AboutUsView(TemplateView):
-    http_method_names = ['get']
+class AboutUsView(BaseTemplateView):
     template_name = 'about-us.html'
 
-class ContactUsView(TemplateView):
+class ContactUsView(BaseTemplateView):
     http_method_names = ['get']
     template_name = 'contact-us.html'
 
-class TermsAndConditionsAgencyView(TemplateView):
-    http_method_names = ['get']
+class TermsAndConditionsAgencyView(BaseTemplateView):
     template_name = 'terms-and-conditions-agency.html'
 
-class TermsAndConditionsUserView(TemplateView):
-    http_method_names = ['get']
+class TermsAndConditionsUserView(BaseTemplateView):
     template_name = 'terms-and-conditions-user.html'
 
-class PrivacyPolicyView(TemplateView):
-    http_method_names = ['get']
+class PrivacyPolicyView(BaseTemplateView):
     template_name = 'privacy-policy.html'
     
-class HowItWorksView(TemplateView):
-    http_method_names = ['get']
+class HowItWorksView(BaseTemplateView):
     template_name = 'how-it-works.html'
 
-class FAQView(TemplateView):
-    http_method_names = ['get']
+class FAQView(BaseTemplateView):
     template_name = 'faq.html'
 
-class UsefulLinksView(TemplateView):
-    http_method_names = ['get']
+class UsefulLinksView(BaseTemplateView):
     template_name = 'useful-links.html'
 
 class AdminPanelView(OnlineMaidStaffRequiredMixin, ListView):
@@ -82,25 +77,20 @@ class AdminPanelEnquiryListView(OnlineMaidStaffRequiredMixin, ListView):
     paginate_by = 50
     context_object_name = 'enquiries'
 
-class Error403View(TemplateView):
-    http_method_names = ['get']
+class Error403View(BaseTemplateView):
     template_name = '403.html'
     
-class Error404View(TemplateView):
-    http_method_names = ['get']
+class Error404View(BaseTemplateView):
     template_name = '404.html'
     
-class Error500View(TemplateView):
-    http_method_names = ['get']
+class Error500View(BaseTemplateView):
     template_name = '500.html'
     
-class RobotsTxt(TemplateView):
-    http_method_names = ['get']
+class RobotsTxt(BaseTemplateView):
     template_name = 'robots.txt'
     content_type='text/plain'
 
-class SitemapView(TemplateView):
-    http_method_names = ['get']
+class SitemapView(BaseTemplateView):
     template_name = 'sitemap.xml'
 
 # Redirect Views
