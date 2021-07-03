@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
-from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.constants import TrueFalseChoices, MaritalStatusChoices
 from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
@@ -18,13 +18,13 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    TypeOfMaidChoices, MaidAssessmentChoices, MaidPassportStatusChoices, MaidLanguageChoices, 
-    MaidResponsibilityChoices, MaritalStatusChoices, MaidReligionChoices, MaidEducationLevelChoices,
-    MaidLoanDescriptionChoices, MaidStatusChoices, MaidFoodPreferenceChoices, 
-    MaidDietaryRestrictionChoices, MaidNationalityChoices, MaidLanguageProficiencyChoices,
-    MaidExperienceChoices, MaidEmploymentCountry, InfantChildCareRemarksChoices, 
-    ElderlyCareRemarksChoices, DisabledCareRemarksChoices, GeneralHouseworkRemarksChoices,
-    CookingRemarksChoices
+    CookingRemarksChoices, DisabledCareRemarksChoices, ElderlyCareRemarksChoices,
+    GeneralHouseworkRemarksChoices, InfantChildCareRemarksChoices, TypeOfMaidChoices,
+    MaidAssessmentChoices, MaidDietaryRestrictionChoices, MaidEducationLevelChoices, 
+    MaidEmploymentCountry, MaidExperienceChoices, MaidFoodPreferenceChoices, 
+    MaidLanguageChoices, MaidLanguageProficiencyChoices, MaidLoanDescriptionChoices,
+    MaidNationalityChoices, MaidPassportStatusChoices, MaidReligionChoices, 
+    MaidResponsibilityChoices, MaidStatusChoices
 )
 
 # Utiliy Classes and Functions
@@ -150,7 +150,7 @@ class Maid(models.Model):
     
     marital_status = models.CharField(
         verbose_name=_('Marital Status'),
-        max_length=2,
+        max_length=9,
         blank=False,
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE

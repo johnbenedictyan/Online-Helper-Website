@@ -22,7 +22,7 @@ from onlinemaid.constants import (
 )
 from onlinemaid.helper_functions import intervening_weekdays
 from accounts.models import User
-from maid.constants import country_language
+from maid.constants import COUNTRY_LANGUAGE_MAP
 
 # Start of mixins
 # PDF Mixin
@@ -39,7 +39,7 @@ class PdfHtmlViewMixin:
             # MoM Safety Agreements are available in different languages.
             # Relevant language template snippet is selected based on FDW's
             # country of origin.
-            return country_language.get(context['object'].fdw.country_of_origin, 'ENG')
+            return COUNTRY_LANGUAGE_MAP.get(context['object'].fdw.country_of_origin, 'ENG')
 
         if isinstance(self.object, models.EmployerDoc):
             # Document version number formatting

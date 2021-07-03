@@ -16,12 +16,12 @@ from django.core.validators import FileExtensionValidator
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from other apps
-from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.constants import TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
 from onlinemaid.helper_functions import decrypt_string
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
-from maid.constants import FullNationsChoices, TypeOfMaidChoices
+from maid.constants import TypeOfMaidChoices
 
 # Same app
 from . import constants as ed_constants
@@ -227,8 +227,8 @@ class Employer(models.Model):
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -438,7 +438,7 @@ class Employer(models.Model):
     def details_missing_spouse(self):
         error_msg_list = []
 
-        if self.employer_marital_status==ed_constants.MaritalStatusChoices.MARRIED or self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE:
+        if self.employer_marital_status==MaritalStatusChoices.MARRIED or self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE:
             mandatory_fields = [
                 'spouse_name',
                 'spouse_gender',
@@ -609,8 +609,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
 
     # Sponsor 1 spouse details
@@ -824,8 +824,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -1014,7 +1014,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_2_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if self.sponsor_2_marital_status==MaritalStatusChoices.MARRIED:
             mandatory_fields = [
                 'sponsor_2_spouse_name',
                 'sponsor_2_spouse_gender',
@@ -1072,7 +1072,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_1_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_1_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if self.sponsor_1_marital_status==MaritalStatusChoices.MARRIED:
             mandatory_fields = [
                 'sponsor_1_spouse_name',
                 'sponsor_1_spouse_gender',
@@ -1169,8 +1169,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
@@ -1318,7 +1318,7 @@ class EmployerJointApplicant(models.Model):
     def details_missing_joint_applicant_spouse(self):
         error_msg_list = []
 
-        if self.joint_applicant_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if self.joint_applicant_marital_status==MaritalStatusChoices.MARRIED:
             mandatory_fields = [
                 'joint_applicant_spouse_name',
                 'joint_applicant_spouse_gender',
@@ -1709,7 +1709,7 @@ class EmployerDoc(models.Model):
                 ipa_pdf=self.rn_docupload_ed.ipa_pdf,
                 medical_report_pdf=self.rn_docupload_ed.medical_report_pdf
         )
-        if archived_doc.employer_marital_status == ed_constants.MaritalStatusChoices.MARRIED:
+        if archived_doc.employer_marital_status == MaritalStatusChoices.MARRIED:
             archived_doc.employer_marriage_sg_registered=self.employer.employer_marriage_sg_registered
             archived_doc.spouse_name=self.employer.spouse_name
             archived_doc.spouse_gender=self.employer.spouse_gender
@@ -2746,8 +2746,8 @@ class ArchivedDoc(models.Model):
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -3021,8 +3021,8 @@ class ArchivedDoc(models.Model):
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
 
     # Sponsor 1 spouse details
@@ -3236,8 +3236,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -3472,8 +3472,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),

@@ -9,11 +9,9 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 import django_filters
 
+from onlinemaid.constants import MaritalStatusChoices
 # Imports from local apps
-from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, MaritalStatusChoices,
-    MaidCreatedOnChoices
-)
+from .constants import TypeOfMaidChoices, MaidCountryOfOrigin, MaidCreatedOnChoices
 from .models import Maid, MaidResponsibility, MaidLanguage
 from .widgets import CustomRangeWidget
 from agency.models import Agency

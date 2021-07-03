@@ -26,10 +26,7 @@ from employer_documentation.models import Employer, EmployerDoc, CaseStatus, Arc
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 
 from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
-from maid.forms import (
-    MaidForm, MaidLanguageSpokenForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm,
-    MaidAboutFDWForm
-)
+from maid.forms import MaidForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm, MaidAboutFDWForm
 from maid.formsets import (
     MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
     MaidEmploymentHistoryFormSet, MaidEmploymentHistoryFormSetHelper
@@ -469,34 +466,6 @@ class DashboardMaidSubFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         form.save()
         return super().form_valid(form)
     
-class DashboardMaidLanguageSpokenFormView(DashboardMaidSubFormView):
-    context_object_name = 'maid_languages'
-    form_class = MaidLanguageSpokenForm
-    success_message = 'Maid created'
-    
-    def get_initial(self):
-        initial =  super().get_initial()
-        maid = Maid.objects.get(
-            pk=self.maid_id
-        )
-        initial.update({
-            'language_spoken': list(
-                maid.languages.values_list(
-                    'language',
-                    flat=True
-                )
-            )
-        })
-        return initial
-    
-    def get_success_url(self) -> str:
-        return reverse_lazy(
-            'dashboard_maid_languages_and_fhpdr_update',
-            kwargs={
-                'pk':self.maid_id
-            }
-        )
-
 class DashboardMaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
     context_object_name = 'maid_food_handling_preference_dietary_restriction'
     form_class = MaidLanguagesAndFHPDRForm

@@ -57,13 +57,6 @@ class ResidentialStatusPartialChoices(models.TextChoices):
     SC = 'SC', _('Singapore citizen')
     PR = 'PR', _('Singapore permanent resident')
 
-class MaritalStatusChoices(models.TextChoices):
-    SINGLE = 'SINGLE', _('Single')
-    MARRIED = 'MARRIED', _('Married')
-    DIVORCED = 'DIVORCED', _('Divorced')
-    WIDOWED = 'WIDOWED', _('Widowed')
-    SEPARATED = 'SEPARATED', _('Separated')
-
 class HouseholdIdTypeChoices(models.TextChoices):
     NRIC = 'NRIC', _('NRIC')
     BC = 'BC', _('Birth Certificate')

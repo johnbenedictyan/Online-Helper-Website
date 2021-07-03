@@ -308,67 +308,6 @@ class MaidForm(forms.ModelForm):
             #TODO: Implement version incrementing
         return super().save(*args, **kwargs)
     
-class MaidLanguageSpokenForm(forms.Form):
-    language_spoken = forms.MultipleChoiceField(
-        label=_('Language Spoken'),
-        choices=MaidLanguageChoices.choices,
-        widget=forms.CheckboxSelectMultiple(),
-        required=True
-    )
-    
-    def __init__(self, *args, **kwargs):
-        self.maid_id = kwargs.pop('maid_id')
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Div(
-                Column(
-                    HTML(
-                        '<h4>Language Spoken</h4>'
-                    ),
-                ),
-                css_class='row',
-                css_id='maidLanguageSpokenGroup'
-            ),
-            Row(
-                Column(
-                    Field(
-                        'language_spoken',
-                        template='widgets/custom-inline-checkbox.html'
-                    ),
-                    css_class='form-group'
-                ),
-                css_class='mb-xl-3'
-            ),
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Next',
-                        css_class="btn btn-primary w-25"
-                    ),
-                    css_class='form-group col-12 text-center'
-                ),
-                css_class='form-row'
-            )
-        )
-        
-    def save(self, *args, **kwargs):
-        cleaned_data = self.cleaned_data
-        maid = Maid.objects.get(
-            pk=self.maid_id
-        )
-        
-        maid.languages.clear()
-        for language in cleaned_data.get('language_spoken'):
-            maid.languages.add(
-                MaidLanguage.objects.get(
-                    language=language
-                )
-            )
-            
-        return maid
-
 class MaidLanguagesAndFHPDRForm(forms.Form):
     english = forms.ChoiceField(
         label=_('English'),

@@ -8,8 +8,6 @@ from django.dispatch import receiver
 # Imports from other apps
 
 # Imports from within the app
-from .constants import MaidResponsibilityChoices
-
 from .models import (
     Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
     MaidResponsibility, 
@@ -59,16 +57,6 @@ def maid_main_responsibility(maid):
         elif len(main_responsibilities) > 1:
             main_responsibilities = [random.choice(main_responsibilities)]
     
-    if maid.other_care.care_for_pets == True:
-        main_responsibilities.append(
-            MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
-        )
-    
-    if maid.other_care.gardening == True:
-        main_responsibilities.append(
-            MaidResponsibilityChoices.MAID_RESP_GARDENING
-        )
-
     for i in db_responsibilities:
         if i not in main_responsibilities:
             responsibilities_tbd.append(i)
