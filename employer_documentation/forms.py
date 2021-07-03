@@ -41,6 +41,15 @@ class EmployerForm(forms.ModelForm):
             'spouse_passport_tag',
         ]
 
+    def is_local(self, rs):
+        return (
+            rs == constants.ResidentialStatusFullChoices.SC or 
+            rs == constants.ResidentialStatusFullChoices.PR
+        )
+
+    def is_foreigner(self, rs):
+        return not self.is_local(rs)
+
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.user_obj = get_user_model().objects.get(pk=self.user_pk)
@@ -49,12 +58,14 @@ class EmployerForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         # Decryption
-        self.initial.update({'employer_nric_num': self.instance.get_employer_nric_full()})
-        self.initial.update({'employer_fin_num': self.instance.get_employer_fin_full()})
-        self.initial.update({'employer_passport_num': self.instance.get_employer_passport_full()})
-        self.initial.update({'spouse_nric_num': self.instance.get_employer_spouse_nric_full()})
-        self.initial.update({'spouse_fin_num': self.instance.get_employer_spouse_fin_full()})
-        self.initial.update({'spouse_passport_num': self.instance.get_employer_spouse_passport_full()})
+        self.initial.update({
+            'employer_nric_num': self.instance.get_employer_nric_full(),
+            'employer_fin_num': self.instance.get_employer_fin_full(),
+            'employer_passport_num': self.instance.get_employer_passport_full(),
+            'spouse_nric_num': self.instance.get_employer_spouse_nric_full(),
+            'spouse_fin_num': self.instance.get_employer_spouse_fin_full(),
+            'spouse_passport_num': self.instance.get_employer_spouse_passport_full()
+        })
         
         # CrispyForm Helper
         self.helper = FormHelper()
@@ -293,7 +304,9 @@ class EmployerForm(forms.ModelForm):
             q_pks = [obj.pk for obj in qs if obj.is_ea_personnel_no_valid()]
             self.fields['agency_employee'].queryset = qs.filter(pk__in=q_pks)
         else:
-            del self.helper.layout.fields[2][0][0] # Remember to make this match the position of the 'agency_employee' field in the layout helper object above
+            # Remember to make this match the position of the 'agency_employee' field in the layout 
+            # helper object above
+            del self.helper.layout.fields[2][0][0] 
             del self.fields['agency_employee']
     
     def check_queryset(self, queryset, error_msg):
@@ -361,19 +374,18 @@ class EmployerForm(forms.ModelForm):
     def clean_employer_nric_num(self):
         cleaned_field = self.cleaned_data.get('employer_nric_num')
         employer_residential_status = self.cleaned_data.get('employer_residential_status')
-        if (
-            employer_residential_status == constants.ResidentialStatusFullChoices.SC or 
-            employer_residential_status == constants.ResidentialStatusFullChoices.PR
-        ):
+        if self.is_local(employer_residential_status):
             empty_field = _("NRIC field cannot be empty")
             error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
-                ciphertext, self.instance.employer_nric_nonce, self.instance.employer_nric_tag = encrypt_string(
+                ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
                 )
+                self.instance.employer_nric_nonce = nonce
+                self.instance.employer_nric_tag = tag
                 return ciphertext
         else:
             return None
@@ -381,16 +393,18 @@ class EmployerForm(forms.ModelForm):
     def clean_employer_fin_num(self):
         cleaned_field = self.cleaned_data.get('employer_fin_num')
         employer_residential_status = self.cleaned_data.get('employer_residential_status')
-        if not employer_residential_status==constants.ResidentialStatusFullChoices.SC and not employer_residential_status==constants.ResidentialStatusFullChoices.PR:
+        if self.is_foreigner(employer_residential_status):
             empty_field = _("FIN field cannot be empty")
             error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
-                ciphertext, self.instance.employer_fin_nonce, self.instance.employer_fin_tag = encrypt_string(
+                ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
                 )
+                self.instance.employer_fin_nonce = nonce
+                self.instance.employer_fin_tag = tag
                 return ciphertext
         else:
             return None
@@ -398,16 +412,18 @@ class EmployerForm(forms.ModelForm):
     def clean_employer_passport_num(self):
         cleaned_field = self.cleaned_data.get('employer_passport_num')
         employer_residential_status = self.cleaned_data.get('employer_residential_status')
-        if not employer_residential_status==constants.ResidentialStatusFullChoices.SC and not employer_residential_status==constants.ResidentialStatusFullChoices.PR:
+        if self.is_foreigner(employer_residential_status):
             empty_field = _("Passport field cannot be empty")
             error_msg = empty_field if not cleaned_field else validate_passport(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
-                ciphertext, self.instance.employer_passport_nonce, self.instance.employer_passport_tag = encrypt_string(
+                ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
                 )
+                self.instance.employer_passport_nonce = nonce
+                self.instance.employer_passport_tag = tag
                 return ciphertext
         else:
             return None
@@ -415,7 +431,7 @@ class EmployerForm(forms.ModelForm):
     def clean_employer_passport_date(self):
         cleaned_field = self.cleaned_data.get('employer_passport_date')
         employer_residential_status = self.cleaned_data.get('employer_residential_status')
-        if not employer_residential_status==constants.ResidentialStatusFullChoices.SC and not employer_residential_status==constants.ResidentialStatusFullChoices.PR:
+        if self.is_foreigner(employer_residential_status):
             empty_field = _("Passport expiry date field cannot be empty")
             error_msg = empty_field if not cleaned_field else None
             if error_msg:
@@ -428,8 +444,13 @@ class EmployerForm(forms.ModelForm):
     def clean_employer_marital_status(self):
         cleaned_field = self.cleaned_data.get('employer_marital_status')
         applicant_type = self.cleaned_data.get('applicant_type')
-        if applicant_type==constants.EmployerTypeOfApplicantChoices.SPOUSE and cleaned_field!=constants.MaritalStatusChoices.MARRIED:
-            raise ValidationError(_('Employer with Spouse application requires marriage status to be "Married"'))
+        if (
+            applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE and 
+            cleaned_field != constants.MaritalStatusChoices.MARRIED
+        ):
+            raise ValidationError(
+                _('Employer with Spouse application requires marriage status to be "Married"')
+            )
         else:
             return cleaned_field
 
@@ -504,16 +525,18 @@ class EmployerForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
-            if spouse_residential_status==constants.ResidentialStatusFullChoices.SC or spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_local(spouse_residential_status):
                 empty_field = _("NRIC field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.spouse_nric_nonce, self.instance.spouse_nric_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.spouse_nric_nonce = nonce
+                    self.instance.spouse_nric_tag = tag
                     return ciphertext
             else:
                 return None
@@ -525,16 +548,18 @@ class EmployerForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.spouse_fin_nonce, self.instance.spouse_fin_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.spouse_fin_nonce = nonce
+                    self.instance.spouse_fin_tag = tag
                     return ciphertext
             else:
                 return None
@@ -546,16 +571,18 @@ class EmployerForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.spouse_passport_nonce, self.instance.spouse_passport_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.spouse_passport_nonce = nonce
+                    self.instance.spouse_passport_tag = tag
                     return ciphertext
             else:
                 return None
@@ -567,7 +594,7 @@ class EmployerForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -646,16 +673,16 @@ class EmployerSponsorForm(forms.ModelForm):
         self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
-        self.initial.update({'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full()})
-        self.initial.update({'sponsor_1_spouse_nric_num': self.instance.get_sponsor_1_spouse_nric_full()})
-        self.initial.update({'sponsor_1_spouse_fin_num': self.instance.get_sponsor_1_spouse_fin_full()})
-        self.initial.update({'sponsor_1_spouse_passport_num': self.instance.get_sponsor_1_spouse_passport_full()})
-        
-        self.initial.update({'sponsor_2_nric_num': self.instance.get_sponsor_2_nric_full()})
-        self.initial.update({'sponsor_2_spouse_nric_num': self.instance.get_sponsor_2_spouse_nric_full()})
-        self.initial.update({'sponsor_2_spouse_fin_num': self.instance.get_sponsor_2_spouse_fin_full()})
-        self.initial.update({'sponsor_2_spouse_passport_num': self.instance.get_sponsor_2_spouse_passport_full()})
-        
+        self.initial.update({
+            'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full(),
+            'sponsor_1_spouse_nric_num': self.instance.get_sponsor_1_spouse_nric_full(),
+            'sponsor_1_spouse_fin_num': self.instance.get_sponsor_1_spouse_fin_full(),
+            'sponsor_1_spouse_passport_num': self.instance.get_sponsor_1_spouse_passport_full(),
+            'sponsor_2_nric_num': self.instance.get_sponsor_2_nric_full(),
+            'sponsor_2_spouse_nric_num': self.instance.get_sponsor_2_spouse_nric_full(),
+            'sponsor_2_spouse_fin_num': self.instance.get_sponsor_2_spouse_fin_full(),
+            'sponsor_2_spouse_passport_num': self.instance.get_sponsor_2_spouse_passport_full()
+        })
         self.helper = FormHelper()
         self.helper.layout = Layout(
             # Sponsors
@@ -1021,10 +1048,12 @@ class EmployerSponsorForm(forms.ModelForm):
         if error_msg:
             raise ValidationError(error_msg)
         else:
-            ciphertext, self.instance.sponsor_1_nric_nonce, self.instance.sponsor_1_nric_tag = encrypt_string(
+            ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
             )
+            self.instance.sponsor_1_nric_nonce = nonce
+            self.instance.sponsor_1_nric_tag = tag
             return ciphertext
 
     def clean_sponsor_1_marriage_sg_registered(self):
@@ -1098,16 +1127,18 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if spouse_residential_status==constants.ResidentialStatusFullChoices.SC or spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_local(spouse_residential_status):
                 empty_field = _("NRIC field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.sponsor_1_spouse_nric_nonce, self.instance.sponsor_1_spouse_nric_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.sponsor_1_spouse_nric_nonce = nonce
+                    self.instance.sponsor_1_spouse_nric_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1119,16 +1150,18 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.sponsor_1_spouse_fin_nonce, self.instance.sponsor_1_spouse_fin_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.sponsor_1_spouse_fin_nonce = nonce
+                    self.instance.sponsor_1_spouse_fin_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1140,16 +1173,18 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_passport(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.sponsor_1_spouse_passport_nonce, self.instance.sponsor_1_spouse_passport_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.sponsor_1_spouse_passport_nonce = nonce
+                    self.instance.sponsor_1_spouse_passport_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1161,7 +1196,7 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1227,10 +1262,12 @@ class EmployerSponsorForm(forms.ModelForm):
             if error_msg:
                 raise ValidationError(error_msg)
             else:
-                ciphertext, self.instance.sponsor_2_nric_nonce, self.instance.sponsor_2_nric_tag = encrypt_string(
+                ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
                 )
+                self.instance.sponsor_2_nric_nonce = nonce 
+                self.instance.sponsor_2_nric_tag = tag
                 return ciphertext
         else:
             return None
@@ -1389,7 +1426,7 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
         if sponsor_2_required and marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if spouse_residential_status==constants.ResidentialStatusFullChoices.SC or spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_local(spouse_residential_status):
                 empty_field = _("NRIC field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
                 if error_msg:
@@ -1411,7 +1448,7 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
         if sponsor_2_required and marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
                 if error_msg:
@@ -1433,16 +1470,18 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
         if sponsor_2_required and marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.sponsor_2_spouse_passport_nonce, self.instance.sponsor_2_spouse_passport_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.sponsor_2_spouse_passport_nonce = nonce
+                    self.instance.sponsor_2_spouse_passport_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1455,7 +1494,7 @@ class EmployerSponsorForm(forms.ModelForm):
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
         if sponsor_2_required and marital_status==constants.MaritalStatusChoices.MARRIED:
             spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1548,10 +1587,12 @@ class EmployerJointApplicantForm(forms.ModelForm):
         self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
-        self.initial.update({'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full()})
-        self.initial.update({'joint_applicant_spouse_nric_num': self.instance.get_joint_applicant_spouse_nric_full()})
-        self.initial.update({'joint_applicant_spouse_fin_num': self.instance.get_joint_applicant_spouse_fin_full()})
-        self.initial.update({'joint_applicant_spouse_passport_num': self.instance.get_joint_applicant_spouse_passport_full()})
+        self.initial.update({
+            'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full(),
+            'joint_applicant_spouse_nric_num': self.instance.get_joint_applicant_spouse_nric_full(),
+            'joint_applicant_spouse_fin_num': self.instance.get_joint_applicant_spouse_fin_full(),
+            'joint_applicant_spouse_passport_num': self.instance.get_joint_applicant_spouse_passport_full()
+        })
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -1720,10 +1761,12 @@ class EmployerJointApplicantForm(forms.ModelForm):
         if error_msg:
             raise ValidationError(error_msg)
         else:
-            ciphertext, self.instance.joint_applicant_nric_nonce, self.instance.joint_applicant_nric_tag = encrypt_string(
+            ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
             )
+            self.instance.joint_applicant_nric_nonce = nonce
+            self.instance.joint_applicant_nric_tag = tag
             return ciphertext
 
     def clean_joint_applicant_spouse_nric_num(self):
@@ -1731,17 +1774,21 @@ class EmployerJointApplicantForm(forms.ModelForm):
         error_msg = validate_nric(cleaned_field)
         marital_status = self.cleaned_data.get('joint_applicant_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
-            if spouse_residential_status==constants.ResidentialStatusFullChoices.SC or spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            spouse_residential_status = self.cleaned_data.get(
+                'joint_applicant_spouse_residential_status'
+            )
+            if self.is_local(spouse_residential_status):
                 empty_field = _("NRIC field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.joint_applicant_spouse_nric_nonce, self.instance.joint_applicant_spouse_nric_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.joint_applicant_spouse_nric_nonce = nonce
+                    self.instance.joint_applicant_spouse_nric_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1753,17 +1800,21 @@ class EmployerJointApplicantForm(forms.ModelForm):
         error_msg = validate_fin(cleaned_field)
         marital_status = self.cleaned_data.get('joint_applicant_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            spouse_residential_status = self.cleaned_data.get(
+                'joint_applicant_spouse_residential_status'
+            )
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.joint_applicant_spouse_fin_nonce, self.instance.joint_applicant_spouse_fin_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.joint_applicant_spouse_fin_nonce = nonce
+                    self.instance.joint_applicant_spouse_fin_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1775,17 +1826,21 @@ class EmployerJointApplicantForm(forms.ModelForm):
         error_msg = validate_passport(cleaned_field)
         marital_status = self.cleaned_data.get('joint_applicant_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            spouse_residential_status = self.cleaned_data.get(
+                'joint_applicant_spouse_residential_status'
+            )
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.joint_applicant_spouse_passport_nonce, self.instance.joint_applicant_spouse_passport_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.joint_applicant_spouse_passport_nonce = nonce
+                    self.instance.joint_applicant_spouse_passport_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1796,8 +1851,10 @@ class EmployerJointApplicantForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_date')
         marital_status = self.cleaned_data.get('joint_applicant_marital_status')
         if marital_status==constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('joint_applicant_spouse_residential_status')
-            if not spouse_residential_status==constants.ResidentialStatusFullChoices.SC and not spouse_residential_status==constants.ResidentialStatusFullChoices.PR:
+            spouse_residential_status = self.cleaned_data.get(
+                'joint_applicant_spouse_residential_status'
+            )
+            if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1984,10 +2041,12 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
         if error_msg:
             raise ValidationError(error_msg)
         else:
-            ciphertext, self.instance.household_id_nonce, self.instance.household_id_tag = encrypt_string(
+            ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
             )
+            self.instance.household_id_nonce = nonce
+            self.instance.household_id_tag = tag
             return ciphertext
 
 class MaidInventoryForm(forms.ModelForm):
@@ -2169,14 +2228,16 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
-        self.initial.update({'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()})
+        self.initial.update({
+            'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()
+        })
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
                 """
-                <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
-            """),
+                    <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
+                """),
 
             Row(
                 Column(
@@ -2407,10 +2468,12 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         if error_msg:
             raise ValidationError(error_msg)
         else:
-            ciphertext, self.instance.fdw_replaced_passport_nonce, self.instance.fdw_replaced_passport_tag = encrypt_string(
+            ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
             )
+            self.instance.fdw_replaced_passport_nonce = nonce
+            self.instance.fdw_replaced_passport_tag = tag
             return ciphertext
 
     def clean_b4_loan_transferred(self):
@@ -2479,8 +2542,8 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             # Service Agreement
             HTML(
                 """
-                <h5 class="doc-section-header" id="id-doc-service-agreement">Service Agreement</h5>
-            """),
+                    <h5 class="doc-section-header" id="id-doc-service-agreement">Service Agreement</h5>
+                """),
             Row(
                 Column(
                     'c1_3_handover_days',
@@ -2620,8 +2683,8 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             # Employment Contract
             HTML(
                 """
-                <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
-            """),
+                    <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
+                """),
             Row(
                 Column(
                     'c3_5_fdw_sleeping_arrangement',
@@ -2703,8 +2766,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                <h5 class="doc-section-header" id="id-doc-safety-agreement">Safety Agreement</h5>
-            """),
+                    <h5 class="doc-section-header" id="id-doc-safety-agreement">Safety Agreement</h5>
+                """),
             Row(
                 Column(
                     'residential_dwelling_type',
@@ -2756,9 +2819,14 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
 
     def clean(self):
-        window_exterior_location_verbose_name = models.DocSafetyAgreement._meta.get_field('window_exterior_location').verbose_name
+        window_exterior_location_verbose_name = models.DocSafetyAgreement._meta.get_field(
+            'window_exterior_location'
+        ).verbose_name
         window_exterior_error_msg = window_exterior_location_verbose_name + ' field cannot be blank'
-        if self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('window_exterior_location'):
+        if (
+            self.cleaned_data.get('fdw_clean_window_exterior') and 
+            not self.cleaned_data.get('window_exterior_location')
+        ):
             self.add_error(
                 'window_exterior_location',
                 ValidationError(
@@ -2770,9 +2838,14 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        grilles_installed_verbose_name = models.DocSafetyAgreement._meta.get_field('grilles_installed_require_cleaning').verbose_name
+        grilles_installed_verbose_name = models.DocSafetyAgreement._meta.get_field(
+            'grilles_installed_require_cleaning'
+        ).verbose_name
         grilles_installed_error_msg = grilles_installed_verbose_name + ' field cannot be blank'
-        if self.cleaned_data.get('window_exterior_location')=='OTHER' and self.cleaned_data.get('grilles_installed_require_cleaning')==None:
+        if (
+            self.cleaned_data.get('window_exterior_location') == 'OTHER' and 
+            self.cleaned_data.get('grilles_installed_require_cleaning') == None
+        ):
             self.add_error(
                 'grilles_installed_require_cleaning',
                 ValidationError(
@@ -2784,9 +2857,14 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        adult_supervision_verbose_name = models.DocSafetyAgreement._meta.get_field('adult_supervision').verbose_name
+        adult_supervision_verbose_name = models.DocSafetyAgreement._meta.get_field(
+            'adult_supervision'
+        ).verbose_name
         adult_supervision_error_msg = 'Adult supervision is required if grilles installed on windows are to be cleaned by FDW'
-        if self.cleaned_data.get('grilles_installed_require_cleaning') and not self.cleaned_data.get('adult_supervision'):
+        if (
+            self.cleaned_data.get('grilles_installed_require_cleaning') and 
+            not self.cleaned_data.get('adult_supervision')
+        ):
             self.add_error(
                 'adult_supervision',
                 ValidationError(
@@ -2798,7 +2876,9 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 )
             )
         
-        verifiy_employer_understands_verbose_name = models.DocSafetyAgreement._meta.get_field('verifiy_employer_understands_window_cleaning').verbose_name
+        verifiy_employer_understands_verbose_name = models.DocSafetyAgreement._meta.get_field(
+            'verifiy_employer_understands_window_cleaning'
+        ).verbose_name
         verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
         if (
             (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1)
