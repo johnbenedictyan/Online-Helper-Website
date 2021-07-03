@@ -23,6 +23,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 from employer_documentation.mixins import PdfHtmlViewMixin
 
 # Imports from local app
+from .constants import MaidStatusChoices
 from .filters import MaidFilter
 from .mixins import SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
 
@@ -39,7 +40,7 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 # Form Views
 
 # Redirect Views
-class MaidRedirectView(RedirectView):
+class BaseMaidRedirectView(RedirectView):
     pk_url_kwarg = 'pk'
 
     def get_object(self):
@@ -50,7 +51,7 @@ class MaidRedirectView(RedirectView):
             )
         )
 
-class MaidTogglePublished(MaidRedirectView):
+class MaidTogglePublished(BaseMaidRedirectView):
     pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
@@ -61,7 +62,7 @@ class MaidTogglePublished(MaidRedirectView):
             'dashboard_maid_list'
         )
 
-class MaidToggleFeatured(MaidRedirectView):
+class MaidToggleFeatured(BaseMaidRedirectView):
     pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
@@ -83,7 +84,7 @@ class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid
-    queryset = Maid.objects.filter(status='PUB')
+    queryset = Maid.objects.filter(status=MaidStatusChoices.PUBLISHED)
     template_name = 'list/maid-list.html'
     filter_set = MaidFilter
     paginate_by = settings.MAID_PAGINATE_BY
@@ -115,7 +116,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
 
 # Update Views
 class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
-                                  SuccessMessageMixin, UpdateView):
+                                SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_loan_transaction'
     form_class = MaidLoanTransactionForm
     http_method_names = ['get','post']
@@ -123,7 +124,7 @@ class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
     template_name = 'update/maid-agency-fee-transaction-update.html'
     success_message = 'Maid agency fee transaction updated'
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return MaidLoanTransaction.objects.get(
             pk = self.kwargs.get('loan_transaction_pk'),
             maid = self.kwargs.get('pk'),
@@ -148,7 +149,7 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
     check_type = 'maid'
     success_message = 'Maid deleted'
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return Maid.objects.get(
             pk = self.kwargs.get(
                 self.pk_url_kwarg
