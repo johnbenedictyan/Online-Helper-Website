@@ -23,16 +23,6 @@ class MaidCountryOfOrigin(models.TextChoices):
     THAILAND    = 'THA', _('Thailand')
     OTHERS      = 'OTH', _('Others')
 
-class MaidNationalityChoices(models.TextChoices):
-    BANGLADESH  = 'BGD', _('Bangladeshi')
-    CAMBODIA    = 'KHM', _('Cambodian')
-    INDIA       = 'IND', _('Indian')
-    INDONESIA   = 'IDN', _('Indonesian')
-    MYANMAR	    = 'MMR', _('Myanma')
-    PHILIPPINES = 'PHL', _('Filipino')
-    SRI_LANKA   = 'LKA', _('Sri Lankan')
-    OTHERS      = 'OTH', _('Others')
-    
 COUNTRY_LANGUAGE_MAP = {
     MaidCountryOfOrigin.BANGLADESH: 'TAM',
     MaidCountryOfOrigin.CAMBODIA: 'KHM',
@@ -44,6 +34,16 @@ COUNTRY_LANGUAGE_MAP = {
     MaidCountryOfOrigin.OTHERS: 'ENG',
 }
 
+class MaidNationalityChoices(models.TextChoices):
+    BANGLADESH  = 'BGD', _('Bangladeshi')
+    CAMBODIA    = 'KHM', _('Cambodian')
+    INDIA       = 'IND', _('Indian')
+    INDONESIA   = 'IDN', _('Indonesian')
+    MYANMAR	    = 'MMR', _('Myanma')
+    PHILIPPINES = 'PHL', _('Filipino')
+    SRI_LANKA   = 'LKA', _('Sri Lankan')
+    OTHERS      = 'OTH', _('Others')
+    
 class MaidLanguageChoices(models.TextChoices):
     ENGLISH         = 'ENG', _('English')
     MANDARIN        = 'MAN', _('Mandarin')
