@@ -1,6 +1,3 @@
-import os.path
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-print(SITE_ROOT)
 #  Imports from django
 from django import forms
 from django.conf import settings
