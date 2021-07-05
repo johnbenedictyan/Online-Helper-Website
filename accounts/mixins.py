@@ -13,10 +13,11 @@ from .models import PotentialEmployer
 
 # Start of Mixins
 
+
 class VerifiedEmployerMixin:
     def check_employer(self):
         return PotentialEmployer.objects.get(
-            pk = self.request.user.pk
+            pk=self.request.user.pk
         )
 
     def dispatch(self, request, *args, **kwargs):
@@ -28,8 +29,11 @@ class VerifiedEmployerMixin:
     def get_object(self, queryset=None):
         return self.check_employer()
 
+
 class PotentialEmployerRequiredMixin(GroupRequiredMixin):
     group_required = u"Potential Employers"
     login_url = reverse_lazy('sign_in')
-    permission_denied_message = '''You are required to login using a
-                                employer's account to perform this action'''
+    permission_denied_message = '''
+        You are required to login using an employer's account to perform this
+        action
+    '''

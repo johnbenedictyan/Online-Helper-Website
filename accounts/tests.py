@@ -16,7 +16,9 @@ from .models import Employer
 
 # Start of Tests
 
-## Helper Functions
+# Helper Functions
+
+
 def create_potential_employer_group():
     potential_employers_group, created = Group.objects.get_or_create(
         name='Potential Employers'
@@ -61,6 +63,7 @@ def create_potential_employer_group():
             )
         )
 
+
 def create_test_potential_employer():
     new_user = create_test_user()
     new_pe = Employer.objects.create(
@@ -81,12 +84,13 @@ def create_test_potential_employer():
         'obj': new_pe
     }
 
+
 class PotentialEmployersTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_potential_employer_group()
         cls.pe = create_test_potential_employer()
-        
+
     def testCanCreate(self):
         new_user = create_test_user()
         new_pe = Employer.objects.create(
@@ -95,7 +99,7 @@ class PotentialEmployersTest(TestCase):
             contact_number=r_contact_number()
         )
 
-        pe_from_db=Employer.objects.get(
+        pe_from_db = Employer.objects.get(
             user=new_user['obj']
         )
         self.assertEquals(new_pe.name,pe_from_db.name)

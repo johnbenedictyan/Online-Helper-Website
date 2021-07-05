@@ -510,7 +510,7 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_name(self):
         cleaned_field = self.cleaned_data.get('spouse_name')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == sconstants.MaritalStatusChoices.MARRIED:
+        if marital_status == constants.MaritalStatusChoices.MARRIED:
             if cleaned_field:
                 return cleaned_field
             else:
@@ -566,7 +566,12 @@ class EmployerForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Employer spouse residential status field cannot be empty"))
+                raise ValidationError(
+                    _("""
+                        Employer spouse residential status field cannot be
+                        empty
+                    """)
+                )
         else:
             return None
 
@@ -574,10 +579,15 @@ class EmployerForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
+            spouse_residential_status = self.cleaned_data.get(
+                'spouse_residential_status'
+            )
             if self.is_local(spouse_residential_status):
                 empty_field = _("NRIC field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
+                if not cleaned_field:
+                    error_msg = empty_field
+                else:
+                    error_msg = validate_nric(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
@@ -597,7 +607,9 @@ class EmployerForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('spouse_fin_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
+            spouse_residential_status = self.cleaned_data.get(
+                'spouse_residential_status'
+            )
             if self.is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
@@ -620,7 +632,9 @@ class EmployerForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('spouse_passport_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
+            spouse_residential_status = self.cleaned_data.get(
+                'spouse_residential_status'
+            )
             if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
@@ -643,7 +657,9 @@ class EmployerForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('spouse_passport_date')
         marital_status = self.cleaned_data.get('employer_marital_status')
         if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('spouse_residential_status')
+            spouse_residential_status = self.cleaned_data.get(
+                'spouse_residential_status'
+            )
             if self.is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
@@ -694,6 +710,7 @@ class EmployerForm(forms.ModelForm):
                     employer_doc.increment_version_number()
         return super().save()
 
+
 class EmployerSponsorForm(forms.ModelForm):
     class Meta:
         model = models.EmployerSponsor
@@ -723,15 +740,24 @@ class EmployerSponsorForm(forms.ModelForm):
         self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
+        instance = self.instance
+        s_1_nric_num = instance.get_sponsor_1_nric_full()
+        s_1_spouse_nric_num = instance.get_sponsor_1_spouse_nric_full()
+        s_1_spouse_fin_num = instance.get_sponsor_1_spouse_fin_full()
+        s_1_spouse_passport_num = instance.get_sponsor_1_spouse_passport_full()
+        s_2_nric_num = instance.get_sponsor_2_nric_full()
+        s_2_spouse_nric_num = instance.get_sponsor_2_spouse_nric_full()
+        s_2_spouse_fin_num = instance.get_sponsor_2_spouse_fin_full()
+        s_2_spouse_passport_num = instance.get_sponsor_2_spouse_passport_full()
         self.initial.update({
-            'sponsor_1_nric_num': self.instance.get_sponsor_1_nric_full(),
-            'sponsor_1_spouse_nric_num': self.instance.get_sponsor_1_spouse_nric_full(),
-            'sponsor_1_spouse_fin_num': self.instance.get_sponsor_1_spouse_fin_full(),
-            'sponsor_1_spouse_passport_num': self.instance.get_sponsor_1_spouse_passport_full(),
-            'sponsor_2_nric_num': self.instance.get_sponsor_2_nric_full(),
-            'sponsor_2_spouse_nric_num': self.instance.get_sponsor_2_spouse_nric_full(),
-            'sponsor_2_spouse_fin_num': self.instance.get_sponsor_2_spouse_fin_full(),
-            'sponsor_2_spouse_passport_num': self.instance.get_sponsor_2_spouse_passport_full()
+            'sponsor_1_nric_num': s_1_nric_num,
+            'sponsor_1_spouse_nric_num': s_1_spouse_nric_num,
+            'sponsor_1_spouse_fin_num': s_1_spouse_fin_num,
+            'sponsor_1_spouse_passport_num': s_1_spouse_passport_num,
+            'sponsor_2_nric_num': s_2_nric_num,
+            'sponsor_2_spouse_nric_num': s_2_spouse_nric_num,
+            'sponsor_2_spouse_fin_num': s_2_spouse_fin_num,
+            'sponsor_2_spouse_passport_num': s_2_spouse_passport_num
         })
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -828,68 +854,96 @@ class EmployerSponsorForm(forms.ModelForm):
                                 Column(
                                     HTML(
                                         """
-                                        <h5 class="my-3">Sponsor 1 Spouse's Information</h5>
-                                    """),
+                                            <h5 class="my-3">
+                                                Sponsor 1 Spouse's Information
+                                            </h5>
+                                        """),
                                     Row(
                                         Column(
                                             'sponsor_1_marriage_sg_registered',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_name',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_gender',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         ),
                                         Column(
                                             Field(
                                                 'sponsor_1_spouse_date_of_birth',
                                                 type='text',
                                                 onfocus="(this.type='date')",
-                                                placeholder='Sponsor 1 spouse date of birth'
+                                                placeholder='''
+                                                    Sponsor 1 spouse date of
+                                                    birth
+                                                '''
                                             ),
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_nationality',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_residential_status',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_nric_num',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                             id='sponsor1spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_fin_num',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                             id='sponsor1spouse_id_fin',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_passport_num',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         ),
                                         Column(
                                             Field(
                                                 'sponsor_1_spouse_passport_date',
                                                 type='text',
                                                 onfocus="(this.type='date')",
-                                                placeholder='Sponsor 1 spouse passport expiry date',
+                                                placeholder='''
+                                                    Sponsor 1 spouse passport
+                                                    expiry date
+                                                ''',
                                             ),
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='''
+                                                form-group col-md-6 spouse-1
+                                            ''',
                                         ),
                                         id='sponsor1spouse_id_passport',
                                     ),
@@ -1002,68 +1056,95 @@ class EmployerSponsorForm(forms.ModelForm):
                                 Column(
                                     HTML(
                                         """
-                                        <h5 class="my-3">Sponsor 2 Spouse's Information</h5>
-                                    """),
+                                            <h5 class="my-3">
+                                                Sponsor 2 Spouse's Information
+                                            </h5>
+                                        """),
                                     Row(
                                         Column(
                                             'sponsor_2_marriage_sg_registered',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_name',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_gender',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         ),
                                         Column(
                                             Field(
                                                 'sponsor_2_spouse_date_of_birth',
                                                 type='text',
                                                 onfocus="(this.type='date')",
-                                                placeholder='Sponsor 2 date of birth',
+                                                placeholder='''
+                                                    Sponsor 2 date of birth
+                                                ''',
                                             ),
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_nationality',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_residential_status',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_nric_num',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                             id='sponsor2spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_fin_num',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                             id='sponsor2spouse_id_fin',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_passport_num',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         ),
                                         Column(
                                             Field(
                                                 'sponsor_2_spouse_passport_date',
                                                 type='text',
                                                 onfocus="(this.type='date')",
-                                                placeholder='Sponsor 2 spouse passport expiry date',
+                                                placeholder='''
+                                                    Sponsor 2 spouse passport
+                                                    expiry date
+                                                ''',
                                             ),
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='''
+                                                form-group col-md-6 spouse-2
+                                            ''',
                                         ),
                                         id='sponsor2spouse_id_passport',
                                     ),
@@ -1107,13 +1188,17 @@ class EmployerSponsorForm(forms.ModelForm):
             return ciphertext
 
     def clean_sponsor_1_marriage_sg_registered(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_marriage_sg_registered')
+        cleaned_field = self.cleaned_data.get(
+            'sponsor_1_marriage_sg_registered'
+        )
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
         if marital_status == constants.MaritalStatusChoices.MARRIED:
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Marriage registration field cannot be empty"))
+                raise ValidationError(
+                    _("Marriage registration field cannot be empty")
+                )
         else:
             return None
 
@@ -1124,7 +1209,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 1 spouse name field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 1 spouse name field cannot be empty")
+                )
         else:
             return None
 
@@ -1135,7 +1222,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 1 spouse gender field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 1 spouse gender field cannot be empty")
+                )
         else:
             return None
 
@@ -1146,7 +1235,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 1 spouse date of birth field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 1 spouse date of birth field cannot be empty")
+                )
         else:
             return None
 
@@ -1157,18 +1248,26 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 1 spouse nationality field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 1 spouse nationality field cannot be empty")
+                )
         else:
             return None
 
     def clean_sponsor_1_spouse_residential_status(self):
-        cleaned_field = self.cleaned_data.get('sponsor_1_spouse_residential_status')
+        cleaned_field = self.cleaned_data.get(
+            'sponsor_1_spouse_residential_status'
+        )
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
         if marital_status == constants.MaritalStatusChoices.MARRIED:
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 1 spouse residential status field cannot be empty"))
+                raise ValidationError(
+                    _("""
+                        Sponsor 1 spouse residential status field cannot be
+                        empty""")
+                    )
         else:
             return None
 
