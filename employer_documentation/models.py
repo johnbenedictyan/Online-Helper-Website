@@ -438,8 +438,8 @@ class Employer(models.Model):
         error_msg_list = []
 
         if (
-            self.employer_marital_status==MaritalStatusChoices.MARRIED or 
-            self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE
+            self.employer_marital_status == MaritalStatusChoices.MARRIED or 
+            self.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.SPOUSE
         ):
             mandatory_fields = [
                 'spouse_name',
@@ -454,8 +454,8 @@ class Employer(models.Model):
                     error_msg_list.append(field)
             
             if (
-                self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
-                self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+                self.spouse_residential_status == ed_constants.ResidentialStatusFullChoices.SC or 
+                self.spouse_residential_status == ed_constants.ResidentialStatusFullChoices.PR
             ):
                 if not self.get_employer_spouse_nric_full():
                     error_msg_list.append('spouse_nric_num')
@@ -474,8 +474,8 @@ class Employer(models.Model):
         error_msg_list = []
 
         if (
-            self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
-            self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+            self.employer_residential_status == ed_constants.ResidentialStatusFullChoices.SC or 
+            self.employer_residential_status == ed_constants.ResidentialStatusFullChoices.PR
         ):
             if not self.get_employer_nric_full():
                 error_msg_list.append('employer_nric_num')
@@ -490,13 +490,13 @@ class Employer(models.Model):
         # Check spouse details completeness
         error_msg_list += self.details_missing_spouse()
 
-        if self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if self.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
             if hasattr(self, 'rn_sponsor_employer'):
                 error_msg_list += self.rn_sponsor_employer.details_missing_sponsors()
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
-        elif self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif self.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             if hasattr(self, 'rn_ja_employer'):
                 error_msg_list += self.rn_ja_employer.details_missing_joint_applicant()
             else:
@@ -1022,7 +1022,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_2_marital_status==MaritalStatusChoices.MARRIED:
+        if self.sponsor_2_marital_status == MaritalStatusChoices.MARRIED:
             mandatory_fields = [
                 'sponsor_2_spouse_name',
                 'sponsor_2_spouse_gender',
@@ -1036,8 +1036,8 @@ class EmployerSponsor(models.Model):
                     error_msg_list.append(field)
             
             if (
-                self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
-                self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+                self.sponsor_2_spouse_residential_status == ed_constants.ResidentialStatusFullChoices.SC or 
+                self.sponsor_2_spouse_residential_status == ed_constants.ResidentialStatusFullChoices.PR
             ):
                 if not self.get_sponsor_2_spouse_nric_full():
                     error_msg_list.append('sponsor_2_spouse_nric_num')
@@ -1083,7 +1083,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_1_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_1_marital_status==MaritalStatusChoices.MARRIED:
+        if self.sponsor_1_marital_status == MaritalStatusChoices.MARRIED:
             mandatory_fields = [
                 'sponsor_1_spouse_name',
                 'sponsor_1_spouse_gender',
@@ -1097,8 +1097,8 @@ class EmployerSponsor(models.Model):
                     error_msg_list.append(field)
             
             if (
-                self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
-                self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+                self.sponsor_1_spouse_residential_status == ed_constants.ResidentialStatusFullChoices.SC or 
+                self.sponsor_1_spouse_residential_status == ed_constants.ResidentialStatusFullChoices.PR
             ):
                 if not self.get_sponsor_1_spouse_nric_full():
                     error_msg_list.append('sponsor_1_spouse_nric_num')
@@ -1332,7 +1332,7 @@ class EmployerJointApplicant(models.Model):
     def details_missing_joint_applicant_spouse(self):
         error_msg_list = []
 
-        if self.joint_applicant_marital_status==MaritalStatusChoices.MARRIED:
+        if self.joint_applicant_marital_status == MaritalStatusChoices.MARRIED:
             mandatory_fields = [
                 'joint_applicant_spouse_name',
                 'joint_applicant_spouse_gender',
@@ -1346,8 +1346,8 @@ class EmployerJointApplicant(models.Model):
                     error_msg_list.append(field)
             
             if (
-                self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
-                self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+                self.joint_applicant_spouse_residential_status == ed_constants.ResidentialStatusFullChoices.SC or 
+                self.joint_applicant_spouse_residential_status == ed_constants.ResidentialStatusFullChoices.PR
             ):
                 if not self.joint_applicant_spouse_nric_full():
                     error_msg_list.append('joint_applicant_spouse_nric_num')
@@ -1365,8 +1365,8 @@ class EmployerJointApplicant(models.Model):
         error_msg_list = []
         
         if (
-            self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.SC or 
-            self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.PR
+            self.joint_applicant_residential_status == ed_constants.ResidentialStatusFullChoices.SC or 
+            self.joint_applicant_residential_status == ed_constants.ResidentialStatusFullChoices.PR
         ):
             if not self.get_joint_applicant_nric_full():
                 error_msg_list.append('joint_applicant_nric_num')
@@ -1565,7 +1565,7 @@ class EmployerDoc(models.Model):
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
         
-        if self.fdw.maid_type==TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
+        if self.fdw.maid_type == TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
             error_msg_list.append('rn_safetyagreement_ed')
 
         return error_msg_list
@@ -2241,7 +2241,7 @@ class DocSafetyAgreement(models.Model):
     )
 
     def save(self):
-        if self.fdw_clean_window_exterior==False:
+        if self.fdw_clean_window_exterior == False:
             self.window_exterior_location = None
             self.grilles_installed_require_cleaning = None
             self.adult_supervision = None

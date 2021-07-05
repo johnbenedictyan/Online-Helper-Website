@@ -34,7 +34,7 @@ def validate_nric(test_id):
         total += 4 if test_id[0]=='T' else 0
         checksum_num = 11 - (total % 11)
         checksum_chr = CHECK_MAP_ST.get(checksum_num)
-        return None if checksum_chr==test_id[-1] else _(error_msg)
+        return None if checksum_chr == test_id[-1] else _(error_msg)
 
 def validate_fin(test_id):
     # return error message if fail, else return None for success
@@ -68,7 +68,7 @@ def validate_fin(test_id):
         total += 4 if test_id[0]=='G' else 0
         checksum_num = 11 - (total % 11)
         checksum_chr = CHECK_MAP_FG.get(checksum_num)
-        return None if checksum_chr==test_id[-1] else _(error_msg)
+        return None if checksum_chr == test_id[-1] else _(error_msg)
 
 def validate_passport(plaintext):
     # return error message if fail, else return None for success

@@ -125,7 +125,7 @@ class EmployerCreateView(
         return kwargs
 
     def form_valid(self, form):
-        if self.authority==om_constants.AG_SALES:
+        if self.authority == om_constants.AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
@@ -172,7 +172,7 @@ class EmployerSponsorCreateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if not self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
             return HttpResponseRedirect(
                 reverse('employer_update_route', kwargs={
                     self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
@@ -226,7 +226,7 @@ class EmployerJointApplicantCreateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        if not self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             return HttpResponseRedirect(
                 reverse('employer_update_route', kwargs={
                     self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),

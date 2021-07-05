@@ -16,23 +16,34 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 
 # Imports from foreign installed apps
-from agency.forms import AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+from agency.forms import (
+    AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
+)
 from agency.formsets import AgencyBranchFormSetHelper, AgencyBranchFormSet
-from agency.models import Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
-from agency.mixins import AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
+from agency.models import (
+    Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
+)
+from agency.mixins import (
+    AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
+)
 
-from employer_documentation.models import Employer, EmployerDoc, CaseStatus, ArchivedDoc
+from employer_documentation.models import (
+    Employer, EmployerDoc, CaseStatus, ArchivedDoc
+)
 
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 
-from maid.constants import MaidFoodPreferenceChoices, MaidFoodPreferenceChoices
-from maid.forms import MaidForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm, MaidAboutFDWForm
+from maid.constants import MaidFoodPreferenceChoices
+from maid.forms import (
+    MaidForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm, MaidAboutFDWForm
+)
 from maid.formsets import (
     MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
     MaidEmploymentHistoryFormSet, MaidEmploymentHistoryFormSetHelper
 )
 from maid.models import (
-    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, MaidInfantChildCare, MaidElderlyCare,
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
+    MaidInfantChildCare, MaidElderlyCare,
     MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidLanguageProficiency
 )
 
@@ -239,15 +250,15 @@ class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin, #ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        if self.authority==AG_OWNERS or self.authority==AG_ADMINS:
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs = EmployerDoc.objects.filter(
                 employer__agency_employee__agency__pk = self.agency_id
             )
-        elif self.authority==AG_MANAGERS:
+        elif self.authority == AG_MANAGERS:
             qs = EmployerDoc.objects.filter(
                 employer__agency_employee__branch=self.request.user.agency_employee.branch
             )
-        elif self.authority==AG_SALES:
+        elif self.authority == AG_SALES:
             qs = EmployerDoc.objects.filter(
                 employer__agency_employee=self.request.user.agency_employee
             )
@@ -266,7 +277,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
     agency_id = ''
 
     def get_queryset(self):
-        if self.authority==AG_OWNERS or self.authority==AG_ADMINS:
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs = chain(
                 EmployerDoc.objects.filter(
                     employer__agency_employee__agency__pk = self.agency_id
@@ -277,7 +288,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
                     ).license_number
                 ),
             )
-        elif self.authority==AG_MANAGERS:
+        elif self.authority == AG_MANAGERS:
             qs = chain(
                 EmployerDoc.objects.filter(
                     employer__agency_employee__branch=self.request.user.agency_employee.branch
@@ -286,7 +297,7 @@ class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilter
                     agency__agency_employee_ea_personnel_number__in=self.request.user.agency_employee.get_all_ea_personnel_no_in_branch()
                 ),
             )
-        elif self.authority==AG_SALES:
+        elif self.authority == AG_SALES:
             qs = chain(
                 EmployerDoc.objects.filter(
                     employer__agency_employee=self.request.user.agency_employee
@@ -310,15 +321,15 @@ class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin, ListFilte
     agency_id = ''
 
     def get_queryset(self):
-        if self.authority==AG_OWNERS or self.authority==AG_ADMINS:
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs = CaseStatus.objects.filter(
                 employer_doc__employer__agency_employee__agency__pk = self.agency_id
             )
-        elif self.authority==AG_MANAGERS:
+        elif self.authority == AG_MANAGERS:
             qs = CaseStatus.objects.filter(
                 employer_doc__employer__agency_employee__branch=self.request.user.agency_employee.branch
             )
-        elif self.authority==AG_SALES:
+        elif self.authority == AG_SALES:
             qs = CaseStatus.objects.filter(
                 employer_doc__employer__agency_employee=self.request.user.agency_employee
             )
