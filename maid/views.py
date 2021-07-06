@@ -25,13 +25,11 @@ from employer_documentation.mixins import PdfHtmlViewMixin
 # Imports from local app
 from .constants import MaidStatusChoices
 from .filters import MaidFilter
-from .mixins import SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
-
 from .forms import MaidLoanTransactionForm
-
+from .mixins import (
+    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
+)
 from .models import Maid, MaidLoanTransaction
-
-from .mixins import SpecificAgencyMaidLoginRequiredMixin
 
 # Start of Views
 
@@ -40,6 +38,8 @@ from .mixins import SpecificAgencyMaidLoginRequiredMixin
 # Form Views
 
 # Redirect Views
+
+
 class BaseMaidRedirectView(RedirectView):
     pk_url_kwarg = 'pk'
 
@@ -51,6 +51,7 @@ class BaseMaidRedirectView(RedirectView):
             )
         )
 
+
 class MaidTogglePublished(BaseMaidRedirectView):
     pk_url_kwarg = 'pk'
 
@@ -61,6 +62,7 @@ class MaidTogglePublished(BaseMaidRedirectView):
         return reverse_lazy(
             'dashboard_maid_list'
         )
+
 
 class MaidToggleFeatured(BaseMaidRedirectView):
     pk_url_kwarg = 'pk'
@@ -78,8 +80,10 @@ class MaidToggleFeatured(BaseMaidRedirectView):
         return reverse_lazy(
             'dashboard_maid_list'
         )
-            
+
 # List Views
+
+
 class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
@@ -90,12 +94,14 @@ class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     paginate_by = settings.MAID_PAGINATE_BY
 
 # Detail Views
+
+
 class MaidDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'maid'
     http_method_names = ['get']
     model = Maid
     template_name = 'detail/maid-detail.html'
-    
+
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
         country_of_origin = self.object.country_of_origin
@@ -115,31 +121,35 @@ class MaidDetail(LoginRequiredMixin, DetailView):
 # Create Views
 
 # Update Views
+
+
 class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
                                 SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_loan_transaction'
     form_class = MaidLoanTransactionForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = MaidLoanTransaction
     template_name = 'update/maid-agency-fee-transaction-update.html'
     success_message = 'Maid agency fee transaction updated'
 
     def get_object(self):
         return MaidLoanTransaction.objects.get(
-            pk = self.kwargs.get('loan_transaction_pk'),
-            maid = self.kwargs.get('pk'),
-            maid__agency = self.request.user.agency_owner.agency
+            pk=self.kwargs.get('loan_transaction_pk'),
+            maid=self.kwargs.get('pk'),
+            maid__agency=self.request.user.agency_owner.agency
         )
-    
+
     def get_success_url(self):
         return reverse_lazy(
             'dashboard_maid_detail',
             kwargs={
-                'pk':self.kwargs.get('pk')
+                'pk': self.kwargs.get('pk')
             }
         )
 
 # Delete Views
+
+
 class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
                  DeleteView):
     context_object_name = 'maid'
@@ -151,20 +161,22 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
 
     def get_object(self):
         return Maid.objects.get(
-            pk = self.kwargs.get(
+            pk=self.kwargs.get(
                 self.pk_url_kwarg
             ),
-            agency = self.request.user.agency_owner.agency
+            agency=self.request.user.agency_owner.agency
         )
 
 # Generic Views
+
+
 class MaidProfileView(View):
     http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
         try:
             selected_maid = Maid.objects.get(
-                pk = self.kwargs.get('pk')
+                pk=self.kwargs.get('pk')
             )
         except Maid.DoesNotExist:
             data = {
@@ -188,6 +200,7 @@ class MaidProfileView(View):
                 ]
             }
             return JsonResponse(data, status=200)
+
 
 class FeaturedMaidListView(View):
     http_method_names = ['post']
@@ -223,6 +236,8 @@ class FeaturedMaidListView(View):
         return JsonResponse(data, status=200)
 
 # PDF Views
+
+
 class PdfMaidBiodataView(LoginRequiredMixin, PdfHtmlViewMixin, DetailView):
     model = Maid
     template_name = 'detail/pdf-biodata-detail.html'
@@ -233,6 +248,6 @@ class PdfMaidBiodataView(LoginRequiredMixin, PdfHtmlViewMixin, DetailView):
 
         if hasattr(request.user, 'agency_employee'):
             context['agency_employee'] = request.user.agency_employee
-        
+
         context['employment_history'] = self.object.employment_history.all()
         return self.generate_pdf_response(request, context)

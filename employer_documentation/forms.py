@@ -3,6 +3,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
@@ -14,7 +15,7 @@ from crispy_forms.bootstrap import PrependedText, StrictButton
 
 # Imports from project
 from onlinemaid import constants as om_constants
-from onlinemaid.helper_functions import encrypt_string
+from onlinemaid.helper_functions import encrypt_string, is_local, is_foreigner
 from onlinemaid.validators import (
     validate_ea_personnel_number, validate_passport, validate_nric,
     validate_fin
@@ -46,14 +47,29 @@ class EmployerForm(forms.ModelForm):
             'spouse_passport_tag',
         ]
 
-    def is_local(self, rs):
-        return (
-            rs == constants.ResidentialStatusFullChoices.SC or
-            rs == constants.ResidentialStatusFullChoices.PR
-        )
+    def is_married(self, ms):
+        return ms == constants.MaritalStatusChoices.MARRIED
 
-    def is_foreigner(self, rs):
-        return not self.is_local(rs)
+    def validate_nric_field(self, cleaned_field):
+        empty_field = _("NRIC field cannot be empty")
+        if not cleaned_field:
+            return empty_field
+        else:
+            return validate_nric(cleaned_field)
+
+    def validate_fin_field(self, cleaned_field):
+        empty_field = _("Fin field cannot be empty")
+        if not cleaned_field:
+            return empty_field
+        else:
+            return validate_fin(cleaned_field)
+
+    def validate_passport_field(self, cleaned_field):
+        empty_field = _("Passport field cannot be empty")
+        if not cleaned_field:
+            return empty_field
+        else:
+            return validate_passport(cleaned_field)
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -395,7 +411,7 @@ class EmployerForm(forms.ModelForm):
         employer_residential_status = self.cleaned_data.get(
             'employer_residential_status'
         )
-        if self.is_local(employer_residential_status):
+        if is_local(employer_residential_status):
             empty_field = _("NRIC field cannot be empty")
             error_msg = empty_field if not cleaned_field else validate_nric(
                 cleaned_field
@@ -418,7 +434,7 @@ class EmployerForm(forms.ModelForm):
         employer_residential_status = self.cleaned_data.get(
             'employer_residential_status'
         )
-        if self.is_foreigner(employer_residential_status):
+        if is_foreigner(employer_residential_status):
             empty_field = _("FIN field cannot be empty")
             error_msg = empty_field if not cleaned_field else validate_fin(
                 cleaned_field
@@ -441,12 +457,8 @@ class EmployerForm(forms.ModelForm):
         employer_residential_status = self.cleaned_data.get(
             'employer_residential_status'
         )
-        if self.is_foreigner(employer_residential_status):
-            empty_field = _("Passport field cannot be empty")
-            if not cleaned_field:
-                error_msg = empty_field
-            else:
-                error_msg = validate_passport(cleaned_field)
+        if is_foreigner(employer_residential_status):
+            error_msg = self.validate_nric_field(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
@@ -465,7 +477,7 @@ class EmployerForm(forms.ModelForm):
         employer_residential_status = self.cleaned_data.get(
             'employer_residential_status'
         )
-        if self.is_foreigner(employer_residential_status):
+        if is_foreigner(employer_residential_status):
             empty_field = _("Passport expiry date field cannot be empty")
             error_msg = empty_field if not cleaned_field else None
             if error_msg:
@@ -497,7 +509,7 @@ class EmployerForm(forms.ModelForm):
             'employer_marriage_sg_registered'
         )
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -510,7 +522,7 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_name(self):
         cleaned_field = self.cleaned_data.get('spouse_name')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -523,7 +535,7 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('spouse_gender')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -536,7 +548,7 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('spouse_date_of_birth')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -549,7 +561,7 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('spouse_nationality')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -562,7 +574,7 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_residential_status(self):
         cleaned_field = self.cleaned_data.get('spouse_residential_status')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -578,16 +590,12 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'spouse_residential_status'
             )
-            if self.is_local(spouse_residential_status):
-                empty_field = _("NRIC field cannot be empty")
-                if not cleaned_field:
-                    error_msg = empty_field
-                else:
-                    error_msg = validate_nric(cleaned_field)
+            if is_local(spouse_residential_status):
+                error_msg = self.validate_nric_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
@@ -606,11 +614,11 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('spouse_fin_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'spouse_residential_status'
             )
-            if self.is_foreigner(spouse_residential_status):
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -631,11 +639,11 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'spouse_residential_status'
             )
-            if self.is_foreigner(spouse_residential_status):
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -656,11 +664,11 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_date')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'spouse_residential_status'
             )
-            if self.is_foreigner(spouse_residential_status):
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -881,7 +889,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                'sponsor_1_spouse_date_of_birth',
+                                                '''
+                                                sponsor_1_spouse_date_of_birth
+                                                ''',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -902,7 +912,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                             ''',
                                         ),
                                         Column(
-                                            'sponsor_1_spouse_residential_status',
+                                            '''
+                                            sponsor_1_spouse_residential_status
+                                            ''',
                                             css_class='''
                                                 form-group col-md-6 spouse-1
                                             ''',
@@ -933,7 +945,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                'sponsor_1_spouse_passport_date',
+                                                '''
+                                                sponsor_1_spouse_passport_date
+                                                ''',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -1083,7 +1097,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                'sponsor_2_spouse_date_of_birth',
+                                                '''
+                                                sponsor_2_spouse_date_of_birth
+                                                ''',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -1103,7 +1119,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                             ''',
                                         ),
                                         Column(
-                                            'sponsor_2_spouse_residential_status',
+                                            '''
+                                            sponsor_2_spouse_residential_status
+                                            ''',
                                             css_class='''
                                                 form-group col-md-6 spouse-2
                                             ''',
@@ -1134,7 +1152,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                'sponsor_2_spouse_passport_date',
+                                                '''
+                                                sponsor_2_spouse_passport_date
+                                                ''',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -1172,7 +1192,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 )
             )
         )
-    
+
     def clean_sponsor_1_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
         error_msg = validate_nric(cleaned_field)
@@ -1192,7 +1212,7 @@ class EmployerSponsorForm(forms.ModelForm):
             'sponsor_1_marriage_sg_registered'
         )
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -1205,7 +1225,7 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_name(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_name')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -1218,7 +1238,7 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_gender')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -1231,7 +1251,7 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_date_of_birth')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -1244,7 +1264,7 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nationality')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -1259,7 +1279,7 @@ class EmployerSponsorForm(forms.ModelForm):
             'sponsor_1_spouse_residential_status'
         )
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        if self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
@@ -1274,11 +1294,12 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nric_num')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if self.is_local(spouse_residential_status):
-                empty_field = _("NRIC field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
+        if self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_1_spouse_residential_status'
+            )
+            if is_local(spouse_residential_status):
+                error_msg = self.validate_nric_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
@@ -1297,11 +1318,12 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_fin_num')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if self.is_foreigner(spouse_residential_status):
-                empty_field = _("FIN field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
+        if self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_1_spouse_residential_status'
+            )
+            if is_foreigner(spouse_residential_status):
+                error_msg = self.validate_fin_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
@@ -1320,11 +1342,12 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if self.is_foreigner(spouse_residential_status):
-                empty_field = _("Passport field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_passport(cleaned_field)
+        if self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_1_spouse_residential_status'
+            )
+            if is_foreigner(spouse_residential_status):
+                error_msg = self.validate_passport_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
@@ -1343,9 +1366,11 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_date')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_1_spouse_residential_status')
-            if self.is_foreigner(spouse_residential_status):
+        if self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_1_spouse_residential_status'
+            )
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1364,7 +1389,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 relationship field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 relationship field cannot be empty")
+                )
         else:
             return None
 
@@ -1375,7 +1402,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 name field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 name field cannot be empty")
+                )
         else:
             return None
 
@@ -1386,7 +1415,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 gender field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 gender field cannot be empty")
+                )
         else:
             return None
 
@@ -1397,7 +1428,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 date of birth field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 date of birth field cannot be empty")
+                )
         else:
             return None
 
@@ -1405,9 +1438,7 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         if sponsor_2_required:
-            sponsor_2_residential_status = self.cleaned_data.get('sponsor_2_residential_status')
-            empty_field = _("NRIC field cannot be empty")
-            error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
+            error_msg = self.validate_nric_field(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
@@ -1415,7 +1446,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     cleaned_field,
                     settings.ENCRYPTION_KEY
                 )
-                self.instance.sponsor_2_nric_nonce = nonce 
+                self.instance.sponsor_2_nric_nonce = nonce
                 self.instance.sponsor_2_nric_tag = tag
                 return ciphertext
         else:
@@ -1428,7 +1459,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 nationality field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 nationality field cannot be empty")
+                )
         else:
             return None
 
@@ -1439,7 +1472,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 residential status field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 residential status field cannot be empty")
+                )
         else:
             return None
 
@@ -1450,7 +1485,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 mobile field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 mobile field cannot be empty")
+                )
         else:
             return None
 
@@ -1461,7 +1498,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 email field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 email field cannot be empty")
+                )
         else:
             return None
 
@@ -1472,7 +1511,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 address field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 address field cannot be empty")
+                )
         else:
             return None
 
@@ -1483,7 +1524,9 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 postal code field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 postal code field cannot be empty")
+                )
         else:
             return None
 
@@ -1494,18 +1537,24 @@ class EmployerSponsorForm(forms.ModelForm):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 marital status field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 marital status field cannot be empty")
+                )
         else:
             return None
 
     def clean_sponsor_2_marriage_sg_registered(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_marriage_sg_registered')
+        cleaned_field = self.cleaned_data.get(
+            'sponsor_2_marriage_sg_registered'
+        )
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         if sponsor_2_required:
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 marriage registration field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 marriage registration field cannot be empty")
+                )
         else:
             return None
 
@@ -1513,11 +1562,13 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_name')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
+        if sponsor_2_required and self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 spouse name field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 spouse name field cannot be empty")
+                )
         else:
             return None
 
@@ -1525,11 +1576,13 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_gender')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
+        if sponsor_2_required and self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 spouse gender field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 spouse gender field cannot be empty")
+                )
         else:
             return None
 
@@ -1537,11 +1590,13 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_date_of_birth')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
+        if sponsor_2_required and self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 spouse date of birth field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 spouse date of birth field cannot be empty")
+                )
         else:
             return None
 
@@ -1549,23 +1604,32 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_nationality')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
+        if sponsor_2_required and self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 spouse nationality field cannot be empty"))
+                raise ValidationError(
+                    _("Sponsor 2 spouse nationality field cannot be empty")
+                )
         else:
             return None
 
     def clean_sponsor_2_spouse_residential_status(self):
-        cleaned_field = self.cleaned_data.get('sponsor_2_spouse_residential_status')
+        cleaned_field = self.cleaned_data.get(
+            'sponsor_2_spouse_residential_status'
+        )
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
+        if sponsor_2_required and self.is_married(marital_status):
             if cleaned_field:
                 return cleaned_field
             else:
-                raise ValidationError(_("Sponsor 2 spouse residential status field cannot be empty"))
+                raise ValidationError(
+                    _("""
+                        Sponsor 2 spouse residential status field cannot be
+                        empty
+                    """)
+                )
         else:
             return None
 
@@ -1573,18 +1637,21 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_nric_num')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if self.is_local(spouse_residential_status):
-                empty_field = _("NRIC field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_nric(cleaned_field)
+        if sponsor_2_required and self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_2_spouse_residential_status'
+            )
+            if is_local(spouse_residential_status):
+                error_msg = self.validate_nric_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.sponsor_2_spouse_nric_nonce, self.instance.sponsor_2_spouse_nric_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.sponsor_2_spouse_nric_nonce = nonce
+                    self.instance.sponsor_2_spouse_nric_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1595,18 +1662,21 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_fin_num')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if self.is_foreigner(spouse_residential_status):
-                empty_field = _("FIN field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
+        if sponsor_2_required and self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_2_spouse_residential_status'
+            )
+            if is_foreigner(spouse_residential_status):
+                error_msg = self.validate_fin_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
-                    ciphertext, self.instance.sponsor_2_spouse_fin_nonce, self.instance.sponsor_2_spouse_fin_tag = encrypt_string(
+                    ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
                     )
+                    self.instance.sponsor_2_spouse_fin_nonce = nonce
+                    self.instance.sponsor_2_spouse_fin_tag = tag
                     return ciphertext
             else:
                 return None
@@ -1617,11 +1687,12 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_num')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if self.is_foreigner(spouse_residential_status):
-                empty_field = _("Passport field cannot be empty")
-                error_msg = empty_field if not cleaned_field else validate_fin(cleaned_field)
+        if sponsor_2_required and self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_2_spouse_residential_status'
+            )
+            if is_foreigner(spouse_residential_status):
+                error_msg = self.validate_fin_field(cleaned_field)
                 if error_msg:
                     raise ValidationError(error_msg)
                 else:
@@ -1641,9 +1712,11 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_date')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and marital_status == constants.MaritalStatusChoices.MARRIED:
-            spouse_residential_status = self.cleaned_data.get('sponsor_2_spouse_residential_status')
-            if self.is_foreigner(spouse_residential_status):
+        if sponsor_2_required and self.is_married(marital_status):
+            spouse_residential_status = self.cleaned_data.get(
+                'sponsor_2_spouse_residential_status'
+            )
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1654,7 +1727,6 @@ class EmployerSponsorForm(forms.ModelForm):
                 return None
         else:
             return None
-
 
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':
@@ -1715,6 +1787,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     employer_doc.increment_version_number()
         return super().save()
 
+
 class EmployerJointApplicantForm(forms.ModelForm):
     class Meta:
         model = models.EmployerJointApplicant
@@ -1736,11 +1809,15 @@ class EmployerJointApplicantForm(forms.ModelForm):
         self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
 
+        ja_nric_num = self.instance.get_joint_applicant_nric_full()
+        jas_nric_num = self.instance.get_joint_applicant_spouse_nric_full()
+        jas_fin_num = self.instance.get_joint_applicant_spouse_fin_full()
+        jas_pass_num = self.instance.get_joint_applicant_spouse_passport_full()
         self.initial.update({
-            'joint_applicant_nric_num': self.instance.get_joint_applicant_nric_full(),
-            'joint_applicant_spouse_nric_num': self.instance.get_joint_applicant_spouse_nric_full(),
-            'joint_applicant_spouse_fin_num': self.instance.get_joint_applicant_spouse_fin_full(),
-            'joint_applicant_spouse_passport_num': self.instance.get_joint_applicant_spouse_passport_full()
+            'joint_applicant_nric_num': ja_nric_num,
+            'joint_applicant_spouse_nric_num': jas_nric_num,
+            'joint_applicant_spouse_fin_num': jas_fin_num,
+            'joint_applicant_spouse_passport_num': jas_pass_num
         })
 
         self.helper = FormHelper()
@@ -1813,14 +1890,16 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             css_class='form-group col-md-6',
                         )
                     ),
-                    
+
                     # Joint applicant spouse
                     Row(
                         Column(
                             HTML(
                                 """
-                                <h5 class="my-3">Joint Applicant Spouse's Information</h5>
-                            """),
+                                <h5 class="my-3">
+                                    Joint Applicant Spouse's Information
+                                </h5>
+                                """),
                             Row(
                                 Column(
                                     'joint_applicant_marriage_sg_registered',
@@ -1841,7 +1920,10 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                         'joint_applicant_spouse_date_of_birth',
                                         type='text',
                                         onfocus="(this.type='date')",
-                                        placeholder='Joint applicant spouse date of birth'
+                                        placeholder='''
+                                            Joint applicant spouse date of
+                                            birth
+                                        '''
                                     ),
                                     css_class='form-group col-md-6 spouse-1',
                                 )
@@ -1852,7 +1934,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                     css_class='form-group col-md-6 spouse-1',
                                 ),
                                 Column(
-                                    'joint_applicant_spouse_residential_status',
+                                    '''
+                                    joint_applicant_spouse_residential_status
+                                    ''',
                                     css_class='form-group col-md-6 spouse-1',
                                 )
                             ),
@@ -1878,7 +1962,10 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                         'joint_applicant_spouse_passport_date',
                                         type='text',
                                         onfocus="(this.type='date')",
-                                        placeholder='Joint applicant spouse passport expiry date',
+                                        placeholder='''
+                                            Joint applicant spouse passport
+                                            expiry date
+                                        ''',
                                     ),
                                     css_class='form-group col-md-6 spouse-1',
                                 ),
@@ -1903,7 +1990,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 )
             )
         )
-    
+
     def clean_joint_applicant_nric_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_nric_num')
         error_msg = validate_nric(cleaned_field)
@@ -1919,14 +2006,18 @@ class EmployerJointApplicantForm(forms.ModelForm):
             return ciphertext
 
     def clean_joint_applicant_spouse_nric_num(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_nric_num')
+        cleaned_field = self.cleaned_data.get(
+            'joint_applicant_spouse_nric_num'
+        )
         error_msg = validate_nric(cleaned_field)
-        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        marital_status = self.cleaned_data.get(
+            'joint_applicant_marital_status'
+        )
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'joint_applicant_spouse_residential_status'
             )
-            if self.is_local(spouse_residential_status):
+            if is_local(spouse_residential_status):
                 empty_field = _("NRIC field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1947,12 +2038,14 @@ class EmployerJointApplicantForm(forms.ModelForm):
     def clean_joint_applicant_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_fin_num')
         error_msg = validate_fin(cleaned_field)
-        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        marital_status = self.cleaned_data.get(
+            'joint_applicant_marital_status'
+        )
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'joint_applicant_spouse_residential_status'
             )
-            if self.is_foreigner(spouse_residential_status):
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("FIN field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1971,14 +2064,18 @@ class EmployerJointApplicantForm(forms.ModelForm):
             return None
 
     def clean_joint_applicant_spouse_passport_num(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_num')
+        cleaned_field = self.cleaned_data.get(
+            'joint_applicant_spouse_passport_num'
+        )
         error_msg = validate_passport(cleaned_field)
-        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        marital_status = self.cleaned_data.get(
+            'joint_applicant_marital_status'
+        )
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'joint_applicant_spouse_residential_status'
             )
-            if self.is_foreigner(spouse_residential_status):
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("Passport field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -1997,13 +2094,17 @@ class EmployerJointApplicantForm(forms.ModelForm):
             return None
 
     def clean_joint_applicant_spouse_passport_date(self):
-        cleaned_field = self.cleaned_data.get('joint_applicant_spouse_passport_date')
-        marital_status = self.cleaned_data.get('joint_applicant_marital_status')
-        if marital_status == constants.MaritalStatusChoices.MARRIED:
+        cleaned_field = self.cleaned_data.get(
+            'joint_applicant_spouse_passport_date'
+        )
+        marital_status = self.cleaned_data.get(
+            'joint_applicant_marital_status'
+        )
+        if self.is_married(marital_status):
             spouse_residential_status = self.cleaned_data.get(
                 'joint_applicant_spouse_residential_status'
             )
-            if self.is_foreigner(spouse_residential_status):
+            if is_foreigner(spouse_residential_status):
                 empty_field = _("Passport expiry date field cannot be empty")
                 error_msg = empty_field if not cleaned_field else None
                 if error_msg:
@@ -2047,6 +2148,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 for employer_doc in employer_doc_qs:
                     employer_doc.increment_version_number()
         return super().save()
+
 
 class EmployerIncomeDetailsForm(forms.ModelForm):
     class Meta:
@@ -2115,6 +2217,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                 for employer_doc in employer_doc_qs:
                     employer_doc.increment_version_number()
         return super().save()
+
 
 class EmployerHouseholdDetailsForm(forms.ModelForm):
     class Meta:
@@ -2198,13 +2301,14 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
             self.instance.household_id_tag = tag
             return ciphertext
 
+
 class MaidInventoryForm(forms.ModelForm):
     class Meta:
         model = models.MaidInventory
         exclude = [
             'employer_doc',
         ]
-    
+
     def save(self, *args, **kwargs):
         self.instance.employer_doc = self.employer_doc
         return super().save(*args, **kwargs)
@@ -2237,6 +2341,7 @@ class MaidInventoryForm(forms.ModelForm):
                 css_class='form-group'
             )
         )
+
 
 class EmployerDocForm(forms.ModelForm):
     class Meta:
@@ -2273,7 +2378,7 @@ class EmployerDocForm(forms.ModelForm):
                 """
                 <h5 class="doc-section-header">Case Information</h5>
             """),
-            
+
             Row(
                 Column(
                     'case_ref_no',
@@ -2361,6 +2466,7 @@ class EmployerDocForm(forms.ModelForm):
                 self.instance.increment_version_number()
         return super().save()
 
+
 class DocServiceFeeScheduleForm(forms.ModelForm):
     class Meta:
         model = models.DocServiceFeeSchedule
@@ -2377,15 +2483,19 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         self.level_1_pk = kwargs.pop('level_1_pk')
         super().__init__(*args, **kwargs)
 
+        passport_num = self.instance.get_fdw_replaced_passport_full()
         self.initial.update({
-            'fdw_replaced_passport_num': self.instance.get_fdw_replaced_passport_full()
-        })
+            'fdw_replaced_passport_num': passport_num
+            })
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
                 """
-                    <h5 class="doc-section-header" id="id-doc-service-fee-schedule">Service Fee Schedule</h5>
+                    <h5 class="doc-section-header"
+                    id="id-doc-service-fee-schedule">
+                    Service Fee Schedule
+                    </h5>
                 """),
 
             Row(
@@ -2674,6 +2784,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     employer_doc.increment_version_number()
         return super().save()
 
+
 class DocServAgmtEmpCtrForm(forms.ModelForm):
     class Meta:
         model = models.DocServAgmtEmpCtr
@@ -2691,7 +2802,9 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             # Service Agreement
             HTML(
                 """
-                    <h5 class="doc-section-header" id="id-doc-service-agreement">Service Agreement</h5>
+                    <h5 class="doc-section-header"
+                    id="id-doc-service-agreement">
+                    Service Agreement</h5>
                 """),
             Row(
                 Column(
@@ -2747,7 +2860,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 )
             ),
-            
+
             Row(
                 Column(
                     'c5_1_1_deployment_deadline',
@@ -2832,7 +2945,9 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             # Employment Contract
             HTML(
                 """
-                    <h5 class="doc-section-header" id="id-doc-employment-contract">Employment Contract</h5>
+                    <h5 class="doc-section-header"
+                        id="id-doc-employment-contract">
+                        Employment Contract</h5>
                 """),
             Row(
                 Column(
@@ -2850,7 +2965,8 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'servicefee_create_route' level_1_pk %}"
+                        <a
+                        href="{% url 'servicefee_create_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -2899,6 +3015,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                     employer_doc.increment_version_number()
         return super().save()
 
+
 class DocSafetyAgreementForm(forms.ModelForm):
     class Meta:
         model = models.DocSafetyAgreement
@@ -2915,7 +3032,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                    <h5 class="doc-section-header" id="id-doc-safety-agreement">Safety Agreement</h5>
+                    <h5 class="doc-section-header"
+                        id="id-doc-safety-agreement">Safety Agreement</h5>
                 """),
             Row(
                 Column(
@@ -2953,7 +3071,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'case_status_update_route' level_1_pk %}"
+                        <a
+                        href="{% url 'case_status_update_route' level_1_pk %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -2968,97 +3087,117 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
 
     def clean(self):
-        window_exterior_location_verbose_name = models.DocSafetyAgreement._meta.get_field(
+        DSA = models.DocSafetyAgreement
+        w_s_l_verbose_name = DSA._meta.get_field(
             'window_exterior_location'
         ).verbose_name
-        window_exterior_error_msg = window_exterior_location_verbose_name + ' field cannot be blank'
+        window_exterior_error_msg = (
+            w_s_l_verbose_name + ' field cannot be blank'
+        )
         if (
-            self.cleaned_data.get('fdw_clean_window_exterior') and 
+            self.cleaned_data.get('fdw_clean_window_exterior') and
             not self.cleaned_data.get('window_exterior_location')
         ):
             self.add_error(
                 'window_exterior_location',
                 ValidationError(
                     window_exterior_error_msg,
-                    code= 'error_window_exterior_location',
-                    params= {
-                        'window_exterior_location': window_exterior_location_verbose_name
+                    code='error_window_exterior_location',
+                    params={
+                        'window_exterior_location': w_s_l_verbose_name
                     },
                 )
             )
-        
-        grilles_installed_verbose_name = models.DocSafetyAgreement._meta.get_field(
+
+        g_l_verbose_name = DSA._meta.get_field(
             'grilles_installed_require_cleaning'
         ).verbose_name
-        grilles_installed_error_msg = grilles_installed_verbose_name + ' field cannot be blank'
+        grilles_installed_error_msg = (
+            g_l_verbose_name + ' field cannot be blank'
+        )
         if (
-            self.cleaned_data.get('window_exterior_location') == 'OTHER' and 
-            self.cleaned_data.get('grilles_installed_require_cleaning') == None
+            self.cleaned_data.get('window_exterior_location') == 'OTHER' and
+            self.cleaned_data.get('grilles_installed_require_cleaning')
         ):
             self.add_error(
                 'grilles_installed_require_cleaning',
                 ValidationError(
                     grilles_installed_error_msg,
-                    code= 'error_grilles_installed_require_cleaning',
-                    params= {
-                        'grilles_installed_require_cleaning': grilles_installed_verbose_name
+                    code='error_grilles_installed_require_cleaning',
+                    params={
+                        'grilles_installed_require_cleaning': g_l_verbose_name
                     },
                 )
             )
-        
-        adult_supervision_verbose_name = models.DocSafetyAgreement._meta.get_field(
+
+        adult_supervision_verbose_name = DSA._meta.get_field(
             'adult_supervision'
         ).verbose_name
-        adult_supervision_error_msg = 'Adult supervision is required if grilles installed on windows are to be cleaned by FDW'
+        adult_supervision_error_msg = '''
+            Adult supervision is required if grilles installed on windows are
+            to be cleaned by FDW
+        '''
         if (
-            self.cleaned_data.get('grilles_installed_require_cleaning') and 
+            self.cleaned_data.get('grilles_installed_require_cleaning') and
             not self.cleaned_data.get('adult_supervision')
         ):
             self.add_error(
                 'adult_supervision',
                 ValidationError(
                     adult_supervision_error_msg,
-                    code= 'error_adult_supervision',
-                    params= {
+                    code='error_adult_supervision',
+                    params={
                         'adult_supervision': adult_supervision_verbose_name
                     },
                 )
             )
-        
-        verifiy_employer_understands_verbose_name = models.DocSafetyAgreement._meta.get_field(
+
+        verifiy_employer_understands_verbose_name = DSA._meta.get_field(
             'verifiy_employer_understands_window_cleaning'
         ).verbose_name
-        verifiy_employer_understands_error_msg = 'This field must correspond with previous fields'
+        verifiy_employer_understands_error_msg = '''
+            This field must correspond with previous fields
+        '''
+        w_e_l = self.cleaned_data.get('window_exterior_location')
+        v_e_u_w_c = self.cleaned_data.get(
+            'verifiy_employer_understands_window_cleaning'
+        )
         if (
-            (not self.cleaned_data.get('fdw_clean_window_exterior') and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1)
+            (
+                not self.cleaned_data.get('fdw_clean_window_exterior') and
+                not self.cleaned_data.get(
+                    'verifiy_employer_understands_window_cleaning'
+                ) == 1
+            )
+            or w_e_l == 'GROUND' and not v_e_u_w_c == 2
+            or w_e_l == 'COMMON' and not v_e_u_w_c == 3
+            or w_e_l == 'OTHER' and not v_e_u_w_c == 4
+            or (
+                v_e_u_w_c == 1 and
+                self.cleaned_data.get('fdw_clean_window_exterior')
+            )
+            or v_e_u_w_c == 2 and not w_e_l == 'GROUND'
+            or v_e_u_w_c == 3 and not w_e_l == 'COMMON'
+            or v_e_u_w_c == 4 and not w_e_l == 'OTHER'
             or
-            (self.cleaned_data.get('window_exterior_location')=='GROUND' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==2)
-            or
-            (self.cleaned_data.get('window_exterior_location')=='COMMON' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==3)
-            or
-            (self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==4)
-            or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==1 and self.cleaned_data.get('fdw_clean_window_exterior'))
-            or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==2 and not self.cleaned_data.get('window_exterior_location')=='GROUND')
-            or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==3 and not self.cleaned_data.get('window_exterior_location')=='COMMON')
-            or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==4 and not self.cleaned_data.get('window_exterior_location')=='OTHER')
-            or
-            (self.cleaned_data.get('verifiy_employer_understands_window_cleaning')==4 and self.cleaned_data.get('window_exterior_location')=='OTHER' and not self.cleaned_data.get('grilles_installed_require_cleaning'))
+            (
+                v_e_u_w_c == 4 and
+                w_e_l == 'OTHER' and
+                not self.cleaned_data.get('grilles_installed_require_cleaning')
+            )
         ):
+            veu_v_n = verifiy_employer_understands_verbose_name
             self.add_error(
                 'verifiy_employer_understands_window_cleaning',
                 ValidationError(
                     verifiy_employer_understands_error_msg,
-                    code= 'error_verifiy_employer_understands',
-                    params= {
-                        'verifiy_employer_understands_window_cleaning': verifiy_employer_understands_verbose_name
+                    code='error_verifiy_employer_understands',
+                    params={
+                        'verifiy_employer_understands_window_cleaning': veu_v_n
                     },
                 )
             )
-        
+
         return self.cleaned_data
 
     def save(self):
@@ -3080,12 +3219,14 @@ class DocSafetyAgreementForm(forms.ModelForm):
         return super().save()
 
 # Temporary solution to blank out S3 bucket URL
-from django.forms.widgets import ClearableFileInput
+
+
 class CustomClearableFileInput(ClearableFileInput):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
         context['widget']['is_initial'] = False
         return context
+
 
 class DocUploadForm(forms.ModelForm):
     class Meta:
@@ -3107,7 +3248,10 @@ class DocUploadForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                <h5 class="doc-section-header" id="id-doc-upload">Upload Documents</h5>
+                <h5 class="doc-section-header"
+                    id="id-doc-upload">
+                    Upload Documents
+                </h5>
             """),
             Row(
                 Column(
@@ -3125,7 +3269,7 @@ class DocUploadForm(forms.ModelForm):
                     css_class='form-group col-md-6'
                 )
             ),
-            
+
             # Submit
             Row(
                 Column(
@@ -3145,6 +3289,7 @@ class DocUploadForm(forms.ModelForm):
             )
         )
 
+
 class CaseStatusForm(forms.ModelForm):
     class Meta:
         model = models.CaseStatus
@@ -3158,8 +3303,9 @@ class CaseStatusForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            HTML('''
-                <h3>Case Status</h3>
+            HTML(
+                '''
+                    <h3>Case Status</h3>
                 '''
             ),
             Row(
@@ -3228,11 +3374,13 @@ class CaseStatusForm(forms.ModelForm):
         )
 
 # Signature Forms
+
+
 class SignatureForm(forms.ModelForm):
     class Meta:
         model = models.CaseSignature
         fields = '__all__'
-    
+
     def __init__(self, *args, **kwargs):
         # Assign model_field_name in urls.py or views.py
         self.model_field_name = kwargs.pop('model_field_name')
@@ -3245,7 +3393,7 @@ class SignatureForm(forms.ModelForm):
         for field in fields_copy:
             if field not in self.form_fields:
                 del self.fields[field]
-        
+
         # Instantiate blank Layout instance
         self.helper = FormHelper()
         self.helper.form_class = 'employer-docsig-form'
@@ -3255,7 +3403,11 @@ class SignatureForm(forms.ModelForm):
         for field in self.fields:
             if field == self.model_field_name:
                 self.helper.layout.append(
-                    Hidden(self.model_field_name, self.model_field_name, id='id_signature'),
+                    Hidden(
+                        self.model_field_name,
+                        self.model_field_name,
+                        id='id_signature'
+                    ),
                 )
             else:
                 self.helper.layout.append(
@@ -3294,7 +3446,11 @@ class SignatureForm(forms.ModelForm):
             Row(
                 Column(
                     Submit("submit", "Submit"),
-                    StrictButton("Clear", onclick="signaturePad.clear()", css_class="btn btn-secondary"),
+                    StrictButton(
+                        "Clear",
+                        onclick="signaturePad.clear()",
+                        css_class="btn btn-secondary"
+                    ),
                 )
             )
         )
@@ -3302,7 +3458,7 @@ class SignatureForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         base64_sig = cleaned_data.get(self.model_field_name)
-        if base64_sig == None:
+        if base64_sig is None:
             error_msg = "There was an issue uploading your signature, \
                 please try again."
             raise ValidationError(error_msg)
@@ -3319,9 +3475,22 @@ class SignatureForm(forms.ModelForm):
         else:
             return cleaned_data
 
+
 class TokenChallengeForm(forms.Form):
-    nric_fin = forms.CharField(label='Last Four Characters of NRIC/FIN', max_length=4)
-    mobile = forms.CharField(label='Mobile Phone Number', max_length=8)
+    nric_fin = forms.CharField(
+        label='Last Four Characters of NRIC/FIN',
+        max_length=4
+    )
+    mobile = forms.CharField(
+        label='Mobile Phone Number',
+        max_length=8
+    )
+
+    def is_local(self, rs):
+        return (
+            rs == constants.ResidentialStatusFullChoices.SC or
+            rs == constants.ResidentialStatusFullChoices.PR
+        )
 
     def __init__(self, *args, **kwargs):
         self.object = kwargs.pop('object')
@@ -3348,17 +3517,16 @@ class TokenChallengeForm(forms.Form):
                 )
             )
         )
-    
+
     def clean_nric_fin(self):
         cleaned_field = self.cleaned_data.get('nric_fin', '').upper()
         valid = False
         if self.stakeholder == 'employer_1':
             obj = self.object.employer_doc.employer
-            if (
-                obj.employer_residential_status == constants.ResidentialStatusFullChoices.SC or
-                obj.employer_residential_status == constants.ResidentialStatusFullChoices.PR
-            ):
-                if cleaned_field == obj.get_employer_nric_partial(padded=False):
+            if is_local(obj.employer_residential_status):
+                if cleaned_field == obj.get_employer_nric_partial(
+                    padded=False
+                ):
                     valid = True
             else:
                 if cleaned_field == obj.get_employer_fin_partial(padded=False):
@@ -3376,9 +3544,11 @@ class TokenChallengeForm(forms.Form):
 
         elif self.stakeholder == 'joint_applicant':
             obj = self.object.employer_doc.employer.rn_ja_employer
-            if cleaned_field == obj.get_joint_applicant_nric_partial(padded=False):
+            if cleaned_field == obj.get_joint_applicant_nric_partial(
+                padded=False
+            ):
                 valid = True
-        
+
         return cleaned_field if valid else None
 
     def clean_mobile(self):
@@ -3386,7 +3556,7 @@ class TokenChallengeForm(forms.Form):
         valid = False
         if self.stakeholder == 'employer_1':
             obj = self.object.employer_doc.employer
-            if cleaned_field == obj.employer_mobile_number: 
+            if cleaned_field == obj.employer_mobile_number:
                 valid = True
 
         elif self.stakeholder == 'sponsor_1':
@@ -3412,8 +3582,9 @@ class TokenChallengeForm(forms.Form):
             error_msg = _('Invalid Credentials')
             raise ValidationError(
                     error_msg,
-                    code= 'invalid',
+                    code='invalid',
             )
+
 
 class EmployerSignatureForm(forms.Form):
     employer_signature = forms.CharField(
@@ -3449,10 +3620,12 @@ class EmployerSignatureForm(forms.Form):
                     Row(
                         Column(
                             Button(
-                            'Clear Signatures',
-                            'Clear Signatures',
-                            css_class='btn btn-outline-secondary w-25 mr-2',
-                            css_id='signature-form-clear-button'
+                                'Clear Signatures',
+                                'Clear Signatures',
+                                css_class='''
+                                    btn btn-outline-secondary w-25 mr-2
+                                ''',
+                                css_id='signature-form-clear-button'
                             ),
                             Button(
                                 'Confirm',
@@ -3467,6 +3640,7 @@ class EmployerSignatureForm(forms.Form):
                 css_class='form-group'
             )
         )
+
 
 class EmployerWithSpouseSignatureForm(forms.Form):
     employer_signature = forms.CharField(
@@ -3530,10 +3704,10 @@ class EmployerWithSpouseSignatureForm(forms.Form):
             Row(
                 Column(
                     Button(
-                    'Clear Signatures',
-                    'Clear Signatures',
-                    css_class='btn btn-outline-secondary w-25 mr-2',
-                    css_id='signature-form-clear-button'
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-outline-secondary w-25 mr-2',
+                        css_id='signature-form-clear-button'
                     ),
                     Button(
                         'Confirm',
@@ -3545,6 +3719,7 @@ class EmployerWithSpouseSignatureForm(forms.Form):
                 )
             )
         )
+
 
 class SponsorSignatureForm(forms.Form):
     sponsor_signature = forms.CharField(
@@ -3580,10 +3755,12 @@ class SponsorSignatureForm(forms.Form):
                     Row(
                         Column(
                             Button(
-                            'Clear Signatures',
-                            'Clear Signatures',
-                            css_class='btn btn-outline-secondary w-25 mr-2',
-                            css_id='signature-form-clear-button'
+                                'Clear Signatures',
+                                'Clear Signatures',
+                                css_class='''
+                                    btn btn-outline-secondary w-25 mr-2
+                                ''',
+                                css_id='signature-form-clear-button'
                             ),
                             Button(
                                 'Confirm',
@@ -3598,6 +3775,7 @@ class SponsorSignatureForm(forms.Form):
                 css_class='form-group'
             )
         )
+
 
 class EmployerWithJointApplicantSignatureForm(forms.Form):
     employer_signature = forms.CharField(
@@ -3662,10 +3840,10 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
             Row(
                 Column(
                     Button(
-                    'Clear Signatures',
-                    'Clear Signatures',
-                    css_class='btn btn-outline-secondary w-25 mr-2',
-                    css_id='signature-form-clear-button'
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-outline-secondary w-25 mr-2',
+                        css_id='signature-form-clear-button'
                     ),
                     Button(
                         'Confirm',
@@ -3677,6 +3855,7 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                 )
             )
         )
+
 
 class HandoverSignatureForm(forms.Form):
     agency_employee_signature = forms.CharField(
@@ -3764,10 +3943,10 @@ class HandoverSignatureForm(forms.Form):
             Row(
                 Column(
                     Button(
-                    'Clear Signatures',
-                    'Clear Signatures',
-                    css_class='btn btn-outline-secondary w-25 mr-2',
-                    css_id='signature-form-clear-button'
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-outline-secondary w-25 mr-2',
+                        css_id='signature-form-clear-button'
                     ),
                     Button(
                         'Confirm',

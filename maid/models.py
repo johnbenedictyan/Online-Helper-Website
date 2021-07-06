@@ -18,18 +18,22 @@ from agency.models import Agency
 
 # Imports from within the app
 from .constants import (
-    CookingRemarksChoices, DisabledCareRemarksChoices, ElderlyCareRemarksChoices,
-    GeneralHouseworkRemarksChoices, InfantChildCareRemarksChoices, TypeOfMaidChoices,
-    MaidAssessmentChoices, MaidDietaryRestrictionChoices, MaidEducationLevelChoices, 
-    MaidEmploymentCountry, MaidExperienceChoices, MaidFoodPreferenceChoices, 
-    MaidLanguageChoices, MaidLanguageProficiencyChoices, MaidLoanDescriptionChoices,
-    MaidNationalityChoices, MaidPassportStatusChoices, MaidReligionChoices, 
-    MaidResponsibilityChoices, MaidStatusChoices
+    CookingRemarksChoices, DisabledCareRemarksChoices,
+    ElderlyCareRemarksChoices, GeneralHouseworkRemarksChoices,
+    InfantChildCareRemarksChoices, TypeOfMaidChoices, MaidAssessmentChoices,
+    MaidDietaryRestrictionChoices, MaidEducationLevelChoices,
+    MaidEmploymentCountry, MaidExperienceChoices, MaidFoodPreferenceChoices,
+    MaidLanguageChoices, MaidLanguageProficiencyChoices,
+    MaidLoanDescriptionChoices, MaidNationalityChoices,
+    MaidPassportStatusChoices, MaidReligionChoices, MaidResponsibilityChoices,
+    MaidStatusChoices
 )
 
 # Utiliy Classes and Functions
 
 # Start of Models
+
+
 class MaidResponsibility(models.Model):
     name = models.CharField(
         verbose_name=_('Name of maid\'s responsibility'),
@@ -37,7 +41,7 @@ class MaidResponsibility(models.Model):
         blank=False,
         choices=MaidResponsibilityChoices.choices
     )
-    
+
     class Meta:
         verbose_name = _("Maid Responsibility")
         verbose_name_plural = _("Maid Responsibilities")
@@ -47,6 +51,7 @@ class MaidResponsibility(models.Model):
 
     def get_db_value(self):
         return self.name
+
 
 class MaidLanguage(models.Model):
     language = models.CharField(
@@ -62,6 +67,7 @@ class MaidLanguage(models.Model):
 
     def __str__(self) -> str:
         return f'{self.get_language_display()}'
+
 
 class Maid(models.Model):
     agency = models.ForeignKey(
@@ -82,18 +88,18 @@ class Maid(models.Model):
         blank=False,
         null=True
     )
-    
+
     passport_number = models.BinaryField(
         editable=True,
         blank=True,
         null=True
     )
-    
+
     passport_number_nonce = models.BinaryField(
         editable=True,
         blank=True
     )
-    
+
     passport_number_tag = models.BinaryField(
         editable=True,
         blank=True
@@ -121,21 +127,21 @@ class Maid(models.Model):
         choices=MaidPassportStatusChoices.choices,
         default=MaidPassportStatusChoices.NOT_READY
     )
-    
+
     passport_expiry = models.DateField(
         verbose_name=_('Passport Expiry Date'),
         null=True,
         blank=True
     )
-    
+
     languages = models.ManyToManyField(
         MaidLanguage
     )
-    
+
     responsibilities = models.ManyToManyField(
         MaidResponsibility
     )
-    
+
     created_on = models.DateTimeField(
         verbose_name=_('Created On'),
         auto_now_add=True,
@@ -155,7 +161,7 @@ class Maid(models.Model):
         choices=MaidStatusChoices.choices,
         default=MaidStatusChoices.UNPUBLISHED
     )
-    
+
     marital_status = models.CharField(
         verbose_name=_('Marital Status'),
         max_length=9,
@@ -188,25 +194,25 @@ class Maid(models.Model):
         null=True,
         choices=MaidNationalityChoices.choices
     )
-    
+
     expected_salary = models.PositiveSmallIntegerField(
         verbose_name=_('Expected Salary'),
         blank=False,
         default=0
     )
-    
+
     expected_days_off = models.PositiveSmallIntegerField(
         verbose_name=_('Expected No of Off Days'),
         blank=False,
         default=0
     )
-    
+
     date_of_birth = models.DateField(
         verbose_name=_('Date of Birth'),
         blank=False,
         null=True
     )
-    
+
     height = models.DecimalField(
         verbose_name=_('Height'),
         max_digits=5,
@@ -228,7 +234,7 @@ class Maid(models.Model):
         ],
         blank=False
     )
-    
+
     place_of_birth = models.CharField(
         verbose_name=_('Place of birth'),
         max_length=25,
@@ -263,7 +269,7 @@ class Maid(models.Model):
         choices=MaidReligionChoices.choices,
         default=MaidReligionChoices.NONE
     )
-    
+
     contact_number = models.CharField(
         verbose_name=_('Contact number in home country'),
         max_length=30,
@@ -276,7 +282,7 @@ class Maid(models.Model):
             )
         ]
     )
-    
+
     education_level = models.CharField(
         verbose_name=_('Education Level'),
         max_length=3,
@@ -284,13 +290,13 @@ class Maid(models.Model):
         choices=MaidEducationLevelChoices.choices,
         default=MaidEducationLevelChoices.HIGH_SCHOOL
     )
-    
+
     about_me = models.TextField(
         verbose_name=_('About Me'),
         max_length=350,
         null=True
     )
-    
+
     fin_number = models.BinaryField(
         verbose_name=_('FDW FIN'),
         editable=True,
@@ -350,17 +356,18 @@ class Maid(models.Model):
         today = timezone.now().date()
         try:
             birthday_current_year = self.date_of_birth.replace(
-                year = today.year)
-    
+                year=today.year
+            )
+
         # Raised when birth date is 29 February and the current year is not a
         # leap year
         except ValueError:
             birthday_current_year = self.date_of_birth.replace(
-                year = today.year,
-                month = self.date_of_birth.month + 1,
-                day = 1
+                year=today.year,
+                month=self.date_of_birth.month + 1,
+                day=1
             )
-    
+
         if birthday_current_year > today:
             return today.year - self.date_of_birth.year - 1
         else:
@@ -373,10 +380,10 @@ class Maid(models.Model):
             self.fin_number_nonce,
             self.fin_number_tag
         )
-    
+
     def get_fdw_fin_partial(self, padded=True):
         plaintext = self.get_fdw_fin_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -389,11 +396,11 @@ class Maid(models.Model):
         elif self.status == MaidStatusChoices.FEATURED:
             self.status = MaidStatusChoices.UNPUBLISHED
         self.save()
-    
+
     def toggle_featured(self):
         err_msg = None
         amt_of_featured = self.agency.amount_of_featured_biodata
-        amt_allowed = self.agency.amount_of_featured_biodata_allowed    
+        amt_allowed = self.agency.amount_of_featured_biodata_allowed
         if self.status == MaidStatusChoices.PUBLISHED:
             if amt_of_featured < amt_allowed:
                 self.status = MaidStatusChoices.FEATURED
@@ -418,14 +425,14 @@ class Maid(models.Model):
             languages.append('Hindi')
         if self.language_proficiency.tamil != MaidLanguageProficiencyChoices.UNABLE:
             languages.append('Tamil')
-        
+
         return languages
 
     def get_languages(self):
         languages_string = ' '.join(self.get_language_list())
         if languages_string:
             return languages_string
-        
+
     def set_languages(self):
         lang_model_map = {
             'English': MaidLanguageChoices.ENGLISH,
@@ -447,14 +454,17 @@ class Maid(models.Model):
     @property
     def is_published(self):
         return (
-            self.status == MaidStatusChoices.PUBLISHED or self.status == MaidStatusChoices.FEATURED
+            self.status == MaidStatusChoices.PUBLISHED or
+            self.status == MaidStatusChoices.FEATURED
         )
-    
+
     @property
     def is_featured(self):
         return self.status == MaidStatusChoices.FEATURED
 
-## Models which have a one-to-many relationship with the maid model
+# Models which have a one-to-many relationship with the maid model
+
+
 class MaidFoodHandlingPreference(models.Model):
     maid = models.ForeignKey(
         Maid,
@@ -463,7 +473,7 @@ class MaidFoodHandlingPreference(models.Model):
     )
 
     preference = models.CharField(
-        verbose_name = _('Food preference'),
+        verbose_name=_('Food preference'),
         max_length=1,
         blank=False,
         choices=MaidFoodPreferenceChoices.choices,
@@ -474,6 +484,7 @@ class MaidFoodHandlingPreference(models.Model):
         verbose_name = _("Maid Food Handling Preference")
         verbose_name_plural = _("Maid Food Handling Preferences")
 
+
 class MaidDietaryRestriction(models.Model):
     maid = models.ForeignKey(
         Maid,
@@ -482,7 +493,7 @@ class MaidDietaryRestriction(models.Model):
     )
 
     restriction = models.CharField(
-        verbose_name = _('Dietary restriction'),
+        verbose_name=_('Dietary restriction'),
         max_length=1,
         blank=False,
         choices=MaidDietaryRestrictionChoices.choices,
@@ -492,6 +503,7 @@ class MaidDietaryRestriction(models.Model):
     class Meta:
         verbose_name = _("Maid Dietary Restriction")
         verbose_name_plural = _("Maid Dietary Restrictions")
+
 
 class MaidEmploymentHistory(models.Model):
     maid = models.ForeignKey(
@@ -542,6 +554,7 @@ class MaidEmploymentHistory(models.Model):
         duration = self.end_date - self.start_date
         return humanise_time_duration(duration)
 
+
 class MaidLoanTransaction(models.Model):
     maid = models.ForeignKey(
         Maid,
@@ -580,7 +593,9 @@ class MaidLoanTransaction(models.Model):
         verbose_name = _("Maid Loan Transaction")
         verbose_name_plural = _("Maid Loan Transactions")
 
-## Models which have a one-to-one relationship with the maid model 
+# Models which have a one-to-one relationship with the maid model
+
+
 class MaidInfantChildCare(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -626,6 +641,7 @@ class MaidInfantChildCare(models.Model):
     class Meta:
         verbose_name = _("Maid Infant Child Care")
         verbose_name_plural = _("Maid Infant Child Care")
+
 
 class MaidElderlyCare(models.Model):
     maid = models.OneToOneField(
@@ -673,6 +689,7 @@ class MaidElderlyCare(models.Model):
         verbose_name = _("Maid Elderly Care")
         verbose_name_plural = _("Maid Elderly Care")
 
+
 class MaidDisabledCare(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -718,6 +735,7 @@ class MaidDisabledCare(models.Model):
     class Meta:
         verbose_name = _("Maid Disabled Care")
         verbose_name_plural = _("Maid Disabled Care")
+
 
 class MaidGeneralHousework(models.Model):
     maid = models.OneToOneField(
@@ -765,6 +783,7 @@ class MaidGeneralHousework(models.Model):
         verbose_name = _("Maid General Housework")
         verbose_name_plural = _("Maid General Housework")
 
+
 class MaidCooking(models.Model):
     maid = models.OneToOneField(
         Maid,
@@ -811,13 +830,14 @@ class MaidCooking(models.Model):
         verbose_name = _("Maid Cooking")
         verbose_name_plural = _("Maid Cooking")
 
+
 class MaidLanguageProficiency(models.Model):
     maid = models.OneToOneField(
         Maid,
         on_delete=models.CASCADE,
         related_name='language_proficiency'
     )
-    
+
     english = models.CharField(
         verbose_name=_('English'),
         blank=False,
@@ -825,7 +845,7 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-    
+
     malay = models.CharField(
         verbose_name=_('Malay / Bahasa Indonesia'),
         blank=False,
@@ -833,7 +853,7 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-    
+
     mandarin = models.CharField(
         verbose_name=_('Mandarin'),
         blank=False,
@@ -841,7 +861,7 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-    
+
     chinese_dialect = models.CharField(
         verbose_name=_('Chinese Dialect'),
         blank=False,
@@ -849,7 +869,7 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-    
+
     hindi = models.CharField(
         verbose_name=_('Hindi'),
         blank=False,
@@ -857,7 +877,7 @@ class MaidLanguageProficiency(models.Model):
         choices=MaidLanguageProficiencyChoices.choices,
         default=MaidLanguageProficiencyChoices.UNABLE
     )
-    
+
     tamil = models.CharField(
         verbose_name=_('Tamil'),
         blank=False,

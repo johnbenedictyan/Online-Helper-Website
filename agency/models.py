@@ -14,13 +14,15 @@ from onlinemaid.storage_backends import PublicMediaStorage
 
 # Imports from within the app
 from .constants import (
-    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices, OpeningHoursChoices
+    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices,
+    OpeningHoursChoices
 )
 from .validators import validate_postcode
 
 # Utiliy Classes and Functions
 
 # Start of Models
+
 
 class Agency(models.Model):
     name = models.CharField(
@@ -44,7 +46,7 @@ class Agency(models.Model):
             URLValidator(
                 message=_('Please enter a valid URL')
             )
-        ]   
+        ]
     )
 
     logo = models.FileField(
@@ -58,54 +60,54 @@ class Agency(models.Model):
         verbose_name=_('Profile'),
         blank=False
     )
-    
+
     services = models.TextField(
         verbose_name=_('Services'),
         blank=False
     )
-    
+
     amount_of_biodata = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of FDW Biodata'),
         default=0,
         null=False
     )
-    
+
     amount_of_biodata_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of FDW Biodata allowed'),
         default=0,
         null=False
     )
-    
+
     amount_of_featured_biodata = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of featured FDW Biodata'),
         default=0,
         null=False
     )
-    
+
     amount_of_featured_biodata_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of featured FDW Biodata allowed'),
         default=0,
         null=False
     )
-    
+
     amount_of_employees = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employee accounts'),
         default=0,
         null=False
     )
-    
+
     amount_of_employees_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employee accounts allowed'),
         default=0,
         null=False
     )
-    
+
     amount_of_documents = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employer documents'),
         default=0,
         null=False
     )
-    
+
     amount_of_documents_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employer documents allowed'),
         default=0,
@@ -145,13 +147,13 @@ class Agency(models.Model):
             return main_branch.office_number
         else:
             return None
-    
+
     def get_branches(self):
         return self.branches.filter(main_branch=False)
-    
+
     # def get_enquiries(self):
     #     return self.enquiries.all()
-    
+
     def get_biodata_limit_status(self):
         return (
             self.amount_of_biodata < self.amount_of_biodata_allowed and
@@ -161,8 +163,10 @@ class Agency(models.Model):
     class Meta:
         verbose_name = 'Agency'
         verbose_name_plural = 'Agencies'
-        
+
 # Models which are one to one with Agency
+
+
 class AgencyOpeningHours(models.Model):
     agency = models.OneToOneField(
         Agency,
@@ -318,7 +322,7 @@ class AgencyOpeningHours(models.Model):
         choices=OpeningHoursChoices.choices,
         default=OpeningHoursChoices.TIME0000
     )
-    
+
     sunday_end = models.CharField(
         verbose_name=_('Sunday\'s closing time'),
         max_length=8,
@@ -355,7 +359,6 @@ class AgencyOpeningHours(models.Model):
         default=False
     )
 
-
     def __str__(self):
         return f'Operating Hours for {self.agency.name}'
 
@@ -364,6 +367,8 @@ class AgencyOpeningHours(models.Model):
         verbose_name_plural = 'Agency Operating Hours'
 
 # Models which are many to one with Agency
+
+
 class AgencyOwner(models.Model):
     user = models.OneToOneField(
         get_user_model(),
@@ -402,6 +407,7 @@ class AgencyOwner(models.Model):
     class Meta:
         verbose_name = 'Agency Owner'
         verbose_name_plural = 'Agency Owners'
+
 
 class AgencyBranch(models.Model):
     MAIN_BRANCH_CHOICES = (
@@ -459,7 +465,7 @@ class AgencyBranch(models.Model):
                 message=_('Please enter a valid contact number')
             )
         ]
-        # This regex validator checks if the contact number provided is all 
+        # This regex validator checks if the contact number provided is all
         # numbers.
     )
 
@@ -473,7 +479,7 @@ class AgencyBranch(models.Model):
                 message=_('Please enter a valid contact number')
             )
         ]
-        # This regex validator checks if the contact number provided is all 
+        # This regex validator checks if the contact number provided is all
         # numbers.
     )
 
@@ -482,14 +488,17 @@ class AgencyBranch(models.Model):
         choices=MAIN_BRANCH_CHOICES,
         default=True
     )
-    
+
     email = models.EmailField(
         verbose_name=_('Branch Email Address'),
         blank=False
     )
 
     def __str__(self):
-        return self.agency.name + ', ' + self.name if self.name else self.agency.name + ' branch'
+        if self.name:
+            return self.agency.name + ', ' + self.name
+        else:
+            return self.agency.name + ' branch'
 
     def save(self, *args, **kwargs):
         sg_region = get_sg_region(self.postal_code)
@@ -500,12 +509,13 @@ class AgencyBranch(models.Model):
         verbose_name = 'Agency Branch'
         verbose_name_plural = 'Agency Branches'
 
+
 class AgencyPlan(models.Model):
     class PlanTypeChoices(models.TextChoices):
         BIODATA_100 = 'B100', _('100 Biodata')
         BIODATA_200 = 'B200', _('200 Biodata')
         BIODATA_300 = 'B300', _('300 Biodata')
-        
+
     agency = models.ForeignKey(
         Agency,
         on_delete=models.CASCADE
@@ -531,6 +541,8 @@ class AgencyPlan(models.Model):
     )
 
 # Agency Employee Models
+
+
 class AgencyEmployee(models.Model):
     user = models.OneToOneField(
         get_user_model(),
@@ -555,7 +567,7 @@ class AgencyEmployee(models.Model):
                 message=_('Please enter a valid contact number')
             )
         ]
-        # This regex validator checks if the contact number provided is all 
+        # This regex validator checks if the contact number provided is all
         # numbers.
     )
 
@@ -601,19 +613,19 @@ class AgencyEmployee(models.Model):
         editable=False,
         default=False
     )
-    
+
     def __str__(self):
         return self.ea_personnel_number + ' - ' + self.name
 
     def get_ea_personnel_no(self):
         return self.ea_personnel_number
-    
+
     def is_ea_personnel_no_valid(self):
         if validate_ea_personnel_number(self.ea_personnel_number):
             return False
         else:
             return True
-    
+
     def get_all_ea_personnel_no_in_branch(self):
         if self.role == AgencyEmployeeRoleChoices.MANAGER:
             return list(
@@ -624,9 +636,11 @@ class AgencyEmployee(models.Model):
                     flat=True
                 )
             )
+
     class Meta:
         verbose_name = 'Agency Employee'
         verbose_name_plural = 'Agency Employees'
+
 
 class PotentialAgency(models.Model):
     name = models.CharField(
@@ -657,7 +671,7 @@ class PotentialAgency(models.Model):
                 message=_('Please enter a valid mobile number')
             )
         ]
-        # This regex validator checks if the contact number provided is all 
+        # This regex validator checks if the contact number provided is all
         # numbers.
     )
 
@@ -671,7 +685,7 @@ class PotentialAgency(models.Model):
                 message=_('Please enter a valid office number')
             )
         ]
-        # This regex validator checks if the office number provided is all 
+        # This regex validator checks if the office number provided is all
         # numbers.
     )
 

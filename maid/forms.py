@@ -19,39 +19,44 @@ from onlinemaid.validators import validate_fin, validate_passport
 
 # Imports from local apps
 from .constants import (
-    CookingRemarksChoices, DisabledCareRemarksChoices, ElderlyCareRemarksChoices,
-    GeneralHouseworkRemarksChoices, InfantChildCareRemarksChoices,
-    MaidAssessmentChoices, MaidDietaryRestrictionChoices, MaidFoodPreferenceChoices,
+    CookingRemarksChoices, DisabledCareRemarksChoices,
+    ElderlyCareRemarksChoices, GeneralHouseworkRemarksChoices,
+    InfantChildCareRemarksChoices, MaidAssessmentChoices,
+    MaidDietaryRestrictionChoices, MaidFoodPreferenceChoices,
     MaidLanguageProficiencyChoices
 )
 from .models import (
-    Maid, MaidCooking, MaidDietaryRestriction, MaidDisabledCare, MaidElderlyCare, 
-    MaidEmploymentHistory, MaidFoodHandlingPreference, MaidGeneralHousework, MaidInfantChildCare,
-    MaidLanguageProficiency, MaidLoanTransaction
+    Maid, MaidCooking, MaidDietaryRestriction, MaidDisabledCare,
+    MaidElderlyCare, MaidEmploymentHistory, MaidFoodHandlingPreference,
+    MaidGeneralHousework, MaidInfantChildCare, MaidLanguageProficiency,
+    MaidLoanTransaction
 )
 from .widgets import CustomDateInput
 
 # Start of Forms
 
 # Model Forms
+
+
 class MaidForm(forms.ModelForm):
     date_of_birth = forms.DateField(
         widget=CustomDateInput(),
         input_formats=['%d %b %Y']
     )
-    
+
     passport_expiry = forms.DateField(
         widget=CustomDateInput(),
         input_formats=['%d %b %Y'],
         required=False
     )
-    
+
     class Meta:
         model = Maid
         exclude = [
-            'agency', 'created_on', 'updated_on', 'about_me', 'responsibilities', 'languages',
-            'skills_evaluation_method', 'passport_number_nonce', 'passport_number_tag',
-            'fin_number_nonce', 'fin_number_tag', 
+            'agency', 'created_on', 'updated_on', 'about_me',
+            'responsibilities', 'languages', 'skills_evaluation_method',
+            'passport_number_nonce', 'passport_number_tag', 'fin_number_nonce',
+            'fin_number_tag'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -59,9 +64,11 @@ class MaidForm(forms.ModelForm):
         self.form_type = kwargs.pop('form_type')
         super().__init__(*args, **kwargs)
         self.FIELD_MAXLENGTH = 20
-        self.initial.update({'passport_number': self.instance.get_passport_number()})
+        self.initial.update({
+            'passport_number': self.instance.get_passport_number()
+        })
         self.initial.update({'fin_number': self.instance.get_fin_number()})
-                
+
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -239,10 +246,10 @@ class MaidForm(forms.ModelForm):
         reference_number = self.cleaned_data.get('reference_number')
         try:
             Maid.objects.get(
-                agency = Agency.objects.get(
-                    pk = self.agency_id
+                agency=Agency.objects.get(
+                    pk=self.agency_id
                 ),
-                reference_number = reference_number
+                reference_number=reference_number
             )
         except Maid.DoesNotExist:
             pass
@@ -262,10 +269,12 @@ class MaidForm(forms.ModelForm):
             raise ValidationError(error_msg)
         else:
             # Encryption
-            ciphertext, self.instance.passport_number_nonce, self.instance.passport_number_tag = encrypt_string(
+            ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY,
             )
+            self.instance.passport_number_nonce = nonce
+            self.instance.passport_number_tag = tag
             return ciphertext
 
     def clean_fin_number(self):
@@ -278,10 +287,12 @@ class MaidForm(forms.ModelForm):
                 raise ValidationError(error_msg)
             else:
                 # Encryption
-                ciphertext, self.instance.fin_number_nonce, self.instance.fin_number_tag = encrypt_string(
+                ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY,
                 )
+                self.instance.fin_number_nonce = nonce
+                self.instance.fin_number_tag = tag
                 return ciphertext
 
     def save(self, *args, **kwargs):
@@ -290,8 +301,8 @@ class MaidForm(forms.ModelForm):
         )
         if self.changed_data:
             if (
-                'name' in self.changed_data or 
-                'passport_number' in self.changed_data or 
+                'name' in self.changed_data or
+                'passport_number' in self.changed_data or
                 'country_of_origin' in self.changed_data
             ):
                 employer_doc_qs = EmployerDoc.objects.filter(
@@ -299,9 +310,10 @@ class MaidForm(forms.ModelForm):
                 )
                 for employer_doc in employer_doc_qs:
                     employer_doc.increment_version_number()
-            #TODO: Implement version incrementing
+            # TODO: Implement version incrementing
         return super().save(*args, **kwargs)
-    
+
+
 class MaidEmploymentHistoryForm(forms.ModelForm):
     class Meta:
         model = MaidEmploymentHistory
@@ -318,7 +330,7 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
                 'maxlength': '100'
             })
         }
-    
+
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
@@ -399,6 +411,7 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
             )
         )
 
+
 class MaidFoodHandlingPreferenceForm(forms.ModelForm):
     class Meta:
         model = MaidFoodHandlingPreference
@@ -428,6 +441,7 @@ class MaidFoodHandlingPreferenceForm(forms.ModelForm):
             )
         )
 
+
 class MaidDietaryRestrictionForm(forms.ModelForm):
     class Meta:
         model = MaidDietaryRestriction
@@ -456,6 +470,7 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+
 
 class MaidLoanTransactionForm(forms.ModelForm):
     class Meta:
@@ -506,75 +521,77 @@ class MaidLoanTransactionForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         self.instance.maid = self.maid
         return super().save(*args, **kwargs)
-    
+
 # Generic Forms (forms.Form)
+
+
 class MaidLanguagesAndFHPDRForm(forms.Form):
     english = forms.ChoiceField(
         label=_('English'),
         required=True,
         choices=MaidLanguageProficiencyChoices.choices
     )
-    
+
     malay = forms.ChoiceField(
         label=_('Malay / Bahasa Indonesia'),
         required=True,
         choices=MaidLanguageProficiencyChoices.choices
     )
-    
+
     mandarin = forms.ChoiceField(
         label=_('Mandarin'),
         required=True,
         choices=MaidLanguageProficiencyChoices.choices
     )
-    
+
     chinese_dialect = forms.ChoiceField(
         label=_('Chinese Dialect'),
         required=True,
         choices=MaidLanguageProficiencyChoices.choices
     )
-    
+
     hindi = forms.ChoiceField(
         label=_('Hindi'),
         required=True,
         choices=MaidLanguageProficiencyChoices.choices
     )
-    
+
     tamil = forms.ChoiceField(
         label=_('Tamil'),
         required=True,
         choices=MaidLanguageProficiencyChoices.choices
     )
-    
+
     food_handling_pork = forms.ChoiceField(
         label=_('Can you handle pork'),
         required=True,
         choices=TrueFalseChoices('Yes', 'No')
     )
-    
+
     food_handling_beef = forms.ChoiceField(
         label=_('Can you handle beef'),
         required=True,
         choices=TrueFalseChoices('Yes', 'No')
     )
-    
+
     food_handling_veg = forms.ChoiceField(
         label=_('Are you willing to work in a vegetarian family'),
         required=True,
         choices=TrueFalseChoices('Yes', 'No')
     )
-    
+
     dietary_restriction_pork = forms.ChoiceField(
         label=_('Can you eat pork'),
         required=True,
         choices=TrueFalseChoices('Yes', 'No')
     )
-    
+
     dietary_restriction_beef = forms.ChoiceField(
         label=_('Can you eat beef'),
         required=True,
         choices=TrueFalseChoices('Yes', 'No')
     )
-    
+
     dietary_restriction_veg = forms.ChoiceField(
         label=_('Are you a vegetarian'),
         required=True,
@@ -676,7 +693,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                 css_class='form-row'
             )
         )
-    
+
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         maid = Maid.objects.get(
@@ -720,7 +737,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.VEG
             )
-        
+
         obj, created = MaidLanguageProficiency.objects.update_or_create(
             maid=Maid.objects.get(pk=self.maid_id),
             defaults={
@@ -734,6 +751,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
         )
         maid.set_languages()
         return maid
+
 
 class MaidExperienceForm(forms.Form):
     cfi_assessment = forms.ChoiceField(
@@ -797,7 +815,7 @@ class MaidExperienceForm(forms.Form):
         widget=forms.Textarea,
         required=False
     )
-    
+
     cfd_assessment = forms.ChoiceField(
         label=_('Assessment'),
         required=True,
@@ -1096,7 +1114,7 @@ class MaidExperienceForm(forms.Form):
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         skills_evaluation_method = cleaned_data.get('skills_evaluation_method')
-        
+
         cfi_assessment = cleaned_data.get('cfi_assessment')
         cfi_willingness = cleaned_data.get('cfi_willingness')
         cfi_experience = cleaned_data.get('cfi_experience')
@@ -1108,7 +1126,7 @@ class MaidExperienceForm(forms.Form):
         cfe_experience = cleaned_data.get('cfe_experience')
         cfe_remarks = cleaned_data.get('cfe_remarks')
         cfe_other_remarks = cleaned_data.get('cfe_other_remarks')
-        
+
         cfd_assessment = cleaned_data.get('cfd_assessment')
         cfd_willingness = cleaned_data.get('cfd_willingness')
         cfd_experience = cleaned_data.get('cfd_experience')
@@ -1126,16 +1144,16 @@ class MaidExperienceForm(forms.Form):
         cok_experience = cleaned_data.get('cok_experience')
         cok_remarks = cleaned_data.get('cok_remarks')
         cok_other_remarks = cleaned_data.get('cok_other_remarks')
-        
+
         maid = Maid.objects.get(
             pk=self.maid_id
         )
-        
-        maid.skills_evaluation_method=skills_evaluation_method
+
+        maid.skills_evaluation_method = skills_evaluation_method
         maid.save()
-        
+
         MaidInfantChildCare.objects.update_or_create(
-            maid=maid, 
+            maid=maid,
             defaults={
                 'assessment': cfi_assessment,
                 'willingness': cfi_willingness,
@@ -1144,9 +1162,9 @@ class MaidExperienceForm(forms.Form):
                 'other_remarks': cfi_other_remarks,
             }
         )
-        
+
         MaidElderlyCare.objects.update_or_create(
-            maid=maid, 
+            maid=maid,
             defaults={
                 'assessment': cfe_assessment,
                 'willingness': cfe_willingness,
@@ -1155,9 +1173,9 @@ class MaidExperienceForm(forms.Form):
                 'other_remarks': cfe_other_remarks,
             }
         )
-        
+
         MaidDisabledCare.objects.update_or_create(
-            maid=maid, 
+            maid=maid,
             defaults={
                 'assessment': cfd_assessment,
                 'willingness': cfd_willingness,
@@ -1166,9 +1184,9 @@ class MaidExperienceForm(forms.Form):
                 'other_remarks': cfd_other_remarks,
             }
         )
-        
+
         MaidGeneralHousework.objects.update_or_create(
-            maid=maid, 
+            maid=maid,
             defaults={
                 'assessment': geh_assessment,
                 'willingness': geh_willingness,
@@ -1177,9 +1195,9 @@ class MaidExperienceForm(forms.Form):
                 'other_remarks': geh_other_remarks,
             }
         )
-        
+
         MaidCooking.objects.update_or_create(
-            maid=maid, 
+            maid=maid,
             defaults={
                 'assessment': cok_assessment,
                 'willingness': cok_willingness,
@@ -1190,14 +1208,15 @@ class MaidExperienceForm(forms.Form):
         )
 
         return maid
-        
+
+
 class MaidAboutFDWForm(forms.Form):
     about_me = forms.CharField(
         label=_(''),
         widget=forms.Textarea(attrs={
             'rows': '10',
             'cols': '100',
-            'maxlength': '300'    
+            'maxlength': '300'
         }),
         required=False
     )
@@ -1248,6 +1267,6 @@ class MaidAboutFDWForm(forms.Form):
         maid = Maid.objects.get(
             pk=self.maid_id
         )
-        maid.about_me=about_me
+        maid.about_me = about_me
         maid.save()
         return maid

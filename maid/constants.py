@@ -12,16 +12,18 @@ from django.utils.translation import ugettext_lazy as _
 
 # Start of Constants
 
+
 class MaidCountryOfOrigin(models.TextChoices):
-    BANGLADESH  = 'BGD', _('Bangladesh')
-    CAMBODIA    = 'KHM', _('Cambodia')
-    INDIA       = 'IND', _('India')
-    INDONESIA   = 'IDN', _('Indonesia')
-    MYANMAR	    = 'MMR', _('Myanmar')
+    BANGLADESH = 'BGD', _('Bangladesh')
+    CAMBODIA = 'KHM', _('Cambodia')
+    INDIA = 'IND', _('India')
+    INDONESIA = 'IDN', _('Indonesia')
+    MYANMAR = 'MMR', _('Myanmar')
     PHILIPPINES = 'PHL', _('Philippines (the)')
-    SRI_LANKA   = 'LKA', _('Sri Lanka')
-    THAILAND    = 'THA', _('Thailand')
-    OTHERS      = 'OTH', _('Others')
+    SRI_LANKA = 'LKA', _('Sri Lanka')
+    THAILAND = 'THA', _('Thailand')
+    OTHERS = 'OTH', _('Others')
+
 
 COUNTRY_LANGUAGE_MAP = {
     MaidCountryOfOrigin.BANGLADESH: 'TAM',
@@ -34,32 +36,36 @@ COUNTRY_LANGUAGE_MAP = {
     MaidCountryOfOrigin.OTHERS: 'ENG',
 }
 
+
 class MaidNationalityChoices(models.TextChoices):
-    BANGLADESH  = 'BGD', _('Bangladeshi')
-    CAMBODIA    = 'KHM', _('Cambodian')
-    INDIA       = 'IND', _('Indian')
-    INDONESIA   = 'IDN', _('Indonesian')
-    MYANMAR	    = 'MMR', _('Myanma')
+    BANGLADESH = 'BGD', _('Bangladeshi')
+    CAMBODIA = 'KHM', _('Cambodian')
+    INDIA = 'IND', _('Indian')
+    INDONESIA = 'IDN', _('Indonesian')
+    MYANMAR = 'MMR', _('Myanma')
     PHILIPPINES = 'PHL', _('Filipino')
-    SRI_LANKA   = 'LKA', _('Sri Lankan')
-    OTHERS      = 'OTH', _('Others')
-    
+    SRI_LANKA = 'LKA', _('Sri Lankan')
+    OTHERS = 'OTH', _('Others')
+
+
 class MaidLanguageChoices(models.TextChoices):
-    ENGLISH         = 'ENG', _('English')
-    MANDARIN        = 'MAN', _('Mandarin')
+    ENGLISH = 'ENG', _('English')
+    MANDARIN = 'MAN', _('Mandarin')
     CHINESE_DIALECT = 'CHD', _('Chinese Dialect')
-    MALAY           = 'MAL', _('Malay / Bahasa Indonesia')
-    HINDI_TAMIL     = 'H_T', _('Hindi / Tamil')
+    MALAY = 'MAL', _('Malay / Bahasa Indonesia')
+    HINDI_TAMIL = 'H_T', _('Hindi / Tamil')
+
 
 class MaidReligionChoices(models.TextChoices):
-        BUDDHIST = 'B', _('Buddhist')
-        MUSLIM = 'M', _('Muslim')
-        HINDU = 'H', _('Hindu')
-        CHRISTIAN = 'CH', _('Christain')
-        CATHOLIC = 'CA', _('Catholic')
-        SIKH = 'S', _('Sikh')
-        OTHERS = 'OTH', _('Others')
-        NONE = 'NONE', _('None')
+    BUDDHIST = 'B', _('Buddhist')
+    MUSLIM = 'M', _('Muslim')
+    HINDU = 'H', _('Hindu')
+    CHRISTIAN = 'CH', _('Christain')
+    CATHOLIC = 'CA', _('Catholic')
+    SIKH = 'S', _('Sikh')
+    OTHERS = 'OTH', _('Others')
+    NONE = 'NONE', _('None')
+
 
 class MaidAssessmentChoices(models.IntegerChoices):
     POOR = 1, _('1 - Poor')
@@ -68,48 +74,57 @@ class MaidAssessmentChoices(models.IntegerChoices):
     GOOD = 4, _('4 - Good')
     EXCELLENT = 5, _('5 - Excellent')
 
+
 class MaidResponsibilityChoices(models.TextChoices):
-    MAID_RESP_GENERAL_HOUSEWORK         = 'GEH', _('General Housework')
-    MAID_RESP_COOKING                   = 'COK', _('Cooking')
+    MAID_RESP_GENERAL_HOUSEWORK = 'GEH', _('General Housework')
+    MAID_RESP_COOKING = 'COK', _('Cooking')
     MAID_RESP_CARE_FOR_INFANTS_CHILDREN = 'CFI', _('Care for Infants/Children')
-    MAID_RESP_CARE_FOR_ELDERLY          = 'CFE', _('Care for the Elderly')
-    MAID_RESP_CARE_FOR_DISABLED         = 'CFD', _('Care for the Disabled')
+    MAID_RESP_CARE_FOR_ELDERLY = 'CFE', _('Care for the Elderly')
+    MAID_RESP_CARE_FOR_DISABLED = 'CFD', _('Care for the Disabled')
+
 
 class MaidGeneralHouseworkRemarksChoices(models.TextChoices):
-        CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
-        OTHERS = 'OTH', _('Other remarks (Please specify)')
+    CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
+    OTHERS = 'OTH', _('Other remarks (Please specify)')
+
 
 class TypeOfMaidChoices(models.TextChoices):
     NEW = 'NEW', _('No Experience')
     TRANSFER = 'TRF', _('Transfer')
     SINGAPORE_EXPERIENCE = 'SGE', _('Singapore Experience')
     OVERSEAS_EXPERIENCE = 'OVE', _('Overseas Experience')
-    
+
+
 class MaidPassportStatusChoices(models.IntegerChoices):
     NOT_READY = 0, _('Not Ready')
     READY = 1, _('Ready')
+
 
 class MaidEducationLevelChoices(models.TextChoices):
     HIGH_SCHOOL = 'HS', _('High School')
     COLLEGE = 'COL', _('College')
     OTHERS = 'OTH', _('Others')
-    
+
+
 class MaidCreatedOnChoices(models.IntegerChoices):
     THREE_DAYS = 3, _('Last 3 days')
     SEVEN_DAYS = 7, _('Last 7 days')
     FIFTEEN_DAYS = 15, _('Last 15 days')
-    
+
+
 class MaidLoanDescriptionChoices(models.TextChoices):
     INITIAL_LOAN = 'IML', _('Initial Maid Loan')
     TRANSFER_FEE = 'ATF', _('Add Transfer Fee')
     OTHER_COST = 'AOC', _('Add Other Cost')
     LOAN_REPAYMENT = 'LR', _('Loan Repayment')
 
+
 class MaidStatusChoices(models.TextChoices):
-    UNPUBLISHED = 'UNPUB', _('Unpublished')    
+    UNPUBLISHED = 'UNPUB', _('Unpublished')
     PUBLISHED = 'PUB', _('Published')
     FEATURED = 'FEAT', _('Featured')
     EMPLOYED = 'EMPLOY', _('Employed')
+
 
 class MaidFoodPreferenceChoices(models.TextChoices):
     PORK = 'P', _('No pork')
@@ -117,7 +132,8 @@ class MaidFoodPreferenceChoices(models.TextChoices):
     BEEF = 'B', _('No beef')
     SEAFOOD = 'S', _('No seafood')
     VEG = 'V', _('Vegetarian')
-    
+
+
 class MaidDietaryRestrictionChoices(models.TextChoices):
     PORK = 'P', _('No pork')
     CHICKEN = 'C', _('No chicken')
@@ -125,12 +141,14 @@ class MaidDietaryRestrictionChoices(models.TextChoices):
     SEAFOOD = 'S', _('No seafood')
     VEG = 'V', _('Able to work in a Vegetarian family')
 
+
 class MaidLanguageProficiencyChoices(models.TextChoices):
     UNABLE = 'UNABLE', _('Unable to speak')
     BASIC = 'BASIC', _('Basic')
     INTERMEDIATE = 'INTER', _('Intermediate')
     ADVANCED = 'ADVAN', _('Advanced')
-    
+
+
 class MaidExperienceChoices(models.TextChoices):
     NO = 'NO', _('No Experience')
     ONE = 'ONE', _('1 Year')
@@ -139,22 +157,27 @@ class MaidExperienceChoices(models.TextChoices):
     FOUR = 'FOUR', _('4 Years')
     O_FIVE = 'O_FIVE', _('>5 Years')
 
+
 class MaidEmploymentCountry(models.TextChoices):
     # https://en.wikipedia.org/wiki/ISO_3166-1
     SINGAPORE = 'SGP', _('Singapore')
     HONG_KONG = 'HKG', _('Hong Kong')
     MALAYSIA = 'MYS', _('Malaysia')
 
+
 CARE_OWN_COUNTRY = 'OC', _('Experience in own country')
 CARE_OVERSEAS = 'OV', _('Experience in overseas')
 CARE_SINGAPORE = 'SG', _('Experience in Singapore')
-CARE_OWN_COUNTRY_SINGAPORE = 'OC_SG', _('Experience in own country and Singapore')
+CARE_OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
+    'Experience in own country and Singapore'
+)
 CARE_OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
 CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
     'Experience in own country, overseas and Singapore'
 )
 CARE_NO_EXP = 'NE', _('No experience, but willing to learn')
 CARE_OTHERS = 'OTH', _('Other remarks (Please specify)')
+
 
 class InfantChildCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = CARE_OWN_COUNTRY
@@ -167,6 +190,7 @@ class InfantChildCareRemarksChoices(models.TextChoices):
     NOT_WILLING = 'NW', _('Not willing to care for infants/children')
     OTHERS = CARE_OTHERS
 
+
 class ElderlyCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = CARE_OWN_COUNTRY
     OVERSEAS = CARE_OVERSEAS
@@ -178,6 +202,7 @@ class ElderlyCareRemarksChoices(models.TextChoices):
     NOT_WILLING = 'NW', _('Not willing to care for elderly')
     OTHERS = CARE_OTHERS
 
+
 class DisabledCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = CARE_OWN_COUNTRY
     OVERSEAS = CARE_OVERSEAS
@@ -188,9 +213,11 @@ class DisabledCareRemarksChoices(models.TextChoices):
     NO_EXP = CARE_NO_EXP
     OTHERS = CARE_OTHERS
 
+
 class GeneralHouseworkRemarksChoices(models.TextChoices):
     CAN_DO_ALL_HOUSEWORK = 'CAN', _('Able to do all general housework')
     OTHERS = CARE_OTHERS
+
 
 class CookingRemarksChoices(models.TextChoices):
     OWN_COUNTRY = 'OC', _('Able to cook own country\'s cuisine')
@@ -231,6 +258,7 @@ class CookingRemarksChoices(models.TextChoices):
         'Able to cook own country\'s, chinese, indian and western cuisine'
     )
     OTHERS = CARE_OTHERS
+
 
 class MaidCareRemarksChoices(models.TextChoices):
     OWN_COUNTRY = CARE_OWN_COUNTRY
