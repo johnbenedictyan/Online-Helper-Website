@@ -215,6 +215,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 AUTH_USER_MODEL = 'accounts.User'
 
 SOCIAL_AUTH_USER_MODEL = 'accounts.User'
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['email']
 AUTHENTICATION_BACKENDS = [
     # Facebook Auth
     'social_core.backends.facebook.FacebookOAuth2',
