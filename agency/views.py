@@ -16,7 +16,8 @@ from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
 from .models import Agency, AgencyOwner, PotentialAgency
 
 from .mixins import (
-    OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin, SpecificAgencyOwnerRequiredMixin
+    OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin,
+    SpecificAgencyOwnerRequiredMixin
 )
 
 # Start of Views
@@ -26,6 +27,8 @@ from .mixins import (
 # Redirect Views
 
 # List Views
+
+
 class AgencyList(ListFilteredMixin, ListView):
     context_object_name = 'agencies'
     http_method_names = ['get']
@@ -37,6 +40,8 @@ class AgencyList(ListFilteredMixin, ListView):
     ordering = ['name']
 
 # Detail Views
+
+
 class AgencyDetail(DetailView):
     context_object_name = 'agency'
     http_method_names = ['get']
@@ -49,23 +54,26 @@ class AgencyDetail(DetailView):
         #     raise Http404
 
         return obj
-    
+
 # Create Views
+
+
 class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
                    CreateView):
     context_object_name = 'agency'
     form_class = AgencyForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = Agency
     template_name = 'create/agency-create.html'
     success_url = reverse_lazy('admin_panel')
     success_message = 'Agency created'
 
+
 class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
                         CreateView):
     context_object_name = 'agency_owner'
     form_class = AgencyOwnerCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = AgencyOwner
     template_name = 'create/agency-owner-create.html'
     success_url = reverse_lazy('admin_panel')
@@ -73,16 +81,17 @@ class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
 
     def form_valid(self, form):
         form.instance.agency = Agency.objects.get(
-            pk = self.kwargs.get(
+            pk=self.kwargs.get(
                 self.pk_url_kwarg
             )
         )
         return super().form_valid(form)
 
+
 class AgencySignUp(SuccessMessageMixin, CreateView):
     context_object_name = 'potential_agency'
     form_class = PotentialAgencyForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = PotentialAgency
     template_name = 'create/agency-sign-up.html'
     success_url = reverse_lazy('home')
@@ -92,6 +101,8 @@ class AgencySignUp(SuccessMessageMixin, CreateView):
 # Update Views
 
 # Delete Views
+
+
 class AgencyDelete(AgencyOwnerRequiredMixin, SuccessMessageMixin, DeleteView):
     pass
 #     context_object_name = 'agency'
@@ -105,9 +116,10 @@ class AgencyDelete(AgencyOwnerRequiredMixin, SuccessMessageMixin, DeleteView):
 #             pk = self.request.user.pk
 #         )
 
-class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin, 
+
+class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin,
                            SuccessMessageMixin, DeleteView):
-    pass       
+    pass
 #     context_object_name = 'agency_employee'
 #     http_method_names = ['post']
 #     model = AgencyEmployee
@@ -117,18 +129,19 @@ class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin,
 #     def delete(self, request, *args, **kwargs):
 #         self.object = self.get_object()
 #         success_url = self.get_success_url()
-        
-#         # Executes the soft delete of the agency employee object so that the 
-#         # transaction history of the particular agency employee does not 
+
+#         # Executes the soft delete of the agency employee object so that the
+#         # transaction history of the particular agency employee does not
 #         # get deleted.
 #         self.object.deleted = True
 #         self.object.save()
 
 #         return HttpResponseRedirect(success_url)
 
+
 class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
                        DeleteView):
-    pass              
+    pass
 #     context_object_name = 'agency_plan'
 #     http_method_names = ['post']
 #     model = AgencyPlan

@@ -14,6 +14,7 @@ from onlinemaid.storage_backends import PublicMediaStorage
 
 # Start of Models
 
+
 class AdvertisementLocation(models.Model):
     class AdvertisementTierChoices(models.TextChoices):
         STANDARD = 'STANDARD', _('Standard')
@@ -32,12 +33,13 @@ class AdvertisementLocation(models.Model):
         choices=AdvertisementTierChoices.choices,
         default=AdvertisementTierChoices.STANDARD
     )
-    
+
     total_amount_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Total number of allowed advertisements'),
         blank=False,
         default=5
     )
+
 
 class Advertisement(models.Model):
     class AdvertisementTypeChoices(models.TextChoices):
@@ -87,20 +89,20 @@ class Advertisement(models.Model):
         default=False,
         editable=False
     )
-    
+
     photo = models.FileField(
         verbose_name=_('Advertisement Photo'),
         blank=False,
         null=True,
         storage=PublicMediaStorage()
     )
-    
+
     remarks = models.TextField(
         verbose_name=_('Testimonial statment'),
         blank=False,
         null=True
     )
-    
+
     frozen = models.BooleanField(
         default=False,
         editable=False

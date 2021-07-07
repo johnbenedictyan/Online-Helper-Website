@@ -9,16 +9,18 @@ from django.utils.translation import ugettext_lazy as _
 # Imports from foreign installed apps
 import django_filters
 
+from onlinemaid.constants import MaritalStatusChoices
 # Imports from local apps
 from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, MaritalStatusChoices,
-    MaidCreatedOnChoices
+    TypeOfMaidChoices, MaidCountryOfOrigin, MaidCreatedOnChoices
 )
 from .models import Maid, MaidResponsibility, MaidLanguage
 from .widgets import CustomRangeWidget
 from agency.models import Agency
 
 # Start of Filters
+
+
 class MiniMaidFilter(django_filters.FilterSet):
     country_of_origin = django_filters.ChoiceFilter(
         choices=MaidCountryOfOrigin.choices,
@@ -35,7 +37,7 @@ class MiniMaidFilter(django_filters.FilterSet):
         empty_label=_('No Preference'),
         label=''
     )
-    
+
     class Meta:
         model = Maid
         fields = {
@@ -43,13 +45,14 @@ class MiniMaidFilter(django_filters.FilterSet):
             'maid_type': ['exact'],
             'responsibilities': ['exact']
         }
-        
+
+
 class MaidFilter(django_filters.FilterSet):
     def filter_age_between(self, queryset, name, value):
         # gt and min value and lt max value
         print(value)
         return queryset
-        
+
     name = django_filters.CharFilter(
         field_name='name',
         lookup_expr='icontains',
@@ -143,4 +146,3 @@ class MaidFilter(django_filters.FilterSet):
                 created_on__gt=time_now - timedelta(days=int(value))
             )
         return queryset
-        

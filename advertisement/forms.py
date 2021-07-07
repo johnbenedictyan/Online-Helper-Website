@@ -13,6 +13,8 @@ from .models import Advertisement
 # Start of Forms
 
 # Model Forms
+
+
 class AdvertisementCreationForm(forms.ModelForm):
     class Meta:
         model = Advertisement

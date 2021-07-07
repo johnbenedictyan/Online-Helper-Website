@@ -5,21 +5,21 @@ from django.urls import include, path
 
 # Imports from local app
 
-## Form Views
+# Form Views
 from .views import AgencySignUp
 
-## List Views
+# List Views
 from .views import AgencyList
 
-## Detail Views
+# Detail Views
 from .views import AgencyDetail
 
-## Create Views
+# Create Views
 from .views import AgencyCreate, AgencyOwnerCreate
 
-## Update Views
+# Update Views
 
-## Delete Views
+# Delete Views
 from .views import AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
 
 # Start of Urls

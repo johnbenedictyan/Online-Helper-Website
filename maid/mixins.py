@@ -15,29 +15,29 @@ from agency.mixins import AgencyOwnerRequiredMixin
 
 # Imports from within the app
 from .models import (
-    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, 
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction
 )
 
 # Utiliy Classes and Functions
 
 # Start of Mixins
 
+
 class SpecificAgencyMaidLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You are required to login using the
                                 employee's or Agency owner account
-                                associate with this maid to perform 
+                                associate with this maid to perform
                                 this action'''
-                            
+
     def dispatch(self, request, *args, **kwargs):
         self.request = request
 
         res = super(SpecificAgencyMaidLoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
-
         maid_agency = Maid.objects.get(
-            pk = self.kwargs.get(
+            pk=self.kwargs.get(
                 self.pk_url_kwarg
             )
         ).agency
@@ -48,8 +48,9 @@ class SpecificAgencyMaidLoginRequiredMixin(LoginRequiredMixin):
         else:
             if self.request.user.agency_employee.agency != maid_agency:
                 return self.handle_no_permission(request)
-        
+
         return res
+
 
 class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
     check_type = None
@@ -85,27 +86,28 @@ class SpecificAgencyOwnerRequiredMixin(AgencyOwnerRequiredMixin):
         try:
             if self.check_type == 'maid':
                 check_model.objects.get(
-                    pk = self.kwargs.get(
+                    pk=self.kwargs.get(
                         self.pk_url_kwarg
                     ),
-                    agency = self.request.user.agency_owner.agency
+                    agency=self.request.user.agency_owner.agency
                 )
             else:
                 check_model.objects.get(
-                    pk = self.kwargs.get(
+                    pk=self.kwargs.get(
                         self.pk_url_kwarg
                     ),
-                    maid__agency = self.request.user.agency_owner.agency
+                    maid__agency=self.request.user.agency_owner.agency
                 )
         except check_model.DoesNotExist:
             return self.handle_no_permission(request)
         else:
             return res
 
+
 class FDWLimitMixin():
     def dispatch(self, request, *args, **kwargs):
         agency = Agency.objects.get(pk=self.agency_id)
-        if agency.get_biodata_limit_status() == True:
+        if agency.get_biodata_limit_status():
             return super().dispatch(request, *args, **kwargs)
         else:
             messages.warning(
@@ -114,4 +116,3 @@ class FDWLimitMixin():
                 extra_tags='error'
             )
             return redirect('dashboard_maid_list')
-                

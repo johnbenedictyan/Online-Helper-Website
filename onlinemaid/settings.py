@@ -37,7 +37,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = int(os.environ.get('DJANGO_DEBUG', '0')) == 1
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
-ADMIN_IP_WHITELIST = os.environ.get('ADMIN_IP_WHITELIST', '127.0.0.1').split(',')
+ADMIN_IP_WHITELIST = os.environ.get(
+    'ADMIN_IP_WHITELIST',
+    '127.0.0.1'
+).split(',')
 
 
 # Application definition
@@ -76,7 +79,7 @@ INSTALLED_APPS = [
     'website',
     'enquiry',
 
-    ######## DEBUG mode only packages, to be REMOVED before production ########
+    # DEBUG mode only packages, to be REMOVED before production #
     # 'sslserver',
 ]
 
@@ -86,7 +89,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware', # django_otp requirement
+    'django_otp.middleware.OTPMiddleware',  # django_otp requirement
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'onlinemaid.middleware.AdminAccessIPWhiteListMiddleware'
@@ -232,7 +235,9 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id, email',
 }
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'
+)
 
 # python-social-auth pipeline override
 # https://python-social-auth.readthedocs.io/en/latest/pipeline.html
@@ -307,16 +312,6 @@ SITE_ID = 1
 MAID_PAGINATE_BY = 12
 AGENCY_PAGINATE_BY = 12
 
-# Agency Employee Fake Email Provider
-# This variable is what will be appended to agency employee's user model's email
-# field. 
-# E.G. ea_personnel_number = 'abc123', the email in the user's model would be 
-# 'abc123@<AGENCY_EMPLOYEE_FEP>'. 
-# So during authentication, we just need to split the string by the @ symbol and
-# extract the ea personnel number for authentication.
-
-AGENCY_EMPLOYEE_FEP = 'example.com'
-
 # Django Recaptcha Settings
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
@@ -332,7 +327,7 @@ handler500 = 'website.views.Error500View'
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
-if DEBUG == False:
+if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
@@ -340,4 +335,3 @@ if DEBUG == False:
 
 # Django Other Settings
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-

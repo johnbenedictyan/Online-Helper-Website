@@ -5,45 +5,45 @@ from django.urls import include, path
 
 # Imports from local app
 
-## Redirect Views
+# Redirect Views
 
-## List Views
+# List Views
 from .views import (
     DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
-    DashboardGeneralEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
-    DashboardSalesList, DashboardEmployerList, DashboardStatusList, 
-    DashboardShortlistedEnquiriesList
+    DashboardGeneralEnquiriesList, DashboardAgencyBranchList,
+    DashboardCaseList, DashboardSalesList, DashboardEmployerList,
+    DashboardStatusList, DashboardShortlistedEnquiriesList
 )
 
-## Detail Views
+# Detail Views
 from .views import (
-    DashboardAgencyDetail, DashboardMaidDetail, 
+    DashboardAgencyDetail, DashboardMaidDetail,
     # DashboardEmployerDetail, DashboardCaseDetail
 )
 
-## Form Views
+# Form Views
 from .views import (
-    DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView, 
-    DashboardMaidAboutFDWFormView, DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
-    DashboardMaidEmploymentHistoryFormView
+    DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView,
+    DashboardMaidAboutFDWFormView, DashboardAgencyOutletDetailsFormView,
+    DashboardMaidLoanFormView, DashboardMaidEmploymentHistoryFormView
 )
-## Create Views
+# Create Views
 from .views import (
     DashboardMaidInformationCreate, DashboardAgencyEmployeeCreate
 )
 
-## Template Views
+# Template Views
 from .views import DashboardHomePage
 
-## Update Views
+# Update Views
 from .views import (
     DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate,
     DashboardAgencyEmployeeUpdate, DashboardMaidInformationUpdate
 )
 
-## Delete Views
+# Delete Views
 
-## Generic Views
+# Generic Views
 from .views import DashboardDataProviderView
 
 # Start of Urls
