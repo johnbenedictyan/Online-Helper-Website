@@ -8,16 +8,16 @@ from django.dispatch import receiver
 # Imports from other apps
 
 # Imports from within the app
-from .constants import MaidResponsibilityChoices
-
 from .models import (
-    Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking, 
-    MaidResponsibility, 
+    Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare,
+    MaidGeneralHousework, MaidCooking, MaidResponsibility
 )
 
 # Utiliy Classes and Functions
+
+
 def maid_main_responsibility(maid):
-    care_models = [
+    care_model_list = [
         MaidInfantChildCare,
         MaidElderlyCare,
         MaidDisabledCare,
@@ -25,7 +25,7 @@ def maid_main_responsibility(maid):
         MaidCooking
     ]
 
-    maid_responsibility_translation_table = {
+    responsibility_transmap = {
         'MaidInfantChildCare': 'CFI',
         'MaidElderlyCare': 'CFE',
         'MaidDisabledCare': 'CFD',
@@ -35,8 +35,8 @@ def maid_main_responsibility(maid):
 
     responsibility_dict = {}
 
-    for i in care_models:
-        for k,v in i.objects.get(maid=maid).__dict__.items():
+    for i in care_model_list:
+        for k, v in i.objects.get(maid=maid).__dict__.items():
             if k == 'assessment':
                 responsibility_dict[i.__name__] = v
 
@@ -47,10 +47,10 @@ def maid_main_responsibility(maid):
     ]
     responsibilities_tbd = []
 
-    for k,v in responsibility_dict.items():
+    for k, v in responsibility_dict.items():
         if v == main_responsibility_value:
             main_responsibilities.append(
-                maid_responsibility_translation_table[k]
+                responsibility_transmap[k]
             )
 
     for i in main_responsibilities:
@@ -58,16 +58,6 @@ def maid_main_responsibility(maid):
             main_responsibilities = [i]
         elif len(main_responsibilities) > 1:
             main_responsibilities = [random.choice(main_responsibilities)]
-    
-    if maid.other_care.care_for_pets == True:
-        main_responsibilities.append(
-            MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
-        )
-    
-    if maid.other_care.gardening == True:
-        main_responsibilities.append(
-            MaidResponsibilityChoices.MAID_RESP_GARDENING
-        )
 
     for i in db_responsibilities:
         if i not in main_responsibilities:
@@ -81,7 +71,7 @@ def maid_main_responsibility(maid):
                 name=i
             )
         )
-    
+
     for i in main_responsibilities:
         maid.responsibilities.add(
             MaidResponsibility.objects.get(
@@ -90,6 +80,8 @@ def maid_main_responsibility(maid):
         )
 
 # Start of Signals
+
+
 @receiver(post_save, sender=Maid)
 def maid_counter(sender, instance, created, **kwargs):
     agency = instance.agency

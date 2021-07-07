@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Start of Constants
 
+
 class AreaChoices(models.TextChoices):
     CENTRAL = 'C', _('Central')
     NORTH = 'N', _('North')
@@ -19,36 +20,39 @@ class AreaChoices(models.TextChoices):
     EAST = 'E', _('East')
     WEST = 'W', _('West')
 
+
 class AgencyEmployeeRoleChoices(models.TextChoices):
     ADMINISTRATOR = 'AD', _('Administrator')
     MANAGER = 'MA', _('Manager')
     SALES_STAFF = 'SS', _('Sales Staff')
     ADMIN_STAFF = 'AM', _('Admin Staff (No EA Personnel Number)')
 
+
 class OpeningHoursTypeChoices(models.TextChoices):
     OPENING_HOURS = 'OH', _('Opening Hours')
     APPOINTMENT_ONLY = 'AO', _('Appointment Only')
 
+
 class OpeningHoursChoices(models.TextChoices):
     TIME0000 = '00:00 AM', _('00:00 AM')
     TIME0030 = '00:30 AM', _('00:30 AM')
-    TIME0100 = '01:00 AM', _('01:00 AM') 
-    TIME0130 = '01:30 AM', _('01:30 AM') 
-    TIME0200 = '02:00 AM', _('02:00 AM') 
-    TIME0230 = '02:30 AM', _('02:30 AM') 
-    TIME0300 = '03:00 AM', _('03:00 AM') 
-    TIME0330 = '03:30 AM', _('03:30 AM') 
-    TIME0400 = '04:00 AM', _('04:00 AM') 
-    TIME0430 = '04:30 AM', _('04:30 AM') 
-    TIME0500 = '05:00 AM', _('05:00 AM') 
-    TIME0530 = '05:30 AM', _('05:30 AM') 
-    TIME0600 = '06:00 AM', _('06:00 AM') 
-    TIME0630 = '06:30 AM', _('06:30 AM') 
-    TIME0700 = '07:00 AM', _('07:00 AM') 
-    TIME0730 = '07:30 AM', _('07:30 AM') 
-    TIME0800 = '08:00 AM', _('08:00 AM') 
-    TIME0830 = '08:30 AM', _('08:30 AM') 
-    TIME0900 = '09:00 AM', _('09:00 AM') 
+    TIME0100 = '01:00 AM', _('01:00 AM')
+    TIME0130 = '01:30 AM', _('01:30 AM')
+    TIME0200 = '02:00 AM', _('02:00 AM')
+    TIME0230 = '02:30 AM', _('02:30 AM')
+    TIME0300 = '03:00 AM', _('03:00 AM')
+    TIME0330 = '03:30 AM', _('03:30 AM')
+    TIME0400 = '04:00 AM', _('04:00 AM')
+    TIME0430 = '04:30 AM', _('04:30 AM')
+    TIME0500 = '05:00 AM', _('05:00 AM')
+    TIME0530 = '05:30 AM', _('05:30 AM')
+    TIME0600 = '06:00 AM', _('06:00 AM')
+    TIME0630 = '06:30 AM', _('06:30 AM')
+    TIME0700 = '07:00 AM', _('07:00 AM')
+    TIME0730 = '07:30 AM', _('07:30 AM')
+    TIME0800 = '08:00 AM', _('08:00 AM')
+    TIME0830 = '08:30 AM', _('08:30 AM')
+    TIME0900 = '09:00 AM', _('09:00 AM')
     TIME0930 = '09:30 AM', _('09:30 AM')
     TIME1000 = '10:30 AM', _('10:30 AM')
     TIME1030 = '10:00 AM', _('10:00 AM')

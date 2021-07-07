@@ -1,5 +1,4 @@
 # Imports from django
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -16,11 +15,13 @@ from .models import Advertisement
 
 # Start of Views
 
-## Template Views
+# Template Views
 
-## Redirect Views
+# Redirect Views
 
-## List Views
+# List Views
+
+
 class AdvertisementList(ListView):
     context_object_name = 'advertisement'
     http_method_names = ['get']
@@ -29,55 +30,63 @@ class AdvertisementList(ListView):
 
     def get_queryset(self):
         return Advertisement.objects.filter(
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
+            agency=Agency.objects.get(
+                pk=self.request.user.pk
             )
         )
 
-## Detail Views
+# Detail Views
+
+
 class AdvertisementDetail(DetailView):
     context_object_name = 'advertisement'
     http_method_names = ['get']
     model = Advertisement
     template_name = 'advertisement-detail.html'
-    
-## Create Views
+
+# Create Views
+
+
 class AdvertisementCreate(CreateView):
     context_object_name = 'advertisement_plan'
     form_class = AdvertisementCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = Advertisement
     template_name = 'advertisement-plan-create.html'
     success_url = reverse_lazy('')
 
-## Update Views
-### Do we want to let them update the advertisement ad type or location?
+# Update Views
+# Do we want to let them update the advertisement ad type or location?
+
+
 class AdvertisementUpdate(LoginRequiredMixin, UpdateView):
     context_object_name = 'advertisement'
     form_class = AdvertisementCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = Advertisement
     template_name = 'advertisement-update.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return Advertisement.objects.get(
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
+            agency=Agency.objects.get(
+                pk=self.request.user.pk
             )
         )
 
-## Delete Views
+# Delete Views
+
+
 class AdvertisementDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'advertisement'
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = Advertisement
     template_name = 'advertisement-delete.html'
     success_url = reverse_lazy('')
 
     def get_object(self, queryset=None):
         return Advertisement.objects.get(
-            agency = Agency.objects.get(
-                pk = self.request.user.pk
+            agency=Agency.objects.get(
+                pk=self.request.user.pk
             )
         )

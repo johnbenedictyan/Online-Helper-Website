@@ -7,6 +7,7 @@ from enquiry.forms import GeneralEnquiryForm
 
 # Start of Context Processors
 
+
 def authority(request):
     authority = None
     authority_groups = [
@@ -16,41 +17,44 @@ def authority(request):
         'Agency Managers',
         'Agency Sales Staff'
     ]
-    if request.user.is_anonymous != True:
+    if not request.user.is_anonymous:
         for authority_name in authority_groups:
             if request.user.groups.filter(
-                name = authority_name
+                name=authority_name
             ).exists():
                 authority = authority_name
 
     return {
         'authority': authority
     }
-    
+
+
 def cartcount(request):
     return {
-        'cart_count': len(request.session.get('cart',[]))
+        'cart_count': len(request.session.get('cart', []))
     }
-    
+
+
 def enquiry_form(request):
     return {
         'enquiry_form': GeneralEnquiryForm()
     }
-        
+
+
 def dashboard_side_nav(request):
     dashboard_side_nav_list = [
-        #Agency
+        # Agency
         'dashboard_agency_detail',
         # 'dashboard_agency_update',
         'dashboard_agency_information_update',
         'dashboard_agency_outlet_details_update',
         'dashboard_agency_opening_hours_update',
-        
-        #Agency Employees
+
+        # Agency Employees
         'dashboard_agency_employee_create',
         'dashboard_agency_employee_update',
-        
-        #Maid
+
+        # Maid
         'dashboard_maid_information_create',
         'dashboard_maid_information_update',
         'dashboard_maid_languages_and_fhpdr_update',
@@ -59,7 +63,7 @@ def dashboard_side_nav(request):
         'dashboard_maid_about_fdw_update',
         'dashboard_maid_loan_update',
 
-        #Employers
+        # Employers
         'employer_create_route',
         'employer_update_route',
         # 'dashboard_employer_detail',
@@ -71,7 +75,7 @@ def dashboard_side_nav(request):
         'employer_incomedetails_update_route',
         'employer_householddetails_route',
 
-        #Cases
+        # Cases
         'dashboard_case_detail',
         'case_create_route',
         'case_update_route',
@@ -87,8 +91,9 @@ def dashboard_side_nav(request):
         'case_status_update_route'
     ]
     return {
-        'dashboard_side_nav_list' : dashboard_side_nav_list
+        'dashboard_side_nav_list': dashboard_side_nav_list
     }
+
 
 def page_bar_url_helper(request):
     EMPLOYER_MINI_NAV_URLS = [

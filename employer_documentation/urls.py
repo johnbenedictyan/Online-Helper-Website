@@ -1,7 +1,7 @@
 # Imports from django
 from django.urls import include, path
 
-from . import views, models
+from . import views
 
 # Start of Urls
 urlpatterns = [
@@ -224,7 +224,7 @@ urlpatterns = [
                                 'service-fees/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/01-service-fee-schedule.html',
-                                    content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                    content_disposition='inline; filename="service_fee_schedule.pdf"',
                                 ),
                                 name='pdf_agency_service_fee_schedule'
                             ),
@@ -232,7 +232,7 @@ urlpatterns = [
                                 'service-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/03-service-agreement.html',
-                                    content_disposition = 'inline; filename="service_agreement.pdf"',
+                                    content_disposition='inline; filename="service_agreement.pdf"',
                                 ),
                                 name='pdf_agency_service_agreement'
                             ),
@@ -240,7 +240,7 @@ urlpatterns = [
                                 'employment-contract/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/04-employment-contract.html',
-                                    content_disposition = 'inline; filename="employment-contract.pdf"',
+                                    content_disposition='inline; filename="employment-contract.pdf"',
                                 ),
                                 name='pdf_agency_employment_contract'
                             ),
@@ -248,8 +248,8 @@ urlpatterns = [
                                 'repayment-schedule/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/05-repayment-schedule.html',
-                                    content_disposition = 'inline; filename="repayment-schedule.pdf"',
-                                    use_repayment_table = True,
+                                    content_disposition='inline; filename="repayment-schedule.pdf"',
+                                    use_repayment_table=True
                                 ),
                                 name='pdf_agency_repayment_schedule'
                             ),
@@ -257,7 +257,7 @@ urlpatterns = [
                                 'rest-day-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/06-rest-day-agreement.html',
-                                    content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                    content_disposition='inline; filename="rest-day-agreement.pdf"',
                                 ),
                                 name='pdf_agency_rest_day_agreement'
                             ),
@@ -265,7 +265,7 @@ urlpatterns = [
                                 'transfer-consent/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/09-transfer-consent.html',
-                                    content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                    content_disposition='inline; filename="transfer-consent.pdf"',
                                 ),
                                 name='pdf_agency_transfer_consent'
                             ),
@@ -273,7 +273,7 @@ urlpatterns = [
                                 'work-pass-authorisation/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
-                                    content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                    content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                 ),
                                 name='pdf_agency_work_pass_authorisation'
                             ),
@@ -281,7 +281,7 @@ urlpatterns = [
                                 'income-tax-declaration/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/13-income-tax-declaration.html',
-                                    content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                    content_disposition='inline; filename="income-tax-declaration.pdf"',
                                 ),
                                 name='pdf_agency_income_tax_declaration'
                             ),
@@ -289,7 +289,7 @@ urlpatterns = [
                                 'safety-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/14-safety-agreement.html',
-                                    content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                    content_disposition='inline; filename="safety-agreement.pdf"',
                                 ),
                                 name='pdf_agency_safety_agreement'
                             ),
@@ -298,7 +298,7 @@ urlpatterns = [
                                 'handover-checklist/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
                                     template_name='employer_documentation/pdf/08-handover-checklist.html',
-                                    content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                    content_disposition='inline; filename="handover-checklist.pdf"'
                                 ),
                                 name='pdf_agency_handover_checklist'
                             ),
@@ -306,24 +306,24 @@ urlpatterns = [
                             path(
                                 'job-order/',
                                 views.UploadedPdfAgencyView.as_view(
-                                    field_name = 'job_order_pdf',
-                                    filename='job_order.pdf',
+                                    field_name='job_order_pdf',
+                                    filename='job_order.pdf'
                                 ),
                                 name='pdf_agency_job_order_route'
                             ),
                             path(
                                 'ipa/',
                                 views.UploadedPdfAgencyView.as_view(
-                                    field_name = 'ipa_pdf',
-                                    filename='ipa.pdf',
+                                    field_name='ipa_pdf',
+                                    filename='ipa.pdf'
                                 ),
                                 name='pdf_agency_ipa_route'
                             ),
                             path(
                                 'medical-report/',
                                 views.UploadedPdfAgencyView.as_view(
-                                    field_name = 'medical_report_pdf',
-                                    filename='medical_report.pdf',
+                                    field_name='medical_report_pdf',
+                                    filename='medical_report.pdf'
                                 ),
                                 name='pdf_agency_medical_report_route'
                             ),
@@ -404,8 +404,8 @@ urlpatterns = [
                             path(
                                 'service-fees/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name = 'employer_documentation/pdf/01-service-fee-schedule.html',
-                                    content_disposition = 'inline; filename="service_fee_schedule.pdf"',
+                                    template_name='employer_documentation/pdf/01-service-fee-schedule.html',
+                                    content_disposition='inline; filename="service_fee_schedule.pdf"',
                                 ),
                                 name='pdf_token_employer_service_fee_schedule'
                             ),
@@ -413,7 +413,7 @@ urlpatterns = [
                                 'service-agreement/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/03-service-agreement.html',
-                                    content_disposition = 'inline; filename="service_agreement.pdf"',
+                                    content_disposition='inline; filename="service_agreement.pdf"',
                                 ),
                                 name='pdf_token_employer_service_agreement'
                             ),
@@ -421,7 +421,7 @@ urlpatterns = [
                                 'employment-contract/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/04-employment-contract.html',
-                                    content_disposition = 'inline; filename="employment-contract.pdf"',
+                                    content_disposition='inline; filename="employment-contract.pdf"',
                                 ),
                                 name='pdf_token_employer_employment_contract'
                             ),
@@ -429,8 +429,8 @@ urlpatterns = [
                                 'repayment-schedule/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/05-repayment-schedule.html',
-                                    content_disposition = 'inline; filename="repayment-schedule.pdf"',
-                                    use_repayment_table = True,
+                                    content_disposition='inline; filename="repayment-schedule.pdf"',
+                                    use_repayment_table=True,
                                 ),
                                 name='pdf_token_employer_repayment_schedule'
                             ),
@@ -438,7 +438,7 @@ urlpatterns = [
                                 'rest-day-agreement/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/06-rest-day-agreement.html',
-                                    content_disposition = 'inline; filename="rest-day-agreement.pdf"',
+                                    content_disposition='inline; filename="rest-day-agreement.pdf"',
                                 ),
                                 name='pdf_token_employer_rest_day_agreement'
                             ),
@@ -446,7 +446,7 @@ urlpatterns = [
                                 'handover-checklist/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/08-handover-checklist.html',
-                                    content_disposition = 'inline; filename="handover-checklist.pdf"',
+                                    content_disposition='inline; filename="handover-checklist.pdf"',
                                 ),
                                 name='pdf_token_employer_handover_checklist'
                             ),
@@ -454,7 +454,7 @@ urlpatterns = [
                                 'transfer-consent/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/09-transfer-consent.html',
-                                    content_disposition = 'inline; filename="transfer-consent.pdf"',
+                                    content_disposition='inline; filename="transfer-consent.pdf"',
                                 ),
                                 name='pdf_token_employer_transfer_consent'
                             ),
@@ -462,7 +462,7 @@ urlpatterns = [
                                 'work-pass-authorisation/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
-                                    content_disposition = 'inline; filename="work-pass-authorisation.pdf"',
+                                    content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                 ),
                                 name='pdf_token_employer_work_pass_authorisation'
                             ),
@@ -470,7 +470,7 @@ urlpatterns = [
                                 'income-tax-declaration/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/13-income-tax-declaration.html',
-                                    content_disposition = 'inline; filename="income-tax-declaration.pdf"',
+                                    content_disposition='inline; filename="income-tax-declaration.pdf"',
                                 ),
                                 name='pdf_token_employer_income_tax_declaration'
                             ),
@@ -478,7 +478,7 @@ urlpatterns = [
                                 'safety-agreement/',
                                 views.HtmlToRenderPdfTokenView.as_view(
                                     template_name='employer_documentation/pdf/14-safety-agreement.html',
-                                    content_disposition = 'inline; filename="safety-agreement.pdf"',
+                                    content_disposition='inline; filename="safety-agreement.pdf"',
                                 ),
                                 name='pdf_token_employer_safety_agreement'
                             ),
@@ -488,7 +488,8 @@ urlpatterns = [
             ),
         ]),
     ),
-    path('status/',
+    path(
+        'status/',
         include([
             path(
                 '<uuid:level_1_pk>/',
@@ -499,7 +500,7 @@ urlpatterns = [
                         name='status_update_route'
                     ),
                 ]),
-            ),
+            )
         ]),
     ),
 ]

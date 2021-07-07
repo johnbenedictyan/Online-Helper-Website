@@ -16,7 +16,9 @@ from .models import Employer
 
 # Start of Tests
 
-## Helper Functions
+# Helper Functions
+
+
 def create_potential_employer_group():
     potential_employers_group, created = Group.objects.get_or_create(
         name='Potential Employers'
@@ -61,6 +63,7 @@ def create_potential_employer_group():
             )
         )
 
+
 def create_test_potential_employer():
     new_user = create_test_user()
     new_pe = Employer.objects.create(
@@ -70,7 +73,7 @@ def create_test_potential_employer():
     )
     pe_group = Group.objects.get(
         name='Potential Employers'
-    ) 
+    )
     pe_group.user_set.add(
         new_user['obj']
     )
@@ -81,12 +84,13 @@ def create_test_potential_employer():
         'obj': new_pe
     }
 
+
 class PotentialEmployersTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_potential_employer_group()
         cls.pe = create_test_potential_employer()
-        
+
     def testCanCreate(self):
         new_user = create_test_user()
         new_pe = Employer.objects.create(
@@ -95,12 +99,14 @@ class PotentialEmployersTest(TestCase):
             contact_number=r_contact_number()
         )
 
-        pe_from_db=Employer.objects.get(
+        pe_from_db = Employer.objects.get(
             user=new_user['obj']
         )
-        self.assertEquals(new_pe.name,pe_from_db.name)
-        self.assertEquals(str(new_pe.contact_number),pe_from_db.contact_number)
-
+        self.assertEquals(new_pe.name, pe_from_db.name)
+        self.assertEquals(
+            str(new_pe.contact_number),
+            pe_from_db.contact_number
+        )
 
     def testCanUpdate(self):
         new_name = r_string(12)
@@ -129,6 +135,7 @@ class PotentialEmployersTest(TestCase):
                 pk=test_pk
             )
 
+
 class PotentialEmployersWithoutSignInUrlTest(TestCase):
     def testCanLoadSignInPage(self):
         response = self.client.get(
@@ -136,24 +143,25 @@ class PotentialEmployersWithoutSignInUrlTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/sign-in.html')
-    
+
     def testCanLoadRegisterPage(self):
         response = self.client.get(
             reverse_lazy('employer_create')
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'create/employer-create.html')
-    
+
     def testWillRedirectToSignInPage(self):
         response = self.client.get(
             reverse_lazy('employer_detail')
-        ) 
+        )
         self.assertRedirects(
             response,
             '/accounts/sign-in/employers?next=/accounts/profile/',
             status_code=302,
             target_status_code=200
         )
+
 
 class PotentialEmployersWithSignInUrlTest(TestCase):
     @classmethod
@@ -171,7 +179,7 @@ class PotentialEmployersWithSignInUrlTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'detail/employer-detail.html')
-    
+
     def testCanLogout(self):
         self.client.login(
             email=self.pe['email'],
@@ -186,13 +194,14 @@ class PotentialEmployersWithSignInUrlTest(TestCase):
             status_code=302,
             target_status_code=200
         )
-    
+
+
 class PotentialEmployersSignInFormTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_potential_employer_group()
         cls.pe = create_test_potential_employer()
-        
+
     def testValidLogin(self):
         test_form_data = {
             'username': self.pe['email'],
@@ -223,28 +232,29 @@ class PotentialEmployersSignInFormTest(TestCase):
         self.assertTemplateUsed(response, 'base/sign-in.html')
         self.assertNotIn('_auth_user_id', self.client.session)
 
+
 class PotentialEmployerCreationFormTest(TestCase):
     def ValidEmployerCreationFormSubmission(self):
         test_form_data = {
-            'email':'asd@asd.com',
-            'password':'Password123!',
-            'name':'john doe',
-            'contact_number':'81234567'
+            'email': 'asd@asd.com',
+            'password': 'Password123!',
+            'name': 'john doe',
+            'contact_number': '81234567'
         }
-        
+
         test_form = EmployerCreationForm(
             data=test_form_data
         )
-        
+
         self.assertTrue(test_form.is_valid())
-        
+
     def testMissingEmailErrorMessage(self):
         test_form_data = {
-            'password':'Password123!',
-            'name':'john doe',
-            'contact_number':'81234567'
+            'password': 'Password123!',
+            'name': 'john doe',
+            'contact_number': '81234567'
         }
-            
+
         test_form = EmployerCreationForm(
             data=test_form_data
         )
@@ -252,7 +262,7 @@ class PotentialEmployerCreationFormTest(TestCase):
             test_form.is_valid()
         )
         response = self.client.post(
-            reverse_lazy('employer_create'), 
+            reverse_lazy('employer_create'),
             test_form_data
         )
         self.assertFormError(
@@ -261,14 +271,14 @@ class PotentialEmployerCreationFormTest(TestCase):
             'email',
             'This field is required.'
         )
-    
+
     def testMissingFirstNameErrorMessage(self):
         test_form_data = {
-            'email':'asd@asd.com',
-            'password':'Password123!',
-            'contact_number':'81234567'
+            'email': 'asd@asd.com',
+            'password': 'Password123!',
+            'contact_number': '81234567'
             }
-            
+
         test_form = EmployerCreationForm(
             data=test_form_data
             )
@@ -285,15 +295,15 @@ class PotentialEmployerCreationFormTest(TestCase):
             'name',
             'This field is required.'
             )
-            
+
     def testMissingLastNameErrorMessage(self):
         test_form_data = {
-            'email':'asd@asd.com',
-            'password':'Password123!',
-            'name':'john doe',
-            'contact_number':'81234567'
+            'email': 'asd@asd.com',
+            'password': 'Password123!',
+            'name': 'john doe',
+            'contact_number': '81234567'
         }
-            
+
         test_form = EmployerCreationForm(
             data=test_form_data
         )
@@ -310,14 +320,14 @@ class PotentialEmployerCreationFormTest(TestCase):
             'last_name',
             'This field is required.'
         )
-            
+
     def testMissingPasswordErrorMessage(self):
         test_form_data = {
-            'email':'asd@asd.com',
-            'name':'john doe',
-            'contact_number':'81234567'
+            'email': 'asd@asd.com',
+            'name': 'john doe',
+            'contact_number': '81234567'
         }
-            
+
         test_form = EmployerCreationForm(
             data=test_form_data
         )
@@ -325,7 +335,7 @@ class PotentialEmployerCreationFormTest(TestCase):
             test_form.is_valid()
         )
         response = self.client.post(
-            reverse_lazy('employer_create'), 
+            reverse_lazy('employer_create'),
             test_form_data
         )
         self.assertFormError(
@@ -334,14 +344,14 @@ class PotentialEmployerCreationFormTest(TestCase):
             'password',
             'This field is required.'
         )
-            
+
     def testMissingContactNumberErrorMessage(self):
         test_form_data = {
-            'email':'asd@asd.com',
-            'password':'Password123!',
-            'name':'john doe',
+            'email': 'asd@asd.com',
+            'password': 'Password123!',
+            'name': 'john doe',
         }
-            
+
         test_form = EmployerCreationForm(
             data=test_form_data
         )
@@ -349,7 +359,7 @@ class PotentialEmployerCreationFormTest(TestCase):
             test_form.is_valid()
         )
         response = self.client.post(
-            reverse_lazy('employer_create'), 
+            reverse_lazy('employer_create'),
             test_form_data
         )
         self.assertFormError(

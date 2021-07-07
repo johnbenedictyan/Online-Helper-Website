@@ -1,5 +1,5 @@
 # Imports from django
-from django.db.models import Q, fields
+from django.db.models import Q
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,6 +11,8 @@ from employer_documentation.models import Employer, CaseStatus, EmployerDoc
 from maid.models import Maid
 
 # Start of Filters
+
+
 class DashboardMaidFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(
         field_name='name',
@@ -30,6 +32,7 @@ class DashboardMaidFilter(django_filters.FilterSet):
             'name',
             'status'
         ]
+
 
 class DashboardEmployerFilter(django_filters.FilterSet):
     MONTH_CHOICES = (
@@ -81,8 +84,10 @@ class DashboardEmployerFilter(django_filters.FilterSet):
             employer_date_of_birth__month=value
         )
 
+
 class DashboardCaseFilter(django_filters.FilterSet):
     pass
+
 
 class DashboardSalesFilter(django_filters.FilterSet):
     employer_fdw_search = django_filters.CharFilter(
@@ -108,6 +113,7 @@ class DashboardSalesFilter(django_filters.FilterSet):
             Q(fdw__name__icontains=value)
         )
 
+
 class DashboardStatusFilter(django_filters.FilterSet):
     employer_fdw_search = django_filters.CharFilter(
         label='Search By',
@@ -118,6 +124,7 @@ class DashboardStatusFilter(django_filters.FilterSet):
             }
         )
     )
+
     class Meta:
         model = CaseStatus
         fields = [

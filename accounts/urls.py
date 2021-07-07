@@ -6,22 +6,22 @@ from django.contrib.auth import views as auth_views
 
 # Imports from local app
 
-## Views that extend inbuilt django views
+# Views that extend inbuilt django views
 from .views import SignInView, AgencySignInView
 
-## Redirect Views 
+# Redirect Views
 from .views import SignOutView
 
-## Detail Views
+# Detail Views
 from .views import PotentialEmployerDetail
 
-## Create Views
+# Create Views
 from .views import PotentialEmployerCreate
 
-## Update Views
+# Update Views
 from .views import PotentialEmployerUpdate
 
-## Delete Views
+# Delete Views
 from .views import PotentialEmployerDelete
 
 # Start of Urls
@@ -82,7 +82,13 @@ urlpatterns = [
         SignOutView.as_view(),
         name='sign_out'
     ),
-    path('oauth/',include('social_django.urls', namespace="social")),
+    path(
+        'oauth/',
+        include(
+            'social_django.urls',
+            namespace="social"
+        )
+    ),
     path(
         'password-reset/',
         auth_views.PasswordResetView.as_view(),

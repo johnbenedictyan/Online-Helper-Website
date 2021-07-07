@@ -58,7 +58,7 @@
 #             email = 'a@a.com',
 #         )
 #         self.potential_agency.save()
-        
+
 #         self.agency = Agency(
 #             email = 'a@a.com',
 #             sales_email = 'a@a.com',
@@ -236,7 +236,7 @@
 #         with open('static/favicon.ico', 'rb') as fp:
 #             self.maid.photo = ImageFile(fp, 'photo.png')
 #             self.maid.save()
-    
+
 #         self.employer_nric, self.employer_nonce, self.employer_tag = encrypt_string(
 #             'S0000000C',
 #             settings.ENCRYPTION_KEY
@@ -390,7 +390,7 @@
 #             email = 'b@a.com',
 #         )
 #         self.potential_agency_other.save()
-        
+
 #         self.agency_other = Agency(
 #             email = 'b@a.com',
 #             sales_email = 'b@a.com',
@@ -467,7 +467,7 @@
 #         # with open('static/favicon.ico', 'rb') as fp:
 #         #     self.maid_other.photo = ImageFile(fp, 'photo.png')
 #         #     self.maid_other.save()
-    
+
 #         # self.employer_admin_other = Employer(
 #         #     agency_employee = self.agency_employee_admin_other,
 #         #     employer_name = 'employer admin',
@@ -683,7 +683,7 @@
 # class EmployerDetailViewTestCase(SetUp, TestCase):
 #     url_route = 'employer_detail_route'
 #     test_view = EmployerDetailView
-    
+
 #     def test_anon_redirect(self):
 #         url_kwargs={
 #             'level_0_pk': self.employer_admin.pk,
@@ -819,7 +819,7 @@
 #             'level_0_pk': self.employer_sales_b1.pk,
 #         }
 #         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
-    
+
 # class DocListViewTestCase(SetUp, TestCase):
 #     url_route = 'employerdoc_list_route'
 #     test_view = EmployerDocListView
@@ -893,7 +893,7 @@
 # class EmployerDocDetailViewTestCase(SetUp, TestCase):
 #     url_route = 'employerdoc_detail_route'
 #     test_view = EmployerDocDetailView
-    
+
 #     def test_anon_redirect(self):
 #         url_kwargs={
 #             'level_0_pk': self.employerdoc_admin.employer.pk,
@@ -974,7 +974,7 @@
 # # class CaseSignatureSlugUpdateViewTestCase(SetUp, TestCase):
 # #     url_route = 'sig_slug_employer_update_route'
 # #     test_view = CaseSignatureSlugUpdateView
-    
+
 # class SignatureUpdateByAgentViewTestCase(SetUp, TestCase):
 #     url_route = 'signature_employer_update_route'
 #     test_view = SignatureUpdateByAgentView
@@ -982,7 +982,7 @@
 #         'model_field_name': 'employer_signature',
 #         'form_fields': ['employer_signature'],
 #     }
-    
+
 #     def test_anon_redirect(self):
 #         url_kwargs={
 #             'level_0_pk': self.employerdoc_admin.employer.pk,
@@ -1070,4 +1070,3 @@
 #             'employersubdoc_pk': self.employerdoc_sales.rn_signatures_ed.pk
 #         }
 #         test_sales_redirect(self, gen_view_and_url_kwargs(url_kwargs, self.view_kwargs))
-

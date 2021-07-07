@@ -5,25 +5,32 @@ from django.http import FileResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import RedirectView
 from django.views.generic.list import View
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import (
+    CreateView, UpdateView, DeleteView, FormView
+)
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404
 
+from agency.mixins import (
+    AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
+    OwnerAccessToEmployerDocAppMixin
+)
+from maid.constants import TypeOfMaidChoices
+from onlinemaid.constants import AG_SALES
+
 # From our apps
-from . import models, forms, constants
+from . import models, forms
+from .constants import EmployerTypeOfApplicantChoices, monthly_income_label_map
 from .formset import (
-    EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper, 
+    EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper,
     MaidInventoryFormSet, MaidInventoryFormSetHelper
 )
 
-from .mixins import PdfHtmlViewMixin
-from onlinemaid import constants as om_constants
-from maid import constants as maid_constants
-from agency.mixins import (
-    AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, OwnerAccessToEmployerDocAppMixin
-)
+from .mixins import PdfHtmlViewMixin, GetObjFromSigSlugMixin
 
 # Detail Views
+
+
 class EmployerDetailView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -32,6 +39,7 @@ class EmployerDetailView(
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
     template_name = 'detail/dashboard-employer-detail.html'
+
 
 class EmployerDocDetailView(
     AgencyAccessToEmployerDocAppMixin,
@@ -43,17 +51,24 @@ class EmployerDocDetailView(
     template_name = 'detail/dashboard-case-detail.html'
 
     def get_context_data(self, **kwargs):
+        sig_object = self.object.rn_signatures_ed
         context = super().get_context_data(**kwargs)
         context.update({
-            'employer_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_employer_1'),
-            'employer_spouse_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_employer_spouse'),
-            'sponsor_1_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_sponsor_1'),
-            'sponsor_2_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_sponsor_2'),
-            'joint_applicant_sigurl': self.object.rn_signatures_ed.get_sigurl('sigslug_joint_applicant')
+            'employer_1_sigurl': sig_object.get_sigurl('sigslug_employer_1'),
+            'employer_spouse_sigurl': sig_object.get_sigurl(
+                'sigslug_employer_spouse'
+            ),
+            'sponsor_1_sigurl': sig_object.get_sigurl('sigslug_sponsor_1'),
+            'sponsor_2_sigurl': sig_object.get_sigurl('sigslug_sponsor_2'),
+            'joint_applicant_sigurl': sig_object.get_sigurl(
+                'sigslug_joint_applicant'
+            )
         })
         return context
-      
+
+
 class SignedDocumentsDetailView(
+    GetObjFromSigSlugMixin,
     DetailView
 ):
     model = models.CaseSignature
@@ -68,36 +83,9 @@ class SignedDocumentsDetailView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            try:
-                if stakeholder == 'employer_1':
-                    obj = self.model.objects.get(
-                        sigslug_employer_1=slug
-                    )
-                elif stakeholder == 'employer_spouse':
-                    obj = self.model.objects.get(
-                        sigslug_employer_spouse=slug
-                    )
-                elif stakeholder == 'sponsor_1':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_1=slug
-                    )
-                elif stakeholder == 'sponsor_2':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_2=slug
-                    )
-                elif stakeholder == 'joint_applicant':
-                    obj = self.model.objects.get(
-                        sigslug_joint_applicant=slug
-                    )
-                else:
-                    obj = None
-                    return obj
-            except self.model.DoesNotExist:
-                obj = None
-                return obj
-            else:
-                self.employer_doc_pk = obj.employer_doc.pk
-                return obj
+            obj = self.get_object_from_slug(slug)
+            self.employer_doc_pk = obj.employer_doc.pk
+            return obj
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
@@ -105,7 +93,7 @@ class SignedDocumentsDetailView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        stakeholder_referrer_dict = {
+        stakeholder_referrer_map = {
             # Stakeholder: Referrer Url Name
             'employer_1':       'token_employer_signature_form_view',
             'employer_spouse':  'token_employer_spouse_signature_form_view',
@@ -113,8 +101,10 @@ class SignedDocumentsDetailView(
             'sponsor_2':        'token_sponsor_2_signature_form_view',
             'joint_applicant':  'token_joint_applicant_signature_form_view'
         }
-        url_route_name =  stakeholder_referrer_dict.get(self.stakeholder)
-        referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
+        url_route_name = stakeholder_referrer_map.get(self.stakeholder)
+        referrer = '/' + '/'.join(
+            request.META.get('HTTP_REFERER', '').split('/')[3:]
+        )
         rev_url = reverse(url_route_name, kwargs={
             'slug': self.kwargs.get(self.slug_url_kwarg)
         })
@@ -133,6 +123,8 @@ class SignedDocumentsDetailView(
         return context
 
 # Create Views
+
+
 class EmployerCreateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -150,27 +142,37 @@ class EmployerCreateView(
         return kwargs
 
     def form_valid(self, form):
-        if self.authority==om_constants.AG_SALES:
+        if self.authority == AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
     def get_success_url(self):
-        if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
-            success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
-        
-        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
-            success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
-        
+        if self.object.applicant_type == EmployerTypeOfApplicantChoices.SPONSOR:
+            success_url = reverse_lazy(
+                'employer_sponsor_create_route',
+                kwargs={
+                    'level_0_pk': self.object.pk
+                }
+            )
+
+        elif self.object.applicant_type == EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            success_url = reverse_lazy(
+                'employer_jointapplicant_create_route',
+                kwargs={
+                    'level_0_pk': self.object.pk
+                }
+            )
+
         else:
-            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
+            success_url = reverse_lazy(
+                'employer_incomedetails_create_route',
+                kwargs={
+                    'level_0_pk': self.object.pk
+                }
+            )
 
         return success_url
+
 
 class EmployerSponsorCreateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -184,29 +186,37 @@ class EmployerSponsorCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'level_0_pk': self.kwargs.get(self.pk_url_kwarg), 
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
             'type_of_applicant': self.get_object().applicant_type,
         })
         return context
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if not self.object.applicant_type == EmployerTypeOfApplicantChoices.SPONSOR:
             return HttpResponseRedirect(
-                reverse('employer_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         elif hasattr(self.object, 'rn_sponsor_employer'):
             return HttpResponseRedirect(
-                reverse('employer_sponsor_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_sponsor_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -225,6 +235,7 @@ class EmployerSponsorCreateView(
         return reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
+
 
 class EmployerJointApplicantCreateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -238,29 +249,37 @@ class EmployerJointApplicantCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'level_0_pk': self.kwargs.get(self.pk_url_kwarg), 
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
             'type_of_applicant': self.get_object().applicant_type,
         })
         return context
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        if not self.object.applicant_type == EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             return HttpResponseRedirect(
-                reverse('employer_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         elif hasattr(self.object, 'rn_ja_employer'):
             return HttpResponseRedirect(
-                reverse('employer_jointapplicant_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_jointapplicant_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -280,6 +299,7 @@ class EmployerJointApplicantCreateView(
             'level_0_pk': self.object.employer.pk
         })
 
+
 class EmployerIncomeDetailsCreateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -292,7 +312,7 @@ class EmployerIncomeDetailsCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
@@ -307,9 +327,13 @@ class EmployerIncomeDetailsCreateView(
         self.object = self.get_object()
         if hasattr(self.object, 'rn_income_employer'):
             return HttpResponseRedirect(
-                reverse('employer_incomedetails_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_incomedetails_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -318,7 +342,7 @@ class EmployerIncomeDetailsCreateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
         type_of_applicant = self.get_object().applicant_type
-        monthly_income_label = constants.monthly_income_label.get(
+        monthly_income_label = monthly_income_label_map.get(
             type_of_applicant
         )
         kwargs['monthly_income_label'] = monthly_income_label
@@ -335,6 +359,7 @@ class EmployerIncomeDetailsCreateView(
             })
         else:
             return reverse_lazy('dashboard_employers_list')
+
 
 class EmployerDocCreateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -359,6 +384,7 @@ class EmployerDocCreateView(
         })
         return success_url
 
+
 class DocServiceFeeScheduleCreateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -371,7 +397,7 @@ class DocServiceFeeScheduleCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
@@ -386,9 +412,13 @@ class DocServiceFeeScheduleCreateView(
         self.object = self.get_object()
         if hasattr(self.object, 'rn_servicefeeschedule_ed'):
             return HttpResponseRedirect(
-                reverse('servicefee_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'servicefee_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -410,6 +440,7 @@ class DocServiceFeeScheduleCreateView(
         })
         return success_url
 
+
 class DocServAgmtEmpCtrCreateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -422,7 +453,7 @@ class DocServAgmtEmpCtrCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
@@ -437,9 +468,13 @@ class DocServAgmtEmpCtrCreateView(
         self.object = self.get_object()
         if hasattr(self.object, 'rn_serviceagreement_ed'):
             return HttpResponseRedirect(
-                reverse('serviceagreement_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'serviceagreement_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -456,7 +491,7 @@ class DocServAgmtEmpCtrCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        if self.object.employer_doc.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
+        if self.object.employer_doc.fdw.maid_type == TypeOfMaidChoices.NEW:
             success_url = reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
             })
@@ -465,6 +500,7 @@ class DocServAgmtEmpCtrCreateView(
                 'level_1_pk': self.object.employer_doc.pk
             })
         return success_url
+
 
 class DocSafetyAgreementCreateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -478,7 +514,7 @@ class DocSafetyAgreementCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
@@ -493,9 +529,13 @@ class DocSafetyAgreementCreateView(
         self.object = self.get_object()
         if hasattr(self.object, 'rn_safetyagreement_ed'):
             return HttpResponseRedirect(
-                reverse('safetyagreement_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'safetyagreement_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -518,6 +558,7 @@ class DocSafetyAgreementCreateView(
         })
         return success_url
 
+
 class DocUploadCreateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -530,7 +571,7 @@ class DocUploadCreateView(
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
-            pk = self.kwargs.get(self.pk_url_kwarg)
+            pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
     def get_context_data(self, **kwargs):
@@ -545,9 +586,13 @@ class DocUploadCreateView(
         self.object = self.get_object()
         if hasattr(self.object, 'rn_docupload_ed'):
             return HttpResponseRedirect(
-                reverse('docupload_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'docupload_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -566,6 +611,8 @@ class DocUploadCreateView(
         return reverse_lazy('dashboard_case_list')
 
 # Update Views
+
+
 class EmployerUpdateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -579,7 +626,7 @@ class EmployerUpdateView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'level_0_pk': self.kwargs.get(self.pk_url_kwarg), 
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
             'type_of_applicant': self.object.applicant_type,
         })
 
@@ -593,19 +640,29 @@ class EmployerUpdateView(
         return kwargs
 
     def get_success_url(self):
-        if self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
-            success_url = reverse_lazy('employer_sponsor_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
-        elif self.object.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
-            success_url = reverse_lazy('employer_jointapplicant_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
+        if self.object.applicant_type == EmployerTypeOfApplicantChoices.SPONSOR:
+            success_url = reverse_lazy(
+                'employer_sponsor_create_route',
+                kwargs={
+                    'level_0_pk': self.object.pk
+                }
+            )
+        elif self.object.applicant_type == EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            success_url = reverse_lazy(
+                'employer_jointapplicant_create_route',
+                kwargs={
+                    'level_0_pk': self.object.pk
+                }
+            )
         else:
-            success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-                'level_0_pk': self.object.pk
-            })
+            success_url = reverse_lazy(
+                'employer_incomedetails_create_route',
+                kwargs={
+                    'level_0_pk': self.object.pk
+                }
+            )
         return success_url
+
 
 class EmployerSponsorUpdateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -625,18 +682,22 @@ class EmployerSponsorUpdateView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'level_0_pk': self.object.employer.pk, 
+            'level_0_pk': self.object.employer.pk,
             'type_of_applicant': self.object.employer.applicant_type,
         })
         return context
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if self.object.employer.applicant_type != EmployerTypeOfApplicantChoices.SPONSOR:
             return HttpResponseRedirect(
-                reverse('employer_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -648,10 +709,14 @@ class EmployerSponsorUpdateView(
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-            'level_0_pk': self.object.employer.pk
-        })
+        success_url = reverse_lazy(
+            'employer_incomedetails_create_route',
+            kwargs={
+                'level_0_pk': self.object.employer.pk
+            }
+        )
         return success_url
+
 
 class EmployerDocJointApplicantUpdateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -678,11 +743,15 @@ class EmployerDocJointApplicantUpdateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not self.object.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        if self.object.employer.applicant_type != EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             return HttpResponseRedirect(
-                reverse('employer_update_route', kwargs={
-                    self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg),
-            }))
+                reverse(
+                    'employer_update_route',
+                    kwargs={
+                        self.pk_url_kwarg: self.kwargs.get(self.pk_url_kwarg)
+                    }
+                )
+            )
         else:
             return super().get(request, *args, **kwargs)
 
@@ -694,10 +763,14 @@ class EmployerDocJointApplicantUpdateView(
         return kwargs
 
     def get_success_url(self):
-        success_url = reverse_lazy('employer_incomedetails_create_route', kwargs={
-            'level_0_pk': self.object.employer.pk
-        })
+        success_url = reverse_lazy(
+            'employer_incomedetails_create_route',
+            kwargs={
+                'level_0_pk': self.object.employer.pk
+            }
+        )
         return success_url
+
 
 class EmployerIncomeDetailsUpdateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -727,7 +800,7 @@ class EmployerIncomeDetailsUpdateView(
         kwargs['user_pk'] = self.request.user.pk
         kwargs['authority'] = self.authority
         type_of_applicant = self.object.employer.applicant_type
-        monthly_income_label = constants.monthly_income_label.get(
+        monthly_income_label = monthly_income_label_map.get(
             type_of_applicant
         )
         kwargs['monthly_income_label'] = monthly_income_label
@@ -735,12 +808,16 @@ class EmployerIncomeDetailsUpdateView(
 
     def get_success_url(self):
         if self.object.employer.household_details_required:
-            success_url = reverse_lazy('employer_householddetails_route', kwargs={
-                'level_0_pk': self.object.employer.pk
-            })
+            success_url = reverse_lazy(
+                'employer_householddetails_route',
+                kwargs={
+                    'level_0_pk': self.object.employer.pk
+                }
+            )
         else:
             success_url = reverse_lazy('dashboard_employers_list')
         return success_url
+
 
 class EmployerDocUpdateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -773,6 +850,7 @@ class EmployerDocUpdateView(
             'level_1_pk': self.object.pk
         })
         return success_url
+
 
 class DocServiceFeeScheduleUpdateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -811,6 +889,7 @@ class DocServiceFeeScheduleUpdateView(
         })
         return success_url
 
+
 class DocServAgmtEmpCtrUpdateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -843,7 +922,7 @@ class DocServAgmtEmpCtrUpdateView(
         return kwargs
 
     def get_success_url(self):
-        if self.object.employer_doc.fdw.maid_type == maid_constants.TypeOfMaidChoices.NEW:
+        if self.object.employer_doc.fdw.maid_type == TypeOfMaidChoices.NEW:
             success_url = reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
             })
@@ -852,6 +931,7 @@ class DocServAgmtEmpCtrUpdateView(
                 'level_1_pk': self.object.employer_doc.pk
             })
         return success_url
+
 
 class DocSafetyAgreementUpdateView(
     AgencyAccessToEmployerDocAppMixin,
@@ -890,6 +970,7 @@ class DocSafetyAgreementUpdateView(
         })
         return success_url
 
+
 class DocUploadUpdateView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -922,6 +1003,7 @@ class DocUploadUpdateView(
 
     def get_success_url(self):
         return reverse('dashboard_case_list')
+
 
 class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
@@ -965,6 +1047,8 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
             })
 
 # Delete Views
+
+
 class EmployerDeleteView(
     OwnerAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -973,6 +1057,7 @@ class EmployerDeleteView(
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
     success_url = reverse_lazy('dashboard_employers_list')
+
 
 class EmployerDocDeleteView(
     OwnerAccessToEmployerDocAppMixin,
@@ -986,6 +1071,8 @@ class EmployerDocDeleteView(
 
 
 # Signature Views
+
+
 class SignatureUpdateByAgentView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -1011,8 +1098,10 @@ class SignatureUpdateByAgentView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model_field_verbose_name'] = models.CaseSignature._meta.get_field(
-            self.model_field_name).verbose_name
+        model_field_verbose_name = models.CaseSignature._meta.get_field(
+            self.model_field_name
+        ).verbose_name
+        context['model_field_verbose_name'] = model_field_verbose_name
         return context
 
     def get_success_url(self):
@@ -1021,6 +1110,8 @@ class SignatureUpdateByAgentView(
         })
 
 # PDF Views
+
+
 class HtmlToRenderPdfAgencyView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -1036,19 +1127,20 @@ class HtmlToRenderPdfAgencyView(
 
         if self.use_repayment_table:
             context['repayment_table'] = self.calc_repayment_schedule()
-        
+
         context['url_name'] = request.resolver_match.url_name
         return self.generate_pdf_response(request, context)
+
 
 class UploadedPdfAgencyView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     DetailView
 ):
-    model= models.EmployerDoc
+    model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
-    as_attachment=False
-    filename='document.pdf'
+    as_attachment = False
+    filename = 'document.pdf'
     field_name = None
 
     def get_object(self):
@@ -1065,12 +1157,18 @@ class UploadedPdfAgencyView(
             )
         except Exception:
             return HttpResponseRedirect(
-                reverse('docupload_create_route', kwargs={
-                    'level_1_pk': self.object.pk,
-            }))
+                reverse(
+                    'docupload_create_route',
+                    kwargs={
+                        'level_1_pk': self.object.pk,
+                    }
+                )
+            )
+
 
 class HtmlToRenderPdfTokenView(
     PdfHtmlViewMixin,
+    GetObjFromSigSlugMixin,
     DetailView
 ):
     model = models.CaseSignature
@@ -1082,33 +1180,7 @@ class HtmlToRenderPdfTokenView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            try:
-                if stakeholder == 'employer_1':
-                    obj = self.model.objects.get(
-                        sigslug_employer_1=slug
-                    ).employer_doc
-                elif stakeholder == 'employer_spouse':
-                    obj = self.model.objects.get(
-                        sigslug_employer_spouse=slug
-                    ).employer_doc
-                elif stakeholder == 'sponsor_1':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_1=slug
-                    ).employer_doc
-                elif stakeholder == 'sponsor_2':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_2=slug
-                    ).employer_doc
-                elif stakeholder == 'joint_applicant':
-                    obj = self.model.objects.get(
-                        sigslug_joint_applicant=slug
-                    ).employer_doc
-                else:
-                    obj = None
-            except self.model.DoesNotExist:
-                return None
-            else:
-                return obj
+            return self.get_object_from_slug(slug)
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
@@ -1116,7 +1188,7 @@ class HtmlToRenderPdfTokenView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        stakeholder_referrer_dict = {
+        stakeholder_referrer_map = {
             # Stakeholder: Referrer Url Name
             'employer_1':       'token_employer_signature_form_view',
             'employer_spouse':  'token_employer_spouse_signature_form_view',
@@ -1124,10 +1196,12 @@ class HtmlToRenderPdfTokenView(
             'sponsor_2':        'token_sponsor_2_signature_form_view',
             'joint_applicant':  'token_joint_applicant_signature_form_view'
         }
-        url_route_name =  stakeholder_referrer_dict.get(self.stakeholder)
-        referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
+        url_route_name = stakeholder_referrer_map.get(self.stakeholder)
+        referrer = '/' + '/'.join(
+            request.META.get('HTTP_REFERER', '').split('/')[3:]
+        )
         signed_doc_rev_url = reverse(
-            'pdf_signed_documents', 
+            'pdf_signed_documents',
             kwargs={
                 'slug': self.kwargs.get(self.slug_url_kwarg)
             }
@@ -1135,7 +1209,10 @@ class HtmlToRenderPdfTokenView(
         rev_url = reverse(url_route_name, kwargs={
             'slug': self.kwargs.get(self.slug_url_kwarg)
         })
-        if self.object and (referrer == rev_url or referrer == signed_doc_rev_url):
+        if self.object and (
+            referrer == rev_url or
+            referrer == signed_doc_rev_url
+        ):
             context = self.get_context_data()
             if self.use_repayment_table:
                 context['repayment_table'] = self.calc_repayment_schedule()
@@ -1144,6 +1221,8 @@ class HtmlToRenderPdfTokenView(
             return HttpResponseRedirect(reverse('error_404'))
 
 # Form Views
+
+
 class EmployerHouseholdDetailsFormView(
     AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
@@ -1158,7 +1237,7 @@ class EmployerHouseholdDetailsFormView(
     agency_id = ''
     employer_id = ''
     success_message = 'Maid employment history updated'
-    
+
     def get_object(self):
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
@@ -1171,7 +1250,7 @@ class EmployerHouseholdDetailsFormView(
             'level_0_pk': self.kwargs.get(
                 self.pk_url_kwarg
             ),
-            'type_of_applicant':models.Employer.objects.get(
+            'type_of_applicant': models.Employer.objects.get(
                 pk=self.kwargs.get(
                     self.pk_url_kwarg
                 )
@@ -1192,7 +1271,7 @@ class EmployerHouseholdDetailsFormView(
             'helper': helper
         })
         return context
-    
+
     def get_formset_form_kwargs(self):
         self.employer_id = self.kwargs.get(
             self.pk_url_kwarg
@@ -1201,12 +1280,12 @@ class EmployerHouseholdDetailsFormView(
             'employer_id': self.employer_id
         }
         return kwargs
-    
+
     def get_instance_object(self):
         return models.Employer.objects.get(
             pk=self.employer_id
         )
-        
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
@@ -1222,7 +1301,7 @@ class EmployerHouseholdDetailsFormView(
             form_kwargs=self.get_formset_form_kwargs(),
             **self.get_form_kwargs()
         )
-        
+
     def form_valid(self, form):
         form.save()
         if form.data.get('submitFlag') == 'True':
@@ -1232,7 +1311,7 @@ class EmployerHouseholdDetailsFormView(
                 reverse_lazy(
                     'employer_householddetails_route',
                     kwargs={
-                        'level_0_pk':self.employer_id
+                        'level_0_pk': self.employer_id
                     }
                 )
             )
@@ -1242,8 +1321,9 @@ class EmployerHouseholdDetailsFormView(
             'dashboard_employers_list'
         )
 
-class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,  
-                            SuccessMessageMixin, FormView):
+
+class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
+                            GetAuthorityMixin, SuccessMessageMixin, FormView):
     form_class = MaidInventoryFormSet
     http_method_names = ['get', 'post']
     template_name = 'employer_documentation/crispy_form.html'
@@ -1252,7 +1332,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
     agency_id = ''
     employer_id = ''
     success_message = 'Maid inventory updated'
-    
+
     def get_object(self):
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
@@ -1271,7 +1351,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
             'helper': helper
         })
         return context
-    
+
     def get_formset_form_kwargs(self):
         self.employer_doc_id = self.kwargs.get(
             self.pk_url_kwarg
@@ -1280,12 +1360,12 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
             'employer_doc_id': self.employer_doc_id
         }
         return kwargs
-    
+
     def get_instance_object(self):
         return models.EmployerDoc.objects.get(
             pk=self.employer_doc_id
         )
-        
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
@@ -1301,7 +1381,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
             form_kwargs=self.get_formset_form_kwargs(),
             **self.get_form_kwargs()
         )
-        
+
     def form_valid(self, form):
         form.save()
         if form.data.get('submitFlag') == 'True':
@@ -1311,18 +1391,19 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin
                 reverse_lazy(
                     'maid_inventory_route',
                     kwargs={
-                        'level_1_pk':self.employer_doc_id
+                        'level_1_pk': self.employer_doc_id
                     }
                 )
             )
-    
+
     def get_success_url(self) -> str:
         return reverse_lazy(
             'docupload_create_route',
             kwargs={
-                'level_1_pk':self.employer_doc_id
+                'level_1_pk': self.employer_doc_id
             }
         )
+
 
 class SignatureFormView(FormView):
     form_class = None
@@ -1372,12 +1453,14 @@ class SignatureFormView(FormView):
             'object': self.object,
         })
         return context
-    
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(request)
-        referrer = '/' + '/'.join(request.META.get('HTTP_REFERER', '').split('/')[3:])
+        referrer = '/' + '/'.join(
+            request.META.get('HTTP_REFERER', '').split('/')[3:]
+        )
         rev_url = reverse(
-            'token_challenge_route', 
+            'token_challenge_route',
             kwargs={
                 'slug': self.kwargs.get(
                     self.slug_url_kwarg
@@ -1397,52 +1480,72 @@ class SignatureFormView(FormView):
                 )
             })
 
+
 class EmployerSignatureFormView(SignatureFormView):
     form_class = forms.EmployerSignatureForm
 
     def form_valid(self, form):
         self.object = super().get_object(self.request)
-        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
+        self.object.employer_signature_1 = form.cleaned_data.get(
+            'employer_signature'
+        )
         self.object.save()
         return super().form_valid(form)
+
 
 class EmployerWithSpouseSignatureFormView(SignatureFormView):
     form_class = forms.EmployerWithSpouseSignatureForm
 
     def form_valid(self, form):
         self.object = super().get_object(self.request)
-        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
-        self.object.employer_spouse_signature = form.cleaned_data.get('employer_spouse_signature')
+        self.object.employer_signature_1 = form.cleaned_data.get(
+            'employer_signature'
+        )
+        self.object.employer_spouse_signature = form.cleaned_data.get(
+            'employer_spouse_signature'
+        )
         self.object.save()
         return super().form_valid(form)
+
 
 class Sponsor1SignatureFormView(SignatureFormView):
     form_class = forms.SponsorSignatureForm
 
     def form_valid(self, form):
         self.object = super().get_object(self.request)
-        self.object.sponsor_1_signature = form.cleaned_data.get('sponsor_signature')
+        self.object.sponsor_1_signature = form.cleaned_data.get(
+            'sponsor_signature'
+        )
         self.object.save()
         return super().form_valid(form)
+
 
 class Sponsor2SignatureFormView(SignatureFormView):
     form_class = forms.SponsorSignatureForm
 
     def form_valid(self, form):
         self.object = super().get_object(self.request)
-        self.object.sponsor_2_signature = form.cleaned_data.get('sponsor_signature')
+        self.object.sponsor_2_signature = form.cleaned_data.get(
+            'sponsor_signature'
+        )
         self.object.save()
         return super().form_valid(form)
+
 
 class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
     form_class = forms.EmployerWithJointApplicantSignatureForm
 
     def form_valid(self, form):
         self.object = super().get_object(self.request)
-        self.object.employer_signature_1 = form.cleaned_data.get('employer_signature')
-        self.object.joint_applicant_signature = form.cleaned_data.get('joint_applicant_signature')
+        self.object.employer_signature_1 = form.cleaned_data.get(
+            'employer_signature'
+        )
+        self.object.joint_applicant_signature = form.cleaned_data.get(
+            'joint_applicant_signature'
+        )
         self.object.save()
         return super().form_valid(form)
+
 
 class HandoverFormView(FormView):
     model = models.CaseSignature
@@ -1468,7 +1571,7 @@ class HandoverFormView(FormView):
         if self.object.employer_doc.details_missing_case_pre_signing_2():
             # TODO: Stop the user from accessing the handover checklist
             print('uh oh')
-            
+
         return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
@@ -1476,9 +1579,13 @@ class HandoverFormView(FormView):
 
     def form_valid(self, form):
         self.object = self.get_object()
-        self.object.employer_signature_2 = form.cleaned_data.get('employer_signature')
+        self.object.employer_signature_2 = form.cleaned_data.get(
+            'employer_signature'
+        )
         self.object.fdw_signature = form.cleaned_data.get('fdw_signature')
-        self.object.agency_staff_signature = form.cleaned_data.get('agency_employee_signature')
+        self.object.agency_staff_signature = form.cleaned_data.get(
+            'agency_employee_signature'
+        )
         self.object.save()
 
         try:
@@ -1487,19 +1594,22 @@ class HandoverFormView(FormView):
             print(e)
         else:
             self.object.employer_doc.delete()
-        
+
         return super().form_valid(form)
 
 # Redirect Views
 
-## Base View Class for all generate and revoke signature slug redirect views
-class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, RedirectView):
+# Base View Class for all generate and revoke signature slug redirect views
+
+
+class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
+                        RedirectView):
     model = models.CaseSignature
     pk_url_kwarg = 'level_1_pk'
     pattern_name = 'case_detail_route'
     stakeholder = ''
     view_type = ''
-    
+
     def get_object(self):
         obj, created = self.model.objects.get_or_create(
             employer_doc__pk=self.kwargs.get(
@@ -1525,47 +1635,66 @@ class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin, Re
                 self.object.generate_sigslug(self.stakeholder)
         elif self.view_type == 'revoke':
             self.object.revoke_sigslug(self.stakeholder)
-        kwargs={'level_1_pk': self.object.employer_doc.pk}
-        return super().get_redirect_url(*args, **kwargs) + "#signatureUrlSection"
+        kwargs = {
+            'level_1_pk': self.object.employer_doc.pk
+        }
+        return super().get_redirect_url(
+            *args,
+            **kwargs
+        ) + "#signatureUrlSection"
+
 
 class GenerateSigSlugView(ModifySigSlugView):
     view_type = 'generate'
 
+
 class RevokeSigSlugView(ModifySigSlugView):
     view_type = 'revoke'
+
 
 class GenerateSigSlugEmployer1View(GenerateSigSlugView):
     stakeholder = 'employer_1'
 
+
 class GenerateSigSlugEmployerSpouseView(GenerateSigSlugView):
     stakeholder = 'employer_spouse'
+
 
 class GenerateSigSlugSponsor1View(GenerateSigSlugView):
     stakeholder = 'sponsor_1'
 
+
 class GenerateSigSlugSponsor2View(GenerateSigSlugView):
     stakeholder = 'sponsor_2'
+
 
 class GenerateSigSlugJointApplicantView(GenerateSigSlugView):
     stakeholder = 'joint_applicant'
 
+
 class RevokeSigSlugEmployer1View(RevokeSigSlugView):
     stakeholder = 'employer_1'
+
 
 class RevokeSigSlugEmployerSpouseView(RevokeSigSlugView):
     stakeholder = 'employer_spouse'
 
+
 class RevokeSigSlugSponsor1View(RevokeSigSlugView):
     stakeholder = 'sponsor_1'
+
 
 class RevokeSigSlugSponsor2View(RevokeSigSlugView):
     stakeholder = 'sponsor_2'
 
+
 class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
     stakeholder = 'joint_applicant'
 
+
 class TokenChallengeView(
     SuccessMessageMixin,
+    GetObjFromSigSlugMixin,
     FormView,
 ):
     model = models.CaseSignature
@@ -1581,36 +1710,9 @@ class TokenChallengeView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            try:
-                if stakeholder == 'employer_1':
-                    obj = self.model.objects.get(
-                        sigslug_employer_1=slug
-                    )
-                elif stakeholder == 'employer_spouse':
-                    obj = self.model.objects.get(
-                        sigslug_employer_spouse=slug
-                    )
-                elif stakeholder == 'sponsor_1':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_1=slug
-                    )
-                elif stakeholder == 'sponsor_2':
-                    obj = self.model.objects.get(
-                        sigslug_sponsor_2=slug
-                    )
-                elif stakeholder == 'joint_applicant':
-                    obj = self.model.objects.get(
-                        sigslug_joint_applicant=slug
-                    )
-                else:
-                    obj = None
-                    return obj
-            except self.model.DoesNotExist:
-                obj = None
-                return obj
-            else:
-                self.employer_doc_pk = obj.employer_doc.pk
-                return obj
+            obj = self.get_object_from_slug(slug)
+            self.employer_doc_pk = obj.employer_doc.pk
+            return obj
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
@@ -1635,17 +1737,21 @@ class TokenChallengeView(
         return reverse(
             signature_route_dict[self.stakeholder],
             kwargs={
-                'slug': getattr(self.get_object(), 'sigslug_' + self.stakeholder)
+                'slug': getattr(
+                    self.get_object(),
+                    'sigslug_' + self.stakeholder
+                )
             }
         )
 
     def get_form_kwargs(self):
-        kwargs =  super().get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({
             'object': self.get_object(),
             'stakeholder': self.stakeholder
         })
         return kwargs
+
 
 class ArchiveCase(RedirectView):
     http_method_names = ['get']
@@ -1653,6 +1759,7 @@ class ArchiveCase(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         return super().get_redirect_url(*args, **kwargs)
+
 
 class CaseStatusAPIView(View):
     def get(self, request, *args, **kwargs):

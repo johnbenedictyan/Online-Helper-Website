@@ -1,6 +1,5 @@
 # Imports from django
 from django.forms.models import inlineformset_factory
-from django.utils.translation import ugettext_lazy as _
 
 # Imports from foreign installed apps
 from crispy_forms.helper import FormHelper
@@ -20,6 +19,7 @@ AgencyBranchFormSet = inlineformset_factory(
     min_num=1,
     max_num=10
 )
+
 
 class AgencyBranchFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):

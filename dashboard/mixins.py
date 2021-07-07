@@ -10,13 +10,14 @@ from agency.models import Agency
 # Utiliy Classes and Functions
 
 # Start of Mixins
+
+
 class AgencyOwnerRequiredMixin:
     def check_owner(self):
         if Agency.objects.get(
-            pk = self.request.user.pk
+            pk=self.request.user.pk
         ):
             return self.request.user.pk
-
 
     def dispatch(self, request, *args, **kwargs):
         if not self.check_owner():
@@ -27,9 +28,9 @@ class AgencyOwnerRequiredMixin:
 # class AdministratorRequiredMixin:
 #     def check_administrator(self):
 #         if Agency.objects.get(
-#             pk = self.request.user.pk
+#             pk=self.request.user.pk
 #         ) or AgencyAdministrator.objects.get(
-#             pk = self.request.user.pk
+#             pk=self.request.user.pk
 #         ):
 #             return self.request.user.pk
 
@@ -43,7 +44,7 @@ class AgencyOwnerRequiredMixin:
 # class VerifiedAgencyEmployeeMixin:
 #     def check_employee_role(self):
 #         role = None
-#         user_pk = self.request.user.pk
+#         user_pk=self.request.user.pk
 #         if Agency.objects.get(
 #             pk = user_pk
 #         ):
@@ -62,7 +63,7 @@ class AgencyOwnerRequiredMixin:
 #                     agency = Agency.objects.get(
 #                         pk = self.pk_url_kwarg
 #                     )
-#                 )   
+#                 )
 #             except AgencyEmployee.DoesNotExist:
 #                 pass
 #             else:
