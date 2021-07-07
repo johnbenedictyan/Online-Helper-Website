@@ -19,7 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 from onlinemaid.constants import (
     TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
 )
-from onlinemaid.helper_functions import decrypt_string, is_local
+from onlinemaid.helper_functions import decrypt_string
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
@@ -34,6 +34,7 @@ from .constants import (
     MonthChoices, WeekChoices,
     NUMBER_OF_WORK_DAYS_IN_MONTH
 )
+from .helper_functions import is_local
 from .fields import CustomMoneyDecimalField
 
 # Utiliy Classes and Functions

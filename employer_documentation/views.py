@@ -11,21 +11,22 @@ from django.views.generic.edit import (
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404
 
+from agency.mixins import (
+    AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
+    OwnerAccessToEmployerDocAppMixin
+)
+from maid.constants import TypeOfMaidChoices
+from onlinemaid.constants import AG_SALES
+
 # From our apps
 from . import models, forms
-from .constants import EmployerTypeOfApplicantChoices
+from .constants import EmployerTypeOfApplicantChoices, monthly_income_label_map
 from .formset import (
     EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper,
     MaidInventoryFormSet, MaidInventoryFormSetHelper
 )
 
 from .mixins import PdfHtmlViewMixin, GetObjFromSigSlugMixin
-from onlinemaid.constants import AG_SALES, monthly_income_label_map
-from maid.constants import TypeOfMaidChoices
-from agency.mixins import (
-    AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
-    OwnerAccessToEmployerDocAppMixin
-)
 
 # Detail Views
 

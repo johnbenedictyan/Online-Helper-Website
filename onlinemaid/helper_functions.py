@@ -15,20 +15,7 @@ from django.utils.crypto import get_random_string
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 
-from .constants import ResidentialStatusFullChoices
-
 UserModel = get_user_model()
-
-
-def is_local(rs):
-    return (
-        rs == ResidentialStatusFullChoices.SC or
-        rs == ResidentialStatusFullChoices.PR
-    )
-
-
-def is_foreigner(rs):
-    return not is_local(rs)
 
 
 def r_string(length):
@@ -297,7 +284,7 @@ def maid_seed_data():
                 new_maid.save()
                 MaidInfantChildCare.objects.create(
                     maid=new_maid,
-                    assessment=random.randint(1,5),
+                    assessment=random.randint(1, 5),
                     willingness=True,
                     experience=True,
                     remarks=MaidCareRemarksChoices.OWN_COUNTRY,
@@ -305,7 +292,7 @@ def maid_seed_data():
                 )
                 MaidElderlyCare.objects.create(
                     maid=new_maid,
-                    assessment=random.randint(1,5),
+                    assessment=random.randint(1, 5),
                     willingness=True,
                     experience=True,
                     remarks=MaidCareRemarksChoices.OWN_COUNTRY,
@@ -313,7 +300,7 @@ def maid_seed_data():
                 )
                 MaidDisabledCare.objects.create(
                     maid=new_maid,
-                    assessment=random.randint(1,5),
+                    assessment=random.randint(1, 5),
                     willingness=True,
                     experience=True,
                     remarks=MaidCareRemarksChoices.OWN_COUNTRY,
@@ -321,7 +308,7 @@ def maid_seed_data():
                 )
                 MaidGeneralHousework.objects.create(
                     maid=new_maid,
-                    assessment=random.randint(1,5),
+                    assessment=random.randint(1, 5),
                     willingness=True,
                     experience=True,
                     remarks=MaidGeneralHouseworkRemarksChoices.CAN_DO_ALL_HOUSEWORK,
@@ -329,7 +316,7 @@ def maid_seed_data():
                 )
                 MaidCooking.objects.create(
                     maid=new_maid,
-                    assessment=random.randint(1,5),
+                    assessment=random.randint(1, 5),
                     willingness=True,
                     experience=True,
                     remarks=MaidCareRemarksChoices.OWN_COUNTRY,
@@ -359,10 +346,14 @@ def subscription_seed_data():
 
         if created:
             for subscription_price in subscription['prices']:
-                sub_product_price, created = SubscriptionProductPrice.objects.get_or_create(
+                SubscriptionProductPrice.objects.get_or_create(
                     id=subscription_price['subcription_price_id'],
                     subscription_product=sub_product,
                     interval=subscription_price['subcription_price_interval'],
-                    interval_count=subscription_price['subcription_price_interval_count'],
-                    unit_amount=subscription_price['subcription_price_unit_amount']
+                    interval_count=subscription_price[
+                        'subcription_price_interval_count'
+                    ],
+                    unit_amount=subscription_price[
+                        'subcription_price_unit_amount'
+                    ]
                 )

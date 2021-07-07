@@ -15,7 +15,7 @@ from crispy_forms.bootstrap import PrependedText, StrictButton
 
 # Imports from project
 from onlinemaid import constants as om_constants
-from onlinemaid.helper_functions import encrypt_string, is_local, is_foreigner
+from onlinemaid.helper_functions import encrypt_string
 from onlinemaid.validators import (
     validate_ea_personnel_number, validate_passport, validate_nric,
     validate_fin
@@ -24,6 +24,7 @@ from agency.models import AgencyEmployee
 from maid.models import Maid
 
 # Imports from local apps
+from .helper_functions import is_local, is_foreigner
 from . import models, constants
 
 # Start of Forms
