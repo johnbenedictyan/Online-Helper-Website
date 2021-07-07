@@ -70,6 +70,7 @@ urlpatterns = [
     path('payment/', include(payment_urls)),
     path('shortlist/', include(shortlist_urls)),
     path('enquiry/', include(enquiry_urls)),
+    path('socia-auth/', include('social_django.urls', namespace='socialauth')),
     path('', include(website_urls))
 ]
 
