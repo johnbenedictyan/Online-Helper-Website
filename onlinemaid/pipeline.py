@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from urllib import quote_plus
 
 from accounts.models import PotentialEmployer
