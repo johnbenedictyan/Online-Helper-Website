@@ -1,5 +1,3 @@
-# Imports from the system
-
 # Django Imports
 from django.contrib.auth.models import Group, Permission
 from django.test import TestCase
