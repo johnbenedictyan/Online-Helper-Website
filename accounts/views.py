@@ -19,8 +19,6 @@ from .mixins import PotentialEmployerGrpRequiredMixin
 
 # Start of Views
 
-# Views that inherit from inbuilt django views
-
 
 class SignInView(SuccessMessageMixin, LoginView):
     template_name = 'base/sign-in.html'
