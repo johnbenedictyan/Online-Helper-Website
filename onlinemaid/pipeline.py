@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from urllib import quote_plus
+from urllib.parse import quote_plus
 
 from accounts.models import PotentialEmployer
 
