@@ -8,17 +8,8 @@ from .managers import CustomUserManager
 
 # Start of Models
 
-# User Models
-
 
 class User(AbstractUser):
-    class RoleChoices(models.TextChoices):
-        EMPLOYER = 'E', _('Employer')
-        AGENCY_OWNER = 'AO', _('Agency Owner')
-        AGENCY_ADMINISTRATOR = 'AA', _('Agency Administrator')
-        AGENCY_MANAGER = 'AM', _('Agency Manager')
-        AGENCY_SALESSTAFF = 'AE', _('Agency Sales Staff')
-
     username = None
     first_name = None
     last_name = None
@@ -69,3 +60,7 @@ class AuditEntry(models.Model):
 
     def __str__(self):
         return '{0} - {1} - {2}'.format(self.action, self.username, self.ip)
+
+    class Meta:
+        verbose_name = 'Audit Entry'
+        verbose_name_plural = 'Audit Entries'

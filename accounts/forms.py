@@ -20,8 +20,6 @@ from .models import PotentialEmployer
 
 # Start of Forms
 
-# Forms that inherit from inbuilt Django forms
-
 
 class SignInForm(AuthenticationForm):
     # This is done because the success_url in the loginview does not seem
@@ -205,8 +203,6 @@ class AgencySignInForm(AuthenticationForm):
                     )
                 )
         return cleaned_data
-
-# Model Forms
 
 
 class EmployerCreationForm(forms.ModelForm):

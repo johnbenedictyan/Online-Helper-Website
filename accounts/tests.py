@@ -10,13 +10,11 @@ from onlinemaid.helper_functions import (
     r_string, r_contact_number, create_test_user
 )
 
-# Imports from local app
+# App Imports
 from .forms import EmployerCreationForm
 from .models import Employer
 
 # Start of Tests
-
-# Helper Functions
 
 
 def create_potential_employer_group():
