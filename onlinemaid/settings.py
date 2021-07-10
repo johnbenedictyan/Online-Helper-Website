@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     'enquiry',
 
     ######## DEBUG mode only packages, to be REMOVED before production ########
-    'sslserver',
+    # 'sslserver',
 ]
 
 MIDDLEWARE = [
