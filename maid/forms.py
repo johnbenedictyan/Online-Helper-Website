@@ -1,12 +1,12 @@
-# Imports from Python
+# Global Imports
 
-# Imports from django
+# Django Imports
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
 
@@ -17,7 +17,7 @@ from onlinemaid.constants import TrueFalseChoices
 from onlinemaid.helper_functions import encrypt_string
 from onlinemaid.validators import validate_fin, validate_passport
 
-# Imports from local apps
+# App Imports
 from .constants import (
     CookingRemarksChoices, DisabledCareRemarksChoices,
     ElderlyCareRemarksChoices, GeneralHouseworkRemarksChoices,

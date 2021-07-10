@@ -1,11 +1,11 @@
-# Imports from django
+# Django Imports
 from django.forms.models import inlineformset_factory
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field
 
-# Imports from local apps
+# App Imports
 from .forms import EmployerHouseholdDetailsForm, MaidInventoryForm
 from .models import Employer, EmployerHousehold, EmployerDoc, MaidInventory
 

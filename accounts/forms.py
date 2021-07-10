@@ -1,4 +1,4 @@
-# Imports from django
+# Django Imports
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
@@ -8,14 +8,14 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from onlinemaid.constants import (
-    AG_OWNERS, P_EMPLOYERS
-)
 
-# Imports from local apps
+# Project Apps Imports
+from onlinemaid.constants import AG_OWNERS, P_EMPLOYERS
+
+# App Imports
 from .models import PotentialEmployer
 
 # Start of Forms
@@ -337,5 +337,3 @@ class EmployerCreationForm(forms.ModelForm):
             )
             self.instance.user = new_user
             return super().save(*args, **kwargs)
-
-# Generic Forms (forms.Form)

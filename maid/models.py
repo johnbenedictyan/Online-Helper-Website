@@ -1,6 +1,6 @@
-# Imports from python
+# Global Imports
 
-# Imports from django
+# Django Imports
 from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator
@@ -13,7 +13,7 @@ from onlinemaid.constants import TrueFalseChoices, MaritalStatusChoices
 from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
-# Imports from other apps
+# Project Apps Imports
 from agency.models import Agency
 
 # Imports from within the app

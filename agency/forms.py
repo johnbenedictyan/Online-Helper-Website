@@ -1,4 +1,4 @@
-# Imports from django
+# Django Imports
 from django import forms
 from django.core.mail import BadHeaderError, send_mail
 from django.conf import settings
@@ -8,12 +8,14 @@ from django.contrib.auth.password_validation import validate_password
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
-# Imports from local apps
+# Project Apps Imports
 from employer_documentation.models import EmployerDoc
+
+# App Imports
 from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner,
@@ -21,10 +23,6 @@ from .models import (
 )
 
 # Start of Forms
-
-# Forms that inherit from inbuilt Django forms
-
-# Model Forms
 
 
 class AgencyForm(forms.ModelForm):

@@ -1,22 +1,21 @@
-# Imports from python
-
-# Imports from django
+# Django Imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from project
-
-# Imports from other apps
-from accounts.models import PotentialEmployer, User
-from agency.models import Agency
-from maid.models import Maid, MaidResponsibility, MaidLanguage
-
-# Imports from within the app
-from .constants import *
-from .validators import validate_links
+# Foreign Apps Imports
 # from .validators import validate_links, validate_obscene_language
 
-# Utiliy Classes and Functions
+# Project Apps Imports
+from accounts.models import PotentialEmployer, User
+from maid.models import Maid, MaidResponsibility, MaidLanguage
+
+# App Imports
+from .constants import (
+    PROPERTY_CHOICES, PROPERTY_2_ROOM_HDB, MAID_NATIONALITY_CHOICES,
+    MAID_TYPE_CHOICES, NO_PREFERENCE
+)
+from .validators import validate_links
+
 
 # Start of Models
 class GeneralEnquiry(models.Model):
@@ -26,7 +25,7 @@ class GeneralEnquiry(models.Model):
         related_name='general_enquiries',
         null=True
     )
-    
+
     name = models.CharField(
         verbose_name=_('Name'),
         blank=False,
@@ -94,7 +93,7 @@ class GeneralEnquiry(models.Model):
         blank=False,
         max_length=3000,
         validators=[
-            validate_links, 
+            validate_links,
             # validate_obscene_language
         ]
     )
@@ -124,27 +123,28 @@ class GeneralEnquiry(models.Model):
     def display_languages(self):
         txt = ''
         for i in self.languages_spoken.all():
-            txt+=str(i)
+            txt += str(i)
         return txt
 
     def display_duties(self):
         txt = ''
         for i in self.maid_responsibility.all():
-            txt+=str(i)
+            txt += str(i)
         return txt
- 
+
+
 class ShortlistedEnquiry(models.Model):
     potential_employer = models.ForeignKey(
         PotentialEmployer,
         on_delete=models.CASCADE,
         related_name='maid_enquiries'
     )
-    
+
     maids = models.ManyToManyField(
         Maid,
         related_name='enquiries'
     )
-    
+
     name = models.CharField(
         verbose_name=_('Name'),
         blank=False,
@@ -186,7 +186,7 @@ class ShortlistedEnquiry(models.Model):
         blank=False,
         max_length=3000,
         validators=[
-            validate_links, 
+            validate_links,
             # validate_obscene_language
         ]
     )

@@ -1,22 +1,29 @@
+# Global Imports
 import inspect
 import datetime
 import re
 import six
 
+
+# Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login, logout_then_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-from django.http import (HttpResponseRedirect, HttpResponsePermanentRedirect,
-                         Http404, HttpResponse, StreamingHttpResponse)
+from django.http import (
+    HttpResponseRedirect, HttpResponsePermanentRedirect, Http404, HttpResponse,
+    StreamingHttpResponse
+)
 from django.shortcuts import resolve_url
-
 try:
     from django.utils.encoding import force_str as force_string
 except ImportError:
     from django.utils.encoding import force_text as force_string
 from django.utils.timezone import now
+
+# Start of Mixins
+
 
 class SuccessMessageMixin:
     def get_success_url(self):
@@ -31,13 +38,14 @@ class SuccessMessageMixin:
             raise ImproperlyConfigured(
                 "Set the success message attribute")
 
+
 class ListFilteredMixin(object):
     """
     ListFitleredMixin adds django-filter support to list class based views.
     """
 
     filter_set = None
-    
+
     def get_filter_set(self):
         if self.filter_set:
             return self.filter_set
@@ -57,8 +65,8 @@ class ListFilteredMixin(object):
 
     def get_base_queryset(self):
         """
-        We can decided to either alter the queryset before or after applying the
-        FilterSet
+        We can decided to either alter the queryset before or after applying
+        the FilterSet
         """
         return super(ListFilteredMixin, self).get_queryset()
 
@@ -78,6 +86,7 @@ class ListFilteredMixin(object):
     def get_context_data(self, **kwargs):
         kwargs.update({'filter': self.get_constructed_filter()})
         return super(ListFilteredMixin, self).get_context_data(**kwargs)
+
 
 class AccessMixin(object):
     """
@@ -232,11 +241,11 @@ class PermissionRequiredMixin(AccessMixin):
         """
         Returns whether or not the user has permissions
         """
-        perms = self.get_permission_required(request)
+        self.get_permission_required(request)
         has_permission = False
 
-        if self.object_level_permissions: 
-            if hasattr(self, 'object')  and self.object is not None: 
+        if self.object_level_permissions:
+            if hasattr(self, 'object') and self.object is not None:
                 has_permission = request.user.has_perm(
                     self.get_permission_required(request),
                     self.object

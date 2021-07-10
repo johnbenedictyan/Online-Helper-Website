@@ -1,28 +1,12 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
-# Views that extend inbuilt django views
-from .views import SignInView, AgencySignInView
-
-# Redirect Views
-from .views import SignOutView
-
-# Detail Views
-from .views import PotentialEmployerDetail
-
-# Create Views
-from .views import PotentialEmployerCreate
-
-# Update Views
-from .views import PotentialEmployerUpdate
-
-# Delete Views
-from .views import PotentialEmployerDelete
+# App Imports
+from .views import (
+    SignInView, AgencySignInView, SignOutView, PotentialEmployerDetail,
+    PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete
+)
 
 # Start of Urls
 

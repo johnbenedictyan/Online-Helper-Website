@@ -1,27 +1,11 @@
-# Imports from django
-from django.urls import include, path
+# Django Imports
+from django.urls import path
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
-## Redirect Views
-from .views import DeactivateGeneralEnquiryView, ToggleApproveEnquiryView
-
-## Template Views 
-from .views import SuccessfulEnquiryView
-
-## List Views
-from .views import EnquiryListView
-
-## Detail Views
-
-## Create Views
-from .views import GeneralEnquiryView
-
-## Update Views
-
-## Delete Views
+# App Imports
+from .views import (
+    DeactivateGeneralEnquiryView, ToggleApproveEnquiryView,
+    SuccessfulEnquiryView, EnquiryListView, GeneralEnquiryView
+)
 
 # Start of Urls
 

@@ -1,14 +1,6 @@
-# Imports from python
-
-# Imports from django
+# Django Imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-# Imports from other apps
-
-# Imports from within the app
-
-# Utiliy Classes and Functions
 
 # Start of Constants
 

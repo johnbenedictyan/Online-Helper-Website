@@ -1,4 +1,4 @@
-#  Imports from django
+#  Django Imports
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (
     Layout, Field, Submit, Row, Column, HTML, Hidden, Button
@@ -23,7 +23,7 @@ from onlinemaid.validators import (
 from agency.models import AgencyEmployee
 from maid.models import Maid
 
-# Imports from local apps
+# App Imports
 from .helper_functions import is_local, is_foreigner
 from . import models, constants
 

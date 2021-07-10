@@ -1,10 +1,8 @@
-# Imports from python
-
-# Imports from django
+# Django Imports
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.urls import reverse_lazy
 
-# Imports from other apps
+# Project Apps Imports
 from onlinemaid.constants import (
     AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
 )
@@ -15,16 +13,12 @@ from maid.models import Maid
 from accounts.models import User
 
 # Imports from within the app
-from .models import (
-    AgencyEmployee, AgencyBranch, AgencyPlan
-)
-
-# Utiliy Classes and Functions
+from .models import AgencyEmployee, AgencyBranch, AgencyPlan
 
 # Start of Mixins
 
 
-class OnlineMaidStaffRequiredMixin(SuperUserRequiredMixin):
+class OMStaffRequiredMixin(SuperUserRequiredMixin):
     login_url = reverse_lazy('sign_in')
     permission_denied_message = '''You are required to login as a member of
                                 Online Maid Pte Ltd to perform this action'''

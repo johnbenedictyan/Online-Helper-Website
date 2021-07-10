@@ -1,10 +1,10 @@
-# Imports from python
+# Global Imports
 
-# Imports from django
+# Django Imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from other apps
+# Project Apps Imports
 
 # Imports from within the app
 

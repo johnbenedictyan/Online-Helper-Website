@@ -1,9 +1,9 @@
-# Imports from python
+# Global Imports
 import json
 from datetime import datetime, timedelta
 from itertools import chain
 
-# Imports from django
+# Django Imports
 from django.contrib import messages
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from agency.forms import (
     AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
 )

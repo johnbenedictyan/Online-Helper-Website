@@ -1,28 +1,13 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
-## Redirect Views
-
-## Template Views 
+# App Imports
 from .views import (
-    HomeView, AboutUsView, ContactUsView, SitemapView, TermsAndConditionsAgencyView, RobotsTxt,
-    TermsAndConditionsUserView, HowItWorksView, FAQView, AdminPanelView, PrivacyPolicyView,
-    AdminPanelEnquiryListView, Error403View, Error404View, Error500View, UsefulLinksView
+    AboutUsView, AdminPanelEnquiryListView, AdminPanelView, ContactUsView,
+    Error403View, Error404View, Error500View, FAQView, HomeView,
+    HowItWorksView, PrivacyPolicyView, RobotsTxt, SitemapView,
+    TermsAndConditionsAgencyView, TermsAndConditionsUserView, UsefulLinksView
 )
-
-## List Views
-
-## Detail Views
-
-## Create Views
-
-## Update Views
-
-## Delete Views
 
 # Start of Urls
 

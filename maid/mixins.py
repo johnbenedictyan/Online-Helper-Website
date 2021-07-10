@@ -1,12 +1,12 @@
-# Imports from python
+# Global Imports
 
-# Imports from django
+# Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
-# Imports from other apps
+# Project Apps Imports
 from onlinemaid.mixins import (
     LoginRequiredMixin
 )

@@ -1,8 +1,8 @@
-# Imports from python
+# Global Imports
 import json
 from random import shuffle
 
-# Imports from django
+# Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,7 +19,7 @@ from django.views.generic.edit import UpdateView, DeleteView
 # Imports from project-wide files
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from employer_documentation.mixins import PdfHtmlViewMixin
 
 # Imports from local app

@@ -1,23 +1,23 @@
-# Imports from django
+# Django Imports
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
+
+# Project Apps Imports
 from maid.models import MaidResponsibility, MaidLanguage
 
-# Imports from local apps
+# App Imports
 from .fields import MaidResponsibilityChoiceField
 from .models import GeneralEnquiry, ShortlistedEnquiry
 
 # Start of Forms
 
-# Forms that inherit from inbuilt Django forms
-
 # Model Forms
+
 
 class GeneralEnquiryForm(forms.ModelForm):
     maid_responsibility = MaidResponsibilityChoiceField(
@@ -29,10 +29,10 @@ class GeneralEnquiryForm(forms.ModelForm):
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple()
     )
-    
+
     consent = forms.BooleanField(
         label="""
-            By submitting this enquiry form, I consent to the collection, 
+            By submitting this enquiry form, I consent to the collection,
             use and disclosure of my personal data by Online Maid Pte Ltd to
             agencies that are listed on this platform.
         """
@@ -196,11 +196,12 @@ class GeneralEnquiryForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-        
+
+
 class ShortlistedEnquiryForm(forms.ModelForm):
     consent = forms.BooleanField(
         label="""
-            By submitting this enquiry form, I consent to the collection, 
+            By submitting this enquiry form, I consent to the collection,
             use and disclosure of my personal data by Online Maid Pte Ltd to
             agencies that are listed on this platform.
         """
@@ -209,7 +210,7 @@ class ShortlistedEnquiryForm(forms.ModelForm):
     class Meta:
         model = ShortlistedEnquiry
         exclude = ['potential_employer', 'maids', 'last_modified']
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -247,5 +248,3 @@ class ShortlistedEnquiryForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-
-# Generic Forms (forms.Form)

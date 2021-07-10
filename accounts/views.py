@@ -1,4 +1,4 @@
-# Imports from django
+# Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -9,13 +9,13 @@ from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
 from .models import PotentialEmployer
-from .mixins import VerifiedEmployerMixin, PotentialEmployerRequiredMixin
+from .mixins import PotentialEmployerGrpRequiredMixin
 
 # Start of Views
 
@@ -67,10 +67,6 @@ class AgencySignInView(SuccessMessageMixin, LoginView):
                 )
             return str(self.success_url)  # success_url may be lazy
 
-# Template Views
-
-# Redirect Views
-
 
 class SignOutView(LoginRequiredMixin, RedirectView):
     pattern_name = 'home'
@@ -84,17 +80,12 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         )
         return super().get_redirect_url(*args, **kwargs)
 
-# Detail Views
 
-
-class PotentialEmployerDetail(PotentialEmployerRequiredMixin,
-                              VerifiedEmployerMixin, DetailView):
+class PotentialEmployerDetail(PotentialEmployerGrpRequiredMixin, DetailView):
     context_object_name = 'employer'
     http_method_names = ['get']
     model = PotentialEmployer
     template_name = 'detail/employer-detail.html'
-
-# Create Views
 
 
 class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
@@ -114,12 +105,9 @@ class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
         })
         return kwargs
 
-# Update Views
-
 
 class PotentialEmployerUpdate(SuccessMessageMixin,
-                              PotentialEmployerRequiredMixin,
-                              VerifiedEmployerMixin, UpdateView):
+                              PotentialEmployerGrpRequiredMixin, UpdateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
     http_method_names = ['get', 'post']
@@ -137,12 +125,9 @@ class PotentialEmployerUpdate(SuccessMessageMixin,
         })
         return kwargs
 
-# Delete Views
-
 
 class PotentialEmployerDelete(SuccessMessageMixin,
-                              PotentialEmployerRequiredMixin,
-                              VerifiedEmployerMixin, DeleteView):
+                              PotentialEmployerGrpRequiredMixin, DeleteView):
     context_object_name = 'employer'
     http_method_names = ['post']
     model = PotentialEmployer
