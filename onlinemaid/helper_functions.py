@@ -5,13 +5,13 @@ import string
 import traceback
 from datetime import date, datetime, timedelta
 
-# Imports from django
+# Django Imports
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 

@@ -1,5 +1,8 @@
+# Django Imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+# Start of Constants
 
 # Agency user groups
 AG_OWNERS = 'Agency Owners'

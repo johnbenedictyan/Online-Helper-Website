@@ -1,14 +1,14 @@
-# Imports from django
+# Django Imports
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 import stripe
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
-# Imports from local apps
+# App Imports
 from .models import (
     SubscriptionProduct, SubscriptionProductImage, SubscriptionProductPrice
 )
@@ -17,9 +17,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Start of Forms
 
-# Forms that inherit from inbuilt Django forms
 
-# Model Forms
 class SubscriptionProductCreationForm(forms.ModelForm):
     class Meta:
         model = SubscriptionProduct
@@ -56,7 +54,7 @@ class SubscriptionProductCreationForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-        
+
     def clean_name(self):
         data = self.cleaned_data.get('name')
         stripe_products = stripe.Product.list()['data']
@@ -65,7 +63,8 @@ class SubscriptionProductCreationForm(forms.ModelForm):
                 msg = _('A product with this name already exist')
                 self.add_error('name', msg)
         return data
-        
+
+
 class SubscriptionProductImageCreationForm(forms.ModelForm):
     class Meta:
         model = SubscriptionProductImage
@@ -98,13 +97,14 @@ class SubscriptionProductImageCreationForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-    
+
     def save(self, *args, **kwargs):
         self.instance.subscription_product = SubscriptionProduct.objects.get(
-            pk = self.subscription_product_id
+            pk=self.subscription_product_id
         )
         return super().save(*args, **kwargs)
-    
+
+
 class SubscriptionProductPriceCreationForm(forms.ModelForm):
     class Meta:
         model = SubscriptionProductPrice

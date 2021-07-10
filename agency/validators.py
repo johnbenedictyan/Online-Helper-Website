@@ -1,7 +1,11 @@
+# Global Imports
 import re
 
+# Django Imports
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
+# Start of Validators
 
 
 def validate_postcode(value):
@@ -23,7 +27,7 @@ def validate_postcode(value):
 
     # Numerical digits check has passed validation, so check sector is valid
     # https://www.ura.gov.sg/realEstateIIWeb/resources/misc/list_of_postal_districts.htm
-    if int(value[:2])<1 or int(value[:2])>82:
+    if int(value[:2]) < 1 or int(value[:2]) > 82:
         raise ValidationError(
             err_msg,
             params={'value': value},

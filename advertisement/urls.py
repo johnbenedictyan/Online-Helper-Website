@@ -1,9 +1,5 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
-
-# Imports from foreign installed apps
-
-# Imports from local app
 
 # List Views
 from .views import AdvertisementList

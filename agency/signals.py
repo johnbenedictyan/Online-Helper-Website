@@ -1,17 +1,17 @@
-# Imports from python
-
-# Imports from django
+# Django Imports
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
-# Imports from other apps
+# Foreign Apps Imports
 import stripe
+
+# Project Apps Imports
 from advertisement.models import Advertisement
 from maid.models import Maid
 from payment.models import Customer
 
-# Imports from within the app
+# App Imports
 from .models import Agency, PotentialAgency, AgencyEmployee
 
 # Start of Signals

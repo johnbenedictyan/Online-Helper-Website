@@ -1,8 +1,8 @@
-# Imports from python
+# Global Imports
 
-# Imports from django
+# Django Imports
 
-# Imports from other apps
+# Project Apps Imports
 from agency.models import Agency
 
 # Imports from within the app

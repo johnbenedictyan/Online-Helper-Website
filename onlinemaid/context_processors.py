@@ -1,8 +1,8 @@
 # Imports from the system
 
-# Imports from django
+# Django Imports
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from enquiry.forms import GeneralEnquiryForm
 
 # Start of Context Processors

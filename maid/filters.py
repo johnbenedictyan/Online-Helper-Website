@@ -1,16 +1,16 @@
 # Python
 from datetime import timedelta
 
-# Imports from django
+# Django Imports
 from django import forms
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 import django_filters
 
 from onlinemaid.constants import MaritalStatusChoices
-# Imports from local apps
+# App Imports
 from .constants import (
     TypeOfMaidChoices, MaidCountryOfOrigin, MaidCreatedOnChoices
 )

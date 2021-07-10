@@ -1,10 +1,10 @@
-# Imports from python
+# Global Imports
 import os
 import uuid
 import secrets
 from decimal import Decimal, ROUND_HALF_UP
 
-# Imports from django
+# Django Imports
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -15,7 +15,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from other apps
+# Project Apps Imports
 from onlinemaid.constants import (
     TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
 )

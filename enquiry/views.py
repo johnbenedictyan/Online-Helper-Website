@@ -1,28 +1,23 @@
-# Imports from django
+# Django Imports
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
-from django.utils import timezone
 
-# Imports from project-wide files
-
-# Imports from foreign installed apps
+# Project Apps Imports
 from accounts.models import PotentialEmployer
-from accounts.mixins import PotentialEmployerRequiredMixin
-from agency.mixins import OnlineMaidStaffRequiredMixin
-from agency.models import Agency
-from maid.models import Maid
+from accounts.mixins import PotentialEmployerGrpRequiredMixin
+from agency.mixins import OMStaffRequiredMixin
 from onlinemaid.mixins import SuccessMessageMixin
 
-# Imports from local app
-from .forms import GeneralEnquiryForm, ShortlistedEnquiryForm
-from .models import GeneralEnquiry, ShortlistedEnquiry
+# App Imports
+from .forms import GeneralEnquiryForm
+from .models import GeneralEnquiry
 
 # Start of Views
 
-# Form Views
+
 class GeneralEnquiryView(SuccessMessageMixin, CreateView):
     context_object_name = 'general_enquiry'
     form_class = GeneralEnquiryForm
@@ -35,25 +30,25 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         if self.request.user:
             form.instance.potential_employer = PotentialEmployer.objects.get(
-                user = self.request.user
+                user=self.request.user
             )
             form.instance.last_modified = self.request.user
         return super().form_valid(form)
 
-# Redirect Views
-class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
+
+class DeactivateGeneralEnquiryView(PotentialEmployerGrpRequiredMixin,
                                    RedirectView):
     http_method_names = ['get']
     pattern_name = None
-    pk_url_kwarg = 'pk'	
+    pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
         try:
             selected_enquiry = GeneralEnquiry.objects.get(
-                pk = kwargs.get(
+                pk=kwargs.get(
                     self.pk_url_kwarg
                 ),
-                active = True
+                active=True
             )
         except GeneralEnquiry.DoesNotExist:
             messages.error(
@@ -61,9 +56,10 @@ class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
                 'This enquiry does not exist'
             )
         else:
-            if selected_enquiry.potential_employer == PotentialEmployer.objects.get(
-                user = self.request.user
-            ):
+            user_potential_employer = PotentialEmployer.objects.get(
+                user=self.request.user
+            )
+            if selected_enquiry.potential_employer == user_potential_employer:
                 selected_enquiry.active = False
                 selected_enquiry.save()
             else:
@@ -74,18 +70,19 @@ class DeactivateGeneralEnquiryView(PotentialEmployerRequiredMixin,
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
-class ToggleApproveEnquiryView(OnlineMaidStaffRequiredMixin, RedirectView):
+
+class ToggleApproveEnquiryView(OMStaffRequiredMixin, RedirectView):
     http_method_names = ['get']
     pattern_name = 'admin_panel_enquiry_list'
-    pk_url_kwarg = 'pk'	
+    pk_url_kwarg = 'pk'
 
     def get_redirect_url(self, *args, **kwargs):
         try:
             selected_enquiry = GeneralEnquiry.objects.get(
-                pk = kwargs.get(
+                pk=kwargs.get(
                     self.pk_url_kwarg
                 ),
-                active = True
+                active=True
             )
         except GeneralEnquiry.DoesNotExist:
             messages.error(
@@ -94,13 +91,13 @@ class ToggleApproveEnquiryView(OnlineMaidStaffRequiredMixin, RedirectView):
             )
         else:
             selected_enquiry.approved = not selected_enquiry.approved
-            selected_enquiry.last_modified = request.user
+            selected_enquiry.last_modified = self.request.user
             selected_enquiry.save()
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
-# List Views
-class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
+
+class EnquiryListView(PotentialEmployerGrpRequiredMixin, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
     model = GeneralEnquiry
@@ -108,19 +105,10 @@ class EnquiryListView(PotentialEmployerRequiredMixin, ListView):
 
     def get_queryset(self):
         return GeneralEnquiry.objects.filter(
-            potential_employer__user = self.request.user,
-            # active = True
+            potential_employer__user=self.request.user
         )
 
-# Detail Views
 
-# Create Views
-
-# Update Views
-
-# Delete Views
-
-# Template Views
 class SuccessfulEnquiryView(TemplateView):
     http_method_names = ['get']
     template_name = 'successful-enquiry.html'

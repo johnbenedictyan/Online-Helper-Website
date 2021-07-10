@@ -1,10 +1,14 @@
+# Django Imports
 from django.contrib import admin
+
+# App Imports
 from .models import (
     Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
     AgencyOwner
 )
 
-# Register your models here.
+# Start of Admin
+
 admin.site.register(Agency)
 admin.site.register(AgencyEmployee)
 admin.site.register(AgencyBranch)

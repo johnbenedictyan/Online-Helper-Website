@@ -1,11 +1,11 @@
 # Imports from the system
 
-# Imports from django
+# Django Imports
 from django.contrib.auth.models import Group, Permission
 from django.test import TestCase
 from django.urls import reverse_lazy
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from onlinemaid.helper_functions import (
     r_string, r_contact_number, create_test_user
 )

@@ -1,13 +1,11 @@
-# Imports from python
-
-# Imports from django
+# Django Imports
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator, URLValidator
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from other apps
+# Project Apps Imports
 from onlinemaid.helper_functions import get_sg_region
 from onlinemaid.validators import validate_ea_personnel_number
 from onlinemaid.storage_backends import PublicMediaStorage

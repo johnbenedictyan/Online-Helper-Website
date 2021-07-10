@@ -1,13 +1,13 @@
-# Imports from python
+# Global Imports
 
-# Imports from django
+# Django Imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
 from onlinemaid.storage_backends import PublicMediaStorage
 
-# Imports from other apps
+# Project Apps Imports
 from agency.models import Agency
 
 # Imports from within the app

@@ -1,32 +1,23 @@
-# Imports from django
+# Django Imports
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
 
-# Imports from foreign installed apps
+# Project Apps Imports
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# Imports from local app
+# App Imports
 from .filters import AgencyFilter
-
 from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
-
 from .models import Agency, AgencyOwner, PotentialAgency
-
 from .mixins import (
-    OnlineMaidStaffRequiredMixin, AgencyOwnerRequiredMixin,
+    OMStaffRequiredMixin, AgencyOwnerRequiredMixin,
     SpecificAgencyOwnerRequiredMixin
 )
 
 # Start of Views
-
-# Template Views
-
-# Redirect Views
-
-# List Views
 
 
 class AgencyList(ListFilteredMixin, ListView):
@@ -39,8 +30,6 @@ class AgencyList(ListFilteredMixin, ListView):
     paginate_by = settings.AGENCY_PAGINATE_BY
     ordering = ['name']
 
-# Detail Views
-
 
 class AgencyDetail(DetailView):
     context_object_name = 'agency'
@@ -48,18 +37,8 @@ class AgencyDetail(DetailView):
     model = Agency
     template_name = 'detail/agency-detail.html'
 
-    def get_object(self):
-        obj = super().get_object()
-        # if obj.complete == False:
-        #     raise Http404
 
-        return obj
-
-# Create Views
-
-
-class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
-                   CreateView):
+class AgencyCreate(OMStaffRequiredMixin, SuccessMessageMixin, CreateView):
     context_object_name = 'agency'
     form_class = AgencyForm
     http_method_names = ['get', 'post']
@@ -69,8 +48,7 @@ class AgencyCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
     success_message = 'Agency created'
 
 
-class AgencyOwnerCreate(OnlineMaidStaffRequiredMixin, SuccessMessageMixin,
-                        CreateView):
+class AgencyOwnerCreate(OMStaffRequiredMixin, SuccessMessageMixin, CreateView):
     context_object_name = 'agency_owner'
     form_class = AgencyOwnerCreationForm
     http_method_names = ['get', 'post']
@@ -97,10 +75,6 @@ class AgencySignUp(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('home')
     success_message = '''
         Your request has been submitted. We will get back to you shortly!'''
-
-# Update Views
-
-# Delete Views
 
 
 class AgencyDelete(AgencyOwnerRequiredMixin, SuccessMessageMixin, DeleteView):

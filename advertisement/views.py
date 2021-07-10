@@ -1,11 +1,11 @@
-# Imports from django
+# Django Imports
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from agency.models import Agency
 
 # Imports from local app

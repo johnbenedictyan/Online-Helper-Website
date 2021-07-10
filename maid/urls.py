@@ -1,7 +1,7 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 
 # Imports from local app
 
