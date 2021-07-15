@@ -15,7 +15,14 @@ from django.utils.crypto import get_random_string
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 
+# App Imports
+from .constants import MaritalStatusChoices
+
 UserModel = get_user_model()
+
+
+def is_married(marital_status):
+    return marital_status == MaritalStatusChoices.MARRIED
 
 
 def r_string(length):

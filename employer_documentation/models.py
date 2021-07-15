@@ -19,7 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 from onlinemaid.constants import (
     TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
 )
-from onlinemaid.helper_functions import decrypt_string
+from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
@@ -34,7 +34,10 @@ from .constants import (
     MonthChoices, WeekChoices,
     NUMBER_OF_WORK_DAYS_IN_MONTH
 )
-from .helper_functions import is_local
+from .helper_functions import (
+    is_local, is_applicant_joint_applicant, is_applicant_sponsor,
+    is_applicant_spouse
+)
 from .fields import CustomMoneyDecimalField
 
 # Utiliy Classes and Functions
@@ -454,8 +457,8 @@ class Employer(models.Model):
         error_msg_list = []
 
         if (
-            self.employer_marital_status == MaritalStatusChoices.MARRIED or
-            self.applicant_type == EmployerTypeOfApplicantChoices.SPOUSE
+            is_married(self.employer_marital_status) or
+            is_applicant_spouse(self.applicant_type)
         ):
             mandatory_fields = [
                 'spouse_name',
@@ -483,7 +486,8 @@ class Employer(models.Model):
         return error_msg_list
 
     def details_missing_employer(self):
-        # Retrieve verbose name -> self._meta.get_field('field_name_str').verbose_name
+        # Retrieve verbose name ->
+        # self._meta.get_field('field_name_str').verbose_name
         error_msg_list = []
 
         if is_local(self.employer_residential_status):
@@ -500,14 +504,14 @@ class Employer(models.Model):
         # Check spouse details completeness
         error_msg_list += self.details_missing_spouse()
 
-        if self.applicant_type == EmployerTypeOfApplicantChoices.SPONSOR:
+        if is_applicant_sponsor(self.applicant_type):
             if hasattr(self, 'rn_sponsor_employer'):
                 m_s = self.rn_sponsor_employer.details_missing_sponsors()
                 error_msg_list += m_s
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
-        elif self.applicant_type == EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif is_applicant_joint_applicant(self.applicant_type):
             if hasattr(self, 'rn_ja_employer'):
                 m_ja = self.rn_ja_employer.details_missing_joint_applicant()
                 error_msg_list += m_ja
@@ -1039,7 +1043,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_2_marital_status == MaritalStatusChoices.MARRIED:
+        if is_married(self.sponsor_2_marital_status):
             mandatory_fields = [
                 'sponsor_2_spouse_name',
                 'sponsor_2_spouse_gender',
@@ -1097,7 +1101,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_1_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_1_marital_status == MaritalStatusChoices.MARRIED:
+        if is_married(self.sponsor_1_marital_status):
             mandatory_fields = [
                 'sponsor_1_spouse_name',
                 'sponsor_1_spouse_gender',
@@ -1345,7 +1349,7 @@ class EmployerJointApplicant(models.Model):
     def details_missing_joint_applicant_spouse(self):
         error_msg_list = []
 
-        if self.joint_applicant_marital_status == MaritalStatusChoices.MARRIED:
+        if is_married(self.joint_applicant_marital_status):
             mandatory_fields = [
                 'joint_applicant_spouse_name',
                 'joint_applicant_spouse_gender',
@@ -1751,7 +1755,7 @@ class EmployerDoc(models.Model):
                 ipa_pdf=self.rn_docupload_ed.ipa_pdf,
                 medical_report_pdf=self.rn_docupload_ed.medical_report_pdf
             )
-        if archived_doc.employer_marital_status == MaritalStatusChoices.MARRIED:
+        if is_married(archived_doc.employer_marital_status):
             archived_doc.employer_marriage_sg_registered = self.employer.employer_marriage_sg_registered
             archived_doc.spouse_name = self.employer.spouse_name
             archived_doc.spouse_gender = self.employer.spouse_gender
@@ -1769,7 +1773,7 @@ class EmployerDoc(models.Model):
             archived_doc.spouse_passport_tag = self.employer.spouse_passport_tag
             archived_doc.spouse_passport_date = self.employer.spouse_passport_date
 
-        elif archived_doc.applicant_type == EmployerTypeOfApplicantChoices.SPONSOR:
+        elif is_applicant_sponsor(archived_doc.applicant_type):
             archived_doc.sponsor_1_relationship = self.employer.rn_sponsor_employer.sponsor_1_relationship
             archived_doc.sponsor_1_name = self.employer.rn_sponsor_employer.sponsor_1_name
             archived_doc.sponsor_1_gender = self.employer.rn_sponsor_employer.sponsor_1_gender
@@ -1835,7 +1839,7 @@ class EmployerDoc(models.Model):
                 archived_doc.sponsor_2_spouse_passport_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_tag
                 archived_doc.sponsor_2_spouse_passport_date = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_date
 
-        elif archived_doc.applicant_type == EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif is_applicant_joint_applicant(archived_doc.applicant_type):
             archived_doc.joint_applicant_relationship = self.employer.rn_ja_employer.joint_applicant_relationship
             archived_doc.joint_applicant_name = self.employer.rn_ja_employer.joint_applicant_name
             archived_doc.joint_applicant_gender = self.employer.rn_ja_employer.joint_applicant_gender
@@ -2080,12 +2084,12 @@ class DocServAgmtEmpCtr(models.Model):
         max_length=100
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
-            3.1")
+        verbose_name=_("3.4 Refund amount if no replacement pursuant to \
+            Clause 3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
-            to"),
+        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
+            entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -2107,20 +2111,20 @@ class DocServAgmtEmpCtr(models.Model):
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
-            __ day(s)"),
+        verbose_name=_("4.1 Replacement only after FDW has worked for minimum \
+            of __ day(s)"),
         choices=DayChoices.choices
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
-            date FDW returned"),
+        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
+            from date FDW returned"),
         choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
-            Service Agreement"),
+        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
+            of Service Agreement"),
         choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
@@ -2128,28 +2132,28 @@ class DocServAgmtEmpCtr(models.Model):
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
-            to Service Fee refund within __ day(s)"),
+        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer \
+            entitled to Service Fee refund within __ day(s)"),
         choices=DayChoices.choices
     )
     c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW \
+            arrives in Singapore")
     )
     c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW \
+            arrives in Singapore")
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
+        verbose_name=_("5.2.2 If new FDW deployed to Employer and former \
+            FDW CAN be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
+        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
+            CAN be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
@@ -2231,7 +2235,9 @@ class DocSafetyAgreement(models.Model):
         help_text=_("If 'Other' is selected, must complete field (ii)."),
     )
     grilles_installed_require_cleaning = models.BooleanField(
-        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        verbose_name=_(
+            '(ii) Grilles installed on windows required to be cleaned by FDW?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
@@ -2241,7 +2247,9 @@ class DocSafetyAgreement(models.Model):
         help_text=_('If yes, must complete field (iii).'),
     )
     adult_supervision = models.BooleanField(
-        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        verbose_name=_(
+            '(iii) Adult supervision when cleaning window exterior?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
@@ -2250,12 +2258,23 @@ class DocSafetyAgreement(models.Model):
         null=True,
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
-        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        verbose_name=_(
+            "Verifiy employer understands window cleaning conditions"
+        ),
         choices=[
-            (1, _("FDW not required to clean window exterior")),
-            (2, _("FDW to clean only window exterior on ground floor")),
-            (3, _("FDW to clean only window exterior along common corridor")),
-            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
+            (
+                1, _("FDW not required to clean window exterior")
+            ),
+            (
+                2, _("FDW to clean only window exterior on ground floor")
+            ),
+            (
+                3, _("FDW to clean only window exterior along common corridor")
+            ),
+            (
+                4, _("Ensure grilles are locked and only cleaned under adult \
+                    supervision")
+            )
         ],
         default='not_required_to_clean_window_exterior',
     )
@@ -3889,8 +3908,8 @@ class ArchivedDoc(models.Model):
             3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
-            to"),
+        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
+            entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -3912,20 +3931,20 @@ class ArchivedDoc(models.Model):
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
-            __ day(s)"),
+        verbose_name=_("4.1 Replacement only after FDW has worked for minimum \
+            of __ day(s)"),
         choices=DayChoices.choices
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
-            date FDW returned"),
+        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
+            from date FDW returned"),
         choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
-            Service Agreement"),
+        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
+            of Service Agreement"),
         choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
@@ -3933,28 +3952,28 @@ class ArchivedDoc(models.Model):
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
-            to Service Fee refund within __ day(s)"),
+        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer \
+            entitled to Service Fee refund within __ day(s)"),
         choices=DayChoices.choices
     )
     c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW \
+            arrives in Singapore")
     )
     c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives \
+            in Singapore")
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
+        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW \
+            CAN be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
+        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
+            CAN be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
@@ -4034,7 +4053,9 @@ class ArchivedDoc(models.Model):
         help_text=_("If 'Other' is selected, must complete field (ii)."),
     )
     grilles_installed_require_cleaning = models.BooleanField(
-        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        verbose_name=_(
+            '(ii) Grilles installed on windows required to be cleaned by FDW?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
@@ -4044,7 +4065,9 @@ class ArchivedDoc(models.Model):
         help_text=_('If yes, must complete field (iii).'),
     )
     adult_supervision = models.BooleanField(
-        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        verbose_name=_(
+            '(iii) Adult supervision when cleaning window exterior?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
@@ -4053,12 +4076,23 @@ class ArchivedDoc(models.Model):
         null=True,
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
-        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        verbose_name=_(
+            "Verifiy employer understands window cleaning conditions"
+        ),
         choices=[
-            (1, _("FDW not required to clean window exterior")),
-            (2, _("FDW to clean only window exterior on ground floor")),
-            (3, _("FDW to clean only window exterior along common corridor")),
-            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
+            (
+                1, _("FDW not required to clean window exterior")
+            ),
+            (
+                2, _("FDW to clean only window exterior on ground floor")
+            ),
+            (
+                3, _("FDW to clean only window exterior along common corridor")
+            ),
+            (
+                4, _("Ensure grilles are locked and only cleaned under adult \
+                    supervision")
+            )
         ],
         blank=True,
         null=True,
