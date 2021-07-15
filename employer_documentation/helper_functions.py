@@ -1,3 +1,4 @@
+# App Imports
 from .constants import (
     ResidentialStatusFullChoices, EmployerTypeOfApplicantChoices
 )
