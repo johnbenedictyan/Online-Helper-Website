@@ -681,130 +681,89 @@ class BaseFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     agency_id = ''
 
 
-class MaidLoanFormView(BaseFormView):
-    form_class = MaidLoanTransactionFormSet
+class BaseFormsetView(BaseFormView):
+    form_class_helper = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        helper = self.form_class_helper()
+        helper.form_tag = False
+        context.update({
+            'helper': helper
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'instance': self.get_instance_object()
+        })
+        return kwargs
+
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            form_kwargs=self.get_formset_form_kwargs(),
+            **self.get_form_kwargs()
+        )
+
+
+class BaseMaidFormsetView(BaseFormsetView):
+    maid_id = ''
+    pk_url_kwarg = 'pk'
     success_url = reverse_lazy('dashboard_maid_list')
     template_name = 'form/maid-formset.html'
-    pk_url_kwarg = 'pk'
-    maid_id = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'maid_id': self.maid_id
+        })
+        return context
+
+    def get_formset_form_kwargs(self):
+        self.maid_id = self.kwargs.get(
+            self.pk_url_kwarg
+        )
+        kwargs = {
+            'maid_id': self.maid_id
+        }
+        return kwargs
+
+    def get_instance_object(self):
+        return Maid.objects.get(
+            pk=self.maid_id
+        )
+
+    def form_valid(self, form):
+        form.save()
+        if form.data.get('submitFlag') == 'True':
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    self.form_invalid_url,
+                    kwargs={
+                        'pk': self.maid_id
+                    }
+                )
+            )
+
+
+class MaidLoanFormView(BaseMaidFormsetView):
+    form_class = MaidLoanTransactionFormSet
+    form_class_helper = MaidLoanTransactionFormSetHelper
+    form_invalid_url = 'dashboard_maid_loan_update'
     success_message = 'Maid loan details updated'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        helper = MaidLoanTransactionFormSetHelper()
-        helper.form_tag = False
-        context.update({
-            'helper': helper,
-            'maid_id': self.maid_id
-        })
-        return context
 
-    def get_formset_form_kwargs(self):
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
-        kwargs = {
-            'maid_id': self.maid_id
-        }
-        return kwargs
-
-    def get_instance_object(self):
-        return Maid.objects.get(
-            pk=self.maid_id
-        )
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'instance': self.get_instance_object()
-        })
-        return kwargs
-
-    def get_form(self, form_class=None):
-        """Return an instance of the form to be used in this view."""
-        if form_class is None:
-            form_class = self.get_form_class()
-        return form_class(
-            form_kwargs=self.get_formset_form_kwargs(),
-            **self.get_form_kwargs()
-        )
-
-    def form_valid(self, form):
-        form.save()
-        if form.data.get('submitFlag') == 'True':
-            return super().form_valid(form)
-        else:
-            return HttpResponseRedirect(
-                reverse_lazy(
-                    'dashboard_maid_loan_update',
-                    kwargs={
-                        'pk': self.maid_id
-                    }
-                )
-            )
-
-
-class MaidEmploymentHistoryFormView(BaseFormView):
+class MaidEmploymentHistoryFormView(BaseMaidFormsetView):
     form_class = MaidEmploymentHistoryFormSet
-    success_url = reverse_lazy('dashboard_maid_list')
-    template_name = 'form/maid-formset.html'
-    pk_url_kwarg = 'pk'
-    maid_id = ''
+    form_class_helper = MaidEmploymentHistoryFormSetHelper
+    form_invalid_url = 'dashboard_maid_employment_history_update'
     success_message = 'Maid employment history updated'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        helper = MaidEmploymentHistoryFormSetHelper()
-        helper.form_tag = False
-        context.update({
-            'helper': helper,
-            'maid_id': self.maid_id
-        })
-        return context
-
-    def get_formset_form_kwargs(self):
-        self.maid_id = self.kwargs.get(
-            self.pk_url_kwarg
-        )
-        kwargs = {
-            'maid_id': self.maid_id
-        }
-        return kwargs
-
-    def get_instance_object(self):
-        return Maid.objects.get(
-            pk=self.maid_id
-        )
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'instance': self.get_instance_object()
-        })
-        return kwargs
-
-    def get_form(self, form_class=None):
-        """Return an instance of the form to be used in this view."""
-        if form_class is None:
-            form_class = self.get_form_class()
-        return form_class(
-            form_kwargs=self.get_formset_form_kwargs(),
-            **self.get_form_kwargs()
-        )
-
-    def form_valid(self, form):
-        form.save()
-        if form.data.get('submitFlag') == 'True':
-            return super().form_valid(form)
-        else:
-            return HttpResponseRedirect(
-                reverse_lazy(
-                    'dashboard_maid_employment_history_update',
-                    kwargs={
-                        'pk': self.maid_id
-                    }
-                )
-            )
 
     def get_success_url(self) -> str:
         return reverse_lazy(
@@ -815,20 +774,12 @@ class MaidEmploymentHistoryFormView(BaseFormView):
         )
 
 
-class AgencyOutletDetailsFormView(BaseFormView):
+class AgencyOutletDetailsFormView(BaseFormsetView):
     form_class = AgencyBranchFormSet
+    form_class_helper = AgencyBranchFormSetHelper
     success_url = reverse_lazy('dashboard_agency_opening_hours_update')
     template_name = 'update/dashboard-agency-outlet-details.html'
     success_message = 'Agency details updated'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        helper = AgencyBranchFormSetHelper()
-        helper.form_tag = False
-        context.update({
-            'helper': helper
-        })
-        return context
 
     def get_formset_form_kwargs(self):
         kwargs = {
@@ -839,22 +790,6 @@ class AgencyOutletDetailsFormView(BaseFormView):
     def get_instance_object(self):
         return Agency.objects.get(
             pk=self.agency_id
-        )
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'instance': self.get_instance_object()
-        })
-        return kwargs
-
-    def get_form(self, form_class=None):
-        """Return an instance of the form to be used in this view."""
-        if form_class is None:
-            form_class = self.get_form_class()
-        return form_class(
-            form_kwargs=self.get_formset_form_kwargs(),
-            **self.get_form_kwargs()
         )
 
     def form_valid(self, form):
