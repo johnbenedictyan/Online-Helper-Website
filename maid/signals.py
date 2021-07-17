@@ -7,7 +7,7 @@ from django.dispatch import receiver
 
 # Project Apps Imports
 
-# Imports from within the app
+# App Imports
 from .models import (
     Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare,
     MaidGeneralHousework, MaidCooking, MaidResponsibility

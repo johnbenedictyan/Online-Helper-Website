@@ -12,7 +12,7 @@ from onlinemaid.mixins import (
 from maid.models import Maid
 from accounts.models import User
 
-# Imports from within the app
+# App Imports
 from .models import AgencyEmployee, AgencyBranch, AgencyPlan
 
 # Start of Mixins

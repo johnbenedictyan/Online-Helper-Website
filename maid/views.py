@@ -14,15 +14,11 @@ from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
-# 3rd party
-
-# Imports from project-wide files
+# Project Apps Imports
+from employer_documentation.mixins import PdfHtmlViewMixin
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# Foreign Apps Imports
-from employer_documentation.mixins import PdfHtmlViewMixin
-
-# Imports from local app
+# App Imports
 from .constants import MaidStatusChoices
 from .filters import MaidFilter
 from .forms import MaidLoanTransactionForm
@@ -32,12 +28,6 @@ from .mixins import (
 from .models import Maid, MaidLoanTransaction
 
 # Start of Views
-
-# Template Views
-
-# Form Views
-
-# Redirect Views
 
 
 class BaseMaidRedirectView(RedirectView):
@@ -81,8 +71,6 @@ class MaidToggleFeatured(BaseMaidRedirectView):
             'dashboard_maid_list'
         )
 
-# List Views
-
 
 class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     context_object_name = 'maids'
@@ -92,8 +80,6 @@ class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
     template_name = 'list/maid-list.html'
     filter_set = MaidFilter
     paginate_by = settings.MAID_PAGINATE_BY
-
-# Detail Views
 
 
 class MaidDetail(LoginRequiredMixin, DetailView):
@@ -117,10 +103,6 @@ class MaidDetail(LoginRequiredMixin, DetailView):
             'similar_maids': similar_maids
         })
         return kwargs
-
-# Create Views
-
-# Update Views
 
 
 class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
@@ -147,8 +129,6 @@ class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
             }
         )
 
-# Delete Views
-
 
 class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
                  DeleteView):
@@ -166,8 +146,6 @@ class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
             ),
             agency=self.request.user.agency_owner.agency
         )
-
-# Generic Views
 
 
 class MaidProfileView(View):
@@ -234,8 +212,6 @@ class FeaturedMaidListView(View):
             'nationality': nationality
         }
         return JsonResponse(data, status=200)
-
-# PDF Views
 
 
 class PdfMaidBiodataView(LoginRequiredMixin, PdfHtmlViewMixin, DetailView):

@@ -1,12 +1,6 @@
 # Django Imports
 from django.urls import include, path
 
-# Foreign Apps Imports
-
-# Imports from local app
-
-# Form Views
-
 # Redirect Views
 from .views import MaidTogglePublished, MaidToggleFeatured
 
@@ -15,8 +9,6 @@ from .views import MaidList
 
 # Detail Views
 from .views import MaidDetail, PdfMaidBiodataView
-
-# Create Views
 
 # Update Views
 from .views import MaidLoanTransactionUpdate

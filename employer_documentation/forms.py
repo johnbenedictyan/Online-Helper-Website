@@ -13,7 +13,7 @@ from crispy_forms.layout import (
 )
 from crispy_forms.bootstrap import PrependedText, StrictButton
 
-# Imports from project
+# Project Apps Imports
 from onlinemaid import constants as om_constants
 from onlinemaid.helper_functions import encrypt_string
 from onlinemaid.validators import (

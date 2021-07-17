@@ -10,7 +10,7 @@ from onlinemaid.storage_backends import PublicMediaStorage
 # Project Apps Imports
 from agency.models import Agency
 
-# Imports from within the app
+# App Imports
 from .constants import (
     SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
 )
