@@ -1,5 +1,3 @@
-# Global Imports
-
 # Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
@@ -13,12 +11,10 @@ from onlinemaid.mixins import (
 from agency.models import Agency
 from agency.mixins import AgencyOwnerRequiredMixin
 
-# Imports from within the app
+# App Imports
 from .models import (
     Maid, MaidFoodHandlingPreference, MaidDietaryRestriction
 )
-
-# Utiliy Classes and Functions
 
 # Start of Mixins
 

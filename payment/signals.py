@@ -7,7 +7,7 @@ from django.utils import timezone
 
 # Project Apps Imports
 
-# Imports from within the app
+# App Imports
 from .constants import (
     SubscriptionStatusChoices, SubscriptionLimitMap
 )

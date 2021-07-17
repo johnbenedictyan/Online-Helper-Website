@@ -10,7 +10,7 @@ from onlinemaid.helper_functions import get_sg_region
 from onlinemaid.validators import validate_ea_personnel_number
 from onlinemaid.storage_backends import PublicMediaStorage
 
-# Imports from within the app
+# App Imports
 from .constants import (
     AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices,
     OpeningHoursChoices

@@ -25,8 +25,7 @@ from agency.models import AgencyEmployee
 from maid.models import Maid
 from maid.constants import TypeOfMaidChoices
 
-# Same app
-# from . import constants as ed_constants
+# App Imports
 from .constants import (
     EmployerTypeOfApplicantChoices, GenderChoices, RelationshipChoices,
     ResidentialStatusFullChoices, ResidentialStatusPartialChoices,
@@ -34,11 +33,11 @@ from .constants import (
     MonthChoices, WeekChoices,
     NUMBER_OF_WORK_DAYS_IN_MONTH
 )
+from .fields import CustomMoneyDecimalField
 from .helper_functions import (
     is_local, is_applicant_joint_applicant, is_applicant_sponsor,
     is_applicant_spouse
 )
-from .fields import CustomMoneyDecimalField
 
 # Utiliy Classes and Functions
 

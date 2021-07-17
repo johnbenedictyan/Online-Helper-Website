@@ -1,22 +1,23 @@
-# Python
+# Global Imports
 import calendar
 import datetime
 
-# Django
+# Django Imports
 from django.conf import settings
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-# 3rd party
+# Foreign Apps Imports
 from weasyprint import HTML, CSS
 
-# From our apps
-from . import models
-from onlinemaid.helper_functions import intervening_weekdays
+# Project Apps Imports
 from maid.constants import COUNTRY_LANGUAGE_MAP
+from onlinemaid.helper_functions import intervening_weekdays
+
+# App Imports
+from .models import EmployerDoc
 
 # Start of mixins
-# PDF Mixin
 
 
 class PdfHtmlViewMixin:
@@ -40,7 +41,7 @@ class PdfHtmlViewMixin:
                 'ENG'
             )
 
-        if isinstance(self.object, models.EmployerDoc):
+        if isinstance(self.object, EmployerDoc):
             # Document version number formatting
             context['object'].version = f'''
                 [{self.object.get_version()}] - {version_explainer_text}
