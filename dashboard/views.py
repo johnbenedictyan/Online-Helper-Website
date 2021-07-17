@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 
-# Foreign Apps Imports
+# Project Apps Imports
 from agency.forms import (
     AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
 )
@@ -26,13 +26,10 @@ from agency.models import (
 from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
-
 from employer_documentation.models import (
     Employer, EmployerDoc, CaseStatus, ArchivedDoc
 )
-
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
-
 from maid.constants import MaidFoodPreferenceChoices
 from maid.forms import (
     MaidForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm, MaidAboutFDWForm
@@ -46,13 +43,11 @@ from maid.models import (
     MaidElderlyCare, MaidFoodHandlingPreference, MaidGeneralHousework,
     MaidInfantChildCare, MaidLanguageProficiency
 )
-
 from payment.models import Customer, Subscription
-
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# Imports from local app
+# App Imports
 from .filters import (
     # DashboardCaseFilter,
     DashboardEmployerFilter, DashboardMaidFilter,
@@ -61,207 +56,20 @@ from .filters import (
 
 # Start of Views
 
-# Template Views
+# Base Views
 
 
-class DashboardHomePage(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                        TemplateView):
-    template_name = 'base/dashboard-home-page.html'
+class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                           ListFilteredMixin, ListView):
+    http_method_names = ['get']
     authority = ''
     agency_id = ''
 
-    def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data()
-        agency = Agency.objects.get(
-            pk=self.agency_id
-        )
-        dashboard_home_page_kwargs = {
-            'accounts': {
-                'current': AgencyEmployee.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': agency.amount_of_employees_allowed
-            },
-            'biodata': {
-                'current': Maid.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': agency.amount_of_biodata_allowed
-            },
-            'branches': {
-                'current': AgencyBranch.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': None
-            },
-            'subscriptions': {
-                'current': Subscription.objects.filter(
-                    customer=Customer.objects.get(
-                        agency=agency
-                    )
-                ).count(),
-                'max': None
-            },
-            'employers': {
-                'current': 123,
-                'max': None
-            },
-            'sales': {
-                'current': 123,
-                'max': None
-            },
-            'enquiries': {
-                'current': 0,
-                'max': None
-            }
-        }
-        kwargs.update(dashboard_home_page_kwargs)
-        return kwargs
 
-# Redirect Views
-
-# List Views
-
-
-class DashboardMaidList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                        ListFilteredMixin, ListView):
-    context_object_name = 'maids'
-    http_method_names = ['get']
-    model = Maid
-    template_name = 'list/dashboard-maid-list.html'
-    filter_set = DashboardMaidFilter
-    authority = ''
-    agency_id = ''
-
-    def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data()
-        kwargs.update({
-            'order_by': self.request.GET.get('order-by')
-        })
-        return kwargs
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        order_by = self.request.GET.get('order-by')
-
-        if order_by:
-            if order_by == 'serialNo':
-                order_by = 'id'
-            elif order_by == '-serialNo':
-                order_by = '-id'
-            elif order_by == 'nationality':
-                order_by = 'country_of_origin'
-            elif order_by == '-nationality':
-                order_by = '-country_of_origin'
-            elif order_by == 'type':
-                order_by = 'maid_type'
-            elif order_by == '-type':
-                order_by = '-maid_type'
-            elif order_by == 'ppExpiry':
-                order_by = 'passport_expiry'
-            elif order_by == '-ppExpiry':
-                order_by = '-passport_expiry'
-            elif order_by == 'dateCreated':
-                order_by = 'created_on'
-            elif order_by == '-dateCreated':
-                order_by = '-created_on'
-            return qs.filter(
-                agency__pk=self.agency_id
-            ).order_by(order_by)
-        else:
-            return qs.filter(
-                agency__pk=self.agency_id
-            ).order_by('passport_expiry')
-
-
-class DashboardAccountList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                           ListView):
-    context_object_name = 'accounts'
-    http_method_names = ['get']
-    model = AgencyEmployee
-    template_name = 'list/dashboard-account-list.html'
-    authority = ''
-    agency_id = ''
-
-    def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data()
-        agency = Agency.objects.get(
-            pk=self.agency_id
-        )
-        kwargs.update({
-            'employee_accounts': {
-                'current': AgencyEmployee.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': agency.amount_of_employees_allowed
-            }
-        })
-        return kwargs
-
-    def get_queryset(self):
-        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            return AgencyEmployee.objects.filter(
-                agency__pk=self.agency_id
-            )
-        else:
-            return AgencyEmployee.objects.filter(
-                agency__pk=self.agency_id,
-                branch=self.request.user.agency_employee.branch
-            )
-
-
-class DashboardAgencyPlanList(AgencyOwnerRequiredMixin, ListView):
-    context_object_name = 'plans'
-    http_method_names = ['get']
-    model = AgencyPlan
-    template_name = 'list/dashboard-agency-plan-list.html'
-
-    def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data()
-        dashboard_agency_plan_kwargs = {
-        }
-        kwargs.update(dashboard_agency_plan_kwargs)
-        return kwargs
-
-
-class DashboardGeneralEnquiriesList(AgencyLoginRequiredMixin, ListView):
-    context_object_name = 'enquiries'
-    http_method_names = ['get']
-    model = GeneralEnquiry
-    template_name = 'list/dashboard-general-enquiries-list.html'
-
-
-class DashboardShortlistedEnquiriesList(AgencyLoginRequiredMixin, ListView):
-    context_object_name = 'enquiries'
-    http_method_names = ['get']
-    model = ShortlistedEnquiry
-    template_name = 'list/dashboard-shortlisted-enquiries-list.html'
-    queryset = ShortlistedEnquiry.objects.filter()
-
-
-class DashboardAgencyBranchList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                                ListView):
-    context_object_name = 'branches'
-    http_method_names = ['get']
-    model = AgencyBranch
-    template_name = 'list/dashboard-agency-branch-list.html'
-    authority = ''
-    agency_id = ''
-
-    def get_queryset(self):
-        return AgencyBranch.objects.filter(
-            agency__pk=self.agency_id
-        )
-
-
-class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                        ListFilteredMixin, ListView):
+class CaseList(BaseFilteredListView):
     # context_object_name = 'cases'
-    http_method_names = ['get']
     template_name = 'list/dashboard-case-list.html'
     # filter_set = DashboardCaseFilter
-    authority = ''
-    agency_id = ''
 
     def get_queryset(self):
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
@@ -283,98 +91,11 @@ class DashboardCaseList(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return qs
 
 
-class DashboardSalesList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                         ListFilteredMixin, ListView):
-    context_object_name = 'sales'
-    http_method_names = ['get']
-    model = EmployerDoc
-    template_name = 'list/dashboard-sales-list.html'
-    filter_set = DashboardSalesFilter
-    authority = ''
-    agency_id = ''
-
-    def get_queryset(self):
-        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            qs = chain(
-                EmployerDoc.objects.filter(
-                    employer__agency_employee__agency__pk=self.agency_id
-                ),
-                ArchivedDoc.objects.filter(
-                    agency__agency_license_no=Agency.objects.get(
-                        pk=self.agency_id
-                    ).license_number
-                ),
-            )
-        elif self.authority == AG_MANAGERS:
-            ae = self.request.user.agency_employee
-            ag_branch = ae.branch
-            ea_p_nos = ae.get_all_ea_personnel_no_in_branch()
-            qs = chain(
-                EmployerDoc.objects.filter(
-                    employer__agency_employee__branch=ag_branch
-                ),
-                ArchivedDoc.objects.filter(
-                    agency__agency_employee_ea_personnel_number__in=ea_p_nos
-                ),
-            )
-        elif self.authority == AG_SALES:
-            ae = self.request.user.agency_employee
-            ae_p_no = ae.ea_personnel_number
-            qs = chain(
-                EmployerDoc.objects.filter(
-                    employer__agency_employee=self.request.user.agency_employee
-                ),
-                ArchivedDoc.objects.filter(
-                    agency__agency_employee_ea_personnel_number=ae_p_no
-                ),
-            )
-        else:
-            qs = None
-
-        return qs
-
-
-class DashboardStatusList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          ListFilteredMixin, ListView):
-    context_object_name = 'statuses'
-    http_method_names = ['get']
-    model = CaseStatus
-    template_name = 'list/dashboard-status-list.html'
-    filter_set = DashboardStatusFilter
-    authority = ''
-    agency_id = ''
-
-    def get_queryset(self):
-        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            agency_id = self.agency_id
-            qs = CaseStatus.objects.filter(
-                employer_doc__employer__agency_employee__agency__pk=agency_id
-            )
-        elif self.authority == AG_MANAGERS:
-            ae = self.request.user.agency_employee
-            qs = CaseStatus.objects.filter(
-                employer_doc__employer__agency_employee__branch=ae.branch
-            )
-        elif self.authority == AG_SALES:
-            ae = self.request.user.agency_employee
-            qs = CaseStatus.objects.filter(
-                employer_doc__employer__agency_employee=ae
-            )
-        else:
-            qs = None
-
-        return qs
-
-
-class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                            ListFilteredMixin, ListView):
+class EmployerList(BaseFilteredListView):
     # context_object_name = 'employers'
-    http_method_names = ['get']
     model = Employer
     template_name = 'list/dashboard-employer-list.html'
     filter_set = DashboardEmployerFilter
-    authority = ''
-    agency_id = ''
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
@@ -424,17 +145,272 @@ class DashboardEmployerList(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
         return qs
 
-# Detail Views
+
+class MaidList(BaseFilteredListView):
+    context_object_name = 'maids'
+    model = Maid
+    template_name = 'list/dashboard-maid-list.html'
+    filter_set = DashboardMaidFilter
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        kwargs.update({
+            'order_by': self.request.GET.get('order-by')
+        })
+        return kwargs
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        order_by = self.request.GET.get('order-by')
+
+        if order_by:
+            if order_by == 'serialNo':
+                order_by = 'id'
+            elif order_by == '-serialNo':
+                order_by = '-id'
+            elif order_by == 'nationality':
+                order_by = 'country_of_origin'
+            elif order_by == '-nationality':
+                order_by = '-country_of_origin'
+            elif order_by == 'type':
+                order_by = 'maid_type'
+            elif order_by == '-type':
+                order_by = '-maid_type'
+            elif order_by == 'ppExpiry':
+                order_by = 'passport_expiry'
+            elif order_by == '-ppExpiry':
+                order_by = '-passport_expiry'
+            elif order_by == 'dateCreated':
+                order_by = 'created_on'
+            elif order_by == '-dateCreated':
+                order_by = '-created_on'
+            return qs.filter(
+                agency__pk=self.agency_id
+            ).order_by(order_by)
+        else:
+            return qs.filter(
+                agency__pk=self.agency_id
+            ).order_by('passport_expiry')
 
 
-class DashboardDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          DetailView):
+class SalesList(BaseFilteredListView):
+    context_object_name = 'sales'
+    model = EmployerDoc
+    template_name = 'list/dashboard-sales-list.html'
+    filter_set = DashboardSalesFilter
+
+    def get_queryset(self):
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
+            qs = chain(
+                EmployerDoc.objects.filter(
+                    employer__agency_employee__agency__pk=self.agency_id
+                ),
+                ArchivedDoc.objects.filter(
+                    agency__agency_license_no=Agency.objects.get(
+                        pk=self.agency_id
+                    ).license_number
+                ),
+            )
+        elif self.authority == AG_MANAGERS:
+            ae = self.request.user.agency_employee
+            ag_branch = ae.branch
+            ea_p_nos = ae.get_all_ea_personnel_no_in_branch()
+            qs = chain(
+                EmployerDoc.objects.filter(
+                    employer__agency_employee__branch=ag_branch
+                ),
+                ArchivedDoc.objects.filter(
+                    agency__agency_employee_ea_personnel_number__in=ea_p_nos
+                ),
+            )
+        elif self.authority == AG_SALES:
+            ae = self.request.user.agency_employee
+            ae_p_no = ae.ea_personnel_number
+            qs = chain(
+                EmployerDoc.objects.filter(
+                    employer__agency_employee=self.request.user.agency_employee
+                ),
+                ArchivedDoc.objects.filter(
+                    agency__agency_employee_ea_personnel_number=ae_p_no
+                ),
+            )
+        else:
+            qs = None
+
+        return qs
+
+
+class StatusList(BaseFilteredListView):
+    context_object_name = 'statuses'
+    model = CaseStatus
+    template_name = 'list/dashboard-status-list.html'
+    filter_set = DashboardStatusFilter
+
+    def get_queryset(self):
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
+            agency_id = self.agency_id
+            qs = CaseStatus.objects.filter(
+                employer_doc__employer__agency_employee__agency__pk=agency_id
+            )
+        elif self.authority == AG_MANAGERS:
+            ae = self.request.user.agency_employee
+            qs = CaseStatus.objects.filter(
+                employer_doc__employer__agency_employee__branch=ae.branch
+            )
+        elif self.authority == AG_SALES:
+            ae = self.request.user.agency_employee
+            qs = CaseStatus.objects.filter(
+                employer_doc__employer__agency_employee=ae
+            )
+        else:
+            qs = None
+
+        return qs
+
+
+class BaseListView(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
     http_method_names = ['get']
     authority = ''
     agency_id = ''
 
 
-class DashboardAgencyDetail(DashboardDetailView):
+class AccountList(BaseListView):
+    context_object_name = 'accounts'
+    model = AgencyEmployee
+    template_name = 'list/dashboard-account-list.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        kwargs.update({
+            'employee_accounts': {
+                'current': AgencyEmployee.objects.filter(
+                    agency=agency
+                ).count(),
+                'max': agency.amount_of_employees_allowed
+            }
+        })
+        return kwargs
+
+    def get_queryset(self):
+        if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
+            return AgencyEmployee.objects.filter(
+                agency__pk=self.agency_id
+            )
+        else:
+            return AgencyEmployee.objects.filter(
+                agency__pk=self.agency_id,
+                branch=self.request.user.agency_employee.branch
+            )
+
+
+class AgencyBranchList(BaseListView):
+    context_object_name = 'branches'
+    model = AgencyBranch
+    template_name = 'list/dashboard-agency-branch-list.html'
+
+    def get_queryset(self):
+        return AgencyBranch.objects.filter(
+            agency__pk=self.agency_id
+        )
+
+
+class BaseEnquiriesListView(AgencyLoginRequiredMixin, ListView):
+    context_object_name = 'enquiries'
+    http_method_names = ['get']
+
+
+class GeneralEnquiriesList(BaseEnquiriesListView):
+    model = GeneralEnquiry
+    template_name = 'list/dashboard-general-enquiries-list.html'
+
+
+class ShortlistedEnquiriesList(BaseEnquiriesListView):
+    model = ShortlistedEnquiry
+    template_name = 'list/dashboard-shortlisted-enquiries-list.html'
+    queryset = ShortlistedEnquiry.objects.filter()
+
+
+class BaseCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                     SuccessMessageMixin, CreateView):
+    http_method_names = ['get', 'post']
+    authority = ''
+    agency_id = ''
+
+
+class MaidInformationCreate(BaseCreateView):
+    context_object_name = 'maid_information'
+    form_class = MaidForm
+    model = Maid
+    template_name = 'form/maid-create-form.html'
+    success_message = 'Maid created'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'new_maid': True
+        })
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'form_type': 'create'
+        })
+        return kwargs
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            'dashboard_maid_languages_and_fhpdr_update',
+            kwargs={
+                'pk': self.object.pk
+            }
+        )
+
+
+class AgencyEmployeeCreate(BaseCreateView):
+    context_object_name = 'agency_employee'
+    form_class = AgencyEmployeeForm
+    model = AgencyEmployee
+    template_name = 'form/agency-employee-create-form.html'
+    success_url = reverse_lazy('dashboard_account_list')
+    success_message = 'Agency employee created'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'agency_id': self.agency_id,
+            'authority': self.authority,
+            'form_type': 'create'
+        })
+        return kwargs
+
+    def form_valid(self, form):
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        form.instance.agency = agency
+        if agency.amount_of_employees < agency.amount_of_employees_allowed:
+            return super().form_valid(form)
+        else:
+            messages.warning(
+                self.request,
+                'You have reached the limit of employee accounts',
+                extra_tags='error'
+            )
+            return super().form_invalid(form)
+
+
+class BaseDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
+    http_method_names = ['get']
+    authority = ''
+    agency_id = ''
+
+
+class AgencyDetail(BaseDetailView):
     context_object_name = 'agency'
     model = Agency
     template_name = 'detail/dashboard-agency-detail.html'
@@ -447,7 +423,7 @@ class DashboardAgencyDetail(DashboardDetailView):
         return agency
 
 
-class DashboardMaidDetail(DashboardDetailView):
+class MaidDetail(BaseDetailView):
     context_object_name = 'maid'
     model = Maid
     template_name = 'detail/dashboard-maid-detail.html'
@@ -459,27 +435,6 @@ class DashboardMaidDetail(DashboardDetailView):
             ),
             agency__pk=self.agency_id
         )
-
-# Form Views
-
-
-class DashboardAgencyEmployeeEmployerReassignment(AgencyLoginRequiredMixin,
-                                                  GetAuthorityMixin,
-                                                  SuccessMessageMixin,
-                                                  FormView):
-    form_class = None
-    http_method_names = ['get', 'post']
-    success_url = reverse_lazy('dashboard_maid_detail')
-    template_name = 'form/maid-create-form.html'
-    authority = ''
-    agency_id = ''
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        return kwargs
-
-    def form_valid(self, form):
-        pass
 
 
 class DashboardMaidSubFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
@@ -517,7 +472,7 @@ class DashboardMaidSubFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         return super().form_valid(form)
 
 
-class DashboardMaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
+class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
     context_object_name = 'maid_food_handling_preference_dietary_restriction'
     form_class = MaidLanguagesAndFHPDRForm
     success_message = 'Maid created'
@@ -612,7 +567,7 @@ class DashboardMaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         )
 
 
-class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
+class MaidExperienceFormView(DashboardMaidSubFormView):
     context_object_name = 'maid_experience'
     form_class = MaidExperienceForm
     success_message = 'Maid created'
@@ -697,7 +652,7 @@ class DashboardMaidExperienceFormView(DashboardMaidSubFormView):
         )
 
 
-class DashboardMaidAboutFDWFormView(DashboardMaidSubFormView):
+class MaidAboutFDWFormView(DashboardMaidSubFormView):
     context_object_name = 'maid_about_me'
     form_class = MaidAboutFDWForm
     success_message = 'Maid created'
@@ -721,50 +676,28 @@ class DashboardMaidAboutFDWFormView(DashboardMaidSubFormView):
         )
 
 
-class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                                SuccessMessageMixin, FormView):
-    form_class = MaidLoanTransactionFormSet
+class BaseFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                   SuccessMessageMixin, FormView):
     http_method_names = ['get', 'post']
+    authority = ''
+    agency_id = ''
+
+
+class MaidLoanFormView(BaseFormView):
+    form_class = MaidLoanTransactionFormSet
     success_url = reverse_lazy('dashboard_maid_list')
     template_name = 'form/maid-formset.html'
     pk_url_kwarg = 'pk'
-    authority = ''
-    agency_id = ''
     maid_id = ''
     success_message = 'Maid loan details updated'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            'maid_id': self.maid_id
-        })
         helper = MaidLoanTransactionFormSetHelper()
-        # helper.add_input(
-        #     Hidden(
-        #         'submitFlag',
-        #         'False',
-        #         css_id="submitFlag"
-        #     )
-        # )
         helper.form_tag = False
-        # helper.add_input(
-        #     Button(
-        #         "add",
-        #         "Add Loan Transaction",
-        #         css_class="btn btn-outline-primary w-50 mb-2 mx-auto",
-        #         css_id="addOutletButton"
-        #     )
-        # )
-        # helper.add_input(
-        #     Submit(
-        #         "save",
-        #         "Save",
-        #         css_class="btn btn-primary w-50 mb-2",
-        #         css_id="submitButton"
-        #     )
-        # )
         context.update({
-            'helper': helper
+            'helper': helper,
+            'maid_id': self.maid_id
         })
         return context
 
@@ -800,7 +733,6 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
     def form_valid(self, form):
         form.save()
-        print(form.data)
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
         else:
@@ -814,51 +746,21 @@ class DashboardMaidLoanFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
             )
 
 
-class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
-                                             GetAuthorityMixin,
-                                             SuccessMessageMixin, FormView):
+class MaidEmploymentHistoryFormView(BaseFormView):
     form_class = MaidEmploymentHistoryFormSet
-    http_method_names = ['get', 'post']
     success_url = reverse_lazy('dashboard_maid_list')
     template_name = 'form/maid-formset.html'
     pk_url_kwarg = 'pk'
-    authority = ''
-    agency_id = ''
     maid_id = ''
     success_message = 'Maid employment history updated'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            'maid_id': self.maid_id
-        })
         helper = MaidEmploymentHistoryFormSetHelper()
-        # helper.add_input(
-        #     Hidden(
-        #         'submitFlag',
-        #         'False',
-        #         css_id="submitFlag"
-        #     )
-        # )
         helper.form_tag = False
-        # helper.add_input(
-        #     Button(
-        #         "add",
-        #         "Add Employment History",
-        #         css_class="btn btn-outline-primary w-50 mb-2 mx-auto",
-        #         css_id="addButton"
-        #     )
-        # )
-        # helper.add_input(
-        #     Submit(
-        #         "save",
-        #         "Save",
-        #         css_class="btn btn-primary w-50 mb-2",
-        #         css_id="submitButton"
-        #     )
-        # )
         context.update({
-            'helper': helper
+            'helper': helper,
+            'maid_id': self.maid_id
         })
         return context
 
@@ -915,44 +817,16 @@ class DashboardMaidEmploymentHistoryFormView(AgencyLoginRequiredMixin,
         )
 
 
-class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
-                                           GetAuthorityMixin,
-                                           SuccessMessageMixin, FormView):
+class AgencyOutletDetailsFormView(BaseFormView):
     form_class = AgencyBranchFormSet
-    http_method_names = ['get', 'post']
     success_url = reverse_lazy('dashboard_agency_opening_hours_update')
     template_name = 'update/dashboard-agency-outlet-details.html'
-    authority = ''
-    agency_id = ''
     success_message = 'Agency details updated'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         helper = AgencyBranchFormSetHelper()
         helper.form_tag = False
-        # helper.add_input(
-        #     Hidden(
-        #         'submitFlag',
-        #         'False',
-        #         css_id="submitFlag"
-        #     )
-        # )
-        # helper.add_input(
-        #     Button(
-        #         "add",
-        #         "Add Outlet",
-        #         css_class="btn btn-outline-primary w-50 mb-2",
-        #         css_id="addButton"
-        #     )
-        # )
-        # helper.add_input(
-        #     Submit(
-        #         "save",
-        #         "Save",
-        #         css_class="btn btn-primary w-50 mb-2",
-        #         css_id="submitButton"
-        #     )
-        # )
         context.update({
             'helper': helper
         })
@@ -996,94 +870,25 @@ class DashboardAgencyOutletDetailsFormView(AgencyLoginRequiredMixin,
                 )
             )
 
-# Create Views
 
-
-class DashboardCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                          SuccessMessageMixin, CreateView):
+class BaseUpdateView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                     SuccessMessageMixin, UpdateView):
     http_method_names = ['get', 'post']
     authority = ''
     agency_id = ''
 
 
-class DashboardMaidInformationCreate(DashboardCreateView):
-    context_object_name = 'maid_information'
-    form_class = MaidForm
-    model = Maid
-    template_name = 'form/maid-create-form.html'
-    success_message = 'Maid created'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'new_maid': True
-        })
-        return context
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            'form_type': 'create'
-        })
-        return kwargs
-
-    def get_success_url(self) -> str:
-        return reverse_lazy(
-            'dashboard_maid_languages_and_fhpdr_update',
-            kwargs={
-                'pk': self.object.pk
-            }
-        )
+class AgencyEmployeeReassignFormView(BaseUpdateView):
+    pass
 
 
-class DashboardAgencyEmployeeCreate(DashboardCreateView):
+class AgencyEmployeeUpdate(BaseUpdateView):
     context_object_name = 'agency_employee'
     form_class = AgencyEmployeeForm
-    model = AgencyEmployee
-    template_name = 'form/agency-employee-create-form.html'
-    success_url = reverse_lazy('dashboard_account_list')
-    success_message = 'Agency employee created'
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'agency_id': self.agency_id,
-            'authority': self.authority,
-            'form_type': 'create'
-        })
-        return kwargs
-
-    def form_valid(self, form):
-        agency = Agency.objects.get(
-            pk=self.agency_id
-        )
-        form.instance.agency = agency
-        if agency.amount_of_employees < agency.amount_of_employees_allowed:
-            return super().form_valid(form)
-        else:
-            messages.warning(
-                self.request,
-                'You have reached the limit of employee accounts',
-                extra_tags='error'
-            )
-            return super().form_invalid(form)
-
-# Update Views
-
-
-class DashboardAgencyEmployeeUpdate(AgencyLoginRequiredMixin,
-                                    GetAuthorityMixin, SuccessMessageMixin,
-                                    UpdateView):
-    context_object_name = 'agency_employee'
-    form_class = AgencyEmployeeForm
-    http_method_names = ['get', 'post']
     model = AgencyEmployee
     template_name = 'form/agency-employee-create-form.html'
     success_url = reverse_lazy('dashboard_account_list')
     success_message = 'Employee details updated'
-    authority = ''
-    agency_id = ''
 
     def get_initial(self):
         initial = super().get_initial()
@@ -1109,9 +914,7 @@ class DashboardAgencyEmployeeUpdate(AgencyLoginRequiredMixin,
         return kwargs
 
 
-class DashboardAgencyInformationUpdate(AgencyLoginRequiredMixin,
-                                       GetAuthorityMixin, SuccessMessageMixin,
-                                       UpdateView):
+class AgencyInformationUpdate(BaseUpdateView):
     context_object_name = 'agency'
     form_class = AgencyUpdateForm
     http_method_names = ['get', 'post']
@@ -1128,17 +931,12 @@ class DashboardAgencyInformationUpdate(AgencyLoginRequiredMixin,
         )
 
 
-class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin,
-                                        GetAuthorityMixin, SuccessMessageMixin,
-                                        UpdateView):
+class AgencyOpeningHoursUpdate(BaseUpdateView):
     context_object_name = 'agency'
     form_class = AgencyOpeningHoursForm
-    http_method_names = ['get', 'post']
     model = AgencyOpeningHours
     template_name = 'update/dashboard-agency-update.html'
     success_url = reverse_lazy('dashboard_agency_detail')
-    authority = ''
-    agency_id = ''
     success_message = 'Agency details updated'
 
     def get_object(self, queryset=None):
@@ -1147,16 +945,12 @@ class DashboardAgencyOpeningHoursUpdate(AgencyLoginRequiredMixin,
         )
 
 
-class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin,
-                                     GetAuthorityMixin, SuccessMessageMixin,
-                                     UpdateView):
+class MaidInformationUpdate(BaseUpdateView):
     context_object_name = 'maid_information'
     form_class = MaidForm
     model = Maid
     template_name = 'form/maid-create-form.html'
     success_message = 'Maid updated'
-    authority = ''
-    agency_id = ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1185,12 +979,8 @@ class DashboardMaidInformationUpdate(AgencyLoginRequiredMixin,
             }
         )
 
-# Delete Views
 
-# Generic Views
-
-
-class DashboardDataProviderView(View):
+class DataProviderView(View):
     http_method_names = ['post']
     # fake_data = [4568,1017,3950,3898,4364,4872,3052,4346,3884,3895,4316,1998,
     #              4595,4887,4199,4518,2053,2862,3032,3752,1404,2432,3479,1108,
@@ -1772,3 +1562,71 @@ class DashboardDataProviderView(View):
             'data': chart_data
         }
         return JsonResponse(data, status=200)
+
+
+class HomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
+    template_name = 'base/dashboard-home-page.html'
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
+        dashboard_home_page_kwargs = {
+            'accounts': {
+                'current': AgencyEmployee.objects.filter(
+                    agency=agency
+                ).count(),
+                'max': agency.amount_of_employees_allowed
+            },
+            'biodata': {
+                'current': Maid.objects.filter(
+                    agency=agency
+                ).count(),
+                'max': agency.amount_of_biodata_allowed
+            },
+            'branches': {
+                'current': AgencyBranch.objects.filter(
+                    agency=agency
+                ).count(),
+                'max': None
+            },
+            'subscriptions': {
+                'current': Subscription.objects.filter(
+                    customer=Customer.objects.get(
+                        agency=agency
+                    )
+                ).count(),
+                'max': None
+            },
+            'employers': {
+                'current': 123,
+                'max': None
+            },
+            'sales': {
+                'current': 123,
+                'max': None
+            },
+            'enquiries': {
+                'current': 0,
+                'max': None
+            }
+        }
+        kwargs.update(dashboard_home_page_kwargs)
+        return kwargs
+
+
+class AgencyPlanList(AgencyOwnerRequiredMixin, ListView):
+    context_object_name = 'plans'
+    http_method_names = ['get']
+    model = AgencyPlan
+    template_name = 'list/dashboard-agency-plan-list.html'
+
+    # def get_context_data(self, **kwargs):
+    #     kwargs = super().get_context_data()
+    #     dashboard_agency_plan_kwargs = {
+    #     }
+    #     kwargs.update(dashboard_agency_plan_kwargs)
+    #     return kwargs
