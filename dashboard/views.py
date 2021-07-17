@@ -56,8 +56,6 @@ from .filters import (
 
 # Start of Views
 
-# Base Views
-
 
 class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
                            ListFilteredMixin, ListView):
@@ -917,12 +915,9 @@ class AgencyEmployeeUpdate(BaseUpdateView):
 class AgencyInformationUpdate(BaseUpdateView):
     context_object_name = 'agency'
     form_class = AgencyUpdateForm
-    http_method_names = ['get', 'post']
     model = Agency
     template_name = 'update/dashboard-agency-update.html'
     success_url = reverse_lazy('dashboard_agency_detail')
-    authority = ''
-    agency_id = ''
     success_message = 'Agency details updated'
 
     def get_object(self, queryset=None):
