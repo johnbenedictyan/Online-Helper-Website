@@ -20,50 +20,40 @@ from .mixins import PotentialEmployerGrpRequiredMixin
 # Start of Views
 
 
-class SignInView(SuccessMessageMixin, LoginView):
+class BaseLoginView(SuccessMessageMixin, LoginView):
+    success_message = 'Successful Login'
+
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        if url:
+            return url
+        else:
+            if not self.success_url:
+                raise ImproperlyConfigured(
+                    "No URL to redirect to. Provide a success_url."
+                )
+            return str(self.success_url)
+
+
+class SignInView(BaseLoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
-    success_message = 'Successful Login'
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        request = self.request
         next_hop_maid_string = 'next=' + reverse('maid_list')
-        if next_hop_maid_string in request.META.get('QUERY_STRING'):
+        if next_hop_maid_string in self.request.META.get('QUERY_STRING'):
             kwargs.update({
                 'show_disclaimer': True
             })
         return kwargs
 
-    def get_success_url(self):
-        url = self.get_redirect_url()
-        if url:
-            return url
-        else:
-            if not self.success_url:
-                raise ImproperlyConfigured(
-                    "No URL to redirect to. Provide a success_url."
-                )
-            return str(self.success_url)  # success_url may be lazy
 
-
-class AgencySignInView(SuccessMessageMixin, LoginView):
+class AgencySignInView(BaseLoginView):
     template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
-    success_message = 'Successful Login'
     success_url = reverse_lazy('dashboard_home')
-
-    def get_success_url(self):
-        url = self.get_redirect_url()
-        if url:
-            return url
-        else:
-            if not self.success_url:
-                raise ImproperlyConfigured(
-                    "No URL to redirect to. Provide a success_url."
-                )
-            return str(self.success_url)  # success_url may be lazy
 
 
 class SignOutView(LoginRequiredMixin, RedirectView):
