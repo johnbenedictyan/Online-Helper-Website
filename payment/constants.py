@@ -1,5 +1,9 @@
+# Django Imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+# Start of Constants
+
 
 class SubscriptionStatusChoices(models.TextChoices):
     INCOMPLETE = 'INCOMPLETE', _('Incomplete')
@@ -9,11 +13,13 @@ class SubscriptionStatusChoices(models.TextChoices):
     PAST_DUE = 'PAST_DUE', _('Past Due')
     CANCELED = 'CANCELED', _('Canceled')
     UNPAID = 'UNPAID', _('Unpaid')
-    
+
+
 class SubscriptionTypeChoices(models.TextChoices):
     PLAN = 'PLAN', _('Plan')
     ADVERTISEMENT = 'AD', _('Advertisement')
-    
+
+
 SubscriptionLimitMap = {
     "prod_IlJqpv40JRgCa6": {
         "name": "Premium Platform & CRM Plan",

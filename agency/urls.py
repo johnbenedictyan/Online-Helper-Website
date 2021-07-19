@@ -1,26 +1,11 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
-## Form Views
-from .views import AgencySignUp
-
-## List Views
-from .views import AgencyList
-
-## Detail Views
-from .views import AgencyDetail
-
-## Create Views
-from .views import AgencyCreate, AgencyOwnerCreate
-
-## Update Views
-
-## Delete Views
-from .views import AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
+# App Imports
+from .views import (
+    AgencySignUp, AgencyList, AgencyDetail, AgencyCreate, AgencyOwnerCreate,
+    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
+)
 
 # Start of Urls
 

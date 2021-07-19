@@ -1,7 +1,7 @@
-# Imports from modules
+# Global Imports
 from datetime import datetime
 
-# Imports from django
+# Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,27 +17,26 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from project-wide files
-
-# Imports from foreign installed apps
+# Foreign Apps Imports
 import stripe
+
+# Project Apps Imports
 from agency.mixins import (
-    AgencyOwnerRequiredMixin, GetAuthorityMixin, OnlineMaidStaffRequiredMixin
+    AgencyOwnerRequiredMixin, GetAuthorityMixin, OMStaffRequiredMixin
 )
 from onlinemaid.mixins import SuccessMessageMixin
 
-# Imports from local app
+# App Imports
 from .constants import (
     SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
 )
-
 from .forms import (
     SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
     SubscriptionProductPriceCreationForm
 )
 from .models import (
-    Invoice, Customer, Subscription, SubscriptionProduct, 
-    SubscriptionProductPrice, SubscriptionProductImage 
+    Customer, Invoice, Subscription, SubscriptionProduct,
+    SubscriptionProductPrice, SubscriptionProductImage
 )
 
 # Stripe Settings
@@ -45,7 +44,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Start of Views
 
-# Template Views
+
 class ViewCart(TemplateView):
     template_name = 'base/cart.html'
 
@@ -59,12 +58,12 @@ class ViewCart(TemplateView):
         )
         return context
 
-# Redirect Views
+
 class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
                      RedirectView):
     authority = ''
     agency_id = ''
-    
+
     def get_redirect_url(self, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         customer_id = Customer.objects.get(
@@ -77,11 +76,12 @@ class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
             ),
         )
         return session.url
-    
+
+
 class CheckoutSuccess(RedirectView):
     http_method_names = ['get']
     pattern_name = 'dashboard_home'
-    
+
     def get_redirect_url(self, *args, **kwargs):
         self.request.session['cart'] = []
         messages.success(
@@ -90,11 +90,12 @@ class CheckoutSuccess(RedirectView):
             extra_tags='success'
         )
         return super().get_redirect_url()
-    
+
+
 class CheckoutCancel(RedirectView):
     http_method_names = ['get']
     pattern_name = 'view_cart'
-    
+
     def get_redirect_url(self, *args, **kwargs):
         messages.info(
             self.request,
@@ -103,6 +104,7 @@ class CheckoutCancel(RedirectView):
         )
         return super().get_redirect_url()
 
+
 class ToggleSubscriptionProductArchive(RedirectView):
     http_method_names = ['get']
     pk_url_kwarg = 'pk'
@@ -110,7 +112,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         try:
             subscription_prod = SubscriptionProduct.objects.get(
-                pk = self.kwargs.get(
+                pk=self.kwargs.get(
                     self.pk_url_kwarg
                 )
             )
@@ -123,7 +125,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
             try:
                 stripe.Product.modify(
                     subscription_prod.pk,
-                    active = not SubscriptionProduct.archived
+                    active=not SubscriptionProduct.archived
                 )
             except Exception as e:
                 print(e)
@@ -136,6 +138,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
                 'admin_panel'
             )
 
+
 class AddToCart(RedirectView):
     pattern_name = 'view_cart'
 
@@ -143,7 +146,7 @@ class AddToCart(RedirectView):
         current_cart = self.request.session.get('cart', [])
         try:
             select_product_price = SubscriptionProductPrice.objects.get(
-                pk = kwargs.get('pk')
+                pk=kwargs.get('pk')
             )
         except SubscriptionProductPrice.DoesNotExist:
             messages.error(
@@ -169,19 +172,20 @@ class AddToCart(RedirectView):
                         If you would like to change that subscription,
                         <a href="{reverse_lazy('stripe_customer_portal')}">
                             Click Here
-                        </a> 
+                        </a>
                         ''',
                         extra_tags='error'
                     )
                     kwargs.pop('pk')
                     return reverse_lazy('dashboard_agency_plan_list')
-                
+
             current_cart.append(
                 select_product_price.pk
             )
             self.request.session['cart'] = current_cart
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
+
 
 class RemoveFromCart(RedirectView):
     pattern_name = 'view_cart'
@@ -190,7 +194,7 @@ class RemoveFromCart(RedirectView):
         current_cart = self.request.session.get('cart', [])
         try:
             select_product_price = SubscriptionProductPrice.objects.get(
-                pk = kwargs.get('pk')
+                pk=kwargs.get('pk')
             )
         except SubscriptionProductPrice.DoesNotExist:
             messages.error(
@@ -200,7 +204,7 @@ class RemoveFromCart(RedirectView):
         else:
             if select_product_price.pk not in current_cart:
                 messages.error(
-                self.request,
+                    self.request,
                     'This product is not in your cart'
                 )
             else:
@@ -211,7 +215,7 @@ class RemoveFromCart(RedirectView):
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
-# List Views
+
 class InvoiceList(LoginRequiredMixin, ListView):
     context_object_name = 'invoice'
     http_method_names = ['get']
@@ -220,57 +224,60 @@ class InvoiceList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Invoice.objects.filter(
-            agency__pk = self.request.user.pk
+            agency__pk=self.request.user.pk
         )
 
-class SubscriptionProductList(OnlineMaidStaffRequiredMixin, ListView):
+
+class SubscriptionProductList(OMStaffRequiredMixin, ListView):
     context_object_name = 'subscription_products'
     http_method_names = ['get']
     model = SubscriptionProduct
     template_name = 'list/subscription-product-list.html'
-    
-class SubscriptionProductImageList(OnlineMaidStaffRequiredMixin, ListView):
+
+
+class SubscriptionProductImageList(OMStaffRequiredMixin, ListView):
     context_object_name = 'subscription_product_images'
     http_method_names = ['get']
     model = SubscriptionProductImage
     template_name = 'list/subscription-product-image-list.html'
-    
+
     def get_queryset(self):
         return get_list_or_404(
             SubscriptionProductImage,
-            subscription_product__pk = self.kwargs.get('pk')
+            subscription_product__pk=self.kwargs.get('pk')
         )
 
-class SubscriptionProductPriceList(OnlineMaidStaffRequiredMixin, ListView):
+
+class SubscriptionProductPriceList(OMStaffRequiredMixin, ListView):
     context_object_name = 'subscription_product_prices'
     http_method_names = ['get']
     model = SubscriptionProductPrice
     template_name = 'list/subscription-product-price-list.html'
-    
+
     def get_queryset(self):
         return get_list_or_404(
             SubscriptionProductPrice,
-            subscription_product__pk = self.kwargs.get('pk')
+            subscription_product__pk=self.kwargs.get('pk')
         )
 
-# Detail Views
+
 class InvoiceDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'invoice'
     http_method_names = ['get']
     model = Invoice
     template_name = 'invoice-detail.html'
 
-# Create Views
-class SubscriptionProductCreate(OnlineMaidStaffRequiredMixin,
+
+class SubscriptionProductCreate(OMStaffRequiredMixin,
                                 SuccessMessageMixin, CreateView):
     context_object_name = 'subscription_product'
     form_class = SubscriptionProductCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = SubscriptionProduct
     template_name = 'create/subscription-product-create.html'
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product created'
-    
+
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
         subscription_product_name = cleaned_data.get('name')
@@ -278,26 +285,27 @@ class SubscriptionProductCreate(OnlineMaidStaffRequiredMixin,
         subscription_product_active = cleaned_data.get('active')
         try:
             stripe_product = stripe.Product.create(
-                name = subscription_product_name,
-                description = subscription_product_description,
-                active = subscription_product_active
+                name=subscription_product_name,
+                description=subscription_product_description,
+                active=subscription_product_active
             )
-        except Exception as e:
+        except Exception:
             form.add_error(None, 'Something wrong happened. Please try again!')
         else:
             form.instance.id = stripe_product.id
         return super().form_valid(form)
 
-class SubscriptionProductImageCreate(OnlineMaidStaffRequiredMixin,
-                                SuccessMessageMixin, CreateView):
+
+class SubscriptionProductImageCreate(OMStaffRequiredMixin,
+                                     SuccessMessageMixin, CreateView):
     context_object_name = 'subscription_product_image'
     form_class = SubscriptionProductImageCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = SubscriptionProductImage
     template_name = 'create/subscription-product-image-create.html'
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product Image created'
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
@@ -306,29 +314,30 @@ class SubscriptionProductImageCreate(OnlineMaidStaffRequiredMixin,
             )
         })
         return kwargs
-    
-class SubscriptionProductPriceCreate(OnlineMaidStaffRequiredMixin,
-                                SuccessMessageMixin, CreateView):
+
+
+class SubscriptionProductPriceCreate(OMStaffRequiredMixin,
+                                     SuccessMessageMixin, CreateView):
     context_object_name = 'subscription_product_price'
     form_class = SubscriptionProductPriceCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = SubscriptionProductPrice
     template_name = 'create/subscription-product-price-create.html'
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product Price created'
-    
+
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
         subscription_product = SubscriptionProduct.objects.get(
-            pk = self.kwargs.get(
+            pk=self.kwargs.get(
                 self.pk_url_kwarg
-            )  
+            )
         )
         try:
             stripe_product = stripe.Product.retrieve(
                 subscription_product.pk
             )
-        except Exception as e:
+        except Exception:
             form.add_error(None, 'This product does not exist!')
         else:
             subscription_product_currency = cleaned_data.get('currency')
@@ -350,10 +359,10 @@ class SubscriptionProductPriceCreate(OnlineMaidStaffRequiredMixin,
                         'interval_count': subscription_product_interval_count,
                         'usage_type': 'licensed'
                     },
-                    active = subscription_product_active,
-                    product = stripe_product.id
+                    active=subscription_product_active,
+                    product=stripe_product.id
                 )
-            except Exception as e:
+            except Exception:
                 form.add_error(
                     None,
                     _('Something wrong happened. Please try again!')
@@ -362,42 +371,42 @@ class SubscriptionProductPriceCreate(OnlineMaidStaffRequiredMixin,
                 form.instance.id = stripe_price.id
                 form.instance.subscription_product = subscription_product
         return super().form_valid(form)
-    
-# Delete Views
-class SubscriptionProductImageDelete(OnlineMaidStaffRequiredMixin,
-                                SuccessMessageMixin, DeleteView):
+
+
+class SubscriptionProductImageDelete(OMStaffRequiredMixin,
+                                     SuccessMessageMixin, DeleteView):
     context_object_name = 'subscription_product_image'
     http_method_names = ['post']
     model = SubscriptionProductImage
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product Image deleted'
-    
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         product_images = [
             img.photo.url for img in SubscriptionProductImage.objects.filter(
-                subscription_product = self.object
+                subscription_product=self.object
             )
         ]
         try:
             stripe.Product.modify(
                 self.object.pk,
-                images = product_images
+                images=product_images
             )
         except Exception as e:
             print(e)
-            
+
         return super().delete(request, *args, **kwargs)
-    
-# Generic Views
+
+
 class CheckoutSession(View):
     http_method_names = ['post']
-    
+
     def post(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             if self.request.user.groups.filter(
                 name='Agency Owners'
-            ).exists() == True:
+            ).exists():
                 try:
                     checkout_session = stripe.checkout.Session.create(
                         success_url=request.build_absolute_uri(
@@ -409,9 +418,9 @@ class CheckoutSession(View):
                         customer=Customer.objects.get(
                             agency__pk=request.user.agency_owner.agency.pk
                         ).pk,
-                        payment_method_types = ['card'],
-                        mode = 'subscription',
-                        line_items = [
+                        payment_method_types=['card'],
+                        mode='subscription',
+                        line_items=[
                             {
                                 'price': i,
                                 'quantity': 1
@@ -430,7 +439,7 @@ class CheckoutSession(View):
                                 'message': str(e)
                             }
                         },
-                        status = 400
+                        status=400
                     )
             else:
                 return JsonResponse(
@@ -439,7 +448,7 @@ class CheckoutSession(View):
                             'message': 'Agency Owner Required'
                         }
                     },
-                    status = 400
+                    status=400
                 )
         else:
             return JsonResponse(
@@ -448,17 +457,18 @@ class CheckoutSession(View):
                         'message': 'Login Required'
                     }
                 },
-                status = 400
+                status=400
             )
-            
+
+
 class StripeWebhookView(View):
     http_method_names = ['post']
     endpoint_secret = 'whsec_7VRZrfVz3dwOCo49n2uLdIyibwXpOdeo'
-    
+
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         payload = request.body
         sig_header = request.META['HTTP_STRIPE_SIGNATURE']
@@ -468,14 +478,14 @@ class StripeWebhookView(View):
             event = stripe.Webhook.construct_event(
                 payload, sig_header, self.endpoint_secret
             )
-        except ValueError as e:
+        except ValueError:
             # Invalid payload
             return HttpResponse(status=400)
-        except stripe.error.SignatureVerificationError as e:
+        except stripe.error.SignatureVerificationError:
             # Invalid signature
             return HttpResponse(status=400)
         else:
-            if event.type=='invoice.created':
+            if event.type == 'invoice.created':
                 Subscription.objects.get_or_create(
                     id=event.data.object.subscription,
                     customer=Customer.objects.get(
@@ -486,7 +496,7 @@ class StripeWebhookView(View):
                     ),
                     status=SubscriptionStatusChoices.UNPAID
                 )
-            if event.type=='invoice.paid':
+            if event.type == 'invoice.paid':
                 subscription = Subscription.objects.get(
                     id=event.data.object.subscription
                 )
@@ -498,8 +508,8 @@ class StripeWebhookView(View):
                 )
                 subscription.status = SubscriptionStatusChoices.ACTIVE
                 subscription.save()
-                
-            if event.type=='invoice.payment_failed':
+
+            if event.type == 'invoice.payment_failed':
                 print(event)
-                
+
             return HttpResponse(status=200)

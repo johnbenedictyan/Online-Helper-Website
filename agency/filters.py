@@ -1,26 +1,30 @@
-# Imports from django
+# Django Imports
 from django.db.models import Q
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
-import django_filters
+# Foreign Apps Imports
+from django_filters import CharFilter as DjangoFiltersCharFilter
+from django_filters import ChoiceFilter as DjangoFiltersChoiceFilter
+from django_filters import FilterSet as DjangoFiltersFilterSet
 
-# Imports from local apps
+# App Imports
 from .constants import AreaChoices
 from .models import Agency
 
 # Start of Filters
-class AgencyFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(
+
+
+class AgencyFilter(DjangoFiltersFilterSet):
+    name = DjangoFiltersCharFilter(
         label='Search',
         method='custom_agency_filter',
         widget=TextInput(attrs={'placeholder': 'Agency, address, tel...'}),
     )
-    branches__area = django_filters.ChoiceFilter(
-        label = _('Location'),
-        choices = AreaChoices.choices,
-        empty_label = _('Any')
+    branches__area = DjangoFiltersChoiceFilter(
+        label=_('Location'),
+        choices=AreaChoices.choices,
+        empty_label=_('Any')
     )
 
     class Meta:
@@ -29,7 +33,7 @@ class AgencyFilter(django_filters.FilterSet):
             'name': ['exact'],
             'branches__area': ['exact'],
         }
-    
+
     def custom_agency_filter(self, queryset, name, value):
         return queryset.filter(
             Q(name__icontains=value) |

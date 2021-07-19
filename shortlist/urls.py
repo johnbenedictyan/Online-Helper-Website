@@ -1,9 +1,7 @@
-# Imports from django
+# Django Imports
 from django.urls import path
 
-# Imports from foreign installed apps
-
-# Imports from local apps
+# App Imports
 from .views import AddTo, RemoveFrom, ViewShortlist
 
 # Start of Urls

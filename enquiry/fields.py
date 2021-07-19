@@ -1,9 +1,9 @@
-# Imports from django
+# Django Imports
 from django import forms
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 
-# Imports from local apps
+# App Imports
 
 # Start of Fields
 class MaidResponsibilityChoiceField(forms.ModelMultipleChoiceField):

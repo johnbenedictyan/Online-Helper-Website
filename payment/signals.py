@@ -1,13 +1,13 @@
-# Imports from python
+# Global Imports
 
-# Imports from django
+# Django Imports
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-# Imports from other apps
+# Project Apps Imports
 
-# Imports from within the app
+# App Imports
 from .constants import (
     SubscriptionStatusChoices, SubscriptionLimitMap
 )

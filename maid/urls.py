@@ -1,30 +1,22 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
-## Form Views
-
-## Redirect Views
+# Redirect Views
 from .views import MaidTogglePublished, MaidToggleFeatured
 
-## List Views
+# List Views
 from .views import MaidList
 
-## Detail Views
+# Detail Views
 from .views import MaidDetail, PdfMaidBiodataView
 
-## Create Views
-
-## Update Views
+# Update Views
 from .views import MaidLoanTransactionUpdate
 
-## Delete Views
+# Delete Views
 from .views import MaidDelete
 
-## Generic Views
+# Generic Views
 from .views import MaidProfileView, FeaturedMaidListView
 
 # Start of Urls

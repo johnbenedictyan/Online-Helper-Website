@@ -1,23 +1,19 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 
-# Imports from foreign installed apps
-
-# Imports from local app
-
-## List Views
+# List Views
 from .views import AdvertisementList
 
-## Detail Views
+# Detail Views
 from .views import AdvertisementDetail
 
-## Create Views
+# Create Views
 from .views import AdvertisementCreate
 
-## Update Views
+# Update Views
 from .views import AdvertisementUpdate
 
-## Delete Views
+# Delete Views
 from .views import AdvertisementDelete
 
 # Start of Urls

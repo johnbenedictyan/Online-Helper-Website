@@ -1,4 +1,4 @@
-# Imports from django
+# Django Imports
 from django import forms
 from django.core.mail import BadHeaderError, send_mail
 from django.conf import settings
@@ -8,65 +8,66 @@ from django.contrib.auth.password_validation import validate_password
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
-# Imports from local apps
+# Project Apps Imports
 from employer_documentation.models import EmployerDoc
+
+# App Imports
 from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
 from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner, PotentialAgency
+    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner,
+    PotentialAgency
 )
 
 # Start of Forms
 
-# Forms that inherit from inbuilt Django forms
 
-# Model Forms
 class AgencyForm(forms.ModelForm):
     main_branch_name = forms.CharField(
         label=_('Branch Name'),
         max_length=100,
         required=False
     )
-    
+
     main_branch_address_1 = forms.CharField(
         label=_('Address Line 1'),
         max_length=100,
         required=True
     )
-    
+
     main_branch_address_2 = forms.CharField(
         label=_('Address Line 2'),
         max_length=100,
         required=True
     )
-    
+
     main_branch_postal_code = forms.CharField(
         label=_('Postal Code'),
         max_length=100,
         required=True
     )
-    
+
     main_branch_email = forms.CharField(
         label=_('Email'),
         max_length=100,
         required=True
     )
-    
+
     main_branch_office_number = forms.CharField(
         label=_('Office No'),
         max_length=100,
         required=True
     )
-    
+
     main_branch_mobile_number = forms.CharField(
         label=_('Mobile Number'),
         max_length=100,
         required=True
     )
-    
+
     opening_hours_type = forms.ChoiceField(
         label=_('Agency\'s operating hours type'),
         required=True,
@@ -120,7 +121,7 @@ class AgencyForm(forms.ModelForm):
         max_length=30,
         required=False
     )
-    
+
     class Meta:
         model = Agency
         fields = ['name', 'license_number', 'website_uri', 'logo',
@@ -301,7 +302,7 @@ class AgencyForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
-    
+
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
         new_agency = super().save()
@@ -315,7 +316,7 @@ class AgencyForm(forms.ModelForm):
             mobile_number=cleaned_data.get('main_branch_mobile_number'),
             main_branch=True
         )
-        
+
         AgencyOpeningHours.objects.create(
             agency=new_agency,
             type=cleaned_data.get('opening_hours_type'),
@@ -330,14 +331,15 @@ class AgencyForm(forms.ModelForm):
         )
         return new_agency
 
+
 class AgencyUpdateForm(forms.ModelForm):
     class Meta:
         model = Agency
         fields = [
-            'name', 'license_number', 'website_uri', 'logo', 'profile', 
+            'name', 'license_number', 'website_uri', 'logo', 'profile',
             'services'
         ]
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['profile'].label = ""
@@ -403,7 +405,8 @@ class AgencyUpdateForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-        
+
+
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),
@@ -467,7 +470,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
         UserModel = get_user_model()
 
         try:
-            user = UserModel.objects.get(
+            UserModel.objects.get(
                 email=email
             )
         except UserModel.DoesNotExist:
@@ -479,7 +482,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
         if validate_password(password):
             msg = _('This password does not meet our requirements')
             self.add_error('password', msg)
-            
+
         return cleaned_data
 
     def save(self, *args, **kwargs):
@@ -490,12 +493,12 @@ class AgencyOwnerCreationForm(forms.ModelForm):
                 email=cleaned_data.get('email'),
                 password=cleaned_data.get('password')
             )
-        except Exception as e:
+        except Exception:
             pass
         else:
             agency_owner_group = Group.objects.get(
                 name='Agency Owners'
-            ) 
+            )
             agency_owner_group.user_set.add(
                 new_user
             )
@@ -504,12 +507,13 @@ class AgencyOwnerCreationForm(forms.ModelForm):
 
             return super().save(*args, **kwargs)
 
+
 class AgencyEmployeeForm(forms.ModelForm):
     pk = None
     agency_id = None
     authority = None
     form_type = None
-    
+
     password = forms.CharField(
         label=_('Password'),
         required=True,
@@ -519,7 +523,7 @@ class AgencyEmployeeForm(forms.ModelForm):
 
     class Meta:
         model = AgencyEmployee
-        exclude = ['agency','user']
+        exclude = ['agency', 'user']
 
     def __init__(self, *args, **kwargs):
         # Limit the choices of the foreign key branch to just the branches
@@ -527,22 +531,22 @@ class AgencyEmployeeForm(forms.ModelForm):
         self.form_type = kwargs.pop('form_type')
         self.agency_id = kwargs.pop('agency_id')
         self.authority = kwargs.pop('authority')
-        
+
         if self.form_type == 'update':
             self.pk = kwargs.pop('pk')
-            
+
         super().__init__(*args, **kwargs)
         branch_list = AgencyBranch.objects.filter(
-            agency = Agency.objects.get(
-                pk = self.agency_id
+            agency=Agency.objects.get(
+                pk=self.agency_id
             )
         )
-        
+
         if self.form_type == 'create':
             self.fields['branch'].queryset = branch_list
             self.fields['branch'].initial = branch_list[0]
             self.fields['ea_personnel_number'].initial = ''
-        
+
         if self.form_type == 'update':
             self.fields['password'].required = False
             self.fields['password'].help_text = _(
@@ -552,7 +556,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                 self.fields['ea_personnel_number'].disabled = True
                 self.fields['branch'].disabled = True
                 self.fields['role'].disabled = True
-            
+
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -625,7 +629,7 @@ class AgencyEmployeeForm(forms.ModelForm):
         UserModel = get_user_model()
 
         try:
-            user = UserModel.objects.get(
+            UserModel.objects.get(
                 email=email
             )
         except UserModel.DoesNotExist:
@@ -639,14 +643,13 @@ class AgencyEmployeeForm(forms.ModelForm):
             if validate_password(password):
                 msg = _('This password does not meet our requirements')
                 self.add_error('password', msg)
-                
+
         ea_personnel_number = cleaned_data.get('ea_personnel_number')
         if role == AgencyEmployeeRoleChoices.SALES_STAFF:
             if not ea_personnel_number:
                 msg = _('EA Personnle Number is required')
                 self.add_error('ea_personnel_number', msg)
-                
-            
+
         return cleaned_data
 
     def save(self, *args, **kwargs):
@@ -660,24 +663,24 @@ class AgencyEmployeeForm(forms.ModelForm):
             'AM': 'Agency Admin Staff'
         }
         email = cleaned_data.get("email")
-        
+
         if self.form_type == 'update':
             employee = AgencyEmployee.objects.get(
-                pk = self.pk
+                pk=self.pk
             )
 
             old_agency_employee_group = Group.objects.get(
                 name=role_name_dict[employee.role]
-            ) 
+            )
 
             new_agency_employee_group = Group.objects.get(
                 name=role_name_dict[role]
-            ) 
+            )
 
             if self.instance.user.email != cleaned_data.get('email'):
                 employee.user.email = cleaned_data.get('email')
                 employee.user.save()
-            
+
             if cleaned_data.get('password'):
                 employee.user.set_password(cleaned_data.get('password'))
                 employee.user.save()
@@ -687,7 +690,10 @@ class AgencyEmployeeForm(forms.ModelForm):
                 new_agency_employee_group.user_set.add(employee.user)
 
             if self.changed_data:
-                if 'name' in self.changed_data or 'ea_personnel_number' in self.changed_data:
+                if (
+                    'name' in self.changed_data or
+                    'ea_personnel_number' in self.changed_data
+                ):
                     employer_doc_qs = EmployerDoc.objects.filter(
                         employer__agency_employee=self.instance
                     )
@@ -700,12 +706,12 @@ class AgencyEmployeeForm(forms.ModelForm):
                     email=email,
                     password=cleaned_data.get('password')
                 )
-            except Exception as e:
+            except Exception:
                 pass
             else:
                 agency_employee_group = Group.objects.get(
                     name=role_name_dict[role]
-                ) 
+                )
                 agency_employee_group.user_set.add(
                     new_user
                 )
@@ -720,6 +726,7 @@ class AgencyEmployeeForm(forms.ModelForm):
         self.instance.role = cleaned_data.get('role')
         return super().save(*args, **kwargs)
 
+
 class AgencyBranchForm(forms.ModelForm):
     class Meta:
         model = AgencyBranch
@@ -727,7 +734,7 @@ class AgencyBranchForm(forms.ModelForm):
         widgets = {
             'main_branch': forms.RadioSelect()
         }
-    
+
     def clean(self):
         cleaned_data = super().clean()
         branch_name = cleaned_data.get('name')
@@ -738,14 +745,14 @@ class AgencyBranchForm(forms.ModelForm):
                 main_branch=True
             )
         except AgencyBranch.DoesNotExist:
-            if main_branch == False:
+            if not main_branch:
                 msg = _('You must have at least one main branch')
                 self.add_error('main_branch', msg)
         else:
             if AgencyBranch.objects.filter(
                 agency=self.agency
             ).count() >= 2:
-                if main_branch == True and branch_name != current_main_branch.name:
+                if main_branch and branch_name != current_main_branch.name:
                     msg = _(f"""
                         {current_main_branch} is already set as the main branch
                     """)
@@ -761,45 +768,51 @@ class AgencyBranchForm(forms.ModelForm):
         WEST = 'W'
 
         postal_code_area_dict = {
-            CENTRAL : [
-                '01','02','03','04','05','06','07','08','09','10','14','15',
-                '16','17','18','19','20','21','22','23','24','25','26','27',
-                '28','29','30','31','32','33','34','35','36','37','38','39',
-                '40','41','58','59','77','78'
+            CENTRAL: [
+                '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+                '14', '15', '16', '17', '18', '19', '20', '21', '22', '23',
+                '24', '25', '26', '27', '28', '29', '30', '31', '32', '33',
+                '34', '35', '36', '37', '38', '39', '40', '41', '58', '59',
+                '77', '78'
             ],
-            NORTH : [
-                '69','70','71','72','73','75','76'
+            NORTH: [
+                '69', '70', '71', '72', '73', '75', '76'
             ],
-            NORTH_EAST : [
-                '53','54','55','56','57','79','80','82'
+            NORTH_EAST: [
+                '53', '54', '55', '56', '57', '79', '80', '82'
             ],
-            EAST : [
-                '42','43','44','45','46','47','48','49','50','51','52','81'
+            EAST: [
+                '42', '43', '44', '45', '46', '47', '48', '49', '50', '51',
+                '52', '81'
             ],
-            WEST : [
-                '11','12','13','60','61','62','63','64','65','66','67','68'
+            WEST: [
+                '11', '12', '13', '60', '61', '62', '63', '64', '65', '66',
+                '67', '68'
             ]
         }
         cleaned_data = self.cleaned_data
         postal_code = cleaned_data.get('postal_code')
-        for k,v in postal_code_area_dict.items():
+        for k, v in postal_code_area_dict.items():
             if str(postal_code[:2]) in v:
                 self.instance.area = k
 
         self.instance.agency = self.agency
 
         main_branch = cleaned_data.get("main_branch")
-        if main_branch == True:
+        if main_branch:
             if not (
-                self.agency.get_main_branch() == self.instance and 
-                not('address_1' in self.changed_data or 'address_2' in self.changed_data)
+                self.agency.get_main_branch() == self.instance and
+                not(
+                    'address_1' in self.changed_data or
+                    'address_2' in self.changed_data
+                )
             ):
                 employer_doc_qs = EmployerDoc.objects.filter(
                     employer__agency_employee__agency=self.agency
                 )
                 for employer_doc in employer_doc_qs:
                     employer_doc.increment_version_number()
-            
+
         return super().save(*args, **kwargs)
 
     def __init__(self, *args, **kwargs):
@@ -816,7 +829,7 @@ class AgencyBranchForm(forms.ModelForm):
                         Column(
                             HTML(
                                 '''
-                                <button class="btn btn-outline-primary 
+                                <button class="btn btn-outline-primary
                                                 eh-delete-button"
                                         data-rowNumber="1"
                                 >
@@ -864,6 +877,7 @@ class AgencyBranchForm(forms.ModelForm):
                 css_class='form-group',
             )
         )
+
 
 class AgencyOpeningHoursForm(forms.ModelForm):
     class Meta:
@@ -928,7 +942,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'monday_end',
@@ -952,7 +968,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'tuesday_end',
@@ -976,7 +994,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'wednesday_end',
@@ -1000,7 +1020,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'thursday_end',
@@ -1024,7 +1046,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'friday_end',
@@ -1048,7 +1072,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'saturday_end',
@@ -1072,7 +1098,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'sunday_end',
@@ -1086,7 +1114,11 @@ class AgencyOpeningHoursForm(forms.ModelForm):
             ),
             Div(
                 HTML(
-                    '<label class="col-sm col-form-label">Public Holidays</label>'
+                    '''
+                        <label class="col-sm col-form-label">
+                            Public Holidays
+                        </label>
+                    '''
                 ),
                 Div(
                     'public_holiday_start',
@@ -1096,7 +1128,9 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '-',
                     ),
-                    css_class='col-0-5 form-group text-center align-self-center'
+                    css_class='''
+                        col-0-5 form-group text-center align-self-center
+                    '''
                 ),
                 Div(
                     'public_holiday_end',
@@ -1112,7 +1146,8 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 Column(
                     HTML(
                         '''
-                        <a href="{% url 'dashboard_agency_outlet_details_update' %}"
+                        <a href="
+                        {% url 'dashboard_agency_outlet_details_update' %}"
                         class="btn btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
@@ -1126,9 +1161,10 @@ class AgencyOpeningHoursForm(forms.ModelForm):
             )
         )
 
+
 class PotentialAgencyForm(forms.ModelForm):
     terms_and_conditions = forms.BooleanField()
-    
+
     placeholders = {
         'name': 'Test Agency',
         'license_number': 'abc123',
@@ -1137,7 +1173,7 @@ class PotentialAgencyForm(forms.ModelForm):
         'office_number': '61234567',
         'email': 'john@testagency.com'
     }
-    
+
     class Meta:
         model = PotentialAgency
         fields = '__all__'
@@ -1145,11 +1181,12 @@ class PotentialAgencyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['terms_and_conditions'].label = f'''
-            I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions_agency')}" target="_blank">
+            I agree to the
+            <a href="{reverse_lazy('terms_and_conditions_agency')}"
+            target="_blank">
                 terms of service
-            </a> 
-            as well as the 
+            </a>
+            as well as the
             <a href="{reverse_lazy('privacy_policy')}" target="_blank">
                 privacy policy
             </a> of Online Maid
@@ -1212,19 +1249,19 @@ class PotentialAgencyForm(forms.ModelForm):
             Agency.objects.get(
                 license_number=license_number
             )
-        except Agency.DoesNotExist as e:
+        except Agency.DoesNotExist:
             pass
         else:
             msg = _('This license number is taken')
             self.add_error('license_number', msg)
         return license_number
-    
+
     def clean_terms_and_conditions(self):
         terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
-        if terms_and_conditions == False:
+        if not terms_and_conditions:
             msg = -('You must agree to sign up for our services')
             self.add_error('terms_and_conditions', msg)
-            
+
         return terms_and_conditions
 
     def save(self, *args, **kwargs):
@@ -1257,4 +1294,4 @@ class PotentialAgencyForm(forms.ModelForm):
                 msg = _('There is an error in this email. Please try again')
                 self.add_error('email', msg)
 
-        return super().save(*args, **kwargs)    
+        return super().save(*args, **kwargs)
