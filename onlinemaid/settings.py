@@ -78,9 +78,6 @@ INSTALLED_APPS = [
     'shortlist',
     'website',
     'enquiry',
-
-    # DEBUG mode only packages, to be REMOVED before production #
-    # 'sslserver',
 ]
 
 MIDDLEWARE = [
