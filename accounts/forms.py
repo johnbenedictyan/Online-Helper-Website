@@ -1,4 +1,4 @@
-# Imports from django
+# Django Imports
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
@@ -8,25 +8,25 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from onlinemaid.constants import (
-    AG_OWNERS, P_EMPLOYERS
-)
 
-# Imports from local apps
+# Project Apps Imports
+from onlinemaid.constants import AG_OWNERS, P_EMPLOYERS
+
+# App Imports
 from .models import PotentialEmployer
 
 # Start of Forms
 
-# Forms that inherit from inbuilt Django forms
+
 class SignInForm(AuthenticationForm):
     # This is done because the success_url in the loginview does not seem
     # to override the default settings.login_redirect_url which is
     # accounts.profile
 
-    # Will need to see if this affects the next url when passed in from a 
+    # Will need to see if this affects the next url when passed in from a
     # mixin like login required
 
     # We cannot have it to be a static redirect, the next url must take
@@ -38,11 +38,11 @@ class SignInForm(AuthenticationForm):
     }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
+        super().__init__(*args, **kwargs)
         for k, v in self.placeholders.items():
             self.fields[k].widget.attrs['placeholder'] = v
         self.fields['password'].help_text = '''
-            <a class='ml-1' 
+            <a class='ml-1'
             href="{% url 'password_reset' %}">Forget your password?</a>
         '''
         self.helper = FormHelper()
@@ -83,12 +83,13 @@ class SignInForm(AuthenticationForm):
             ),
         )
 
+
 class AgencySignInForm(AuthenticationForm):
     # This is done because the success_url in the loginview does not seem
     # to override the default settings.login_redirect_url which is
     # accounts.profile
 
-    # Will need to see if this affects the next url when passed in from a 
+    # Will need to see if this affects the next url when passed in from a
     # mixin like login required
 
     # We cannot have it to be a static redirect, the next url must take
@@ -112,13 +113,13 @@ class AgencySignInForm(AuthenticationForm):
         'username': 'owner@agency.com',
         'password': 'topsecret'
     }
-    
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
+        super().__init__(*args, **kwargs)
         for k, v in self.placeholders.items():
             self.fields[k].widget.attrs['placeholder'] = v
         self.fields['password'].help_text = '''
-            <a class='ml-1' 
+            <a class='ml-1'
             href="{% url 'password_reset' %}">Forget your password?</a>
         '''
         self.helper = FormHelper()
@@ -191,19 +192,19 @@ class AgencySignInForm(AuthenticationForm):
                         code='invalid-signin'
                     )
                 )
-            if agency.active == False:
+            if not agency.active:
                 self.add_error(
                     'agency_license_number',
                     ValidationError(
                         _(
-                            '''This agency has been deactivate. 
+                            '''This agency has been deactivate.
                             Please contact Online Maid Pte Ltd.'''),
                         code='invalid-signin'
                     )
                 )
         return cleaned_data
 
-# Model Forms
+
 class EmployerCreationForm(forms.ModelForm):
     email = forms.CharField(
         label=_('Email Address'),
@@ -217,14 +218,14 @@ class EmployerCreationForm(forms.ModelForm):
         max_length=255,
         widget=forms.PasswordInput()
     )
-    
+
     terms_and_conditions = forms.BooleanField()
 
     placeholders = {
         'email': 'johndoe@example.com',
         'password': 'topsecret'
     }
-    
+
     class Meta:
         model = PotentialEmployer
         exclude = ['user']
@@ -240,11 +241,13 @@ class EmployerCreationForm(forms.ModelForm):
             for k, v in self.placeholders.items():
                 self.fields[k].widget.attrs['placeholder'] = v
         self.fields['terms_and_conditions'].label = f'''
-            I agree to the 
-            <a href="{reverse_lazy('terms_and_conditions_user')}" target="_blank">
+            I agree to the
+            <a href="{
+                reverse_lazy('terms_and_conditions_user')
+            }" target="_blank">
                 terms of service
-            </a> 
-            as well as the 
+            </a>
+            as well as the
             <a href="{reverse_lazy('privacy_policy')}" target="_blank">
                 privacy policy
             </a> of Online Maid
@@ -284,12 +287,12 @@ class EmployerCreationForm(forms.ModelForm):
 
     def clean_terms_and_conditions(self):
         terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
-        if terms_and_conditions == False:
+        if not terms_and_conditions:
             msg = -('You must agree to sign up for our services')
             self.add_error('terms_and_conditions', msg)
-            
+
         return terms_and_conditions
-    
+
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
@@ -319,16 +322,14 @@ class EmployerCreationForm(forms.ModelForm):
                 email=cleaned_data.get('email'),
                 password=cleaned_data.get('password')
             )
-        except Exception as e:
+        except Exception:
             pass
         else:
             potential_employer_group = Group.objects.get(
                 name='Potential Employers'
-            ) 
+            )
             potential_employer_group.user_set.add(
                 new_user
             )
             self.instance.user = new_user
             return super().save(*args, **kwargs)
-
-# Generic Forms (forms.Form)

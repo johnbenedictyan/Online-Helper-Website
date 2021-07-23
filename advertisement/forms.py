@@ -1,18 +1,20 @@
-# Imports from django
+# Django Imports
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
-# Imports from local apps
+# App Imports
 from .models import Advertisement
 
 # Start of Forms
 
 # Model Forms
+
+
 class AdvertisementCreationForm(forms.ModelForm):
     class Meta:
         model = Advertisement
@@ -54,5 +56,3 @@ class AdvertisementCreationForm(forms.ModelForm):
         if UserModel.objects.get(email=email):
             msg = _('This email is taken')
             self.add_error('email', msg)
-
-# Generic Forms (forms.Form)

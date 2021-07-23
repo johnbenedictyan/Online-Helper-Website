@@ -1,10 +1,10 @@
-# Imports from python
+# Global Imports
 import os
 import uuid
 import secrets
 from decimal import Decimal, ROUND_HALF_UP
 
-# Imports from django
+# Django Imports
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -15,29 +15,45 @@ from django.core.files.storage import FileSystemStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.translation import ugettext_lazy as _
 
-# Imports from other apps
-from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import decrypt_string
+# Project Apps Imports
+from onlinemaid.constants import (
+    TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
+)
+from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
 from maid.models import Maid
-from maid.constants import FullNationsChoices, TypeOfMaidChoices
+from maid.constants import TypeOfMaidChoices
 
-# Same app
-from . import constants as ed_constants
+# App Imports
+from .constants import (
+    EmployerTypeOfApplicantChoices, GenderChoices, RelationshipChoices,
+    ResidentialStatusFullChoices, ResidentialStatusPartialChoices,
+    IncomeChoices, HouseholdIdTypeChoices, DayChoices, DayOfWeekChoices,
+    MonthChoices, WeekChoices,
+    NUMBER_OF_WORK_DAYS_IN_MONTH
+)
 from .fields import CustomMoneyDecimalField
+from .helper_functions import (
+    is_local, is_applicant_joint_applicant, is_applicant_sponsor,
+    is_applicant_spouse
+)
 
 # Utiliy Classes and Functions
+
+
 class OverwriteStorage(FileSystemStorage):
     def get_available_name(self, filename, max_length=100):
         if self.exists(filename):
             os.remove(os.path.join(self.location, filename))
         return filename
 
+
 def generate_joborder_path(instance, filename):
     relative_path = 'archive/' + str(instance.employer_doc.pk)
     # return the whole path to the file
     return os.path.join(relative_path, 'f07_job_order.pdf')
+
 
 def generate_archive_path(instance, filename):
     # filename parameter is passed from view in format:
@@ -48,10 +64,11 @@ def generate_archive_path(instance, filename):
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 
-
 # Start of Models
 
 # Employer e-Documentation Models
+
+
 class Employer(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -63,8 +80,8 @@ class Employer(models.Model):
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
-        choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
-        default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
+        choices=EmployerTypeOfApplicantChoices.choices,
+        default=EmployerTypeOfApplicantChoices.SINGLE,
     )
 
     household_details_required = models.BooleanField(
@@ -94,8 +111,8 @@ class Employer(models.Model):
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
 
     employer_mobile_number = models.CharField(
@@ -103,7 +120,7 @@ class Employer(models.Model):
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid mobile number')
             )
         ],
@@ -114,7 +131,7 @@ class Employer(models.Model):
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[6][0-9]{7}$', # Singapore landline numbers
+                regex='^[6][0-9]{7}$',  # Singapore landline numbers
                 message=_('Please enter a valid home telephone number')
             )
         ],
@@ -157,8 +174,8 @@ class Employer(models.Model):
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
     )
 
     employer_nric_num = models.BinaryField(
@@ -227,8 +244,8 @@ class Employer(models.Model):
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -254,10 +271,10 @@ class Employer(models.Model):
             self.employer_nric_nonce,
             self.employer_nric_tag,
         )
-    
+
     def get_employer_nric_partial(self, padded=True):
         plaintext = self.get_employer_nric_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -269,10 +286,10 @@ class Employer(models.Model):
             self.employer_fin_nonce,
             self.employer_fin_tag,
         )
-    
+
     def get_employer_fin_partial(self, padded=True):
         plaintext = self.get_employer_fin_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -291,7 +308,7 @@ class Employer(models.Model):
     def get_email_partial(self):
         return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
 
-    ## Employer Spouse
+    # Employer Spouse
     spouse_name = models.CharField(
         verbose_name=_("Spouse's Name"),
         max_length=40,
@@ -299,22 +316,22 @@ class Employer(models.Model):
         null=True,
         default=None,
     )
-    
+
     spouse_gender = models.CharField(
         verbose_name=_("Spouse's gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
-    
+
     spouse_date_of_birth = models.DateField(
         verbose_name=_("Spouse's date of birth"),
         blank=True,
         null=True,
     )
-    
+
     spouse_nationality = models.CharField(
         verbose_name=_("Spouse's nationality/citizenship"),
         max_length=3,
@@ -323,73 +340,73 @@ class Employer(models.Model):
         blank=True,
         null=True,
     )
-    
+
     spouse_residential_status = models.CharField(
         verbose_name=_("Spouse's residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
-    
+
     spouse_nric_num = models.BinaryField(
         verbose_name=_("Spouse's NRIC"),
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_fin_num = models.BinaryField(
         verbose_name=_("Spouse's FIN"),
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_passport_num = models.BinaryField(
         verbose_name=_("Spouse's Passport No"),
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
         blank=True,
@@ -406,7 +423,7 @@ class Employer(models.Model):
 
     def get_employer_spouse_nric_partial(self, padded=True):
         plaintext = self.get_employer_spouse_nric_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -421,7 +438,7 @@ class Employer(models.Model):
 
     def get_employer_spouse_fin_partial(self, padded=True):
         plaintext = self.get_employer_spouse_fin_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -434,11 +451,14 @@ class Employer(models.Model):
             self.spouse_passport_tag,
         )
 
-    #Utility Functions
+    # Utility Functions
     def details_missing_spouse(self):
         error_msg_list = []
 
-        if self.employer_marital_status==ed_constants.MaritalStatusChoices.MARRIED or self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPOUSE:
+        if (
+            is_married(self.employer_marital_status) or
+            is_applicant_spouse(self.applicant_type)
+        ):
             mandatory_fields = [
                 'spouse_name',
                 'spouse_gender',
@@ -450,8 +470,8 @@ class Employer(models.Model):
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(field)
-            
-            if self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+
+            if is_local(self.spouse_residential_status):
                 if not self.get_employer_spouse_nric_full():
                     error_msg_list.append('spouse_nric_num')
             else:
@@ -461,14 +481,15 @@ class Employer(models.Model):
                     error_msg_list.append('spouse_passport_num')
                 if not self.spouse_passport_date:
                     error_msg_list.append('spouse_passport_date')
-            
+
         return error_msg_list
 
     def details_missing_employer(self):
-        # Retrieve verbose name -> self._meta.get_field('field_name_str').verbose_name
+        # Retrieve verbose name ->
+        # self._meta.get_field('field_name_str').verbose_name
         error_msg_list = []
 
-        if self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.employer_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+        if is_local(self.employer_residential_status):
             if not self.get_employer_nric_full():
                 error_msg_list.append('employer_nric_num')
         else:
@@ -482,22 +503,27 @@ class Employer(models.Model):
         # Check spouse details completeness
         error_msg_list += self.details_missing_spouse()
 
-        if self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if is_applicant_sponsor(self.applicant_type):
             if hasattr(self, 'rn_sponsor_employer'):
-                error_msg_list += self.rn_sponsor_employer.details_missing_sponsors()
+                m_s = self.rn_sponsor_employer.details_missing_sponsors()
+                error_msg_list += m_s
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
-        elif self.applicant_type==ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif is_applicant_joint_applicant(self.applicant_type):
             if hasattr(self, 'rn_ja_employer'):
-                error_msg_list += self.rn_ja_employer.details_missing_joint_applicant()
+                m_ja = self.rn_ja_employer.details_missing_joint_applicant()
+                error_msg_list += m_ja
             else:
                 error_msg_list.append('rn_ja_employer')
 
         if not hasattr(self, 'rn_income_employer'):
             error_msg_list.append('rn_income_employer')
 
-        if self.household_details_required and not self.rn_household_employer.all().count():
+        if (
+            self.household_details_required and
+            not self.rn_household_employer.all().count()
+        ):
             error_msg_list.append('rn_household_employer')
 
         return error_msg_list
@@ -529,20 +555,22 @@ class Employer(models.Model):
     def __str__(self):
         return self.employer_name
 
-## Sponsors
+# Sponsors
+
+
 class EmployerSponsor(models.Model):
     employer = models.OneToOneField(
         Employer,
         on_delete=models.CASCADE,
         related_name='rn_sponsor_employer'
     )
-    
+
     # Sponsor 1 details
     sponsor_1_relationship = models.CharField(
         verbose_name=_("Sponsor 1 relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
     )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
@@ -551,8 +579,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
@@ -576,15 +604,15 @@ class EmployerSponsor(models.Model):
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
-        choices=ed_constants.ResidentialStatusPartialChoices.choices,
-        default=ed_constants.ResidentialStatusPartialChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
         ],
@@ -609,8 +637,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
 
     # Sponsor 1 spouse details
@@ -636,8 +664,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -657,8 +685,8 @@ class EmployerSponsor(models.Model):
     sponsor_1_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -730,8 +758,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_relationship = models.CharField(
         verbose_name=_("Sponsor 2 relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
         blank=True,
         null=True,
     )
@@ -744,8 +772,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -781,8 +809,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
-        choices=ed_constants.ResidentialStatusPartialChoices.choices,
-        default=ed_constants.ResidentialStatusPartialChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
         blank=True,
         null=True,
     )
@@ -791,7 +819,7 @@ class EmployerSponsor(models.Model):
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
         ],
@@ -824,8 +852,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -853,8 +881,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -874,8 +902,8 @@ class EmployerSponsor(models.Model):
     sponsor_2_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -943,7 +971,7 @@ class EmployerSponsor(models.Model):
 
     def get_sponsor_1_nric_partial(self, padded=True):
         plaintext = self.get_sponsor_1_nric_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -971,7 +999,7 @@ class EmployerSponsor(models.Model):
             self.sponsor_1_spouse_passport_nonce,
             self.sponsor_1_spouse_passport_tag,
         )
-    
+
     def get_sponsor_2_nric_full(self):
         return decrypt_string(
             self.sponsor_2_nric_num,
@@ -982,7 +1010,7 @@ class EmployerSponsor(models.Model):
 
     def get_sponsor_2_nric_partial(self, padded=True):
         plaintext = self.get_sponsor_2_nric_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -1014,7 +1042,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_2_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if is_married(self.sponsor_2_marital_status):
             mandatory_fields = [
                 'sponsor_2_spouse_name',
                 'sponsor_2_spouse_gender',
@@ -1026,8 +1054,8 @@ class EmployerSponsor(models.Model):
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(field)
-            
-            if self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_2_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+
+            if is_local(self.sponsor_2_spouse_residential_status):
                 if not self.get_sponsor_2_spouse_nric_full():
                     error_msg_list.append('sponsor_2_spouse_nric_num')
             else:
@@ -1037,7 +1065,7 @@ class EmployerSponsor(models.Model):
                     error_msg_list.append('sponsor_2_spouse_passport_num')
                 if not self.sponsor_2_spouse_passport_date:
                     error_msg_list.append('sponsor_2_spouse_passport_date')
-            
+
         return error_msg_list
 
     def details_missing_sponsor_2(self):
@@ -1061,7 +1089,7 @@ class EmployerSponsor(models.Model):
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(f'rn_sponsor_employer.{field}')
-            
+
             if not self.get_sponsor_2_nric_full():
                 error_msg_list.append('rn_sponsor_employer.sponsor_2_nric_num')
 
@@ -1072,7 +1100,7 @@ class EmployerSponsor(models.Model):
     def details_missing_sponsor_1_spouse(self):
         error_msg_list = []
 
-        if self.sponsor_1_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if is_married(self.sponsor_1_marital_status):
             mandatory_fields = [
                 'sponsor_1_spouse_name',
                 'sponsor_1_spouse_gender',
@@ -1084,8 +1112,8 @@ class EmployerSponsor(models.Model):
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(field)
-            
-            if self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.sponsor_1_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+
+            if is_local(self.sponsor_1_spouse_residential_status):
                 if not self.get_sponsor_1_spouse_nric_full():
                     error_msg_list.append('sponsor_1_spouse_nric_num')
             else:
@@ -1095,7 +1123,7 @@ class EmployerSponsor(models.Model):
                     error_msg_list.append('sponsor_1_spouse_passport_num')
                 if not self.sponsor_1_spouse_passport_date:
                     error_msg_list.append('sponsor_1_spouse_passport_date')
-            
+
         return error_msg_list
 
     def details_missing_sponsors(self):
@@ -1104,7 +1132,9 @@ class EmployerSponsor(models.Model):
         error_msg_list += self.details_missing_sponsor_2()
         return error_msg_list
 
-## Joint Applicants
+# Joint Applicants
+
+
 class EmployerJointApplicant(models.Model):
     employer = models.OneToOneField(
         Employer,
@@ -1114,8 +1144,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_relationship = models.CharField(
         verbose_name=_("Joint applicant's relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
     )
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
@@ -1124,8 +1154,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
@@ -1149,8 +1179,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
-        choices=ed_constants.ResidentialStatusPartialChoices.choices,
-        default=ed_constants.ResidentialStatusPartialChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
@@ -1169,8 +1199,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
@@ -1196,8 +1226,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_spouse_gender = models.CharField(
         verbose_name=_("Joint applicant's spouse gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -1217,8 +1247,8 @@ class EmployerJointApplicant(models.Model):
     joint_applicant_spouse_residential_status = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -1286,7 +1316,7 @@ class EmployerJointApplicant(models.Model):
 
     def get_joint_applicant_nric_partial(self, padded=True):
         plaintext = self.get_joint_applicant_nric_full()
-        if padded == True:
+        if padded:
             return 'x'*5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
@@ -1318,7 +1348,7 @@ class EmployerJointApplicant(models.Model):
     def details_missing_joint_applicant_spouse(self):
         error_msg_list = []
 
-        if self.joint_applicant_marital_status==ed_constants.MaritalStatusChoices.MARRIED:
+        if is_married(self.joint_applicant_marital_status):
             mandatory_fields = [
                 'joint_applicant_spouse_name',
                 'joint_applicant_spouse_gender',
@@ -1330,24 +1360,28 @@ class EmployerJointApplicant(models.Model):
             for field in mandatory_fields:
                 if not getattr(self, field):
                     error_msg_list.append(field)
-            
-            if self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_spouse_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+
+            if is_local(self.joint_applicant_spouse_residential_status):
                 if not self.joint_applicant_spouse_nric_full():
                     error_msg_list.append('joint_applicant_spouse_nric_num')
             else:
                 if not self.get_joint_applicant_spouse_fin_full():
                     error_msg_list.append('joint_applicant_spouse_fin_num')
                 if not self.get_joint_applicant_spouse_passport_full():
-                    error_msg_list.append('joint_applicant_spouse_passport_num')
+                    error_msg_list.append(
+                        'joint_applicant_spouse_passport_num'
+                    )
                 if not self.joint_applicant_spouse_passport_date:
-                    error_msg_list.append('joint_applicant_spouse_passport_date')
-            
+                    error_msg_list.append(
+                        'joint_applicant_spouse_passport_date'
+                    )
+
         return error_msg_list
 
     def details_missing_joint_applicant(self):
         error_msg_list = []
-        
-        if self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.SC or self.joint_applicant_residential_status==ed_constants.ResidentialStatusFullChoices.PR:
+
+        if is_local(self.joint_applicant_residential_status):
             if not self.get_joint_applicant_nric_full():
                 error_msg_list.append('joint_applicant_nric_num')
         else:
@@ -1357,9 +1391,10 @@ class EmployerJointApplicant(models.Model):
                 error_msg_list.append('joint_applicant_passport_num')
             if not self.joint_applicant_passport_date:
                 error_msg_list.append('joint_applicant_passport_date')
-        
+
         error_msg_list += self.details_missing_joint_applicant_spouse()
         return error_msg_list
+
 
 class EmployerIncome(models.Model):
     employer = models.OneToOneField(
@@ -1379,9 +1414,10 @@ class EmployerIncome(models.Model):
     )
     monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly Income"),
-        choices=ed_constants.IncomeChoices.choices,
-        default=ed_constants.IncomeChoices.INCOME_3,
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
     )
+
 
 class EmployerHousehold(models.Model):
     employer = models.ForeignKey(
@@ -1398,8 +1434,8 @@ class EmployerHousehold(models.Model):
     household_id_type = models.CharField(
         verbose_name=_("Household member ID type"),
         max_length=8,
-        choices=ed_constants.HouseholdIdTypeChoices.choices,
-        # default=ed_constants.HouseholdIdTypeChoices.NRIC,
+        choices=HouseholdIdTypeChoices.choices,
+        # default=HouseholdIdTypeChoices.NRIC,
     )
     household_id_num = models.BinaryField(
         verbose_name=_("Household member's ID number"),
@@ -1417,8 +1453,8 @@ class EmployerHousehold(models.Model):
     household_relationship = models.CharField(
         verbose_name=_("Household member's relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        # default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        # default=RelationshipChoices.DAUGHTER,
     )
 
     def get_household_id_full(self):
@@ -1428,6 +1464,7 @@ class EmployerHousehold(models.Model):
             self.household_id_nonce,
             self.household_id_tag,
         )
+
 
 class EmployerDoc(models.Model):
     # Auto fields
@@ -1473,7 +1510,7 @@ class EmployerDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=ed_constants.DayChoices.choices[0:5],
+        choices=DayChoices.choices[0:5],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
@@ -1483,8 +1520,8 @@ class EmployerDoc(models.Model):
     )
     fdw_off_day_of_week = models.PositiveSmallIntegerField(
         verbose_name=_("FDW Off Day Day of Week"),
-        choices=ed_constants.DayOfWeekChoices.choices,
-        default=ed_constants.DayOfWeekChoices.SUN
+        choices=DayOfWeekChoices.choices,
+        default=DayOfWeekChoices.SUN
     )
 
     def save(self, *args, **kwargs):
@@ -1495,7 +1532,7 @@ class EmployerDoc(models.Model):
         # Create related CaseStatus object if it does not exist
         if not hasattr(self, 'rn_casestatus_ed'):
             CaseStatus.objects.create(employer_doc=self)
-        
+
         # Create related CaseSignature object if it does not exist
         if not hasattr(self, 'rn_signatures_ed'):
             CaseSignature.objects.create(employer_doc=self)
@@ -1504,20 +1541,25 @@ class EmployerDoc(models.Model):
         return str(self.version).zfill(4)
 
     def per_off_day_compensation(self):
-        return Decimal(self.fdw_salary/ed_constants.NUMBER_OF_WORK_DAYS_IN_MONTH).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+        return Decimal(
+            self.fdw_salary/NUMBER_OF_WORK_DAYS_IN_MONTH
+        ).quantize(
+            Decimal('.01'),
+            rounding=ROUND_HALF_UP
+        )
 
     def fdw_off_day_of_week_display(self):
-        if int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.MON:
+        if int(self.fdw_off_day_of_week) == DayOfWeekChoices.MON:
             return _('Monday')
-        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.TUE:
+        elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.TUE:
             return _('Tuesday')
-        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.WED:
+        elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.WED:
             return _('Wednesday')
-        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.THU:
+        elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.THU:
             return _('Thursday')
-        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.FRI:
+        elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.FRI:
             return _('Friday')
-        elif int(self.fdw_off_day_of_week) == ed_constants.DayOfWeekChoices.SAT:
+        elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.SAT:
             return _('Saturday')
         else:
             return _('Sunday')
@@ -1527,20 +1569,23 @@ class EmployerDoc(models.Model):
 
         if not hasattr(self, 'rn_servicefeeschedule_ed'):
             error_msg_list.append('rn_servicefeeschedule_ed')
-        
+
         if not hasattr(self, 'rn_serviceagreement_ed'):
             error_msg_list.append('rn_serviceagreement_ed')
-        
+
         if hasattr(self, 'rn_docupload_ed'):
             if not self.rn_docupload_ed.job_order_pdf:
                 error_msg_list.append('rn_docupload_ed.job_order_pdf')
         else:
             error_msg_list.append('rn_docupload_ed')
-        
+
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
-        
-        if self.fdw.maid_type==TypeOfMaidChoices.NEW and not hasattr(self, 'rn_safetyagreement_ed'):
+
+        if (
+            self.fdw.maid_type == TypeOfMaidChoices.NEW and
+            not hasattr(self, 'rn_safetyagreement_ed')
+        ):
             error_msg_list.append('rn_safetyagreement_ed')
 
         return error_msg_list
@@ -1553,13 +1598,13 @@ class EmployerDoc(models.Model):
                 error_msg_list.append('rn_docupload_ed.ipa_pdf')
             if not self.rn_docupload_ed.medical_report_pdf:
                 error_msg_list.append('rn_docupload_ed.medical_report_pdf')
-        
+
         # if hasattr(self, 'rn_casestatus_ed'):
         #     if not self.rn_casestatus_ed.fdw_work_commencement_date:
         #         error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
         # else:
         #     error_msg_list.append('rn_casestatus_ed')
-        
+
         # if not self.rn_maid_inventory.objects.all().count():
         #     error_msg_list.append('rn_maid_inventory')
 
@@ -1568,7 +1613,7 @@ class EmployerDoc(models.Model):
 
         if not self.fdw.get_fdw_fin_full():
             error_msg_list.append('fdw.fin_number')
-        
+
         return error_msg_list
 
     def archive(self):
@@ -1694,7 +1739,7 @@ class EmployerDoc(models.Model):
                 shn_end_date=self.rn_casestatus_ed.shn_end_date,
                 thumb_print_date=self.rn_casestatus_ed.thumb_print_date,
                 fdw_work_commencement_date=self.rn_casestatus_ed.fdw_work_commencement_date,
-                #START OF TODO
+                # START OF TODO
                 f01_service_fee_schedule=None,
                 f03_service_agreement=None,
                 f04_employment_contract=None,
@@ -1704,125 +1749,125 @@ class EmployerDoc(models.Model):
                 f09_transfer_consent=None,
                 f10_work_pass_authorisation=None,
                 f14_safety_agreement=None,
-                #END OF TODO
+                # END OF TODO
                 job_order_pdf=self.rn_docupload_ed.job_order_pdf,
                 ipa_pdf=self.rn_docupload_ed.ipa_pdf,
                 medical_report_pdf=self.rn_docupload_ed.medical_report_pdf
-        )
-        if archived_doc.employer_marital_status == ed_constants.MaritalStatusChoices.MARRIED:
-            archived_doc.employer_marriage_sg_registered=self.employer.employer_marriage_sg_registered
-            archived_doc.spouse_name=self.employer.spouse_name
-            archived_doc.spouse_gender=self.employer.spouse_gender
-            archived_doc.spouse_date_of_birth=self.employer.spouse_date_of_birth
-            archived_doc.spouse_nationality=self.employer.spouse_nationality
-            archived_doc.spouse_residential_status=self.employer.spouse_residential_status
-            archived_doc.spouse_nric_num=self.employer.spouse_nric_num
-            archived_doc.spouse_nric_nonce=self.employer.spouse_nric_nonce
-            archived_doc.spouse_nric_tag=self.employer.spouse_nric_tag
-            archived_doc.spouse_fin_num=self.employer.spouse_fin_num
-            archived_doc.spouse_fin_nonce=self.employer.spouse_fin_nonce
-            archived_doc.spouse_fin_tag=self.employer.spouse_fin_tag
-            archived_doc.spouse_passport_num=self.employer.spouse_passport_num
-            archived_doc.spouse_passport_nonce=self.employer.spouse_passport_nonce
-            archived_doc.spouse_passport_tag=self.employer.spouse_passport_tag
-            archived_doc.spouse_passport_date=self.employer.spouse_passport_date
+            )
+        if is_married(archived_doc.employer_marital_status):
+            archived_doc.employer_marriage_sg_registered = self.employer.employer_marriage_sg_registered
+            archived_doc.spouse_name = self.employer.spouse_name
+            archived_doc.spouse_gender = self.employer.spouse_gender
+            archived_doc.spouse_date_of_birth = self.employer.spouse_date_of_birth
+            archived_doc.spouse_nationality = self.employer.spouse_nationality
+            archived_doc.spouse_residential_status = self.employer.spouse_residential_status
+            archived_doc.spouse_nric_num = self.employer.spouse_nric_num
+            archived_doc.spouse_nric_nonce = self.employer.spouse_nric_nonce
+            archived_doc.spouse_nric_tag = self.employer.spouse_nric_tag
+            archived_doc.spouse_fin_num = self.employer.spouse_fin_num
+            archived_doc.spouse_fin_nonce = self.employer.spouse_fin_nonce
+            archived_doc.spouse_fin_tag = self.employer.spouse_fin_tag
+            archived_doc.spouse_passport_num = self.employer.spouse_passport_num
+            archived_doc.spouse_passport_nonce = self.employer.spouse_passport_nonce
+            archived_doc.spouse_passport_tag = self.employer.spouse_passport_tag
+            archived_doc.spouse_passport_date = self.employer.spouse_passport_date
 
-        elif archived_doc.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.SPONSOR:
-            archived_doc.sponsor_1_relationship=self.employer.rn_sponsor_employer.sponsor_1_relationship
-            archived_doc.sponsor_1_name=self.employer.rn_sponsor_employer.sponsor_1_name
-            archived_doc.sponsor_1_gender=self.employer.rn_sponsor_employer.sponsor_1_gender
-            archived_doc.sponsor_1_date_of_birth=self.employer.rn_sponsor_employer.sponsor_1_date_of_birth
-            archived_doc.sponsor_1_nric_num=self.employer.rn_sponsor_employer.sponsor_1_nric_num
-            archived_doc.sponsor_1_nric_nonce=self.employer.rn_sponsor_employer.sponsor_1_nric_nonce
-            archived_doc.sponsor_1_nric_tag=self.employer.rn_sponsor_employer.sponsor_1_nric_tag
-            archived_doc.sponsor_1_nationality=self.employer.rn_sponsor_employer.sponsor_1_nationality
-            archived_doc.sponsor_1_residential_status=self.employer.rn_sponsor_employer.sponsor_1_residential_status
-            archived_doc.sponsor_1_mobile_number=self.employer.rn_sponsor_employer.sponsor_1_mobile_number
-            archived_doc.sponsor_1_email=self.employer.rn_sponsor_employer.sponsor_1_email
-            archived_doc.sponsor_1_address_1=self.employer.rn_sponsor_employer.sponsor_1_address_1
-            archived_doc.sponsor_1_address_2=self.employer.rn_sponsor_employer.sponsor_1_address_2
-            archived_doc.sponsor_1_post_code=self.employer.rn_sponsor_employer.sponsor_1_post_code
-            archived_doc.sponsor_1_marital_status=self.employer.rn_sponsor_employer.sponsor_1_marital_status
-            archived_doc.sponsor_1_marriage_sg_registered=self.employer.rn_sponsor_employer.sponsor_1_marriage_sg_registered
-            archived_doc.sponsor_1_spouse_name=self.employer.rn_sponsor_employer.sponsor_1_spouse_name
-            archived_doc.sponsor_1_spouse_gender=self.employer.rn_sponsor_employer.sponsor_1_spouse_gender
-            archived_doc.sponsor_1_spouse_date_of_birth=self.employer.rn_sponsor_employer.sponsor_1_spouse_date_of_birth
-            archived_doc.sponsor_1_spouse_nationality=self.employer.rn_sponsor_employer.sponsor_1_spouse_nationality
-            archived_doc.sponsor_1_spouse_residential_status=self.employer.rn_sponsor_employer.sponsor_1_spouse_residential_status
-            archived_doc.sponsor_1_spouse_nric_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_num
-            archived_doc.sponsor_1_spouse_nric_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_nonce
-            archived_doc.sponsor_1_spouse_nric_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_tag
-            archived_doc.sponsor_1_spouse_fin_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_num
-            archived_doc.sponsor_1_spouse_fin_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_nonce
-            archived_doc.sponsor_1_spouse_fin_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_tag
-            archived_doc.sponsor_1_spouse_passport_num=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_num
-            archived_doc.sponsor_1_spouse_passport_nonce=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_nonce
-            archived_doc.sponsor_1_spouse_passport_tag=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_tag
-            archived_doc.sponsor_1_spouse_passport_date=self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_date
-            archived_doc.sponsor_2_required=self.employer.rn_sponsor_employer.sponsor_2_required
-            if archived_doc.sponsor_2_required == True:
-                archived_doc.sponsor_2_relationship=self.employer.rn_sponsor_employer.sponsor_2_relationship
-                archived_doc.sponsor_2_name=self.employer.rn_sponsor_employer.sponsor_2_name
-                archived_doc.sponsor_2_gender=self.employer.rn_sponsor_employer.sponsor_2_gender
-                archived_doc.sponsor_2_date_of_birth=self.employer.rn_sponsor_employer.sponsor_2_date_of_birth
-                archived_doc.sponsor_2_nric_num=self.employer.rn_sponsor_employer.sponsor_2_nric_num
-                archived_doc.sponsor_2_nric_nonce=self.employer.rn_sponsor_employer.sponsor_2_nric_nonce
-                archived_doc.sponsor_2_nric_tag=self.employer.rn_sponsor_employer.sponsor_2_nric_tag
-                archived_doc.sponsor_2_nationality=self.employer.rn_sponsor_employer.sponsor_2_nationality
-                archived_doc.sponsor_2_residential_status=self.employer.rn_sponsor_employer.sponsor_2_residential_status
-                archived_doc.sponsor_2_mobile_number=self.employer.rn_sponsor_employer.sponsor_2_mobile_number
-                archived_doc.sponsor_2_email=self.employer.rn_sponsor_employer.sponsor_2_email
-                archived_doc.sponsor_2_address_1=self.employer.rn_sponsor_employer.sponsor_2_address_1
-                archived_doc.sponsor_2_address_2=self.employer.rn_sponsor_employer.sponsor_2_address_2
-                archived_doc.sponsor_2_post_code=self.employer.rn_sponsor_employer.sponsor_2_post_code
-                archived_doc.sponsor_2_marital_status=self.employer.rn_sponsor_employer.sponsor_2_marital_status
-                archived_doc.sponsor_2_marriage_sg_registered=self.employer.rn_sponsor_employer.sponsor_2_marriage_sg_registered
-                archived_doc.sponsor_2_spouse_name=self.employer.rn_sponsor_employer.sponsor_2_spouse_name
-                archived_doc.sponsor_2_spouse_gender=self.employer.rn_sponsor_employer.sponsor_2_spouse_gender
-                archived_doc.sponsor_2_spouse_date_of_birth=self.employer.rn_sponsor_employer.sponsor_2_spouse_date_of_birth
-                archived_doc.sponsor_2_spouse_nationality=self.employer.rn_sponsor_employer.sponsor_2_spouse_nationality
-                archived_doc.sponsor_2_spouse_residential_status=self.employer.rn_sponsor_employer.sponsor_2_spouse_residential_status
-                archived_doc.sponsor_2_spouse_nric_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_num
-                archived_doc.sponsor_2_spouse_nric_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_nonce
-                archived_doc.sponsor_2_spouse_nric_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_tag
-                archived_doc.sponsor_2_spouse_fin_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_num
-                archived_doc.sponsor_2_spouse_fin_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_nonce
-                archived_doc.sponsor_2_spouse_fin_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_tag
-                archived_doc.sponsor_2_spouse_passport_num=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_num
-                archived_doc.sponsor_2_spouse_passport_nonce=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_nonce
-                archived_doc.sponsor_2_spouse_passport_tag=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_tag
-                archived_doc.sponsor_2_spouse_passport_date=self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_date
+        elif is_applicant_sponsor(archived_doc.applicant_type):
+            archived_doc.sponsor_1_relationship = self.employer.rn_sponsor_employer.sponsor_1_relationship
+            archived_doc.sponsor_1_name = self.employer.rn_sponsor_employer.sponsor_1_name
+            archived_doc.sponsor_1_gender = self.employer.rn_sponsor_employer.sponsor_1_gender
+            archived_doc.sponsor_1_date_of_birth = self.employer.rn_sponsor_employer.sponsor_1_date_of_birth
+            archived_doc.sponsor_1_nric_num = self.employer.rn_sponsor_employer.sponsor_1_nric_num
+            archived_doc.sponsor_1_nric_nonce = self.employer.rn_sponsor_employer.sponsor_1_nric_nonce
+            archived_doc.sponsor_1_nric_tag = self.employer.rn_sponsor_employer.sponsor_1_nric_tag
+            archived_doc.sponsor_1_nationality = self.employer.rn_sponsor_employer.sponsor_1_nationality
+            archived_doc.sponsor_1_residential_status = self.employer.rn_sponsor_employer.sponsor_1_residential_status
+            archived_doc.sponsor_1_mobile_number = self.employer.rn_sponsor_employer.sponsor_1_mobile_number
+            archived_doc.sponsor_1_email = self.employer.rn_sponsor_employer.sponsor_1_email
+            archived_doc.sponsor_1_address_1 = self.employer.rn_sponsor_employer.sponsor_1_address_1
+            archived_doc.sponsor_1_address_2 = self.employer.rn_sponsor_employer.sponsor_1_address_2
+            archived_doc.sponsor_1_post_code = self.employer.rn_sponsor_employer.sponsor_1_post_code
+            archived_doc.sponsor_1_marital_status = self.employer.rn_sponsor_employer.sponsor_1_marital_status
+            archived_doc.sponsor_1_marriage_sg_registered = self.employer.rn_sponsor_employer.sponsor_1_marriage_sg_registered
+            archived_doc.sponsor_1_spouse_name = self.employer.rn_sponsor_employer.sponsor_1_spouse_name
+            archived_doc.sponsor_1_spouse_gender = self.employer.rn_sponsor_employer.sponsor_1_spouse_gender
+            archived_doc.sponsor_1_spouse_date_of_birth = self.employer.rn_sponsor_employer.sponsor_1_spouse_date_of_birth
+            archived_doc.sponsor_1_spouse_nationality = self.employer.rn_sponsor_employer.sponsor_1_spouse_nationality
+            archived_doc.sponsor_1_spouse_residential_status = self.employer.rn_sponsor_employer.sponsor_1_spouse_residential_status
+            archived_doc.sponsor_1_spouse_nric_num = self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_num
+            archived_doc.sponsor_1_spouse_nric_nonce = self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_nonce
+            archived_doc.sponsor_1_spouse_nric_tag = self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_tag
+            archived_doc.sponsor_1_spouse_fin_num = self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_num
+            archived_doc.sponsor_1_spouse_fin_nonce = self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_nonce
+            archived_doc.sponsor_1_spouse_fin_tag = self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_tag
+            archived_doc.sponsor_1_spouse_passport_num = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_num
+            archived_doc.sponsor_1_spouse_passport_nonce = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_nonce
+            archived_doc.sponsor_1_spouse_passport_tag = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_tag
+            archived_doc.sponsor_1_spouse_passport_date = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_date
+            archived_doc.sponsor_2_required = self.employer.rn_sponsor_employer.sponsor_2_required
+            if archived_doc.sponsor_2_required:
+                archived_doc.sponsor_2_relationship = self.employer.rn_sponsor_employer.sponsor_2_relationship
+                archived_doc.sponsor_2_name = self.employer.rn_sponsor_employer.sponsor_2_name
+                archived_doc.sponsor_2_gender = self.employer.rn_sponsor_employer.sponsor_2_gender
+                archived_doc.sponsor_2_date_of_birth = self.employer.rn_sponsor_employer.sponsor_2_date_of_birth
+                archived_doc.sponsor_2_nric_num = self.employer.rn_sponsor_employer.sponsor_2_nric_num
+                archived_doc.sponsor_2_nric_nonce = self.employer.rn_sponsor_employer.sponsor_2_nric_nonce
+                archived_doc.sponsor_2_nric_tag = self.employer.rn_sponsor_employer.sponsor_2_nric_tag
+                archived_doc.sponsor_2_nationality = self.employer.rn_sponsor_employer.sponsor_2_nationality
+                archived_doc.sponsor_2_residential_status = self.employer.rn_sponsor_employer.sponsor_2_residential_status
+                archived_doc.sponsor_2_mobile_number = self.employer.rn_sponsor_employer.sponsor_2_mobile_number
+                archived_doc.sponsor_2_email = self.employer.rn_sponsor_employer.sponsor_2_email
+                archived_doc.sponsor_2_address_1 = self.employer.rn_sponsor_employer.sponsor_2_address_1
+                archived_doc.sponsor_2_address_2 = self.employer.rn_sponsor_employer.sponsor_2_address_2
+                archived_doc.sponsor_2_post_code = self.employer.rn_sponsor_employer.sponsor_2_post_code
+                archived_doc.sponsor_2_marital_status = self.employer.rn_sponsor_employer.sponsor_2_marital_status
+                archived_doc.sponsor_2_marriage_sg_registered = self.employer.rn_sponsor_employer.sponsor_2_marriage_sg_registered
+                archived_doc.sponsor_2_spouse_name = self.employer.rn_sponsor_employer.sponsor_2_spouse_name
+                archived_doc.sponsor_2_spouse_gender = self.employer.rn_sponsor_employer.sponsor_2_spouse_gender
+                archived_doc.sponsor_2_spouse_date_of_birth = self.employer.rn_sponsor_employer.sponsor_2_spouse_date_of_birth
+                archived_doc.sponsor_2_spouse_nationality = self.employer.rn_sponsor_employer.sponsor_2_spouse_nationality
+                archived_doc.sponsor_2_spouse_residential_status = self.employer.rn_sponsor_employer.sponsor_2_spouse_residential_status
+                archived_doc.sponsor_2_spouse_nric_num = self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_num
+                archived_doc.sponsor_2_spouse_nric_nonce = self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_nonce
+                archived_doc.sponsor_2_spouse_nric_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_tag
+                archived_doc.sponsor_2_spouse_fin_num = self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_num
+                archived_doc.sponsor_2_spouse_fin_nonce = self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_nonce
+                archived_doc.sponsor_2_spouse_fin_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_tag
+                archived_doc.sponsor_2_spouse_passport_num = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_num
+                archived_doc.sponsor_2_spouse_passport_nonce = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_nonce
+                archived_doc.sponsor_2_spouse_passport_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_tag
+                archived_doc.sponsor_2_spouse_passport_date = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_date
 
-        elif archived_doc.applicant_type == ed_constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
-            archived_doc.joint_applicant_relationship=self.employer.rn_ja_employer.joint_applicant_relationship
-            archived_doc.joint_applicant_name=self.employer.rn_ja_employer.joint_applicant_name
-            archived_doc.joint_applicant_gender=self.employer.rn_ja_employer.joint_applicant_gender
-            archived_doc.joint_applicant_date_of_birth=self.employer.rn_ja_employer.joint_applicant_date_of_birth
-            archived_doc.joint_applicant_nric_num=self.employer.rn_ja_employer.joint_applicant_nric_num
-            archived_doc.joint_applicant_nric_nonce=self.employer.rn_ja_employer.joint_applicant_nric_nonce
-            archived_doc.joint_applicant_nric_tag=self.employer.rn_ja_employer.joint_applicant_nric_tag
-            archived_doc.joint_applicant_nationality=self.employer.rn_ja_employer.joint_applicant_nationality
-            archived_doc.joint_applicant_residential_status=self.employer.rn_ja_employer.joint_applicant_residential_status
-            archived_doc.joint_applicant_address_1=self.employer.rn_ja_employer.joint_applicant_address_1
-            archived_doc.joint_applicant_address_2=self.employer.rn_ja_employer.joint_applicant_address_2
-            archived_doc.joint_applicant_post_code=self.employer.rn_ja_employer.joint_applicant_post_code
-            archived_doc.joint_applicant_marital_status=self.employer.rn_ja_employer.joint_applicant_marital_status
-            archived_doc.joint_applicant_marriage_sg_registered=self.employer.rn_ja_employer.joint_applicant_marriage_sg_registered
-            archived_doc.joint_applicant_spouse_name=self.employer.rn_ja_employer.joint_applicant_spouse_name
-            archived_doc.joint_applicant_spouse_gender=self.employer.rn_ja_employer.joint_applicant_spouse_gender
-            archived_doc.joint_applicant_spouse_date_of_birth=self.employer.rn_ja_employer.joint_applicant_spouse_date_of_birth
-            archived_doc.joint_applicant_spouse_nationality=self.employer.rn_ja_employer.joint_applicant_spouse_nationality
-            archived_doc.joint_applicant_spouse_residential_status=self.employer.rn_ja_employer.joint_applicant_spouse_residential_status
-            archived_doc.joint_applicant_spouse_nric_num=self.employer.rn_ja_employer.joint_applicant_spouse_nric_num
-            archived_doc.joint_applicant_spouse_nric_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_nric_nonce
-            archived_doc.joint_applicant_spouse_nric_tag=self.employer.rn_ja_employer.joint_applicant_spouse_nric_tag
-            archived_doc.joint_applicant_spouse_fin_num=self.employer.rn_ja_employer.joint_applicant_spouse_fin_num
-            archived_doc.joint_applicant_spouse_fin_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_fin_nonce
-            archived_doc.joint_applicant_spouse_fin_tag=self.employer.rn_ja_employer.joint_applicant_spouse_fin_tag
-            archived_doc.joint_applicant_spouse_passport_num=self.employer.rn_ja_employer.joint_applicant_spouse_passport_num
-            archived_doc.joint_applicant_spouse_passport_nonce=self.employer.rn_ja_employer.joint_applicant_spouse_passport_nonce
-            archived_doc.joint_applicant_spouse_passport_tag=self.employer.rn_ja_employer.joint_applicant_spouse_passport_tag
-            archived_doc.joint_applicant_spouse_passport_date=self.employer.rn_ja_employer.joint_applicant_spouse_passport_date
+        elif is_applicant_joint_applicant(archived_doc.applicant_type):
+            archived_doc.joint_applicant_relationship = self.employer.rn_ja_employer.joint_applicant_relationship
+            archived_doc.joint_applicant_name = self.employer.rn_ja_employer.joint_applicant_name
+            archived_doc.joint_applicant_gender = self.employer.rn_ja_employer.joint_applicant_gender
+            archived_doc.joint_applicant_date_of_birth = self.employer.rn_ja_employer.joint_applicant_date_of_birth
+            archived_doc.joint_applicant_nric_num = self.employer.rn_ja_employer.joint_applicant_nric_num
+            archived_doc.joint_applicant_nric_nonce = self.employer.rn_ja_employer.joint_applicant_nric_nonce
+            archived_doc.joint_applicant_nric_tag = self.employer.rn_ja_employer.joint_applicant_nric_tag
+            archived_doc.joint_applicant_nationality = self.employer.rn_ja_employer.joint_applicant_nationality
+            archived_doc.joint_applicant_residential_status = self.employer.rn_ja_employer.joint_applicant_residential_status
+            archived_doc.joint_applicant_address_1 = self.employer.rn_ja_employer.joint_applicant_address_1
+            archived_doc.joint_applicant_address_2 = self.employer.rn_ja_employer.joint_applicant_address_2
+            archived_doc.joint_applicant_post_code = self.employer.rn_ja_employer.joint_applicant_post_code
+            archived_doc.joint_applicant_marital_status = self.employer.rn_ja_employer.joint_applicant_marital_status
+            archived_doc.joint_applicant_marriage_sg_registered = self.employer.rn_ja_employer.joint_applicant_marriage_sg_registered
+            archived_doc.joint_applicant_spouse_name = self.employer.rn_ja_employer.joint_applicant_spouse_name
+            archived_doc.joint_applicant_spouse_gender = self.employer.rn_ja_employer.joint_applicant_spouse_gender
+            archived_doc.joint_applicant_spouse_date_of_birth = self.employer.rn_ja_employer.joint_applicant_spouse_date_of_birth
+            archived_doc.joint_applicant_spouse_nationality = self.employer.rn_ja_employer.joint_applicant_spouse_nationality
+            archived_doc.joint_applicant_spouse_residential_status = self.employer.rn_ja_employer.joint_applicant_spouse_residential_status
+            archived_doc.joint_applicant_spouse_nric_num = self.employer.rn_ja_employer.joint_applicant_spouse_nric_num
+            archived_doc.joint_applicant_spouse_nric_nonce = self.employer.rn_ja_employer.joint_applicant_spouse_nric_nonce
+            archived_doc.joint_applicant_spouse_nric_tag = self.employer.rn_ja_employer.joint_applicant_spouse_nric_tag
+            archived_doc.joint_applicant_spouse_fin_num = self.employer.rn_ja_employer.joint_applicant_spouse_fin_num
+            archived_doc.joint_applicant_spouse_fin_nonce = self.employer.rn_ja_employer.joint_applicant_spouse_fin_nonce
+            archived_doc.joint_applicant_spouse_fin_tag = self.employer.rn_ja_employer.joint_applicant_spouse_fin_tag
+            archived_doc.joint_applicant_spouse_passport_num = self.employer.rn_ja_employer.joint_applicant_spouse_passport_num
+            archived_doc.joint_applicant_spouse_passport_nonce = self.employer.rn_ja_employer.joint_applicant_spouse_passport_nonce
+            archived_doc.joint_applicant_spouse_passport_tag = self.employer.rn_ja_employer.joint_applicant_spouse_passport_tag
+            archived_doc.joint_applicant_spouse_passport_date = self.employer.rn_ja_employer.joint_applicant_spouse_passport_date
 
         archived_doc.save()
 
@@ -1830,6 +1875,7 @@ class EmployerDoc(models.Model):
         self.rn_signatures_ed.erase_signatures()
         self.version += 1
         self.save()
+
 
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
@@ -1931,7 +1977,7 @@ class DocServiceFeeSchedule(models.Model):
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("2h. Cost for replacement within __ month(s)"),
-        choices=ed_constants.MonthChoices.choices,
+        choices=MonthChoices.choices,
         blank=True,
         null=True,
     )
@@ -2007,6 +2053,7 @@ class DocServiceFeeSchedule(models.Model):
             self.fdw_replaced_passport_tag,
         )
 
+
 class DocServAgmtEmpCtr(models.Model):
     employer_doc = models.OneToOneField(
         EmployerDoc,
@@ -2018,7 +2065,7 @@ class DocServAgmtEmpCtr(models.Model):
     c1_3_handover_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
-        choices=ed_constants.DayChoices.choices
+        choices=DayChoices.choices
     )
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
@@ -2036,12 +2083,12 @@ class DocServAgmtEmpCtr(models.Model):
         max_length=100
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
-            3.1")
+        verbose_name=_("3.4 Refund amount if no replacement pursuant to \
+            Clause 3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
-            to"),
+        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
+            entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -2059,54 +2106,54 @@ class DocServAgmtEmpCtr(models.Model):
     c4_1_replacement_period = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("4.1 Replacement FDW period validity (months)"),
-        choices=ed_constants.MonthChoices.choices
+        choices=MonthChoices.choices
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
-            __ day(s)"),
-        choices=ed_constants.DayChoices.choices
+        verbose_name=_("4.1 Replacement only after FDW has worked for minimum \
+            of __ day(s)"),
+        choices=DayChoices.choices
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
-            date FDW returned"),
-        choices=ed_constants.MonthChoices.choices
+        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
+            from date FDW returned"),
+        choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
-            Service Agreement"),
-        choices=ed_constants.DayChoices.choices
+        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
+            of Service Agreement"),
+        choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
         verbose_name=_("5.1.1 Failed FDW deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
-            to Service Fee refund within __ day(s)"),
-        choices=ed_constants.DayChoices.choices
+        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer \
+            entitled to Service Fee refund within __ day(s)"),
+        choices=DayChoices.choices
     )
     c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW \
+            arrives in Singapore")
     )
     c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW \
+            arrives in Singapore")
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
-        choices=ed_constants.WeekChoices.choices
+        verbose_name=_("5.2.2 If new FDW deployed to Employer and former \
+            FDW CAN be transferred to new employer, refund within __ week(s)"),
+        choices=WeekChoices.choices
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
-        choices=ed_constants.WeekChoices.choices
+        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
+            CAN be transferred to new employer, refund within __ week(s)"),
+        choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
         verbose_name=_("6.4 Food and Accommodation cost per day")
@@ -2129,9 +2176,9 @@ class DocServAgmtEmpCtr(models.Model):
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("13. Service Agreement termination notice (days)"),
-        choices=ed_constants.DayChoices.choices
+        choices=DayChoices.choices
     )
-    
+
     # Employment Contract
     c3_5_fdw_sleeping_arrangement = models.CharField(
         verbose_name=_("3.5 FDW sleeping arrangement"),
@@ -2146,8 +2193,9 @@ class DocServAgmtEmpCtr(models.Model):
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("4.1 Employment Contract termination notice (days)"),
-        choices=ed_constants.DayChoices.choices
+        choices=DayChoices.choices
     )
+
 
 class DocSafetyAgreement(models.Model):
     employer_doc = models.OneToOneField(
@@ -2186,7 +2234,9 @@ class DocSafetyAgreement(models.Model):
         help_text=_("If 'Other' is selected, must complete field (ii)."),
     )
     grilles_installed_require_cleaning = models.BooleanField(
-        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        verbose_name=_(
+            '(ii) Grilles installed on windows required to be cleaned by FDW?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
@@ -2196,7 +2246,9 @@ class DocSafetyAgreement(models.Model):
         help_text=_('If yes, must complete field (iii).'),
     )
     adult_supervision = models.BooleanField(
-        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        verbose_name=_(
+            '(iii) Adult supervision when cleaning window exterior?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
@@ -2205,23 +2257,34 @@ class DocSafetyAgreement(models.Model):
         null=True,
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
-        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        verbose_name=_(
+            "Verifiy employer understands window cleaning conditions"
+        ),
         choices=[
-            (1, _("FDW not required to clean window exterior")),
-            (2, _("FDW to clean only window exterior on ground floor")),
-            (3, _("FDW to clean only window exterior along common corridor")),
-            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
+            (
+                1, _("FDW not required to clean window exterior")
+            ),
+            (
+                2, _("FDW to clean only window exterior on ground floor")
+            ),
+            (
+                3, _("FDW to clean only window exterior along common corridor")
+            ),
+            (
+                4, _("Ensure grilles are locked and only cleaned under adult \
+                    supervision")
+            )
         ],
         default='not_required_to_clean_window_exterior',
     )
 
     def save(self):
-        if self.fdw_clean_window_exterior==False:
+        if not self.fdw_clean_window_exterior:
             self.window_exterior_location = None
             self.grilles_installed_require_cleaning = None
             self.adult_supervision = None
 
-        elif not self.window_exterior_location=='OTHER':
+        elif not self.window_exterior_location == 'OTHER':
             self.grilles_installed_require_cleaning = None
             self.adult_supervision = None
 
@@ -2229,6 +2292,7 @@ class DocSafetyAgreement(models.Model):
             self.adult_supervision = None
 
         return super().save()
+
 
 class DocUpload(models.Model):
     employer_doc = models.OneToOneField(
@@ -2261,6 +2325,7 @@ class DocUpload(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
     )
 
+
 class MaidInventory(models.Model):
     item_name = models.CharField(
         verbose_name=_('Maid Inventory Item Name'),
@@ -2275,6 +2340,7 @@ class MaidInventory(models.Model):
 
     def __str__(self) -> str:
         return self.item_name
+
 
 class CaseSignature(models.Model):
     employer_doc = models.OneToOneField(
@@ -2428,7 +2494,7 @@ class CaseSignature(models.Model):
             current_site = Site.objects.get_current()
             relative_url = reverse(
                 'token_challenge_route',
-                kwargs = {'slug': slug},
+                kwargs={'slug': slug},
             )
             return current_site.domain + relative_url
         else:
@@ -2449,12 +2515,13 @@ class CaseSignature(models.Model):
         self.sponsor_2_signature = None if self.sponsor_2_signature else self.sponsor_2_signature
         self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
         self.save()
-    
+
     # Verification Tokens
     token_employer_1 = models.BinaryField(
         blank=True,
         null=True,
     )
+
 
 class CaseStatus(models.Model):
     employer_doc = models.OneToOneField(
@@ -2487,6 +2554,7 @@ class CaseStatus(models.Model):
         blank=True,
         null=True
     )
+
 
 class ArchivedAgencyDetails(models.Model):
     agency_name = models.CharField(
@@ -2534,6 +2602,7 @@ class ArchivedAgencyDetails(models.Model):
         blank=False
     )
 
+
 class ArchivedMaid(models.Model):
     name = models.CharField(
         verbose_name=_('Name'),
@@ -2577,6 +2646,7 @@ class ArchivedMaid(models.Model):
         blank=True
     )
 
+
 class ArchivedDoc(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -2588,8 +2658,8 @@ class ArchivedDoc(models.Model):
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
-        choices=ed_constants.EmployerTypeOfApplicantChoices.choices,
-        default=ed_constants.EmployerTypeOfApplicantChoices.SINGLE,
+        choices=EmployerTypeOfApplicantChoices.choices,
+        default=EmployerTypeOfApplicantChoices.SINGLE,
     )
 
     # Agency Information
@@ -2611,36 +2681,36 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Employer Name'),
         max_length=40,
     )
-    
+
     employer_gender = models.CharField(
         verbose_name=_("Employer gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
-    
+
     employer_mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid mobile number')
             )
         ],
     )
-    
+
     employer_home_number = models.CharField(
         verbose_name=_('Home Tel Number'),
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[6][0-9]{7}$', # Singapore landline numbers
+                regex='^[6][0-9]{7}$',  # Singapore landline numbers
                 message=_('Please enter a valid home telephone number')
             )
         ],
     )
-    
+
     employer_email = models.EmailField(
         verbose_name=_('Email Address')
     )
@@ -2649,14 +2719,14 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Address Line 1'),
         max_length=100,
     )
-    
+
     employer_address_2 = models.CharField(
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
         null=True,
     )
-    
+
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
@@ -2678,8 +2748,8 @@ class ArchivedDoc(models.Model):
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
     )
 
     employer_nric_num = models.BinaryField(
@@ -2705,53 +2775,53 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True,
     )
-    
+
     employer_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     employer_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     employer_passport_num = models.BinaryField(
         verbose_name=_('Employer passport'),
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     employer_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     employer_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
         null=True,
     )
-    
+
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
         blank=True,
         null=True,
     )
-    
+
     employer_marital_status = models.CharField(
         verbose_name=_("Employer marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
-    
+
     employer_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
@@ -2773,7 +2843,7 @@ class ArchivedDoc(models.Model):
             self.employer_nric_nonce,
             self.employer_nric_tag,
         )
-    
+
     def get_employer_nric_partial(self):
         plaintext = self.get_employer_nric_full()
         return 'x'*5 + plaintext[-4:] if plaintext else ''
@@ -2801,7 +2871,7 @@ class ArchivedDoc(models.Model):
             self.spouse_nric_nonce,
             self.spouse_nric_tag,
         )
-    
+
     def get_employer_spouse_fin_full(self):
         return decrypt_string(
             self.spouse_fin_num,
@@ -2824,7 +2894,7 @@ class ArchivedDoc(models.Model):
     def get_email_partial(self):
         return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
 
-    ## Employer Spouse
+    # Employer Spouse
     spouse_name = models.CharField(
         verbose_name=_("Spouse's Name"),
         max_length=40,
@@ -2835,8 +2905,8 @@ class ArchivedDoc(models.Model):
     spouse_gender = models.CharField(
         verbose_name=_("Spouse's gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -2856,8 +2926,8 @@ class ArchivedDoc(models.Model):
     spouse_residential_status = models.CharField(
         verbose_name=_("Spouse's residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -2915,37 +2985,13 @@ class ArchivedDoc(models.Model):
         null=True,
     )
 
-    def get_employer_spouse_nric_full(self):
-        return decrypt_string(
-            self.spouse_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_nric_nonce,
-            self.spouse_nric_tag,
-        )
-
-    def get_employer_spouse_fin_full(self):
-        return decrypt_string(
-            self.spouse_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_fin_nonce,
-            self.spouse_fin_tag,
-        )
-
-    def get_employer_spouse_passport_full(self):
-        return decrypt_string(
-            self.spouse_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_passport_nonce,
-            self.spouse_passport_tag,
-        )
-
-    ## Sponsors
+    # Sponsors
     # Sponsor 1 details
     sponsor_1_relationship = models.CharField(
         verbose_name=_("Sponsor 1 relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
     )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
@@ -2955,8 +3001,8 @@ class ArchivedDoc(models.Model):
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
@@ -2984,8 +3030,8 @@ class ArchivedDoc(models.Model):
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
-        choices=ed_constants.ResidentialStatusPartialChoices.choices,
-        default=ed_constants.ResidentialStatusPartialChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -2993,7 +3039,7 @@ class ArchivedDoc(models.Model):
         null=True,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
         ],
@@ -3021,8 +3067,8 @@ class ArchivedDoc(models.Model):
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
 
     # Sponsor 1 spouse details
@@ -3048,8 +3094,8 @@ class ArchivedDoc(models.Model):
     sponsor_1_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -3069,8 +3115,8 @@ class ArchivedDoc(models.Model):
     sponsor_1_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -3142,8 +3188,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_relationship = models.CharField(
         verbose_name=_("Sponsor 2 relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
         blank=True,
         null=True,
     )
@@ -3156,8 +3202,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -3193,8 +3239,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
-        choices=ed_constants.ResidentialStatusPartialChoices.choices,
-        default=ed_constants.ResidentialStatusPartialChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
         blank=True,
         null=True,
     )
@@ -3203,7 +3249,7 @@ class ArchivedDoc(models.Model):
         max_length=10,
         validators=[
             RegexValidator(
-                regex='^[8-9][0-9]{7}$', # Singapore mobile numbers
+                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
         ],
@@ -3236,8 +3282,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
         blank=True,
         null=True,
     )
@@ -3265,8 +3311,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -3286,8 +3332,8 @@ class ArchivedDoc(models.Model):
     sponsor_2_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -3376,7 +3422,7 @@ class ArchivedDoc(models.Model):
             self.sponsor_1_spouse_passport_nonce,
             self.sponsor_1_spouse_passport_tag,
         )
-    
+
     def get_sponsor_2_nric_full(self):
         return decrypt_string(
             self.sponsor_2_nric_num,
@@ -3413,8 +3459,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_relationship = models.CharField(
         verbose_name=_("Joint applicant's relationship with Employer"),
         max_length=30,
-        choices=ed_constants.RelationshipChoices.choices,
-        default=ed_constants.RelationshipChoices.DAUGHTER,
+        choices=RelationshipChoices.choices,
+        default=RelationshipChoices.DAUGHTER,
     )
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
@@ -3424,8 +3470,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
@@ -3450,8 +3496,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
-        choices=ed_constants.ResidentialStatusPartialChoices.choices,
-        default=ed_constants.ResidentialStatusPartialChoices.SC,
+        choices=ResidentialStatusPartialChoices.choices,
+        default=ResidentialStatusPartialChoices.SC,
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
@@ -3472,8 +3518,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
         max_length=10,
-        choices=ed_constants.MaritalStatusChoices.choices,
-        default=ed_constants.MaritalStatusChoices.SINGLE,
+        choices=MaritalStatusChoices.choices,
+        default=MaritalStatusChoices.SINGLE,
     )
     joint_applicant_marriage_sg_registered = models.BooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
@@ -3499,8 +3545,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_spouse_gender = models.CharField(
         verbose_name=_("Joint applicant's spouse gender"),
         max_length=1,
-        choices=ed_constants.GenderChoices.choices,
-        default=ed_constants.GenderChoices.F,
+        choices=GenderChoices.choices,
+        default=GenderChoices.F,
         blank=True,
         null=True,
     )
@@ -3520,8 +3566,8 @@ class ArchivedDoc(models.Model):
     joint_applicant_spouse_residential_status = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
         max_length=5,
-        choices=ed_constants.ResidentialStatusFullChoices.choices,
-        default=ed_constants.ResidentialStatusFullChoices.SC,
+        choices=ResidentialStatusFullChoices.choices,
+        default=ResidentialStatusFullChoices.SC,
         blank=True,
         null=True,
     )
@@ -3586,7 +3632,7 @@ class ArchivedDoc(models.Model):
             self.joint_applicant_nric_nonce,
             self.joint_applicant_nric_tag,
         )
-    
+
     def get_joint_applicant_spouse_nric_full(self):
         return decrypt_string(
             self.joint_applicant_spouse_nric_num,
@@ -3622,8 +3668,8 @@ class ArchivedDoc(models.Model):
     )
     monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly Income"),
-        choices=ed_constants.IncomeChoices.choices,
-        default=ed_constants.IncomeChoices.INCOME_3,
+        choices=IncomeChoices.choices,
+        default=IncomeChoices.INCOME_3,
     )
 
     # Doc Base
@@ -3650,14 +3696,14 @@ class ArchivedDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=ed_constants.DayChoices.choices[0:5],
+        choices=DayChoices.choices[0:5],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
     fdw_off_day_of_week = models.PositiveSmallIntegerField(
         verbose_name=_("FDW Off Day Day of Week"),
-        choices=ed_constants.DayOfWeekChoices.choices,
-        default=ed_constants.DayOfWeekChoices.SUN
+        choices=DayOfWeekChoices.choices,
+        default=DayOfWeekChoices.SUN
     )
 
     def get_version(self):
@@ -3758,7 +3804,7 @@ class ArchivedDoc(models.Model):
     b2h_replacement_months = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("2h. Cost for replacement within __ month(s)"),
-        choices=ed_constants.MonthChoices.choices,
+        choices=MonthChoices.choices,
         blank=True,
         null=True,
     )
@@ -3839,7 +3885,7 @@ class ArchivedDoc(models.Model):
     c1_3_handover_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
-        choices=ed_constants.DayChoices.choices
+        choices=DayChoices.choices
     )
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
@@ -3861,8 +3907,8 @@ class ArchivedDoc(models.Model):
             3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is entitled \
-            to"),
+        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
+            entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -3880,54 +3926,54 @@ class ArchivedDoc(models.Model):
     c4_1_replacement_period = models.PositiveSmallIntegerField(
         # months
         verbose_name=_("4.1 Replacement FDW period validity (months)"),
-        choices=ed_constants.MonthChoices.choices
+        choices=MonthChoices.choices
     )
     c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("4.1 Replacement only after FDW has worked for minimum of \
-            __ day(s)"),
-        choices=ed_constants.DayChoices.choices
+        verbose_name=_("4.1 Replacement only after FDW has worked for minimum \
+            of __ day(s)"),
+        choices=DayChoices.choices
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) from \
-            date FDW returned"),
-        choices=ed_constants.MonthChoices.choices
+        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
+            from date FDW returned"),
+        choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date of \
-            Service Agreement"),
-        choices=ed_constants.DayChoices.choices
+        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
+            of Service Agreement"),
+        choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
         verbose_name=_("5.1.1 Failed FDW deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer entitled \
-            to Service Fee refund within __ day(s)"),
-        choices=ed_constants.DayChoices.choices
+        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer \
+            entitled to Service Fee refund within __ day(s)"),
+        choices=DayChoices.choices
     )
     c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW \
+            arrives in Singapore")
     )
     c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives in \
-            Singapore")
+        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives \
+            in Singapore")
     )
     c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
-        choices=ed_constants.WeekChoices.choices
+        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW \
+            CAN be transferred to new employer, refund within __ week(s)"),
+        choices=WeekChoices.choices
     )
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
-        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW CAN \
-            be transferred to new employer, refund within __ week(s)"),
-        choices=ed_constants.WeekChoices.choices
+        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
+            CAN be transferred to new employer, refund within __ week(s)"),
+        choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
         verbose_name=_("6.4 Food and Accommodation cost per day")
@@ -3950,9 +3996,9 @@ class ArchivedDoc(models.Model):
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("13. Service Agreement termination notice (days)"),
-        choices=ed_constants.DayChoices.choices
+        choices=DayChoices.choices
     )
-    
+
     # Employment Contract
     c3_5_fdw_sleeping_arrangement = models.CharField(
         verbose_name=_("3.5 FDW sleeping arrangement"),
@@ -3967,7 +4013,7 @@ class ArchivedDoc(models.Model):
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("4.1 Employment Contract termination notice (days)"),
-        choices=ed_constants.DayChoices.choices
+        choices=DayChoices.choices
     )
 
     # Safety Agreement
@@ -4006,7 +4052,9 @@ class ArchivedDoc(models.Model):
         help_text=_("If 'Other' is selected, must complete field (ii)."),
     )
     grilles_installed_require_cleaning = models.BooleanField(
-        verbose_name=_('(ii) Grilles installed on windows required to be cleaned by FDW?'),
+        verbose_name=_(
+            '(ii) Grilles installed on windows required to be cleaned by FDW?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
@@ -4016,7 +4064,9 @@ class ArchivedDoc(models.Model):
         help_text=_('If yes, must complete field (iii).'),
     )
     adult_supervision = models.BooleanField(
-        verbose_name=_('(iii) Adult supervision when cleaning window exterior?'),
+        verbose_name=_(
+            '(iii) Adult supervision when cleaning window exterior?'
+        ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
@@ -4025,12 +4075,23 @@ class ArchivedDoc(models.Model):
         null=True,
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
-        verbose_name=_("Verifiy employer understands window cleaning conditions"),
+        verbose_name=_(
+            "Verifiy employer understands window cleaning conditions"
+        ),
         choices=[
-            (1, _("FDW not required to clean window exterior")),
-            (2, _("FDW to clean only window exterior on ground floor")),
-            (3, _("FDW to clean only window exterior along common corridor")),
-            (4, _("Ensure grilles are locked and only cleaned under adult supervision")),
+            (
+                1, _("FDW not required to clean window exterior")
+            ),
+            (
+                2, _("FDW to clean only window exterior on ground floor")
+            ),
+            (
+                3, _("FDW to clean only window exterior along common corridor")
+            ),
+            (
+                4, _("Ensure grilles are locked and only cleaned under adult \
+                    supervision")
+            )
         ],
         blank=True,
         null=True,

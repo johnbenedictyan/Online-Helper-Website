@@ -1,22 +1,19 @@
-# Imports from django
+# Django Imports
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.views.generic.base import RedirectView, TemplateView
+from django.views.generic.base import RedirectView
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from accounts.models import PotentialEmployer
 from enquiry.forms import ShortlistedEnquiryForm
 from enquiry.models import ShortlistedEnquiry
 from maid.models import Maid
 
-# Imports from local apps
 
 # Start of Views
 
-## Redirect Views
 class AddTo(RedirectView):
     pattern_name = 'maid_list'
 
@@ -24,7 +21,7 @@ class AddTo(RedirectView):
         current_shortlist = self.request.session.get('shortlist', [])
         try:
             selected_maid = Maid.objects.get(
-                pk = kwargs.get('pk')
+                pk=kwargs.get('pk')
             )
         except Maid.DoesNotExist:
             messages.error(
@@ -32,7 +29,7 @@ class AddTo(RedirectView):
                 'This maid does not exist'
             )
         else:
-            if selected_maid.published == False:
+            if not selected_maid.published:
                 messages.error(
                     self.request,
                     'This maid cannot be shortlisted at the moment'
@@ -50,6 +47,7 @@ class AddTo(RedirectView):
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
+
 class RemoveFrom(RedirectView):
     pattern_name = 'maid_list'
 
@@ -57,7 +55,7 @@ class RemoveFrom(RedirectView):
         current_shortlist = self.request.session.get('shortlist', [])
         try:
             selected_maid = Maid.objects.get(
-                pk = kwargs.get('pk')
+                pk=kwargs.get('pk')
             )
         except Maid.DoesNotExist:
             messages.error(
@@ -67,7 +65,7 @@ class RemoveFrom(RedirectView):
         else:
             if selected_maid.pk not in current_shortlist:
                 messages.error(
-                self.request,
+                    self.request,
                     'This maid is not in your shortlist'
                 )
             else:
@@ -78,7 +76,7 @@ class RemoveFrom(RedirectView):
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
-## Template Views
+
 class ViewShortlist(CreateView):
     form_class = ShortlistedEnquiryForm
     http_method_names = ['get', 'post']
@@ -90,7 +88,7 @@ class ViewShortlist(CreateView):
     def dispatch(self, request, *args, **kwargs):
         self.current_shortlist = self.request.session.get('shortlist', [])
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({

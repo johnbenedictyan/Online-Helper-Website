@@ -1,42 +1,43 @@
-# Imports from python
-
-# Imports from django
+# Django Imports
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
-# Imports from other apps
+# Foreign Apps Imports
 import stripe
+
+# Project Apps Imports
 from advertisement.models import Advertisement
 from maid.models import Maid
 from payment.models import Customer
 
-# Imports from within the app
+# App Imports
 from .models import Agency, PotentialAgency, AgencyEmployee
 
-
-
 # Start of Signals
+
+
 @receiver(post_save, sender=Agency)
 def agency_created(sender, instance, created, **kwargs):
-    if created == True:
+    if created:
         try:
             pa = PotentialAgency.objects.get(
-                license_number = instance.license_number
+                license_number=instance.license_number
             )
         except PotentialAgency.DoesNotExist as e:
             print(e)
         else:
             pa.delete()
 
+
 @receiver(post_save, sender=Agency)
 def stripe_customer_created_or_update(sender, instance, created, **kwargs):
     agency = instance
-    if created == True:
+    if created:
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             stripe_customer = stripe.Customer.create(
-                address = {
+                address={
                     'city': None,
                     'country': None,
                     'line1': None,
@@ -44,7 +45,7 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
                     'postal_code': None,
                     'state': None,
                 },
-                description = f'Customer account for {agency.name}',
+                description=f'Customer account for {agency.name}',
                 email=None,
                 name=agency.name,
                 invoice_settings={
@@ -57,13 +58,14 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
             print(e)
         else:
             new_customer = Customer(
-                agency = agency
+                agency=agency
             )
             new_customer.id = stripe_customer.id
             new_customer.save()
     else:
         pass
-    
+
+
 @receiver(post_save, sender=AgencyEmployee)
 def agency_employee_counter(sender, instance, created, **kwargs):
     agency = instance.agency
@@ -71,11 +73,12 @@ def agency_employee_counter(sender, instance, created, **kwargs):
         agency=agency
     ).count()
     agency.save()
-    
+
+
 @receiver(post_save, sender=Agency)
 def deactivate_agency(sender, instance, created, **kwargs):
     agency = instance
-    if agency.active == False:
+    if not agency.active:
         Maid.objects.filter(
             agency=agency
         ).update(
@@ -86,7 +89,8 @@ def deactivate_agency(sender, instance, created, **kwargs):
         ).update(
             frozen=True
         )
-        
+
+
 @receiver(pre_save, sender=Agency)
 def reactivate_agency(sender, instance, **kwargs):
     if instance.id:
@@ -94,7 +98,7 @@ def reactivate_agency(sender, instance, **kwargs):
         prev = agency = Agency.objects.get(
             pk=instance.pk
         )
-        if prev.active == False and current.active == True:
+        if not prev.active and current.active:
             Maid.objects.filter(
                 agency=agency
             ).update(

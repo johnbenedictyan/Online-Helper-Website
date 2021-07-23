@@ -16,16 +16,16 @@ Including another URLconf
 # Imports from system
 import os
 
-# Imports from django
+# Django Imports
 from django.contrib import admin
 from django.urls import include,path
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from django_otp.admin import OTPAdminSite
 
-# Imports from local apps
+# App Imports
 from accounts.urls import urlpatterns as accounts_urls
 from advertisement.urls import urlpatterns as advertisement_urls
 from agency.urls import urlpatterns as agency_urls
@@ -70,6 +70,7 @@ urlpatterns = [
     path('payment/', include(payment_urls)),
     path('shortlist/', include(shortlist_urls)),
     path('enquiry/', include(enquiry_urls)),
+    path('socia-auth/', include('social_django.urls', namespace='socialauth')),
     path('', include(website_urls))
 ]
 

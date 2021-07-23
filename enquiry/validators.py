@@ -1,7 +1,15 @@
+# Global Imports
 import re
+
+# Django Imports
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
+# Foreign Apps Imports
 # from profanity_check import predict
+
+# Start of Validators
+
 
 # def validate_obscene_language(value):
 #     if predict([value] == 1):
@@ -10,11 +18,12 @@ from django.utils.translation import gettext_lazy as _
 #             params={'value': value},
 #         )
 
+
 def validate_links(value):
     url_regex = "(?P<url>https?://[^\s]+)"
     try:
         re.search(url_regex, value).group('url')
-    except:
+    except Exception:
         return value
     else:
         raise ValidationError(

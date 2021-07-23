@@ -1,12 +1,11 @@
-# Imports from django
+# Django Imports
 from django.forms.models import inlineformset_factory
-from django.utils.translation import ugettext_lazy as _
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field
 
-# Imports from local apps
+# App Imports
 from .forms import EmployerHouseholdDetailsForm, MaidInventoryForm
 from .models import Employer, EmployerHousehold, EmployerDoc, MaidInventory
 
@@ -20,6 +19,7 @@ EmployerHouseholdFormSet = inlineformset_factory(
     min_num=0,
     max_num=10
 )
+
 
 class EmployerHouseholdFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
@@ -64,6 +64,7 @@ class EmployerHouseholdFormSetHelper(FormHelper):
         )
         self.render_required_fields = True
 
+
 MaidInventoryFormSet = inlineformset_factory(
     parent_model=EmployerDoc,
     form=MaidInventoryForm,
@@ -72,6 +73,8 @@ MaidInventoryFormSet = inlineformset_factory(
     min_num=0,
     max_num=20
 )
+
+
 class MaidInventoryFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

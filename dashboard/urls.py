@@ -1,57 +1,45 @@
-# Imports from django
+# Django Imports
 from django.urls import include, path
 
-# Imports from foreign installed apps
+# Start of urls
 
-# Imports from local app
-
-## Redirect Views
-
-## List Views
+# List Views
 from .views import (
-    DashboardMaidList, DashboardAccountList, DashboardAgencyPlanList,
-    DashboardGeneralEnquiriesList, DashboardAgencyBranchList, DashboardCaseList,
-    DashboardSalesList, DashboardEmployerList, DashboardStatusList, 
-    DashboardShortlistedEnquiriesList
+    MaidList, AccountList, AgencyPlanList, GeneralEnquiriesList,
+    AgencyBranchList, CaseList, SalesList, EmployerList, StatusList,
+    ShortlistedEnquiriesList
 )
 
-## Detail Views
+# Detail Views
+from .views import AgencyDetail, MaidDetail
+
+# Form Views
 from .views import (
-    DashboardAgencyDetail, DashboardMaidDetail, 
-    # DashboardEmployerDetail, DashboardCaseDetail
+    MaidLanguagesAndFHPDRFormView, MaidExperienceFormView,
+    MaidAboutFDWFormView, AgencyOutletDetailsFormView, MaidLoanFormView,
+    MaidEmploymentHistoryFormView
+)
+# Create Views
+from .views import MaidInformationCreate, AgencyEmployeeCreate
+
+# Template Views
+from .views import HomePage
+
+# Update Views
+from .views import (
+    AgencyInformationUpdate, AgencyOpeningHoursUpdate,
+    AgencyEmployeeUpdate, MaidInformationUpdate
 )
 
-## Form Views
-from .views import (
-    DashboardMaidLanguagesAndFHPDRFormView, DashboardMaidExperienceFormView, 
-    DashboardMaidAboutFDWFormView, DashboardAgencyOutletDetailsFormView, DashboardMaidLoanFormView,
-    DashboardMaidEmploymentHistoryFormView
-)
-## Create Views
-from .views import (
-    DashboardMaidInformationCreate, DashboardAgencyEmployeeCreate
-)
-
-## Template Views
-from .views import DashboardHomePage
-
-## Update Views
-from .views import (
-    DashboardAgencyInformationUpdate, DashboardAgencyOpeningHoursUpdate,
-    DashboardAgencyEmployeeUpdate, DashboardMaidInformationUpdate
-)
-
-## Delete Views
-
-## Generic Views
-from .views import DashboardDataProviderView
+# Generic Views
+from .views import DataProviderView
 
 # Start of Urls
 
 urlpatterns = [
     path(
         'data/',
-        DashboardDataProviderView.as_view(),
+        DataProviderView.as_view(),
         name='dashboard_data_provider'
     ),
     path(
@@ -62,64 +50,64 @@ urlpatterns = [
                 include([
                     path(
                         '',
-                        DashboardMaidList.as_view(),
+                        MaidList.as_view(),
                         name='dashboard_maid_list'
                     ),
                     path(
                         '<int:pk>/',
-                        DashboardMaidDetail.as_view(),
+                        MaidDetail.as_view(),
                         name='dashboard_maid_detail'
                     )
                 ])
             ),
             path(
                 'accounts/',
-                DashboardAccountList.as_view(),
+                AccountList.as_view(),
                 name='dashboard_account_list'
             ),
             path(
                 'agency-details/',
-                DashboardAgencyDetail.as_view(),
+                AgencyDetail.as_view(),
                 name='dashboard_agency_detail'
             ),
             path(
                 'agency-plans/',
-                DashboardAgencyPlanList.as_view(),
+                AgencyPlanList.as_view(),
                 name='dashboard_agency_plan_list'
             ),
             path(
                 'general-enquiries/',
-                DashboardGeneralEnquiriesList.as_view(),
+                GeneralEnquiriesList.as_view(),
                 name='dashboard_general_enquiries_list'
             ),
             path(
                 'shortlisted-enquiries/',
-                DashboardShortlistedEnquiriesList.as_view(),
+                ShortlistedEnquiriesList.as_view(),
                 name='dashboard_shortlisted_enquiries_list'
             ),
             path(
                 'branches/',
-                DashboardAgencyBranchList.as_view(),
+                AgencyBranchList.as_view(),
                 name='dashboard_branches_list'
             ),
             path(
                 'cases/',
-                DashboardCaseList.as_view(),
+                CaseList.as_view(),
                 name='dashboard_case_list'
             ),
             path(
                 'sales/',
-                DashboardSalesList.as_view(),
+                SalesList.as_view(),
                 name='dashboard_sales_list'
             ),
             path(
                 'status/',
-                DashboardStatusList.as_view(),
+                StatusList.as_view(),
                 name='dashboard_status_list'
             ),
             path(
                 'employers/',
-                DashboardEmployerList.as_view(),
+                EmployerList.as_view(),
                 name='dashboard_employers_list'
             )
         ])
@@ -129,12 +117,12 @@ urlpatterns = [
         include([
             path(
                 'maid/',
-                DashboardMaidInformationCreate.as_view(),
+                MaidInformationCreate.as_view(),
                 name='dashboard_maid_information_create'
             ),
             path(
                 'employee/',
-                DashboardAgencyEmployeeCreate.as_view(),
+                AgencyEmployeeCreate.as_view(),
                 name='dashboard_agency_employee_create'
             )
         ])
@@ -144,22 +132,22 @@ urlpatterns = [
         include([
             path(
                 'agency-information/',
-                DashboardAgencyInformationUpdate.as_view(),
+                AgencyInformationUpdate.as_view(),
                 name='dashboard_agency_information_update'
             ),
             path(
                 'agency-opening-hours/',
-                DashboardAgencyOpeningHoursUpdate.as_view(),
+                AgencyOpeningHoursUpdate.as_view(),
                 name='dashboard_agency_opening_hours_update'
             ),
             path(
                 'agency-outlet-details/',
-                DashboardAgencyOutletDetailsFormView.as_view(),
+                AgencyOutletDetailsFormView.as_view(),
                 name='dashboard_agency_outlet_details_update'
             ),
             path(
                 'agency-employee/<int:pk>/',
-                DashboardAgencyEmployeeUpdate.as_view(),
+                AgencyEmployeeUpdate.as_view(),
                 name='dashboard_agency_employee_update'
             ),
             path(
@@ -167,32 +155,32 @@ urlpatterns = [
                 include([
                     path(
                         '',
-                        DashboardMaidInformationUpdate.as_view(),
+                        MaidInformationUpdate.as_view(),
                         name='dashboard_maid_information_update'
                     ),
                     path(
                         'languages-and-food-handling-dietary-restriction/',
-                        DashboardMaidLanguagesAndFHPDRFormView.as_view(),
+                        MaidLanguagesAndFHPDRFormView.as_view(),
                         name='dashboard_maid_languages_and_fhpdr_update'
                     ),
                     path(
                         'experience/',
-                        DashboardMaidExperienceFormView.as_view(),
+                        MaidExperienceFormView.as_view(),
                         name='dashboard_maid_experience_update'
                     ),
                     path(
                         'about-fdw/',
-                        DashboardMaidAboutFDWFormView.as_view(),
+                        MaidAboutFDWFormView.as_view(),
                         name='dashboard_maid_about_fdw_update'
                     ),
                     path(
                         'employment-history/',
-                        DashboardMaidEmploymentHistoryFormView.as_view(),
+                        MaidEmploymentHistoryFormView.as_view(),
                         name='dashboard_maid_employment_history_update'
                     ),
                     path(
                         'loan/',
-                        DashboardMaidLoanFormView.as_view(),
+                        MaidLoanFormView.as_view(),
                         name='dashboard_maid_loan_update'
                     )
                 ])
@@ -201,7 +189,7 @@ urlpatterns = [
     ),
     path(
         '',
-        DashboardHomePage.as_view(),
+        HomePage.as_view(),
         name='dashboard_home'
     )
 ]

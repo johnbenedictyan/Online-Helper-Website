@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+
 class IncomeChoices(models.IntegerChoices):
     INCOME_0 = 0, _("Below $2,000")
     INCOME_1 = 1, _("$2,000 to $2,499")
@@ -16,6 +17,7 @@ class IncomeChoices(models.IntegerChoices):
     INCOME_11 = 11, _("$15,000 to $19,999")
     INCOME_12 = 12, _("$20,000 to $24,999")
     INCOME_13 = 13, _("$25,000 and above")
+
 
 class RelationshipChoices(models.TextChoices):
     SON = 'SON', _('Son')
@@ -36,13 +38,15 @@ class RelationshipChoices(models.TextChoices):
     SISTER_IN_LAW = 'SISTER_IN_LAW', _('Sister-in-law')
     GRANDFATHER_IN_LAW = 'GRANDFATHER_IN_LAW', _('Grandfather-in-law')
     GRANDMOTHER_IN_LAW = 'GRANDMOTHER_IN_LAW', _('Grandmother-in-law')
-    YOUNG_CHILD_LEGAL_WARD = 'YOUNG_CHILD_LEGAL_WARD', _('Young child legal ward')
+    CHILD_LEGAL_WARD = 'YOUNG_CHILD_LEGAL_WARD', _('Young child legal ward')
     AGED_PERSON_LEGAL = 'AGED_PERSON_LEGAL_WARD', _('Aged person legal ward')
     OTHER = 'OTHER', _('Other')
+
 
 class GenderChoices(models.TextChoices):
     M = 'M', _('Male')
     F = 'F', _('Female')
+
 
 class ResidentialStatusFullChoices(models.TextChoices):
     SC = 'SC', _('Singapore citizen')
@@ -53,20 +57,16 @@ class ResidentialStatusFullChoices(models.TextChoices):
     DIPLO = 'DIPLO', _('Diplomat')
     OTHER = 'OTHER', _('Others')
 
+
 class ResidentialStatusPartialChoices(models.TextChoices):
     SC = 'SC', _('Singapore citizen')
     PR = 'PR', _('Singapore permanent resident')
 
-class MaritalStatusChoices(models.TextChoices):
-    SINGLE = 'SINGLE', _('Single')
-    MARRIED = 'MARRIED', _('Married')
-    DIVORCED = 'DIVORCED', _('Divorced')
-    WIDOWED = 'WIDOWED', _('Widowed')
-    SEPARATED = 'SEPARATED', _('Separated')
 
 class HouseholdIdTypeChoices(models.TextChoices):
     NRIC = 'NRIC', _('NRIC')
     BC = 'BC', _('Birth Certificate')
+
 
 class DayChoices(models.IntegerChoices):
     D00 = 0, _("0 days")
@@ -99,12 +99,14 @@ class DayChoices(models.IntegerChoices):
     D27 = 27, _("27 days")
     D28 = 28, _("28 days")
 
+
 class WeekChoices(models.IntegerChoices):
     W00 = 0, _("0 weeks")
     W01 = 1, _("1 week")
     W02 = 2, _("2 weeks")
     W03 = 3, _("3 weeks")
     W04 = 4, _("4 weeks")
+
 
 class MonthChoices(models.IntegerChoices):
     M00 = 0, _("0 months")
@@ -133,13 +135,15 @@ class MonthChoices(models.IntegerChoices):
     M23 = 23, _("23 months")
     M24 = 24, _("24 months")
 
+
 class EmployerTypeOfApplicantChoices(models.TextChoices):
     SINGLE = 'SINGLE', _("Employer Only")
     SPOUSE = 'SPOUSE', _("Employer with Spouse")
     SPONSOR = 'SPONSR', _("Employer with Sponsor(s)")
     JOINT_APPLICANT = 'JNT_AP', _("Employer with Joint Applicant")
 
-monthly_income_label = {
+
+monthly_income_label_map = {
     EmployerTypeOfApplicantChoices.SINGLE: [
         'Employer Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
@@ -158,6 +162,7 @@ monthly_income_label = {
         ]
 }
 
+
 class DayOfWeekChoices(models.IntegerChoices):
     MON = 0, _('Monday')
     TUE = 1, _('Tuesday')
@@ -166,5 +171,6 @@ class DayOfWeekChoices(models.IntegerChoices):
     FRI = 4, _('Friday')
     SAT = 5, _('Saturday')
     SUN = 6, _('Sunday')
+
 
 NUMBER_OF_WORK_DAYS_IN_MONTH = 26

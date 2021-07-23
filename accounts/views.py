@@ -1,4 +1,4 @@
-# Imports from django
+# Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -9,64 +9,53 @@ from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# Imports from foreign installed apps
+# Foreign Apps Imports
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
 from .models import PotentialEmployer
-from .mixins import VerifiedEmployerMixin, PotentialEmployerRequiredMixin
+from .mixins import PotentialEmployerGrpRequiredMixin
 
 # Start of Views
 
-## Views that inherit from inbuilt django views
-class SignInView(SuccessMessageMixin, LoginView):
+
+class BaseLoginView(SuccessMessageMixin, LoginView):
+    success_message = 'Successful Login'
+
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        if url:
+            return url
+        else:
+            if not self.success_url:
+                raise ImproperlyConfigured(
+                    "No URL to redirect to. Provide a success_url."
+                )
+            return str(self.success_url)
+
+
+class SignInView(BaseLoginView):
     template_name = 'base/sign-in.html'
     authentication_form = SignInForm
-    success_message = 'Successful Login'
     success_url = reverse_lazy('home')
-    
+
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
-        request = self.request
         next_hop_maid_string = 'next=' + reverse('maid_list')
-        if next_hop_maid_string in request.META.get('QUERY_STRING'):
+        if next_hop_maid_string in self.request.META.get('QUERY_STRING'):
             kwargs.update({
                 'show_disclaimer': True
             })
         return kwargs
 
-    def get_success_url(self):
-        url = self.get_redirect_url()
-        if url:
-            return url
-        else:
-            if not self.success_url:
-                raise ImproperlyConfigured(
-                    "No URL to redirect to. Provide a success_url."
-                )
-            return str(self.success_url)  # success_url may be lazy
-    
-class AgencySignInView(SuccessMessageMixin, LoginView):
+
+class AgencySignInView(BaseLoginView):
     template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
-    success_message = 'Successful Login'
     success_url = reverse_lazy('dashboard_home')
-    
-    def get_success_url(self):
-        url = self.get_redirect_url()
-        if url:
-            return url
-        else:
-            if not self.success_url:
-                raise ImproperlyConfigured(
-                    "No URL to redirect to. Provide a success_url."
-                )
-            return str(self.success_url)  # success_url may be lazy
-        
-## Template Views
 
-## Redirect Views
+
 class SignOutView(LoginRequiredMixin, RedirectView):
     pattern_name = 'home'
 
@@ -79,19 +68,18 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         )
         return super().get_redirect_url(*args, **kwargs)
 
-## Detail Views
-class PotentialEmployerDetail(PotentialEmployerRequiredMixin, VerifiedEmployerMixin,
-                     DetailView):
+
+class PotentialEmployerDetail(PotentialEmployerGrpRequiredMixin, DetailView):
     context_object_name = 'employer'
     http_method_names = ['get']
     model = PotentialEmployer
     template_name = 'detail/employer-detail.html'
 
-## Create Views
+
 class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = PotentialEmployer
     template_name = 'create/employer-create.html'
     success_url = reverse_lazy('home')
@@ -105,12 +93,12 @@ class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
         })
         return kwargs
 
-## Update Views
-class PotentialEmployerUpdate(SuccessMessageMixin, PotentialEmployerRequiredMixin,
-                     VerifiedEmployerMixin, UpdateView):
+
+class PotentialEmployerUpdate(SuccessMessageMixin,
+                              PotentialEmployerGrpRequiredMixin, UpdateView):
     context_object_name = 'employer'
     form_class = EmployerCreationForm
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     model = PotentialEmployer
     template_name = 'update/employer-update.html'
     success_url = reverse_lazy('employer_detail')
@@ -125,9 +113,9 @@ class PotentialEmployerUpdate(SuccessMessageMixin, PotentialEmployerRequiredMixi
         })
         return kwargs
 
-## Delete Views
-class PotentialEmployerDelete(SuccessMessageMixin, PotentialEmployerRequiredMixin,
-                     VerifiedEmployerMixin, DeleteView):
+
+class PotentialEmployerDelete(SuccessMessageMixin,
+                              PotentialEmployerGrpRequiredMixin, DeleteView):
     context_object_name = 'employer'
     http_method_names = ['post']
     model = PotentialEmployer
