@@ -1,20 +1,24 @@
 {% load static %}
 <section id='cta-banner-section'>
     <div class="container-fluid bg-cta-color cta-text-color">
-        <div class="row">
-            <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2 p-5 p-lg-4 p-xl-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
                 <div class="row">
-                    <div class="col p-md-3 p-lg-4 p-xl-5">
-                        <h2 class="mb-3">Let us help you find the most suitable maid for your family</h2>
-                        <p>Online Maid is the lading platform in Singapore with more than 200 Ministry of Manpower (MOM) approved employment agencies onboard. Send us your enquiry and let us assist you in your search for a suitable maid.</p>
-                        <a href="{% url 'general_enquiry' %}" class="btn btn-cta-btn-bg-color cta-button">
-                            <h6 class="mb-0 py-1">Send Enquiry</h6>
-                        </a>
+                    <div class="col-md-5 p-4">
+                        <div class="row">
+                            <div class="col p-md-3 p-lg-4 p-xl-5">
+                                <h2 class="mb-3">Let us help you find the most suitable maid for your family</h2>
+                                <p>Online Maid is the lading platform in Singapore with more than 200 Ministry of Manpower (MOM) approved employment agencies onboard. Send us your enquiry and let us assist you in your search for a suitable maid.</p>
+                                <a href="{% url 'general_enquiry' %}" class="btn btn-cta-btn-bg-color cta-button">
+                                    <h6 class="mb-0 py-1">Send Enquiry</h6>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-5 d-flex flex-column justify-content-center offset-1">
+                        <div class="w-100 h-100" style="background-image: url({% static 'images/cta.jpg' %}); background-position: center"></div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5 col-xl-4 col-xxxl-3 d-none d-md-flex p-5">
-                <img src="{% static 'images/cta.jpg' %}" alt="CTA Photo" class="img-fluid bg-primary">
             </div>
         </div>
     </div>
