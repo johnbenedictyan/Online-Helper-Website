@@ -110,14 +110,14 @@
             {% if agency.opening_hours.type == 'AO' %}
             <p>Appointment Only</p>
             {% else %}
-            <p>Monday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.monday_start}} - {{agency.opening_hours.monday_end}}{% endif %}</p>
-            <p>Tuesday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.tuesday_start}} - {{agency.opening_hours.tuesday_end}}{% endif %}</p>
-            <p>Wednesday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.wednesday_start}} - {{agency.opening_hours.wednesday_end}}{% endif %}</p>
-            <p>Thursday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.thursday_start}} - {{agency.opening_hours.thursday_end}}{% endif %}</p>
-            <p>Friday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.friday_start}} - {{agency.opening_hours.friday_end}}{% endif %}</p>
-            <p>Saturday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.saturday_start}} - {{agency.opening_hours.saturday_end}}{% endif %}</p>
-            <p>Sunday: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.sunday_start}} - {{agency.opening_hours.sunday_end}}{% endif %}</p>
-            <p>Public Holidays: {% if agencu.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.public_holiday_start}} - {{agency.opening_hours.public_holiday_end}}{% endif %}</p>
+            <p>Monday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.monday_start}} - {{agency.opening_hours.monday_end}}{% endif %}</p>
+            <p>Tuesday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.tuesday_start}} - {{agency.opening_hours.tuesday_end}}{% endif %}</p>
+            <p>Wednesday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.wednesday_start}} - {{agency.opening_hours.wednesday_end}}{% endif %}</p>
+            <p>Thursday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.thursday_start}} - {{agency.opening_hours.thursday_end}}{% endif %}</p>
+            <p>Friday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.friday_start}} - {{agency.opening_hours.friday_end}}{% endif %}</p>
+            <p>Saturday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.saturday_start}} - {{agency.opening_hours.saturday_end}}{% endif %}</p>
+            <p>Sunday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.sunday_start}} - {{agency.opening_hours.sunday_end}}{% endif %}</p>
+            <p>Public Holidays: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.public_holiday_start}} - {{agency.opening_hours.public_holiday_end}}{% endif %}</p>
             {% endif %}
         </div>
         <div class="col-md-6" id="agencyProfileGroup">
