@@ -32,12 +32,6 @@ def r_string(length):
     return r_str
 
 
-def random_with_N_digits(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
-    return random.randint(range_start, range_end)
-
-
 def r_contact_number():
     return random.randint(80000000, 99999999)
 
@@ -106,12 +100,6 @@ def decrypt_string(ciphertext, encryption_key, nonce, tag):
             return plaintext if isinstance(plaintext, str) else ''
     else:
         return None
-
-
-def calculate_age(born):
-    today = date.today()
-    offset = ((today.month, today.day) < (born.month, born.day))
-    return today.year - born.year - offset
 
 
 def populate_necessary_rows():
@@ -239,9 +227,7 @@ def maid_seed_data():
     from agency.models import Agency
 
     from maid.constants import (
-        TypeOfMaidChoices, MaidReligionChoices, MaidLanguageChoices,
-        MaidCountryOfOrigin, MaritalStatusChoices, MaidAssessmentChoices,
-        MaidCareRemarksChoices, MaidPassportStatusChoices,
+        TypeOfMaidChoices, MaidCareRemarksChoices, MaidPassportStatusChoices,
         MaidGeneralHouseworkRemarksChoices
     )
 
@@ -252,7 +238,6 @@ def maid_seed_data():
 
     import json
     maid_data = json.load(open('./maid.json'))
-    from django.core.files.uploadedfile import SimpleUploadedFile
 
     # small_gif = (
     #     b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
