@@ -14,7 +14,6 @@ from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
 from .models import Agency, AgencyOwner, PotentialAgency
 from .mixins import (
     OMStaffRequiredMixin, AgencyOwnerRequiredMixin,
-    SpecificAgencyOwnerRequiredMixin
 )
 
 # Start of Views
@@ -91,8 +90,7 @@ class AgencyDelete(AgencyOwnerRequiredMixin, SuccessMessageMixin, DeleteView):
 #         )
 
 
-class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin,
-                           SuccessMessageMixin, DeleteView):
+class AgencyEmployeeDelete(SuccessMessageMixin, DeleteView):
     pass
 #     context_object_name = 'agency_employee'
 #     http_method_names = ['post']
@@ -113,8 +111,7 @@ class AgencyEmployeeDelete(SpecificAgencyOwnerRequiredMixin,
 #         return HttpResponseRedirect(success_url)
 
 
-class AgencyPlanDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
-                       DeleteView):
+class AgencyPlanDelete(SuccessMessageMixin, DeleteView):
     pass
 #     context_object_name = 'agency_plan'
 #     http_method_names = ['post']

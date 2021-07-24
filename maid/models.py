@@ -1,5 +1,3 @@
-# Global Imports
-
 # Django Imports
 from django.db import models
 from django.conf import settings
@@ -28,8 +26,7 @@ from .constants import (
     MaidPassportStatusChoices, MaidReligionChoices, MaidResponsibilityChoices,
     MaidStatusChoices
 )
-
-# Utiliy Classes and Functions
+from .helper_functions import is_able_to_speak
 
 # Start of Models
 
@@ -413,17 +410,17 @@ class Maid(models.Model):
 
     def get_language_list(self):
         languages = []
-        if self.language_proficiency.english != MaidLanguageProficiencyChoices.UNABLE:
+        if is_able_to_speak(self.language_proficiency.english):
             languages.append('English')
-        if self.language_proficiency.malay != MaidLanguageProficiencyChoices.UNABLE:
+        if is_able_to_speak(self.language_proficiency.malay):
             languages.append('Malay')
-        if self.language_proficiency.mandarin != MaidLanguageProficiencyChoices.UNABLE:
+        if is_able_to_speak(self.language_proficiency.mandarin):
             languages.append('Mandarin')
-        if self.language_proficiency.chinese_dialect != MaidLanguageProficiencyChoices.UNABLE:
+        if is_able_to_speak(self.language_proficiency.chinese_dialect):
             languages.append('Chinese Dialect')
-        if self.language_proficiency.hindi != MaidLanguageProficiencyChoices.UNABLE:
+        if is_able_to_speak(self.language_proficiency.hindi):
             languages.append('Hindi')
-        if self.language_proficiency.tamil != MaidLanguageProficiencyChoices.UNABLE:
+        if is_able_to_speak(self.language_proficiency.tamil):
             languages.append('Tamil')
 
         return languages
