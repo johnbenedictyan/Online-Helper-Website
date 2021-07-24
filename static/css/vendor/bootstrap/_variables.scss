@@ -51,52 +51,9 @@ $curious-blue: #2F75B5 !default;
 $zambezi: #595959 !default;
 $dark-grey: #A6A6A6 !default;
 $orange-peel: #FF9900 !default;
-
-$off-white: #e9edf2 !default;
 $light-cyan:#7abad0 !default;
-$dark-cyan: #2c687d !default;
-$cyan-blue: #0571bb !default;
-$dark-blue: #3d5d9b !default;
-$fire-opal: #de6449 !default;
 $custom-blue: #5B7FB5 !default;
-$custom-black: #383e47 !default;
 $custom-light-blue : #d9e9f1 !default;
-$dashboard-primary: #4F72A7 !default;
-$dashboard-navbar-color: #DDEBF7 !default;
-$dashboard-pagebar-color: #EAF3FA !default;
-$dashboard-general-background-color: #2A68A2 !default;
-$dashboard-text-color: #1F4E78 !default;
-$dashboard-table-background-light: #FFFFFF !default;
-$dashboard-table-background-dark: #F6F9FC !default;
-$forms-background: #F7F9FB !default;
-$footer-color: #2A68A2 !default;
-$cta-bg-color: #DDE6EE !default;
-
-// Sections Background Colours:
-$how-it-works-bg-color: #F7F9FB !default;
-$how-it-works-text-color: #1F4E78 !default;
-
-$preferences-bg-color: #F2F5F8 !default;
-$preferences-text-color: #1F4E78 !default;
-$preferences-find-out-text-color: #F2F5F8 !default;
-
-$featured-maid-bg-color: #F7F9FB !default;
-$featured-maid-text-color: #1F4E78 !default;
-$featured-maid-btn-bg-color: #2A68A2 !default;
-
-$cta-bg-color: #DDE6EE !default;
-$cta-text-color: #1F4E78 !default;
-$cta-btn-bg-color: #2A68A2 !default;
-
-$easiest-way-banner-bg-color: #F7F9FB !default;
-$easiest-way-banner-text-color: #1F4E78 !default;
-
-$why-choose-us-bg-color: #F2F5F8 !default;
-$why-choose-us-text-color: #1F4E78 !default;
-
-$mini-faq-bg-color: #F7F9FB !default;
-$mini-faq-text-color: #1F4E78 !default;
-$mini-faq-btn-text-color: #1F4E78 !default;
 
 // Icon Colours
 $svg-cv-bg-color: #5C9833 !default;
@@ -117,46 +74,18 @@ $colors: map-merge(("blue": $blue,
         "cyan": $cyan,
         "white": $white,
         "gray": $gray-600,
-        "gray-dark": $gray-800,
-        "off-white": $off-white,
+        "alice-blue": $alice-blue,
+        "light-alice-blue": $light-alice-blue,
+        "patterns-blue": $patterns-blue,
+        "seagull": $seagull,
+        "bahama-blue": $bahama-blue,
+        "lochmara": $lochmara,
+        "curious-blue": $curious-blue,
+        "zambezi": $zambezi,
+        "dark-grey": $dark-grey,
+        "orange-peel": $orange-peel,
         "light-cyan": $light-cyan,
-        "dark-cyan": $dark-cyan,
-        "cyan-blue": $cyan-blue,
-        "dark-blue": $dark-blue,
-        "fire-opal": $fire-opal,
-        "custom-black": $custom-black,
         "custom-light-blue": $custom-light-blue,
-        "dashboard-primary": $dashboard-primary,
-        "dashboard-navbar-color": $dashboard-navbar-color,
-        "dashboard-pagebar-color": $dashboard-pagebar-color,
-        "dashboard-general-background-color": $dashboard-general-background-color,
-        "dashboard-text-color": $dashboard-text-color,
-        "dashboard-table-background-light": $dashboard-table-background-light,
-        "dashboard-table-background-dark": $dashboard-table-background-dark,
-        "forms-background": $forms-background,
-        "footer-color": $footer-color,
-        "how-it-works-bg-color": $how-it-works-bg-color,
-        "how-it-works-text-color": $how-it-works-text-color,
-        "preferences-bg-color": $preferences-bg-color,
-        "preferences-text-color": $preferences-text-color,
-        "preferences-find-out-text-color": $preferences-find-out-text-color,
-        "featured-maid-bg-color": $featured-maid-bg-color,
-        "featured-maid-text-color": $featured-maid-text-color,
-        "featured-maid-btn-bg-color": $featured-maid-btn-bg-color,
-        "cta-bg-color": $cta-bg-color,
-        "cta-text-color": $cta-text-color,
-        "cta-btn-bg-color": $cta-btn-bg-color,
-        "easiest-way-banner-bg-color": $easiest-way-banner-bg-color,
-        "easiest-way-banner-text-color": $easiest-way-banner-text-color,
-        "why-choose-us-bg-color": $why-choose-us-bg-color,
-        "why-choose-us-text-color": $why-choose-us-text-color,
-        "mini-faq-bg-color": $mini-faq-bg-color,
-        "mini-faq-text-color": $mini-faq-text-color,
-        "mini-faq-btn-text-color": $mini-faq-btn-text-color,
-        "svg-cv-bg-color": $svg-cv-bg-color,
-        "svg-employee-bg-color": $svg-employee-bg-color,
-        "svg-filter-bg-color": $svg-filter-bg-color,
-        "svg-home-bg-color": $svg-home-bg-color
 ),
     $colors);
 
@@ -169,8 +98,6 @@ $warning: $yellow !default;
 $danger: $red !default;
 $light: $gray-100 !default;
 $dark: $gray-800 !default;
-$custom-dark: $custom-black !default;
-$custom-light-blue: $custom-light-blue !default;
 
 $theme-colors: () !default;
 $theme-colors: map-merge(
@@ -184,39 +111,18 @@ $theme-colors: map-merge(
         "light": $light,
         "dark": $dark,
         "tertiary": $tertiary,
-        "custom-dark": $custom-dark,
+        "custom-ab": $alice-blue,
+        "custom-lab": $light-alice-blue,
+        "custom-pb": $patterns-blue,
+        "custom-bb": $bahama-blue,
         "custom-light-blue": $custom-light-blue,
-        "dashboard-primary": $dashboard-primary,
-        "dashboard-navbar-color": $dashboard-navbar-color,
-        "dashboard-pagebar-color": $dashboard-pagebar-color,
-        "dashboard-general-background-color": $dashboard-general-background-color,
-        "dashboard-text-color": $dashboard-text-color,
-        "dashboard-table-background-light": $dashboard-table-background-light,
-        "dashboard-table-background-dark": $dashboard-table-background-dark,
-        "forms-background": $forms-background,
-        "footer-color": $footer-color,
-        "how-it-works-bg-color": $how-it-works-bg-color,
-        "how-it-works-text-color": $how-it-works-text-color,
-        "preferences-bg-color": $preferences-bg-color,
-        "preferences-text-color": $preferences-text-color,
-        "preferences-find-out-text-color": $preferences-find-out-text-color,
-        "featured-maid-bg-color": $featured-maid-bg-color,
-        "featured-maid-text-color": $featured-maid-text-color,
-        "featured-maid-btn-bg-color": $featured-maid-btn-bg-color,
-        "cta-bg-color": $cta-bg-color,
-        "cta-text-color": $cta-text-color,
-        "cta-btn-bg-color": $cta-btn-bg-color,
-        "easiest-way-banner-bg-color": $easiest-way-banner-bg-color,
-        "easiest-way-banner-text-color": $easiest-way-banner-text-color,
-        "why-choose-us-bg-color": $why-choose-us-bg-color,
-        "why-choose-us-text-color": $why-choose-us-text-color,
-        "mini-faq-bg-color": $mini-faq-bg-color,
-        "mini-faq-text-color": $mini-faq-text-color,
-        "mini-faq-btn-text-color": $mini-faq-btn-text-color,
-        "svg-cv-bg-color": $svg-cv-bg-color,
-        "svg-employee-bg-color": $svg-employee-bg-color,
-        "svg-filter-bg-color": $svg-filter-bg-color,
-        "svg-home-bg-color": $svg-home-bg-color
+        "dashboard-primary": $lochmara,
+        "dashboard-navbar-color": $patterns-blue,
+        "dashboard-pagebar-color": $light-alice-blue,
+        "dashboard-text-color": $bahama-blue,
+        "dashboard-table-background-light": $white,
+        "dashboard-table-background-dark": $alice-blue,
+        "footer-color": $lochmara,
     ),
     $theme-colors);
 
