@@ -1,5 +1,6 @@
 $EMERALD : #23CE6B !default;
 $WHITE : #fff !default;
+$VENETIAN-RED: #C80815 !default;
 
 
 $RICH_BLACK_FOGRA_39: #08090a !default;
@@ -428,14 +429,23 @@ body.dashboard-body{
     &-card {
         cursor: pointer;
         @media screen and (min-width:768px) {
-            height: 36rem;
+            height: 34rem;
         }
-        @media screen and (min-width:1400px) {
-            height: 38rem;
+        @media screen and (min-width:1024px) {
+            height: 33rem;
+        }
+        @media screen and (min-width:1920px) {
+            height: 33rem;
         }
         .card-title {
-            @media screen and (min-width:768px) and (max-width:1920px) {
-                height: 5rem;
+            @media screen and (min-width:768px) {
+                height: 4.5rem;
+            }
+            @media screen and (min-width:1024px) {
+                height: 3rem;
+            }
+            @media screen and (min-width:1920px) {
+                height: 4rem;
             }
         }
     }
@@ -668,7 +678,7 @@ hr.text-light{
     border-radius: 2px;
 }
 
-.noUi-target.noUi-connect {}
+// .noUi-target.noUi-connect {}
 
 /* Handles and cursors;
  */

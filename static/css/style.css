@@ -222,7 +222,7 @@ html {
 }
 
 .bg-secondary1 {
-  background-color: #C20114;
+  background-color: #C80815;
 }
 
 .bg-third1 {
@@ -439,19 +439,37 @@ body.dashboard-body {
 
 @media screen and (min-width: 768px) {
   .agency-card {
-    height: 36rem;
+    height: 34rem;
   }
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1024px) {
   .agency-card {
-    height: 38rem;
+    height: 33rem;
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1920px) {
+@media screen and (min-width: 1920px) {
+  .agency-card {
+    height: 33rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
   .agency-card .card-title {
-    height: 5rem;
+    height: 4.5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .agency-card .card-title {
+    height: 3rem;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .agency-card .card-title {
+    height: 4rem;
   }
 }
 
