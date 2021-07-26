@@ -1,22 +1,6 @@
 {% extends 'payment-base.html' %}
 {% block payment_section %}
-<section>
-    <div class="jumbotron jumbotron-fluid bg-hero">
-        <div class="container">
-            <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
-                    <h1 class="display-4 pl-3 pl-md-2">Cart</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% include 'sections/title-banner.html' with page_name='Cart' %}
 <section>
     <div class="container">
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
