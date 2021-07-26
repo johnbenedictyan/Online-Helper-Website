@@ -141,7 +141,7 @@ class AgencySignInForm(AuthenticationForm):
                 Column(
                     HTML("""<a class='ml-1 fs-11'
             href="{% url 'password_reset' %}">Forget your password?</a>"""),
-                    css_class="mb-3"),
+                    css_class="col-12 mb-3"),
                 css_class='form-row'
             ),
             Row(
