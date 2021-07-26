@@ -10,11 +10,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 # Start of Forms
 
-# Forms that inherit from inbuilt Django forms
 
-# Model Forms
-
-# Generic Forms (forms.Form)
 class ContactUsFrom(forms.Form):
     MAID_NATIONALITY_CHOICES = (
         ('ALL', _('No preference')),
@@ -45,7 +41,7 @@ class ContactUsFrom(forms.Form):
     )
 
     MAID_AGE_CHOICES = (
-        (i, _(f'{i}')) for i in range(23,51) 
+        (i, _(f'{i}')) for i in range(23, 51)
     )
 
     first_name = forms.CharField(

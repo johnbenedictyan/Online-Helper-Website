@@ -323,8 +323,6 @@ class Maid(models.Model):
     def get_main_responsibility(self):
         main_responsibility = [
             i for i in self.responsibilities.all()
-            if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
-            and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
         ]
         if main_responsibility != []:
             return main_responsibility[0]
