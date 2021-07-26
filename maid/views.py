@@ -164,7 +164,7 @@ class MaidProfileView(View):
         else:
             data = {
                 'salary': selected_maid.expected_salary,
-                'days_off': selected_maid.days_off,
+                'days_off': selected_maid.expected_days_off,
                 'employment_history': [
                     {
                         'start_date': eh.start_date,
