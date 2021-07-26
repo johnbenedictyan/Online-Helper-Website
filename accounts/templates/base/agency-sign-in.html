@@ -10,20 +10,7 @@
             <form method="post" enctype="multipart/form-data">
                 {% crispy form %}
             </form>
-            <div class="row">
-                <div class="col text-center my-2 mt-md-4">
-                    <div class="row">
-                        <div class="col">
-                            <p class="text-dark">For agency without an account, kindly create an account via the link below.</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col my-2">
-                            <a href="{% url 'agency_sign_up' %}" class="btn btn-outline-primary ">Create an agency account</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include 'components/form-footer.html' with page_name='Agency Sign In' %}
         </div>
     </div>
 </div>

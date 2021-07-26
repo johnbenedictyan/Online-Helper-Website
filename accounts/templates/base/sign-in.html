@@ -10,8 +10,8 @@
             <div class="row">
                 <div class="col py-md-4">
                     <div class="row">
-                        <div class="col">
-                            <h5>Login with email</h5>
+                        <div class="col mb-md-2 mb-lg-3 mb-xl-4">
+                            <h5 class="fs-16">Login With Email</h5>
                         </div>
                     </div>
                     <form method="post" enctype="multipart/form-data">
@@ -27,8 +27,8 @@
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col mb-1">
-                                    <h5>Or login with</h5>
+                                <div class="col mb-md-2 mb-lg-3 mb-xl-4">
+                                    <h5 class="fs-16">Or Login With</h5>
                                 </div>
                             </div>
                             <div class="row">
@@ -49,18 +49,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col text-center my-2 my-md-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <p class="small text-dark">For users without an account, kindly click via the link below to register with us.</p>
-                        </div>
-                        <div class="col-md-5 my-2 mx-auto">
-                            <a href="{% url 'potential_employer_create' %}" class="btn btn-outline-primary w-75">Create a free account</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include 'components/form-footer.html' with page_name='User Sign In' %}
         </div>
     </div>
 </div>

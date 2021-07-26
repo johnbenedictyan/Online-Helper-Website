@@ -1195,6 +1195,15 @@ class PotentialAgencyForm(forms.ModelForm):
             self.fields[k].widget.attrs['placeholder'] = v
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Div(
+                    HTML(
+                        '<h5 class="fs-16">Employment Agency Sign Up</h5>'
+                    ),
+                    css_class='col mb-md-2 mb-lg-3 mb-xl-4'
+                ),
+                css_class='row'
+            ),
             Row(
                 Column(
                     'name',
