@@ -1,6 +1,7 @@
 {% extends 'maid-base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load agency_tags %}
 {% block maid_section %}
 {% include 'sections/title-banner.html' with page_name='Maid Profile' %}
 <section>
@@ -424,7 +425,7 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col mb-2">
-                                <h5 class="fs-12">{{branch.name|title}}</h5>
+                                <h5 class="fs-12">{{branch.name|title|fbn}}</h5>
                             </div>
                         </div>
                         <div class="row">
