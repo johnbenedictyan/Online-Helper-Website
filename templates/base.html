@@ -15,7 +15,7 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mr-auto">
                         {% with request.resolver_match.url_name as url_name %}
-                        <li class="nav-item {% if url_name == 'home' %}active{% endif %}">
+                        <li class="mx-2 nav-item {% if url_name == 'home' %}active{% endif %}">
                             <a class="nav-link custom-nav-link" href="{% url 'home' %}">
                                 <p class="mb-0">Home</p>
                                 {% if url_name == 'home' %} 
@@ -23,7 +23,15 @@
                                 {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item {% if url_name == 'maid_list' %}active{% endif %}">
+                        <li class="mx-2 nav-item {% if url_name == 'about_us' %}active{% endif %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'about_us' %}">
+                                <p class="mb-0">About Us</p>
+                                {% if url_name == 'about_us' %} 
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="mx-2 nav-item {% if url_name == 'maid_list' %}active{% endif %}">
                             <a class="nav-link custom-nav-link" href="{% url 'maid_list' %}">
                                 <p class="mb-0">Search Maid</p>
                                 {% if url_name == 'maid_list' %} 
@@ -31,7 +39,7 @@
                                 {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item {% if url_name == 'agency_list' %}active{% endif %}">
+                        <li class="mx-2 nav-item {% if url_name == 'agency_list' %}active{% endif %}">
                             <a class="nav-link custom-nav-link" href="{% url 'agency_list' %}">
                                 <p class="mb-0">Maid Agencies</p>
                                 {% if url_name == 'agency_list' %} 
@@ -39,7 +47,7 @@
                                 {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item {% if url_name == 'faq' %}active{% endif %}">
+                        <li class="mx-2 nav-item {% if url_name == 'faq' %}active{% endif %}">
                             <a class="nav-link custom-nav-link" href="{% url 'faq' %}">
                                 <p class="mb-0">FAQ</p>
                                 {% if url_name == 'faq' %} 
@@ -47,18 +55,18 @@
                                 {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
-                            <a class="nav-link custom-nav-link" href="{% url 'general_enquiry' %}">
-                                <p class="mb-0">Enquire</p>
-                                {% if url_name == 'general_enquiry' %} 
+                        <li class="mx-2 nav-item {% if url_name == 'view_shortlist' %}active{% endif %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'view_shortlist' %}">
+                                <p class="mb-0">View Shortlist</p>
+                                {% if url_name == 'view_shortlist' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item {% if url_name == 'about_us' %}active{% endif %}">
-                            <a class="nav-link custom-nav-link" href="{% url 'about_us' %}">
-                                <p class="mb-0">About Us</p>
-                                {% if url_name == 'about_us' %} 
+                        <li class="mx-2 nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
+                            <a class="nav-link custom-nav-link" href="{% url 'general_enquiry' %}">
+                                <p class="mb-0">Enquiry</p>
+                                {% if url_name == 'general_enquiry' %} 
                                     <span class="sr-only">(current)</span>
                                 {% endif %}
                             </a>
@@ -123,23 +131,41 @@
             {% endblock main_content %}
         </main>
         <footer>
-            <div class="container-fluid bg-footer-color text-light">
+            <div class="container-fluid bg-custom-bb text-light">
                 <div class="row justify-content-center">
-                    <div class="col-xl-6">
+                    <div class="col col-md-11 col-lg-10 col-xl-9">
                         <div class="row pt-4 pb-3 pt-md-5 pb-md-2 pl-2 pl-md-0">
                             <div class="col">
-                                <a href="{% url 'home' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">Home</p></a>
-                                <a href="{% url 'maid_list' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">Search Maid</p></a>
-                                <a href="{% url 'agency_list' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">Agencies</p></a>
+                                <a href="{% url 'home' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Home</p></a>
+                                <a href="{% url 'about_us' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">About Us</p></a>
+                                <a href="{% url 'maid_list' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Search Maids</p></a>
                             </div>
                             <div class="col">
-                                <a href="{% url 'faq' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">FAQ</p></a>
-                                <a href="{% url 'general_enquiry' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">Enquiry</p></a>
-                                <a href="{% url 'about_us' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">About Us</p></a>
+                                <a href="{% url 'agency_list' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Maid Agencies</p></a>
+                                <a href="{% url 'faq' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">FAQ</p></a>
+                                <a href="{% url 'general_enquiry' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Send Enquiry</p></a>
                             </div>
                             <div class="col">
-                                <a href="{% url 'terms_and_conditions_user' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
-                                <a href="{% url 'privacy_policy' %}" class="footer-link text-reset"><p class="fs-12 mb-1 mb-xl-2">Privacy Policy</p></a>
+                                <a href="{% url 'view_shortlist' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">View Shortlist</p></a>
+                                <a href="{% url 'terms_and_conditions_user' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Terms &#38; Conditions</p></a>
+                                <a href="{% url 'privacy_policy' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Privacy Policy</p></a>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="{% url 'agency_sign_up' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Agency Sign Up</p></a>
+                                        <a href="{% url 'agency_sign_in' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">Agency Log In</p></a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="{% url 'potential_employer_create' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">User Sign Up</p></a>
+                                        <a href="{% url 'sign_in' %}" class="footer-link text-reset"><p class="fs-11 mb-1 mb-xl-2">User Login In</p></a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="fs-11">Email: support@onlinemaid.sg</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -149,8 +175,7 @@
                         </div>
                         <div class="row">
                             <div class="col mb-2 text-center">
-                                <p class="mb-0 text-smaller">© 2020 Copyright OnlineMaid</p>
-                                <p class="text-smaller">All Rights Reserved</p>
+                                <p class="mb-1 fs-11">© 2021 Copyright OnlineMaid Pte Ltd. All Rights Reserve.</p>
                                 <a href="https://storyset.com/web" class="text-reset small d-none">Illustration by Freepik Storyset</a>
                             </div>
                         </div>
