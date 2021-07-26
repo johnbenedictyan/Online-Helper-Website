@@ -5,7 +5,8 @@ from django.contrib.auth import views as auth_views
 # App Imports
 from .views import (
     SignInView, AgencySignInView, SignOutView, PotentialEmployerDetail,
-    PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete
+    PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete,
+    CustomPasswordResetView
 )
 
 # Start of Urls
@@ -75,7 +76,7 @@ urlpatterns = [
     ),
     path(
         'password-reset/',
-        auth_views.PasswordResetView.as_view(),
+        CustomPasswordResetView.as_view(),
         name='password_reset'
     ),
     path(
