@@ -9,7 +9,7 @@
             <div class="col-5 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
             </div>
             <div class="col-5 offset-2 pt-4" id="agencyInformationGroup">
-                <h5 class="fs-3">{{agency.name}}</h5>
+                <h5 class="fs-16">{{agency.name}}</h5>
                 <p>License Number: {{agency.license_number}}</p>
                 <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
             </div>
@@ -21,7 +21,7 @@
                     <div class="col mb-lg-3 mb-xl-4">
                         <div class="row">
                             <div class="col">
-                                <h5 class="fs-2">Main Branch</h5>
+                                <h5 class="fs-14">Main Branch</h5>
                                 <p>
                                     {{agency.get_main_branch.address_1}} <br>
                                     {{agency.get_main_branch.address_2}} <br>
@@ -64,7 +64,7 @@
                     <div class="col mb-lg-3 mb-xl-4">
                         <div class="row">
                             <div class="col">
-                                <h5 class="fs-2">{{branch.name|title}}</h5>
+                                <h5 class="fs-14">{{branch.name|title}}</h5>
                                 <p>
                                     {{branch.address_1}} <br>
                                     {{branch.address_2}} <br>
@@ -105,7 +105,7 @@
                 {% endfor %}
             </div>
             <div class="col-md-6 mb-4" id="agencyOpeningHoursGroup">
-                <h5 class="fs-2">Opening Hours</h5>
+                <h5 class="fs-14">Opening Hours</h5>
                 {% if agency.opening_hours.type == 'AO' %}
                 <p>Appointment Only</p>
                 {% else %}
@@ -120,11 +120,11 @@
                 {% endif %}
             </div>
             <div class="col-md-6" id="agencyProfileGroup">
-                <h5 class="fs-2">Profile</h5>
+                <h5 class="fs-14">Profile</h5>
                 <p>{{agency.profile}}</p>
             </div>
             <div class="col-md-6" id="agencyServicesGroup">
-                <h5 class="fs-2">Our Services</h5>
+                <h5 class="fs-14">Our Services</h5>
                 <p>{{agency.services}}</p>
             </div>
         </div>

@@ -1,40 +1,44 @@
-.fs-05 {
+.fs-10 {
   font-size: calc(10/12 * 1rem);
 }
 
-.fs-1 {
+.fs-11 {
+  font-size: calc(11/12 * 1rem);
+}
+
+.fs-12 {
   font-size: calc(12/12 * 1rem);
 }
 
-.fs-2 {
+.fs-14 {
   font-size: calc(14/12 * 1rem);
 }
 
-.fs-3 {
+.fs-16 {
   font-size: calc(16/12 * 1rem);
 }
 
-.fs-4 {
+.fs-18 {
   font-size: calc(18/12 * 1rem);
 }
 
-.fs-5 {
+.fs-20 {
   font-size: calc(20/12 * 1rem);
 }
 
-.fs-6 {
+.fs-22 {
   font-size: calc(22/12 * 1rem);
 }
 
-.fs-7 {
+.fs-26 {
   font-size: calc(26/12 * 1rem);
 }
 
-.fs-8 {
+.fs-28 {
   font-size: calc(28/12 * 1rem);
 }
 
-.fs-9 {
+.fs-32 {
   font-size: calc(32/12 * 1rem);
 }
 
