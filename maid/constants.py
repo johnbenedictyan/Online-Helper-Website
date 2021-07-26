@@ -120,17 +120,13 @@ class MaidStatusChoices(models.TextChoices):
 
 class MaidFoodPreferenceChoices(models.TextChoices):
     PORK = 'P', _('No pork')
-    CHICKEN = 'C', _('No chicken')
     BEEF = 'B', _('No beef')
-    SEAFOOD = 'S', _('No seafood')
     VEG = 'V', _('Vegetarian')
 
 
 class MaidDietaryRestrictionChoices(models.TextChoices):
     PORK = 'P', _('No pork')
-    CHICKEN = 'C', _('No chicken')
     BEEF = 'B', _('No beef')
-    SEAFOOD = 'S', _('No seafood')
     VEG = 'V', _('Able to work in a Vegetarian family')
 
 

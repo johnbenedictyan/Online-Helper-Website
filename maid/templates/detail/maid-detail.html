@@ -2,21 +2,22 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block maid_section %}
+{% include 'sections/title-banner.html' with page_name='Maid Profile' %}
 <section>
     <div class="container">
         <div class="row">
-            <div class="col my-xxl-5">
+            <div class="col mb-2 mb-md-3 mb-lg-4 mb-xl-5">
                 <div class="row">
                     <div class="col-md-4" style="display: flex;flex-direction: column;">
                         <div class="row d-md-none">
-                            <div class="col text-center">
+                            <div class="col">
                                 <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-1 btn-primary">Add to Shortlist</a>
                                 <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-1 btn-outline-primary">Download Bio-data</a>
                             </div>
                         </div>
                         <div style="background-image:url({{maid.photo.url}});background-position-x: center;background-size: cover; flex: 1;"></div>
                         <div class="row d-none d-md-flex">
-                            <div class="col-xl-8 mt-2 text-center offset-xl-2">
+                            <div class="col-xl-8 mt-2 offset-xl-2">
                                 <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-2 btn-primary">Add to Shortlist</a>
                                 <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-2 btn-outline-primary">Download Bio-data</a>
                             </div>
@@ -25,142 +26,142 @@
                     <div class="col-md-6 offset-md-2">
                         <div class="row">
                             <div class="col">
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Name</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.name}}</p>
+                                        <p class="mb-0">: {{maid.name}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">
                                             Reference Number
                                         </p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.reference_number}}</p>
+                                        <p class="mb-0">: {{maid.reference_number}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Nationality</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_country_of_origin_display}}</p>
+                                        <p class="mb-0">: {{maid.get_country_of_origin_display}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Type</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_maid_type_display}}</p>
+                                        <p class="mb-0">: {{maid.get_maid_type_display}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Date of Birth</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.date_of_birth|date:"d M Y"}}</p>
+                                        <p class="mb-0">: {{maid.date_of_birth|date:"d M Y"}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Age</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_age}}</p>
+                                        <p class="mb-0">: {{maid.get_age}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Height</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.height}} cm</p>
+                                        <p class="mb-0">: {{maid.height}} cm</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Weight</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.weight}} kg</p>
+                                        <p class="mb-0">: {{maid.weight}} kg</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Marital Status</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_marital_status_display}}</p>
+                                        <p class="mb-0">: {{maid.get_marital_status_display}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Religion</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_religion_display}}</p>
+                                        <p class="mb-0">: {{maid.get_religion_display}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Number of Children</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.number_of_children}}</p>
+                                        <p class="mb-0">: {{maid.number_of_children}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Age of Children</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.age_of_children}}</p>
+                                        <p class="mb-0">: {{maid.age_of_children}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Number of Siblings</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.number_of_siblings}}</p>
+                                        <p class="mb-0">: {{maid.number_of_siblings}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Education</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_education_level_display}}</p>
+                                        <p class="mb-0">: {{maid.get_education_level_display}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Expected Salary</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">${{maid.expected_salary}}</p>
+                                        <p class="mb-0">: ${{maid.expected_salary}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1 bg-white">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Number of off days</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.expected_days_off}}</p>
+                                        <p class="mb-0">: {{maid.expected_days_off}}</p>
                                     </div>
                                 </div>
-                                <div class="row border py-1">
+                                <div class="row py-2">
                                     <div class="col-6">
                                         <p class="mb-0">Spoken Languages</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="mb-0">{{maid.get_languages}}</p>
+                                        <p class="mb-0">: {{maid.get_languages}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -172,54 +173,68 @@
         <div class="row">
             <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
-                    <div class="col">
-                        <h5>Emplyoment History</h5>
+                    <div class="col mb-2">
+                        <h5 class="fs-14">Food Handling Preference and Dietary Restriction</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col mx-2">
+                        <div class="row bg-custom-pb">
+                            <div class="col-4 py-3">
+                                <h5 class="fs-11 mb-0">Description</h5>
+                            </div>
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Willingness</h5>
+                            </div>
+                            <div class="col-4 py-3">
+                                <h5 class="fs-11 mb-0">Description</h5>
+                            </div>
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Willingness</h5>
+                            </div>
+                        </div>
                         <div class="row">
-                            <div class="col py-3 border">
-                                <p class="mb-0">From</p>
+                            <div class="col-4 py-3">
+                                <p class="fs-11 mb-0">Can you handle pork?</p>
                             </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0">To</p>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_food_handling_pork}}</p>
                             </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0">Country</p>
+                            <div class="col-4 py-3">
+                                <p class="fs-11 mb-0">Can you eat pork?</p>
                             </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0">Employer</p>
-                            </div>
-                            <div class="col-5 py-3 border">
-                                <p class="mb-0">Work Duties</p>
-                            </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0">Remarks</p>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_dietary_restriction_pork}}</p>
                             </div>
                         </div>
-                        {% for employment_history in maid.employment_history.all %}
-                        <div class="row {% cycle 'bg-white' '' %}">
-                            <div class="col py-3 border">
-                                <p class="mb-0">{{employment_history.start_date|date:'d M Y'}}</p>
+                        <div class="row">
+                            <div class="col-4 py-3">
+                                <p class="fs-11 mb-0">Can you handle beef?</p>
                             </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0">{{employment_history.end_date|date:'d M Y'}}</p>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_food_handling_beef}}</p>
                             </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0">{{employment_history.get_country_display}}</p>
+                            <div class="col-4 py-3">
+                                <p class="fs-11 mb-0">Can you eat beef?</p>
                             </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0"></p>
-                            </div>
-                            <div class="col-5 py-3 border">
-                                <p class="mb-0">{% for work_duty in employment_history.work_duties.all %} {{work_duty}},{% endfor %}</p>
-                            </div>
-                            <div class="col py-3 border">
-                                <p class="mb-0"></p>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_dietary_restriction_beef}}</p>
                             </div>
                         </div>
-                        {% endfor %}
+                        <div class="row">
+                            <div class="col-4 py-3">
+                                <p class="fs-11 mb-0">Are you willing to work in a vegetarian family?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_food_handling_veg}}</p>
+                            </div>
+                            <div class="col-4 py-3">
+                                <p class="fs-11 mb-0">Are you vegetarian?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_dietary_restriction_veg}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -227,75 +242,111 @@
         <div class="row">
             <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
-                    <div class="col">
-                        <h5>Experience</h5>
+                    <div class="col mb-2">
+                        <h5 class="fs-14">Skills of Maid</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col mx-2">
-                        <div class="row">
-                            <div class="col py-3 border">
-                                <h class="mb-0">Type</h>
+                        <div class="row bg-custom-pb">
+                            <div class="col-3 py-3">
+                                <h5 class="fs-11 mb-0">Type</h5>
                             </div>
-                            <div class="col py-3 border">
-                                <h class="mb-0">Assessment</h>
+                            <div class="col-2 py-3">
+                                <h5 class="fs-11 mb-0">Willingness</h5>
                             </div>
-                            <div class="col py-3 border">
-                                <h class="mb-0">Remarks</h>
+                            <div class="col-2 py-3">
+                                <h5 class="fs-11 mb-0">Experience</h5>
+                            </div>
+                            <div class="col-2 py-3">
+                                <h5 class="fs-11 mb-0">Assessment</h5>
+                            </div>
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Remarks</h5>
                             </div>
                         </div>
-                        <div class="row bg-white">
-                            <div class="col py-3 border">
+                        <div class="row">
+                            <div class="col-3 py-3">
                                 <p class="mb-0">Infant Child Care</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.infant_child_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.infant_child_care.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
                                 <p class="mb-0">{{maid.infant_child_care.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col py-3">
                                 <p class="mb-0">{{maid.infant_child_care.get_remarks_display}}</h5>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3">
                                 <p class="mb-0">Elderly Care</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.elderly_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.elderly_care.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
                                 <p class="mb-0">{{maid.elderly_care.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col py-3">
                                 <p class="mb-0">{{maid.elderly_care.get_remarks_display}}</h5>
                             </div>
                         </div>
-                        <div class="row bg-white">
-                            <div class="col py-3 border">
+                        <div class="row">
+                            <div class="col-3 py-3">
                                 <p class="mb-0">Disabled Care</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.disabled_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.disabled_care.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
                                 <p class="mb-0">{{maid.disabled_care.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col py-3">
                                 <p class="mb-0">{{maid.disabled_care.get_remarks_display}}</h5>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col py-3 border">
+                            <div class="col-3 py-3">
                                 <p class="mb-0">General Housework</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.general_housework.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.general_housework.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
                                 <p class="mb-0">{{maid.general_housework.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col py-3">
                                 <p class="mb-0">{{maid.general_housework.get_remarks_display}}</h5>
                             </div>
                         </div>
-                        <div class="row bg-white">
-                            <div class="col py-3 border">
+                        <div class="row">
+                            <div class="col-3 py-3">
                                 <p class="mb-0">Cooking</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.cooking.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
+                                <p class="mb-0">{{maid.cooking.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-2 py-3">
                                 <p class="mb-0">{{maid.cooking.assessment}}</h5>
                             </div>
-                            <div class="col py-3 border">
+                            <div class="col py-3">
                                 <p class="mb-0">{{maid.cooking.get_remarks_display}}</h5>
                             </div>
                         </div>
@@ -307,36 +358,83 @@
             <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-2">
-                        <h5>Agency Contact Details</h5>
+                        <h5 class="fs-14">Emplyoment History</h5>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 card custom-card">
+                    <div class="col mx-2">
+                        <div class="row bg-custom-pb">
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Employment Date</h5>
+                            </div>
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Employment Info</h5>
+                            </div>
+                            <div class="col-5 py-3">
+                                <h5 class="fs-11 mb-0">Work Duties</h5>
+                            </div>
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Reasons for Leaving</h5>
+                            </div>
+                        </div>
+                        {% for employment_history in maid.employment_history.all %}
+                        <div class="row {% cycle 'bg-white' '' %}">
+                            <div class="col py-3">
+                                <p class="mb-0">{{employment_history.start_date|date:'d M Y'}}</p>
+                                <p class="mb-0">{{employment_history.end_date|date:'d M Y'}}</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="mb-0">{{employment_history.get_country_display}}</p>
+                            </div>
+                            <div class="col-5 py-3">
+                                <p class="mb-0">{% for work_duty in employment_history.work_duties.all %} {{work_duty}},{% endfor %}</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="mb-0"></p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-2 my-md-3 my-lg-4">
+                <div class="row">
+                    <div class="col mb-2">
+                        <h5 class="fs-14">About Maid</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="fs-11">{{maid.about_me}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-2 my-md-3 my-lg-4">
+                <div class="row">
+                    <div class="col mb-3">
+                        <h5 class="fs-14">Agency Contact Details</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for branch in maid.agency.branches.all %}
+                    <div class="col-6">
                         <div class="row">
-                            <div class="col">
-                                <h6>Phone</h6>
-                                <p>{{maid.agency.get_main_branch_number}}</p>
+                            <div class="col mb-2">
+                                <h5 class="fs-12">{{branch.name|title}}</h5>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h6>Email</h6>
-                                <p>{{maid.agency.email}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h6>Website</h6>
-                                <p>{{maid.agency.website_uri}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h6>Address</h6>
-                                <p>{{maid.agency.get_main_branch.address_1}} <br/> {{maid.agency.get_main_branch.address_2}} <br/> Singapore {{maid.agency.get_main_branch.postal_code}}</p>
+                                <p class="fs-11">Office No: {{branch.office_number}}</p>
+                                <p class="fs-11">Mobile No: {{branch.mobile_number}}</p>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

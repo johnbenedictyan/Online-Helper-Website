@@ -451,6 +451,54 @@ class Maid(models.Model):
                     )
                 )
 
+    def get_food_handling_pork(self):
+        if self.food_handling_preferences.filter(
+            preference=MaidFoodPreferenceChoices.PORK
+        ):
+            return 'Yes'
+        else:
+            return 'No'
+
+    def get_food_handling_beef(self):
+        if self.food_handling_preferences.filter(
+            preference=MaidFoodPreferenceChoices.BEEF
+        ):
+            return 'Yes'
+        else:
+            return 'No'
+
+    def get_food_handling_veg(self):
+        if self.food_handling_preferences.filter(
+            preference=MaidFoodPreferenceChoices.VEG
+        ):
+            return 'Yes'
+        else:
+            return 'No'
+
+    def get_dietary_restriction_pork(self):
+        if self.food_handling_preferences.filter(
+            preference=MaidDietaryRestrictionChoices.PORK
+        ):
+            return 'Yes'
+        else:
+            return 'No'
+
+    def get_dietary_restriction_beef(self):
+        if self.food_handling_preferences.filter(
+            preference=MaidDietaryRestrictionChoices.PORK
+        ):
+            return 'Yes'
+        else:
+            return 'No'
+
+    def get_dietary_restriction_veg(self):
+        if self.food_handling_preferences.filter(
+            preference=MaidDietaryRestrictionChoices.PORK
+        ):
+            return 'Yes'
+        else:
+            return 'No'
+
     @property
     def is_published(self):
         return (
