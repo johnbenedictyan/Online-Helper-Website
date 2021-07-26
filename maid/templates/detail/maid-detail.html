@@ -358,7 +358,7 @@
             <div class="col my-2 my-md-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-2">
-                        <h5 class="fs-14">Emplyoment History</h5>
+                        <h5 class="fs-14">Employment History</h5>
                     </div>
                 </div>
                 <div class="row">
@@ -387,10 +387,10 @@
                                 <p class="mb-0">{{employment_history.get_country_display}}</p>
                             </div>
                             <div class="col-5 py-3">
-                                <p class="mb-0">{% for work_duty in employment_history.work_duties.all %} {{work_duty}},{% endfor %}</p>
+                                <p class="mb-0">{{employment_history.work_duties}}</p>
                             </div>
                             <div class="col py-3">
-                                <p class="mb-0"></p>
+                                <p class="mb-0">{{employment_history.reason_for_leaving}}</p>
                             </div>
                         </div>
                         {% endfor %}
