@@ -147,7 +147,7 @@ class AgencySignInForm(AuthenticationForm):
                     Submit(
                         'submit',
                         'Log In',
-                        css_class="btn btn-primary w-100"
+                        css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
