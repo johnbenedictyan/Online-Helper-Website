@@ -2,7 +2,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 
 # Foreign Apps Imports
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, HTML
 
 # Project Apps Imports
 from onlinemaid.constants import AG_OWNERS, P_EMPLOYERS
@@ -41,25 +41,27 @@ class SignInForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         for k, v in self.placeholders.items():
             self.fields[k].widget.attrs['placeholder'] = v
-        self.fields['password'].help_text = '''
-            <a class='ml-1'
-            href="{% url 'password_reset' %}">Forget your password?</a>
-        '''
+        # self.fields['password'].help_text = '''
+        #     <a class='ml-1'
+        #     href="{% url 'password_reset' %}">Forget your password?</a>
+        # '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(
                     'username',
                     css_class='form-group col-12'
-                ),
-                css_class='form-row'
+                )
             ),
             Row(
                 Column(
                     'password',
-                    css_class='form-group col-12'
+                    css_class='form-group col-12 mb-0'
                 ),
-                css_class='form-row'
+                Column(
+                    HTML("""<a class='ml-1 fs-11'
+            href="{% url 'password_reset' %}">Forget your password?</a>"""),
+                    css_class="mb-3")
             ),
             # Row(
             #     Column(
@@ -118,10 +120,6 @@ class AgencySignInForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         for k, v in self.placeholders.items():
             self.fields[k].widget.attrs['placeholder'] = v
-        self.fields['password'].help_text = '''
-            <a class='ml-1'
-            href="{% url 'password_reset' %}">Forget your password?</a>
-        '''
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -138,8 +136,12 @@ class AgencySignInForm(AuthenticationForm):
             Row(
                 Column(
                     'password',
-                    css_class='form-group col-md-6 pr-3'
+                    css_class='form-group col-md-6 pr-3 mb-0'
                 ),
+                Column(
+                    HTML("""<a class='ml-1 fs-11'
+            href="{% url 'password_reset' %}">Forget your password?</a>"""),
+                    css_class="mb-3"),
                 css_class='form-row'
             ),
             Row(
@@ -333,3 +335,28 @@ class EmployerCreationForm(forms.ModelForm):
             )
             self.instance.user = new_user
             return super().save(*args, **kwargs)
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].label = 'Email Address'
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'email',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Send',
+                        css_class="btn btn-primary w-100"
+                    ),
+                    css_class='form-group col-12 text-center'
+                )
+            ),
+        )
