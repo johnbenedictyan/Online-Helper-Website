@@ -1,13 +1,13 @@
 <section>
-    <div class="jumbotron jumbotron-small jumbotron-fluid bg-hero {% if empty_page is not True %}title-banner{% endif %}">
+    <div class="jumbotron jumbotron-small jumbotron-fluid bg-custom-pb {% if empty_page is not True %}title-banner{% endif %}">
         <div class="container">
             <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1 text-light">
+                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
                     <h1 class="pl-3 pl-md-2 mb-0">{{ page_name }}</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-light">Home</a></li>
-                            <li class="breadcrumb-item active text-light" aria-current="page">{{ page_name }}</li>
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ page_name }}</li>
                         </ol>
                     </nav>
                 </div>
