@@ -1198,37 +1198,37 @@ class PotentialAgencyForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-md-6 pr-3'
+                    css_class='form-group col-md-6 pr-md-2 pr-lg-3 pr-xl-4'
                 ),
                 Column(
                     'license_number',
-                    css_class='form-group col-md-6 pl-3'
+                    css_class='form-group col-md-6 pl-md-2 pl-lg-3 pl-xl-4'
                 )
             ),
             Row(
                 Column(
                     'person_in_charge',
-                    css_class='form-group col-md-6 pr-3'
+                    css_class='form-group col-md-6 pr-md-2 pr-lg-3 pr-xl-4'
                 ),
                 Column(
                     'email',
-                    css_class='form-group col-md-6 pl-3'
+                    css_class='form-group col-md-6 pl-md-2 pl-lg-3 pl-xl-4'
                 )
             ),
             Row(
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-6 pr-3'
+                    css_class='form-group col-md-6 pr-md-2 pr-lg-3 pr-xl-4'
                 ),
                 Column(
                     'office_number',
-                    css_class='form-group col-md-6 pl-3'
+                    css_class='form-group col-md-6 pl-md-2 pl-lg-3 pl-xl-4'
                 ),
             ),
             Row(
                 Column(
                     'terms_and_conditions',
-                    css_class='form-group col'
+                    css_class='form-group col fs-11'
                 )
             ),
             Row(
@@ -1236,7 +1236,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-100"
+                        css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'
                 )
