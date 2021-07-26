@@ -16,13 +16,13 @@
             </div>
             <div class="col-md-5 my-2 mx-auto">
                 {% if page_name == 'Agency Sign In' %}
-                    <a href="{% url 'agency_sign_up' %}" class="btn btn-outline-primary w-50">Create an agency account</a>
+                    <a href="{% url 'agency_sign_up' %}" class="btn btn-outline-primary w-75">Create an agency account</a>
                 {% elif page_name == 'Agency Sign Up' %}
                     <a href="{% url 'sign_in' %}" class="btn btn-outline-primary w-50">Create a free account</a>
                 {% elif page_name == 'User Sign In' %}
                     <a href="{% url 'potential_employer_create' %}" class="btn btn-outline-primary w-50">Create a free account</a>
                 {% elif page_name == 'User Sign Up' %}
-                    <a href="{% url 'agency_sign_up' %}" class="btn btn-outline-primary w-50">Create an agency account</a>
+                    <a href="{% url 'agency_sign_up' %}" class="btn btn-outline-primary w-75">Create an agency account</a>
                 {% endif %} 
 
             </div>
