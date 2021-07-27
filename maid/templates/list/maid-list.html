@@ -4,38 +4,42 @@
 {% block maid_section %}
 {% include 'sections/title-banner.html' with page_name='Maids' %}
 <section>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 col-xl-3 mb-3 offset-lg-1 offset-xl-0">
-                <form action="" method="get">
-                    <div class="row">
-                        <div class="col">
-                            {{filter.form|crispy}}
-                        </div>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-xl-8-5">
+                <div class="row">
+                    <div class="col-lg-10 col-xl-3 mb-3 offset-lg-1 offset-xl-0">
+                        <form action="" method="get">
+                            <div class="row">
+                                <div class="col">
+                                    {{filter.form|crispy}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <a href="{% url 'maid_list' %}" class="btn btn-secondary w-100">Reset</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="row">
-                        <div class="col mb-2">
-                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    <div class="col-xl-9">
+                        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
+                            {% for maid in maids %}
+                                <div class="col mb-4 px-1">
+                                    {% include 'components/maid-card.html' with maid=maid %}
+                                </div>
+                            {% empty %}
+                            <h5>No Maids. Try a different search criteria.</h5>
+                            {% endfor %}
                         </div>
+                        {% include 'pagination.html' %}
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <a href="{% url 'maid_list' %}" class="btn btn-secondary w-100">Reset</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-xl-9">
-                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
-                    {% for maid in maids %}
-                        <div class="col mb-4 px-1">
-                            {% include 'components/maid-card.html' with maid=maid %}
-                        </div>
-                    {% empty %}
-                    <h5>No Maids. Try a different search criteria.</h5>
-                    {% endfor %}
                 </div>
-                {% include 'pagination.html' %}
             </div>
         </div>
     </div>

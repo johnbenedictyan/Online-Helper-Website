@@ -29,7 +29,7 @@ class AddTo(RedirectView):
                 'This maid does not exist'
             )
         else:
-            if not selected_maid.published:
+            if not selected_maid.is_published:
                 messages.error(
                     self.request,
                     'This maid cannot be shortlisted at the moment'
