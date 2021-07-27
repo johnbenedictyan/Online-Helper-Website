@@ -713,7 +713,7 @@ class EmployerSponsorUpdateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not is_applicant_sponsor(self.object.applicant_type):
+        if not is_applicant_sponsor(self.object.employer.applicant_type):
             return HttpResponseRedirect(
                 reverse(
                     'employer_update_route',
