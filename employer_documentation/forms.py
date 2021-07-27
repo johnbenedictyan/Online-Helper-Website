@@ -743,6 +743,9 @@ class EmployerSponsorForm(forms.ModelForm):
             'sponsor_2_spouse_passport_tag',
         ]
 
+    def is_married(self, ms):
+        return ms == constants.MaritalStatusChoices.MARRIED
+
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
