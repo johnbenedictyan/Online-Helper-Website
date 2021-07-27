@@ -1,24 +1,18 @@
 {% load static %}
-<section class="bg-custom-ab text-custom-bb" id="easiest-way-banner-section">
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-xl-8-5">
-                <div class="row py-4">
-                    <div class="col-xl-6 p-5 p-lg-4">
-                        <img src="{% static 'images/easiest-way-image.jpg' %}" alt="Easiest Way Image" class="img-fluid bg-primary">
-                    </div>
-                    <div class="col-md-1">
-                    </div>
-                    <div class="col px-xl-4 py-xl-5">
-                        <div class="row">
-                            <div class="col p-md-3 p-lg-4 p-xl-5">
-                                <h5 class="fs-20 mb-3">The Easiest Way To Find Suitable Maids for your Family</h5>
-                                <p class="fs-11">Online Maid is the leading maid platform in Singapore with the largest maid biodata database. We have more than 200 Ministry of Manpower approved employment agencies onboard. With a wide range of maid biodata available for viewing online, you are able to save time and effort in your search for a suitable maid for your family.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{% include 'components/27-start.html' with bg_color='bg-custom-ab' section_id='easiest-way-banner-section' %}
+<div class="row">
+    <div class="col-xl-6 px-5 px-lg-4">
+        <img src="{% static 'images/easiest-way-image.jpg' %}" alt="Easiest Way Image" class="img-fluid bg-primary">
+    </div>
+    <div class="col-md-1">
+    </div>
+    <div class="col p-xl-4">
+        <div class="row">
+            <div class="col p-md-3 p-lg-4 p-xl-5">
+                <h5 class="fs-20 mb-3">The Easiest Way To Find Suitable Maids for your Family</h5>
+                <p class="fs-11 text-dark">Online Maid is the leading maid platform in Singapore with the largest maid biodata database. We have more than 200 Ministry of Manpower approved employment agencies onboard. With a wide range of maid biodata available for viewing online, you are able to save time and effort in your search for a suitable maid for your family.</p>
             </div>
         </div>
     </div>
-</section>
+</div>
+{% include 'components/27-end.html' %}
