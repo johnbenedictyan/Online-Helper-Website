@@ -354,7 +354,8 @@ class EmployerIncomeDetailsCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'monthly_income_label': monthly_income_label
+            'monthly_income_label': monthly_income_label,
+            'form_type': 'CREATE'
         })
         return kwargs
 
@@ -619,7 +620,8 @@ class DocUploadCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'level_1_pk': self.kwargs.get(self.pk_url_kwarg)
+            'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
+            'form_type': 'CREATE'
         })
         return kwargs
 
@@ -832,7 +834,8 @@ class EmployerIncomeDetailsUpdateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'monthly_income_label': monthly_income_label
+            'monthly_income_label': monthly_income_label,
+            'form_type': 'UPDATE'
         })
         return kwargs
 
