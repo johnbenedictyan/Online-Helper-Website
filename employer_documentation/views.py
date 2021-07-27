@@ -229,7 +229,8 @@ class EmployerSponsorCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'CREATE'
+            'form_type': 'CREATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -294,7 +295,8 @@ class EmployerJointApplicantCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'CREATE'
+            'form_type': 'CREATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -355,7 +357,8 @@ class EmployerIncomeDetailsCreateView(
             'user_pk': self.request.user.pk,
             'authority': self.authority,
             'monthly_income_label': monthly_income_label,
-            'form_type': 'CREATE'
+            'form_type': 'CREATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -729,7 +732,8 @@ class EmployerSponsorUpdateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'UPDATE'
+            'form_type': 'UPDATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -787,7 +791,8 @@ class EmployerDocJointApplicantUpdateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'UPDATE'
+            'form_type': 'UPDATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -834,7 +839,8 @@ class EmployerIncomeDetailsUpdateView(
             'user_pk': self.request.user.pk,
             'authority': self.authority,
             'monthly_income_label': monthly_income_label,
-            'form_type': 'UPDATE'
+            'form_type': 'UPDATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
