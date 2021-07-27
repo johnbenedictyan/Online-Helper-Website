@@ -620,8 +620,7 @@ class DocUploadCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
-            'form_type': 'CREATE'
+            'level_1_pk': self.kwargs.get(self.pk_url_kwarg)
         })
         return kwargs
 
