@@ -743,10 +743,14 @@ class EmployerSponsorForm(forms.ModelForm):
             'sponsor_2_spouse_passport_tag',
         ]
 
+    def is_married(self, ms):
+        return ms == constants.MaritalStatusChoices.MARRIED
+
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
         self.form_type = kwargs.pop('form_type')
+        self.level_0_pk = kwargs.pop('level_0_pk')
         super().__init__(*args, **kwargs)
 
         instance = self.instance
@@ -1184,10 +1188,16 @@ class EmployerSponsorForm(forms.ModelForm):
             # Submit
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="{% url 'employer_update_route' level_0_pk %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-25"
                     ),
                     css_class='form-group col-md-6 text-center'
                 )
@@ -1808,6 +1818,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
         self.form_type = kwargs.pop('form_type')
+        self.level_0_pk = kwargs.pop('level_0_pk')
         super().__init__(*args, **kwargs)
 
         ja_nric_num = self.instance.get_joint_applicant_nric_full()
@@ -1982,10 +1993,16 @@ class EmployerJointApplicantForm(forms.ModelForm):
             # Submit
             Row(
                 Column(
+                    HTML(
+                        '''
+                        <a href="{% url 'employer_update_route' level_0_pk %}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-25"
                     ),
                     css_class='form-group col-12 text-center'
                 )
@@ -2163,7 +2180,15 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         self.authority = kwargs.pop('authority')
         self.form_type = kwargs.pop('form_type')
         self.monthly_income_label = kwargs.pop('monthly_income_label')
+        self.level_0_pk = kwargs.pop('level_0_pk')
         super().__init__(*args, **kwargs)
+
+        if self.instance.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+            back_url = 'employer_sponsor_update_route'
+        elif self.instance.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+            back_url = 'employer_jointapplicant_update_route'
+        else:
+            back_url = 'employer_update_route'
 
         # Set form field label based on applicant type
         self.fields['monthly_income'].label = self.monthly_income_label[0]
@@ -2195,10 +2220,16 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
             # Submit
             Row(
                 Column(
+                    HTML(
+                        f'''
+                        <a href="{{% url '{back_url}' level_0_pk %}}"
+                        class="btn btn-outline-primary w-25 mx-2">Back</a>
+                        '''
+                    ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-25"
                     ),
                     css_class='form-group col-12 text-center'
                 )
