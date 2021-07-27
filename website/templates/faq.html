@@ -343,52 +343,56 @@
             </div>
         </div>
     </div>
-    <div class="container d-none d-md-block">
-        <div class="row">
-            <div class="col-3 pr-xl-5">
-                <div class="list-group" id="faq-tab" role="tablist">
-                    <a class="list-group-item faq-item mb-3 mb-lg-4 active" id="faq-employer-eligibility-list" data-toggle="list" href="#faq-employer-eligibility" role="tab" aria-controls="home">
-                        Employer Eligibilty
-                    </a>
-                    <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-waiting-time-cost-list" data-toggle="list" href="#faq-waiting-time-cost" role="tab" aria-controls="profile">
-                        Waiting time &amp; cost
-                    </a>
-                    <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-during-employment-list" data-toggle="list" href="#faq-during-employment" role="tab" aria-controls="messages">
-                        During Employment
-                    </a>
-                    <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-repatriation-list" data-toggle="list" href="#faq-repatriation" role="tab" aria-controls="settings">
-                        Repatriation
-                    </a>
-                    <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-covid-list" data-toggle="list" href="#faq-covid" role="tab" aria-controls="settings">
-                        Covid
-                    </a>
-                </div>
-            </div>
-            <div class="col-9">
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="faq-employer-eligibility" role="tabpanel" aria-labelledby="faq-employer-eligibility-list">
-                        <div class="container">
-                            {% include 'sections/faq/employer-eligibility.html' %}
+    <div class="container-fluid d-none d-md-block">
+        <div class="row justify-content-center">
+            <div class="col-xl-8-5">
+                <div class="row">
+                    <div class="col-xl-2-5 pr-xl-5">
+                        <div class="list-group" id="faq-tab" role="tablist">
+                            <a class="list-group-item faq-item mb-3 mb-lg-4 active" id="faq-employer-eligibility-list" data-toggle="list" href="#faq-employer-eligibility" role="tab" aria-controls="home">
+                                Employer Eligibilty
+                            </a>
+                            <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-waiting-time-cost-list" data-toggle="list" href="#faq-waiting-time-cost" role="tab" aria-controls="profile">
+                                Waiting time &amp; cost
+                            </a>
+                            <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-during-employment-list" data-toggle="list" href="#faq-during-employment" role="tab" aria-controls="messages">
+                                During Employment
+                            </a>
+                            <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-repatriation-list" data-toggle="list" href="#faq-repatriation" role="tab" aria-controls="settings">
+                                Repatriation
+                            </a>
+                            <a class="list-group-item faq-item mb-3 mb-lg-4" id="faq-covid-list" data-toggle="list" href="#faq-covid" role="tab" aria-controls="settings">
+                                Covid
+                            </a>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="faq-waiting-time-cost" role="tabpanel" aria-labelledby="faq-waiting-time-cost-list">
-                        <div class="container">
-                            {% include 'sections/faq/waiting-time-and-cost.html' %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="faq-during-employment" role="tabpanel" aria-labelledby="faq-during-employment-list">
-                        <div class="container">
-                            {% include 'sections/faq/during-employment.html' %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="faq-repatriation" role="tabpanel" aria-labelledby="faq-repatriation-list">
-                        <div class="container">
-                            {% include 'sections/faq/repatriation.html' %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="faq-covid" role="tabpanel" aria-labelledby="faq-covid-list">
-                        <div class="container">
-                            {% include 'sections/faq/covid.html' %}
+                    <div class="col">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="faq-employer-eligibility" role="tabpanel" aria-labelledby="faq-employer-eligibility-list">
+                                <div class="container">
+                                    {% include 'sections/faq/employer-eligibility.html' %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="faq-waiting-time-cost" role="tabpanel" aria-labelledby="faq-waiting-time-cost-list">
+                                <div class="container">
+                                    {% include 'sections/faq/waiting-time-and-cost.html' %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="faq-during-employment" role="tabpanel" aria-labelledby="faq-during-employment-list">
+                                <div class="container">
+                                    {% include 'sections/faq/during-employment.html' %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="faq-repatriation" role="tabpanel" aria-labelledby="faq-repatriation-list">
+                                <div class="container">
+                                    {% include 'sections/faq/repatriation.html' %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="faq-covid" role="tabpanel" aria-labelledby="faq-covid-list">
+                                <div class="container">
+                                    {% include 'sections/faq/covid.html' %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
