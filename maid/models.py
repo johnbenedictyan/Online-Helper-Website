@@ -195,13 +195,19 @@ class Maid(models.Model):
     expected_salary = models.PositiveSmallIntegerField(
         verbose_name=_('Expected Salary'),
         blank=False,
-        default=0
+        default=0,
+        validators=[
+            MaxValueValidator(9999)
+        ]
     )
 
     expected_days_off = models.PositiveSmallIntegerField(
         verbose_name=_('Expected No of Off Days'),
         blank=False,
-        default=0
+        default=0,
+        validators=[
+            MaxValueValidator(4)
+        ]
     )
 
     date_of_birth = models.DateField(

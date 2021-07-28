@@ -89,7 +89,12 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
 
 
 class DashboardCaseFilter(DjangoFiltersFilterSet):
-    pass
+    class Meta:
+        model = EmployerDoc
+        fields = [
+            'employer__employer_name',
+            'fdw__name'
+        ]
 
 
 class DashboardSalesFilter(DjangoFiltersFilterSet):

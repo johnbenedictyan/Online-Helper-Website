@@ -493,9 +493,9 @@ class Employer(models.Model):
             if not self.get_employer_nric_full():
                 error_msg_list.append('employer_nric_num')
         else:
-            if not self.get_employer_employer_fin_full():
+            if not self.get_employer_fin_full():
                 error_msg_list.append('employer_fin_num')
-            if not self.get_employer_employer_passport_full():
+            if not self.get_employer_passport_full():
                 error_msg_list.append('employer_passport_num')
             if not self.employer_passport_date:
                 error_msg_list.append('employer_passport_date')

@@ -49,7 +49,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
 # App Imports
 from .filters import (
-    # DashboardCaseFilter,
+    DashboardCaseFilter,
     DashboardEmployerFilter, DashboardMaidFilter,
     DashboardSalesFilter, DashboardStatusFilter
 )
@@ -65,9 +65,10 @@ class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
 
 
 class CaseList(BaseFilteredListView):
-    # context_object_name = 'cases'
+    context_object_name = 'cases'
+    model = EmployerDoc
     template_name = 'list/dashboard-case-list.html'
-    # filter_set = DashboardCaseFilter
+    filter_set = DashboardCaseFilter
 
     def get_queryset(self):
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
