@@ -3,7 +3,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
@@ -13,7 +13,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
-from .forms import EmployerCreationForm, SignInForm, AgencySignInForm
+from .forms import (
+    EmployerCreationForm, SignInForm, AgencySignInForm, CustomPasswordResetForm
+)
 from .models import PotentialEmployer
 from .mixins import PotentialEmployerGrpRequiredMixin
 
@@ -54,6 +56,11 @@ class AgencySignInView(BaseLoginView):
     template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
     success_url = reverse_lazy('dashboard_home')
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'form/password-reset-form.html'
 
 
 class SignOutView(LoginRequiredMixin, RedirectView):

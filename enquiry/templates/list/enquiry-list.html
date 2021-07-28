@@ -1,23 +1,7 @@
 {% extends 'enquiry-base.html' %}
 {% load crispy_forms_tags %}
 {% block enquiry_section %}
-<section>
-    <div class="jumbotron jumbotron-fluid bg-hero">
-        <div class="container">
-            <div class="row">
-                <div class="col col-md-8 col-lg-6 py-2 py-md-3 offset-md-1">
-                    <h1 class="display-4 pl-3 pl-md-2">My Enquiries</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">My Enquiries</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% include 'sections/title-banner.html' with page_name='Enquiries' %}
 <section>
     <div class="container">
         {% for enquiry in enquiries %}

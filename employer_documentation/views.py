@@ -229,7 +229,8 @@ class EmployerSponsorCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'CREATE'
+            'form_type': 'CREATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -294,7 +295,8 @@ class EmployerJointApplicantCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'CREATE'
+            'form_type': 'CREATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -354,7 +356,9 @@ class EmployerIncomeDetailsCreateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'monthly_income_label': monthly_income_label
+            'monthly_income_label': monthly_income_label,
+            'form_type': 'CREATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -711,7 +715,7 @@ class EmployerSponsorUpdateView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not is_applicant_sponsor(self.object.applicant_type):
+        if not is_applicant_sponsor(self.object.employer.applicant_type):
             return HttpResponseRedirect(
                 reverse(
                     'employer_update_route',
@@ -728,7 +732,8 @@ class EmployerSponsorUpdateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'UPDATE'
+            'form_type': 'UPDATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -786,7 +791,8 @@ class EmployerDocJointApplicantUpdateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'form_type': 'UPDATE'
+            'form_type': 'UPDATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 
@@ -832,7 +838,9 @@ class EmployerIncomeDetailsUpdateView(
         kwargs.update({
             'user_pk': self.request.user.pk,
             'authority': self.authority,
-            'monthly_income_label': monthly_income_label
+            'monthly_income_label': monthly_income_label,
+            'form_type': 'UPDATE',
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
         })
         return kwargs
 

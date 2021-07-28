@@ -1,17 +1,21 @@
-{% extends 'components/agency-crispy-form.html' %}
-{% block title_banner_section %}
-    {% include 'sections/title-banner.html' with page_name='Agency Sign Up' %}
-{% endblock title_banner_section %}
-
-{% block post_form_section %}
-    <div class="row">
-        <div class="col text-center my-2 my-md-5">
+{% extends 'agency-base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block agency_section %}
+{% include 'sections/title-banner.html' with page_name='Agency Sign Up' %}
+<div class="container-fluid">
+    {% include 'components/crispy-form-error.html' %}
+    <div class="row justify-content-center">
+        <div class="col-10 col-lg-8 col-xl-6-5 mb-md-3 mb-lg-4 mb-xl-5">
             <div class="row">
-                <div class="col my-2 mt-4 mt-md-0">
-                    <p class="text-muted">The above form is for employment agencies, if you are a user, please sign up via the link below.</p>
-                    <a href="{% url 'sign_in' %}" class="btn btn-outline-primary">Log In Here</a>
+                <div class="col py-md-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% crispy form %}
+                    </form>
                 </div>
             </div>
+            {% include 'components/form-footer.html' with page_name='Agency Sign Up' %}
         </div>
     </div>
-{% endblock post_form_section %}
+</div>
+{% endblock agency_section %}

@@ -1,9 +1,6 @@
-$EMERALD : #23CE6B !default;
-$WHITE : #fff !default;
-$VENETIAN-RED: #C80815 !default;
+$white: #fff !default;
+$gray-400: #ced4da !default;
 
-
-$RICH_BLACK_FOGRA_39: #08090a !default;
 $LIGHT_SKY_BLUE: #85c7f2 !default;
 $TRUE_BLUE: #3066be !default;
 
@@ -11,10 +8,12 @@ $BASE_FONT_SIZE: 1rem !default;
 $FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
 $FONT_SIZE_SMALLER: $BASE_FONT_SIZE * $FONT_SIZE_SMALLER_REDUCTION_FACTOR;
 $FONT_SIZE_SMALLER_SLIGHT: .9rem;
+$FONT_SIZE_LARGER: 1.1rem;
 $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 
 // Custom Typography
 $FONT_SIZE_10: calc(10/12 * 1rem);
+$FONT_SIZE_11: calc(11/12 * 1rem);
 $FONT_SIZE_12: calc(12/12 * 1rem);
 $FONT_SIZE_14: calc(14/12 * 1rem);
 $FONT_SIZE_16: calc(16/12 * 1rem);
@@ -25,35 +24,57 @@ $FONT_SIZE_26: calc(26/12 * 1rem);
 $FONT_SIZE_28: calc(28/12 * 1rem);
 $FONT_SIZE_32: calc(32/12 * 1rem);
 
-.fs{
-    &-05 {
+html, body {
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.fs {
+    &-10 {
         font-size: $FONT_SIZE_10;
     }
-    &-1 {
+    &-11 {
+        font-size: $FONT_SIZE_11;
+    }
+    &-12 {
         font-size: $FONT_SIZE_12;
     }
-    &-2 {
+    &-14 {
         font-size: $FONT_SIZE_14;
     }
-    &-3 {
+    &-16 {
         font-size: $FONT_SIZE_16;
     }
-    &-4 {
+    &-18 {
         font-size: $FONT_SIZE_18;
     }
-    &-5 {
+    &-20 {
         font-size: $FONT_SIZE_20;
     }
-    &-6 {
+    &-22 {
         font-size: $FONT_SIZE_22;
     }
-    &-7 {
+    &-26 {
         font-size: $FONT_SIZE_26;
     }
-    &-8 {
+    &-28 {
         font-size: $FONT_SIZE_28;
     }
-    &-9 {
+    &-32 {
         font-size: $FONT_SIZE_32;
     }
 }
@@ -166,39 +187,11 @@ $DASHBOARD_FONT_SIZE_BUTTON: .875rem;
     }
 }
 
-.dashboard-font-size{
-    &-text {
-        font-size: $DASHBOARD_FONT_SIZE_TEXT;
-    }
-    &-table-header {
-        font-size: $DASHBOARD_FONT_SIZE_TABLE_HEADER;
-    }
-    &-button {
-        font-size: $DASHBOARD_FONT_SIZE_BUTTON;
-    }
-}
-
 html {
     scroll-behavior: smooth;
 }
 
 .bg {
-    &-primary1 {
-        background-color: $TRUE_BLUE;
-    }
-
-    &-dark1 {
-        background-color: $RICH_BLACK_FOGRA_39;
-    }
-
-    &-secondary1 {
-        background-color: $VENETIAN_RED;
-    }
-
-    &-third1 {
-        background-color: $EMERALD;
-    }
-
     &-hero {
         background-image: url('/static/images/hero-image.png');
         background-size: cover;
@@ -216,12 +209,6 @@ html {
 
     &-faq {
         background-image: url('/static/svgs/faq.svg');
-        background-size: cover;
-        background-position: center;
-    }
-
-    &-enquiry-banner {
-        // background-image: url('/static/images/maid-collage.png');
         background-size: cover;
         background-position: center;
     }
@@ -298,7 +285,7 @@ button.mini-faq-button {
     &.active {
         background-color: $TRUE_BLUE;
         p {
-            color: $WHITE
+            color: $white
         }
     }
 
@@ -318,19 +305,19 @@ $PRIMARY_COLOUR: #0571bb;
 
     &.active {
         background-color: $PRIMARY_COLOUR;
-        color: $WHITE !important;
+        color: $white !important;
         a {
-            color: $WHITE !important;
+            color: $white !important;
         } 
     }
 
     &:hover:not(.active) {
         background-color: $PRIMARY_COLOUR;
-        color: $WHITE !important;
+        color: $white !important;
         transition: background-color .5s ease-in-out;
         transition: color .5s ease-in-out; 
         a {
-            color: $WHITE !important;
+            color: $white !important;
         }
     }
 }
@@ -356,17 +343,6 @@ $CUSTOM_CARD_BORDER_RADIUS: .5rem;
 $CUSTOM_CARD_HEADER_MARGIN: 0 0 1rem 0;
 $MAID_PROFILE_CARD_CUSTOM_CARD_PADDING: .75rem;
 $MAID_PROFILE_CARD_CUSTOM_CARD_MARGIN: .5rem .25rem 1rem .25rem;
-$white: #fff !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;
-$gray-700: #495057 !default;
-$gray-800: #343a40 !default;
-$gray-900: #212529 !default;
-$black: #000 !default;
 
 body.dashboard-body{
     background-color: $white !important;
@@ -487,7 +463,6 @@ body.dashboard-body{
     background-color: $gray-400;
 }
 
-$FONT_SIZE_LARGER: 1.1rem;
 .how-it-works-card{
     .card-text{
         font-size: $FONT_SIZE_LARGER;

@@ -1,25 +1,19 @@
 {% load static %}
-<section id='cta-banner-section'>
-    <div class="container-fluid bg-custom-pb custom-bb">
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
-                <div class="row">
-                    <div class="col-md-5 p-4">
-                        <div class="row">
-                            <div class="col p-md-3 p-lg-4 p-xl-5">
-                                <h2 class="mb-3">Let us help you find the most suitable maid for your family</h2>
-                                <p>Online Maid is the lading platform in Singapore with more than 200 Ministry of Manpower (MOM) approved employment agencies onboard. Send us your enquiry and let us assist you in your search for a suitable maid.</p>
-                                <a href="{% url 'general_enquiry' %}" class="btn btn-custom-bb cta-button">
-                                    <h6 class="mb-0 py-1">Send Enquiry</h6>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 py-5 d-flex flex-column justify-content-center offset-1">
-                        <div class="w-100 h-100" style="background-image: url({% static 'images/cta.jpg' %}); background-position: center"></div>
-                    </div>
-                </div>
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-pb' section_id='cta-banner-section' narrow=True %}
+<div class="row">
+    <div class="col-md-5 p-4">
+        <div class="row">
+            <div class="col p-md-3 p-lg-4 p-xl-5">
+                <h5 class="fs-20 mb-3">Let us help you find the most suitable maid for your family</h5>
+                <p class="fs-11 text-dark">Online Maid is the leading maid platform in Singapore with more than 200 Ministry of Manpower approved employment agencies onboard. Send in your enquiry and let us assist you in your search for a suitable maid.</p>
+                <a href="{% url 'general_enquiry' %}" class="btn btn-custom-bb cta-button">
+                    <h6 class="mb-0 py-1">Send Enquiry</h6>
+                </a>
             </div>
         </div>
     </div>
-</section>
+    <div class="col-md-6 py-5 d-flex flex-column justify-content-center offset-1">
+        <div class="w-100 h-100" style="background-image: url({% static 'images/cta.jpg' %}); background-position: center"></div>
+    </div>
+</div>
+{% include 'components/27-ws-section/end.html' %}

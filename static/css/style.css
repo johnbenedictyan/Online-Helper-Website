@@ -1,40 +1,75 @@
-.fs-05 {
+html, body {
+  min-height: 100vh;
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.fs-10 {
   font-size: calc(10/12 * 1rem);
 }
 
-.fs-1 {
+.fs-11 {
+  font-size: calc(11/12 * 1rem);
+}
+
+.fs-12 {
   font-size: calc(12/12 * 1rem);
 }
 
-.fs-2 {
+.fs-14 {
   font-size: calc(14/12 * 1rem);
 }
 
-.fs-3 {
+.fs-16 {
   font-size: calc(16/12 * 1rem);
 }
 
-.fs-4 {
+.fs-18 {
   font-size: calc(18/12 * 1rem);
 }
 
-.fs-5 {
+.fs-20 {
   font-size: calc(20/12 * 1rem);
 }
 
-.fs-6 {
+.fs-22 {
   font-size: calc(22/12 * 1rem);
 }
 
-.fs-7 {
+.fs-26 {
   font-size: calc(26/12 * 1rem);
 }
 
-.fs-8 {
+.fs-28 {
   font-size: calc(28/12 * 1rem);
 }
 
-.fs-9 {
+.fs-32 {
   font-size: calc(32/12 * 1rem);
 }
 
@@ -197,36 +232,8 @@
   }
 }
 
-.dashboard-font-size-text {
-  font-size: 0.75rem;
-}
-
-.dashboard-font-size-table-header {
-  font-size: 0.875rem;
-}
-
-.dashboard-font-size-button {
-  font-size: 0.875rem;
-}
-
 html {
   scroll-behavior: smooth;
-}
-
-.bg-primary1 {
-  background-color: #3066be;
-}
-
-.bg-dark1 {
-  background-color: #08090a;
-}
-
-.bg-secondary1 {
-  background-color: #C80815;
-}
-
-.bg-third1 {
-  background-color: #23CE6B;
 }
 
 .bg-hero {
@@ -248,11 +255,6 @@ html {
 
 .bg-faq {
   background-image: url("/static/svgs/faq.svg");
-  background-size: cover;
-  background-position: center;
-}
-
-.bg-enquiry-banner {
   background-size: cover;
   background-position: center;
 }

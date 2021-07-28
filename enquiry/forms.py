@@ -210,6 +210,14 @@ class ShortlistedEnquiryForm(forms.ModelForm):
     class Meta:
         model = ShortlistedEnquiry
         exclude = ['potential_employer', 'maids', 'last_modified']
+        widgets = {
+            'remarks': forms.Textarea(
+                attrs={
+                    'rows': 8,
+                    'cols': 15
+                }
+            )
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -217,24 +225,45 @@ class ShortlistedEnquiryForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    HTML(
-                        '<h1>Enquiry Form</h1>'
-                    )
+                    'name',
+                    css_class='form-group'
+                ),
+                Column(
+                    'mobile_number',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    'email',
+                    css_class='form-group'
+                ),
+                Column(
+                    'property_type',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    'no_of_family_members',
+                    css_class='form-group'
+                ),
+                Column(
+                    'no_of_below_5',
+                    css_class='form-group'
                 )
             ),
             Row(
                 Column(
                     'remarks',
                     css_class='form-group'
-                ),
-                css_class='form-row'
+                )
             ),
             Row(
                 Column(
                     'consent',
                     css_class='form-group col'
-                ),
-                css_class='form-row'
+                )
             ),
             Row(
                 Column(
@@ -243,8 +272,7 @@ class ShortlistedEnquiryForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col text-center'
-                ),
-                css_class='form-row'
+                    css_class='form-group text-center'
+                )
             )
         )
