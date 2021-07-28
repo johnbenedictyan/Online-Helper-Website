@@ -32,7 +32,7 @@
             <div class="col-2">
                 <h6 class="mb-0">EA Personnel</h6>
             </div>
-            <div class="col-1">
+            <div class="col-1 text-center">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
@@ -57,10 +57,10 @@
                 <p class="mb-0">{{ object.employer.agency_employee }}</p>
             </div>
             <div class="col-1">
-                <div class="row justify-content-evenly">
-                    <a href="{% url 'case_update_route' level_1_pk=object.pk %}"><i class="far fa-edit"></i></a>
-                    <a href="{% url 'case_detail_route' level_1_pk=object.pk %}"><i class="far fa-file-image"></i></a>
-                    <a href="{% url 'case_delete_route' level_1_pk=object.pk %}"><i class="far fa-trash-alt"></i></a>
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="{% url 'case_update_route' level_1_pk=object.pk %}"><i class="far fa-edit"></i></a>
+                    <a class="mx-1" href="{% url 'case_detail_route' level_1_pk=object.pk %}"><i class="far fa-file-image"></i></a>
+                    <a class="mx-1" href="{% url 'case_delete_route' level_1_pk=object.pk %}"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>

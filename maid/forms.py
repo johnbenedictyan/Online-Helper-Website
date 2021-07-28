@@ -1,3 +1,6 @@
+# Global Imports
+from decimal import Decimal
+
 # Django Imports
 from django import forms
 from django.conf import settings
@@ -292,6 +295,72 @@ class MaidForm(forms.ModelForm):
                 self.instance.fin_number_nonce = nonce
                 self.instance.fin_number_tag = tag
                 return ciphertext
+
+    def clean_expected_salary(self):
+        cleaned_field = self.cleaned_data.get('expected_salary')
+        if cleaned_field > 9999:
+            self.add_error(
+                cleaned_field,
+                ValidationError(
+                    _('Invalid Value'),
+                    code='invalid'
+                )
+            )
+
+    def clean_expected_days_off(self):
+        cleaned_field = self.cleaned_data.get('expected_days_off')
+        if cleaned_field > 4:
+            self.add_error(
+                cleaned_field,
+                ValidationError(
+                    _('Invalid Value'),
+                    code='invalid'
+                )
+            )
+
+    def clean_height(self):
+        cleaned_field = self.cleaned_data.get('height')
+        if cleaned_field > Decimal(200):
+            self.add_error(
+                cleaned_field,
+                ValidationError(
+                    _('Invalid Value'),
+                    code='invalid'
+                )
+            )
+
+    def clean_weight(self):
+        cleaned_field = self.cleaned_data.get('weight')
+        if cleaned_field > Decimal(100):
+            self.add_error(
+                cleaned_field,
+                ValidationError(
+                    _('Invalid Value'),
+                    code='invalid'
+                )
+            )
+
+    def clean_number_of_children(self):
+        cleaned_field = self.cleaned_data.get('number_of_children')
+        if cleaned_field > 20:
+            self.add_error(
+                cleaned_field,
+                ValidationError(
+                    _('Invalid Value'),
+                    code='invalid'
+                )
+            )
+
+    def clean_number_of_siblings(self):
+        cleaned_field = self.cleaned_data.get('number_of_siblings')
+        if cleaned_field > 20:
+            self.add_error(
+                cleaned_field,
+                ValidationError(
+                    _('Invalid Value'),
+                    code='invalid'
+                )
+            )
 
     def save(self, *args, **kwargs):
         self.instance.agency = Agency.objects.get(

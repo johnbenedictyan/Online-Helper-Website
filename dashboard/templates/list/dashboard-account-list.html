@@ -40,10 +40,7 @@
             <div class="col">
                 <h6 class="fs-14 mb-0">Last Login</h6>
             </div>
-            <div class="col-1">
-                <h6 class="fs-14 mb-0">Published</h6>
-            </div>
-            <div class="col-1">
+            <div class="col-1 text-center">
                 <h6 class="fs-14 mb-0">Actions</h6>
             </div>
         </div>
@@ -71,22 +68,9 @@
                 <p class="mb-0">{{account.user.last_login|date:"j M g:i A"}}</p>
             </div>
             <div class="col-1">
-                <p class="mb-0">
-                    {% if account.get_ea_personnel_no %}
-                        {% if account.published == True %}
-                        Yes
-                        {% else %}
-                        No
-                        {% endif %}
-                    {% else %}
-                    N.A.
-                    {% endif %}
-                </p>
-            </div>
-            <div class="col-1">
-                <div class="row justify-content-evenly">
-                    <a href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
-                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                    <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>
