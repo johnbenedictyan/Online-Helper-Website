@@ -3,38 +3,34 @@
 {% load static %}
 {% block accounts_section %}
 {% include 'sections/title-banner.html' with page_name=page_name %}
-<div class="container-fluid">
-    {% include 'components/crispy-form-error.html' %}
-    <div class="row justify-content-center">
-        <div class="col-10 col-lg-8 col-xl-6-5 mb-md-3 mb-lg-4 mb-xl-5">
-            <div class="row">
-                <div class="col py-md-4">
-                    <div class="row">
-                        <div class="col mb-md-2 mb-lg-3 mb-xl-4">
-                            <h5 class="fs-16">{% if page_name == 'User Sign Up' %}Sign Up{%else%}Login{% endif %} With Email</h5>
-                        </div>
-                    </div>
-                    <form method="post" enctype="multipart/form-data">
-                        {% crispy form %}
-                    </form>
-                </div>
-                <div class="col-1-5">
-                </div>
-                <div class="col pb-md-4 my-auto">
-                    {% include 'components/social-login.html' %}
-                </div>
+{% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='account-section' %}
+{% include 'components/crispy-form-error.html' %}
+<div class="row">
+    <div class="col py-md-4">
+        <div class="row">
+            <div class="col mb-md-2 mb-lg-3 mb-xl-4">
+                <h5 class="fs-16">{% if page_name == 'User Sign Up' %}Sign Up{%else%}Login{% endif %} With Email</h5>
             </div>
-            {% if page_name == 'User Sign Up' %}
-            <div class="row">
-                <div class="col my-4">
-                    <p class="fs-11 text-dark">
-                        As per directive by Ministry of Manpower, users are requested to log in to view information of Maids. Alternatively, users may send in their enquiries, which does not require a sign up.
-                    </p>
-                </div>
-            </div>
-            {% endif %}
-            {% include 'components/form-footer.html' with page_name=page_name %}
         </div>
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form %}
+        </form>
+    </div>
+    <div class="col col-1-5">
+    </div>
+    <div class="col pb-md-4 my-auto">
+        {% include 'components/social-login.html' %}
     </div>
 </div>
+{% if page_name == 'User Sign Up' %}
+<div class="row">
+    <div class="col my-4">
+        <p class="fs-11 text-dark">
+            As per directive by Ministry of Manpower, users are requested to log in to view information of Maids. Alternatively, users may send in their enquiries, which does not require a sign up.
+        </p>
+    </div>
+</div>
+{% endif %}
+{% include 'components/form-footer.html' with page_name=page_name %}
+{% include 'components/45-ws-section/end.html' %}
 {% endblock accounts_section %}

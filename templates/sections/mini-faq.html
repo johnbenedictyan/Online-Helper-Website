@@ -1,9 +1,5 @@
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='mini-faq-section' %}
-<div class="row">
-    <div class="col text-center">
-        <h5 class="fs-20 mb-3 mb-md-4">Frequently Asked Questions</h5>
-    </div>
-</div>
+{% include 'components/section-heading.html' with title='Frequently Asked Questions' %}
 <div class="row justify-content-center">
     <div class="col-xl-9 mb-md-4">
         <div class="accordion" id="faqAccordion">
@@ -119,7 +115,7 @@
             </div>
             <div class="row">
                 <div class="col py-2 py-lg-3 text-center">
-                    <a href="{% url 'faq' %}" class="btn btn-lg btn-outline-primary text-primary1">
+                    <a href="{% url 'faq' %}" class="btn btn-outline-primary text-primary1">
                         <p class="mb-0">View More<i class="fas fa-long-arrow-alt-right ml-2"></i></p>
                     </a>
                 </div>
