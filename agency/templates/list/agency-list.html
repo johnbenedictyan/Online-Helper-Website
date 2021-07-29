@@ -2,40 +2,34 @@
 {% load crispy_forms_tags %}
 {% block agency_section %}
 {% include 'sections/title-banner.html' with page_name='Agencies' %}
-<section>
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-xl-8-5">
-                <div class="row">
-                    <div class="col-lg-10 col-xl-2-5 mb-3 offset-lg-1 offset-xl-0">
-                        <form action="" method="get">
-                            <div class="row">
-                                <div class="col px-lg-3 mb-lg-2">
-                                    {{filter.form|crispy}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col px-lg-3">
-                                    <a href="{% url 'agency_list' %}" class="btn btn-secondary w-100">Reset</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
-                            {% for agency in agencies %}
-                                <div class="col mb-4">
-                                    {% include 'components/agency-card.html' with agency=agency %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                        {% include 'pagination.html' %}
-                    </div>
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='agencies-section' %}
+<div class="row">
+    <div class="col-lg-10 col-xl-2-5 mb-3 offset-lg-1 offset-xl-0">
+        <form action="" method="get">
+            <div class="row">
+                <div class="col px-lg-3 mb-lg-2">
+                    {{filter.form|crispy}}
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col px-lg-3">
+                    <a href="{% url 'agency_list' %}" class="btn btn-secondary w-100">Reset</a>
+                </div>
+            </div>
+        </form>
     </div>
-</section>
+    <div class="col">
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
+            {% for agency in agencies %}
+                <div class="col mb-4">
+                    {% include 'components/agency-card.html' with agency=agency %}
+                </div>
+            {% endfor %}
+        </div>
+        {% include 'pagination.html' %}
+    </div>
+</div>
+{% include 'components/27-ws-section/end.html' %}
 {% include 'sections/cta-banner.html' %}
 {% endblock agency_section %}
 {% block js %}

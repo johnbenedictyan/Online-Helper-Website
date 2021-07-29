@@ -3,19 +3,15 @@
 {% load static %}
 {% block agency_section %}
 {% include 'sections/title-banner.html' with page_name='Agency Sign Up' %}
-<div class="container-fluid">
-    {% include 'components/crispy-form-error.html' %}
-    <div class="row justify-content-center">
-        <div class="col-10 col-lg-8 col-xl-6-5 mb-md-3 mb-lg-4 mb-xl-5">
-            <div class="row">
-                <div class="col py-md-4">
-                    <form method="post" enctype="multipart/form-data">
-                        {% crispy form %}
-                    </form>
-                </div>
-            </div>
-            {% include 'components/form-footer.html' with page_name='Agency Sign Up' %}
-        </div>
+{% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='account-section' %}
+{% include 'components/crispy-form-error.html' %}
+<div class="row">
+    <div class="col py-md-4">
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form %}
+        </form>
     </div>
 </div>
+{% include 'components/form-footer.html' with page_name='Agency Sign Up' %}
+{% include 'components/45-ws-section/end.html' %}
 {% endblock agency_section %}

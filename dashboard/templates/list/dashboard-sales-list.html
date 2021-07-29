@@ -21,25 +21,25 @@
             </div>
         </div>
         <div class="row bg-dashboard-primary text-light mx-half py-3 border">
-            <div class="col-0-5 text-center">
+            <div class="col col-0-5 text-center">
                 <h6 class="mb-0">S/N</h6>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <h6 class="mb-0">Contract Date</h6>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <h6 class="mb-0">Deployment</h6>
             </div>
             <div class="col">
                 <h6 class="mb-0">Employer & FDW</h6>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <h6 class="mb-0">Type</h6>
             </div>
             <div class="col-2">
                 <h6 class="mb-0">Amount</h6>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <h6 class="mb-0">Received On</h6>
             </div>
             <div class="col-1 text-center">
@@ -49,25 +49,25 @@
         {% for sale in sales %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
             {% if sales.is_archived_doc is False %}
-            <div class="col-0-5">
+            <div class="col col-0-5">
                 <p class="mb-0"></p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{{sale.agreement_date}}</p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">Employer: {{sale.employer.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.employer.agency_employee.name}}</p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
             </div>
             <div class="col-2">
                 <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br/>Balance:$ {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
             </div>
             <div class="col-1">
@@ -77,25 +77,25 @@
                 </div>
             </div>
             {% else %}
-            <div class="col-0-5">
+            <div class="col col-0-5">
                 <p class="mb-0"></p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{{sale.agreement_date}}</p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{{sale.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">Employer: {{sale.employer_name}}<br/>FDW: {{sale.maid_name}}<br/>Personnel: {{sale.agency_employee_name}}</p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
             </div>
             <div class="col-2">
                 <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br/>Balance:$ {{sale.calc_bal}}</p>
             </div>
-            <div class="col-1-5">
+            <div class="col col-1-5">
                 <p class="mb-0">{{sale.ca_deposit_date}}</p>
             </div>
             <div class="col-1">
