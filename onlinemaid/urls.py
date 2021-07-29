@@ -18,7 +18,7 @@ import os
 
 # Django Imports
 from django.contrib import admin
-from django.urls import include,path
+from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -51,7 +51,7 @@ USE_MAID_DB_PLANTER = os.environ.get('USE_MAID_DB_PLANTER') == 'TRUE'
 if USE_MAID_DB_PLANTER:
     from .helper_functions import maid_seed_data
     maid_seed_data()
-    
+
 # Django OTP
 ''' Use this to toggle 2FA on/off '''
 USE_2FA = os.environ.get('USE_2FA') == 'TRUE'
@@ -75,4 +75,7 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )

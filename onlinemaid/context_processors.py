@@ -45,7 +45,6 @@ def dashboard_side_nav(request):
     dashboard_side_nav_list = [
         # Agency
         'dashboard_agency_detail',
-        # 'dashboard_agency_update',
         'dashboard_agency_information_update',
         'dashboard_agency_outlet_details_update',
         'dashboard_agency_opening_hours_update',
@@ -66,7 +65,6 @@ def dashboard_side_nav(request):
         # Employers
         'employer_create_route',
         'employer_update_route',
-        # 'dashboard_employer_detail',
         'employer_sponsor_create_route',
         'employer_sponsor_update_route',
         'employer_jointapplicant_create_route',

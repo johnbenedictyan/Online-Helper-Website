@@ -22,9 +22,6 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 from .constants import MaidStatusChoices
 from .filters import MaidFilter
 from .forms import MaidLoanTransactionForm
-from .mixins import (
-    SpecificAgencyMaidLoginRequiredMixin, SpecificAgencyOwnerRequiredMixin
-)
 from .models import Maid, MaidLoanTransaction
 
 # Start of Views
@@ -105,8 +102,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
         return kwargs
 
 
-class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
-                                SuccessMessageMixin, UpdateView):
+class MaidLoanTransactionUpdate(SuccessMessageMixin, UpdateView):
     context_object_name = 'maid_loan_transaction'
     form_class = MaidLoanTransactionForm
     http_method_names = ['get', 'post']
@@ -130,8 +126,7 @@ class MaidLoanTransactionUpdate(SpecificAgencyMaidLoginRequiredMixin,
         )
 
 
-class MaidDelete(SpecificAgencyOwnerRequiredMixin, SuccessMessageMixin,
-                 DeleteView):
+class MaidDelete(SuccessMessageMixin, DeleteView):
     context_object_name = 'maid'
     http_method_names = ['post']
     model = Maid
