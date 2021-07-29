@@ -10,7 +10,8 @@ from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
 # Project Apps Imports
 from maid.models import MaidResponsibility, MaidLanguage
 
-# App Imports
+# App Importsf
+from .constants import MAID_TYPE_CHOICES, MAID_NATIONALITY_CHOICES
 from .fields import MaidResponsibilityChoiceField
 from .models import GeneralEnquiry, ShortlistedEnquiry
 
@@ -20,12 +21,26 @@ from .models import GeneralEnquiry, ShortlistedEnquiry
 
 
 class GeneralEnquiryForm(forms.ModelForm):
+    maid_nationality = forms.MultipleChoiceField(
+        label='',
+        choices=MAID_NATIONALITY_CHOICES,
+        widget=forms.CheckboxSelectMultiple()
+    )
+
+    maid_type = forms.MultipleChoiceField(
+        label='',
+        choices=MAID_TYPE_CHOICES,
+        widget=forms.CheckboxSelectMultiple()
+    )
+
     maid_responsibility = MaidResponsibilityChoiceField(
+        label='',
         queryset=MaidResponsibility.objects.all(),
         widget=forms.CheckboxSelectMultiple()
     )
 
     languages_spoken = forms.ModelMultipleChoiceField(
+        label='',
         queryset=MaidLanguage.objects.all(),
         widget=forms.CheckboxSelectMultiple()
     )
@@ -124,39 +139,60 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     HTML(
-                        '<h5>Employer Requirments</h5>'
+                        '<h5 class="fs-12">Maid\'s Nationality</h5>'
                     )
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
-                    'maid_nationality',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'maid_type',
-                    css_class='form-group col-md-6'
+                    Field(
+                        'maid_nationality',
+                        template='widgets/custom_multi_choice_field.html'
+                    ),
+                    css_class='form-group col-12'
                 ),
                 css_class='form-row'
             ),
             Row(
+                Column(
+                    HTML(
+                        '<h5 class="fs-12">Type of Maid</h5>'
+                    )
+                ),
+                Column(
+                    Field(
+                        'maid_type',
+                        template='widgets/custom_multi_choice_field.html'
+                    ),
+                    css_class='form-group col-12'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    HTML(
+                        '<h5 class="fs-12">Job Responsibility</h5>'
+                    )
+                ),
                 Column(
                     Field(
                         'maid_responsibility',
                         template='widgets/custom_multi_choice_field.html'
                     ),
-                    css_class='form-group'
+                    css_class='form-group col-12'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
+                    HTML(
+                        '<h5 class="fs-12">Spoken Language</h5>'
+                    )
+                ),
+                Column(
                     Field(
                         'languages_spoken',
                         template='widgets/custom_multi_choice_field.html'
                     ),
-                    css_class='form-group'
+                    css_class='form-group col-12'
                 ),
                 css_class='form-row'
             ),
