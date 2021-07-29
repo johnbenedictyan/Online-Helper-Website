@@ -90,7 +90,7 @@
                 <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
             </div>
             <div class="col-1">
-                <div class="row justify-content-evenly">
+                <div class="row justify-content-center">
                     <a href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
                     <a href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
                     {% if maid.is_published is False %}
