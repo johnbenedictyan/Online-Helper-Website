@@ -1670,6 +1670,8 @@ class EmployerDoc(models.Model):
                 employer_marital_status=self.employer.employer_marital_status,
                 worked_in_sg=self.employer.rn_income_employer.worked_in_sg,
                 monthly_income=self.employer.rn_income_employer.monthly_income,
+                agency_staff_name=self.employer.agency_employee.name,
+                agency_staff_ea_personnel_number=self.employer.agency_employee.ea_personnel_number,
                 version=self.version,
                 case_ref_no=self.case_ref_no,
                 agreement_date=self.agreement_date,
@@ -3704,6 +3706,16 @@ class ArchivedDoc(models.Model):
         verbose_name=_("FDW Off Day Day of Week"),
         choices=DayOfWeekChoices.choices,
         default=DayOfWeekChoices.SUN
+    )
+    agency_staff_name = models.CharField(
+        verbose_name=_("Agency Employee Name"),
+        max_length=100,
+        null=True
+    )
+    agency_staff_ea_personnel_number = models.CharField(
+        verbose_name=_("Agency Employee EA Personnel Number"),
+        max_length=100,
+        null=True
     )
 
     def get_version(self):
