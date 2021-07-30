@@ -9,7 +9,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView, FormView
 )
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import get_object_or_404 as get_obj_or_404
+from django.shortcuts import get_object_or_404 as get_obj_or_404, redirect
 
 from agency.mixins import (
     AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
@@ -1627,8 +1627,16 @@ class HandoverFormView(FormView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.employer_doc.details_missing_case_pre_signing_2():
-            # TODO: Stop the user from accessing the handover checklist
-            print('uh oh')
+            # TODO: Custom Message on why they are failing the details missing
+            print(self.object.employer_doc.details_missing_case_pre_signing_2())
+            return redirect(
+                reverse(
+                    'case_detail_route',
+                    kwargs={
+                        'level_1_pk': self.object.employer_doc.pk
+                    }
+                )
+            )
 
         return super().get(request, *args, **kwargs)
 
