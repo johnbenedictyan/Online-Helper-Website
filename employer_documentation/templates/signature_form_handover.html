@@ -96,5 +96,5 @@
 
 {% block js %}
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-    {% include 'employer_documentation/snippets/signature_snippet_tri_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="agency-employee-signature-pad" signature_input_2_id="id_agency_employee_signature" signature_pad_3_id="fdw-signature-pad" signature_input_3_id="id_fdw_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+    {% include 'snippets/signature_snippet_tri_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="agency-employee-signature-pad" signature_input_2_id="id_agency_employee_signature" signature_pad_3_id="fdw-signature-pad" signature_input_3_id="id_fdw_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% endblock js %}

@@ -9,7 +9,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView, FormView
 )
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import get_object_or_404 as get_obj_or_404
+from django.shortcuts import redirect
 
 from agency.mixins import (
     AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
@@ -69,13 +69,23 @@ class EmployerDocDetailView(
         return context
 
 
+class ArchivedEmployerDocDetailView(
+    # AgencyAccessToEmployerDocAppMixin,
+    GetAuthorityMixin,
+    DetailView
+):
+    model = models.ArchivedDoc
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'detail/dashboard-archived-case-detail.html'
+
+
 class SignedDocumentsDetailView(
     GetObjFromSigSlugMixin,
     DetailView
 ):
     model = models.CaseSignature
     slug_url_kwarg = 'slug'
-    template_name = 'employer_documentation/signed_documents.html'
+    template_name = 'signed_documents.html'
     stakeholder = ''
 
     def get_object(self):
@@ -134,7 +144,7 @@ class EmployerCreateView(
 ):
     model = models.Employer
     form_class = forms.EmployerForm
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -186,7 +196,7 @@ class EmployerSponsorCreateView(
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
@@ -252,7 +262,7 @@ class EmployerJointApplicantCreateView(
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
@@ -318,7 +328,7 @@ class EmployerIncomeDetailsCreateView(
     model = models.EmployerIncome
     form_class = forms.EmployerIncomeDetailsForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
@@ -382,7 +392,7 @@ class EmployerDocCreateView(
 ):
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -409,7 +419,7 @@ class DocServiceFeeScheduleCreateView(
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -467,7 +477,7 @@ class DocServAgmtEmpCtrCreateView(
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -530,7 +540,7 @@ class DocSafetyAgreementCreateView(
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -589,7 +599,7 @@ class DocUploadCreateView(
     model = models.DocUpload
     form_class = forms.DocUploadForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -644,7 +654,7 @@ class EmployerUpdateView(
 ):
     model = models.Employer
     form_class = forms.EmployerForm
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_0_pk'
 
     def get_context_data(self, **kwargs):
@@ -698,7 +708,7 @@ class EmployerSponsorUpdateView(
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -755,7 +765,7 @@ class EmployerDocJointApplicantUpdateView(
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -814,7 +824,7 @@ class EmployerIncomeDetailsUpdateView(
     model = models.EmployerIncome
     form_class = forms.EmployerIncomeDetailsForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -865,7 +875,7 @@ class EmployerDocUpdateView(
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -900,7 +910,7 @@ class DocServiceFeeScheduleUpdateView(
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -940,7 +950,7 @@ class DocServAgmtEmpCtrUpdateView(
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -985,7 +995,7 @@ class DocSafetyAgreementUpdateView(
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1025,7 +1035,7 @@ class DocUploadUpdateView(
     model = models.DocUpload
     form_class = forms.DocUploadForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1057,7 +1067,7 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
     form_class = forms.CaseStatusForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1116,7 +1126,7 @@ class EmployerDocDeleteView(
 ):
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/employer_confirm_delete.html'
+    template_name = 'employer_confirm_delete.html'
     success_url = reverse_lazy('dashboard_case_list')
 
 
@@ -1131,7 +1141,7 @@ class SignatureUpdateByAgentView(
     model = models.CaseSignature
     form_class = forms.SignatureForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/signature_form_agency.html'
+    template_name = 'signature_form_agency.html'
     model_field_name = None
     form_fields = None
 
@@ -1167,7 +1177,7 @@ class SignatureUpdateByAgentView(
 
 
 class HtmlToRenderPdfAgencyView(
-    AgencyAccessToEmployerDocAppMixin,
+    # AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     PdfHtmlViewMixin,
     DetailView
@@ -1188,6 +1198,33 @@ class HtmlToRenderPdfAgencyView(
             'url_name': request.resolver_match.url_name
         })
         return self.generate_pdf_response(request, context)
+
+
+class ArchivedPdfAgencyView(
+    # AgencyAccessToEmployerDocAppMixin,
+    GetAuthorityMixin,
+    DetailView
+):
+    model = models.ArchivedDoc
+    pk_url_kwarg = 'level_1_pk'
+    as_attachment = False
+    filename = 'document.pdf'
+    field_name = None
+
+    def get_object(self):
+        return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            return FileResponse(
+                getattr(self.object, self.field_name).open(),
+                as_attachment=self.as_attachment,
+                filename=self.filename,
+                content_type='application/pdf'
+            )
+        except Exception:
+            pass
 
 
 class UploadedPdfAgencyView(
@@ -1291,7 +1328,7 @@ class EmployerHouseholdDetailsFormView(
 ):
     form_class = EmployerHouseholdFormSet
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_0_pk'
     authority = ''
     agency_id = ''
@@ -1386,7 +1423,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
                             GetAuthorityMixin, SuccessMessageMixin, FormView):
     form_class = MaidInventoryFormSet
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_1_pk'
     authority = ''
     agency_id = ''
@@ -1469,38 +1506,43 @@ class SignatureFormView(FormView):
     form_class = None
     slug_url_kwarg = 'slug'
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_token.html'
+    template_name = 'signature_form_token.html'
 
     def get_object(self, request):
         url_name = resolve(request.path).url_name
-        url_name_resolver_map = {
-            'token_employer_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_employer_with_spouse_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_employer_spouse_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_sponsor_1_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_sponsor_2_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_joint_applicant_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
-            )
-        }
+        url_name_resolver_map = [
+            'token_employer_signature_form_view',
+            'token_employer_with_spouse_signature_form_view',
+            'token_employer_spouse_signature_form_view',
+            'token_sponsor_1_signature_form_view',
+            'token_sponsor_2_signature_form_view',
+            'token_joint_applicant_signature_form_view'
+        ]
         if url_name in url_name_resolver_map:
-            return url_name_resolver_map[url_name]
+            if url_name == 'token_employer_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_employer_with_spouse_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_employer_spouse_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_sponsor_1_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_sponsor_2_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_joint_applicant_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
+                )
         else:
             return HttpResponseRedirect(reverse('error_404'))
 
@@ -1610,7 +1652,7 @@ class HandoverFormView(FormView):
     form_class = forms.HandoverSignatureForm
     pk_url_kwarg = 'level_1_pk'
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_handover.html'
+    template_name = 'signature_form_handover.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1627,8 +1669,16 @@ class HandoverFormView(FormView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.employer_doc.details_missing_case_pre_signing_2():
-            # TODO: Stop the user from accessing the handover checklist
-            print('uh oh')
+            # TODO: Custom Message on why they are failing the details missing
+            print(self.object.employer_doc.details_missing_case_pre_signing_2())
+            return redirect(
+                reverse(
+                    'case_detail_route',
+                    kwargs={
+                        'level_1_pk': self.object.employer_doc.pk
+                    }
+                )
+            )
 
         return super().get(request, *args, **kwargs)
 
@@ -1758,7 +1808,7 @@ class TokenChallengeView(
     model = models.CaseSignature
     form_class = forms.TokenChallengeForm
     slug_url_kwarg = 'slug'
-    template_name = 'employer_documentation/signature_challenge_form.html'
+    template_name = 'signature_challenge_form.html'
     stakeholder = ''
 
     def get_object(self):

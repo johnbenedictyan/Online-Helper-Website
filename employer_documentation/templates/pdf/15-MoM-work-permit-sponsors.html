@@ -1,4 +1,4 @@
-{% extends 'employer_documentation/pdf/00-base.html' %}
+{% extends 'pdf/00-base.html' %}
 {% load static %}
 {% load humanize %}
 
@@ -36,7 +36,7 @@
 {% endblock css %}
 
 {% block pdf_content %}
-{% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
+{% include 'pdf/00-MoM-logos-header-snippet.html' %}
 
 <section>
     <span class="part-b">PART B</span>
@@ -73,7 +73,7 @@
 </section>
 
 <div class="page-break">
-    {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
+    {% include 'pdf/00-MoM-logos-header-snippet.html' %}
 </div>
 
 <section style="margin: 1rem 0;">
@@ -122,7 +122,7 @@
 
 {% if object.rn_sponsor_ed.sponsor_1_marital_status == 'MARRIED' or object.rn_sponsor_ed.number_of_sponsors == 2 %}
 <div class="page-break">
-    {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
+    {% include 'pdf/00-MoM-logos-header-snippet.html' %}
 </div>
 
 <section style="margin: 1rem 0;">
@@ -197,7 +197,7 @@
 
 {% if object.rn_sponsor_ed.number_of_sponsors == 2 %}
 <div class="page-break">
-    {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
+    {% include 'pdf/00-MoM-logos-header-snippet.html' %}
 </div>
 
 <section style="margin: 1rem 0;">
@@ -260,7 +260,7 @@
 </section>
 
 <div class="page-break">
-    {% include 'employer_documentation/pdf/00-MoM-logos-header-snippet.html' %}
+    {% include 'pdf/00-MoM-logos-header-snippet.html' %}
 </div>
 
 <section style="margin: 1rem 0;">

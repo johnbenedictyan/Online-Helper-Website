@@ -1,9 +1,9 @@
-{% extends 'employer_documentation/pdf/00-base.html' %}
+{% extends 'pdf/00-base.html' %}
 {% load humanize %}
 
 {% block title %}Rest Day Agreement{% endblock %}
 {% block pdf_content %}
-{% include 'employer_documentation/pdf/00-header.html' %}
+{% include 'pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">REST DAY AGREEMENT BETWEEN EMPLOYER AND Maid</h2>
 <br>
@@ -59,7 +59,7 @@
         <td colspan="3">It was agreed between the contracting parties that the abovementioned Maid is entitled to 1 rest day per week, on {{ object.fdw_off_day_of_week_display }}, with compensation of S${{ object.per_off_day_compensation|intcomma }} for each rest day forgone.</td>
     </tr>
     
-    {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
+    {% include 'pdf/00-signatures-employer-fdw.html' %}
 
     <tr>
         <td><br></td>
@@ -81,7 +81,7 @@
     </tr>
 
     {% with object=None %}
-        {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
+        {% include 'pdf/00-signatures-employer-fdw.html' %}
     {% endwith %}
 
 </table>
