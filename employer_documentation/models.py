@@ -1602,14 +1602,16 @@ class EmployerDoc(models.Model):
             if not self.rn_docupload_ed.medical_report_pdf:
                 error_msg_list.append('rn_docupload_ed.medical_report_pdf')
 
-        # if hasattr(self, 'rn_casestatus_ed'):
-        #     if not self.rn_casestatus_ed.fdw_work_commencement_date:
-        #         error_msg_list.append('rn_casestatus_ed.fdw_work_commencement_date')
-        # else:
-        #     error_msg_list.append('rn_casestatus_ed')
+        if hasattr(self, 'rn_casestatus_ed'):
+            if not self.rn_casestatus_ed.fdw_work_commencement_date:
+                error_msg_list.append(
+                    'rn_casestatus_ed.fdw_work_commencement_date'
+                )
+        else:
+            error_msg_list.append('rn_casestatus_ed')
 
-        # if not self.rn_maid_inventory.objects.all().count():
-        #     error_msg_list.append('rn_maid_inventory')
+        if not self.rn_maid_inventory.objects.all().count():
+            error_msg_list.append('rn_maid_inventory')
 
         if not self.fdw.get_passport_number():
             error_msg_list.append('fdw.passport_number')
