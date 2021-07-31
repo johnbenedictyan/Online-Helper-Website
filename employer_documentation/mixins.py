@@ -26,10 +26,7 @@ class PdfHtmlViewMixin:
     use_repayment_table = False
 
     def get_context_data(self, **kwargs):
-        version_explainer_text = '''
-            This document version supersedes all previous versions with the
-            same Case #, if any.
-        '''
+        version_explainer_text = '''This document version supersedes all previous versions with the same Case #, if any.'''
         context = super().get_context_data()
 
         def get_preferred_language():
@@ -43,18 +40,12 @@ class PdfHtmlViewMixin:
 
         if isinstance(self.object, EmployerDoc):
             # Document version number formatting
-            context['object'].version = f'''
-                [{self.object.get_version()}] - {version_explainer_text}
-            '''
+            context['object'].version = f'''[{self.object.get_version()}] - {version_explainer_text}'''
 
             preferred_language = get_preferred_language()
-            SAFETY_AGREEMENT_SNIPPETS_URI = '''
-                employer_documentation/pdf/safety_agreement_snippets
-            '''
+            SAFETY_AGREEMENT_SNIPPETS_URI = '''employer_documentation/pdf/safety_agreement_snippets'''
             for i in range(1, 4):
-                context['lang_snippet_0'+str(i)] = f'''
-                    {SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html
-                '''
+                context['lang_snippet_0'+str(i)] = f'''{SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html'''
 
         return context
 
