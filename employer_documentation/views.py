@@ -1688,8 +1688,7 @@ class HandoverFormView(FormView):
         except Exception as e:
             print(e)
         else:
-            pass
-            # self.object.employer_doc.delete()
+            self.object.employer_doc.delete()
 
         return super().form_valid(form)
 
