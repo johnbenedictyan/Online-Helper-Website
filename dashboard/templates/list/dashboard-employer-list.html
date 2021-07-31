@@ -17,11 +17,13 @@
                             {{filter.form.employer_name|as_crispy_field}}
                         </div>
                         <div class="col-5 offset-1">
-                            {{filter.form.agency_employee|as_crispy_field}}
-                        </div>
-                        <div class="col-5 offset-6">
                             {{filter.form.employer_birthday_month|as_crispy_field}}
                         </div>
+                        {% comment %}
+                        <div class="col-5 offset-1">
+                            {{filter.form.agency_employee|as_crispy_field}}
+                        </div>
+                        {% endcomment %}
                     </div>
                 </form>
             </div>
@@ -82,6 +84,12 @@
                     <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i class="far fa-file-image"></i></a>
                     <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i class="far fa-trash-alt"></i></a>
                 </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row bg-light text-dark mx-half py-3 border border-top-0">
+            <div class="col text-center">
+                <p class="mb-0">No Employers</p>
             </div>
         </div>
         {% endfor %}

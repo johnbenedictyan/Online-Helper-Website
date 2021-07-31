@@ -1,5 +1,4 @@
 # Global Imports
-import io
 import os
 import uuid
 import requests
@@ -11,6 +10,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
@@ -1623,7 +1623,7 @@ class EmployerDoc(models.Model):
 
     def archive(self):
         service_fee_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_service_fee_schedule',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1635,7 +1635,7 @@ class EmployerDoc(models.Model):
             name='Service-Fee-Schedule.pdf'
         )
         service_agreement_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_service_agreement',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1647,7 +1647,7 @@ class EmployerDoc(models.Model):
             name='Service-Agreement.pdf'
         )
         agency_employment_contract_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_employment_contract',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1659,7 +1659,7 @@ class EmployerDoc(models.Model):
             name='Agency-Employment-Contract.pdf'
         )
         agency_repayment_schedule_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_repayment_schedule',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1671,7 +1671,7 @@ class EmployerDoc(models.Model):
             name='Agency-Repayment-Schedule.pdf'
         )
         rest_day_agreement_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_rest_day_agreement',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1683,7 +1683,7 @@ class EmployerDoc(models.Model):
             name='Rest-Day-Agreement.pdf'
         )
         handover_checklist_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_handover_checklist',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1695,7 +1695,7 @@ class EmployerDoc(models.Model):
             name='Handover-Checklist.pdf'
         )
         transfer_consent_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_transfer_consent',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1707,7 +1707,7 @@ class EmployerDoc(models.Model):
             name='Transfer-Consent.pdf'
         )
         work_pass_authorisation_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_work_pass_authorisation',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1719,7 +1719,7 @@ class EmployerDoc(models.Model):
             name='Work-Pass-Authorisation.pdf'
         )
         income_tax_declaration_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_income_tax_declaration',
                 kwargs={
                     'level_1_pk': self.pk
@@ -1731,7 +1731,7 @@ class EmployerDoc(models.Model):
             name='Income-Tax-Declaration.pdf'
         )
         safety_agreement_pdf_bytes = requests.get(
-            'http://127.0.0.1:8080'+reverse(
+            f'http://{get_current_site(None).domain}'+reverse(
                 'pdf_agency_safety_agreement',
                 kwargs={
                     'level_1_pk': self.pk
