@@ -1167,12 +1167,36 @@ class SignatureUpdateByAgentView(
 
 
 class HtmlToRenderPdfAgencyView(
-    AgencyAccessToEmployerDocAppMixin,
+    # AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
     PdfHtmlViewMixin,
     DetailView
 ):
     model = models.EmployerDoc
+    pk_url_kwarg = 'level_1_pk'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+
+        if self.use_repayment_table:
+            context.update({
+                'repayment_table': self.calc_repayment_schedule()
+            })
+
+        context.update({
+            'url_name': request.resolver_match.url_name
+        })
+        return self.generate_pdf_response(request, context)
+
+
+class HtmlToRenderArchivedPdfAgencyView(
+    AgencyAccessToEmployerDocAppMixin,
+    GetAuthorityMixin,
+    PdfHtmlViewMixin,
+    DetailView
+):
+    model = models.ArchivedDoc
     pk_url_kwarg = 'level_1_pk'
 
     def get(self, request, *args, **kwargs):
@@ -1473,34 +1497,39 @@ class SignatureFormView(FormView):
 
     def get_object(self, request):
         url_name = resolve(request.path).url_name
-        url_name_resolver_map = {
-            'token_employer_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_employer_with_spouse_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_employer_spouse_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_sponsor_1_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_sponsor_2_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
-            ),
-            'token_joint_applicant_signature_form_view': get_obj_or_404(
-                models.CaseSignature,
-                sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
-            )
-        }
+        url_name_resolver_map = [
+            'token_employer_signature_form_view',
+            'token_employer_with_spouse_signature_form_view',
+            'token_employer_spouse_signature_form_view',
+            'token_sponsor_1_signature_form_view',
+            'token_sponsor_2_signature_form_view',
+            'token_joint_applicant_signature_form_view'
+        ]
         if url_name in url_name_resolver_map:
-            return url_name_resolver_map[url_name]
+            if url_name == 'token_employer_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_employer_with_spouse_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_employer_spouse_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_sponsor_1_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_sponsor_2_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
+                )
+            if url_name == 'token_joint_applicant_signature_form_view':
+                return models.CaseSignature.objects.get(
+                    sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
+                )
         else:
             return HttpResponseRedirect(reverse('error_404'))
 
@@ -1659,7 +1688,8 @@ class HandoverFormView(FormView):
         except Exception as e:
             print(e)
         else:
-            self.object.employer_doc.delete()
+            pass
+            # self.object.employer_doc.delete()
 
         return super().form_valid(form)
 

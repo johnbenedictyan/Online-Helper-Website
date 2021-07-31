@@ -1,6 +1,8 @@
 # Global Imports
+import io
 import os
 import uuid
+import requests
 import secrets
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -11,6 +13,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.translation import ugettext_lazy as _
@@ -1617,6 +1620,126 @@ class EmployerDoc(models.Model):
         return error_msg_list
 
     def archive(self):
+        service_fee_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_service_fee_schedule',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        service_fee_pdf = ContentFile(
+            service_fee_pdf_bytes,
+            name='Service-Fee-Schedule.pdf'
+        )
+        service_agreement_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_service_agreement',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        service_agreement_pdf = ContentFile(
+            service_agreement_pdf_bytes,
+            name='Service-Agreement.pdf'
+        )
+        agency_employment_contract_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_employment_contract',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        agency_employment_contract_pdf = ContentFile(
+            agency_employment_contract_pdf_bytes,
+            name='Agency-Employment-Contract.pdf'
+        )
+        agency_repayment_schedule_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_repayment_schedule',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        agency_repayment_schedule_pdf = ContentFile(
+            agency_repayment_schedule_pdf_bytes,
+            name='Agency-Repayment-Schedule.pdf'
+        )
+        rest_day_agreement_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_rest_day_agreement',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        rest_day_agreement_pdf = ContentFile(
+            rest_day_agreement_pdf_bytes,
+            name='Rest-Day-Agreement.pdf'
+        )
+        handover_checklist_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_handover_checklist',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        handover_checklist_pdf = ContentFile(
+            handover_checklist_pdf_bytes,
+            name='Handover-Checklist.pdf'
+        )
+        transfer_consent_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_transfer_consent',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        transfer_consent_pdf = ContentFile(
+            transfer_consent_pdf_bytes,
+            name='Transfer-Consent.pdf'
+        )
+        work_pass_authorisation_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_work_pass_authorisation',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        work_pass_authorisation_pdf = ContentFile(
+            work_pass_authorisation_pdf_bytes,
+            name='Work-Pass-Authorisation.pdf'
+        )
+        income_tax_declaration_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_income_tax_declaration',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        income_tax_declaration_pdf = ContentFile(
+            income_tax_declaration_pdf_bytes,
+            name='Income-Tax-Declaration.pdf'
+        )
+        safety_agreement_pdf_bytes = requests.get(
+            'http://127.0.0.1:8080'+reverse(
+                'pdf_agency_safety_agreement',
+                kwargs={
+                    'level_1_pk': self.pk
+                }
+            )
+        ).content
+        safety_agreement_pdf = ContentFile(
+            safety_agreement_pdf_bytes,
+            name='Safety-Agreement.pdf'
+        )
         try:
             ArchivedDoc.objects.get(
                 pk=self.id
@@ -1670,8 +1793,6 @@ class EmployerDoc(models.Model):
                 employer_marital_status=self.employer.employer_marital_status,
                 worked_in_sg=self.employer.rn_income_employer.worked_in_sg,
                 monthly_income=self.employer.rn_income_employer.monthly_income,
-                agency_staff_name=self.employer.agency_employee.name,
-                agency_staff_ea_personnel_number=self.employer.agency_employee.ea_personnel_number,
                 version=self.version,
                 case_ref_no=self.case_ref_no,
                 agreement_date=self.agreement_date,
@@ -1741,17 +1862,16 @@ class EmployerDoc(models.Model):
                 shn_end_date=self.rn_casestatus_ed.shn_end_date,
                 thumb_print_date=self.rn_casestatus_ed.thumb_print_date,
                 fdw_work_commencement_date=self.rn_casestatus_ed.fdw_work_commencement_date,
-                # START OF TODO
-                f01_service_fee_schedule=None,
-                f03_service_agreement=None,
-                f04_employment_contract=None,
-                f05_repayment_schedule=None,
-                f06_rest_day_agreement=None,
-                f08_handover_checklist=None,
-                f09_transfer_consent=None,
-                f10_work_pass_authorisation=None,
-                f14_safety_agreement=None,
-                # END OF TODO
+                f01_service_fee_schedule=service_fee_pdf,
+                f03_service_agreement=service_agreement_pdf,
+                f04_employment_contract=agency_employment_contract_pdf,
+                f05_repayment_schedule=agency_repayment_schedule_pdf,
+                f06_rest_day_agreement=rest_day_agreement_pdf,
+                f08_handover_checklist=handover_checklist_pdf,
+                f09_transfer_consent=transfer_consent_pdf,
+                f10_work_pass_authorisation=work_pass_authorisation_pdf,
+                f13_income_tax_declaration=income_tax_declaration_pdf,
+                f14_safety_agreement=safety_agreement_pdf,
                 job_order_pdf=self.rn_docupload_ed.job_order_pdf,
                 ipa_pdf=self.rn_docupload_ed.ipa_pdf,
                 medical_report_pdf=self.rn_docupload_ed.medical_report_pdf
@@ -2521,7 +2641,7 @@ class CaseSignature(models.Model):
     # Verification Tokens
     token_employer_1 = models.BinaryField(
         blank=True,
-        null=True,
+        null=True
     )
 
 
@@ -3706,16 +3826,6 @@ class ArchivedDoc(models.Model):
         verbose_name=_("FDW Off Day Day of Week"),
         choices=DayOfWeekChoices.choices,
         default=DayOfWeekChoices.SUN
-    )
-    agency_staff_name = models.CharField(
-        verbose_name=_("Agency Employee Name"),
-        max_length=100,
-        null=True
-    )
-    agency_staff_ea_personnel_number = models.CharField(
-        verbose_name=_("Agency Employee EA Personnel Number"),
-        max_length=100,
-        null=True
     )
 
     def get_version(self):

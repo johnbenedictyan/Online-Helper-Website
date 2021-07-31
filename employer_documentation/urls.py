@@ -330,6 +330,119 @@ urlpatterns = [
                         ]),
                     ),
                     path(
+                        'archived-pdf/',
+                        include([
+                            # HTML to PDF - First signing event
+                            path(
+                                'service-fees/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/01-service-fee-schedule.html',
+                                    content_disposition='inline; filename="service_fee_schedule.pdf"',
+                                ),
+                                name='archived_pdf_agency_service_fee_schedule'
+                            ),
+                            path(
+                                'service-agreement/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/03-service-agreement.html',
+                                    content_disposition='inline; filename="service_agreement.pdf"',
+                                ),
+                                name='archived_pdf_agency_service_agreement'
+                            ),
+                            path(
+                                'employment-contract/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/04-employment-contract.html',
+                                    content_disposition='inline; filename="employment-contract.pdf"',
+                                ),
+                                name='archived_pdf_agency_employment_contract'
+                            ),
+                            path(
+                                'repayment-schedule/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/05-repayment-schedule.html',
+                                    content_disposition='inline; filename="repayment-schedule.pdf"',
+                                    use_repayment_table=True
+                                ),
+                                name='archived_pdf_agency_repayment_schedule'
+                            ),
+                            path(
+                                'rest-day-agreement/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/06-rest-day-agreement.html',
+                                    content_disposition='inline; filename="rest-day-agreement.pdf"',
+                                ),
+                                name='archived_pdf_agency_rest_day_agreement'
+                            ),
+                            path(
+                                'transfer-consent/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/09-transfer-consent.html',
+                                    content_disposition='inline; filename="transfer-consent.pdf"',
+                                ),
+                                name='archived_pdf_agency_transfer_consent'
+                            ),
+                            path(
+                                'work-pass-authorisation/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
+                                    content_disposition='inline; filename="work-pass-authorisation.pdf"',
+                                ),
+                                name='archived_pdf_agency_work_pass_authorisation'
+                            ),
+                            path(
+                                'income-tax-declaration/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/13-income-tax-declaration.html',
+                                    content_disposition='inline; filename="income-tax-declaration.pdf"',
+                                ),
+                                name='archived_pdf_agency_income_tax_declaration'
+                            ),
+                            path(
+                                'safety-agreement/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/14-safety-agreement.html',
+                                    content_disposition='inline; filename="safety-agreement.pdf"',
+                                ),
+                                name='archived_pdf_agency_safety_agreement'
+                            ),
+                            # HTML to PDF - Second signing event
+                            path(
+                                'handover-checklist/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='employer_documentation/pdf/08-handover-checklist.html',
+                                    content_disposition='inline; filename="handover-checklist.pdf"'
+                                ),
+                                name='archived_pdf_agency_handover_checklist'
+                            ),
+                            # File to PDF
+                            path(
+                                'job-order/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    field_name='job_order_pdf',
+                                    filename='job_order.pdf'
+                                ),
+                                name='archived_pdf_agency_job_order_route'
+                            ),
+                            path(
+                                'ipa/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    field_name='ipa_pdf',
+                                    filename='ipa.pdf'
+                                ),
+                                name='archived_pdf_agency_ipa_route'
+                            ),
+                            path(
+                                'medical-report/',
+                                views.UploadedPdfAgencyView.as_view(
+                                    field_name='medical_report_pdf',
+                                    filename='medical_report.pdf'
+                                ),
+                                name='archived_pdf_agency_medical_report_route'
+                            ),
+                        ]),
+                    ),
+                    path(
                         'sign/',
                         include([
                             # Agency signing
