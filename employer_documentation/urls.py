@@ -223,7 +223,7 @@ urlpatterns = [
                             path(
                                 'service-fees/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/01-service-fee-schedule.html',
+                                    template_name='pdf/01-service-fee-schedule.html',
                                     content_disposition='inline; filename="service_fee_schedule.pdf"',
                                 ),
                                 name='pdf_agency_service_fee_schedule'
@@ -231,7 +231,7 @@ urlpatterns = [
                             path(
                                 'service-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/03-service-agreement.html',
+                                    template_name='pdf/03-service-agreement.html',
                                     content_disposition='inline; filename="service_agreement.pdf"',
                                 ),
                                 name='pdf_agency_service_agreement'
@@ -239,7 +239,7 @@ urlpatterns = [
                             path(
                                 'employment-contract/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/04-employment-contract.html',
+                                    template_name='pdf/04-employment-contract.html',
                                     content_disposition='inline; filename="employment-contract.pdf"',
                                 ),
                                 name='pdf_agency_employment_contract'
@@ -247,7 +247,7 @@ urlpatterns = [
                             path(
                                 'repayment-schedule/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/05-repayment-schedule.html',
+                                    template_name='pdf/05-repayment-schedule.html',
                                     content_disposition='inline; filename="repayment-schedule.pdf"',
                                     use_repayment_table=True
                                 ),
@@ -256,7 +256,7 @@ urlpatterns = [
                             path(
                                 'rest-day-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/06-rest-day-agreement.html',
+                                    template_name='pdf/06-rest-day-agreement.html',
                                     content_disposition='inline; filename="rest-day-agreement.pdf"',
                                 ),
                                 name='pdf_agency_rest_day_agreement'
@@ -264,7 +264,7 @@ urlpatterns = [
                             path(
                                 'transfer-consent/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/09-transfer-consent.html',
+                                    template_name='pdf/09-transfer-consent.html',
                                     content_disposition='inline; filename="transfer-consent.pdf"',
                                 ),
                                 name='pdf_agency_transfer_consent'
@@ -272,7 +272,7 @@ urlpatterns = [
                             path(
                                 'work-pass-authorisation/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
+                                    template_name='pdf/10-work-pass-authorisation.html',
                                     content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                 ),
                                 name='pdf_agency_work_pass_authorisation'
@@ -280,7 +280,7 @@ urlpatterns = [
                             path(
                                 'income-tax-declaration/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/13-income-tax-declaration.html',
+                                    template_name='pdf/13-income-tax-declaration.html',
                                     content_disposition='inline; filename="income-tax-declaration.pdf"',
                                 ),
                                 name='pdf_agency_income_tax_declaration'
@@ -288,7 +288,7 @@ urlpatterns = [
                             path(
                                 'safety-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/14-safety-agreement.html',
+                                    template_name='pdf/14-safety-agreement.html',
                                     content_disposition='inline; filename="safety-agreement.pdf"',
                                 ),
                                 name='pdf_agency_safety_agreement'
@@ -297,7 +297,7 @@ urlpatterns = [
                             path(
                                 'handover-checklist/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/08-handover-checklist.html',
+                                    template_name='pdf/08-handover-checklist.html',
                                     content_disposition='inline; filename="handover-checklist.pdf"'
                                 ),
                                 name='pdf_agency_handover_checklist'
@@ -336,7 +336,7 @@ urlpatterns = [
                             path(
                                 'service-fees/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/01-service-fee-schedule.html',
+                                    template_name='pdf/01-service-fee-schedule.html',
                                     content_disposition='inline; filename="service_fee_schedule.pdf"',
                                 ),
                                 name='archived_pdf_agency_service_fee_schedule'
@@ -344,7 +344,7 @@ urlpatterns = [
                             path(
                                 'service-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/03-service-agreement.html',
+                                    template_name='pdf/03-service-agreement.html',
                                     content_disposition='inline; filename="service_agreement.pdf"',
                                 ),
                                 name='archived_pdf_agency_service_agreement'
@@ -352,7 +352,7 @@ urlpatterns = [
                             path(
                                 'employment-contract/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/04-employment-contract.html',
+                                    template_name='pdf/04-employment-contract.html',
                                     content_disposition='inline; filename="employment-contract.pdf"',
                                 ),
                                 name='archived_pdf_agency_employment_contract'
@@ -360,7 +360,7 @@ urlpatterns = [
                             path(
                                 'repayment-schedule/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/05-repayment-schedule.html',
+                                    template_name='pdf/05-repayment-schedule.html',
                                     content_disposition='inline; filename="repayment-schedule.pdf"',
                                     use_repayment_table=True
                                 ),
@@ -369,7 +369,7 @@ urlpatterns = [
                             path(
                                 'rest-day-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/06-rest-day-agreement.html',
+                                    template_name='pdf/06-rest-day-agreement.html',
                                     content_disposition='inline; filename="rest-day-agreement.pdf"',
                                 ),
                                 name='archived_pdf_agency_rest_day_agreement'
@@ -377,7 +377,7 @@ urlpatterns = [
                             path(
                                 'transfer-consent/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/09-transfer-consent.html',
+                                    template_name='pdf/09-transfer-consent.html',
                                     content_disposition='inline; filename="transfer-consent.pdf"',
                                 ),
                                 name='archived_pdf_agency_transfer_consent'
@@ -385,7 +385,7 @@ urlpatterns = [
                             path(
                                 'work-pass-authorisation/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
+                                    template_name='pdf/10-work-pass-authorisation.html',
                                     content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                 ),
                                 name='archived_pdf_agency_work_pass_authorisation'
@@ -393,7 +393,7 @@ urlpatterns = [
                             path(
                                 'income-tax-declaration/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/13-income-tax-declaration.html',
+                                    template_name='pdf/13-income-tax-declaration.html',
                                     content_disposition='inline; filename="income-tax-declaration.pdf"',
                                 ),
                                 name='archived_pdf_agency_income_tax_declaration'
@@ -401,7 +401,7 @@ urlpatterns = [
                             path(
                                 'safety-agreement/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/14-safety-agreement.html',
+                                    template_name='pdf/14-safety-agreement.html',
                                     content_disposition='inline; filename="safety-agreement.pdf"',
                                 ),
                                 name='archived_pdf_agency_safety_agreement'
@@ -410,7 +410,7 @@ urlpatterns = [
                             path(
                                 'handover-checklist/',
                                 views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='employer_documentation/pdf/08-handover-checklist.html',
+                                    template_name='pdf/08-handover-checklist.html',
                                     content_disposition='inline; filename="handover-checklist.pdf"'
                                 ),
                                 name='archived_pdf_agency_handover_checklist'
@@ -517,7 +517,7 @@ urlpatterns = [
                             path(
                                 'service-fees/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/01-service-fee-schedule.html',
+                                    template_name='pdf/01-service-fee-schedule.html',
                                     content_disposition='inline; filename="service_fee_schedule.pdf"',
                                 ),
                                 name='pdf_token_employer_service_fee_schedule'
@@ -525,7 +525,7 @@ urlpatterns = [
                             path(
                                 'service-agreement/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/03-service-agreement.html',
+                                    template_name='pdf/03-service-agreement.html',
                                     content_disposition='inline; filename="service_agreement.pdf"',
                                 ),
                                 name='pdf_token_employer_service_agreement'
@@ -533,7 +533,7 @@ urlpatterns = [
                             path(
                                 'employment-contract/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/04-employment-contract.html',
+                                    template_name='pdf/04-employment-contract.html',
                                     content_disposition='inline; filename="employment-contract.pdf"',
                                 ),
                                 name='pdf_token_employer_employment_contract'
@@ -541,7 +541,7 @@ urlpatterns = [
                             path(
                                 'repayment-schedule/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/05-repayment-schedule.html',
+                                    template_name='pdf/05-repayment-schedule.html',
                                     content_disposition='inline; filename="repayment-schedule.pdf"',
                                     use_repayment_table=True,
                                 ),
@@ -550,7 +550,7 @@ urlpatterns = [
                             path(
                                 'rest-day-agreement/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/06-rest-day-agreement.html',
+                                    template_name='pdf/06-rest-day-agreement.html',
                                     content_disposition='inline; filename="rest-day-agreement.pdf"',
                                 ),
                                 name='pdf_token_employer_rest_day_agreement'
@@ -558,7 +558,7 @@ urlpatterns = [
                             path(
                                 'handover-checklist/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/08-handover-checklist.html',
+                                    template_name='pdf/08-handover-checklist.html',
                                     content_disposition='inline; filename="handover-checklist.pdf"',
                                 ),
                                 name='pdf_token_employer_handover_checklist'
@@ -566,7 +566,7 @@ urlpatterns = [
                             path(
                                 'transfer-consent/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/09-transfer-consent.html',
+                                    template_name='pdf/09-transfer-consent.html',
                                     content_disposition='inline; filename="transfer-consent.pdf"',
                                 ),
                                 name='pdf_token_employer_transfer_consent'
@@ -574,7 +574,7 @@ urlpatterns = [
                             path(
                                 'work-pass-authorisation/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/10-work-pass-authorisation.html',
+                                    template_name='pdf/10-work-pass-authorisation.html',
                                     content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                 ),
                                 name='pdf_token_employer_work_pass_authorisation'
@@ -582,7 +582,7 @@ urlpatterns = [
                             path(
                                 'income-tax-declaration/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/13-income-tax-declaration.html',
+                                    template_name='pdf/13-income-tax-declaration.html',
                                     content_disposition='inline; filename="income-tax-declaration.pdf"',
                                 ),
                                 name='pdf_token_employer_income_tax_declaration'
@@ -590,7 +590,7 @@ urlpatterns = [
                             path(
                                 'safety-agreement/',
                                 views.HtmlToRenderPdfTokenView.as_view(
-                                    template_name='employer_documentation/pdf/14-safety-agreement.html',
+                                    template_name='pdf/14-safety-agreement.html',
                                     content_disposition='inline; filename="safety-agreement.pdf"',
                                 ),
                                 name='pdf_token_employer_safety_agreement'

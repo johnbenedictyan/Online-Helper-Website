@@ -46,7 +46,7 @@ class PdfHtmlViewMixin:
 
             preferred_language = get_preferred_language()
             # DO NOT FORMAT TO PEP8, IT WILL BREAK
-            SAFETY_AGREEMENT_SNIPPETS_URI = '''employer_documentation/pdf/safety_agreement_snippets'''
+            SAFETY_AGREEMENT_SNIPPETS_URI = '''pdf/safety_agreement_snippets'''
             for i in range(1, 4):
                 # DO NOT FORMAT TO PEP8, IT WILL BREAK
                 context['lang_snippet_0'+str(i)] = f'''{SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html'''

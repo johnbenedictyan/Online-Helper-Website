@@ -1,11 +1,11 @@
-{% extends 'employer_documentation/pdf/00-base.html' %}
+{% extends 'pdf/00-base.html' %}
 {% load humanize %}
 
 {% block title %}{% if object.fdw_is_replacement %}Form B – Service & Fees Schedule For Replacement Maid{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
 
 {% block pdf_content %}
 
-{% include 'employer_documentation/pdf/00-header.html' %}
+{% include 'pdf/00-header.html' %}
 <br>
 <h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE & FEES SCHEDULE FOR REPLACEMENT Maid{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
 <br>

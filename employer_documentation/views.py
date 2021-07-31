@@ -75,7 +75,7 @@ class SignedDocumentsDetailView(
 ):
     model = models.CaseSignature
     slug_url_kwarg = 'slug'
-    template_name = 'employer_documentation/signed_documents.html'
+    template_name = 'signed_documents.html'
     stakeholder = ''
 
     def get_object(self):
@@ -134,7 +134,7 @@ class EmployerCreateView(
 ):
     model = models.Employer
     form_class = forms.EmployerForm
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -186,7 +186,7 @@ class EmployerSponsorCreateView(
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
@@ -252,7 +252,7 @@ class EmployerJointApplicantCreateView(
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
@@ -318,7 +318,7 @@ class EmployerIncomeDetailsCreateView(
     model = models.EmployerIncome
     form_class = forms.EmployerIncomeDetailsForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.Employer.objects.get(
@@ -382,7 +382,7 @@ class EmployerDocCreateView(
 ):
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -409,7 +409,7 @@ class DocServiceFeeScheduleCreateView(
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -467,7 +467,7 @@ class DocServAgmtEmpCtrCreateView(
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -530,7 +530,7 @@ class DocSafetyAgreementCreateView(
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -589,7 +589,7 @@ class DocUploadCreateView(
     model = models.DocUpload
     form_class = forms.DocUploadForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self, *args, **kwargs):
         return models.EmployerDoc.objects.get(
@@ -644,7 +644,7 @@ class EmployerUpdateView(
 ):
     model = models.Employer
     form_class = forms.EmployerForm
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_0_pk'
 
     def get_context_data(self, **kwargs):
@@ -698,7 +698,7 @@ class EmployerSponsorUpdateView(
     model = models.EmployerSponsor
     form_class = forms.EmployerSponsorForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -755,7 +755,7 @@ class EmployerDocJointApplicantUpdateView(
     model = models.EmployerJointApplicant
     form_class = forms.EmployerJointApplicantForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -814,7 +814,7 @@ class EmployerIncomeDetailsUpdateView(
     model = models.EmployerIncome
     form_class = forms.EmployerIncomeDetailsForm
     pk_url_kwarg = 'level_0_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -865,7 +865,7 @@ class EmployerDocUpdateView(
     model = models.EmployerDoc
     form_class = forms.EmployerDocForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -900,7 +900,7 @@ class DocServiceFeeScheduleUpdateView(
     model = models.DocServiceFeeSchedule
     form_class = forms.DocServiceFeeScheduleForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -940,7 +940,7 @@ class DocServAgmtEmpCtrUpdateView(
     model = models.DocServAgmtEmpCtr
     form_class = forms.DocServAgmtEmpCtrForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -985,7 +985,7 @@ class DocSafetyAgreementUpdateView(
     model = models.DocSafetyAgreement
     form_class = forms.DocSafetyAgreementForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1025,7 +1025,7 @@ class DocUploadUpdateView(
     model = models.DocUpload
     form_class = forms.DocUploadForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1057,7 +1057,7 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     model = models.CaseStatus
     form_class = forms.CaseStatusForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1116,7 +1116,7 @@ class EmployerDocDeleteView(
 ):
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/employer_confirm_delete.html'
+    template_name = 'employer_confirm_delete.html'
     success_url = reverse_lazy('dashboard_case_list')
 
 
@@ -1131,7 +1131,7 @@ class SignatureUpdateByAgentView(
     model = models.CaseSignature
     form_class = forms.SignatureForm
     pk_url_kwarg = 'level_1_pk'
-    template_name = 'employer_documentation/signature_form_agency.html'
+    template_name = 'signature_form_agency.html'
     model_field_name = None
     form_fields = None
 
@@ -1315,7 +1315,7 @@ class EmployerHouseholdDetailsFormView(
 ):
     form_class = EmployerHouseholdFormSet
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_0_pk'
     authority = ''
     agency_id = ''
@@ -1410,7 +1410,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
                             GetAuthorityMixin, SuccessMessageMixin, FormView):
     form_class = MaidInventoryFormSet
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/crispy_form.html'
+    template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_1_pk'
     authority = ''
     agency_id = ''
@@ -1493,7 +1493,7 @@ class SignatureFormView(FormView):
     form_class = None
     slug_url_kwarg = 'slug'
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_token.html'
+    template_name = 'signature_form_token.html'
 
     def get_object(self, request):
         url_name = resolve(request.path).url_name
@@ -1639,7 +1639,7 @@ class HandoverFormView(FormView):
     form_class = forms.HandoverSignatureForm
     pk_url_kwarg = 'level_1_pk'
     http_method_names = ['get', 'post']
-    template_name = 'employer_documentation/signature_form_handover.html'
+    template_name = 'signature_form_handover.html'
 
     def get_object(self):
         return self.model.objects.get(
@@ -1796,7 +1796,7 @@ class TokenChallengeView(
     model = models.CaseSignature
     form_class = forms.TokenChallengeForm
     slug_url_kwarg = 'slug'
-    template_name = 'employer_documentation/signature_challenge_form.html'
+    template_name = 'signature_challenge_form.html'
     stakeholder = ''
 
     def get_object(self):
