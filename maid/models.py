@@ -195,13 +195,19 @@ class Maid(models.Model):
     expected_salary = models.PositiveSmallIntegerField(
         verbose_name=_('Expected Salary'),
         blank=False,
-        default=0
+        default=0,
+        validators=[
+            MaxValueValidator(9999)
+        ]
     )
 
     expected_days_off = models.PositiveSmallIntegerField(
         verbose_name=_('Expected No of Off Days'),
         blank=False,
-        default=0
+        default=0,
+        validators=[
+            MaxValueValidator(4)
+        ]
     )
 
     date_of_birth = models.DateField(
@@ -323,8 +329,6 @@ class Maid(models.Model):
     def get_main_responsibility(self):
         main_responsibility = [
             i for i in self.responsibilities.all()
-            if i.name != MaidResponsibilityChoices.MAID_RESP_GARDENING
-            and i.name != MaidResponsibilityChoices.MAID_RESP_CARE_FOR_PETS
         ]
         if main_responsibility != []:
             return main_responsibility[0]
