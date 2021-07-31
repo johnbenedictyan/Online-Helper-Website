@@ -9,7 +9,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView, FormView
 )
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import get_object_or_404 as get_obj_or_404, redirect
+from django.shortcuts import redirect
 
 from agency.mixins import (
     AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
@@ -67,6 +67,16 @@ class EmployerDocDetailView(
             )
         })
         return context
+
+
+class ArchivedEmployerDocDetailView(
+    # AgencyAccessToEmployerDocAppMixin,
+    GetAuthorityMixin,
+    DetailView
+):
+    model = models.ArchivedDoc
+    pk_url_kwarg = 'level_1_pk'
+    template_name = 'detail/dashboard-archived-case-detail.html'
 
 
 class SignedDocumentsDetailView(
@@ -1190,28 +1200,31 @@ class HtmlToRenderPdfAgencyView(
         return self.generate_pdf_response(request, context)
 
 
-class HtmlToRenderArchivedPdfAgencyView(
-    AgencyAccessToEmployerDocAppMixin,
+class ArchivedPdfAgencyView(
+    # AgencyAccessToEmployerDocAppMixin,
     GetAuthorityMixin,
-    PdfHtmlViewMixin,
     DetailView
 ):
     model = models.ArchivedDoc
     pk_url_kwarg = 'level_1_pk'
+    as_attachment = False
+    filename = 'document.pdf'
+    field_name = None
+
+    def get_object(self):
+        return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        context = self.get_context_data()
-
-        if self.use_repayment_table:
-            context.update({
-                'repayment_table': self.calc_repayment_schedule()
-            })
-
-        context.update({
-            'url_name': request.resolver_match.url_name
-        })
-        return self.generate_pdf_response(request, context)
+        try:
+            return FileResponse(
+                getattr(self.object, self.field_name).open(),
+                as_attachment=self.as_attachment,
+                filename=self.filename,
+                content_type='application/pdf'
+            )
+        except Exception:
+            pass
 
 
 class UploadedPdfAgencyView(

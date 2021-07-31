@@ -1998,6 +1998,10 @@ class EmployerDoc(models.Model):
         self.version += 1
         self.save()
 
+    @property
+    def is_archived_doc(self):
+        return False
+
 
 class DocServiceFeeSchedule(models.Model):
     employer_doc = models.OneToOneField(
