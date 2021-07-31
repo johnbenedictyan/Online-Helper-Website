@@ -87,7 +87,7 @@
                 <p class="mb-0">{{sale.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">Employer: {{sale.employer_name}}<br/>FDW: {{sale.maid_name}}<br/>Personnel: {{sale.agency_employee_name}}</p>
+                <p class="mb-0">Employer: {{sale.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.agency.agency_employee_name}} {{sale.agency.agency_employee_ea_personnel_number}}</p>
             </div>
             <div class="col col-1-5">
                 <p class="mb-0">{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
