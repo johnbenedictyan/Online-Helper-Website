@@ -306,6 +306,7 @@ class MaidForm(forms.ModelForm):
                     code='invalid'
                 )
             )
+        return cleaned_field
 
     def clean_expected_days_off(self):
         cleaned_field = self.cleaned_data.get('expected_days_off')
@@ -317,6 +318,7 @@ class MaidForm(forms.ModelForm):
                     code='invalid'
                 )
             )
+        return cleaned_field
 
     def clean_height(self):
         cleaned_field = self.cleaned_data.get('height')
@@ -328,6 +330,7 @@ class MaidForm(forms.ModelForm):
                     code='invalid'
                 )
             )
+        return cleaned_field
 
     def clean_weight(self):
         cleaned_field = self.cleaned_data.get('weight')
@@ -339,6 +342,7 @@ class MaidForm(forms.ModelForm):
                     code='invalid'
                 )
             )
+        return cleaned_field
 
     def clean_number_of_children(self):
         cleaned_field = self.cleaned_data.get('number_of_children')
@@ -350,6 +354,7 @@ class MaidForm(forms.ModelForm):
                     code='invalid'
                 )
             )
+        return cleaned_field
 
     def clean_number_of_siblings(self):
         cleaned_field = self.cleaned_data.get('number_of_siblings')
@@ -361,6 +366,7 @@ class MaidForm(forms.ModelForm):
                     code='invalid'
                 )
             )
+        return cleaned_field
 
     def save(self, *args, **kwargs):
         self.instance.agency = Agency.objects.get(
@@ -377,7 +383,6 @@ class MaidForm(forms.ModelForm):
                 )
                 for employer_doc in employer_doc_qs:
                     employer_doc.increment_version_number()
-            # TODO: Implement version incrementing
         return super().save(*args, **kwargs)
 
 

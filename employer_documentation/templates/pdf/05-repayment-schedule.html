@@ -1,9 +1,9 @@
-{% extends 'employer_documentation/pdf/00-base.html' %}
+{% extends 'pdf/00-base.html' %}
 {% load humanize %}
 
 {% block title %}Repayment Schedule{% endblock %}
 {% block pdf_content %}
-{% include 'employer_documentation/pdf/00-header.html' %}
+{% include 'pdf/00-header.html' %}
 <h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
 <div class="border--bottom"></div>
 <table>
@@ -69,7 +69,7 @@
 <p>I hereby acknowledge that I understand and agree to the above schedule.</p>
 
 <table>
-    {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
+    {% include 'pdf/00-signatures-employer-fdw.html' %}
 </table>
 
 {% endblock pdf_content %}

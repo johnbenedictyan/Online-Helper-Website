@@ -44,7 +44,7 @@ class GeneralEnquiryForm(forms.ModelForm):
 
     class Meta:
         model = GeneralEnquiry
-        exclude = ['potential_employer', 'last_modified']
+        exclude = ['potential_employer', 'last_modified', 'date_published']
         widgets = {
             'name': forms.TextInput(
                 attrs={

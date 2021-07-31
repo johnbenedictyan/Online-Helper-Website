@@ -1,9 +1,9 @@
-{% extends 'employer_documentation/pdf/00-base.html' %}
+{% extends 'pdf/00-base.html' %}
 {% load humanize %}
 
 {% block title %}Employment Contract{% endblock %}
 {% block pdf_content %}
-{% include 'employer_documentation/pdf/00-header.html' %}
+{% include 'pdf/00-header.html' %}
 <br>
 <div class="text-align-center">
     <h2>STANDARD EMPLOYMENT CONTRACT</h2>
@@ -323,7 +323,7 @@
             <td></td>
         </tr>
         
-        {% include 'employer_documentation/pdf/00-signatures-employer-fdw.html' %}
+        {% include 'pdf/00-signatures-employer-fdw.html' %}
         
         <tr>
             <td></td>

@@ -8,9 +8,6 @@
                 <div class="col my-auto">
                     <h5 class="fs-16 mb-0">FDW Information</h5>
                 </div>
-                <div class="col-2-5">
-                    <a href="{% url 'dashboard_maid_information_update' object.fdw.pk %}" class="btn btn-primary btn-dashboard-primary w-100">Edit FDW Info</a>
-                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -39,9 +36,6 @@
             <div class="row bg-dashboard-pagebar-color mb-2">
                 <div class="col my-auto">
                     <h5 class="fs-16 mb-0">Employer Information</h5>
-                </div>
-                <div class="col-2-5">
-                    <a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}" class="btn btn-primary btn-dashboard-primary w-100">Edit Employer Info</a>
                 </div>
             </div>
             <div class="row">
@@ -77,9 +71,6 @@
             <div class="row bg-dashboard-pagebar-color mb-2">
                 <div class="col my-auto">
                     <h5 class="fs-16 mb-0">Case Information</h5>
-                </div>
-                <div class="col-2-5">
-                    <a href="{% url 'case_update_route' level_1_pk=object.pk %}" class="btn btn-primary btn-dashboard-primary w-100">Edit Case Info</a>
                 </div>
             </div>
             <div class="row">
@@ -507,19 +498,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_service_fee_schedule' level_1_pk=object.pk %}"><p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form A{% else %}Form B{% endif %})</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_handover_checklist' level_1_pk=object.pk %}"><p class="mb-1">Handover Checklist</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_service_agreement' level_1_pk=object.pk %}"><p class="mb-1">Service Agreement</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_transfer_consent' level_1_pk=object.pk %}"><p class="mb-1">Transfer Consent</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_employment_contract' level_1_pk=object.pk %}"><p class="mb-1">Employment Contract</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}"><p class="mb-1">Work Pass Authorisation</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_repayment_schedule' level_1_pk=object.pk %}"><p class="mb-1">Loan Repayment Schedule</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_job_order_route' level_1_pk=object.pk %}"><p class="mb-1">Job Order</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_rest_day_agreement' level_1_pk=object.pk %}"><p class="mb-1">Rest Day Agreement</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_ipa_route' level_1_pk=object.pk %}"><p class="mb-1">IPA</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_safety_agreement' level_1_pk=object.pk %}"><p class="mb-1">Safety Agreement</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_income_tax_declaration' level_1_pk=object.pk %}"><p class="mb-1">Income Tax Declaration</p></a></div>
-                <div class="col-md-6 my-2"><a href="{% url 'pdf_agency_medical_report_route' level_1_pk=object.pk %}"><p class="mb-1">Medical Report</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_service_fee_schedule' level_1_pk=object.pk %}"><p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form A{% else %}Form B{% endif %})</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_handover_checklist' level_1_pk=object.pk %}"><p class="mb-1">Handover Checklist</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_service_agreement' level_1_pk=object.pk %}"><p class="mb-1">Service Agreement</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_transfer_consent' level_1_pk=object.pk %}"><p class="mb-1">Transfer Consent</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_employment_contract' level_1_pk=object.pk %}"><p class="mb-1">Employment Contract</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}"><p class="mb-1">Work Pass Authorisation</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_repayment_schedule' level_1_pk=object.pk %}"><p class="mb-1">Loan Repayment Schedule</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_job_order_route' level_1_pk=object.pk %}"><p class="mb-1">Job Order</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_rest_day_agreement' level_1_pk=object.pk %}"><p class="mb-1">Rest Day Agreement</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_ipa_route' level_1_pk=object.pk %}"><p class="mb-1">IPA</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_safety_agreement' level_1_pk=object.pk %}"><p class="mb-1">Safety Agreement</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_income_tax_declaration' level_1_pk=object.pk %}"><p class="mb-1">Income Tax Declaration</p></a></div>
+                <div class="col-md-6 my-2"><a href="{% url 'archived_pdf_agency_medical_report_route' level_1_pk=object.pk %}"><p class="mb-1">Medical Report</p></a></div>
             </div>
         </div>
     </div>
@@ -530,153 +521,7 @@
                     <h5 class="fs-14 mb-0">Signature URL</h5>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 my-2">
-                    <label for="disabled_sigslug_employer_1">Employer's Signature Link (Except handover checklist)</label>
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="input-group">
-                                <input id="copy-value-employer-1" type="text" class="form-control" value="{% if employer_1_sigurl %}{{ employer_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-employer-1" {% if not employer_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="col-md-6 my-2"><a href="#"><p class="mb-1">Employer's Signature Link (Handover checklist)</p></a></div> -->
-                <div class="col-md-6 my-2">
-                    <label for="disabled_sigslug_employer_spouse">Employer Spouse Signature</label>
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="input-group">
-                                <input id="copy-value-employer-spouse" type="text" class="form-control" value="{% if employer_spouse_sigurl %}{{ employer_spouse_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-employer-spouse" {% if not employer_spouse_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 my-2">
-                    <label for="disabled_sigslug_joint_applicant">Joint Applicant Signature</label>
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="input-group">
-                                <input id="copy-value-joint-applicant" type="text" class="form-control" value="{% if joint_applicant_sigurl %}{{ joint_applicant_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-joint-applicant" {% if not joint_applicant_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_joint_applicant_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_joint_applicant_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 my-2">
-                    <label for="disabled_sigslug_sponsor_1">Sponsor 1 Signature</label>
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="input-group">
-                                <input id="copy-value-sponsor-1" type="text" class="form-control" value="{% if sponsor_1_sigurl %}{{ sponsor_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 my-2">
-                    <label for="disabled_sigslug_sponsor_1">Sponsor 2 Signature</label>
-                    <div class="row">
-                        <div class="col-11">
-                            <div class="input-group">
-                                <input id="copy-value-sponsor-2" type="text" class="form-control" value="{% if sponsor_2_sigurl %}{{ sponsor_2_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}"><p class="mb-1">EA personnel's signature Link (All doc)</p></a></div>
-                <!-- <div class="col-md-6 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div> -->
-            </div>
-            <div class="row">
-                <div class="col">
-                    <a href="{% url 'handover_form_view' object.pk %}" class="btn btn-dashboard-primary">Handover FDW</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 mb-5">
-            <div class="row mb-2">
-                <div class="col my-2">
-                    <h5 class="fs-14 mb-0">Notes</h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>Step 1 - EA personnel signs on all documents</p>
-                    <p>Step 2 - Employer/ spouse sign on the documents (except handover checklist) that contain the EA personnel's signature</p>
-                    <p>Step 3 - FDW signs on documents . Employer sign on handover checklist</p>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 {% endblock dashboard_section %}
-
-{% block js %}
-<script>
-function copyToClipboard(element) {
-    navigator.clipboard.writeText(element.value)
-        .then(() => {
-            // Animate copy button
-            element.animate([
-                { transform: 'scale(1)' },
-                { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
-                { transform: 'scale(1)' },
-            ], {
-                duration: 500, //milliseconds
-                easing: 'ease-in', //'linear', a bezier curve, etc.
-                delay: 0, //milliseconds
-                iterations: 1, //or a number
-                direction: 'normal', //'normal', 'reverse', etc.
-                fill: 'forwards' //'backwards', 'both', 'none', 'auto'
-            });
-        })
-        .catch(err => {
-            console.log('Error in copying text: ', err);
-        });
-}
-
-let copyElements = {
-    'copy-button-employer-1': 'copy-value-employer-1',
-    'copy-button-employer-spouse': 'copy-value-employer-spouse',
-    'copy-button-joint-applicant': 'copy-value-joint-applicant',
-    'copy-button-sponsor-1': 'copy-value-sponsor-1',
-    'copy-button-sponsor-2': 'copy-value-sponsor-2',
-}
-
-if (copyElements) {
-    for (let button in copyElements) {
-        let valueElement = document.getElementById(copyElements[button]);
-        if (copyElements.hasOwnProperty(button)) {
-            document.getElementById(button).addEventListener('click', () => copyToClipboard(valueElement));
-        }
-    }
-}
-</script>
-{% endblock js %}
