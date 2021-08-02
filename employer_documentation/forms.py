@@ -1116,9 +1116,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                             ''',
                                         ),
                                         Column(
-                                            '''
-                                            sponsor_2_spouse_residential_status
-                                            ''',
+                                            'sponsor_2_spouse_residential_status',
                                             css_class='''
                                                 form-group col-md-6 spouse-2
                                             ''',
@@ -1936,9 +1934,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                     css_class='form-group col-md-6 spouse-1',
                                 ),
                                 Column(
-                                    '''
-                                    joint_applicant_spouse_residential_status
-                                    ''',
+                                    'joint_applicant_spouse_residential_status',
                                     css_class='form-group col-md-6 spouse-1',
                                 )
                             ),
