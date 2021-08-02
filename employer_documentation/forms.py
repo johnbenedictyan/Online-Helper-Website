@@ -894,9 +894,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                '''
-                                                sponsor_1_spouse_date_of_birth
-                                                ''',
+                                                'sponsor_1_spouse_date_of_birth',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -917,9 +915,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                             ''',
                                         ),
                                         Column(
-                                            '''
-                                            sponsor_1_spouse_residential_status
-                                            ''',
+                                            'sponsor_1_spouse_residential_status',
                                             css_class='''
                                                 form-group col-md-6 spouse-1
                                             ''',
@@ -950,9 +946,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                '''
-                                                sponsor_1_spouse_passport_date
-                                                ''',
+                                                'sponsor_1_spouse_passport_date',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -1102,9 +1096,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                '''
-                                                sponsor_2_spouse_date_of_birth
-                                                ''',
+                                                'sponsor_2_spouse_date_of_birth',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
@@ -1157,9 +1149,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                         ),
                                         Column(
                                             Field(
-                                                '''
-                                                sponsor_2_spouse_passport_date
-                                                ''',
+                                                'sponsor_2_spouse_passport_date',
                                                 type='text',
                                                 onfocus="(this.type='date')",
                                                 placeholder='''
