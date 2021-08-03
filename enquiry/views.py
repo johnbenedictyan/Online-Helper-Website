@@ -117,6 +117,7 @@ class SuccessfulEnquiryView(TemplateView):
 
 class BaseApproveEnquiryView(RedirectView):
     object_class = None
+    pk_url_kwarg = 'pk'
 
     def get_object(self):
         return get_object_or_404(

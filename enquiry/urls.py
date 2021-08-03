@@ -34,7 +34,7 @@ urlpatterns = [
         name='toggle_approve_enquiry'
     ),
     path(
-        'approve',
+        'approve/',
         include([
             path(
                 'general/<int:pk>/',
@@ -49,7 +49,7 @@ urlpatterns = [
         ])
     ),
     path(
-        'reject',
+        'reject/',
         include([
             path(
                 'general/<int:pk>/',
