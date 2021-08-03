@@ -1,11 +1,12 @@
 # Django Imports
+from itertools import chain
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
 # Project Apps Imports
 from agency.mixins import OMStaffRequiredMixin
 from agency.models import Agency
-from enquiry.models import GeneralEnquiry
+from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from payment.models import SubscriptionProduct
 from maid.filters import MiniMaidFilter
 
@@ -91,7 +92,11 @@ class AdminPanelView(OMStaffRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context.update({
-            'subscription_products': SubscriptionProduct.objects.all()
+            'subscription_products': SubscriptionProduct.objects.all(),
+            'enquiries': chain(
+                GeneralEnquiry.objects.filter(approved=False),
+                ShortlistedEnquiry.objects.filter(approved=False)
+            )
         })
         return context
 

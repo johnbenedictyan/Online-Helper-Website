@@ -1,4 +1,8 @@
+# Global Imports
+from datetime import date
+
 # Django Imports
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -52,12 +56,14 @@ class GeneralEnquiry(models.Model):
         max_length=7
     )
 
-    maid_nationality = models.CharField(
-        verbose_name=_('Maid\'s Nationality'),
-        blank=False,
-        choices=MAID_NATIONALITY_CHOICES,
-        default=NO_PREFERENCE,
-        max_length=3
+    maid_nationality = ArrayField(
+        models.CharField(
+            verbose_name=_('Maid\'s Nationality'),
+            blank=False,
+            choices=MAID_NATIONALITY_CHOICES,
+            default=NO_PREFERENCE,
+            max_length=3
+        )
     )
 
     maid_responsibility = models.ManyToManyField(
@@ -70,12 +76,14 @@ class GeneralEnquiry(models.Model):
         related_name='general_enquiries'
     )
 
-    maid_type = models.CharField(
-        verbose_name=_('Type of maid'),
-        blank=False,
-        choices=MAID_TYPE_CHOICES,
-        default=NO_PREFERENCE,
-        max_length=3
+    maid_type = ArrayField(
+        models.CharField(
+            verbose_name=_('Type of maid'),
+            blank=False,
+            choices=MAID_TYPE_CHOICES,
+            default=NO_PREFERENCE,
+            max_length=3
+        )
     )
 
     no_of_family_members = models.IntegerField(
@@ -116,21 +124,47 @@ class GeneralEnquiry(models.Model):
     )
 
     date_published = models.DateField(
-        auto_created=True,
+        null=True,
         editable=False
     )
 
-    def display_languages(self):
+    def get_maid_languages(self):
         txt = ''
         for i in self.languages_spoken.all():
             txt += str(i)
         return txt
 
-    def display_duties(self):
+    def get_maid_duties(self):
         txt = ''
         for i in self.maid_responsibility.all():
             txt += str(i)
         return txt
+
+    def get_maid_nationalities(self):
+        txt = ''
+        for i in self.maid_nationality:
+            txt += dict(MAID_NATIONALITY_CHOICES).get(i)
+        return txt
+
+    def get_maid_types(self):
+        txt = ''
+        for i in self.maid_type:
+            txt += dict(MAID_TYPE_CHOICES).get(i)
+        return txt
+
+    @property
+    def is_general_enquiry(self):
+        return True
+
+    def approve(self, user):
+        self.approved = True
+        self.last_modified = user
+        self.date_published = date.today()
+        self.save()
+
+    def reject(self):
+        # TODO: Add the rejection email mechanism
+        self.delete()
 
 
 class ShortlistedEnquiry(models.Model):
@@ -209,6 +243,20 @@ class ShortlistedEnquiry(models.Model):
     )
 
     date_published = models.DateField(
-        auto_created=True,
+        null=True,
         editable=False
     )
+
+    @property
+    def is_shortlisted_enquiry(self):
+        return True
+
+    def approve(self, user):
+        self.approved = True
+        self.last_modified = user
+        self.date_published = date.today()
+        self.save()
+
+    def reject(self):
+        # TODO: Add the rejection email mechanism
+        self.delete()
