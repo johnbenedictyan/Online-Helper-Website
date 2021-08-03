@@ -324,12 +324,13 @@ class BaseEnquiriesListView(AgencyLoginRequiredMixin, ListView):
 class GeneralEnquiriesList(BaseEnquiriesListView):
     model = GeneralEnquiry
     template_name = 'list/dashboard-general-enquiries-list.html'
+    queryset = GeneralEnquiry.objects.filter(approved=True)
 
 
 class ShortlistedEnquiriesList(BaseEnquiriesListView):
     model = ShortlistedEnquiry
     template_name = 'list/dashboard-shortlisted-enquiries-list.html'
-    queryset = ShortlistedEnquiry.objects.filter()
+    queryset = ShortlistedEnquiry.objects.filter(approved=True)
 
 
 class BaseCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin,

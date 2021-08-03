@@ -10,7 +10,7 @@ from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
 # Project Apps Imports
 from maid.models import MaidResponsibility, MaidLanguage
 
-# App Importsf
+# App Imports
 from .constants import MAID_TYPE_CHOICES, MAID_NATIONALITY_CHOICES
 from .fields import MaidResponsibilityChoiceField
 from .models import GeneralEnquiry, ShortlistedEnquiry
