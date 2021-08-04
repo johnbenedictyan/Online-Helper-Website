@@ -50,7 +50,12 @@ class EmployerHouseholdFormSetHelper(FormHelper):
                             css_class='col-xl-6'
                         ),
                         Column(
-                            'household_date_of_birth',
+                            Field(
+                                'household_date_of_birth',
+                                type='text',
+                                onfocus="(this.type='date')",
+                                placeholder='Date of birth'
+                            ),
                             css_class='col-xl-6',
                         ),
                         Column(

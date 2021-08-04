@@ -363,6 +363,13 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
             })
         }
 
+    def __init__(self, *args, **kwargs):
+        self.maid_id = kwargs.pop('maid_id')
+        self.maid = Maid.objects.get(
+            pk=self.maid_id
+        )
+        super().__init__(*args, **kwargs)
+
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
@@ -370,78 +377,6 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         self.instance.maid = self.maid
         return super().save(*args, **kwargs)
-
-    def __init__(self, *args, **kwargs):
-        self.maid_id = kwargs.pop('maid_id')
-        self.maid = Maid.objects.get(
-            pk=self.maid_id
-        )
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            HTML(
-                                '''
-                                <button class="btn btn-outline-primary">
-                                    <i class="fas fa-times"></i>
-                                </button>'''
-                            ),
-                            css_class='col-12 text-right'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            Row(
-                                Column(
-                                    'start_date'
-                                )
-                            ),
-                            Row(
-                                Column(
-                                    'end_date'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            Row(
-                                Column(
-                                    'work_duties'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            Row(
-                                Column(
-                                    'employer'
-                                )
-                            ),
-                            Row(
-                                Column(
-                                    'country'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        ),
-                        Column(
-                            Row(
-                                Column(
-                                    'reason_for_leaving'
-                                )
-                            ),
-                            css_class='col-md-6'
-                        )
-                    )
-                ),
-                css_class='form-group'
-            )
-        )
 
 
 class MaidFoodHandlingPreferenceForm(forms.ModelForm):
