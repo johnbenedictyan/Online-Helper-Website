@@ -571,29 +571,29 @@ class AgencyEmployeeForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'ea_personnel_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'password',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='form-row'
             ),

@@ -100,11 +100,11 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'applicant_type',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'household_details_required',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                 )
             ),
             Row(
@@ -115,7 +115,7 @@ class EmployerForm(forms.ModelForm):
                     # MUST update 'del self.helper.layout.fields[1][1]' line
                     # as this removes this object from the layout helper.
                     'agency_employee',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
 
@@ -127,11 +127,11 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'employer_name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'employer_gender',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
@@ -139,33 +139,33 @@ class EmployerForm(forms.ModelForm):
                     PrependedText(
                         'employer_mobile_number', '+65',
                     ),
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-xl-6',
                 ),
                 Column(
                     PrependedText(
                         'employer_home_number', '+65',
                     ),
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-xl-6',
                 )
             ),
             Row(
                 Column(
                     'employer_email',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'employer_address_1',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
                 Column(
                     'employer_address_2',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'employer_post_code',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
@@ -176,32 +176,32 @@ class EmployerForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Employer date of birth',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'employer_nationality',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
                 Column(
                     'employer_residential_status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'employer_nric_num',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                     id='employer_id_nric',
                 )
             ),
             Row(
                 Column(
                     'employer_fin_num',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'employer_passport_num',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 id='employer_id_other'
             ),
@@ -213,12 +213,12 @@ class EmployerForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Employer passport expiry date',
                     ),
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                     id='employer_id_other_2',
                 ),
                 Column(
                     'employer_marital_status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
 
@@ -232,11 +232,11 @@ class EmployerForm(forms.ModelForm):
                     Row(
                         Column(
                             'spouse_name',
-                            css_class='form-group col-md-6 employer-spouse spouse-only',
+                            css_class='form-group col-lg-6 employer-spouse spouse-only',
                         ),
                         Column(
                             'spouse_gender',
-                            css_class='form-group col-md-6 employer-spouse spouse-only',
+                            css_class='form-group col-lg-6 employer-spouse spouse-only',
                         )
                     ),
                     Row(
@@ -247,32 +247,32 @@ class EmployerForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Employer spouse date of birth',
                             ),
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-lg-6'
                         ),
                         Column(
                             'spouse_nationality',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-lg-6'
                         )
                     ),
                     Row(
                         Column(
                             'spouse_residential_status',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-lg-6'
                         ),
                         Column(
                             'spouse_nric_num',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-lg-6',
                             id='spouse_id_nric',
                         )
                     ),
                     Row(
                         Column(
                             'spouse_fin_num',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-lg-6'
                         ),
                         Column(
                             'spouse_passport_num',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-lg-6'
                         ),
                         id='spouse_id_other',
                     ),
@@ -284,12 +284,12 @@ class EmployerForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Employer spouse passport expiry date',
                             ),
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-lg-6',
                             id='spouse_id_other_2',
                         ),
                         Column(
                             'employer_marriage_sg_registered',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-lg-6'
                         )
                     ),
                 ),
@@ -2127,11 +2127,11 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     Row(
                         Column(
                             'worked_in_sg',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-xl-6'
                         ),
                         Column(
                             'monthly_income',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-xl-6',
                         )
                     ),
                 ),
@@ -2239,6 +2239,11 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
                 )
             )
         )
+
+        instance = self.instance
+        self.initial.update({
+            'household_id_num': instance.get_household_id_full(),
+        })
 
     def clean_household_id_num(self):
         cleaned_field = self.cleaned_data.get('household_id_num')

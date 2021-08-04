@@ -83,153 +83,114 @@ class MaidForm(forms.ModelForm):
             Row(
                 Column(
                     'photo',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-12'
                 ),
                 Column(
                     'status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'expected_salary',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'expected_days_off',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'reference_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'country_of_origin',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'date_of_birth',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'height',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'weight',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'marital_status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'number_of_siblings',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'number_of_children',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'age_of_children',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'religion',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'place_of_birth',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'address_1',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-xl-6'
                 ),
                 Column(
                     'address_2',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-xl-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'education_level',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'repatriation_airport',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-12'
                 ),
                 Column(
                     'passport_status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     Field(
                         'passport_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'passport_expiry',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     Field(
                         'fin_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row form-group'
-            ),
-            Row(
                 Column(
                     Submit(
                         'submit',
