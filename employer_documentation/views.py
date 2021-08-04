@@ -1336,7 +1336,7 @@ class EmployerHouseholdDetailsFormView(
     authority = ''
     agency_id = ''
     employer_id = ''
-    success_message = 'Maid employment history updated'
+    success_message = 'Household details updated'
 
     def get_object(self):
         return models.Employer.objects.get(

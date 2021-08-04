@@ -90,12 +90,22 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
                         Column(
                             Row(
                                 Column(
-                                    'start_date'
+                                    Field(
+                                        'start_date',
+                                        type='text',
+                                        onfocus="(this.type='date')",
+                                        placeholder='Start date'
+                                    ),
                                 )
                             ),
                             Row(
                                 Column(
-                                    'end_date'
+                                    Field(
+                                        'end_date',
+                                        type='text',
+                                        onfocus="(this.type='date')",
+                                        placeholder='End date'
+                                    ),
                                 )
                             ),
                             css_class='col-md-6'
