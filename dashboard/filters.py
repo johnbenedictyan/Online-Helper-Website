@@ -6,10 +6,13 @@ from django.utils.translation import ugettext_lazy as _
 # Foreign Apps Imports
 from django_filters import CharFilter as DjangoFiltersCharFilter
 from django_filters import ChoiceFilter as DjangoFiltersChoiceFilter
+from django_filters import ModelChoiceFilter as DjangoFilterModelChoiceFilter
 from django_filters import FilterSet as DjangoFiltersFilterSet
 
 # App Imports
+from agency.models import AgencyEmployee
 from employer_documentation.models import Employer, CaseStatus, EmployerDoc
+from maid.constants import MaidStatusChoices
 from maid.models import Maid
 
 # Start of Filters
@@ -26,6 +29,7 @@ class DashboardMaidFilter(DjangoFiltersFilterSet):
         field_name='status',
         lookup_expr='exact',
         label=_('Filter By'),
+        choices=MaidStatusChoices.choices,
         empty_label=_('Any')
     )
 
@@ -60,12 +64,14 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
         widget=TextInput(attrs={'placeholder': 'Name or Mobile'})
     )
 
-    agency_employee = DjangoFiltersChoiceFilter(
-        field_name='agency_employee',
-        lookup_expr='exact',
-        label=_('Filter By EA Personnel'),
-        empty_label=_('Any')
-    )
+    # agency_employee = DjangoFilterModelChoiceFilter(
+    #     field_name='agency_employee',
+    #     lookup_expr='exact',
+    #     label=_('Filter By EA Personnel'),
+    #     queryset=AgencyEmployee.objects.all(),
+    #     method='agency_employee_filter',
+    #     empty_label=_('Any')
+    # )
 
     employer_birthday_month = DjangoFiltersChoiceFilter(
         field_name='employer_date_of_birth',
@@ -79,13 +85,16 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
         model = Employer
         fields = [
             'employer_name',
-            'agency_employee'
+            # 'agency_employee'
         ]
 
     def employer_birthday_month_filter(self, queryset, name, value):
         return queryset.filter(
             employer_date_of_birth__month=value
         )
+
+    def agency_employee_filter(self, queryset, name, value):
+        return queryset
 
 
 class DashboardCaseFilter(DjangoFiltersFilterSet):
