@@ -47,15 +47,15 @@ class EmployerHouseholdFormSetHelper(FormHelper):
                         ),
                         Column(
                             'household_id_num',
-                            css_class='col-lg-6'
+                            css_class='col-xl-6'
                         ),
                         Column(
                             'household_date_of_birth',
-                            css_class='col-lg-6',
+                            css_class='col-xl-6',
                         ),
                         Column(
                             'household_relationship',
-                            css_class='col-lg-6'
+                            css_class='col-xl-6'
                         )
                     )
                 ),

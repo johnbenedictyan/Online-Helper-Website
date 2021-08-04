@@ -2340,7 +2340,7 @@ class EmployerDocForm(forms.ModelForm):
             Row(
                 Column(
                     'case_ref_no',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     Field(
@@ -2349,17 +2349,17 @@ class EmployerDocForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Contract date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
                 Column(
                     'employer',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                 ),
                 Column(
                     'fdw',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
@@ -2368,33 +2368,31 @@ class EmployerDocForm(forms.ModelForm):
                         'fdw_salary', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     PrependedText(
                         'fdw_loan', '$',
                         min='0', max='10000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 )
             ),
             Row(
                 Column(
                     'fdw_off_days',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-xl-6',
                 ),
                 Column(
                     PrependedText(
                         'fdw_monthly_loan_repayment', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
-                )
-            ),
-            Row(
+                    css_class='form-group col-lg-6'
+                ),
                 Column(
                     'fdw_off_day_of_week',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                 )
             ),
             # Submit
