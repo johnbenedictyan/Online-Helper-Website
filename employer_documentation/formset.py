@@ -39,15 +39,15 @@ class EmployerHouseholdFormSetHelper(FormHelper):
                     Row(
                         Column(
                             'household_name',
-                            css_class='col-md-6'
+                            css_class='col-lg-6'
                         ),
                         Column(
                             'household_id_type',
-                            css_class='col-md-6',
+                            css_class='col-lg-6',
                         ),
                         Column(
                             'household_id_num',
-                            css_class='col-md-6'
+                            css_class='col-xl-6'
                         ),
                         Column(
                             Field(
@@ -56,11 +56,11 @@ class EmployerHouseholdFormSetHelper(FormHelper):
                                 onfocus="(this.type='date')",
                                 placeholder='Date of birth'
                             ),
-                            css_class='col-md-6',
+                            css_class='col-xl-6',
                         ),
                         Column(
                             'household_relationship',
-                            css_class='col-md-6'
+                            css_class='col-xl-6'
                         )
                     )
                 ),

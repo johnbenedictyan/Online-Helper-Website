@@ -55,9 +55,8 @@ class MaidForm(forms.ModelForm):
         model = Maid
         exclude = [
             'agency', 'created_on', 'updated_on', 'about_me',
-            'responsibilities', 'languages', 'skills_evaluation_method',
-            'passport_number_nonce', 'passport_number_tag', 'fin_number_nonce',
-            'fin_number_tag'
+            'responsibilities', 'languages', 'passport_number_nonce',
+            'passport_number_tag', 'fin_number_nonce', 'fin_number_tag'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -84,153 +83,114 @@ class MaidForm(forms.ModelForm):
             Row(
                 Column(
                     'photo',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-12'
                 ),
                 Column(
                     'status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'expected_salary',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'expected_days_off',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'reference_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'country_of_origin',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'date_of_birth',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'height',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'weight',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'marital_status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'number_of_siblings',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'number_of_children',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'age_of_children',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'religion',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'place_of_birth',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'address_1',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-xl-6'
                 ),
                 Column(
                     'address_2',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-xl-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'education_level',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'repatriation_airport',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-12'
                 ),
                 Column(
                     'passport_status',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row'
-            ),
-            Row(
                 Column(
                     Field(
                         'passport_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'passport_expiry',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     Field(
                         'fin_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
-                css_class='form-row form-group'
-            ),
-            Row(
                 Column(
                     Submit(
                         'submit',
@@ -793,7 +753,7 @@ class MaidExperienceForm(forms.Form):
     )
 
     cfe_assessment = forms.ChoiceField(
-        label=_('Elderly care assessment'),
+        label=_('Assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
         initial=MaidAssessmentChoices.AVERAGE
@@ -930,11 +890,6 @@ class MaidExperienceForm(forms.Form):
                 css_class='row',
                 css_id='maidExperienceGroup'
             ),
-            Row(
-                Column(
-                    'skills_evaluation_method'
-                )
-            ),
             Div(
                 Column(
                     Row(
@@ -965,7 +920,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 Column(
                     Row(
@@ -996,7 +951,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 css_class='row'
             ),
@@ -1030,7 +985,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 Column(
                     Row(
@@ -1061,7 +1016,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 css_class='row'
             ),
@@ -1095,7 +1050,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 css_class='row'
             ),
@@ -1120,7 +1075,6 @@ class MaidExperienceForm(forms.Form):
 
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
-        skills_evaluation_method = cleaned_data.get('skills_evaluation_method')
 
         cfi_assessment = cleaned_data.get('cfi_assessment')
         cfi_willingness = cleaned_data.get('cfi_willingness')
@@ -1156,7 +1110,6 @@ class MaidExperienceForm(forms.Form):
             pk=self.maid_id
         )
 
-        maid.skills_evaluation_method = skills_evaluation_method
         maid.save()
 
         MaidInfantChildCare.objects.update_or_create(

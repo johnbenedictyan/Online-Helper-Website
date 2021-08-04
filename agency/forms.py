@@ -358,19 +358,19 @@ class AgencyUpdateForm(forms.ModelForm):
             Row(
                 Column(
                     'logo',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-12'
                 ),
                 Column(
                     'name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'license_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'website_uri',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='mb-xl-3'
             ),
@@ -380,7 +380,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         '<h5 class="fs-2">Profile</h5>'
                     ),
                     'profile',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                     css_id='agencyProfileGroup'
                 ),
                 Column(
@@ -388,7 +388,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         '<h5 class="fs-2">Our Services</h5>'
                     ),
                     'services',
-                    css_class='form-group col-md-6',
+                    css_class='form-group col-lg-6',
                     css_id='agencyServicesGroup'
                 ),
                 css_class='mb-xl-3'
@@ -571,29 +571,29 @@ class AgencyEmployeeForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'ea_personnel_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'password',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-lg-6'
                 ),
                 css_class='form-row'
             ),
