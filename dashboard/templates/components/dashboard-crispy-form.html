@@ -4,7 +4,7 @@
     {% block title_banner_section %}
     {% endblock title_banner_section %}
     {% include 'components/crispy-form-error.html' %}
-    <div class="container">
+    <div class="container" style="min-height: 75vh;">
         <form method="post" enctype="multipart/form-data">
             {% crispy form %}
         </form>
