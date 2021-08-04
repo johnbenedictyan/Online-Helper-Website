@@ -29,13 +29,13 @@
             {% include 'messages.html' %}
             <section>
                 <div class="container-fluid">
-                    <div class="row" style="min-height: 85vh;">
+                    <div class="row" style="min-height: 90vh;">
                         {% with request.resolver_match.url_name as url_name %}
                             {% if url_name in dashboard_side_nav_list %}
-                            <div id="dashboardSideNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
+                            <div id="dashboardSideNavWrapper" class="col col-md-3 col-lg-2-5 col-xl-2 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
                                 {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                             </div>
-                            <div id="dashboardPageNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-pagebar-color text-dashboard-text-color">
+                            <div id="dashboardPageNavWrapper" class="col col-md-2-5 col-lg-2-5 col-xl-2 bg-dashboard-pagebar-color text-dashboard-text-color">
                                 {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
                                     <div class="col">   
                                     {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
@@ -73,11 +73,11 @@
                                 {% endif %}
                             </div>
                             {% else %}
-                            <div id="dashboardSideNavWrapper" class="col-md-3 col-lg-2 bg-dashboard-navbar-color text-dark">
+                            <div id="dashboardSideNavWrapper" class="col col-md-3 col-lg-2 bg-dashboard-navbar-color text-dark">
                                 {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                             </div>
                             {% endif %}
-                            <div id="dashboardMainContentWrapper" class="col p-6">
+                            <div id="dashboardMainContentWrapper" class="col p-3 p-md-4 p-lg-5 p-xl-6">
                                 {% block dashboard_section %}
                                 {% endblock dashboard_section %}
                             </div>

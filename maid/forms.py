@@ -55,9 +55,8 @@ class MaidForm(forms.ModelForm):
         model = Maid
         exclude = [
             'agency', 'created_on', 'updated_on', 'about_me',
-            'responsibilities', 'languages', 'skills_evaluation_method',
-            'passport_number_nonce', 'passport_number_tag', 'fin_number_nonce',
-            'fin_number_tag'
+            'responsibilities', 'languages', 'passport_number_nonce',
+            'passport_number_tag', 'fin_number_nonce', 'fin_number_tag'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -858,7 +857,7 @@ class MaidExperienceForm(forms.Form):
     )
 
     cfe_assessment = forms.ChoiceField(
-        label=_('Elderly care assessment'),
+        label=_('Assessment'),
         required=True,
         choices=MaidAssessmentChoices.choices,
         initial=MaidAssessmentChoices.AVERAGE
@@ -995,11 +994,6 @@ class MaidExperienceForm(forms.Form):
                 css_class='row',
                 css_id='maidExperienceGroup'
             ),
-            Row(
-                Column(
-                    'skills_evaluation_method'
-                )
-            ),
             Div(
                 Column(
                     Row(
@@ -1030,7 +1024,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 Column(
                     Row(
@@ -1061,7 +1055,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 css_class='row'
             ),
@@ -1095,7 +1089,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 Column(
                     Row(
@@ -1126,7 +1120,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 css_class='row'
             ),
@@ -1160,7 +1154,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-xl-6'
                 ),
                 css_class='row'
             ),
@@ -1185,7 +1179,6 @@ class MaidExperienceForm(forms.Form):
 
     def save(self, *args, **kwargs):
         cleaned_data = self.cleaned_data
-        skills_evaluation_method = cleaned_data.get('skills_evaluation_method')
 
         cfi_assessment = cleaned_data.get('cfi_assessment')
         cfi_willingness = cleaned_data.get('cfi_willingness')
@@ -1221,7 +1214,6 @@ class MaidExperienceForm(forms.Form):
             pk=self.maid_id
         )
 
-        maid.skills_evaluation_method = skills_evaluation_method
         maid.save()
 
         MaidInfantChildCare.objects.update_or_create(
