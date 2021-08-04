@@ -29,7 +29,7 @@
             {% include 'messages.html' %}
             <section>
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row" style="min-height: 85vh;">
                         {% with request.resolver_match.url_name as url_name %}
                             {% if url_name in dashboard_side_nav_list %}
                             <div id="dashboardSideNavWrapper" class="col-md-2 col-lg-2 bg-dashboard-navbar-color text-dashboard-text-color collapse show">

@@ -1,5 +1,6 @@
 # Django
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy, resolve
 from django.http import FileResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import RedirectView
@@ -20,7 +21,9 @@ from onlinemaid.constants import AG_SALES
 
 # From our apps
 from . import models, forms
-from .constants import monthly_income_label_map
+from .constants import (
+    monthly_income_label_map, ERROR_MESSAGES_VERBOSE_NAME_MAP
+)
 from .formset import (
     EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper,
     MaidInventoryFormSet, MaidInventoryFormSetHelper
@@ -1333,7 +1336,7 @@ class EmployerHouseholdDetailsFormView(
     authority = ''
     agency_id = ''
     employer_id = ''
-    success_message = 'Maid employment history updated'
+    success_message = 'Household details updated'
 
     def get_object(self):
         return models.Employer.objects.get(
@@ -1668,9 +1671,15 @@ class HandoverFormView(FormView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.employer_doc.details_missing_case_pre_signing_2():
-            # TODO: Custom Message on why they are failing the details missing
-            print(self.object.employer_doc.details_missing_case_pre_signing_2())
+        ed = self.object.employer_doc
+        missing_details = ed.details_missing_case_pre_signing_2()
+        if missing_details:
+            for md in missing_details:
+                messages.warning(
+                    self.request,
+                    ERROR_MESSAGES_VERBOSE_NAME_MAP[md],
+                    extra_tags='error'
+                )
             return redirect(
                 reverse(
                     'case_detail_route',
@@ -1736,9 +1745,15 @@ class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
     def get_redirect_url(self, *args, **kwargs):
         self.object = self.get_object()
         if self.view_type == 'generate':
-            if self.object.employer_doc.details_missing_case_pre_signing_1():
-                # TODO: Send a message to the user about the missing fields
-                print('Uh OH')
+            ed = self.object.employer_doc
+            missing_details = ed.details_missing_case_pre_signing_1()
+            if missing_details:
+                for md in missing_details:
+                    messages.warning(
+                        self.request,
+                        ERROR_MESSAGES_VERBOSE_NAME_MAP[md],
+                        extra_tags='error'
+                    )
             else:
                 self.object.generate_sigslug(self.stakeholder)
         elif self.view_type == 'revoke':

@@ -8,6 +8,7 @@
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-agency-tab" data-toggle="pill" href="#v-pills-agency" role="tab" aria-controls="v-pills-agency" aria-selected="true">Agencies</a>
                 <a class="nav-link" id="v-pills-subscription-products-tab" data-toggle="pill" href="#v-pills-subscription-products" role="tab" aria-controls="v-pills-subscription-products" aria-selected="false">Subscription Products</a>
+                <a class="nav-link" id="v-pills-enquiries-tab" data-toggle="pill" href="#v-pills-enquiries" role="tab" aria-controls="v-pills-enquiries" aria-selected="false">Enquiries</a>
                 </div>
             </div>
             <div class="col-10">
@@ -16,10 +17,6 @@
                         <div class="row">
                             <div class="col">
                                 <h1>Agency List</h1>
-                                <div class="d-flex justify-content-between">
-                                    <a href="{% url 'agency_create' %}" class="btn btn-primary">Add Agency</a>
-                                    <span class="">{% include 'pagination.html' %}</span>
-                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -113,6 +110,47 @@
                                                 <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
                                                 <a href="" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
                                             </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-enquiries" role="tabpanel" aria-labelledby="v-pills-enquiries-tab">
+                        <div class="row">
+                            <div class="col">
+                                <h1>Enquiries</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col my-2">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">Remarks</th>
+                                            <th class="text-center" scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for enquiry in enquiries %}
+                                        <tr>
+                                            <th class="align-middle text-center" scope="row">{{enquiry.pk}}</th>
+                                            <td class="align-middle text-center">{{enquiry.remarks}}</td>
+                                            <td class="align-middle text-center">
+                                                {% if enquiry.maids %}
+                                                <a href="{% url 'approve_shortlisted_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-check-circle"></i></a>
+                                                <a href="{% url 'reject_shortlisted_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
+                                                {% else %}
+                                                <a href="{% url 'approve_general_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-check-circle"></i></a>
+                                                <a href="{% url 'reject_general_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td class="align-middle text-center">No Enquiries</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

@@ -24,7 +24,7 @@
             <div class="col-1">
                 <h6 class="mb-0">Date</h6>
             </div>
-            <div class="col-1">
+            <div class="col-1 text-center">
                 <h6 class="mb-0">Actions</h6>
             </div>
         </div>
@@ -39,22 +39,28 @@
                 <p class="mb-0">Email: {{enquiry.email}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">Nationality: {{enquiry.get_maid_nationality_display}}</p>
-                <p class="mb-0">Type: {{enquiry.get_maid_type_display}}</p>
-                <p class="mb-0">Language: {{enquiry.display_languages}}</p>
-                <p class="mb-0">Duty: {{enquiry.display_duties}}</p>
+                <p class="mb-0">Nationality: {{enquiry.get_maid_nationalities}}</p>
+                <p class="mb-0">Type: {{enquiry.get_maid_types}}</p>
+                <p class="mb-0">Language: {{enquiry.get_maid_languages}}</p>
+                <p class="mb-0">Duty: {{enquiry.get_maid_duties}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{enquiry.remarks}}</p>
             </div>
             <div class="col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{enquiry.date_published}}</p>
             </div>
             <div class="col-1">
-                <div class="row justify-content-evenly">
-                    <a href="#"><i class="far fa-edit"></i></a>
-                    <a href="#"><i class="far fa-trash-alt"></i></a>
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="#"><i class="far fa-edit"></i></a>
+                    <a class="mx-1" href="#"><i class="far fa-trash-alt-alt"></i></a>
                 </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row mx-half py-3 border border-top-0">
+            <div class="col text-center">
+                <p class="mb-0">No Enquiries</p>
             </div>
         </div>
         {% endfor %}
