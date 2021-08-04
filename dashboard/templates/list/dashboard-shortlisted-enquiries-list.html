@@ -39,15 +39,21 @@
                 <p class="mb-0">Email: {{enquiry.email}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">Name: {{enquiry}}</p>
-                <p class="mb-0">Nationality: {{enquiry}}</p>
-                <p class="mb-0">Type: {{enquiry}}</p>
+                {% for maid in enquiry.maids.all|enquirymaidfilter:agency_id %}
+                    <div class="row">
+                        <div class="col mb-2">
+                            <p class="mb-0">Name: {{maid.name}}</p>
+                            <p class="mb-0">Nationality: {{maid.get_country_of_origin_display }}</p>
+                            <p class="mb-0">Type: {{maid.get_maid_type_display}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="col">
                 <p class="mb-0">{{enquiry.remarks}}</p>
             </div>
             <div class="col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{enquiry.date_published}}</p>
             </div>
             <div class="col-1">
                 <div class="row justify-content-center">

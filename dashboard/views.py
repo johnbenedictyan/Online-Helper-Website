@@ -316,7 +316,8 @@ class AgencyBranchList(BaseListView):
         )
 
 
-class BaseEnquiriesListView(AgencyLoginRequiredMixin, ListView):
+class BaseEnquiriesListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                            ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
 
@@ -331,6 +332,18 @@ class ShortlistedEnquiriesList(BaseEnquiriesListView):
     model = ShortlistedEnquiry
     template_name = 'list/dashboard-shortlisted-enquiries-list.html'
     queryset = ShortlistedEnquiry.objects.filter(approved=True)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            maids__agency__pk=self.agency_id
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'agency_id': self.agency_id
+        })
+        return context
 
 
 class BaseCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin,

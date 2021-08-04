@@ -260,3 +260,8 @@ class ShortlistedEnquiry(models.Model):
     def reject(self):
         # TODO: Add the rejection email mechanism
         self.delete()
+
+    def get_maids(self, agency_id):
+        return self.maids.filter(
+            agency__pk=agency_id
+        )
