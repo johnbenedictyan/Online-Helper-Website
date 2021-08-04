@@ -444,8 +444,9 @@ class Maid(models.Model):
             'Tamil': MaidLanguageChoices.HINDI_TAMIL
         }
         if hasattr(self, 'language_proficiency'):
-            self.languages_set.clear()
-            for lang in self.get_languages():
+            if self.languages:
+                self.languages.clear()
+            for lang in self.get_language_list():
                 self.languages.add(
                     MaidLanguage.objects.get(
                         language=lang_model_map[lang]
