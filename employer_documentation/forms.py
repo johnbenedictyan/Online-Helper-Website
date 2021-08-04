@@ -2197,9 +2197,9 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
 
     def clean_household_id_num(self):
         cleaned_field = self.cleaned_data.get('household_id_num')
-        error_msg = validate_passport(cleaned_field)
+        error_msg = validate_nric(cleaned_field)
         if error_msg:
-            raise ValidationError(error_msg)
+            raise ValidationError(_('Invalid NRIC or birth certificate number'))
         else:
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
