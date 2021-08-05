@@ -257,10 +257,11 @@ class MaidForm(forms.ModelForm):
                 return ciphertext
 
     def clean_expected_salary(self):
-        cleaned_field = self.cleaned_data.get('expected_salary')
+        field_name = 'expected_salary'
+        cleaned_field = self.cleaned_data.get(field_name)
         if cleaned_field > 9999:
             self.add_error(
-                cleaned_field,
+                field_name,
                 ValidationError(
                     _('Invalid Value'),
                     code='invalid'
@@ -269,10 +270,11 @@ class MaidForm(forms.ModelForm):
         return cleaned_field
 
     def clean_expected_days_off(self):
-        cleaned_field = self.cleaned_data.get('expected_days_off')
+        field_name = 'expected_days_off'
+        cleaned_field = self.cleaned_data.get(field_name)
         if cleaned_field > 4:
             self.add_error(
-                cleaned_field,
+                field_name,
                 ValidationError(
                     _('Invalid Value'),
                     code='invalid'
@@ -281,10 +283,11 @@ class MaidForm(forms.ModelForm):
         return cleaned_field
 
     def clean_height(self):
-        cleaned_field = self.cleaned_data.get('height')
+        field_name = 'height'
+        cleaned_field = self.cleaned_data.get(field_name)
         if cleaned_field > Decimal(200):
             self.add_error(
-                cleaned_field,
+                field_name,
                 ValidationError(
                     _('Invalid Value'),
                     code='invalid'
@@ -293,10 +296,11 @@ class MaidForm(forms.ModelForm):
         return cleaned_field
 
     def clean_weight(self):
-        cleaned_field = self.cleaned_data.get('weight')
+        field_name = 'weight'
+        cleaned_field = self.cleaned_data.get(field_name)
         if cleaned_field > Decimal(100):
             self.add_error(
-                cleaned_field,
+                field_name,
                 ValidationError(
                     _('Invalid Value'),
                     code='invalid'
@@ -305,10 +309,11 @@ class MaidForm(forms.ModelForm):
         return cleaned_field
 
     def clean_number_of_children(self):
-        cleaned_field = self.cleaned_data.get('number_of_children')
+        field_name = 'number_of_children'
+        cleaned_field = self.cleaned_data.get(field_name)
         if cleaned_field > 20:
             self.add_error(
-                cleaned_field,
+                field_name,
                 ValidationError(
                     _('Invalid Value'),
                     code='invalid'
@@ -317,10 +322,11 @@ class MaidForm(forms.ModelForm):
         return cleaned_field
 
     def clean_number_of_siblings(self):
-        cleaned_field = self.cleaned_data.get('number_of_siblings')
+        field_name = 'number_of_siblings'
+        cleaned_field = self.cleaned_data.get(field_name)
         if cleaned_field > 20:
             self.add_error(
-                cleaned_field,
+                field_name,
                 ValidationError(
                     _('Invalid Value'),
                     code='invalid'
