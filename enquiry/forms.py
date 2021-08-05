@@ -138,63 +138,79 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    HTML(
-                        '<h5 class="fs-12">Maid\'s Nationality</h5>'
-                    )
+                   Row(
+                        Column(
+                            HTML(
+                                '<h5 class="fs-12">Maid\'s Nationality</h5>'
+                            )
+                        ),
+                        Column(
+                            Field(
+                                'maid_nationality',
+                                template='widgets/custom_multi_choice_field.html'
+                            ),
+                            css_class='form-group col-12'
+                        ),
+                        css_class='form-row'
+                    ),
+                    css_class='col-lg-6'
                 ),
                 Column(
-                    Field(
-                        'maid_nationality',
-                        template='widgets/custom_multi_choice_field.html'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5 class="fs-12">Type of Maid</h5>'
+                            )
+                        ),
+                        Column(
+                            Field(
+                                'maid_type',
+                                template='widgets/custom_multi_choice_field.html'
+                            ),
+                            css_class='form-group col-12'
+                        ),
+                        css_class='form-row'
                     ),
-                    css_class='form-group col-12'
-                ),
-                css_class='form-row'
+                    css_class='col-lg-6'
+                )
             ),
             Row(
                 Column(
-                    HTML(
-                        '<h5 class="fs-12">Type of Maid</h5>'
-                    )
-                ),
-                Column(
-                    Field(
-                        'maid_type',
-                        template='widgets/custom_multi_choice_field.html'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5 class="fs-12">Job Responsibility</h5>'
+                            )
+                        ),
+                        Column(
+                            Field(
+                                'maid_responsibility',
+                                template='widgets/custom_multi_choice_field.html'
+                            ),
+                            css_class='form-group col-12'
+                        ),
+                        css_class='form-row'
                     ),
-                    css_class='form-group col-12'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    HTML(
-                        '<h5 class="fs-12">Job Responsibility</h5>'
-                    )
+                    css_class='col-lg-6'
                 ),
                 Column(
-                    Field(
-                        'maid_responsibility',
-                        template='widgets/custom_multi_choice_field.html'
+                    Row(
+                        Column(
+                            HTML(
+                                '<h5 class="fs-12">Spoken Language</h5>'
+                            )
+                        ),
+                        Column(
+                            Field(
+                                'languages_spoken',
+                                template='widgets/custom_multi_choice_field.html'
+                            ),
+                            css_class='form-group col-12'
+                        ),
+                        css_class='form-row'
                     ),
-                    css_class='form-group col-12'
-                ),
-                css_class='form-row'
-            ),
-            Row(
-                Column(
-                    HTML(
-                        '<h5 class="fs-12">Spoken Language</h5>'
-                    )
-                ),
-                Column(
-                    Field(
-                        'languages_spoken',
-                        template='widgets/custom_multi_choice_field.html'
-                    ),
-                    css_class='form-group col-12'
-                ),
-                css_class='form-row'
+                    css_class='col-lg-6'
+                )
             ),
             Row(
                 Column(

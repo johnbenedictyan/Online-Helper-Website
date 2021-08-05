@@ -105,7 +105,7 @@ class MaidFilter(FilterSet):
     )
     created_on = ChoiceFilter(
         field_name='created_on',
-        label=_('Created On'),
+        label=_('Added In'),
         choices=MaidCreatedOnChoices.choices,
         empty_label=_('No Preference'),
         method='created_on_filter'
