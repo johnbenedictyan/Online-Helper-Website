@@ -5,8 +5,8 @@
 {% include 'components/crispy-form-error.html' %}
 {% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='general-enquiry-section' %}
 {% include 'components/section-heading.html' with title='Let us help you find the most suitable Maid' %}
-<div class="row">
-    <div class="col my-md-3 my-lg-4">
+<div class="row justify-content-center">
+    <div class="col-md-10 col-xl-12 my-md-3 my-lg-4">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% crispy form %}
