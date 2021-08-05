@@ -2191,54 +2191,9 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
             pk=self.employer_id
         )
         super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            # Household Details
-            Row(
-                Column(
-                    HTML(
-                        """
-                        <h5 class="my-3">Household Details</h5>
-                    """),
-                    Row(
-                        Column(
-                            'household_name',
-                            css_class='form-group col-md-6'
-                        ),
-                        Column(
-                            'household_id_type',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'household_id_num',
-                            css_class='form-group col-md-6'
-                        ),
-                        Column(
-                            'household_date_of_birth',
-                            css_class='form-group col-md-6',
-                        ),
-                        Column(
-                            'household_relationship',
-                            css_class='form-group col-md-6'
-                        )
-                    ),
-                ),
-                id='household-section',
-            ),
-
-            # Submit
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-primary w-50"
-                    ),
-                    css_class='form-group col-12 text-center'
-                )
-            )
-        )
+        self.initial.update({
+            'household_id_num': self.instance.get_household_id_full(),
+        })
 
         instance = self.instance
         self.initial.update({
@@ -2247,9 +2202,9 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
 
     def clean_household_id_num(self):
         cleaned_field = self.cleaned_data.get('household_id_num')
-        error_msg = validate_passport(cleaned_field)
+        error_msg = validate_nric(cleaned_field)
         if error_msg:
-            raise ValidationError(error_msg)
+            raise ValidationError(_('Invalid NRIC or birth certificate number'))
         else:
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
@@ -2277,28 +2232,6 @@ class MaidInventoryForm(forms.ModelForm):
             pk=self.employer_doc_id
         )
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column(
-                    Row(
-                        Column(
-                            Field(
-                                'DELETE'
-                            ),
-                            css_class='col-12 text-right'
-                        )
-                    ),
-                    Row(
-                        Column(
-                            'item_name',
-                            css_class='col-md-6'
-                        )
-                    )
-                ),
-                css_class='form-group'
-            )
-        )
 
 
 class EmployerDocForm(forms.ModelForm):

@@ -117,3 +117,12 @@
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function(){
+        $('#id_employer_fdw_search').on('change', function(){
+            this.form.submit();
+        });
+    })
+</script>
+{% endblock js%}
