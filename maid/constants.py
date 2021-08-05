@@ -34,7 +34,7 @@ class MaidNationalityChoices(models.TextChoices):
     CAMBODIA = 'KHM', _('Cambodian')
     INDIA = 'IND', _('Indian')
     INDONESIA = 'IDN', _('Indonesian')
-    MYANMAR = 'MMR', _('Myanma')
+    MYANMAR = 'MMR', _('Myanmar')
     PHILIPPINES = 'PHL', _('Filipino')
     SRI_LANKA = 'LKA', _('Sri Lankan')
     OTHERS = 'OTH', _('Others')

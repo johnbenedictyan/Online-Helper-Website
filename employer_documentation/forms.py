@@ -2191,10 +2191,6 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
             pk=self.employer_id
         )
         super().__init__(*args, **kwargs)
-        self.initial.update({
-            'household_id_num': self.instance.get_household_id_full(),
-        })
-
         instance = self.instance
         self.initial.update({
             'household_id_num': instance.get_household_id_full(),

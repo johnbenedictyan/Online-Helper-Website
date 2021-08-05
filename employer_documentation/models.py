@@ -1610,7 +1610,7 @@ class EmployerDoc(models.Model):
         else:
             error_msg_list.append('rn_casestatus_ed')
 
-        if not self.rn_maid_inventory.objects.all().count():
+        if not self.rn_maid_inventory.all().count():
             error_msg_list.append('rn_maid_inventory')
 
         if not self.fdw.get_passport_number():
