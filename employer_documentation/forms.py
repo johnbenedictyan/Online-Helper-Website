@@ -1128,7 +1128,7 @@ class EmployerSponsorForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-md-6 text-center'
+                    css_class='form-group col-12 text-center'
                 )
             )
         )
