@@ -145,7 +145,7 @@ class OwnerAccessToEmployerDocAppMixin(AgencyAccessToEmployerDocAppMixin):
         if self.authority == AG_OWNERS:
             return handler
         else:
-            self.handle_no_permission(request)
+            return self.handle_no_permission(request)
 
 
 class GetAuthorityMixin:
