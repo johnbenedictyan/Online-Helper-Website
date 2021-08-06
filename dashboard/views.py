@@ -5,6 +5,7 @@ from itertools import chain
 
 # Django Imports
 from django.contrib import messages
+from django.db.models import Q
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
 from django.forms.models import model_to_dict
@@ -14,6 +15,7 @@ from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
+from requests.api import request
 
 # Project Apps Imports
 from agency.forms import (
@@ -199,12 +201,20 @@ class SalesList(BaseFilteredListView):
     filter_set = DashboardSalesFilter
 
     def get_queryset(self):
+        qs = super().get_queryset()
+        qsArchived = ArchivedDoc.objects.none()
+        if self.request.GET.get('employer_fdw_search'):
+            search_terms = self.request.GET.get('employer_fdw_search')
+            qsArchived = ArchivedDoc.objects.filter(
+                Q(employer_name__icontains=search_terms) |
+                Q(fdw__name__icontains=search_terms)
+            )
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs = chain(
-                EmployerDoc.objects.filter(
+                qs.filter(
                     employer__agency_employee__agency__pk=self.agency_id
                 ),
-                ArchivedDoc.objects.filter(
+                qsArchived.filter(
                     agency__agency_license_no=Agency.objects.get(
                         pk=self.agency_id
                     ).license_number
@@ -215,10 +225,10 @@ class SalesList(BaseFilteredListView):
             ag_branch = ae.branch
             ea_p_nos = ae.get_all_ea_personnel_no_in_branch()
             qs = chain(
-                EmployerDoc.objects.filter(
+                qs.filter(
                     employer__agency_employee__branch=ag_branch
                 ),
-                ArchivedDoc.objects.filter(
+                qsArchived.filter(
                     agency__agency_employee_ea_personnel_number__in=ea_p_nos
                 ),
             )
@@ -226,10 +236,10 @@ class SalesList(BaseFilteredListView):
             ae = self.request.user.agency_employee
             ae_p_no = ae.ea_personnel_number
             qs = chain(
-                EmployerDoc.objects.filter(
+                qs.filter(
                     employer__agency_employee=self.request.user.agency_employee
                 ),
-                ArchivedDoc.objects.filter(
+                qsArchived.filter(
                     agency__agency_employee_ea_personnel_number=ae_p_no
                 ),
             )
@@ -246,19 +256,20 @@ class StatusList(BaseFilteredListView):
     filter_set = DashboardStatusFilter
 
     def get_queryset(self):
+        qs = super().get_queryset()
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             agency_id = self.agency_id
-            qs = CaseStatus.objects.filter(
+            qs = qs.filter(
                 employer_doc__employer__agency_employee__agency__pk=agency_id
             )
         elif self.authority == AG_MANAGERS:
             ae = self.request.user.agency_employee
-            qs = CaseStatus.objects.filter(
+            qs = qs.filter(
                 employer_doc__employer__agency_employee__branch=ae.branch
             )
         elif self.authority == AG_SALES:
             ae = self.request.user.agency_employee
-            qs = CaseStatus.objects.filter(
+            qs = qs.filter(
                 employer_doc__employer__agency_employee=ae
             )
         else:

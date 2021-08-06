@@ -60,7 +60,7 @@ class ListFilteredMixin(object):
         """
         return {
             'data': self.request.GET,
-            'queryset': self.get_base_queryset(),
+            'queryset': self.get_base_queryset()
         }
 
     def get_base_queryset(self):
