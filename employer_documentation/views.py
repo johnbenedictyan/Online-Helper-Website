@@ -1119,7 +1119,8 @@ class EmployerDeleteView(
 ):
     model = models.Employer
     pk_url_kwarg = 'level_0_pk'
-    success_url = reverse_lazy('dashboard_employers_list')
+    template_name = 'employer_confirm_delete.html'
+    success_url = 'dashboard_employers_list'
 
 
 class EmployerDocDeleteView(
@@ -1130,7 +1131,7 @@ class EmployerDocDeleteView(
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
     template_name = 'employer_confirm_delete.html'
-    success_url = reverse_lazy('dashboard_case_list')
+    success_url = 'dashboard_case_list'
 
 
 # Signature Views
