@@ -2104,9 +2104,10 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         self.level_0_pk = kwargs.pop('level_0_pk')
         super().__init__(*args, **kwargs)
 
-        if self.instance.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        employer = models.Employer.objects.get(pk=self.level_0_pk)
+        if employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
             back_url = 'employer_sponsor_update_route'
-        elif self.instance.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             back_url = 'employer_jointapplicant_update_route'
         else:
             back_url = 'employer_update_route'
