@@ -501,6 +501,50 @@ class Maid(models.Model):
         else:
             return 'No'
 
+    def get_employment_history(self):
+        content = ''
+        for eh in self.employment_history.all():
+            content += f"""
+                <div class="row">
+                    <div class="col">
+                        <p>{eh.start_date} - {eh.end_date}</p>
+                        <p>{eh.work_duties}</p>
+                    </div>
+                </div>
+            """
+        return content
+
+    def get_popover_data(self):
+        content = f"""
+        <div class="maid-card-popover">
+            <div class="container border">
+                <div class="row bg-custom-bb text-light">
+                    <div class="col p-4">
+                        <h5 class="fs-12">{self.name}</h5>
+                        <p class="fs-11 mb-0">Basic Salary: S${self.name}</p>
+                        <p class="fs-11 mb-0">
+                            Rest Day Per Mth: {self.expected_days_off}
+                        </p>
+                        <p class="fs-11 mb-0">
+                            Language: {self.get_languages()}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col p-4">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="fs-12">Employment History</h5>
+                            </div>
+                        </div>
+                        {self.get_employment_history()}
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+        return content
+
     @property
     def is_published(self):
         return (

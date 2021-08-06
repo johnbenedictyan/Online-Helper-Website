@@ -62,3 +62,11 @@
 </div>
 {% include 'components/27-ws-section/end.html' %}
 {% endblock maid_section %}
+{% block js %}
+<script>
+    $('.maid-card').popover({
+        'trigger': 'hover',
+        'html': true
+    })
+</script>
+{% endblock js %}

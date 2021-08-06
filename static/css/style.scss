@@ -537,13 +537,15 @@ body.dashboard-body{
 }
 
 #maid-profile-card{
-    width: 300px !important;
+    width: 400px !important;
+    box-shadow: none !important;
+    border-radius: none !important;
 
     .custom-card {
         padding: $MAID_PROFILE_CARD_CUSTOM_CARD_PADDING;
         margin: $MAID_PROFILE_CARD_CUSTOM_CARD_MARGIN;
-        border-radius: $CUSTOM_CARD_BORDER_RADIUS;
-        box-shadow: $CUSTOM_CARD_BOX_SHADOW_SETTINGS $CUSTOM_CARD_SHADOW_COLOUR;
+        // border-radius: $CUSTOM_CARD_BORDER_RADIUS;
+        // box-shadow: $CUSTOM_CARD_BOX_SHADOW_SETTINGS $CUSTOM_CARD_SHADOW_COLOUR;
 
         &__header {
             margin: $CUSTOM_CARD_HEADER_MARGIN;
@@ -717,12 +719,15 @@ hr.text-light{
 }
 
 // How it works section
-.how-it-works-content{
+.row.how-it-works-content{
     @media screen and (min-width: 768px) and (max-width: 991px) {
-        min-height: 6rem;
+        min-height: 6rem !important;
     }
     @media screen and (min-width: 992px) and (max-width: 1199px) {
-        min-height: 7.5rem;
+        min-height: 7.5rem !important;
+    }
+    @media screen and (min-width: 1200px) {
+        min-height: 6rem !important;
     }
 }
 
