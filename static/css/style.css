@@ -614,15 +614,15 @@ body.dashboard-body {
 }
 
 #maid-profile-card {
-  width: 300px !important;
+  width: 400px !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  border-radius: none !important;
 }
 
 #maid-profile-card .custom-card {
   padding: 0.75rem;
   margin: 0.5rem 0.25rem 1rem 0.25rem;
-  border-radius: 0.5rem;
-  -webkit-box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
-          box-shadow: 0px 16px 40px rgba(59, 123, 196, 0.2);
 }
 
 #maid-profile-card .custom-card__header {
@@ -817,14 +817,20 @@ hr.text-light {
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
-  .how-it-works-content {
-    min-height: 6rem;
+  .row.how-it-works-content {
+    min-height: 6rem !important;
   }
 }
 
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-  .how-it-works-content {
-    min-height: 7.5rem;
+  .row.how-it-works-content {
+    min-height: 7.5rem !important;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .row.how-it-works-content {
+    min-height: 6rem !important;
   }
 }
 
