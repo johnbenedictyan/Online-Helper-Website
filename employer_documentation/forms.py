@@ -20,7 +20,7 @@ from onlinemaid.validators import (
     validate_ea_personnel_number, validate_passport, validate_nric,
     validate_fin
 )
-from agency.models import AgencyEmployee
+from agency.models import Agency, AgencyEmployee
 from maid.models import Maid
 
 # App Imports
@@ -2246,21 +2246,28 @@ class EmployerDocForm(forms.ModelForm):
         self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
 
-        self.fields['employer'].queryset = (
-            models.Employer.objects.filter(
-                agency_employee__agency__pk=self.agency_id,
-            )
+        current_user = get_user_model().objects.get(pk=self.user_pk)
+        employers_qs = models.Employer.objects.filter(
+            agency_employee__agency__pk=self.agency_id,
         )
+        fdw_qs = Maid.objects.filter(agency=Agency.objects.get(
+            pk=self.agency_id
+        ))
+        self.fields['fdw'].queryset = fdw_qs
 
-        if self.authority == om_constants.AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
+        if (
+            self.authority == om_constants.AG_OWNERS or
+            self.authority == om_constants.AG_ADMINS or
+            self.authority == om_constants.AG_ADMIN_STAFF
+        ):
+            self.fields['employer'].queryset = employers_qs
+        elif self.authority == om_constants.AG_MANAGERS:
+            self.fields['employer'].queryset = employers_qs.filter(
+                agency_employee__branch=current_user.agency_employee.branch
             )
         else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
+            self.fields['employer'].queryset = employers_qs.filter(
+                agency_employee = current_user.agency_employee
             )
 
         self.helper = FormHelper()
