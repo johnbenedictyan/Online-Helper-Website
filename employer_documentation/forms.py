@@ -49,7 +49,7 @@ class EmployerForm(forms.ModelForm):
         ]
 
     def is_married(self, ms):
-        return ms == constants.MaritalStatusChoices.MARRIED
+        return ms == om_constants.MaritalStatusChoices.MARRIED
 
     def validate_nric_field(self, cleaned_field):
         empty_field = _("NRIC field cannot be empty")
@@ -486,7 +486,7 @@ class EmployerForm(forms.ModelForm):
         if (
             applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
             and
-            cleaned_field != constants.MaritalStatusChoices.MARRIED
+            cleaned_field != om_constants.MaritalStatusChoices.MARRIED
         ):
             raise ValidationError(
                 _('''
@@ -736,7 +736,7 @@ class EmployerSponsorForm(forms.ModelForm):
         ]
 
     def is_married(self, ms):
-        return ms == constants.MaritalStatusChoices.MARRIED
+        return ms == om_constants.MaritalStatusChoices.MARRIED
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
