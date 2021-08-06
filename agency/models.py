@@ -503,6 +503,9 @@ class AgencyBranch(models.Model):
         self.area = sg_region if sg_region else AreaChoices.choices[0][0]
         super().save(*args, **kwargs)
 
+    def get_employees(self):
+        return self.employees.filter(branch=self)
+
     class Meta:
         verbose_name = 'Agency Branch'
         verbose_name_plural = 'Agency Branches'
