@@ -1527,6 +1527,9 @@ class EmployerDoc(models.Model):
         default=DayOfWeekChoices.SUN
     )
 
+    def __str__(self):
+        return f'Case # {self.case_ref_no}'
+
     def save(self, *args, **kwargs):
         # Auto-increment document version number on every save
         # self.version += 1

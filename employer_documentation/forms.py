@@ -20,7 +20,7 @@ from onlinemaid.validators import (
     validate_ea_personnel_number, validate_passport, validate_nric,
     validate_fin
 )
-from agency.models import AgencyEmployee
+from agency.models import Agency, AgencyEmployee
 from maid.models import Maid
 
 # App Imports
@@ -49,7 +49,7 @@ class EmployerForm(forms.ModelForm):
         ]
 
     def is_married(self, ms):
-        return ms == constants.MaritalStatusChoices.MARRIED
+        return ms == om_constants.MaritalStatusChoices.MARRIED
 
     def validate_nric_field(self, cleaned_field):
         empty_field = _("NRIC field cannot be empty")
@@ -451,7 +451,7 @@ class EmployerForm(forms.ModelForm):
             'employer_residential_status'
         )
         if is_foreigner(employer_residential_status):
-            error_msg = self.validate_nric_field(cleaned_field)
+            error_msg = self.validate_passport_field(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
@@ -486,7 +486,7 @@ class EmployerForm(forms.ModelForm):
         if (
             applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
             and
-            cleaned_field != constants.MaritalStatusChoices.MARRIED
+            cleaned_field != om_constants.MaritalStatusChoices.MARRIED
         ):
             raise ValidationError(
                 _('''
@@ -736,7 +736,7 @@ class EmployerSponsorForm(forms.ModelForm):
         ]
 
     def is_married(self, ms):
-        return ms == constants.MaritalStatusChoices.MARRIED
+        return ms == om_constants.MaritalStatusChoices.MARRIED
 
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
@@ -1128,7 +1128,7 @@ class EmployerSponsorForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-md-6 text-center'
+                    css_class='form-group col-12 text-center'
                 )
             )
         )
@@ -1743,6 +1743,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
             'joint_applicant_spouse_passport_tag',
         ]
 
+    def is_married(self, ms):
+        return ms == om_constants.MaritalStatusChoices.MARRIED
+
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
@@ -2104,9 +2107,10 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         self.level_0_pk = kwargs.pop('level_0_pk')
         super().__init__(*args, **kwargs)
 
-        if self.instance.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        employer = models.Employer.objects.get(pk=self.level_0_pk)
+        if employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
             back_url = 'employer_sponsor_update_route'
-        elif self.instance.employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             back_url = 'employer_jointapplicant_update_route'
         else:
             back_url = 'employer_update_route'
@@ -2242,21 +2246,28 @@ class EmployerDocForm(forms.ModelForm):
         self.agency_id = kwargs.pop('agency_id')
         super().__init__(*args, **kwargs)
 
-        self.fields['employer'].queryset = (
-            models.Employer.objects.filter(
-                agency_employee__agency__pk=self.agency_id,
-            )
+        current_user = get_user_model().objects.get(pk=self.user_pk)
+        employers_qs = models.Employer.objects.filter(
+            agency_employee__agency__pk=self.agency_id,
         )
+        fdw_qs = Maid.objects.filter(agency=Agency.objects.get(
+            pk=self.agency_id
+        ))
+        self.fields['fdw'].queryset = fdw_qs
 
-        if self.authority == om_constants.AG_OWNERS:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_owner.agency)
+        if (
+            self.authority == om_constants.AG_OWNERS or
+            self.authority == om_constants.AG_ADMINS or
+            self.authority == om_constants.AG_ADMIN_STAFF
+        ):
+            self.fields['employer'].queryset = employers_qs
+        elif self.authority == om_constants.AG_MANAGERS:
+            self.fields['employer'].queryset = employers_qs.filter(
+                agency_employee__branch=current_user.agency_employee.branch
             )
         else:
-            self.fields['fdw'].queryset = (
-                Maid.objects.filter(agency=get_user_model().objects.get(
-                    pk=self.user_pk).agency_employee.agency)
+            self.fields['employer'].queryset = employers_qs.filter(
+                agency_employee = current_user.agency_employee
             )
 
         self.helper = FormHelper()

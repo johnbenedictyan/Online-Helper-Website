@@ -53,7 +53,10 @@
                                     EA Personnel:
                                 </div>
                                 <div class="col">
-                                    
+                                    {% for employee in agency.get_main_branch.get_employees %}
+                                    <p>{{employee.name}} ({{employee.ea_personnel_number}})</p>
+                                    <p>Mobile: {{employee.contact_number}}</p>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -96,7 +99,11 @@
                                     EA Personnel:
                                 </div>
                                 <div class="col">
-                                    
+                                    {% for employee in branch.get_employees %}
+                                    <p>{{employee.name}} ({{employee.ea_personnel_number}})</p>
+                                    <p>Mobile: {{employee.contact_number}}</p>
+                                    {% endfor %}
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -111,13 +118,13 @@
             <p>Appointment Only</p>
             {% else %}
             <p>Monday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.monday_start}} - {{agency.opening_hours.monday_end}}{% endif %}</p>
-            <p>Tuesday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.tuesday_start}} - {{agency.opening_hours.tuesday_end}}{% endif %}</p>
-            <p>Wednesday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.wednesday_start}} - {{agency.opening_hours.wednesday_end}}{% endif %}</p>
-            <p>Thursday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.thursday_start}} - {{agency.opening_hours.thursday_end}}{% endif %}</p>
-            <p>Friday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.friday_start}} - {{agency.opening_hours.friday_end}}{% endif %}</p>
-            <p>Saturday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.saturday_start}} - {{agency.opening_hours.saturday_end}}{% endif %}</p>
-            <p>Sunday: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.sunday_start}} - {{agency.opening_hours.sunday_end}}{% endif %}</p>
-            <p>Public Holidays: {% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.public_holiday_start}} - {{agency.opening_hours.public_holiday_end}}{% endif %}</p>
+            <p>Tuesday: {% if agency.opening_hours.tuesday_closed == True %}Closed{% else %}{{agency.opening_hours.tuesday_start}} - {{agency.opening_hours.tuesday_end}}{% endif %}</p>
+            <p>Wednesday: {% if agency.opening_hours.wednesday_closed == True %}Closed{% else %}{{agency.opening_hours.wednesday_start}} - {{agency.opening_hours.wednesday_end}}{% endif %}</p>
+            <p>Thursday: {% if agency.opening_hours.thursday_closed == True %}Closed{% else %}{{agency.opening_hours.thursday_start}} - {{agency.opening_hours.thursday_end}}{% endif %}</p>
+            <p>Friday: {% if agency.opening_hours.friday_closed == True %}Closed{% else %}{{agency.opening_hours.friday_start}} - {{agency.opening_hours.friday_end}}{% endif %}</p>
+            <p>Saturday: {% if agency.opening_hours.saturday_closed == True %}Closed{% else %}{{agency.opening_hours.saturday_start}} - {{agency.opening_hours.saturday_end}}{% endif %}</p>
+            <p>Sunday: {% if agency.opening_hours.sunday_closed == True %}Closed{% else %}{{agency.opening_hours.sunday_start}} - {{agency.opening_hours.sunday_end}}{% endif %}</p>
+            <p>Public Holidays: {% if agency.opening_hours.public_holiday_closed == True %}Closed{% else %}{{agency.opening_hours.public_holiday_start}} - {{agency.opening_hours.public_holiday_end}}{% endif %}</p>
             {% endif %}
         </div>
         <div class="col-md-6" id="agencyProfileGroup">

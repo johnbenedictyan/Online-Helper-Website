@@ -541,10 +541,10 @@ class AgencyEmployeeForm(forms.ModelForm):
                 pk=self.agency_id
             )
         )
+        self.fields['branch'].queryset = branch_list
+        self.fields['branch'].initial = branch_list[0]
 
         if self.form_type == 'create':
-            self.fields['branch'].queryset = branch_list
-            self.fields['branch'].initial = branch_list[0]
             self.fields['ea_personnel_number'].initial = ''
 
         if self.form_type == 'update':
