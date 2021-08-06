@@ -451,7 +451,7 @@ class EmployerForm(forms.ModelForm):
             'employer_residential_status'
         )
         if is_foreigner(employer_residential_status):
-            error_msg = self.validate_nric_field(cleaned_field)
+            error_msg = self.validate_passport_field(cleaned_field)
             if error_msg:
                 raise ValidationError(error_msg)
             else:
