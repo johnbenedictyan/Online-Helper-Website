@@ -8,6 +8,7 @@ from django_filters import CharFilter as DjangoFiltersCharFilter
 from django_filters import ChoiceFilter as DjangoFiltersChoiceFilter
 from django_filters import ModelChoiceFilter as DjangoFilterModelChoiceFilter
 from django_filters import FilterSet as DjangoFiltersFilterSet
+from requests.api import request
 
 # App Imports
 from agency.models import AgencyEmployee
@@ -41,6 +42,12 @@ class DashboardMaidFilter(DjangoFiltersFilterSet):
         ]
 
 
+def get_agency_employee_list(agency_id):
+    return AgencyEmployee.objects.filter(
+        agency__pk=agency_id
+    )
+
+
 class DashboardEmployerFilter(DjangoFiltersFilterSet):
     MONTH_CHOICES = (
         (1, 'January'),
@@ -64,14 +71,14 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
         widget=TextInput(attrs={'placeholder': 'Name or Mobile'})
     )
 
-    # agency_employee = DjangoFilterModelChoiceFilter(
-    #     field_name='agency_employee',
-    #     lookup_expr='exact',
-    #     label=_('Filter By EA Personnel'),
-    #     queryset=AgencyEmployee.objects.all(),
-    #     method='agency_employee_filter',
-    #     empty_label=_('Any')
-    # )
+    agency_employee = DjangoFilterModelChoiceFilter(
+        field_name='agency_employee',
+        lookup_expr='exact',
+        label=_('Filter By EA Personnel'),
+        queryset=get_agency_employee_list,
+        method='agency_employee_filter',
+        empty_label=_('Any')
+    )
 
     employer_birthday_month = DjangoFiltersChoiceFilter(
         field_name='employer_date_of_birth',
