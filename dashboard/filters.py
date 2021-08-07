@@ -8,13 +8,13 @@ from django_filters import CharFilter as DjangoFiltersCharFilter
 from django_filters import ChoiceFilter as DjangoFiltersChoiceFilter
 from django_filters import ModelChoiceFilter as DjangoFilterModelChoiceFilter
 from django_filters import FilterSet as DjangoFiltersFilterSet
-from requests.api import request
 
 # App Imports
 from agency.models import AgencyEmployee
 from employer_documentation.models import Employer, CaseStatus, EmployerDoc
 from maid.constants import MaidStatusChoices
 from maid.models import Maid
+from onlinemaid.constants import AG_MANAGERS, AG_SALES
 
 # Start of Filters
 
@@ -42,10 +42,23 @@ class DashboardMaidFilter(DjangoFiltersFilterSet):
         ]
 
 
-def get_agency_employee_list(agency_id):
-    return AgencyEmployee.objects.filter(
+def get_agency_employee_list(requestObj):
+    agency_id = requestObj['agency_id']
+    authority = requestObj['authority']
+    user = requestObj['user']
+    qs = AgencyEmployee.objects.filter(
         agency__pk=agency_id
     )
+
+    if authority == AG_MANAGERS:
+        qs = qs.filter(
+            branch=user.agency_employee.branch
+        )
+    elif authority == AG_SALES:
+        qs = qs.filter(
+            user=user
+        )
+    return qs
 
 
 class DashboardEmployerFilter(DjangoFiltersFilterSet):
