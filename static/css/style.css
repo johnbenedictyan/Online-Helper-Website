@@ -834,6 +834,14 @@ hr.text-light {
   }
 }
 
+.toast-innerwrapper {
+  z-index: 1080;
+}
+
+.toast-body {
+  background-color: #fff;
+}
+
 .slick-caorusel > .slick-list > .slick-track {
   margin-left: 0;
 }

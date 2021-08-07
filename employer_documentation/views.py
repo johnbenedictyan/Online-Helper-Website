@@ -1755,6 +1755,10 @@ class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
                         ERROR_MESSAGES_VERBOSE_NAME_MAP[md],
                         extra_tags='error'
                     )
+                return super().get_redirect_url(
+                    *args,
+                    **kwargs
+                )
             else:
                 self.object.generate_sigslug(self.stakeholder)
         elif self.view_type == 'revoke':
