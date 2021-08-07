@@ -75,102 +75,6 @@ const maidDetailUrlGen = (id) => {
     return location.origin + maidDetailUrl
 }
 
-const tippy_initialisation = function () {
-    contentGenerator = (salary, days_off, employment_history) => {
-        loaded_content = `<div id="maid-profile-card">
-                <div class="container">
-                    <div class="row">
-                        <div class="col px-2 px-md-3 px-lg-4 mt-4">
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="text-muted">Salary</h6>
-                                    <p>$${salary}</p>
-                                </div>
-                                <div class="col">
-                                    <h6 class="text-muted">Days off</h6>
-                                    <p>${days_off}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="text-muted">Employment History</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col px-2 px-md-3">
-                            <div class="card custom-card">
-                                <p class="lead mb-1">01/02/12 - 01/02/14</p>
-                                <h6 class="text-muted mb-0">2 years</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`
-        contentString = `<div id='maid-profile-card'>`
-        if (salary) {
-            contentString += `<p>Salary: $${salary}</p>`
-        }
-        if (days_off) {
-            contentString += `<p>Number of days off: ${days_off}</p>`
-        }
-        if (employment_history) {
-            contentString += '<h5>Employment History</h5><ul>'
-            for (eh in employment_history) {
-                contentString += `Start Date: ${eh.start_date} End Date:${eh.end_date} Country:${eh.country} Work_duration:${eh.work_duration}`
-            }
-            contentString += '</ul>'
-        }
-        return loaded_content
-    }
-    const loading_content = null;
-    let csrftoken = Cookies.get('csrftoken');
-    tippy('.maid-card', {
-        content: loading_content,
-        placement: 'right',
-        allowHTML: true,
-        theme: 'light',
-        onCreate(instance) {
-            // Setup our own custom state properties
-            instance._isFetching = false;
-            instance._data = null;
-            instance._error = null;
-        },
-        onShow(instance) {
-            let backend_uri = maidProfileUrlGen(instance.reference.attributes['data-maid'].value);
-            if (instance._isFetching || instance._data || instance._error) {
-                return;
-            }
-            instance._isFetching = true;
-
-            fetch(backend_uri, {
-                method: 'POST',
-                mode: 'same-origin',
-                headers: { 'X-CSRFToken': csrftoken }
-            })
-                .then((response) => response.json())
-                .then((result) => {
-                    instance._data = contentGenerator(result.salary, result.days_off, result.employment_history);
-                    instance.setContent(instance._data);
-                })
-                .catch((error) => {
-                    instance._error = error;
-                    instance.setContent(`Request failed. ${error}`);
-                })
-                .finally(() => {
-                    instance._isFetching = false;
-                });
-        },
-        onHidden(instance) {
-            instance.setContent(loading_content);
-            // Unset these properties so new network requests can be initiated
-            instance._data = null;
-            instance._error = null;
-        }
-    })
-}
-
 const maidProfileRedirect = (pk) => {
     location.replace(maidDetailUrlGen(pk));
 }
@@ -363,7 +267,6 @@ $(function () {
     assessmentProgressBarInitialisation();
     maidCreateFormFunc();
     rangeSliderInitialisation();
-    tippy_initialisation();
     populateFeaturedMaids();
     MO(
         {
@@ -373,8 +276,7 @@ $(function () {
                 childList: true,
                 subtree: false
             }
-        },
-        tippy_initialisation()
+        }
     );
     // $('#nationalitySelect').on('change', function () {
     //     let nationality = $(this).val();

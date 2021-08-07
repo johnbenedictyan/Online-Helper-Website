@@ -731,6 +731,15 @@ hr.text-light{
     }
 }
 
+.toast{
+    &-innerwrapper {
+        z-index: 1080;
+    }
+    &-body{
+        background-color: #fff;
+    }
+}
+
 
 
 
