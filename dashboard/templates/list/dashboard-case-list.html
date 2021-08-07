@@ -1,4 +1,5 @@
 {% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
 {% load dashboard_tags %}
 {% block dashboard_section %}
 <section>
@@ -9,8 +10,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="col text-right mb-3">
-                <a href="{% url 'case_create_route' %}" class="btn btn-lg btn-dashboard-primary mr-1 fs-14">Create Case</a>
+            <div class="col-9 mb-4 ml-2">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-5">
+                            {{filter.form.employer_fdw_search|as_crispy_field}}
+                        </div>
+                        <div class="col-5 offset-1">
+                            {{filter.form.agency_employee|as_crispy_field}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col text-right">
+                        <a href="{% url 'case_create_route' %}" class="btn btn-lg btn-dashboard-primary mr-1 fs-14">Create Case</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row bg-dashboard-primary text-light mx-half py-3 border">

@@ -105,7 +105,7 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
         model = Employer
         fields = [
             'employer_name',
-            # 'agency_employee'
+            'agency_employee'
         ]
 
     def employer_birthday_month_filter(self, queryset, name, value):
@@ -118,12 +118,41 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
 
 
 class DashboardCaseFilter(DjangoFiltersFilterSet):
+    employer_fdw_search = DjangoFiltersCharFilter(
+        label='Search By',
+        method='custom_employer_fdw_filter',
+        widget=TextInput(
+            attrs={
+                'placeholder': 'Employer / FDW'
+            }
+        )
+    )
+
+    agency_employee = DjangoFilterModelChoiceFilter(
+        field_name='agency_employee',
+        lookup_expr='exact',
+        label=_('Filter By EA Personnel'),
+        queryset=get_agency_employee_list,
+        method='agency_employee_filter',
+        empty_label=_('Any')
+    )
+
     class Meta:
         model = EmployerDoc
         fields = [
             'employer__employer_name',
-            'fdw__name'
+            'fdw__name',
+            'employer__agency_employee'
         ]
+
+    def custom_employer_fdw_filter(self, queryset, name, value):
+        return queryset.filter(
+            Q(employer__employer_name__icontains=value) |
+            Q(fdw__name__icontains=value)
+        )
+
+    def agency_employee_filter(self, queryset, name, value):
+        return queryset
 
 
 class DashboardSalesFilter(DjangoFiltersFilterSet):
