@@ -1,22 +1,74 @@
-{% extends 'payment-base.html' %}
-{% block payment_section %}
-{% include 'sections/title-banner.html' with page_name='Cart' %}
+{% extends 'dashboard-base.html' %}
+{% block dashboard_section %}
 <section>
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
-            {% for product_price in cart %}
-                <div class="col mb-4">
-                    {{product_price}}
-                    <a href="{% url 'remove_from_cart' product_price.pk %}" class="btn btn-danger">Remove</a>
-                </div>
-            {% endfor %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col mb-3">
+                <h5 class="fs-20">Shopping Cart</h5>
+            </div>
         </div>
+        <div class="row bg-dashboard-primary text-light mx-half py-3 border">
+            <div class="col">
+                <h6 class="mb-0">S/N</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Description</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0"># Month</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Start Date</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">End Date</h6>
+            </div>
+            <div class="col">
+                <h6 class="mb-0">Nett Amount</h6>
+            </div>
+            <div class="col-1 text-center">
+                <h6 class="mb-0">Actions</h6>
+            </div>
+        </div>
+        {% for product_price in cart %}
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3">
+            <div class="col">
+                <p class="mb-0">{{product_price.pk}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{product_price.subscription_product.name}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{product_price.subscription_product.interval}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0"></p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{product_price.subscription_product.unit_amount}}</p>
+            </div>
+            <div class="col-1">
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="{% url 'remove_from_cart' product_price.pk %}"><i class="far fa-trash-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row mx-half py-3 border border-top-0">
+            <div class="col text-center">
+                <p class="mb-0">No Cart Items</p>
+            </div>
+        </div>
+        {% endfor %}
         {% if cart_count > 0 %}
         <button id="checkout-btn" class="btn btn-primary">Checkout</button>
         {% endif %}
     </div>
 </section>
-{% endblock payment_section %}
+{% endblock dashboard_section %}
 {% block js %}
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <script>

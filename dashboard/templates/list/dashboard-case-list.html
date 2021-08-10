@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="row bg-dashboard-primary text-light mx-half py-3 border">
+        <div class="row bg-dashboard-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col-1">
                 <h6 class="mb-0">S/N</h6>
             </div>
@@ -54,7 +54,7 @@
             </div>
         </div>
         {% for object in object_list %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center d-none d-xl-flex">
             <div class="col-1">
                 <p class="mb-0">{{ forloop.counter }}</p>
             </div>
@@ -82,12 +82,71 @@
             </div>
         </div>
         {% empty %}
-        <div class="row mx-half py-3 border border-top-0">
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col text-center">
                 <p class="mb-0">No Cases</p>
             </div>
         </div>
         {% endfor %}
+        <div class="row d-xl-none">
+            {% for object in object_list %}
+            <div class="col col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{object.case_ref_no}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Contract Date:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.agreement_date}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Case No:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.case_ref_no}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Employer:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Case Type:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer.get_applicant_type_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>EA Personnel:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer.agency_employee}}</p>
+                            </div>
+                        </div>
+                        <h5 class="fs-12">Actions:</h5>
+                        <a class="mx-1" href="{% url 'case_update_route' level_1_pk=object.pk %}"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'case_detail_route' level_1_pk=object.pk %}"><i class="far fa-file-image"></i></a>
+                        <a class="mx-1" href="{% url 'case_delete_route' level_1_pk=object.pk %}"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock dashboard_section %}

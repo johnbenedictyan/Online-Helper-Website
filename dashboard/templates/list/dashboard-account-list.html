@@ -18,7 +18,7 @@
                 <p class="mb-0 mr-1">Account Limit: {{employee_accounts.current}}/{{employee_accounts.max}}</p>
             </div>
         </div>
-        <div class="row bg-custom-ab-blue text-dark mx-half py-3 border text-center">
+        <div class="row bg-custom-ab text-dark mx-half py-3 border text-center d-none d-xl-flex">
             <div class="col-1">
                 <h6 class="fs-14 mb-0">S/N</h6>
             </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         {% for account in accounts %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center">
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center d-none d-xl-flex">
             <div class="col-1">
                 <p class="mb-0">{{account.pk}}</p>
             </div>
@@ -75,12 +75,70 @@
             </div>
         </div>
         {% empty %}
-        <div class="row mx-half py-3 border border-top-0">
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col text-center">
                 <p class="mb-0">No Employee Accounts</p>
             </div>
         </div>
         {% endfor %}
+        <div class="row d-xl-none">
+            {% for account in accounts %}
+            <div class="col col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{account.pk}} - {{account.name}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Email Address:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{account.user.email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>EA Personnel Number:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{account.ea_personnel_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Role:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{account.get_role_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Branch:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{account.branch.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Last Login:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{account.user.last_login|date:"j M g:i A"}}</p>
+                            </div>
+                        </div>
+                        <h5 class="fs-12">Actions:</h5>
+                        <a class="mx-1" href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock dashboard_section %}

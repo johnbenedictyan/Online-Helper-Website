@@ -5,33 +5,33 @@ from django.urls import include, path
 
 # Imports from local app
 
-## Redirect Views
+# Redirect Views
 from .views import (
     AddToCart, CustomerPortal, RemoveFromCart, ViewCart, CheckoutSuccess,
     CheckoutCancel, ToggleSubscriptionProductArchive
 )
 
-## List Views
+# List Views
 from .views import (
     InvoiceList, SubscriptionProductList, SubscriptionProductImageList,
     SubscriptionProductPriceList
 )
 
-## Detail Views
+# Detail Views
 from .views import InvoiceDetail
 
-## Create Views
+# Create Views
 from .views import (
     SubscriptionProductCreate, SubscriptionProductImageCreate,
     SubscriptionProductPriceCreate
 )
 
-## Update Views
+# Update Views
 
-## Delete Views
+# Delete Views
 from .views import SubscriptionProductImageDelete
 
-## Generic Views
+# Generic Views
 from .views import StripeWebhookView, CheckoutSession
 
 # Start of Urls
@@ -161,7 +161,7 @@ urlpatterns = [
         'cart/',
         include([
             path(
-                'add/<slug:pk>/',
+                'add/',
                 AddToCart.as_view(),
                 name='add_to_cart'
             ),

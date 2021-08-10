@@ -1,4 +1,5 @@
 # Global Imports
+import itertools
 import json
 from datetime import datetime, timedelta
 from itertools import chain
@@ -245,7 +246,15 @@ class SalesList(BaseFilteredListView):
         else:
             qs = None
 
+        self.qs = qs
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'qs2': list(self.qs)
+        })
+        return context
 
 
 class StatusList(BaseFilteredListView):
