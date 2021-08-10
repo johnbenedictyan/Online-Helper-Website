@@ -161,7 +161,7 @@ urlpatterns = [
         'cart/',
         include([
             path(
-                'add/<slug:pk>/',
+                'add/',
                 AddToCart.as_view(),
                 name='add_to_cart'
             ),

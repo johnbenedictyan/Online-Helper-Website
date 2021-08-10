@@ -11,13 +11,13 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        {% include 'components/plan-card.html' with plan_type='Basic' plan_name='Biodata & CRM Solution Plan' price='280' feature1='100 Biodata Plan' feature2='100 Employer E-document' feature3='5 Sub Account User' %}
+                        {% include 'components/plan-card.html' with plan_type='Basic' plan_name='Biodata & CRM Solution Plan' price='280' feature1='100 Biodata Plan' feature2='100 Employer E-document' feature3='5 Sub Account User' plan_id='BasicPlan' prod_id='prod_K0olZqTcT0jErR' %}
                     </div>
                     <div class="col">
-                        {% include 'components/plan-card.html' with plan_type='Standard' plan_name='Biodata & CRM Solution Plan' price='380' feature1='300 Biodata Plan' feature2='300 Employer E-document' feature3='10 Sub Account User' banner=True %}
+                        {% include 'components/plan-card.html' with plan_type='Standard' plan_name='Biodata & CRM Solution Plan' price='380' feature1='300 Biodata Plan' feature2='300 Employer E-document' feature3='10 Sub Account User' banner=True plan_id='StandardPlan' prod_id='prod_IlJiwIHP2LXuRI' %}
                     </div>
                     <div class="col">
-                        {% include 'components/plan-card.html' with plan_type='Premium' plan_name='Biodata & CRM Solution Plan' price='480' feature1='600 Biodata Plan' feature2='600 Employer E-document' feature3='10 Sub Account User' %}
+                        {% include 'components/plan-card.html' with plan_type='Premium' plan_name='Biodata & CRM Solution Plan' price='480' feature1='600 Biodata Plan' feature2='600 Employer E-document' feature3='10 Sub Account User' plan_id='PremiumPlan' prod_id='prod_IlJqpv40JRgCa6' %}
                     </div>
                 </div>
             </div>
@@ -31,30 +31,30 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='Per Featured Maid' price='60' slots='32' %}
+                        {% include 'components/advertisement-card.html' with name='Per Featured Maid' price='60' slots='32' plan_id='featured_maids_ad' prod_id='prod_J438kMRsmpiPZR' %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='Home Page' price='500' slots='4' %}
+                        {% include 'components/advertisement-card.html' with name='Home Page' price='500' slots='4' plan_id='home_page_ad' prod_id='prod_J434xmRtR0HI8c' %}
                     </div>
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='Search Maid Page' price='400' slots='4' %}
+                        {% include 'components/advertisement-card.html' with name='Search Maid Page' price='400' slots='4' plan_id='search_maid_ad' prod_id='prod_J436TNwqM3fOBW' %}
                     </div>
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='Maid Profile Page' price='400' slots='4' %}
+                        {% include 'components/advertisement-card.html' with name='Maid Profile Page' price='400' slots='4' plan_id='maid_profile_ad' prod_id='prod_J436TNwqM3fOBW' %}
                     </div>
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='FAQs' price='200' slots='2' %}
+                        {% include 'components/advertisement-card.html' with name='FAQs' price='200' slots='2' plan_id='faq_ad' prod_id='prod_K0ouoMLDSY4Cta' %}
                     </div>
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='Maid Agencies' price='200' slots='2' %}
+                        {% include 'components/advertisement-card.html' with name='Maid Agencies' price='200' slots='2' plan_id='maid_agencies_ad' prod_id='prod_K0ouoMLDSY4Cta' %}
                     </div>
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='About Us' price='200' slots='2' %}
+                        {% include 'components/advertisement-card.html' with name='About Us' price='200' slots='2' plan_id='about_us_ad' prod_id='prod_K0ouoMLDSY4Cta'%}
                     </div>
                     <div class="col-xl-4 mb-5">
-                        {% include 'components/advertisement-card.html' with name='Enquiry' price='200' slots='2' %}
+                        {% include 'components/advertisement-card.html' with name='Enquiry' price='200' slots='2' plan_id='enquiry_ad' prod_id='prod_K0ouoMLDSY4Cta' %}
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
         </div>
         <div class="row">
             <div class="col my-4 text-right">
-                <a href="" class="btn btn-primary">View Shopping Cart</a>
+                <a href="{% url 'view_cart' %}" class="btn btn-primary">View Shopping Cart</a>
             </div>
         </div>
     </div>
