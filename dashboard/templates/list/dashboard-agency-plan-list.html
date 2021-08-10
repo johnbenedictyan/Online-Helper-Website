@@ -1,6 +1,80 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col mb-5">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="fs-20 text-dark mb-4">Subscription Plans</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {% include 'components/plan-card.html' with plan_type='Basic' plan_name='Biodata & CRM Solution Plan' price='280' feature1='100 Biodata Plan' feature2='100 Employer E-document' feature3='5 Sub Account User' %}
+                    </div>
+                    <div class="col">
+                        {% include 'components/plan-card.html' with plan_type='Standard' plan_name='Biodata & CRM Solution Plan' price='380' feature1='300 Biodata Plan' feature2='300 Employer E-document' feature3='10 Sub Account User' banner=True %}
+                    </div>
+                    <div class="col">
+                        {% include 'components/plan-card.html' with plan_type='Premium' plan_name='Biodata & CRM Solution Plan' price='480' feature1='600 Biodata Plan' feature2='600 Employer E-document' feature3='10 Sub Account User' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="fs-18 text-dark mb-4">Advertisement</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Per Featured Maid' price='60' slots='32' %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Home Page' price='500' slots='4' %}
+                    </div>
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Search Maid Page' price='400' slots='4' %}
+                    </div>
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Maid Profile Page' price='400' slots='4' %}
+                    </div>
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='FAQs' price='200' slots='2' %}
+                    </div>
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Maid Agencies' price='200' slots='2' %}
+                    </div>
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='About Us' price='200' slots='2' %}
+                    </div>
+                    <div class="col-xl-4 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Enquiry' price='200' slots='2' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5 class="fs-11">** Subscription and Advertisement Discount</h5>
+                <p class="fs-11 ml-3">5% Discount for 6 months</p>
+                <p class="fs-11 ml-3">10% Discount for 12 months</p>
+                <p class="fs-11 ml-3">Plans and Advertisement (except for featured Maid) are available in 3, 6 and 12 months</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-4 text-right">
+                <a href="" class="btn btn-primary">View Shopping Cart</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- <section>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -270,5 +344,5 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 {% endblock dashboard_section %}
