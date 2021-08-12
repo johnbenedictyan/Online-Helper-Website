@@ -1563,12 +1563,12 @@ class HomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
                 ).count(),
                 'max': None
             },
-            'subscriptions': {
-                'current': Subscription.objects.filter(
-                    customer=customer
-                ).count(),
-                'max': None
-            },
+            # 'subscriptions': {
+            #     'current': Subscription.objects.filter(
+            #         customer=customer
+            #     ).count(),
+            #     'max': None
+            # },
             'employers': {
                 'current': 123,
                 'max': None
