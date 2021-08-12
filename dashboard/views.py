@@ -51,8 +51,7 @@ from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
 # App Imports
 from .filters import (
-    DashboardCaseFilter,
-    DashboardEmployerFilter, DashboardMaidFilter,
+    DashboardCaseFilter, DashboardEmployerFilter, DashboardMaidFilter,
     DashboardSalesFilter, DashboardStatusFilter
 )
 
