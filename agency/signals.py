@@ -38,12 +38,12 @@ def stripe_customer_created_or_update(sender, instance, created, **kwargs):
         try:
             stripe_customer = stripe.Customer.create(
                 address={
-                    'city': None,
-                    'country': None,
-                    'line1': None,
-                    'line2': None,
-                    'postal_code': None,
-                    'state': None,
+                    'city': 'Singapore',
+                    'country': 'Singapore',
+                    'line1': agency.get_main_branch().address_1,
+                    'line2': agency.get_main_branch().address_2,
+                    'postal_code': agency.get_main_branch().postal_code,
+                    'state': 'Singapore',
                 },
                 description=f'Customer account for {agency.name}',
                 email=None,

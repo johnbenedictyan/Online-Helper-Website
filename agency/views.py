@@ -28,6 +28,8 @@ class AgencyList(GetAuthorityMixin, ListFilteredMixin, ListView):
     filter_set = AgencyFilter
     paginate_by = settings.AGENCY_PAGINATE_BY
     ordering = ['name']
+    authority = ''
+    agency_id = ''
 
 
 class AgencyDetail(DetailView):
