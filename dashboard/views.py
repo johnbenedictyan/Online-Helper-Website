@@ -1528,6 +1528,13 @@ class HomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
         agency = Agency.objects.get(
             pk=self.agency_id
         )
+        try:
+            customer = Customer.objects.get(
+                agency=agency
+            )
+        except Customer.DoesNotExist as e:
+            print(e)
+
         dashboard_home_page_kwargs = {
             'accounts': {
                 'current': AgencyEmployee.objects.filter(
@@ -1549,9 +1556,7 @@ class HomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
             },
             'subscriptions': {
                 'current': Subscription.objects.filter(
-                    customer=Customer.objects.get(
-                        agency=agency
-                    )
+                    customer=customer
                 ).count(),
                 'max': None
             },
