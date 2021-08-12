@@ -13,13 +13,13 @@ from .filters import AgencyFilter
 from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
 from .models import Agency, AgencyOwner, PotentialAgency
 from .mixins import (
-    OMStaffRequiredMixin, AgencyOwnerRequiredMixin,
+    GetAuthorityMixin, OMStaffRequiredMixin, AgencyOwnerRequiredMixin,
 )
 
 # Start of Views
 
 
-class AgencyList(ListFilteredMixin, ListView):
+class AgencyList(GetAuthorityMixin, ListFilteredMixin, ListView):
     context_object_name = 'agencies'
     http_method_names = ['get']
     model = Agency
