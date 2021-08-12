@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col-5 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+        <div class="col-5 border" style="background-image: url({% if agency.logo.url %}{{agency.logo.url}}{% endif %}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
         <div class="col-5 offset-2 pt-4" id="agencyInformationGroup">
             <h5 class="fs-16">{{agency.name}}</h5>
