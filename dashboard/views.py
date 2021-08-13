@@ -153,8 +153,13 @@ class MaidList(BaseFilteredListView):
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data()
+        agency = Agency.objects.get(pk=self.agency_id)
         kwargs.update({
-            'order_by': self.request.GET.get('order-by')
+            'order_by': self.request.GET.get('order-by'),
+            'biodata': agency.amount_of_biodata,
+            'featured': agency.amount_of_featured_biodata,
+            'biodata_allowed': agency.amount_of_biodata_allowed,
+            'feat_biodata_allowed': agency.amount_of_featured_biodata_allowed
         })
         return kwargs
 
