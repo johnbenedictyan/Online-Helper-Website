@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="row bg-custom-ab-blue text-dark mx-half py-3 border">
+        <div class="row bg-custom-ab text-dark mx-half py-3 border d-none d-xl-flex">
             <div class="col-1">
                 <h6 class="fs-14 mb-0">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
             </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
         {% for maid in maids %}
-        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col-1">
                 <p class="mb-0">{{maid.pk}}</p>
             </div>
@@ -103,12 +103,84 @@
             </div>
         </div>
         {% empty %}
-        <div class="row mx-half py-3 border border-top-0">
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col text-center">
                 <p class="mb-0">No Maids</p>
             </div>
         </div>
         {% endfor %}
+        <div class="row d-xl-none">
+            {% for maid in maids %}
+            <div class="col col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{maid.pk}} - {{maid.name}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Name:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Nationality:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.get_country_of_origin_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Type:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.get_maid_type_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>PP Expiry:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.passport_expiry|date:"j M Y"}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Status:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.get_status_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Date Created:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.created_on|date:"j M Y"}}</p>
+                            </div>
+                        </div>
+                        <h5 class="fs-12">Actions:</h5>
+                        <a class="mx-1" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
+                        {% if maid.is_published is False %}
+                        <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"></i></a>
+                        {% else %}
+                        <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"></i></a>
+                        {% endif %}
+                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock dashboard_section %}

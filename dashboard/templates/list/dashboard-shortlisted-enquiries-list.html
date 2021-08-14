@@ -8,7 +8,7 @@
                 <h4 class="fs-20">Shortlisted Enquiries</h4>
             </div>
         </div>
-        <div class="row bg-dashboard-primary text-light mx-half py-3 border">
+        <div class="row bg-dashboard-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col col-0-5 text-center">
                 <h6 class="mb-0">S/N</h6>
             </div>
@@ -29,7 +29,7 @@
             </div>
         </div>
         {% for enquiry in enquiries %}
-        <div class="row {% cycle '' 'bg-light ' %} mx-half py-3 border border-top-0">
+        <div class="row {% cycle '' 'bg-light ' %} mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col col-0-5 text-center">
                 <p class="mb-0">{{enquiry.pk}}</p>
             </div>
@@ -63,12 +63,107 @@
             </div>
         </div>
         {% empty %}
-        <div class="row mx-half py-3 border border-top-0">
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col text-center">
                 <p class="mb-0">No Enquiries</p>
             </div>
         </div>
         {% endfor %}
+        <div class="row d-xl-none">
+            {% for enquiry in enquiries %}
+            <div class="col col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{enquiry.pk}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Name:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Mobile No:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.mobile_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Email:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% for maid in enquiry.maids.all|enquirymaidfilter:agency_id %}
+                                <div class="col-12 my-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    Name:
+                                                </div>
+                                                <div class="col">
+                                                    {{maid.name}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    Nationality:
+                                                </div>
+                                                <div class="col">
+                                                    {{maid.get_country_of_origin_display}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    Type:
+                                                </div>
+                                                <div class="col">
+                                                    {{maid.get_maid_type_display}}
+                                                </div>
+                                            </div>
+                                            <p class="mb-0">Name: {{maid.name}}</p>
+                                            <p class="mb-0">Nationality: {{maid.get_country_of_origin_display }}</p>
+                                            <p class="mb-0">Type: {{maid.get_maid_type_display}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Remarks:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.remarks}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Date Published:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.date_published}}</p>
+                            </div>
+                        </div>
+                        <h5 class="fs-12">Actions:</h5>
+                        <a class="mx-1" href="#"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock dashboard_section %}

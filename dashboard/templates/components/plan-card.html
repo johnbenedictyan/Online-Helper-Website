@@ -1,0 +1,87 @@
+<div class="card bg-custom-lab text-dark">
+    <div class="card-body text-center">
+      <h5 class="card-title fs-16">{{plan_type}}</h5>
+      <h5 class="card-title fs-12 mb-0">{{plan_name}}</h5>
+      {% if banner %}
+      <div class="row" style="margin-right: -1.25rem; margin-left: -1.25rem;">
+          <div class="col bg-primary text-white my-1 py-2">
+              <h5 class="fs-14 mb-0">Most Popular Plan</h5>
+          </div>
+      </div>
+      {% else %}
+      <div class="row justify-content-center">
+          <div class="col-6">
+            <hr>
+          </div>
+      </div>
+      {% endif %}
+      <p class="fs-20 {% if banner %}mt-1 mb-5{% else %}mt-3 mb-5{% endif %}">S${{price}}/ mth</p>
+      <div class="row">
+          <div class="col text-left mb-4">
+            <p class="card-text">{{feature1}}</p>
+            <p class="card-text">{{feature2}}</p>
+            <p class="card-text">{{feature3}}</p>
+          </div>
+      </div>
+      <button type="button" class="btn btn-primary w-50 my-4" data-toggle="modal" data-target="#{{plan_id}}Modal">Subscribe</button>
+    </div>
+</div>
+  
+<div class="modal fade" id="{{plan_id}}Modal" tabindex="-1" aria-labelledby="{{plan_id}}ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{plan_id}}ModalLabel">
+                    {% if plan_id == 'BasicPlan' %}
+                    Basic Biodata & CRM Solution Plan
+                    {% elif plan_id == 'StandardPlan' %}
+                    Standard Biodata & CRM Solution Plan
+                    {% elif plan_id == 'PremiumPlan' %}
+                    Premium Biodata & CRM Solution Plan
+                    {% endif %}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'add_to_cart' %}" id="subscriptionPlanForm" method="POST">
+                    {% csrf_token %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="agencySubscriptionPlan" id="agencySubscriptionPlanRadios1" value="{% if plan_id == 'BasicPlan' %}price_1JMn8FKvEbGNaxrCyjESuW6Y{% elif plan_id == 'StandardPlan' %}price_1I9n5vKvEbGNaxrCbI9NEQ7Y{% elif plan_id == 'PremiumPlan' %}price_1I9nCqKvEbGNaxrCgwHXYWEY{% endif %}" checked>
+                        <label class="form-check-label" for="agencySubscriptionPlanRadios1">
+                            3 Months
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="agencySubscriptionPlan" id="agencySubscriptionPlanRadios2" value="{% if plan_id == 'BasicPlan' %}price_1JMn8FKvEbGNaxrChQji3o1u{% elif plan_id == 'StandardPlan' %}price_1I9n6KKvEbGNaxrCdb3CjhAE{% elif plan_id == 'PremiumPlan' %}price_1I9nDBKvEbGNaxrCliF4Utjg{% endif %}">
+                        <label class="form-check-label" for="agencySubscriptionPlanRadios2">
+                            6 Months
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="agencySubscriptionPlan" id="agencySubscriptionPlanRadios3" value="{% if plan_id == 'BasicPlan' %}price_1JMn8FKvEbGNaxrCvTyY5Ym6{% elif plan_id == 'StandardPlan' %}price_1I9n6xKvEbGNaxrC30npDvLs{% elif plan_id == 'PremiumPlan' %}price_1I9nDRKvEbGNaxrCmYucgqfN{% endif %}">
+                        <label class="form-check-label" for="agencySubscriptionPlanRadios3">
+                            12 Months
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="submitButton">Subscribe</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% block js %}
+<script>
+    $(function(){
+        $('#submitButton').click(
+            function(){
+                $('#subscriptionPlanForm').submit();
+            }
+        );
+    });
+</script>
+{% endblock js%}

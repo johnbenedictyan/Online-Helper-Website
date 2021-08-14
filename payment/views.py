@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import get_list_or_404
+from django.shortcuts import get_list_or_404, redirect
 from django.urls.base import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
@@ -139,52 +139,60 @@ class ToggleSubscriptionProductArchive(RedirectView):
             )
 
 
-class AddToCart(RedirectView):
+class AddToCart(View):
     pattern_name = 'view_cart'
 
-    def get_redirect_url(self, *args, **kwargs):
-        current_cart = self.request.session.get('cart', [])
-        try:
-            select_product_price = SubscriptionProductPrice.objects.get(
-                pk=kwargs.get('pk')
-            )
-        except SubscriptionProductPrice.DoesNotExist:
-            messages.error(
-                self.request,
-                'This product does not exist'
-            )
-        else:
-            subscription_product = select_product_price.subscription_product
-            agency = self.request.user.agency_owner.agency
-            if SubscriptionLimitMap[subscription_product.pk]['type'] == 'plan':
-                if Subscription.objects.filter(
-                    customer=Customer.objects.get(
-                        agency=agency
-                    ),
-                    subscription_type=SubscriptionTypeChoices.PLAN,
-                    status=SubscriptionStatusChoices.ACTIVE,
-                    end_date__gt=timezone.now()
-                ).count() >= 1:
-                    messages.warning(
-                        self.request,
-                        f'''
-                        You already have an active subscription.
-                        If you would like to change that subscription,
-                        <a href="{reverse_lazy('stripe_customer_portal')}">
-                            Click Here
-                        </a>
-                        ''',
-                        extra_tags='error'
-                    )
-                    kwargs.pop('pk')
-                    return reverse_lazy('dashboard_agency_plan_list')
+    def post(self, request, *args, **kwargs):
+        if (
+            request.POST.get('agencySubscriptionPlan') or
+            request.POST.get('advertisementPlan')
+        ):
+            current_cart = self.request.session.get('cart', [])
+            if request.POST.get('agencySubscriptionPlan'):
+                pk = request.POST.get('agencySubscriptionPlan')
+            else:
+                pk = request.POST.get('advertisementPlan')
+            try:
+                selected_product_price = SubscriptionProductPrice.objects.get(
+                    pk=pk
+                )
+            except SubscriptionProductPrice.DoesNotExist:
+                messages.error(
+                    self.request,
+                    'This product does not exist'
+                )
+                return redirect('dashboard_agency_plan_list')
+            else:
+                product = selected_product_price.subscription_product
+                agency = self.request.user.agency_owner.agency
+                if SubscriptionLimitMap[product.pk]['type'] == 'plan':
+                    if Subscription.objects.filter(
+                        customer=Customer.objects.get(
+                            agency=agency
+                        ),
+                        subscription_type=SubscriptionTypeChoices.PLAN,
+                        status=SubscriptionStatusChoices.ACTIVE,
+                        end_date__gt=timezone.now()
+                    ).count() >= 1:
+                        messages.warning(
+                            self.request,
+                            f'''
+                            You already have an active subscription.
+                            If you would like to change that subscription,
+                            <a href="{reverse_lazy('stripe_customer_portal')}">
+                                Click Here
+                            </a>
+                            ''',
+                            extra_tags='error'
+                        )
+                        return reverse_lazy('dashboard_agency_plan_list')
 
-            current_cart.append(
-                select_product_price.pk
-            )
-            self.request.session['cart'] = current_cart
-        kwargs.pop('pk')
-        return super().get_redirect_url(*args, **kwargs)
+                current_cart.append(
+                    selected_product_price.pk
+                )
+                self.request.session['cart'] = current_cart
+        else:
+            return redirect('dashboard_agency_plan_list')
 
 
 class RemoveFromCart(RedirectView):

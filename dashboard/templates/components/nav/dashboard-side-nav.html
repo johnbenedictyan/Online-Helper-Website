@@ -206,18 +206,32 @@
                 </div>
             </div>
         </div>
-        <div class="row new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}">
+        <div class="row">
             <div class="col">
-                <a class="nav-link new-side-nav-link" href="{% url 'dashboard_agency_plan_list' %}" class="">
-                    <p class="m-1 pl-2">Subscriptions</p>
-                </a>
-            </div>
-        </div>
-        <div class="row new-side-nav-link">
-            <div class="col">
-                <a class="nav-link new-side-nav-link" href="{% url 'stripe_customer_portal' %}" class="">
-                <p class="m-1 pl-2">Billing History</p>
-                </a>
+                <div class="row new-side-nav-link">
+                    <div class="col-10">
+                        <a class="nav-link new-side-nav-link" href="{% url 'dashboard_agency_plan_list' %}">
+                            <p class="m-1 pl-2">Subscriptions</p>
+                        </a>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center px-0">
+                        <a class="navToggler" data-toggle="collapse" href="#subscriptionDropdownNav" role="button" aria-expanded="true" aria-controls="subscriptionDropdownNav">
+                            <i class="fas fa-angle-double-{% if url_name == 'dashboard_general_enquiries_list' or url_name == 'dashboard_shortlisted_enquiries_list' %}down{% else %}right{% endif %}"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse row {% if url_name == 'view_cart' or url_name == 'stripe_customer_portal' %}show{% endif %}" id="subscriptionDropdownNav">
+                    <div class="col-12 new-side-nav-link {% if url_name == 'view_cart' %}active{% endif %}">
+                        <a href="{% url 'view_cart' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">Shopping Cart</p>
+                        </a>
+                    </div>
+                    <div class="col-12 new-side-nav-link">
+                        <a href="{% url 'stripe_customer_portal' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                            <p class="m-1 pl-4">Billing History</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

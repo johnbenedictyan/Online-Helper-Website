@@ -20,7 +20,7 @@
                 </form>
             </div>
         </div>
-        <div class="row bg-dashboard-primary text-light mx-half py-3 border">
+        <div class="row bg-dashboard-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col col-0-5 text-center">
                 <h6 class="mb-0">S/N</h6>
             </div>
@@ -47,7 +47,7 @@
             </div>
         </div>
         {% for sale in sales %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             {% if sale.is_archived_doc is False %}
             <div class="col col-0-5">
                 <p class="mb-0"></p>
@@ -108,12 +108,138 @@
             {% endif %}
         </div>
         {% empty %}
-        <div class="row mx-half py-3 border border-top-0">
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col text-center">
                 <p class="mb-0">No Sales Data</p>
             </div>
         </div>
         {% endfor %}
+        <div class="row">
+            {% for sale in qs2 %}
+            <div class="col col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        {% if sale.is_archived_doc is False %}
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{sale.pk}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Contract Date:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{sale.agreement_date}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Deployment:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Employer & FDW:</p>
+                            </div>
+                            <div class="col">
+                                <p>Employer: {{sale.employer.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.employer.agency_employee.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Type:</p>
+                            </div>
+                            <div class="col">
+                                <p>{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Amount:</p>
+                            </div>
+                            <div class="col">
+                                <p>Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br/>Balance:$ {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Received On:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
+                            </div>
+                        </div>
+                        <h5 class="fs-12">Actions:</h5>
+                        <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        {% else %}
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{sale.pk}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Contract Date:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{sale.agreement_date}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Deployment:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{sale.fdw_work_commencement_date}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Employer & FDW:</p>
+                            </div>
+                            <div class="col">
+                                <p>Employer: {{sale.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.agency.agency_employee_name}} {{sale.agency.agency_employee_ea_personnel_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Type:</p>
+                            </div>
+                            <div class="col">
+                                <p>{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Amount:</p>
+                            </div>
+                            <div class="col">
+                                <p>Deposit:$ {{sale.ca_deposit_amount}}<br/>Balance:$ {{sale.calc_bal}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-lg-5">
+                                <p>Received On:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{sale.ca_deposit_date}}</p>
+                            </div>
+                        </div>
+                        <h5 class="fs-12">Actions:</h5>
+                        <a class="mx-1" href="#"><i class="far fa-unlink"></i></a>
+                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="far fa-file-image"></i></a>
+                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock dashboard_section %}
