@@ -299,9 +299,7 @@ class AccountList(BaseListView):
         )
         kwargs.update({
             'employee_accounts': {
-                'current': AgencyEmployee.objects.filter(
-                    agency=agency
-                ).count(),
+                'current': agency.amount_of_employees,
                 'max': agency.amount_of_employees_allowed
             }
         })
