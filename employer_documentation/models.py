@@ -2132,6 +2132,14 @@ class DocServiceFeeSchedule(models.Model):
     )
     ca_deposit_date = models.DateField(
         verbose_name=_('Deposit Paid Date'),
+        blank=True,
+        null=True
+    )
+    ca_deposit_detail = models.CharField(
+        verbose_name=_("Deposit Payment Detail"),
+        max_length=255,
+        blank=True,
+        null=True
     )
 
     def calc_admin_cost(self):

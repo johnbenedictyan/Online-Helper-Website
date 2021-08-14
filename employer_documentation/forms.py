@@ -2355,7 +2355,6 @@ class EmployerDocForm(forms.ModelForm):
         fdw_salary = self.cleaned_data.get(
             'fdw_salary'
         )
-        print(fdw_monthly_loan_repayment, fdw_salary)
         if fdw_monthly_loan_repayment >= fdw_salary:
             self.add_error(
                 'fdw_monthly_loan_repayment',
@@ -2449,7 +2448,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             # Form A
             HTML(
                 """
-                <h6>Service Fee</h6>
+                <h6>1. Service Fee</h6>
             """),
             Row(
                 Column(
@@ -2463,7 +2462,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
             HTML(
                 """
-                <h6>Administrative Cost</h6>
+                <h6>2. Administrative Cost</h6>
             """),
             Row(
                 Column(
@@ -2582,7 +2581,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
             HTML(
                 """
-                <h6>Placement Fee</h6>
+                <h6>3. Placement Fee</h6>
             """),
             Row(
                 Column(
@@ -2596,7 +2595,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
             HTML(
                 """
-                <h6>Deposit</h6>
+                <h6>4. Deposit</h6>
             """),
             Row(
                 Column(
