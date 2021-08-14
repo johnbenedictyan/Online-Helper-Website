@@ -681,10 +681,14 @@ class EmployerForm(forms.ModelForm):
             'fdw_salary'
         )
         if fdw_monthly_loan_repayment >= fdw_salary:
-            raise ValidationError(
-                '''The FDW monthly loan repayment should be less than the FDW
-                basic salary'''
-            ) 
+            self.add_error(
+                'fdw_monthly_loan_repayment_error',
+                ValidationError(
+                    '''The FDW monthly loan repayment should be less than the
+                    FDW basic salary''',
+                    code='fdw_monthly_loan_repayment_error',
+                )
+            )
         return fdw_monthly_loan_repayment
 
     def save(self):
