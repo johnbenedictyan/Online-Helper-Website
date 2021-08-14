@@ -1830,6 +1830,7 @@ class EmployerDoc(models.Model):
                 b3_agency_fee=self.rn_servicefeeschedule_ed.b3_agency_fee,
                 ca_deposit_amount=self.rn_servicefeeschedule_ed.ca_deposit_amount,
                 ca_deposit_date=self.rn_servicefeeschedule_ed.ca_deposit_date,
+                ca_remaining_payment_date=self.rn_servicefeeschedule_ed.ca_remaining_payment_date,
                 c1_3_handover_days=self.rn_serviceagreement_ed.c1_3_handover_days,
                 c3_2_no_replacement_criteria_1=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1,
                 c3_2_no_replacement_criteria_2=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2,
@@ -2139,6 +2140,10 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_("Deposit Payment Detail"),
         max_length=255,
         blank=True,
+        null=True
+    )
+    ca_remaining_payment_date = models.DateField(
+        verbose_name=_('Remaining Amount Paid Date'),
         null=True
     )
 
@@ -3967,6 +3972,10 @@ class ArchivedDoc(models.Model):
     )
     ca_deposit_date = models.DateField(
         verbose_name=_('Deposit Paid Date'),
+    )
+    ca_remaining_payment_date = models.DateField(
+        verbose_name=_('Remaining Amount Paid Date'),
+        null=True
     )
 
     def calc_admin_cost(self):
