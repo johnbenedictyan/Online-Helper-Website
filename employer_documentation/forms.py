@@ -673,24 +673,6 @@ class EmployerForm(forms.ModelForm):
         else:
             return None
 
-    def clean_fdw_monthly_loan_repayment(self):
-        fdw_monthly_loan_repayment = self.cleaned_data.get(
-            'fdw_monthly_loan_repayment'
-        )
-        fdw_salary = self.cleaned_data.get(
-            'fdw_salary'
-        )
-        if fdw_monthly_loan_repayment >= fdw_salary:
-            self.add_error(
-                'fdw_monthly_loan_repayment_error',
-                ValidationError(
-                    '''The FDW monthly loan repayment should be less than the
-                    FDW basic salary''',
-                    code='fdw_monthly_loan_repayment_error',
-                )
-            )
-        return fdw_monthly_loan_repayment
-
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':
             employer_strict_fields = [
@@ -2365,6 +2347,25 @@ class EmployerDocForm(forms.ModelForm):
                 )
             )
         )
+
+    def clean_fdw_monthly_loan_repayment(self):
+        fdw_monthly_loan_repayment = self.cleaned_data.get(
+            'fdw_monthly_loan_repayment'
+        )
+        fdw_salary = self.cleaned_data.get(
+            'fdw_salary'
+        )
+        print(fdw_monthly_loan_repayment, fdw_salary)
+        if fdw_monthly_loan_repayment >= fdw_salary:
+            self.add_error(
+                'fdw_monthly_loan_repayment',
+                ValidationError(
+                    '''The FDW monthly loan repayment should be less than the
+                    FDW basic salary''',
+                    code='fdw_monthly_loan_repayment_error',
+                )
+            )
+        return fdw_monthly_loan_repayment
 
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':
