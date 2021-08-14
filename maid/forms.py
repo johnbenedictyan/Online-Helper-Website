@@ -334,6 +334,15 @@ class MaidForm(forms.ModelForm):
             )
         return cleaned_field
 
+    def clean_photo(self):
+        photo = self.cleaned_data.get('photo', False)
+        if photo:
+            if photo._size > 4*1024*1024:
+                raise ValidationError("Image file too large ( > 4mb )")
+            return photo
+        else:
+            raise ValidationError("Couldn't read uploaded image")
+
     def save(self, *args, **kwargs):
         self.instance.agency = Agency.objects.get(
             pk=self.agency_id

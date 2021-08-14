@@ -1,5 +1,6 @@
 # Django Imports
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.mail import BadHeaderError, send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -406,6 +407,14 @@ class AgencyUpdateForm(forms.ModelForm):
             )
         )
 
+    def clean_logo(self):
+        logo = self.cleaned_data.get('logo', False)
+        if logo:
+            if logo._size > 4*1024*1024:
+                raise ValidationError("Image file too large ( > 4mb )")
+            return logo
+        else:
+            raise ValidationError("Couldn't read uploaded image")
 
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
