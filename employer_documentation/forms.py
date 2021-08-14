@@ -2607,10 +2607,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 ),
                 Column(
                     Field(
-                        'ca_deposit_date',
-                        type='text',
-                        onfocus="(this.type='date')",
-                        placeholder='Deposit paid date'
+                        'ca_deposit_detail'
                     ),
                     css_class='form-group col-md-6'
                 )
