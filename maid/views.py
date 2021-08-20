@@ -69,7 +69,8 @@ class MaidToggleFeatured(BaseMaidRedirectView):
         )
 
 
-class MaidList(LoginRequiredMixin, ListFilteredMixin, ListView):
+class MaidList(LoginRequiredMixin, GetAuthorityMixin, ListFilteredMixin,
+               ListView):
     context_object_name = 'maids'
     http_method_names = ['get']
     model = Maid

@@ -214,51 +214,42 @@ class SalesList(BaseFilteredListView):
                 Q(fdw__name__icontains=search_terms)
             )
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            qs = chain(
+            qs = list(
                 qs.filter(
                     employer__agency_employee__agency__pk=self.agency_id
-                ),
-                qsArchived.filter(
-                    agency__agency_license_no=Agency.objects.get(
-                        pk=self.agency_id
-                    ).license_number
-                ),
-            )
+                    )
+                ) + list(
+                    qsArchived.filter(
+                        agency__agency_license_no=Agency.objects.get(
+                            pk=self.agency_id
+                        ).license_number
+                    )
+                )
         elif self.authority == AG_MANAGERS:
             ae = self.request.user.agency_employee
             ag_branch = ae.branch
             ea_p_nos = ae.get_all_ea_personnel_no_in_branch()
-            qs = chain(
+            qs = list(
                 qs.filter(
                     employer__agency_employee__branch=ag_branch
-                ),
+                )) + list(
                 qsArchived.filter(
                     agency__agency_employee_ea_personnel_number__in=ea_p_nos
-                ),
-            )
+                ))
         elif self.authority == AG_SALES:
             ae = self.request.user.agency_employee
             ae_p_no = ae.ea_personnel_number
-            qs = chain(
+            qs = list(
                 qs.filter(
                     employer__agency_employee=self.request.user.agency_employee
-                ),
+                )) + list(
                 qsArchived.filter(
                     agency__agency_employee_ea_personnel_number=ae_p_no
-                ),
-            )
+                ))
         else:
             qs = None
 
-        self.qs = qs
         return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'qs2': list(self.qs)
-        })
-        return context
 
 
 class StatusList(BaseFilteredListView):

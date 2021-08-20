@@ -1,0 +1,159 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/vendor/bootstrap/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body class="dashboard-body">
+        <main>
+            <style>
+                @page {
+                    font-size: 12pt;
+                    font-family: Arial;
+                    size: A4;
+                }
+                .fs-11 {
+                    font-size: 11pt;
+                }
+                .fs-14 {
+                    font-size: 14pt;
+                }
+                .fs-18 {
+                    font-size: 18pt;
+                }
+            </style>
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8-5">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="fs-18">{{object.employer.agency_employee.agency.name}}</h5>
+                                    <p>License No: {{object.employer.agency_employee.agency.license_number}}</p>
+                                    <p>{{object.employer.agency_employee.agency.get_main_branch.address_1}}</p>
+                                    <p>{{object.employer.agency_employee.agency.get_main_branch.address_2}}</p>
+                                    <p>{{object.employer.agency_employee.agency.get_main_branch.postal_code}}</p>
+                                </div>
+                                <div class="col mt-5">
+                                    <h5 class="fs-14">Deposit Receipt</h5>
+                                    <p>Receipt No: </p>
+                                    <p>Date: </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col my-5">
+                                    <h5 class="fs-14">Received From</h5>
+                                    <p>{{object.employer.employer_name}}</p>
+                                    <p>{{object.employer.employer_address_1}}</p>
+                                    <p>{{object.employer.employer_address_2}}</p>
+                                    <p>{{object.employer.postal_code}}</p>
+                                </div>
+                            </div>
+                            <div class="row bg-custom-bb text-white py-2">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-8">
+                                    <h5 class="fs-11 mb-0">Description</h5>
+                                </div>
+                                <div class="col-2">
+                                    <h5 class="fs-11 mb-0">Amount</h5>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                &nbsp;
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-1">
+                                    <p class="mb-0">1</p>
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Service Fee</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.b1_service_fee}}</p>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-1">
+                                    <p class="mb-0">2</p>
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Administrative Costs</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.calc_admin_cost}}</p>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-1">
+                                    <p class="mb-0">3</p>
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Placement Fee</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.calc_placement_fee}}</p>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Sub Total</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.calc_total_fee}}</p>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                &nbsp;
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Deposit Received</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.ca_deposit_amount}}</p>
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Outstanding Amount</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.calc_bal}}</p>
+                                </div>
+                            </div>
+                            <div class="row py-2 border border-left-0 border-right-0">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Total Amount</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="mb-0">{{object.rn_servicefeeschedule_ed.calc_total_fee}}</p>
+                                </div>
+                            </div>
+                            <div class="row pt-4">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-0">Payment Detail: </p>
+                                </div>
+                                <div class="col-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

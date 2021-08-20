@@ -327,6 +327,14 @@ urlpatterns = [
                                 ),
                                 name='pdf_agency_medical_report_route'
                             ),
+                            path(
+                                'deposit-invoice/',
+                                views.HtmlToRenderPdfAgencyView.as_view(
+                                    template_name='pdf/deposit-invoice.html',
+                                    content_disposition='inline; filename="deposit-invoice.pdf"'
+                                ),
+                                name='pdf_deposit_invoice'
+                            ),
                         ]),
                     ),
                     path(

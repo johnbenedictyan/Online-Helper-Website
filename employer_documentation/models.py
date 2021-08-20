@@ -2146,6 +2146,18 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_('Remaining Amount Paid Date'),
         null=True
     )
+    ca_deposit_receipt_no = models.CharField(
+        max_length=255,
+        verbose_name=_('Deposit Receipt No'),
+        blank=True,
+        null=True
+    )
+    ca_remaining_payment_receipt_no = models.CharField(
+        max_length=255,
+        verbose_name=_('Remaining Payment Receipt No'),
+        blank=True,
+        null=True
+    )
 
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
