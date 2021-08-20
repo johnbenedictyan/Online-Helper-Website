@@ -3129,6 +3129,81 @@ class DocSafetyAgreementForm(forms.ModelForm):
                     employer_doc.increment_version_number()
         return super().save()
 
+
+class DepositDetailForm(forms.ModelForm):
+    class Meta:
+        model = models.DocServiceFeeSchedule
+        fields = [
+            'ca_deposit_detail',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML(
+                """
+                    <h5>Deposit Details</h5>
+                """),
+            Row(
+                Column(
+                    'ca_deposit_detail'
+                ),
+            ),
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-25"
+                    ),
+                    css_class='form-group col-12 text-center'
+                )
+            )
+        )
+
+    def save(self):
+        return super().save()
+
+
+class RemainingAmountDetailForm(forms.ModelForm):
+    class Meta:
+        model = models.DocServiceFeeSchedule
+        fields = [
+            'ca_remaining_payment_detail',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML(
+                """
+                    <h5>Remaining Amount Details</h5>
+                """),
+            Row(
+                Column(
+                    'ca_remaining_payment_detail'
+                ),
+            ),
+
+            # Submit
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-primary w-25"
+                    ),
+                    css_class='form-group col-12 text-center'
+                )
+            )
+        )
+
 # Temporary solution to blank out S3 bucket URL
 
 

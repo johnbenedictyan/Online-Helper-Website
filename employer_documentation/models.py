@@ -4,6 +4,7 @@ import uuid
 import requests
 import secrets
 from decimal import Decimal, ROUND_HALF_UP
+from datetime import datetime, timezone
 
 # Django Imports
 from django.db import models
@@ -68,6 +69,21 @@ def generate_archive_path(instance, filename):
     return os.path.join(relative_path, filename_split[-1])
 
 # Start of Models
+
+
+class ReceiptMaster(models.Model):
+    number = models.PositiveBigIntegerField(
+        verbose_name=_('Running Count of the receipt numbers'),
+        editable=False,
+        default=0
+    )
+
+    def get_running_number(self):
+        return self.number
+
+    def increment_running_number(self):
+        self.number += 1
+        self.save()
 
 # Employer e-Documentation Models
 
@@ -1830,7 +1846,11 @@ class EmployerDoc(models.Model):
                 b3_agency_fee=self.rn_servicefeeschedule_ed.b3_agency_fee,
                 ca_deposit_amount=self.rn_servicefeeschedule_ed.ca_deposit_amount,
                 ca_deposit_date=self.rn_servicefeeschedule_ed.ca_deposit_date,
+                ca_deposit_detail=self.rn_servicefeeschedule_ed.ca_deposit_detail,
+                ca_deposit_receipt_no=self.rn_servicefeeschedule_ed.ca_deposit_receipt_no,
                 ca_remaining_payment_date=self.rn_servicefeeschedule_ed.ca_remaining_payment_date,
+                ca_remaining_payment_detail=self.rn_servicefeeschedule_ed.ca_remaining_payment_detail,
+                ca_remaining_payment_receipt_no=self.rn_servicefeeschedule_ed.ca_remaining_payment_receipt_no,
                 c1_3_handover_days=self.rn_serviceagreement_ed.c1_3_handover_days,
                 c3_2_no_replacement_criteria_1=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1,
                 c3_2_no_replacement_criteria_2=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2,
@@ -2158,12 +2178,17 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True
     )
+    ca_remaining_payment_detail = models.CharField(
+        verbose_name=_("Deposit Remaining Payment Detail"),
+        max_length=255,
+        blank=True,
+        null=True
+    )
 
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
         total = 0
         fields = [
-            self.b1_service_fee,
             self.b2a_work_permit_application_collection,
             self.b2b_medical_examination_fee,
             self.b2c_security_bond_accident_insurance,
@@ -2183,10 +2208,7 @@ class DocServiceFeeSchedule(models.Model):
 
     def calc_placement_fee(self):
         # Method to calculate placement fee
-        return (
-            + self.b3_agency_fee
-            + self.employer_doc.fdw_loan
-        )
+        return self.b3_agency_fee + self.employer_doc.fdw_loan
 
     def calc_total_fee(self):
         # Method to calculate total fee
@@ -2208,6 +2230,32 @@ class DocServiceFeeSchedule(models.Model):
             self.fdw_replaced_passport_nonce,
             self.fdw_replaced_passport_tag,
         )
+
+    def generate_receipt_no(self):
+        running_receipt_no = ReceiptMaster.get_running_number()
+        ReceiptMaster.increment_running_number()
+        month = datetime.now().strftime('%m')
+        year = datetime.now().strftime('%Y')
+        invoice_number = f'{running_receipt_no}/{month}/{year}'
+        return invoice_number
+
+    def generate_invoice(self, detail, invoice_type):
+        if invoice_type == 'Deposit':
+            self.ca_deposit_date = timezone.now()
+            self.ca_deposit_detail = detail
+            self.ca_deposit_receipt_no = self.generate_receipt_no()
+        else:
+            self.ca_remaining_payment_date = timezone.now()
+            self.ca_deposit_detail = detail
+            self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
+
+        self.save()
+
+    def generate_deposit_invoice(self, detail):
+        self.generate_invoice(detail=detail, invoice_type='Deposit')
+
+    def generate_remaining_invoice(self, detail):
+        self.generate_invoice(detail=detail, invoice_type='Remaining Amount')
 
 
 class DocServAgmtEmpCtr(models.Model):
@@ -3989,12 +4037,35 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Remaining Amount Paid Date'),
         null=True
     )
+    ca_deposit_detail = models.CharField(
+        verbose_name=_("Deposit Payment Detail"),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    ca_remaining_payment_detail = models.CharField(
+        verbose_name=_("Deposit Remaining Payment Detail"),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    ca_deposit_receipt_no = models.CharField(
+        max_length=255,
+        verbose_name=_('Deposit Receipt No'),
+        blank=True,
+        null=True
+    )
+    ca_remaining_payment_receipt_no = models.CharField(
+        max_length=255,
+        verbose_name=_('Remaining Payment Receipt No'),
+        blank=True,
+        null=True
+    )
 
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
         total = 0
         fields = [
-            self.b1_service_fee,
             self.b2a_work_permit_application_collection,
             self.b2b_medical_examination_fee,
             self.b2c_security_bond_accident_insurance,
@@ -4014,10 +4085,7 @@ class ArchivedDoc(models.Model):
 
     def calc_placement_fee(self):
         # Method to calculate placement fee
-        return (
-            + self.b3_agency_fee
-            + self.fdw_loan
-        )
+        return self.b3_agency_fee + self.fdw_loan
 
     def calc_total_fee(self):
         # Method to calculate total fee
