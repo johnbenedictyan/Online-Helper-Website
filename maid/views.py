@@ -15,6 +15,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
 # Project Apps Imports
+from agency.mixins import GetAuthorityMixin
 from employer_documentation.mixins import PdfHtmlViewMixin
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
