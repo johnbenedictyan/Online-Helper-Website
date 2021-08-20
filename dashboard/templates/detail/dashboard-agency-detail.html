@@ -10,7 +10,7 @@
         <div class="col-5 border" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %} height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
         <div class="col-5 offset-2 pt-4" id="agencyInformationGroup">
-            <h5 class="fs-16">{{agency.name}}</h5>
+            <h5 class="fs-20">{{agency.name}}</h5>
             <p>License Number: {{agency.license_number}}</p>
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
         </div>
@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col">
                             <h5 class="fs-14">Main Branch</h5>
-                            <p>
+                            <p class="fs-11">
                                 {{agency.get_main_branch.address_1}} <br>
                                 {{agency.get_main_branch.address_2}} <br>
                                 Singapore {{agency.get_main_branch.postal_code}}
@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-3">
                                     Office No:
                                 </div>
                                 <div class="col">
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-3">
                                     Mobile No:
                                 </div>
                                 <div class="col">
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-3">
                                     EA Personnel:
                                 </div>
                                 <div class="col">

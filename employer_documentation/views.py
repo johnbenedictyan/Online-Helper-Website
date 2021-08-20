@@ -1908,3 +1908,20 @@ class CaseStatusAPIView(View):
                 'fdwWorkCommencementDateInput': case_status.fdw_work_commencement_date
             }
         return JsonResponse(data, status=200)
+
+
+class GenerateDepositReceipt(UpdateView):
+    model = models.DocServiceFeeSchedule
+    form_class = forms.DepositDetailForm
+    http_method_names = ['get']
+    pk_url_kwarg = 'level_1_pk'
+
+    def get_queryset(self):
+        return models.DocServiceFeeSchedule.get(
+            employer_doc__pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+    
+    def form_valid(self, form: forms.DepositDetailForm):
+        return super().form_valid(form)
