@@ -48,7 +48,7 @@ urlpatterns = [
         name='potential_employer_detail'
     ),
     path(
-        'sign-in/',
+        'login/',
         include([
             path(
                 'employers',

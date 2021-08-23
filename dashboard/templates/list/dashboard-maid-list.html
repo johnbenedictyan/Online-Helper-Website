@@ -42,28 +42,28 @@
         </div>
         <div class="row bg-custom-ab text-dark mx-half py-3 border d-none d-xl-flex">
             <div class="col-1">
-                <h6 class="fs-14 mb-0">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="fs-14 mb-0">Name <i class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nameSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Name <i class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nameSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="fs-14 mb-0">Nationality <i class="fas {% if order_by == 'nationality' %}fa-sort-alpha-down{% elif order_by == '-nationality' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nationalitySortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Nationality <i class="fas {% if order_by == 'nationality' %}fa-sort-alpha-down{% elif order_by == '-nationality' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nationalitySortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="fs-14 mb-0">Type <i class="fas {% if order_by == 'type' %}fa-sort-alpha-down{% elif order_by == '-type' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="typeSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Type <i class="fas {% if order_by == 'type' %}fa-sort-alpha-down{% elif order_by == '-type' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="typeSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="fs-14 mb-0">PP Expiry <i class="fas {% if order_by == 'ppExpiry' %}fa-sort-amount-down{% elif order_by == '-ppExpiry' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="ppExpirySortToggle"></i></h6>
+                <h6 class="dashboard-table-header">PP Expiry <i class="fas {% if order_by == 'ppExpiry' %}fa-sort-amount-down{% elif order_by == '-ppExpiry' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="ppExpirySortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="fs-14 mb-0">Status <i class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="statusSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Status <i class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="statusSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="fs-14 mb-0">Date Created <i class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateCreatedSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Date Created <i class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateCreatedSortToggle"></i></h6>
             </div>
             <div class="col-1 text-center">
-                <h6 class="fs-14 mb-0">Actions</h6>
+                <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
         {% for maid in maids %}

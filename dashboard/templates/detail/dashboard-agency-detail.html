@@ -11,7 +11,7 @@
         </div>
         <div class="col-5 offset-2 pt-4" id="agencyInformationGroup">
             <h5 class="fs-20">{{agency.name}}</h5>
-            <p>License Number: {{agency.license_number}}</p>
+            <p class="fs-11">License Number: {{agency.license_number}}</p>
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
         </div>
     </div>
@@ -69,7 +69,7 @@
                     <div class="row">
                         <div class="col">
                             <h5 class="fs-14">{{branch.name|title}}</h5>
-                            <p>
+                            <p class="fs-11">
                                 {{branch.address_1}} <br>
                                 {{branch.address_2}} <br>
                                 Singapore {{branch.postal_code}}
@@ -129,11 +129,11 @@
         </div>
         <div class="col-md-6" id="agencyProfileGroup">
             <h5 class="fs-14">Profile</h5>
-            <p>{{agency.profile}}</p>
+            <p class="fs-11">{{agency.profile}}</p>
         </div>
         <div class="col-md-6" id="agencyServicesGroup">
             <h5 class="fs-14">Our Services</h5>
-            <p>{{agency.services}}</p>
+            <p class="fs-11">{{agency.services}}</p>
         </div>
     </div>
 </div>

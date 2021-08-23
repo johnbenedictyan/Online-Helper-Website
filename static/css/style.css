@@ -458,6 +458,11 @@ html {
   scroll-behavior: smooth;
 }
 
+.dashboard-table-header {
+  font-size: FONT_SIZE_11;
+  margin-bottom: 0;
+}
+
 .bg-hero {
   background-image: url("/static/images/hero-image.png");
   background-size: cover;
@@ -542,7 +547,7 @@ button.mini-faq-button i {
 }
 
 .side-nav-link.active {
-  background-color: #3066be;
+  background-color: #2A68A2;
 }
 
 .side-nav-link.active p {
@@ -550,7 +555,7 @@ button.mini-faq-button i {
 }
 
 .side-nav-link:hover:not(.active) {
-  background-color: #85c7f2;
+  background-color: #2F75B5;
   -webkit-transition: background-color .5s ease-in-out;
   transition: background-color .5s ease-in-out;
 }

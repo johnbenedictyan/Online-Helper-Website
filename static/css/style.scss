@@ -1,8 +1,8 @@
 $white: #fff !default;
 $gray-400: #ced4da !default;
 
-$LIGHT_SKY_BLUE: #85c7f2 !default;
-$TRUE_BLUE: #3066be !default;
+$lochmara: #2A68A2 !default;
+$curious-blue: #2F75B5 !default;
 
 $BASE_FONT_SIZE: 1rem !default;
 $FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
@@ -369,6 +369,11 @@ html {
     scroll-behavior: smooth;
 }
 
+.dashboard-table-header {
+    font-size: FONT_SIZE_11;
+    margin-bottom: 0;
+}
+
 .bg {
     &-hero {
         background-image: url('/static/images/hero-image.png');
@@ -461,14 +466,14 @@ button.mini-faq-button {
     border-radius: .5rem ;
 
     &.active {
-        background-color: $TRUE_BLUE;
+        background-color: $lochmara;
         p {
             color: $white
         }
     }
 
     &:hover:not(.active) {
-        background-color: $LIGHT_SKY_BLUE;
+        background-color: $curious-blue;
         transition: background-color .5s ease-in-out;
     }
 }
