@@ -35,25 +35,25 @@
         </div>
         <div class="row bg-dashboard-table-background-dark text-dark mx-half py-3 border d-none d-xl-flex">
             <div class="col-1">
-                <h6 class="mb-0">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Employer <i class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="employerNameSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Employer <i class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="employerNameSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Mobile</h6>
+                <h6 class="dashboard-table-header">Mobile</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Home No</h6>
+                <h6 class="dashboard-table-header">Home No</h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">Date of Birth <i class="fas {% if order_by == 'dateOfBirth' %}fa-sort-amount-down{% elif order_by == '-dateOfBirth' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateOfBirthSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Date of Birth <i class="fas {% if order_by == 'dateOfBirth' %}fa-sort-amount-down{% elif order_by == '-dateOfBirth' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateOfBirthSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="mb-0">EA Personnel <i class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="eaPersonnelSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">EA Personnel <i class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="eaPersonnelSortToggle"></i></h6>
             </div>
             <div class="col-1 text-center">
-                <h6 class="mb-0">Actions</h6>
+                <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
         {% for object in object_list %}

@@ -153,7 +153,7 @@ class PotentialEmployersWithoutSignInUrlTest(TestCase):
         )
         self.assertRedirects(
             response,
-            '/accounts/sign-in/employers?next=/accounts/profile/',
+            '/accounts/login/employers?next=/accounts/profile/',
             status_code=302,
             target_status_code=200
         )

@@ -33,8 +33,8 @@ class SignInForm(AuthenticationForm):
     # precedence
     # redirect_named_url = 'home'
     placeholders = {
-        'username': 'johndoe123',
-        'password': 'topsecret'
+        'username': '',
+        'password': ''
     }
 
     def __init__(self, *args, **kwargs):
@@ -125,18 +125,18 @@ class AgencySignInForm(AuthenticationForm):
             Row(
                 Column(
                     'agency_license_number',
-                    css_class='form-group col-md-6 pr-3'
+                    css_class='form-group col-md-6 pr-md-3'
                 ),
                 Column(
                     'username',
-                    css_class='form-group col-md-6 pl-3'
+                    css_class='form-group col-md-6 pl-md-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'password',
-                    css_class='form-group col-md-6 pr-3 mb-0'
+                    css_class='form-group col-md-6 pr-md-3 mb-0'
                 ),
                 Column(
                     HTML("""<a class='ml-1 fs-11'
