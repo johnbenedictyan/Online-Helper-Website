@@ -498,6 +498,11 @@ html {
   border-radius: inherit !important;
 }
 
+.list-group-item.faq-item.active {
+  background-color: #2A68A2;
+  border-color: #2A68A2;
+}
+
 .faq-question {
   font-weight: 500;
 }

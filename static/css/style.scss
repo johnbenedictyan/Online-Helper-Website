@@ -408,6 +408,10 @@ html {
 .list-group-item{
     &.faq-item{
         border-radius: inherit !important;
+        &.active {
+            background-color: $lochmara;
+            border-color: $lochmara;
+        }
     }
 }
 

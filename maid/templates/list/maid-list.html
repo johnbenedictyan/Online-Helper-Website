@@ -5,36 +5,36 @@
 {% include 'sections/title-banner.html' with page_name='Maids' %}
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='maid-section' %}
 <div class="row justify-content-center">
-    <div class="col-md-11 col-lg-10 col-xl-2-5 mb-3">
+    <div class="col-md-11 col-lg-10 col-xl-3 mb-3">
         <form action="" method="get">
             <div class="row">
                 <div class="col px-lg-3 mb-lg-2">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 fs-11">
                             {{filter.form.name|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-xl-12">
+                        <div class="col-6 col-xl-12 fs-11">
                             {{filter.form.maid_type|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-xl-12">
+                        <div class="col-6 col-xl-12 fs-11">
                             {{filter.form.country_of_origin|as_crispy_field}}
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 fs-11">
                             {{filter.form.age|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-xl-12" col-xl-12>
+                        <div class="col-6 col-xl-12 fs-11">
                             {{filter.form.languages|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-xl-12">
+                        <div class="col-6 col-xl-12 fs-11">
                             {{filter.form.responsibilities|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-lg-4 col-xl-12">
+                        <div class="col-6 col-lg-4 col-xl-12 fs-11">
                             {{filter.form.marital_status|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-lg-4 col-xl-12">
+                        <div class="col-6 col-lg-4 col-xl-12 fs-11">
                             {{filter.form.created_on|as_crispy_field}}
                         </div>
-                        <div class="col-6 col-lg-4 col-xl-12">
+                        <div class="col-6 col-lg-4 col-xl-12 fs-11">
                             {{filter.form.agency|as_crispy_field}}
                         </div>
                     </div>
@@ -42,13 +42,13 @@
             </div>
             <div class="row">
                 <div class="col px-lg-3">
-                    <a href="{% url 'agency_list' %}" class="btn btn-secondary w-100">Reset</a>
+                    <a href="{% url 'agency_list' %}" class="btn btn-custom-loch w-100">Reset</a>
                 </div>
             </div>
         </form>
     </div>
-    <div class="col-12 col-xl-9-5 mt-md-3">
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
+    <div class="col-12 col-xl-9 mt-md-3">
+        <div class="row row-cols-1 row-cols-md-3">
             {% for maid in maids %}
                 <div class="col mb-4">
                     {% include 'components/maid-card.html' with maid=maid %}
