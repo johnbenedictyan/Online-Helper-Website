@@ -83,7 +83,7 @@ class MaidForm(forms.ModelForm):
             Row(
                 Column(
                     'photo',
-                    css_class='form-group col-12'
+                    css_class='form-group col-24'
                 ),
                 Column(
                     'status',
@@ -167,7 +167,7 @@ class MaidForm(forms.ModelForm):
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-12'
+                    css_class='form-group col-24'
                 ),
                 Column(
                     'passport_status',
@@ -197,7 +197,7 @@ class MaidForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -417,7 +417,7 @@ class MaidFoodHandlingPreferenceForm(forms.ModelForm):
                         'Purchase',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -447,7 +447,7 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
                         'Purchase',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -474,7 +474,7 @@ class MaidLoanTransactionForm(forms.ModelForm):
                             Field(
                                 'DELETE'
                             ),
-                            css_class='col-12 text-right'
+                            css_class='col-24 text-right'
                         )
                     ),
                     Row(
@@ -670,7 +670,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                         'Next',
                         css_class="btn btn-primary w-25 mx-2"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -912,7 +912,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5>Infant Child Care</h5>'
                             ),
-                            css_class='col-12'
+                            css_class='col-24'
                         ),
                         Column(
                             'cfi_assessment',
@@ -943,7 +943,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5>Elderly Care</h5>'
                             ),
-                            css_class='col-12'
+                            css_class='col-24'
                         ),
                         Column(
                             'cfe_assessment',
@@ -977,7 +977,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5>Disabled Care</h5>'
                             ),
-                            css_class='col-12'
+                            css_class='col-24'
                         ),
                         Column(
                             'cfd_assessment',
@@ -1008,7 +1008,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5>General Housework</h5>'
                             ),
-                            css_class='col-12'
+                            css_class='col-24'
                         ),
                         Column(
                             'geh_assessment',
@@ -1042,7 +1042,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5>Cooking</h5>'
                             ),
-                            css_class='col-12'
+                            css_class='col-24'
                         ),
                         Column(
                             'cok_assessment',
@@ -1082,7 +1082,7 @@ class MaidExperienceForm(forms.Form):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -1213,7 +1213,7 @@ class MaidAboutFDWForm(forms.Form):
             Row(
                 Column(
                     'about_me',
-                    css_class='col-12'
+                    css_class='col-24'
                 ),
                 css_class='form-group'
             ),
@@ -1230,7 +1230,7 @@ class MaidAboutFDWForm(forms.Form):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )

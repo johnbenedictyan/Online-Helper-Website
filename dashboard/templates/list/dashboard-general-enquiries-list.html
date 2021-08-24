@@ -9,10 +9,10 @@
             </div>
         </div>
         <div class="row bg-custom-bb text-light mx-half py-3 border d-none d-xl-flex">
-            <div class="col col-0-5 text-center">
+            <div class="col col-1 text-center">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Employer</h6>
             </div>
             <div class="col">
@@ -24,16 +24,16 @@
             <div class="col-1">
                 <h6 class="dashboard-table-header">Date</h6>
             </div>
-            <div class="col-1 text-center">
+            <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
         {% for enquiry in enquiries %}
         <div class="row {% cycle '' 'bg-light ' %} mx-half py-3 border border-top-0 d-none d-xl-flex">
-            <div class="col col-0-5 text-center">
+            <div class="col col-1 text-center">
                 <p class="mb-0">{{enquiry.pk}}</p>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <p class="mb-1">Name: {{enquiry.name}}</p>
                 <p class="mb-1">Mobile: {{enquiry.mobile_number}}</p>
                 <p class="mb-0">Email: {{enquiry.email}}</p>
@@ -66,7 +66,7 @@
         {% endfor %}
         <div class="row d-xl-none">
             {% for enquiry in enquiries %}
-            <div class="col col-lg-6">
+            <div class="col col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Name:</p>
                             </div>
                             <div class="col">
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Mobile No:</p>
                             </div>
                             <div class="col">
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Email:</p>
                             </div>
                             <div class="col">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Nationality:</p>
                             </div>
                             <div class="col">
@@ -107,7 +107,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Type:</p>
                             </div>
                             <div class="col">
@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Languages:</p>
                             </div>
                             <div class="col">
@@ -123,7 +123,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Duty:</p>
                             </div>
                             <div class="col">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Remarks:</p>
                             </div>
                             <div class="col">
@@ -139,7 +139,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Date Published:</p>
                             </div>
                             <div class="col">

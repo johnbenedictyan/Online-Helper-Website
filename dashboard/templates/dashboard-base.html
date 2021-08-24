@@ -5,7 +5,7 @@
     <body class="dashboard-body">
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-custom-loch">
-                <a class="navbar-brand fs-16" href="{% url 'dashboard_home' %}">Times Recruitment Agency</a>
+                <a class="navbar-brand fs-16 ml-md-2 ml-lg-3 ml-xl-4" href="{% url 'dashboard_home' %}">{{agency_name|title}}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -32,10 +32,10 @@
                     <div class="row" style="min-height: 90vh;">
                         {% with request.resolver_match.url_name as url_name %}
                             {% if url_name in dashboard_side_nav_list %}
-                            <div id="dashboardSideNavWrapper" class="col col-md-3 col-lg-2-5 col-xl-1-5 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
+                            <div id="dashboardSideNavWrapper" class="col col-md-5 col-lg-5 col-xl-4 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
                                 {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                             </div>
-                            <div id="dashboardPageNavWrapper" class="col col-md-2-5 col-lg-2-5 col-xl-1-5 bg-dashboard-pagebar-color text-dashboard-text-color">
+                            <div id="dashboardPageNavWrapper" class="col col-md-5 col-lg-5 col-xl-4 bg-dashboard-pagebar-color text-dashboard-text-color">
                                 {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
                                     <div class="col">   
                                     {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
@@ -73,7 +73,7 @@
                                 {% endif %}
                             </div>
                             {% else %}
-                            <div id="dashboardSideNavWrapper" class="col col-md-3 col-lg-2-5 bg-dashboard-navbar-color text-dark">
+                            <div id="dashboardSideNavWrapper" class="col col-md-6 col-xl-4 bg-dashboard-navbar-color text-dark">
                                 {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                             </div>
                             {% endif %}

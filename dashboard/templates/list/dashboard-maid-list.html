@@ -10,19 +10,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-9">
+            <div class="col-18">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-5">
+                        <div class="col-10">
                             {{filter.form.name|as_crispy_field}}
                         </div>
-                        <div class="col-5 offset-1">
+                        <div class="col-10 offset-2">
                             {{filter.form.status|as_crispy_field}}
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="col-3">
+            <div class="col-6">
                 <div class="row">
                     <div class="col text-right pb-2">
                         <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-lg btn-primary mr-1 fs-14">Add Biodata</a>
@@ -62,7 +62,7 @@
             <div class="col">
                 <h6 class="dashboard-table-header">Date Created <i class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateCreatedSortToggle"></i></h6>
             </div>
-            <div class="col-1 text-center">
+            <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
@@ -111,7 +111,7 @@
         {% endfor %}
         <div class="row d-xl-none">
             {% for maid in maids %}
-            <div class="col col-lg-6">
+            <div class="col col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Name:</p>
                             </div>
                             <div class="col">
@@ -128,7 +128,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Nationality:</p>
                             </div>
                             <div class="col">
@@ -136,7 +136,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Type:</p>
                             </div>
                             <div class="col">
@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>PP Expiry:</p>
                             </div>
                             <div class="col">
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Status:</p>
                             </div>
                             <div class="col">
@@ -160,7 +160,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Date Created:</p>
                             </div>
                             <div class="col">

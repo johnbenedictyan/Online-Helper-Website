@@ -10,13 +10,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-9 mb-4 ml-2">
+            <div class="col-18 mb-4 ml-2">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-5">
+                        <div class="col-10">
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
-                        <div class="col-5 offset-1">
+                        <div class="col-10 offset-2">
                             {{filter.form.agency_employee|as_crispy_field}}
                         </div>
                     </div>
@@ -34,7 +34,7 @@
             <div class="col-1">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Contract Date</h6>
             </div>
             <div class="col-1">
@@ -46,10 +46,10 @@
             <div class="col-1">
                 <h6 class="dashboard-table-header">Case Type</h6>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">EA Personnel</h6>
             </div>
-            <div class="col-1 text-center">
+            <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
@@ -58,7 +58,7 @@
             <div class="col-1">
                 <p class="mb-0">{{ forloop.counter }}</p>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <p class="mb-0">{{ object.agreement_date }}</p>
             </div>
             <div class="col-1">
@@ -70,7 +70,7 @@
             <div class="col-1">
                 <p class="mb-0">{{ object.employer.get_applicant_type_display }}</p>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <p class="mb-0">{{ object.employer.agency_employee }}</p>
             </div>
             <div class="col-1">
@@ -90,7 +90,7 @@
         {% endfor %}
         <div class="row d-xl-none">
             {% for object in object_list %}
-            <div class="col col-lg-6">
+            <div class="col col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Contract Date:</p>
                             </div>
                             <div class="col">
@@ -107,7 +107,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Case No:</p>
                             </div>
                             <div class="col">
@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Employer:</p>
                             </div>
                             <div class="col">
@@ -123,7 +123,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Case Type:</p>
                             </div>
                             <div class="col">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>EA Personnel:</p>
                             </div>
                             <div class="col">

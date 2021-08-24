@@ -3,7 +3,7 @@
 {% block dashboard_section %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-11 text-right mb-5">
+        <div class="col-22 text-right mb-5">
             <a href="{% url 'employer_update_route' level_0_pk=object.pk %}" class="btn btn-primary btn-dashboard-primary w-25">Edit</a>
         </div>
     </div>
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Employer Contact Details</h5>
@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Employer's Information</h5>
@@ -130,7 +130,7 @@
     </div>
     {% if object.employer_marital_status == 'MARRIED' %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Spouse's Information</h5>
@@ -190,7 +190,7 @@
     {% endif %}
     {% if object.applicant_type == 'SPONSR' %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Sponsor 1's Information</h5>
@@ -268,7 +268,7 @@
     </div>
     {% if object.rn_sponsor_employer.sponsor_1_marital_status == 'MARRIED' %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Sponsor 1 Spouse's Information</h5>
@@ -328,7 +328,7 @@
     {% endif %}
     {% if object.rn_sponsor_employer.sponsor_2_required %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Sponsor 2's Information</h5>
@@ -406,7 +406,7 @@
     </div>
     {% if object.rn_sponsor_employer.sponsor_2_marital_status == 'MARRIED' %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Sponsor 2 Spouse's Information</h5>
@@ -468,7 +468,7 @@
     {% endif %}
     {% if object.applicant_type == 'JNT_AP' %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Joint Applicant's Information</h5>
@@ -533,7 +533,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Joint Applicant Spouse's Information</h5>
@@ -592,7 +592,7 @@
     </div>
     {% endif %}
     <div class="row">
-        <div class="col-12 mb-4">
+        <div class="col-24 mb-4">
             <div class="row">
                 <div class="col">
                     <h5>Income Details</h5>

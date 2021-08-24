@@ -2,14 +2,14 @@
 {% block dashboard_section %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-11 text-right mb-4">
+        <div class="col-22 text-right mb-4">
             <a href="{% url 'dashboard_agency_information_update' %}" class="btn btn-lg btn-dashboard-primary w-25 fs-14">Edit</a>
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col-5 border" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %} height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+        <div class="col-10 border" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %} height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
         </div>
-        <div class="col-5 offset-2 pt-4" id="agencyInformationGroup">
+        <div class="col-10 offset-4 pt-4" id="agencyInformationGroup">
             <h5 class="fs-20">{{agency.name}}</h5>
             <p class="fs-11">License Number: {{agency.license_number}}</p>
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
@@ -17,7 +17,7 @@
     </div>
     <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
     <div class="row">
-        <div class="col-md-6 mb-4" id="agencyOutletDetailsGroup">
+        <div class="col-md-12 mb-4" id="agencyOutletDetailsGroup">
             <div class="row">
                 <div class="col mb-lg-3 mb-xl-4">
                     <div class="row">
@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-6">
                                     Office No:
                                 </div>
                                 <div class="col">
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-6">
                                     Mobile No:
                                 </div>
                                 <div class="col">
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-6">
                                     EA Personnel:
                                 </div>
                                 <div class="col">
@@ -79,7 +79,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-4">
                                     Office No:
                                 </div>
                                 <div class="col">
@@ -87,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-4">
                                     Mobile No:
                                 </div>
                                 <div class="col">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-4">
                                     EA Personnel:
                                 </div>
                                 <div class="col">
@@ -112,7 +112,7 @@
             </div>
             {% endfor %}
         </div>
-        <div class="col-md-6 mb-4" id="agencyOpeningHoursGroup">
+        <div class="col-md-12 mb-4" id="agencyOpeningHoursGroup">
             <h5 class="fs-14">Opening Hours</h5>
             {% if agency.opening_hours.type == 'AO' %}
             <p>Appointment Only</p>
@@ -127,11 +127,11 @@
             <p>Public Holidays: {% if agency.opening_hours.public_holiday_closed == True %}Closed{% else %}{{agency.opening_hours.public_holiday_start}} - {{agency.opening_hours.public_holiday_end}}{% endif %}</p>
             {% endif %}
         </div>
-        <div class="col-md-6" id="agencyProfileGroup">
+        <div class="col-md-12" id="agencyProfileGroup">
             <h5 class="fs-14">Profile</h5>
             <p class="fs-11">{{agency.profile}}</p>
         </div>
-        <div class="col-md-6" id="agencyServicesGroup">
+        <div class="col-md-12" id="agencyServicesGroup">
             <h5 class="fs-14">Our Services</h5>
             <p class="fs-11">{{agency.services}}</p>
         </div>
