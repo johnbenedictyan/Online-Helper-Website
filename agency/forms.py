@@ -294,7 +294,7 @@ class AgencyForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -359,7 +359,7 @@ class AgencyUpdateForm(forms.ModelForm):
             Row(
                 Column(
                     'logo',
-                    css_class='form-group col-12'
+                    css_class='form-group col-24'
                 ),
                 Column(
                     'name',
@@ -401,7 +401,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -466,7 +466,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -624,7 +624,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -845,7 +845,7 @@ class AgencyBranchForm(forms.ModelForm):
                                     <i class="fas fa-times"></i>
                                 </button>'''
                             ),
-                            css_class='col-12 text-right'
+                            css_class='col-24 text-right'
                         )
                     ),
                     Row(
@@ -1165,7 +1165,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-25 mx-2"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -1256,7 +1256,7 @@ class PotentialAgencyForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )

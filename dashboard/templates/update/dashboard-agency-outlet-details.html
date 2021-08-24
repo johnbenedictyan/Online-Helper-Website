@@ -11,10 +11,10 @@
             </div>
             {% crispy form helper %}
             <div class="row form-row">
-                <div class="col-12 my-2 text-center">
+                <div class="col-24 my-2 text-center">
                     <button class="btn btn-outline-success w-50 mb-2" id="addButton">Add Outlet</button>
                 </div>
-                <div class="col-12 my-2 text-center">
+                <div class="col-24 my-2 text-center">
                     <input type="hidden" name="submitFlag" class="form-control" id="submitFlag">
                     <a href="{% url 'dashboard_agency_information_update' %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>
                     <button type="submit" id="submitButton" class="btn btn-primary w-25 mb-2 mx-2">Next</button>

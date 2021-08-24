@@ -33,7 +33,7 @@ class AgencyBranchFormSetHelper(FormHelper):
                             Field(
                                 'DELETE'
                             ),
-                            css_class='col-12 text-right'
+                            css_class='col-24 text-right'
                         )
                     ),
                     Row(

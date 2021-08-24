@@ -4,7 +4,7 @@
 {% block main_content %}
 <div class="row mx-0 px-0">
     <!-- Side Nav -->
-    <div class="col-md-2 px-0">
+    <div class="col-md-4 px-0">
         <nav class="row">
             <div class="col d-flex flex-column justify-content-around">
                 {% with request.resolver_match.url_name as url_name %}
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Employer Documentation Main Section -->
-    <section class="col-10 my-3 my-lg-5">
+    <section class="col-20 my-3 my-lg-5">
         {% block ed_section %}{% endblock ed_section %}
     </section>
 </div>

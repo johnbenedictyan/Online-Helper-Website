@@ -5,15 +5,15 @@
 <section id="main-banner-section">
     <div class="jumbotron jumbotron-fluid bg-home-hero mb-0">
         <div class="container">
-            <div class="row">
-                <div class="col col-lg-6 offset-lg-3 text-center py-2 py-md-3 text-light">
+            <div class="row justify-content-center">
+                <div class="col col-lg-12 text-center py-2 py-md-3 text-light">
                     <h1 class="display-5 mb-3">The Leading Maid Platform in Singapore</h1>
                     <p class="lead mb-0">More than 8000 maids for you to choose from</p>
                     <p class="lead">Start your search now!</p>
                 </div>
             </div>
             <div class="row d-none d-md-flex justify-content-center">
-                <div class="col col-lg-10 col-xl-8">
+                <div class="col col-lg-20 col-xl-16">
                     <form action="{% url 'maid_list' %}" method="get">
                         <div class="form-row">
                             <div class="col px-half">
@@ -61,7 +61,7 @@
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-lab' section_id='preferences-section' %}
 {% include 'components/section-heading.html' with title='Preferences' %}
 <div class="row">
-    <div class="col-md-4 mb-4 mb-md-5">
+    <div class="col-md-8 mb-4 mb-md-5">
         <div class="card preferences-card">
             <img src="{% static 'images/homepage_preference/partTime1.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-4 mb-md-5">
+    <div class="col-md-8 mb-4 mb-md-5">
         <div class="card preferences-card">
             <img src="{% static 'images/homepage_preference/cooking1.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -83,7 +83,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-4 mb-md-5">
+    <div class="col-md-8 mb-4 mb-md-5">
         <div class="card preferences-card">
             <img src="{% static 'images/homepage_preference/childrenCare1.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -96,7 +96,7 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="col-md-4 mb-4 mb-md-5">
+    <div class="col-md-8 mb-4 mb-md-5">
         <div class="card preferences-card">
             <img src="{% static 'images/homepage_preference/elderly.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -107,7 +107,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-4 mb-md-5">
+    <div class="col-md-8 mb-4 mb-md-5">
         <div class="card preferences-card">
             <img src="{% static 'images/homepage_preference/elderlyCare1.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -124,9 +124,9 @@
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='featured-maids-section' %}
 {% include 'components/section-heading.html' with title='Featured Maids' %}
 <div class="row bg-featured-maids mb-3 mb-md-4">
-    <div class="col-md-6 offset-md-6 py-5">
+    <div class="col-md-12 offset-md-12 py-5">
         <div class="row mb-3">
-            <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-md-0 py-2 py-md-0">
+            <div class="col-20 col-lg-16 col-xl-12 offset-2 offset-md-0 py-2 py-md-0">
                 <label for="nationalitySelect" class="ml-1">Nationality</label>
                 <select class="form-control" id="nationalitySelect">
                     <option value="ANY">No Preference</option>
@@ -141,7 +141,7 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col offset-1 offset-md-0 ">
+            <div class="col offset-2 offset-md-0 ">
                 <h5 class="ml-1">Browse our featured maids</h5>
             </div>
         </div>

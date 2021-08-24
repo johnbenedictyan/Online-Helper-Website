@@ -1,8 +1,6 @@
 # Global Imports
-import itertools
 import json
 from datetime import datetime, timedelta
-from itertools import chain
 
 # Django Imports
 from django.contrib import messages
@@ -45,7 +43,7 @@ from maid.models import (
     MaidElderlyCare, MaidFoodHandlingPreference, MaidGeneralHousework,
     MaidInfantChildCare, MaidLanguageProficiency
 )
-from payment.models import Customer, Subscription
+from payment.models import Customer
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
@@ -58,8 +56,19 @@ from .filters import (
 # Start of Views
 
 
-class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                           ListFilteredMixin, ListView):
+class BaseDashboardView(AgencyLoginRequiredMixin, GetAuthorityMixin):
+    authority = ''
+    agency_id = ''
+
+    def get_context_data(self, **kwargs):
+        return {
+            'agency_name': Agency.objects.get(
+                pk=self.agency_id
+            ).name
+        }
+
+
+class BaseFilteredListView(BaseDashboardView, ListFilteredMixin, ListView):
     http_method_names = ['get']
     authority = ''
     agency_id = ''
@@ -281,7 +290,7 @@ class StatusList(BaseFilteredListView):
         return qs
 
 
-class BaseListView(AgencyLoginRequiredMixin, GetAuthorityMixin, ListView):
+class BaseListView(BaseDashboardView, ListView):
     http_method_names = ['get']
     authority = ''
     agency_id = ''
@@ -328,8 +337,7 @@ class AgencyBranchList(BaseListView):
         )
 
 
-class BaseEnquiriesListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                            ListView):
+class BaseEnquiriesListView(BaseDashboardView, ListView):
     context_object_name = 'enquiries'
     http_method_names = ['get']
 
@@ -358,8 +366,7 @@ class ShortlistedEnquiriesList(BaseEnquiriesListView):
         return context
 
 
-class BaseCreateView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                     SuccessMessageMixin, CreateView):
+class BaseCreateView(BaseDashboardView, SuccessMessageMixin, CreateView):
     http_method_names = ['get', 'post']
     authority = ''
     agency_id = ''
@@ -429,7 +436,7 @@ class AgencyEmployeeCreate(BaseCreateView):
             return super().form_invalid(form)
 
 
-class BaseDetailView(AgencyLoginRequiredMixin, GetAuthorityMixin, DetailView):
+class BaseDetailView(BaseDashboardView, DetailView):
     http_method_names = ['get']
     authority = ''
     agency_id = ''
@@ -462,8 +469,8 @@ class MaidDetail(BaseDetailView):
         )
 
 
-class DashboardMaidSubFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                               SuccessMessageMixin, FormView):
+class DashboardMaidSubFormView(BaseDashboardView, SuccessMessageMixin,
+                               FormView):
     http_method_names = ['get', 'post']
     pk_url_kwarg = 'pk'
     template_name = 'form/maid-create-form.html'
@@ -701,8 +708,7 @@ class MaidAboutFDWFormView(DashboardMaidSubFormView):
         )
 
 
-class BaseFormView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                   SuccessMessageMixin, FormView):
+class BaseFormView(BaseDashboardView, SuccessMessageMixin, FormView):
     http_method_names = ['get', 'post']
     authority = ''
     agency_id = ''
@@ -831,8 +837,7 @@ class AgencyOutletDetailsFormView(BaseFormsetView):
             )
 
 
-class BaseUpdateView(AgencyLoginRequiredMixin, GetAuthorityMixin,
-                     SuccessMessageMixin, UpdateView):
+class BaseUpdateView(BaseDashboardView, SuccessMessageMixin, UpdateView):
     http_method_names = ['get', 'post']
     authority = ''
     agency_id = ''
@@ -1521,7 +1526,7 @@ class DataProviderView(View):
         return JsonResponse(data, status=200)
 
 
-class HomePage(AgencyLoginRequiredMixin, GetAuthorityMixin, TemplateView):
+class HomePage(BaseDashboardView, TemplateView):
     template_name = 'base/dashboard-home-page.html'
     authority = ''
     agency_id = ''

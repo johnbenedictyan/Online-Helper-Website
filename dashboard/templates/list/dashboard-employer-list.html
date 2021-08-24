@@ -10,22 +10,22 @@
             </div>
         </div>
         <div class="row mb-2">
-            <div class="col-md-9">
+            <div class="col-md-18">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-5">
+                        <div class="col-10">
                             {{filter.form.employer_name|as_crispy_field}}
                         </div>
-                        <div class="col-5 offset-1">
+                        <div class="col-10 offset-2">
                             {{filter.form.employer_birthday_month|as_crispy_field}}
                         </div>
-                        <div class="col-5">
+                        <div class="col-10">
                             {{filter.form.agency_employee|as_crispy_field}}
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="row h-100">
                     <div class="col text-right mt-auto mb-3">
                         <a href="{% url 'employer_create_route' %}" class="btn btn-primary mr-1">Add Employer</a>
@@ -52,7 +52,7 @@
             <div class="col">
                 <h6 class="dashboard-table-header">EA Personnel <i class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="eaPersonnelSortToggle"></i></h6>
             </div>
-            <div class="col-1 text-center">
+            <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
@@ -93,7 +93,7 @@
         {% endfor %}
         <div class="row d-xl-none">
             {% for object in object_list %}
-            <div class="col col-lg-6">
+            <div class="col col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Employer:</p>
                             </div>
                             <div class="col">
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Mobile No:</p>
                             </div>
                             <div class="col">
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Home No:</p>
                             </div>
                             <div class="col">
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>Date of Birth:</p>
                             </div>
                             <div class="col">
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 col-lg-5">
+                            <div class="col-8 col-lg-10">
                                 <p>EA Personnel:</p>
                             </div>
                             <div class="col">

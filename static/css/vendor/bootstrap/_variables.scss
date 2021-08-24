@@ -89,7 +89,7 @@ $colors: map-merge(("blue": $blue,
 ),
     $colors);
 
-$primary: $curious-blue !default;
+$primary: $lochmara !default;
 $secondary: $custom-blue !default;
 $tertiary: $orange-peel !default;
 $success: $green !default;
@@ -277,7 +277,7 @@ $container-max-widths: (
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-columns: 12 !default;
+$grid-columns: 24 !default;
 $grid-gutter-width: 1.5rem !default;
 $grid-row-columns: 6 !default;
 

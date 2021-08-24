@@ -6,10 +6,10 @@
         <form method="post" enctype="multipart/form-data">
             {% crispy form helper %}
             <div class="row form-row">
-                <div class="col-12 my-2 text-center">
+                <div class="col-24 my-2 text-center">
                     <button class="btn btn-outline-success w-50 mb-2" id="addButton">Add</button>
                 </div>
-                <div class="col-12 my-2 text-center">
+                <div class="col-24 my-2 text-center">
                     <input type="hidden" name="submitFlag" class="form-control" id="submitFlag">
                     {% if url_name == 'dashboard_maid_employment_history_update' %}
                     <a href="{% url 'dashboard_maid_experience_update' maid_id %}" class="btn btn-outline-primary w-25 mb-2 mx-2">Back</a>

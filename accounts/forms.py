@@ -50,13 +50,13 @@ class SignInForm(AuthenticationForm):
             Row(
                 Column(
                     'username',
-                    css_class='form-group col-12'
+                    css_class='form-group col-24'
                 )
             ),
             Row(
                 Column(
                     'password',
-                    css_class='form-group col-12 mb-0'
+                    css_class='form-group col-24 mb-0'
                 ),
                 Column(
                     HTML("""<a class='ml-1 fs-11'
@@ -79,7 +79,7 @@ class SignInForm(AuthenticationForm):
                         'Log in',
                         css_class="btn btn-primary w-100"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             ),
@@ -141,7 +141,7 @@ class AgencySignInForm(AuthenticationForm):
                 Column(
                     HTML("""<a class='ml-1 fs-11'
             href="{% url 'password_reset' %}">Forget your password?</a>"""),
-                    css_class="col-12 mb-3"),
+                    css_class="col-24 mb-3"),
                 css_class='form-row'
             ),
             Row(
@@ -151,7 +151,7 @@ class AgencySignInForm(AuthenticationForm):
                         'Log In',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             ),
@@ -259,11 +259,11 @@ class EmployerCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-12'
+                    css_class='form-group col-24'
                 ),
                 Column(
                     'password',
-                    css_class='form-group col-12'
+                    css_class='form-group col-24'
                 ),
                 css_class='form-row'
             ),
@@ -281,7 +281,7 @@ class EmployerCreationForm(forms.ModelForm):
                         'Create',
                         css_class="btn btn-primary w-100"
                     ),
-                    css_class='col-12 text-center'
+                    css_class='col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -356,7 +356,7 @@ class CustomPasswordResetForm(PasswordResetForm):
                         'Send',
                         css_class="btn btn-primary w-100"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             ),
         )

@@ -13,7 +13,7 @@
             <div class="col mb-4 ml-2">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
                     </div>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="row bg-custom-bb text-light mx-half pt-3 border border-bottom-0">
-            <div class="col-5">
+            <div class="col-10">
             </div>
             <div class="col text-center">
                 <h6 class="mb-0">Dates</h6>
@@ -31,10 +31,10 @@
             <div class="col-1">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Contract Date</h6>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Employer & FDW</h6>
             </div>
             <div class="col">
@@ -52,7 +52,7 @@
             <div class="col">
                 <h6 class="dashboard-table-header">Deployment</h6>
             </div>
-            <div class="col-1 text-center">
+            <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
             </div>
         </div>
@@ -61,10 +61,10 @@
             <div class="col-1">
                 <p class="mb-0">{{status.pk}}</p>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <p class="mb-0">{{status.employer_doc.agreement_date}}</p>
             </div>
-            <div class="col-2">
+            <div class="col-4">
                 <p class="mb-0">{{status.employer_doc.employer}}<br/>{{status.employer_doc.fdw}}</p>
             </div>
             <div class="col">
@@ -111,7 +111,7 @@
                             <form action="" method="post" id="caseStatusForm">
                                 {% csrf_token %}
                                 <div class="form-row"> 
-                                    <div class="col-md-12"> 
+                                    <div class="col-md-24"> 
                                         <div class="form-group mb-3"> 
                                             <label class="">
                                                 FDW Name
@@ -121,7 +121,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12"> 
+                                    <div class="col-md-24"> 
                                         <div id="div_id_ipa_approval_date" class="form-group mb-3"> 
                                             <label for="id_ipa_approval_date" class="">
                                                 In Principle Approval (IPA) Date
@@ -131,7 +131,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12"> 
+                                    <div class="col-md-24"> 
                                         <div id="div_id_arrival_date" class="form-group mb-3"> 
                                             <label for="id_arrival_date" class="">
                                                 FDW Arrival Date
@@ -141,7 +141,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-24">
                                         <div id="div_id_shn_end_date" class="form-group mb-3"> 
                                             <label for="id_shn_end_date" class="">SHN End Date</label>
                                             <div class="">
@@ -149,7 +149,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12"> 
+                                    <div class="col-md-24"> 
                                         <div id="div_id_thumb_print_date" class="form-group mb-3"> 
                                             <label for="id_thumb_print_date" class="">
                                                 FDW Thumb Print Date
@@ -159,7 +159,7 @@
                                             </div> 
                                         </div>
                                     </div> 
-                                    <div class="col-md-12">
+                                    <div class="col-md-24">
                                         <div id="div_id_fdw_work_commencement_date" class="form-group mb-3">
                                             <label for="id_fdw_work_commencement_date" class="">Deployment Date</label>
                                             <div class="">

@@ -304,7 +304,7 @@ class EmployerForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -1128,7 +1128,7 @@ class EmployerSponsorForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -1928,7 +1928,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -2156,7 +2156,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -2343,7 +2343,7 @@ class EmployerDocForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -2627,7 +2627,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -2886,7 +2886,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -2992,7 +2992,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -3160,7 +3160,7 @@ class DepositDetailForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -3199,7 +3199,7 @@ class RemainingAmountDetailForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -3270,7 +3270,7 @@ class DocUploadForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -3354,7 +3354,7 @@ class CaseStatusForm(forms.ModelForm):
                         'Next',
                         css_class="btn btn-primary w-25"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 )
             )
         )
@@ -3487,11 +3487,11 @@ class TokenChallengeForm(forms.Form):
             Row(
                 Column(
                     'nric_fin',
-                    css_class='form-group col-9 my-2',
+                    css_class='form-group col-18 my-2',
                 ),
                 Column(
                     'mobile',
-                    css_class='form-group col-9 my-2',
+                    css_class='form-group col-18 my-2',
                 ),
                 Column(
                     Submit(
@@ -3499,7 +3499,7 @@ class TokenChallengeForm(forms.Form):
                         'Confirm',
                         css_class="btn btn-primary w-75",
                     ),
-                    css_class='form-group col-9 my-3 text-center',
+                    css_class='form-group col-18 my-3 text-center',
                 )
             )
         )

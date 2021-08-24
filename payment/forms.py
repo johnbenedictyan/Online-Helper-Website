@@ -49,7 +49,7 @@ class SubscriptionProductCreationForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -92,7 +92,7 @@ class SubscriptionProductImageCreationForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
@@ -147,7 +147,7 @@ class SubscriptionProductPriceCreationForm(forms.ModelForm):
                         'Submit',
                         css_class="btn btn-primary w-50"
                     ),
-                    css_class='form-group col-12 text-center'
+                    css_class='form-group col-24 text-center'
                 ),
                 css_class='form-row'
             )
