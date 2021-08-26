@@ -416,6 +416,7 @@ class AgencyUpdateForm(forms.ModelForm):
         else:
             raise ValidationError("Couldn't read uploaded image")
 
+
 class AgencyOwnerCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email Address'),
@@ -1254,7 +1255,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-30"
                     ),
                     css_class='form-group col-24 text-center'
                 )
