@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 
 # Foreign Apps Imports
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, HTML
+from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div
 
 # Project Apps Imports
 from onlinemaid.constants import AG_OWNERS, P_EMPLOYERS
@@ -122,6 +122,15 @@ class AgencySignInForm(AuthenticationForm):
             self.fields[k].widget.attrs['placeholder'] = v
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Div(
+                Div(
+                    HTML(
+                        '<h5 class="fs-16">Employment Agency Login</h5>'
+                    ),
+                    css_class='col mb-md-2 mb-lg-3 mb-xl-4'
+                ),
+                css_class='row'
+            ),
             Row(
                 Column(
                     'agency_license_number',
