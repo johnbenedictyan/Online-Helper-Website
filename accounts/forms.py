@@ -76,7 +76,7 @@ class SignInForm(AuthenticationForm):
                 Column(
                     Submit(
                         'submit',
-                        'Log in',
+                        'Login',
                         css_class="btn btn-primary w-100"
                     ),
                     css_class='form-group col-24 text-center'
@@ -111,9 +111,9 @@ class AgencySignInForm(AuthenticationForm):
     )
 
     placeholders = {
-        'agency_license_number': 'abc123',
-        'username': 'owner@agency.com',
-        'password': 'topsecret'
+        'agency_license_number': '',
+        'username': '',
+        'password': ''
     }
 
     def __init__(self, *args, **kwargs):
@@ -157,7 +157,7 @@ class AgencySignInForm(AuthenticationForm):
                 Column(
                     Submit(
                         'submit',
-                        'Log In',
+                        'Login',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
@@ -233,8 +233,8 @@ class EmployerCreationForm(forms.ModelForm):
     terms_and_conditions = forms.BooleanField()
 
     placeholders = {
-        'email': 'johndoe@example.com',
-        'password': 'topsecret'
+        'email': '',
+        'password': ''
     }
 
     class Meta:

@@ -35,7 +35,7 @@ class AgencyLoginRequiredMixin(LoginRequiredMixin):
             request, *args, **kwargs)
 
     # This mixin is the base mixin if we want the user to login in using the
-    # agency log in page rather than the log in page for the potential
+    # agency login page rather than the login page for the potential
     # employers.
 
 

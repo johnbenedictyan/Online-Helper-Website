@@ -1175,12 +1175,12 @@ class PotentialAgencyForm(forms.ModelForm):
     terms_and_conditions = forms.BooleanField()
 
     placeholders = {
-        'name': 'Test Agency',
-        'license_number': 'abc123',
-        'person_in_charge': 'John Doe',
-        'contact_number': '98765432',
-        'office_number': '61234567',
-        'email': 'john@testagency.com'
+        'name': '',
+        'license_number': '',
+        'person_in_charge': '',
+        'contact_number': '',
+        'office_number': '',
+        'email': ''
     }
 
     class Meta:
