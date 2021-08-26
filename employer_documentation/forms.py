@@ -100,11 +100,11 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'applicant_type',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'household_details_required',
-                    css_class='form-group col-lg-6',
+                    css_class='form-group col-lg-12',
                 )
             ),
             Row(
@@ -115,7 +115,7 @@ class EmployerForm(forms.ModelForm):
                     # MUST update 'del self.helper.layout.fields[1][1]' line
                     # as this removes this object from the layout helper.
                     'agency_employee',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
 
@@ -127,11 +127,11 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'employer_name',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'employer_gender',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
@@ -151,21 +151,21 @@ class EmployerForm(forms.ModelForm):
             Row(
                 Column(
                     'employer_email',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'employer_address_1',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
                 Column(
                     'employer_address_2',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'employer_post_code',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
@@ -176,32 +176,32 @@ class EmployerForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Employer date of birth',
                     ),
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'employer_nationality',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
                 Column(
                     'employer_residential_status',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'employer_nric_num',
-                    css_class='form-group col-lg-6',
+                    css_class='form-group col-lg-12',
                     id='employer_id_nric',
                 )
             ),
             Row(
                 Column(
                     'employer_fin_num',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'employer_passport_num',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 id='employer_id_other'
             ),
@@ -213,12 +213,12 @@ class EmployerForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Employer passport expiry date',
                     ),
-                    css_class='form-group col-lg-6',
+                    css_class='form-group col-lg-12',
                     id='employer_id_other_2',
                 ),
                 Column(
                     'employer_marital_status',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
 
@@ -232,11 +232,11 @@ class EmployerForm(forms.ModelForm):
                     Row(
                         Column(
                             'spouse_name',
-                            css_class='form-group col-lg-6 employer-spouse spouse-only',
+                            css_class='form-group col-lg-12 employer-spouse spouse-only',
                         ),
                         Column(
                             'spouse_gender',
-                            css_class='form-group col-lg-6 employer-spouse spouse-only',
+                            css_class='form-group col-lg-12 employer-spouse spouse-only',
                         )
                     ),
                     Row(
@@ -247,32 +247,32 @@ class EmployerForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Employer spouse date of birth',
                             ),
-                            css_class='form-group col-lg-6'
+                            css_class='form-group col-lg-12'
                         ),
                         Column(
                             'spouse_nationality',
-                            css_class='form-group col-lg-6'
+                            css_class='form-group col-lg-12'
                         )
                     ),
                     Row(
                         Column(
                             'spouse_residential_status',
-                            css_class='form-group col-lg-6'
+                            css_class='form-group col-lg-12'
                         ),
                         Column(
                             'spouse_nric_num',
-                            css_class='form-group col-lg-6',
+                            css_class='form-group col-lg-12',
                             id='spouse_id_nric',
                         )
                     ),
                     Row(
                         Column(
                             'spouse_fin_num',
-                            css_class='form-group col-lg-6'
+                            css_class='form-group col-lg-12'
                         ),
                         Column(
                             'spouse_passport_num',
-                            css_class='form-group col-lg-6'
+                            css_class='form-group col-lg-12'
                         ),
                         id='spouse_id_other',
                     ),
@@ -284,12 +284,12 @@ class EmployerForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Employer spouse passport expiry date',
                             ),
-                            css_class='form-group col-lg-6',
+                            css_class='form-group col-lg-12',
                             id='spouse_id_other_2',
                         ),
                         Column(
                             'employer_marriage_sg_registered',
-                            css_class='form-group col-lg-6'
+                            css_class='form-group col-lg-12'
                         )
                     ),
                 ),
@@ -784,21 +784,21 @@ class EmployerSponsorForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'sponsor_1_relationship',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 ),
                                 Column(
                                     'sponsor_1_name',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_1_gender',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 ),
                                 Column(
                                     'sponsor_1_nric_num',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
@@ -809,49 +809,49 @@ class EmployerSponsorForm(forms.ModelForm):
                                         onfocus="(this.type='date')",
                                         placeholder='Sponsor 1 date of birth'
                                     ),
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 ),
                                 Column(
                                     'sponsor_1_nationality',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_1_residential_status',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 ),
                                 Column(
                                     PrependedText(
                                         'sponsor_1_mobile_number', '+65',
                                     ),
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_1_email',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 ),
                                 Column(
                                     'sponsor_1_address_1',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_1_address_2',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 ),
                                 Column(
                                     'sponsor_1_post_code',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_1_marital_status',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             # Sponsor 1 spouse
@@ -866,17 +866,17 @@ class EmployerSponsorForm(forms.ModelForm):
                                     Row(
                                         Column(
                                             'sponsor_1_marriage_sg_registered',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_name',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_gender',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         ),
                                         Column(
                                             Field(
@@ -885,35 +885,35 @@ class EmployerSponsorForm(forms.ModelForm):
                                                 onfocus="(this.type='date')",
                                                 placeholder='Sponsor 1 spouse date of birth'
                                             ),
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_nationality',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_residential_status',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_nric_num',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                             id='sponsor1spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_1_spouse_fin_num',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                             id='sponsor1spouse_id_fin',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_1_spouse_passport_num',
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         ),
                                         Column(
                                             Field(
@@ -922,7 +922,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                                 onfocus="(this.type='date')",
                                                 placeholder='Sponsor 1 spouse passport expiry date',
                                             ),
-                                            css_class='form-group col-md-6 spouse-1',
+                                            css_class='form-group col-md-12 spouse-1',
                                         ),
                                         id='sponsor1spouse_id_passport',
                                     ),
@@ -944,7 +944,7 @@ class EmployerSponsorForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'sponsor_2_required',
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                         ),
@@ -960,21 +960,21 @@ class EmployerSponsorForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'sponsor_2_relationship',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 ),
                                 Column(
                                     'sponsor_2_name',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_2_gender',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 ),
                                 Column(
                                     'sponsor_2_nric_num',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 )
                             ),
                             Row(
@@ -985,49 +985,49 @@ class EmployerSponsorForm(forms.ModelForm):
                                         onfocus="(this.type='date')",
                                         placeholder='Sponsor 2 date of birth',
                                     ),
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 ),
                                 Column(
                                     'sponsor_2_nationality',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_2_residential_status',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 ),
                                 Column(
                                     PrependedText(
                                         'sponsor_2_mobile_number', '+65',
                                     ),
-                                    css_class='form-group col-md-6',
+                                    css_class='form-group col-md-12',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_2_email',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 ),
                                 Column(
                                     'sponsor_2_address_1',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_2_address_2',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 ),
                                 Column(
                                     'sponsor_2_post_code',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 )
                             ),
                             Row(
                                 Column(
                                     'sponsor_2_marital_status',
-                                    css_class='form-group col-md-6 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2',
                                 )
                             ),
                             # Sponsor 2 spouse
@@ -1042,17 +1042,17 @@ class EmployerSponsorForm(forms.ModelForm):
                                     Row(
                                         Column(
                                             'sponsor_2_marriage_sg_registered',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_name',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_gender',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         ),
                                         Column(
                                             Field(
@@ -1061,35 +1061,35 @@ class EmployerSponsorForm(forms.ModelForm):
                                                 onfocus="(this.type='date')",
                                                 placeholder='Sponsor 2 date of birth',
                                             ),
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_nationality',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_residential_status',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_nric_num',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                             id='sponsor2spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_fin_num',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                             id='sponsor2spouse_id_fin',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_passport_num',
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         ),
                                         Column(
                                             Field(
@@ -1098,7 +1098,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                                 onfocus="(this.type='date')",
                                                 placeholder='Sponsor 2 spouse passport expiry date',
                                             ),
-                                            css_class='form-group col-md-6 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2',
                                         ),
                                         id='sponsor2spouse_id_passport',
                                     ),
@@ -1776,17 +1776,17 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     Row(
                         Column(
                             'joint_applicant_relationship',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         ),
                         Column(
                             'joint_applicant_name',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         )
                     ),
                     Row(
                         Column(
                             'joint_applicant_gender',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         ),
                         Column(
                             Field(
@@ -1795,43 +1795,43 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                 onfocus="(this.type='date')",
                                 placeholder='Joint applicant date of birth'
                             ),
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         )
                     ),
                     Row(
                         Column(
                             'joint_applicant_nric_num',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         ),
                         Column(
                             'joint_applicant_nationality',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         )
                     ),
                     Row(
                         Column(
                             'joint_applicant_residential_status',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         ),
                         Column(
                             'joint_applicant_address_1',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         )
                     ),
                     Row(
                         Column(
                             'joint_applicant_address_2',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         ),
                         Column(
                             'joint_applicant_post_code',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         )
                     ),
                     Row(
                         Column(
                             'joint_applicant_marital_status',
-                            css_class='form-group col-md-6',
+                            css_class='form-group col-md-12',
                         )
                     ),
 
@@ -1847,17 +1847,17 @@ class EmployerJointApplicantForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'joint_applicant_marriage_sg_registered',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 ),
                                 Column(
                                     'joint_applicant_spouse_name',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 )
                             ),
                             Row(
                                 Column(
                                     'joint_applicant_spouse_gender',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 ),
                                 Column(
                                     Field(
@@ -1866,35 +1866,35 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                         onfocus="(this.type='date')",
                                         placeholder='Joint applicant spouse date of birth'
                                     ),
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 )
                             ),
                             Row(
                                 Column(
                                     'joint_applicant_spouse_nationality',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 ),
                                 Column(
                                     'joint_applicant_spouse_residential_status',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 )
                             ),
                             Row(
                                 Column(
                                     'joint_applicant_spouse_nric_num',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                     id='ja_spouse_id_nric',
                                 ),
                                 Column(
                                     'joint_applicant_spouse_fin_num',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                     id='ja_spouse_id_fin',
                                 )
                             ),
                             Row(
                                 Column(
                                     'joint_applicant_spouse_passport_num',
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 ),
                                 Column(
                                     Field(
@@ -1903,7 +1903,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                                         onfocus="(this.type='date')",
                                         placeholder='Joint applicant spouse passport expiry date',
                                     ),
-                                    css_class='form-group col-md-6 spouse-1',
+                                    css_class='form-group col-md-12 spouse-1',
                                 ),
                                 id='ja_spouse_id_passport',
                             ),
@@ -2280,7 +2280,7 @@ class EmployerDocForm(forms.ModelForm):
             Row(
                 Column(
                     'case_ref_no',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     Field(
@@ -2289,17 +2289,17 @@ class EmployerDocForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Contract date'
                     ),
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
                 Column(
                     'employer',
-                    css_class='form-group col-lg-6',
+                    css_class='form-group col-lg-12',
                 ),
                 Column(
                     'fdw',
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
@@ -2308,14 +2308,14 @@ class EmployerDocForm(forms.ModelForm):
                         'fdw_salary', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     PrependedText(
                         'fdw_loan', '$',
                         min='0', max='10000',
                     ),
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 )
             ),
             Row(
@@ -2328,11 +2328,11 @@ class EmployerDocForm(forms.ModelForm):
                         'fdw_monthly_loan_repayment', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-lg-6'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'fdw_off_day_of_week',
-                    css_class='form-group col-lg-6',
+                    css_class='form-group col-lg-12',
                 )
             ),
             # Submit
@@ -2415,7 +2415,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             Row(
                 Column(
                     'is_new_case',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2425,11 +2425,11 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     Row(
                         Column(
                             'fdw_replaced_name',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-12'
                         ),
                         Column(
                             'fdw_replaced_passport_num',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-12'
                         )
                     ),
                     Row(
@@ -2438,7 +2438,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                                 'b4_loan_transferred', '$',
                                 min='0', max='1000',
                             ),
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-12'
                         )
                     ),
                 ),
@@ -2456,7 +2456,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'b1_service_fee', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2470,14 +2470,14 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'b2a_work_permit_application_collection', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'b2b_medical_examination_fee', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
@@ -2486,14 +2486,14 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'b2c_security_bond_accident_insurance', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'b2d_indemnity_policy_reimbursement', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
@@ -2502,53 +2502,53 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'b2e_home_service', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'b2f_sip', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'b2g1_other_services_description',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'b2g1_other_services_fee', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'b2g2_other_services_description',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'b2g2_other_services_fee', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'b2g3_other_services_description',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'b2g3_other_services_fee', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
@@ -2556,14 +2556,14 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     Row(
                         Column(
                             'b2h_replacement_months',
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-12'
                         ),
                         Column(
                             PrependedText(
                                 'b2h_replacement_cost', '$',
                                 min='0', max='1000',
                             ),
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-12'
                         )
                     ),
                     Row(
@@ -2572,7 +2572,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                                 'b2i_work_permit_renewal', '$',
                                 min='0', max='1000',
                             ),
-                            css_class='form-group col-md-6'
+                            css_class='form-group col-md-12'
                         )
                     ),
                 ),
@@ -2589,7 +2589,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'b3_agency_fee', '$',
                         min='0', max='10000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2603,13 +2603,13 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                         'ca_deposit_amount', '$',
                         min='0', max='10000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     Field(
                         'ca_deposit_detail'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2720,7 +2720,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             Row(
                 Column(
                     'c1_3_handover_days',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
@@ -2747,55 +2747,55 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                         'c3_4_no_replacement_refund', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
             Row(
                 Column(
                     'c4_1_number_of_replacements',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'c4_1_replacement_period',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'c4_1_replacement_after_min_working_days',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'c4_1_5_replacement_deadline',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
             Row(
                 Column(
                     'c5_1_1_deployment_deadline',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'c5_1_1_failed_deployment_refund', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'c5_1_2_refund_within_days',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'c5_1_2_before_fdw_arrives_charge', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
@@ -2804,17 +2804,17 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                         'c5_1_2_after_fdw_arrives_charge', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'c5_2_2_can_transfer_refund_within',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'c5_3_2_cannot_transfer_refund_within',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2824,32 +2824,32 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                         'c6_4_per_day_food_accommodation_cost', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     PrependedText(
                         'c6_6_per_session_counselling_cost', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
             Row(
                 Column(
                     'c9_1_independent_mediator_1',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'c9_2_independent_mediator_2',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
             Row(
                 Column(
                     'c13_termination_notice',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2863,11 +2863,11 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
             Row(
                 Column(
                     'c3_5_fdw_sleeping_arrangement',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'c4_1_termination_notice',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -2949,31 +2949,31 @@ class DocSafetyAgreementForm(forms.ModelForm):
             Row(
                 Column(
                     'residential_dwelling_type',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'fdw_clean_window_exterior',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'window_exterior_location',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'grilles_installed_require_cleaning',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'adult_supervision',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'verifiy_employer_understands_window_cleaning',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -3242,17 +3242,17 @@ class DocUploadForm(forms.ModelForm):
             Row(
                 Column(
                     'job_order_pdf',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'ipa_pdf',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
                 Column(
                     'medical_report_pdf',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
 
@@ -3302,7 +3302,7 @@ class CaseStatusForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='IPA approval date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     Field(
@@ -3311,7 +3311,7 @@ class CaseStatusForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='FDW arrival date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     Field(
@@ -3320,7 +3320,7 @@ class CaseStatusForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Security bond approval date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     Field(
@@ -3329,7 +3329,7 @@ class CaseStatusForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='Thumb print date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     Field(
@@ -3338,7 +3338,7 @@ class CaseStatusForm(forms.ModelForm):
                         onfocus="(this.type='date')",
                         placeholder='FDW work commencement date'
                     ),
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 )
             ),
             Row(
@@ -3398,7 +3398,7 @@ class SignatureForm(forms.ModelForm):
             else:
                 self.helper.layout.append(
                     Row(
-                        Column(field, css_class='form-group col-md-6')
+                        Column(field, css_class='form-group col-md-12')
                     )
                 )
 

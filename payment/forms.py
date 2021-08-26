@@ -117,11 +117,11 @@ class SubscriptionProductPriceCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'unit_amount',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'currency',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 css_class='form-row'
             ),

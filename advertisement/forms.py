@@ -27,11 +27,11 @@ class AdvertisementCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'location',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 Column(
                     'ad_type',
-                    css_class='form-group col-md-6'
+                    css_class='form-group col-md-12'
                 ),
                 css_class='form-row'
             ),
