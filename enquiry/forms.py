@@ -63,32 +63,32 @@ class GeneralEnquiryForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(
                 attrs={
-                    'placeholder': 'Name'
+                    'placeholder': ''
                 }
             ),
             'mobile_number': forms.TextInput(
                 attrs={
-                    'placeholder': 'Mobile Number'
+                    'placeholder': ''
                 }
             ),
             'email': forms.TextInput(
                 attrs={
-                    'placeholder': 'Email Address'
+                    'placeholder': ''
                 }
             ),
             'no_of_family_members': forms.NumberInput(
                 attrs={
-                    'placeholder': 'Number of Family Members'
+                    'placeholder': ''
                 }
             ),
             'no_of_below_5': forms.NumberInput(
                 attrs={
-                    'placeholder': 'Number of Children below 5'
+                    'placeholder': ''
                 }
             ),
             'no_of_babies': forms.NumberInput(
                 attrs={
-                    'placeholder': 'Number of Babies'
+                    'placeholder': ''
                 }
             ),
             'remarks': forms.Textarea(
@@ -106,33 +106,33 @@ class GeneralEnquiryForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'mobile_number',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pl-md-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'property_type',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pl-md-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'no_of_family_members',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'no_of_below_5',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pl-md-3'
                 ),
                 css_class='form-row'
             ),
