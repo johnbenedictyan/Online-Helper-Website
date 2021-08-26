@@ -5,9 +5,13 @@
 {% include 'sections/title-banner.html' with page_name='Agency Log In' %}
 {% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='account-section' %}
 {% include 'components/crispy-form-error.html' %}
-<form method="post" enctype="multipart/form-data">
-    {% crispy form %}
-</form>
+<div class="row">
+    <div class="col py-md-4">
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form %}
+        </form>
+    </div>
+</div>
 {% include 'components/form-footer.html' with page_name='Agency Login' %}
 {% include 'components/45-ws-section/end.html' %}
 {% endblock accounts_section %}
