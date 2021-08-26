@@ -153,7 +153,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                         ),
                         css_class='form-row'
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-lg-12'
                 ),
                 Column(
                     Row(
@@ -171,7 +171,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                         ),
                         css_class='form-row'
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-lg-12'
                 )
             ),
             Row(
@@ -191,7 +191,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                         ),
                         css_class='form-row'
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-lg-12'
                 ),
                 Column(
                     Row(
@@ -209,7 +209,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                         ),
                         css_class='form-row'
                     ),
-                    css_class='col-lg-6'
+                    css_class='col-lg-12'
                 )
             ),
             Row(
