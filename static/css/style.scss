@@ -15,7 +15,6 @@ $FONT_SIZE_LARGER_SLIGHT: 1.05rem;
 // Custom Typography
 $FONT_SIZE_10: calc(10/12 * 1rem);
 $FONT_SIZE_11: calc(11/12 * 1rem);
-$FONT_SIZE_11-5: calc(11.5/12 * 1rem);
 $FONT_SIZE_12: calc(12/12 * 1rem);
 $FONT_SIZE_14: calc(14/12 * 1rem);
 $FONT_SIZE_16: calc(16/12 * 1rem);
@@ -125,9 +124,6 @@ footer {
     }
     &-11 {
         font-size: $FONT_SIZE_11;
-    }
-    &-11-5 {
-        font-size: $FONT_SIZE_11-5;
     }
     &-12 {
         font-size: $FONT_SIZE_12;
