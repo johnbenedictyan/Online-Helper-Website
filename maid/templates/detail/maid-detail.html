@@ -16,7 +16,12 @@
                                 <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-1 btn-outline-primary">Download Bio-data</a>
                             </div>
                         </div>
-                        <div style="background-image:url({{maid.photo.url}});background-position-x: center;background-size: cover; flex: 1;"></div>
+                        <div class="row d-md-none">
+                            <div class="col">
+                                <img class="img-fluid" src="{% static '{{maid.photo.url}}' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="d-none d-md-flex" style="background-image:url({{maid.photo.url}});background-position-x: center;background-size: cover; flex: 1;"></div>
                         <div class="row d-none d-md-flex">
                             <div class="col-xl-16 mt-2 offset-xl-4">
                                 <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-2 btn-primary">Add to Shortlist</a>
