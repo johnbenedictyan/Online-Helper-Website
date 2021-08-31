@@ -2,6 +2,7 @@ $white: #fff !default;
 $gray-400: #ced4da !default;
 
 $lochmara: #2A68A2 !default;
+$bahama-blue: #1F4E78 !default;
 $curious-blue: #2F75B5 !default;
 $custom-light-blue2: #3482cb !default;
 
@@ -599,13 +600,13 @@ button.mini-faq-button {
 }
 
 .new-side-nav-link{
-    color: #1F4E78 !important;
+    color: $bahama-blue !important;
     a {
-        color: #1F4E78 !important;
+        color: $bahama-blue !important;
     }
 
     &.active {
-        background-color: $lochmara;
+        background-color: $bahama-blue;
         color: $white !important;
         a {
             color: $white !important;
@@ -613,7 +614,7 @@ button.mini-faq-button {
     }
 
     &:hover:not(.active) {
-        background-color: $lochmara;
+        background-color: $bahama-blue;
         color: $white !important;
         transition: background-color .5s ease-in-out;
         transition: color .5s ease-in-out; 
