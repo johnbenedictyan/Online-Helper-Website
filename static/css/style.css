@@ -372,7 +372,7 @@ button.mini-faq-button i {
 }
 
 .new-side-nav-link.active {
-  background-color: #2A68A2;
+  background-color: #1F4E78;
   color: #fff !important;
 }
 
@@ -381,7 +381,7 @@ button.mini-faq-button i {
 }
 
 .new-side-nav-link:hover:not(.active) {
-  background-color: #2A68A2;
+  background-color: #1F4E78;
   color: #fff !important;
   -webkit-transition: background-color .5s ease-in-out;
   transition: background-color .5s ease-in-out;
