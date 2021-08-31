@@ -3,6 +3,7 @@ $gray-400: #ced4da !default;
 
 $lochmara: #2A68A2 !default;
 $curious-blue: #2F75B5 !default;
+$custom-light-blue2: #3482cb !default;
 
 $BASE_FONT_SIZE: 1rem !default;
 $FONT_SIZE_SMALLER_REDUCTION_FACTOR: .75;
@@ -517,6 +518,9 @@ html {
             border-color: $lochmara;
         }
     }
+    &:hover{
+        text-decoration: none;
+    }
 }
 
 .faq-question{
@@ -532,6 +536,14 @@ ol {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Rubik', sans-serif;
+}
+
+.nav-item {
+    &.active {
+        .custom-nav-link{
+            color: $custom-light-blue2;
+        }
+    }
 }
 
 button.mini-faq-button {

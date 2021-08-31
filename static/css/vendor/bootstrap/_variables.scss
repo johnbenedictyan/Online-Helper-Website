@@ -54,6 +54,7 @@ $orange-peel: #FF9900 !default;
 $light-cyan:#7abad0 !default;
 $custom-blue: #5B7FB5 !default;
 $custom-light-blue : #d9e9f1 !default;
+$custom-light-blue2 : #3482cb !default;
 
 // Icon Colours
 $svg-cv-bg-color: #5C9833 !default;
@@ -86,6 +87,7 @@ $colors: map-merge(("blue": $blue,
         "orange-peel": $orange-peel,
         "light-cyan": $light-cyan,
         "custom-light-blue": $custom-light-blue,
+        "custom-light-blue2": $custom-light-blue2,
 ),
     $colors);
 
