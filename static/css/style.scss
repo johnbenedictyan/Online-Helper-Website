@@ -637,6 +637,16 @@ a.mini-side-nav-link{
     color: #1F4E78 !important;
 }
 
+.w{
+    &-xs{
+        @media screen and (max-width: 767px) {
+            &-100 {
+                width: 100% !important;
+            }
+        }
+    }
+}
+
 $CUSTOM_CARD_BOX_SHADOW_SETTINGS: 0px 16px 40px;
 $CUSTOM_CARD_SHADOW_COLOUR: rgba(59, 123, 196, 0.2);
 $CUSTOM_CARD_PADDING: 1.75rem;

@@ -405,6 +405,12 @@ a.mini-side-nav-link {
   color: #1F4E78 !important;
 }
 
+@media screen and (max-width: 767px) {
+  .w-xs-100 {
+    width: 100% !important;
+  }
+}
+
 body.dashboard-body {
   background-color: #fff !important;
 }
