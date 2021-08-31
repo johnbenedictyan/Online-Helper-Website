@@ -68,7 +68,8 @@ class BaseDashboardView(AgencyLoginRequiredMixin, GetAuthorityMixin):
         }
 
 
-class BaseFilteredListView(BaseDashboardView, ListFilteredMixin, ListView):
+class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
+                           ListFilteredMixin, ListView):
     http_method_names = ['get']
     authority = ''
     agency_id = ''
