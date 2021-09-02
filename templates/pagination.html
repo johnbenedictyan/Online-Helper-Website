@@ -8,7 +8,7 @@
 
             {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
-                    <a class="btn btn-xs-lg btn btn-xs-lg-sm btn btn-xs-lg-primary" href="?page={{ num }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">{{ num }}</a>
+                    <a class="btn btn-xs-lg btn btn-xs-lg-sm btn-primary" href="?page={{ num }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">{{ num }}</a>
                 {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                     <a class="btn btn-xs-lg btn btn-xs-lg-sm btn btn-xs-lg-outline-primary" href="?page={{ num }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">{{ num }}</a>
                 {% endif %}
