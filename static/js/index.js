@@ -95,6 +95,7 @@ const displayContent = function(res) {
         let maid = res.data.featured_maids[index];
         let url_mask = `{% url 'add_to_shortlist' 1 %}`.replace('1', maid.pk);
         featuredMaidsContent += `
+            <a class="text-decoration-none" href="{% url 'maid_detail' ${maid.pk} %}">
                 <div class="card maid-card" id='maid-${maid.pk}' data-maid='${maid.pk}'>
                     <div onclick="maidProfileRedirect(${maid.pk})">
                         <img src="${maid.photo_url}" class="card-img-top" alt="Maid Photo">
@@ -109,7 +110,8 @@ const displayContent = function(res) {
                     <div class="card-footer">
                         <a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a>
                     </div>
-                </div>`
+                </div>
+            </a>`
     };
     featuredMaidsContent += `</div>`;
     $('#featured-maids-wrapper').html(featuredMaidsContent);
