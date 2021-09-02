@@ -48,9 +48,9 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 {% if agency.owners.count != 1%}
-                                                    <a href="{% url 'agency_owner_create' agency.pk %}" class="btn btn-light"><i class="fas fa-user-plus"></i></a>
+                                                    <a href="{% url 'agency_owner_create' agency.pk %}" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-user-plus"></i></a>
                                                 {% endif %}
-                                                <a href="" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
+                                                <a href="" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-trash-alt"></i></a>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -58,7 +58,7 @@
                                 </table>
                             </div>
                             <div class="col-24 d-flex justify-content-between">
-                                <a href="{% url 'agency_create' %}" class="btn btn-primary">Add Agency</a>
+                                <a href="{% url 'agency_create' %}" class="btn btn-xs-lg btn btn-xs-lg-primary">Add Agency</a>
                                 <span class="">{% include 'pagination.html' %}</span>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                         <div class="row">
                             <div class="col">
                                 <h1>Subscription Product List</h1>
-                                <a href="{% url 'subscription_product_create' %}" class="btn btn-primary">Add Product</a>
+                                <a href="{% url 'subscription_product_create' %}" class="btn btn-xs-lg btn btn-xs-lg-primary">Add Product</a>
                             </div>
                         </div>
                         <div class="row">
@@ -92,23 +92,23 @@
                                             <td class="align-middle text-center">{{product.description}}</td>
                                             <td class="align-middle text-center">
                                                 {{product.images_set.count}}
-                                                <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
-                                                <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-eye"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-edit"></i></a>
                                             </td>
                                             <td class="align-middle text-center">
                                                 {{product.prices_set.count}}
-                                                <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
-                                                <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-eye"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-edit"></i></a>
                                             </td>
                                             <td class="align-middle text-center"></td>
                                             <td class="align-middle text-center">
                                                 {% if product.archived == False %}
-                                                <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-eye"></i></a>
                                                 {% else %}
-                                                <a href="#" class="btn btn-light"><i class="fas fa-eye-slash"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-eye-slash"></i></a>
                                                 {% endif %}
-                                                <a href="#" class="btn btn-light"><i class="fas fa-edit"></i></a>
-                                                <a href="" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
+                                                <a href="#" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-edit"></i></a>
+                                                <a href="" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-trash-alt"></i></a>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -140,11 +140,11 @@
                                             <td class="align-middle text-center">{{enquiry.remarks}}</td>
                                             <td class="align-middle text-center">
                                                 {% if enquiry.maids %}
-                                                <a href="{% url 'approve_shortlisted_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-check-circle"></i></a>
-                                                <a href="{% url 'reject_shortlisted_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
+                                                <a href="{% url 'approve_shortlisted_enquiry' enquiry.pk %}" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-check-circle"></i></a>
+                                                <a href="{% url 'reject_shortlisted_enquiry' enquiry.pk %}" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-trash-alt"></i></a>
                                                 {% else %}
-                                                <a href="{% url 'approve_general_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-check-circle"></i></a>
-                                                <a href="{% url 'reject_general_enquiry' enquiry.pk %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a>
+                                                <a href="{% url 'approve_general_enquiry' enquiry.pk %}" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-check-circle"></i></a>
+                                                <a href="{% url 'reject_general_enquiry' enquiry.pk %}" class="btn btn-xs-lg btn btn-xs-lg-light"><i class="fas fa-trash-alt"></i></a>
                                                 {% endif %}
                                             </td>
                                         </tr>

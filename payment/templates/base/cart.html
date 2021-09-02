@@ -64,7 +64,7 @@
         </div>
         {% endfor %}
         {% if cart_count > 0 %}
-        <button id="checkout-btn" class="btn btn-primary">Checkout</button>
+        <button id="checkout-btn btn-xs-lg" class="btn btn-xs-lg btn btn-xs-lg-primary">Checkout</button>
         {% endif %}
     </div>
 </section>
@@ -88,7 +88,7 @@
             });
         };
         document
-        .getElementById("checkout-btn")
+        .getElementById("checkout-btn btn-xs-lg")
         .addEventListener("click", function(evt) {
             createCheckoutSession().then(function(data) {
             // Call Stripe.js method to redirect to the new Checkout page

@@ -470,33 +470,33 @@ h5 {
     background-color: #999999;
 }
 
-.getstarted-btn {
+.getstarted-btn btn-xs-lg {
     background-color: #7ABAD0;
     color: white;
     display: block;
     margin: 0 auto;
 }
 
-.getstarted-btn:hover,
-.lightblue-btn:hover {
+.getstarted-btn btn-xs-lg:hover,
+.lightblue-btn btn-xs-lg:hover {
     background-color: #5B7FB5;
     color: white;
     text-decoration: none;
 }
 
-.lightblue-btn {
+.lightblue-btn btn-xs-lg {
     background-color: #7ABAD0;
     color: white;
     text-decoration: none;
 }
 
-.blue-btn:hover {
+.blue-btn btn-xs-lg:hover {
     background-color: #7ABAD0;
     color: white;
     text-decoration: none;
 }
 
-.blue-btn {
+.blue-btn btn-xs-lg {
     background-color: #5B7FB5;
     color: white;
 }
@@ -544,7 +544,7 @@ h5 {
     background-color: orange !important;
 }
 
-.faq-btn {
+.faq-btn btn-xs-lg {
     font-weight: 600 !important;
 }
 
@@ -657,7 +657,7 @@ h5 {
 }
 
 
-.filter-btn {
+.filter-btn btn-xs-lg {
     background: orange;
     color: white;
     padding: 0px 4.66rem;
@@ -825,9 +825,9 @@ h5 {
 
 
 
-/*.btn-primary.disabled,*/
+/*.btn btn-xs-lg-primary.disabled,*/
 
-/*.btn-primary:disabled {*/
+/*.btn btn-xs-lg-primary:disabled {*/
 
 /*    background-color: orange;*/
 
@@ -968,12 +968,12 @@ h5 {
     width: 5%;
 }
 
-.btn-google {
+.btn btn-xs-lg-google {
     color: white;
     background-color: #ea4335;
 }
 
-.btn-facebook {
+.btn btn-xs-lg-facebook {
     color: white;
     background-color: #3b5998;
 }

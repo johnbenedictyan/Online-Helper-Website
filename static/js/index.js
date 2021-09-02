@@ -83,7 +83,7 @@ const maidProfileRedirect = (pk) => {
 const displayEmptyContent = function() {
     let featuredMaidsContent = `<div class="row">
                 <div class="col text-center">
-                    <h1>No Featured Maids</h1>
+                    <h1 class="fs-12">No Featured Maids</h1>
                 </div>
             </div>`;
     $('#featured-maids-wrapper').html(featuredMaidsContent);
@@ -107,7 +107,7 @@ const displayContent = function(res) {
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a>
+                        <a href="${url_mask}" class="btn btn-xs-lg btn btn-xs-lg-primary w-100">Add to Shortlist</a>
                     </div>
                 </div>`
     };
@@ -229,7 +229,7 @@ const dashboardAgencyPlanChangePlan = function() {
 
 const dashboardAgencyPlanAddToCart = function(){
     $('.cart-button').click(function () {
-        let priceId = document.querySelector(`input[name="${String($(this).attr('id')).split('btn')[0]}"]:checked`).value;
+        let priceId = document.querySelector(`input[name="${String($(this).attr('id')).split('btn btn-xs-lg')[0]}"]:checked`).value;
         location.replace(location.origin.concat(`/payment/cart/add/${priceId}`))
     })
 }

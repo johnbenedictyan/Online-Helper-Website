@@ -14,7 +14,6 @@ class MaidCountryOfOrigin(models.TextChoices):
     PHILIPPINES = 'PHL', _('Philippines (the)')
     SRI_LANKA = 'LKA', _('Sri Lanka')
     THAILAND = 'THA', _('Thailand')
-    OTHERS = 'OTH', _('Others')
 
 
 COUNTRY_LANGUAGE_MAP = {
@@ -25,7 +24,6 @@ COUNTRY_LANGUAGE_MAP = {
     MaidCountryOfOrigin.MYANMAR: 'BUR',
     MaidCountryOfOrigin.PHILIPPINES: 'TAG',
     MaidCountryOfOrigin.SRI_LANKA: 'SIN',
-    MaidCountryOfOrigin.OTHERS: 'ENG',
 }
 
 

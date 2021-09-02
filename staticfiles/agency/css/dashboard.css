@@ -265,7 +265,7 @@ tbody tr:nth-child(odd) {
   background-color: #e9ecef;
 }
 
-.btn {
+.btn btn-xs-lg {
   padding: 0.7rem 1.25rem;
 }
 
@@ -366,7 +366,7 @@ tbody tr:nth-child(odd) {
   background-color: #fff2e6;
 }
 
-.basic-btn {
+.basic-btn btn-xs-lg {
   background-color: #ffcc99;
 }
 
@@ -378,7 +378,7 @@ tbody tr:nth-child(odd) {
   background-color: #77deee;
 }
 
-.standard-btn {
+.standard-btn btn-xs-lg {
   background-color: #b3e6ff;
 }
 
@@ -386,7 +386,7 @@ tbody tr:nth-child(odd) {
   background-color: #e6fff9;
 }
 
-.premium-btn {
+.premium-btn btn-xs-lg {
   background-color: #b3ffec;
 }
 
@@ -533,7 +533,7 @@ table#employment_history td {
 }
 
 /*End of General*/
-.btn-success, .btn--submit {
+.btn btn-xs-lg-success, .btn btn-xs-lg--submit {
   font-size: 0.85rem;
   color: white;
   background-color: #28a745;
@@ -541,7 +541,7 @@ table#employment_history td {
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.btn-danger, .btn--cancel {
+.btn btn-xs-lg-danger, .btn btn-xs-lg--cancel {
   font-size: 0.85rem;
   color: white;
   background-color: #dc3545;
@@ -549,18 +549,18 @@ table#employment_history td {
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.btn-info {
+.btn btn-xs-lg-info {
   background-color: #FF942A;
   border-color: lightgray;
 }
 
-.btn-blue {
+.btn btn-xs-lg-blue {
   font-size: 0.85rem;
   background-color: #669BCC;
   border-color: lightgray;
 }
 
-.btn-green, .btn--add {
+.btn btn-xs-lg-green, .btn btn-xs-lg--add {
   font-size: 0.85rem;
   background-color: #66CCCA;
   border-color: lightgray;

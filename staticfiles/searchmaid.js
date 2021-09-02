@@ -119,7 +119,7 @@ $(document).ready(function() {
     });
 
     // display the results after reseting the filters
-    $("#reset_btn").click(function() {
+    $("#reset_btn btn-xs-lg").click(function() {
         resetFilters();
         getAPIData();
     });
@@ -179,7 +179,7 @@ function putCards(result) {
                             </li>
                         </ul>
                         </a>
-                    <a type="button" class="btn lightblue-btn btn-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/` + b.id + `">Add to Shortlist</a>
+                    <a type="button" class="btn btn-xs-lg lightblue-btn btn-xs-lg btn btn-xs-lg-block shadow" href="/shortlisted_cart/add_to_shortlisted_cart/` + b.id + `">Add to Shortlist</a>
                 </div>
                 
                 <div class="popup shadow-dark">
@@ -283,7 +283,7 @@ function putCards(result) {
         if(entry[2]){
             active = "active"
         }
-        $("#page-number .page-item:first").after(`<li class="page-item page-number-item ${active}"><button class="btn page-link" id="page_no_${entry[1]}" url="${entry[0]}">${entry[1]}</button></li>`)
+        $("#page-number .page-item:first").after(`<li class="page-item page-number-item ${active}"><button class="btn btn-xs-lg page-link" id="page_no_${entry[1]}" url="${entry[0]}">${entry[1]}</button></li>`)
         console.log(`placing page ${entry[1]}`)
         if(!entry[2]){
             $(`#page_no_${entry[1]}`).click(function() {
