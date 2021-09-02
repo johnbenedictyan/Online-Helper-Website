@@ -702,9 +702,11 @@
 </div>
 <div class="row">
     <div class="col">
-        {% for maid in similar_maids %}
-            {% include 'components/maid-card.html' with maid=maid %}
-        {% endfor %}
+        <div class="maid-carousel">
+            {% for maid in similar_maids %}
+                {% include 'components/maid-card.html' with maid=maid %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% include 'components/27-ws-section/end.html' %}
