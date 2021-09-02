@@ -11,13 +11,13 @@
                 <div class="row">
                     <div class="col-md-8" style="display: flex;flex-direction: column;">
                         <div class="row d-md-none">
-                            <div class="col">
+                            <div class="col my-3">
                                 <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn w-100 my-1 btn-primary">Add to Shortlist</a>
                                 <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn w-100 my-1 btn-outline-primary">Download Bio-data</a>
                             </div>
                         </div>
                         <div class="row d-md-none">
-                            <div class="col">
+                            <div class="col my-3">
                                 <img class="img-fluid" src="{{maid.photo.url}}" alt="">
                             </div>
                         </div>
@@ -177,13 +177,73 @@
             </div>
         </div>
         <div class="row">
-            <div class="col my-2 my-md-3 my-lg-4">
+            <div class="col my-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-2">
                         <h5 class="fs-14">Food Handling Preference and Dietary Restriction</h5>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row d-md-none">
+                    <div class="col mx-2">
+                        <div class="row bg-custom-pb">
+                            <div class="col-12 py-3">
+                                <h5 class="fs-11 mb-0">Description</h5>
+                            </div>
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Willingness</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="fs-11 mb-0">Can you handle pork?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_food_handling_pork}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="fs-11 mb-0">Can you eat pork?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_dietary_restriction_pork}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="fs-11 mb-0">Can you handle beef?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_food_handling_beef}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="fs-11 mb-0">Can you eat beef?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_dietary_restriction_beef}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="fs-11 mb-0">Are you willing to work in a vegetarian family?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_food_handling_veg}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="fs-11 mb-0">Are you vegetarian?</p>
+                            </div>
+                            <div class="col py-3">
+                                <p class="fs-11 mb-0">{{maid.get_dietary_restriction_veg}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-none d-md-flex">
                     <div class="col mx-2">
                         <div class="row bg-custom-pb">
                             <div class="col-8 py-3">
@@ -246,13 +306,172 @@
             </div>
         </div>
         <div class="row">
-            <div class="col my-2 my-md-3 my-lg-4">
+            <div class="col my-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-2">
                         <h5 class="fs-14">Skills of Maid</h5>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row d-md-none">
+                    <div class="col mx-2">
+                        <div class="row bg-custom-pb">
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Infant Child Care</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Willingness</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.infant_child_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Experience</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.infant_child_care.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Assessment</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.infant_child_care.assessment}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Remarks</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.infant_child_care.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row bg-custom-pb">
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Elderly Care</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Willingness</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.elderly_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Experience</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.elderly_care.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Assessment</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.elderly_care.assessment}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Remarks</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.elderly_care.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row bg-custom-pb">
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Disabled Care</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Willingness</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.disabled_care.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Experience</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.disabled_care.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Assessment</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.disabled_care.assessment}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Remarks</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.disabled_care.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row bg-custom-pb">
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">General Housework</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Willingness</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.general_housework.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Experience</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.general_housework.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Assessment</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.general_housework.assessment}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Remarks</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.general_housework.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                        <div class="row bg-custom-pb">
+                            <div class="col py-3">
+                                <h5 class="fs-11 mb-0">Cooking</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Willingness</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.cooking.get_willingness_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Experience</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.cooking.get_experience_display}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Assessment</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.cooking.assessment}}</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">Remarks</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{maid.cooking.get_remarks_display}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-none d-md-flex">
                     <div class="col mx-2">
                         <div class="row bg-custom-pb">
                             <div class="col-6 py-3">
@@ -361,13 +580,46 @@
             </div>
         </div>
         <div class="row">
-            <div class="col my-2 my-md-3 my-lg-4">
+            <div class="col my-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-2">
                         <h5 class="fs-14">Employment History</h5>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row d-md-none">
+                    <div class="col mx-2">
+                        {% for employment_history in maid.employment_history.all %}
+                        <div class="row {% cycle 'bg-white' '' %}">
+                            <div class="col-12 py-3">
+                                <h5 class="fs-11 mb-0">Employment Date</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{employment_history.start_date|date:'d M Y'}}</p>
+                                <p class="mb-0">{{employment_history.end_date|date:'d M Y'}}</p>
+                            </div>
+                            <div class="col-12 py-3">
+                                <h5 class="fs-11 mb-0">Employment Info</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{employment_history.get_country_display}}</p>
+                            </div>
+                            <div class="col-12 py-3">
+                                <h5 class="fs-11 mb-0">Work Duties</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{employment_history.work_duties}}</p>
+                            </div>
+                            <div class="col-12 py-3">
+                                <h5 class="fs-11 mb-0">Reasons for Leaving</h5>
+                            </div>
+                            <div class="col-12 py-3">
+                                <p class="mb-0">{{employment_history.reason_for_leaving}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row d-none d-md-flex">
                     <div class="col mx-2">
                         <div class="row bg-custom-pb">
                             <div class="col py-3">
@@ -405,7 +657,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col my-2 my-md-3 my-lg-4">
+            <div class="col my-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-2">
                         <h5 class="fs-14">About Maid</h5>
@@ -419,7 +671,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col my-2 my-md-3 my-lg-4">
+            <div class="col my-3 my-lg-4">
                 <div class="row">
                     <div class="col mb-3">
                         <h5 class="fs-14">Agency Contact Details</h5>

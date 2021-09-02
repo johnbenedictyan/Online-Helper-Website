@@ -5,17 +5,207 @@
 {% include 'sections/title-banner.html' with page_name='Agency Details' %}
 <section>
     <div class="container">
-        <div class="row mb-5">
-            <div class="col-10 border" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+        <div class="row my-4 my-md-0 mb-md-5">
+            <div class="col-10 border d-none d-md-flex" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
             </div>
-            <div class="col-10 offset-4 pt-4" id="agencyInformationGroup">
+            <div class="col-24 d-md-none">
+                <img src="{{agency.logo.url}}" alt="" class="img-fluid">
+            </div>
+            <div class="col-24 col-md-10 offset-md-4 pt-2 pt-md-4" id="agencyInformationGroup">
                 <h5 class="fs-16">{{agency.name}}</h5>
                 <p class="fs-12">License Number: {{agency.license_number}}</p>
                 <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
             </div>
         </div>
-        <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
-        <div class="row">
+        <hr class="d-none d-md-block my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
+        <div class="row d-md-none my-4 my-md-0">
+            <div class="col-24 mb-4" id="agencyOutletDetailsGroup">
+                <div class="row">
+                    <div class="col mb-lg-3 mb-xl-4">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="fs-14">Main Branch</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                Address
+                            </div>
+                            <div class="col">
+                                {{agency.get_main_branch.address_1}} <br>
+                                {{agency.get_main_branch.address_2}} <br>
+                                Singapore {{agency.get_main_branch.postal_code}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-10">
+                                        Office No:
+                                    </div>
+                                    <div class="col">
+                                        {{agency.get_main_branch.office_number}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10">
+                                        Mobile No:
+                                    </div>
+                                    <div class="col">
+                                        {{agency.get_main_branch.mobile_number}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10">
+                                        EA Personnel:
+                                    </div>
+                                    <div class="col">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for branch in agency.get_branches %}
+                <div class="row">
+                    <div class="col mb-lg-3 mb-xl-4">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="fs-14">{{branch.name|title}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                Address
+                            </div>
+                            <div class="col">
+                                {{branch.address_1}} <br>
+                                {{branch.address_2}} <br>
+                                Singapore {{branch.postal_code}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-10">
+                                        Office No:
+                                    </div>
+                                    <div class="col">
+                                        {{branch.office_number}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10">
+                                        Mobile No:
+                                    </div>
+                                    <div class="col">
+                                        {{branch.mobile_number}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10">
+                                        EA Personnel:
+                                    </div>
+                                    <div class="col">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-24 mb-4" id="agencyOpeningHoursGroup">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="fs-14">Opening Hours</h5>
+                    </div>
+                </div>
+                {% if agency.opening_hours.type == 'AO' %}
+                <div class="row">
+                    <div class="col">
+                        <p>Appointment Only</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-10">
+                        Monday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.monday_start}} - {{agency.opening_hours.monday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Tuesday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.tuesday_start}} - {{agency.opening_hours.tuesday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Wednesday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.wednesday_start}} - {{agency.opening_hours.wednesday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Thursday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.thursday_start}} - {{agency.opening_hours.thursday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Friday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.friday_start}} - {{agency.opening_hours.friday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Saturday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.saturday_start}} - {{agency.opening_hours.saturday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Sunday:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.sunday_start}} - {{agency.opening_hours.sunday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        Public Holidays:
+                    </div>
+                    <div class="col">
+                        <p>{% if agency.opening_hours.monday_closed == True %}Closed{% else %}{{agency.opening_hours.public_holiday_start}} - {{agency.opening_hours.public_holiday_end}}{% endif %}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-24 mb-4" id="agencyProfileGroup">
+                <h5 class="fs-14">Profile</h5>
+                <p class="fs-12">{{agency.profile}}</p>
+            </div>
+            <div class="col-24" id="agencyServicesGroup">
+                <h5 class="fs-14">Our Services</h5>
+                <p class="fs-12">{{agency.services}}</p>
+            </div>
+        </div>
+        <div class="row d-none d-md-flex">
             <div class="col-md-12 mb-4" id="agencyOutletDetailsGroup">
                 <div class="row">
                     <div class="col mb-lg-3 mb-xl-4">

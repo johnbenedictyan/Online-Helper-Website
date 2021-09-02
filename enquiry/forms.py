@@ -138,7 +138,7 @@ class GeneralEnquiryForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                   Row(
+                    Row(
                         Column(
                             HTML(
                                 '<h5 class="fs-12">Maid\'s Nationality</h5>'
@@ -241,7 +241,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-50"
+                        css_class="btn btn-primary w-100 w-md-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -322,7 +322,7 @@ class ShortlistedEnquiryForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-primary w-25"
+                        css_class="btn btn-primary w-100 w-md-50"
                     ),
                     css_class='form-group text-center'
                 )
