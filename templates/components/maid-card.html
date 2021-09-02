@@ -7,6 +7,7 @@
             <p class="card-text mb-1">{{maid.get_age}} years old</p>
             <p class="card-text mb-1">{{maid.get_marital_status_display}}</p>
             <p class="card-text mb-1">{{maid.get_maid_type_display}}</p>
+            <a href="{% url 'maid_detail' maid.pk %}" class="d-none stretched-link">&nbsp;</a>
         </div>
     </div>
     <div class="card-footer">
