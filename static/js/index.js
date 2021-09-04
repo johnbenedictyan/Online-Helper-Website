@@ -234,6 +234,7 @@ const maidCreateFormFunc = function(){
 }
 
 $(function () {
+    AOS.init();
     maidCarousel();
     assessmentProgressBarInitialisation();
     maidCreateFormFunc();
@@ -249,10 +250,10 @@ $(function () {
             }
         }
     );
-    // $('#nationalitySelect').on('change', function () {
-    //     let nationality = $(this).val();
-    //     populateFeaturedMaids(nationality);
-    // })
+    $('#nationalitySelect').on('change', function () {
+        let nationality = $(this).val();
+        populateFeaturedMaids(nationality);
+    })
 });
 
 window.onload = () => {
