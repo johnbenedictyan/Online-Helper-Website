@@ -5,7 +5,7 @@
 {% include 'sections/title-banner.html' with page_name='Agency Details' %}
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='agency-details-section' %}
 <div class="row my-4 my-md-0 mb-md-5">
-    <div class="col-10 border d-none d-md-flex" style="background-image: url({{agency.logo.url}}); height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+    <div class="col-10 d-none d-md-flex agency-thumbnail" style="background-image: url({{agency.logo.url}});">
     </div>
     <div class="col-24 d-md-none mb-2">
         <img src="{{agency.logo.url}}" alt="" class="img-fluid">
@@ -16,7 +16,7 @@
         <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
     </div>
 </div>
-<hr class="d-none d-md-block my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
+<hr class="d-none d-md-block my-5 custom-horizontal-divider">
 <div class="row d-md-none my-4 my-md-0">
     <div class="col-24 mb-4" id="agencyOutletDetailsGroup">
         <div class="row">

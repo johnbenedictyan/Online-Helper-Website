@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col-10 border" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %} height: 20vh; background-size: contain; background-repeat: no-repeat; background-position: center;">
+        <div class="col-10 agency-thumbnail" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %}">
         </div>
         <div class="col-10 offset-4 pt-4" id="agencyInformationGroup">
             <h5 class="fs-20">{{agency.name}}</h5>
@@ -15,7 +15,7 @@
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
         </div>
     </div>
-    <hr class="my-5" style="margin-left: -5.3rem; margin-right: -5.3rem;">
+    <hr class="my-5 custom-horizontal-divider">
     <div class="row">
         <div class="col-md-12 mb-4" id="agencyOutletDetailsGroup">
             <div class="row">

@@ -101,6 +101,10 @@ footer {
   }
 }
 
+.fs-0-55 {
+  font-size: 0.55rem;
+}
+
 .fs-10 {
   font-size: calc(10/12 * 1rem);
 }
@@ -251,6 +255,52 @@ html {
 .dashboard-table-header {
   font-size: FONT_SIZE_11;
   margin-bottom: 0;
+}
+
+.custom-vertical-divider {
+  border-left: 1px solid rgba(0, 0, 0, 0.5);
+  height: 80%;
+}
+
+.custom-horizontal-divider {
+  margin-left: -5.3rem;
+  margin-right: -5.3rem;
+}
+
+.plan-card-custom-horizontal-divider {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+}
+
+.agency-thumbnail {
+  height: 20vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.maid-thumbnail {
+  background-position-x: center;
+  background-size: cover;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.position-center {
+  background-position: center;
+}
+
+.min-height-mini-nav {
+  min-height: 2.5rem !important;
+}
+
+.min-height-75 {
+  min-height: 75vh !important;
+}
+
+.min-height-90 {
+  min-height: 90vh !important;
 }
 
 .bg-hero {

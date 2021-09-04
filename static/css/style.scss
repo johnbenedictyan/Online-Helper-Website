@@ -120,6 +120,9 @@ footer {
             }
         }
     }
+    &-0-55{
+        font-size: 0.55rem;
+    }
     &-10 {
         font-size: $FONT_SIZE_10;
     }
@@ -264,212 +267,6 @@ $DASHBOARD_FONT_SIZE_BUTTON: .875rem;
         }
     }
 }
-// .col{
-//     &-0-5{
-//         flex: 0 0 4.166667%;
-//         max-width: 4.166667%;
-//     }
-//     &-1-5{
-//         flex: 0 0 12.5%;
-//         max-width: 12.5%;
-//     }
-//     &-2-5{
-//         flex: 0 0 20.833333%;
-//         max-width: 20.833333%;
-//     }
-//     &-3-5{
-//         flex: 0 0 29.166667%;
-//         max-width: 29.166667%;
-//     }
-//     &-4-5{
-//         flex: 0 0 37.5%;
-//         max-width: 37.5%;
-//     }
-//     &-5-5{
-//         flex: 0 0 41.66667%;
-//         max-width: 41.66667%;
-//     }
-//     &-6-5{
-//         flex: 0 0 54.16667%;
-//         max-width: 54.16667%;
-//     }
-//     &-7-5{
-//         flex: 0 0 62.5%;
-//         max-width: 62.5%;
-//     }
-//     &-8-5{
-//         flex: 0 0 70.83333%;
-//         max-width: 70.83333%;
-//     }
-//     &-9-5{
-//         flex: 0 0 79.16667%;
-//         max-width: 79.16667%;
-//     }
-//     &-10-5{
-//         flex: 0 0 87.5%;
-//         max-width: 87.5%;
-//     }
-//     &-11-5{
-//         flex: 0 0 95.83333%;
-//         max-width: 95.83333%;
-//     }
-//     &-md{
-//         @media (min-width:768px) {
-//             &-0-5{
-//                 flex: 0 0 4.166667%;
-//                 max-width: 4.166667%;
-//             }
-//             &-1-5{
-//                 flex: 0 0 12.5%;
-//                 max-width: 12.5%;
-//             }
-//             &-2-5{
-//                 flex: 0 0 20.833333%;
-//                 max-width: 20.833333%;
-//             }
-//             &-3-5{
-//                 flex: 0 0 29.166667%;
-//                 max-width: 29.166667%;
-//             }
-//             &-4-5{
-//                 flex: 0 0 37.5%;
-//                 max-width: 37.5%;
-//             }
-//             &-5-5{
-//                 flex: 0 0 41.66667%;
-//                 max-width: 41.66667%;
-//             }
-//             &-6-5{
-//                 flex: 0 0 54.16667%;
-//                 max-width: 54.16667%;
-//             }
-//             &-7-5{
-//                 flex: 0 0 62.5%;
-//                 max-width: 62.5%;
-//             }
-//             &-8-5{
-//                 flex: 0 0 70.83333%;
-//                 max-width: 70.83333%;
-//             }
-//             &-9-5{
-//                 flex: 0 0 79.16667%;
-//                 max-width: 79.16667%;
-//             }
-//             &-10-5{
-//                 flex: 0 0 87.5%;
-//                 max-width: 87.5%;
-//             }
-//             &-11-5{
-//                 flex: 0 0 95.83333%;
-//                 max-width: 95.83333%;
-//             }
-//         }
-//     }
-//     &-lg{
-//         @media (min-width:992px) {
-//             &-0-5{
-//                 flex: 0 0 4.166667%;
-//                 max-width: 4.166667%;
-//             }
-//             &-1-5{
-//                 flex: 0 0 12.5%;
-//                 max-width: 12.5%;
-//             }
-//             &-2-5{
-//                 flex: 0 0 20.833333%;
-//                 max-width: 20.833333%;
-//             }
-//             &-3-5{
-//                 flex: 0 0 29.166667%;
-//                 max-width: 29.166667%;
-//             }
-//             &-4-5{
-//                 flex: 0 0 37.5%;
-//                 max-width: 37.5%;
-//             }
-//             &-5-5{
-//                 flex: 0 0 41.66667%;
-//                 max-width: 41.66667%;
-//             }
-//             &-6-5{
-//                 flex: 0 0 54.16667%;
-//                 max-width: 54.16667%;
-//             }
-//             &-7-5{
-//                 flex: 0 0 62.5%;
-//                 max-width: 62.5%;
-//             }
-//             &-8-5{
-//                 flex: 0 0 70.83333%;
-//                 max-width: 70.83333%;
-//             }
-//             &-9-5{
-//                 flex: 0 0 79.16667%;
-//                 max-width: 79.16667%;
-//             }
-//             &-10-5{
-//                 flex: 0 0 87.5%;
-//                 max-width: 87.5%;
-//             }
-//             &-11-5{
-//                 flex: 0 0 95.83333%;
-//                 max-width: 95.83333%;
-//             }
-//         }
-//     }
-//     &-xl{
-//         @media (min-width:1200px) {
-//             &-0-5{
-//                 flex: 0 0 4.166667%;
-//                 max-width: 4.166667%;
-//             }
-//             &-1-5{
-//                 flex: 0 0 12.5%;
-//                 max-width: 12.5%;
-//             }
-//             &-2-5{
-//                 flex: 0 0 20.833333%;
-//                 max-width: 20.833333%;
-//             }
-//             &-3-5{
-//                 flex: 0 0 29.166667%;
-//                 max-width: 29.166667%;
-//             }
-//             &-4-5{
-//                 flex: 0 0 37.5%;
-//                 max-width: 37.5%;
-//             }
-//             &-5-5{
-//                 flex: 0 0 41.66667%;
-//                 max-width: 41.66667%;
-//             }
-//             &-6-5{
-//                 flex: 0 0 54.16667%;
-//                 max-width: 54.16667%;
-//             }
-//             &-7-5{
-//                 flex: 0 0 62.5%;
-//                 max-width: 62.5%;
-//             }
-//             &-8-5{
-//                 flex: 0 0 70.83333%;
-//                 max-width: 70.83333%;
-//             }
-//             &-9-5{
-//                 flex: 0 0 79.16667%;
-//                 max-width: 79.16667%;
-//             }
-//             &-10-5{
-//                 flex: 0 0 87.5%;
-//                 max-width: 87.5%;
-//             }
-//             &-11-5{
-//                 flex: 0 0 95.83333%;
-//                 max-width: 95.83333%;
-//             }
-//         }
-//     }
-// }
 
 html {
     scroll-behavior: smooth;
@@ -478,6 +275,50 @@ html {
 .dashboard-table-header {
     font-size: FONT_SIZE_11;
     margin-bottom: 0;
+}
+
+.custom-vertical-divider {
+    border-left: 1px solid rgba(0,0,0,0.5);
+    height: 80%;
+}
+
+.custom-horizontal-divider {
+    margin-left: -5.3rem;
+    margin-right: -5.3rem;
+}
+
+.plan-card-custom-horizontal-divider {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+}
+
+.agency-thumbnail {
+    height: 20vh;
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: center;
+}
+
+.maid-thumbnail {
+    background-position-x: center;
+    background-size: cover;
+    flex: 1;
+}
+
+.position-center {
+    background-position: center
+}
+
+.min-height{
+    &-mini-nav {
+        min-height: 2.5rem !important;
+    }
+    &-75 {
+        min-height: 75vh !important;
+    }
+    &-90 {
+        min-height: 90vh !important;
+    }
 }
 
 .bg {
