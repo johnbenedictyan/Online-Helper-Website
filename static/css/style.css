@@ -291,6 +291,10 @@ html {
   background-position: center;
 }
 
+.br-inherit {
+  border-radius: inherit;
+}
+
 .min-height-mini-nav {
   min-height: 2.5rem !important;
 }
