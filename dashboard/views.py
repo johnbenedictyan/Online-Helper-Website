@@ -61,11 +61,13 @@ class BaseDashboardView(AgencyLoginRequiredMixin, GetAuthorityMixin):
     agency_id = ''
 
     def get_context_data(self, **kwargs):
-        return {
+        context = super().get_context_data(**kwargs)
+        context.update({
             'agency_name': Agency.objects.get(
                 pk=self.agency_id
             ).name
-        }
+        })
+        return context
 
 
 class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
