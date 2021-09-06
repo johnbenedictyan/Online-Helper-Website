@@ -135,7 +135,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5 class="fs-2">Agency Information</h5>'
+                        '<h5 class="fs-14">Agency Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -350,7 +350,7 @@ class AgencyUpdateForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5 class="fs-2">Agency Information</h5>'
+                        '<h5 class="fs-14">Agency Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -378,7 +378,7 @@ class AgencyUpdateForm(forms.ModelForm):
             Row(
                 Column(
                     HTML(
-                        '<h5 class="fs-2">Profile</h5>'
+                        '<h5 class="fs-14">Profile</h5>'
                     ),
                     'profile',
                     css_class='form-group col-lg-12',
@@ -386,7 +386,7 @@ class AgencyUpdateForm(forms.ModelForm):
                 ),
                 Column(
                     HTML(
-                        '<h5 class="fs-2">Our Services</h5>'
+                        '<h5 class="fs-14">Our Services</h5>'
                     ),
                     'services',
                     css_class='form-group col-lg-12',
@@ -572,7 +572,7 @@ class AgencyEmployeeForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5 class="fs-2">Employee Information</h5>'
+                        '<h5 class="fs-14">Employee Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -929,7 +929,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5 class="fs-2">Opening Hours</h5>'
+                        '<h5 class="fs-14">Opening Hours</h5>'
                     )
                 ),
                 css_class='row'
@@ -946,7 +946,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'monday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -958,7 +958,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'monday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'monday_closed',
@@ -972,7 +972,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'tuesday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -984,7 +984,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'tuesday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'tuesday_closed',
@@ -998,7 +998,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'wednesday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -1010,7 +1010,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'wednesday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'wednesday_closed',
@@ -1024,7 +1024,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'thursday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -1036,7 +1036,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'thursday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'thursday_closed',
@@ -1050,7 +1050,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'friday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -1062,7 +1062,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'friday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'friday_closed',
@@ -1076,7 +1076,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'saturday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -1088,7 +1088,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'saturday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'saturday_closed',
@@ -1102,7 +1102,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'sunday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -1114,7 +1114,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'sunday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'sunday_closed',
@@ -1132,7 +1132,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'public_holiday_start',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     HTML(
@@ -1144,7 +1144,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 ),
                 Div(
                     'public_holiday_end',
-                    css_class='col-sm-4'
+                    css_class='col-sm-8'
                 ),
                 Div(
                     'public_holiday_closed',
