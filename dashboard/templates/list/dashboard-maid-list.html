@@ -59,7 +59,7 @@
             <div class="col">
                 <h6 class="dashboard-table-header">Status <i class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="statusSortToggle"></i></h6>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Date Created <i class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateCreatedSortToggle"></i></h6>
             </div>
             <div class="col-2 text-center">
@@ -86,7 +86,7 @@
             <div class="col">
                 <p class="mb-0">{{maid.get_status_display}}</p>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
             </div>
             <div class="col-2">
