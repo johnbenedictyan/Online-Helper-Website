@@ -40,7 +40,7 @@ class AdvertisementCreationForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),

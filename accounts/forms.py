@@ -77,7 +77,7 @@ class SignInForm(AuthenticationForm):
                     Submit(
                         'submit',
                         'Login',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100"
+                        css_class="btn btn-xs-lg btn-primary w-100"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -158,7 +158,7 @@ class AgencySignInForm(AuthenticationForm):
                     Submit(
                         'submit',
                         'Login',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100 w-md-30"
+                        css_class="btn btn-xs-lg btn-primary w-100 w-md-30"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -288,7 +288,7 @@ class EmployerCreationForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Create',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100"
+                        css_class="btn btn-xs-lg btn-primary w-100"
                     ),
                     css_class='col-24 text-center'
                 ),
@@ -363,7 +363,7 @@ class CustomPasswordResetForm(PasswordResetForm):
                     Submit(
                         'submit',
                         'Send',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100"
+                        css_class="btn btn-xs-lg btn-primary w-100"
                     ),
                     css_class='form-group col-24 text-center'
                 )

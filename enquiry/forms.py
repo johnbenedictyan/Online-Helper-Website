@@ -241,7 +241,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100 w-md-50"
+                        css_class="btn btn-xs-lg btn-primary w-100 w-md-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -322,7 +322,7 @@ class ShortlistedEnquiryForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100 w-md-50"
+                        css_class="btn btn-xs-lg btn-primary w-100 w-md-50"
                     ),
                     css_class='form-group text-center'
                 )

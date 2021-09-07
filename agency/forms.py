@@ -292,7 +292,7 @@ class AgencyForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -399,7 +399,7 @@ class AgencyUpdateForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -465,7 +465,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -623,7 +623,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -1164,7 +1164,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25 mx-2"
+                        css_class="btn btn-xs-lg btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -1255,7 +1255,7 @@ class PotentialAgencyForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-100 w-md-30"
+                        css_class="btn btn-xs-lg btn-primary w-100 w-md-30"
                     ),
                     css_class='form-group col-24 text-center'
                 )

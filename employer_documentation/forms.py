@@ -302,7 +302,7 @@ class EmployerForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -1126,7 +1126,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -1926,7 +1926,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2154,7 +2154,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2341,7 +2341,7 @@ class EmployerDocForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2625,7 +2625,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2884,7 +2884,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2990,7 +2990,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3158,7 +3158,7 @@ class DepositDetailForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3197,7 +3197,7 @@ class RemainingAmountDetailForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3268,7 +3268,7 @@ class DocUploadForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3352,7 +3352,7 @@ class CaseStatusForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3497,7 +3497,7 @@ class TokenChallengeForm(forms.Form):
                     Submit(
                         'submit',
                         'Confirm',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-75",
+                        css_class="btn btn-xs-lg btn-primary w-75",
                     ),
                     css_class='form-group col-18 my-3 text-center',
                 )
@@ -3616,7 +3616,7 @@ class EmployerSignatureForm(forms.Form):
                             Button(
                                 'Confirm',
                                 'Confirm',
-                                css_class='btn btn-xs-lg btn btn-xs-lg-primary w-25 ml-2',
+                                css_class='btn btn-xs-lg btn-primary w-25 ml-2',
                                 css_id='signature-form-submit-button'
                             ),
                             css_class='d-flex justify-content-center mt-4'
@@ -3698,7 +3698,7 @@ class EmployerWithSpouseSignatureForm(forms.Form):
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn btn-xs-lg-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
@@ -3751,7 +3751,7 @@ class SponsorSignatureForm(forms.Form):
                             Button(
                                 'Confirm',
                                 'Confirm',
-                                css_class='btn btn-xs-lg btn btn-xs-lg-primary w-25 ml-2',
+                                css_class='btn btn-xs-lg btn-primary w-25 ml-2',
                                 css_id='signature-form-submit-button'
                             ),
                             css_class='d-flex justify-content-center mt-4'
@@ -3834,7 +3834,7 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn btn-xs-lg-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
@@ -3937,7 +3937,7 @@ class HandoverSignatureForm(forms.Form):
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn btn-xs-lg-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'

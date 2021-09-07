@@ -195,7 +195,7 @@ class MaidForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -415,7 +415,7 @@ class MaidFoodHandlingPreferenceForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Purchase',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -445,7 +445,7 @@ class MaidDietaryRestrictionForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Purchase',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-50"
+                        css_class="btn btn-xs-lg btn-primary w-50"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -669,7 +669,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25 mx-2"
+                        css_class="btn btn-xs-lg btn-primary w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -1081,7 +1081,7 @@ class MaidExperienceForm(forms.Form):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
@@ -1229,7 +1229,7 @@ class MaidAboutFDWForm(forms.Form):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn btn-xs-lg-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 ),
