@@ -1597,7 +1597,7 @@ class HomePage(BaseDashboardView, TemplateView):
         return kwargs
 
 
-class AgencyPlanList(AgencyOwnerRequiredMixin, ListView):
+class AgencyPlanList(AgencyOwnerRequiredMixin, GetAuthorityMixin, ListView):
     context_object_name = 'plans'
     http_method_names = ['get']
     model = AgencyPlan
