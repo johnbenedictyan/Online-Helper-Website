@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border text-center d-none d-xl-flex">
-            <div class="col-1">
+            <div class="col-2">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
             <div class="col">
@@ -46,7 +46,7 @@
         </div>
         {% for account in accounts %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center d-none d-xl-flex">
-            <div class="col-1">
+            <div class="col-2">
                 <p class="mb-0">{{account.pk}}</p>
             </div>
             <div class="col">
@@ -67,7 +67,7 @@
             <div class="col">
                 <p class="mb-0">{{account.user.last_login|date:"j M g:i A"}}</p>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <div class="row justify-content-center">
                     <a class="mx-1" href="{% url 'dashboard_agency_employee_update' account.pk %}"><i class="far fa-edit"></i></a>
                     <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
