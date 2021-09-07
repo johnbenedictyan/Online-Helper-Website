@@ -624,7 +624,8 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
             Div(
                 Column(
                     HTML(
-                        '<h4>Food Handling and Dietary Restriction</h4>'
+                        '''<h4 class="fs-14">Food Handling and Dietary
+                        Restriction</h4>'''
                     ),
                 ),
                 css_class='row',
