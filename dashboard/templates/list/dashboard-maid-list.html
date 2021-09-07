@@ -44,7 +44,7 @@
             <div class="col-2">
                 <h6 class="dashboard-table-header">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Name <i class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nameSortToggle"></i></h6>
             </div>
             <div class="col">
@@ -67,7 +67,7 @@
             </div>
         </div>
         {% for maid in maids %}
-        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
+        <div class="row{% cycle ' ' ' bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col-2">
                 <p class="mb-0">{{maid.pk}}</p>
             </div>
