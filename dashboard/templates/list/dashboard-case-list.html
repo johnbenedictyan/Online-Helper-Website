@@ -31,19 +31,19 @@
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
-            <div class="col-1">
+            <div class="col-2">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
             <div class="col-4">
                 <h6 class="dashboard-table-header">Contract Date</h6>
             </div>
-            <div class="col-1">
+            <div class="col">
                 <h6 class="dashboard-table-header">Case No</h6>
             </div>
             <div class="col">
                 <h6 class="dashboard-table-header">Employer</h6>
             </div>
-            <div class="col-1">
+            <div class="col">
                 <h6 class="dashboard-table-header">Case Type</h6>
             </div>
             <div class="col-4">
@@ -55,25 +55,25 @@
         </div>
         {% for object in object_list %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center d-none d-xl-flex">
-            <div class="col-1">
+            <div class="col-2">
                 <p class="mb-0">{{ forloop.counter }}</p>
             </div>
             <div class="col-4">
                 <p class="mb-0">{{ object.agreement_date }}</p>
             </div>
-            <div class="col-1">
+            <div class="col">
                 <p class="mb-0">{{ object.case_ref_no }}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{ object.employer }}</p>
             </div>
-            <div class="col-1">
+            <div class="col">
                 <p class="mb-0">{{ object.employer.get_applicant_type_display }}</p>
             </div>
             <div class="col-4">
                 <p class="mb-0">{{ object.employer.agency_employee }}</p>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <div class="row justify-content-center">
                     <a class="mx-1" href="{% url 'case_update_route' level_1_pk=object.pk %}"><i class="far fa-edit"></i></a>
                     <a class="mx-1" href="{% url 'case_detail_route' level_1_pk=object.pk %}"><i class="far fa-file-image"></i></a>

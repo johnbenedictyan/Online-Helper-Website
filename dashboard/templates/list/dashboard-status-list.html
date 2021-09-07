@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border border-top-0">
-            <div class="col-1">
+            <div class="col-2">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
             <div class="col-4">
@@ -58,7 +58,7 @@
         </div>
         {% for status in statuses %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0">
-            <div class="col-1">
+            <div class="col-2">
                 <p class="mb-0">{{status.pk}}</p>
             </div>
             <div class="col-4">
@@ -82,7 +82,7 @@
             <div class="col">
                 <p class="mb-0">{{status.fdw_work_commencement_date}}</p>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <div class="row justify-content-center">
                     <a class="mx-1 showModalLink" data-case-pk="{{status.employer_doc.pk}}"><i class="far fa-edit"></i></a>
                     <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
