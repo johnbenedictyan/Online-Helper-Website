@@ -7,7 +7,7 @@
             </a>
         </div>
     </div>
-    {% if url_name == 'dashboard_maid_language_spoken_update' %}
+    {% if url_name !== 'dashboard_maid_information_create' %}
     <div class="row">
         <div class="col">
             <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_language_spoken_update' %}active{% endif %}" href="{% if not new_maid %}{% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}{% else %}#{% endif %}">
