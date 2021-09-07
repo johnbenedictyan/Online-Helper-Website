@@ -166,7 +166,7 @@ class Agency(models.Model):
 
     def create_or_update_stripe_customer(self):
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        if not self.has_customer_relation:
+        if not self.has_customer_relation():
             stripe_customer = stripe.Customer.create(
                 address={
                     'city': 'Singapore',
