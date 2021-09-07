@@ -839,7 +839,7 @@ class AgencyBranchForm(forms.ModelForm):
                         Column(
                             HTML(
                                 '''
-                                <button class="btn btn-xs-lg btn btn-xs-lg-outline-primary
+                                <button class="btn btn-xs-lg btn-outline-primary
                                                 eh-delete-button"
                                         data-rowNumber="1"
                                 >
@@ -1158,7 +1158,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '''
                         <a href="
                         {% url 'dashboard_agency_outlet_details_update' %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(

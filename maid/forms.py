@@ -663,7 +663,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                     HTML(
                         '''
                         <a href="{% url 'dashboard_maid_information_update' maid_id %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -1075,7 +1075,7 @@ class MaidExperienceForm(forms.Form):
                     HTML(
                         '''
                         <a href="{% url 'dashboard_maid_languages_and_fhpdr_update' maid_id %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -1223,7 +1223,7 @@ class MaidAboutFDWForm(forms.Form):
                     HTML(
                         '''
                         <a href="{% url 'dashboard_maid_employment_history_update' maid_id %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(

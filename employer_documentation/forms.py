@@ -1120,7 +1120,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'employer_update_route' level_0_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -1920,7 +1920,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'employer_update_route' level_0_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -2148,7 +2148,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     HTML(
                         f'''
                         <a href="{{% url '{back_url}' level_0_pk %}}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -2619,7 +2619,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'case_update_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -2878,7 +2878,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                         '''
                         <a
                         href="{% url 'servicefee_create_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -2984,7 +2984,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                         '''
                         <a
                         href="{% url 'case_status_update_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -3262,7 +3262,7 @@ class DocUploadForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'safetyagreement_create_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
@@ -3346,7 +3346,7 @@ class CaseStatusForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'serviceagreement_create_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn btn-xs-lg-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
