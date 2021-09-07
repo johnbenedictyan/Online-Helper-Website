@@ -208,7 +208,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row new-side-nav-link">
+                <div class="row new-side-nav-link {% if url_name == 'dashboard_agency_plan_list' %}active{% endif %}">
                     <div class="col-20">
                         <a class="nav-link new-side-nav-link" href="{% url 'dashboard_agency_plan_list' %}">
                             <p class="fs-11 m-1 pl-2">Subscriptions</p>
