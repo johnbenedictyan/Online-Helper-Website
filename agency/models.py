@@ -1,3 +1,6 @@
+# Global Imports
+import stripe
+
 # Django Imports
 from django.db import models
 from django.conf import settings
@@ -157,6 +160,27 @@ class Agency(models.Model):
             self.amount_of_biodata < self.amount_of_biodata_allowed and
             self.amount_of_biodata_allowed != 0
         )
+
+    def create_stripe_customer(self):
+        if not self.has_customer_relation:
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            stripe_customer = stripe.Customer.create(
+                address={
+                    'city': 'Singapore',
+                    'country': 'Singapore',
+                    'line1': self.get_main_branch().address_1,
+                    'line2': self.get_main_branch().address_2,
+                    'postal_code': self.get_main_branch().postal_code,
+                    'state': 'Singapore',
+                },
+                description=f'Customer account for {self.name}',
+                email=None,
+                name=self.name
+            )
+            return stripe_customer
+
+    def has_customer_relation(self):
+        return hasattr(self, 'customer_account')
 
     class Meta:
         verbose_name = 'Agency'
