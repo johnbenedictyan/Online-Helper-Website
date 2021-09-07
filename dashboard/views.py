@@ -1603,9 +1603,11 @@ class AgencyPlanList(AgencyOwnerRequiredMixin, ListView):
     model = AgencyPlan
     template_name = 'list/dashboard-agency-plan-list.html'
 
-    # def get_context_data(self, **kwargs):
-    #     kwargs = super().get_context_data()
-    #     dashboard_agency_plan_kwargs = {
-    #     }
-    #     kwargs.update(dashboard_agency_plan_kwargs)
-    #     return kwargs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'agency_name': Agency.objects.get(
+                pk=self.agency_id
+            ).name
+        })
+        return context
