@@ -39,19 +39,19 @@ class MaidLoanTransactionFormSetHelper(FormHelper):
                     Row(
                         Column(
                             'date',
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         ),
                         Column(
                             'description',
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         ),
                         Column(
                             'amount',
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         ),
                         Column(
                             'remarks',
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         )
                     )
                 ),
@@ -108,7 +108,7 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
                                     ),
                                 )
                             ),
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         ),
                         Column(
                             Row(
@@ -116,7 +116,7 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
                                     'work_duties'
                                 )
                             ),
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         )
                     ),
                     Row(
@@ -131,7 +131,7 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
                                     'race_of_employer'
                                 )
                             ),
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         ),
                         Column(
                             Row(
@@ -139,7 +139,7 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
                                     'reason_for_leaving'
                                 )
                             ),
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         )
                     )
                 ),

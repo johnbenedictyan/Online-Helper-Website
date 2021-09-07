@@ -98,7 +98,7 @@ class MaidInventoryFormSetHelper(FormHelper):
                     Row(
                         Column(
                             'item_name',
-                            css_class='col-md-6'
+                            css_class='col-md-12'
                         )
                     )
                 ),
