@@ -76,6 +76,15 @@ class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     authority = ''
     agency_id = ''
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'agency_name': Agency.objects.get(
+                pk=self.agency_id
+            ).name
+        })
+        return context
+
 
 class CaseList(BaseFilteredListView):
     context_object_name = 'cases'
