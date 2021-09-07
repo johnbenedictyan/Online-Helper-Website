@@ -74,7 +74,7 @@ class MaidForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>FDW Information</h5>'
+                        '<h5 class="fs-14">FDW Information</h5>'
                     )
                 ),
                 css_class='row',
@@ -911,7 +911,7 @@ class MaidExperienceForm(forms.Form):
                     Row(
                         Column(
                             HTML(
-                                '<h5>Infant Child Care</h5>'
+                                '<h5 class="fs-14">Infant Child Care</h5>'
                             ),
                             css_class='col-24'
                         ),
@@ -942,7 +942,7 @@ class MaidExperienceForm(forms.Form):
                     Row(
                         Column(
                             HTML(
-                                '<h5>Elderly Care</h5>'
+                                '<h5 class="fs-14">Elderly Care</h5>'
                             ),
                             css_class='col-24'
                         ),
@@ -976,7 +976,7 @@ class MaidExperienceForm(forms.Form):
                     Row(
                         Column(
                             HTML(
-                                '<h5>Disabled Care</h5>'
+                                '<h5 class="fs-14">Disabled Care</h5>'
                             ),
                             css_class='col-24'
                         ),
@@ -1007,7 +1007,7 @@ class MaidExperienceForm(forms.Form):
                     Row(
                         Column(
                             HTML(
-                                '<h5>General Housework</h5>'
+                                '<h5 class="fs-14">General Housework</h5>'
                             ),
                             css_class='col-24'
                         ),
@@ -1041,7 +1041,7 @@ class MaidExperienceForm(forms.Form):
                     Row(
                         Column(
                             HTML(
-                                '<h5>Cooking</h5>'
+                                '<h5 class="fs-14">Cooking</h5>'
                             ),
                             css_class='col-24'
                         ),

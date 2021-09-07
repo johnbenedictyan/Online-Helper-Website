@@ -163,7 +163,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>Main Outlet Details</h5>'
+                        '<h5 class="fs-14">Main Outlet Details</h5>'
                     )
                 ),
                 css_class='row',
@@ -203,7 +203,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     HTML(
-                        '<h5>Opening Hours</h5>'
+                        '<h5 class="fs-14">Opening Hours</h5>'
                     )
                 ),
                 css_class='row',
@@ -253,7 +253,7 @@ class AgencyForm(forms.ModelForm):
                     Div(
                         Column(
                             HTML(
-                                '<h5>Profile</h5>'
+                                '<h5 class="fs-14">Profile</h5>'
                             )
                         ),
                         css_class='row',
@@ -271,7 +271,7 @@ class AgencyForm(forms.ModelForm):
                     Div(
                         Column(
                             HTML(
-                                '<h5>Our Services</h5>'
+                                '<h5 class="fs-14">Our Services</h5>'
                             )
                         ),
                         css_class='row',

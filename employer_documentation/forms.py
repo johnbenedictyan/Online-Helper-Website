@@ -3144,7 +3144,7 @@ class DepositDetailForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                    <h5>Deposit Details</h5>
+                    <h5 class="fs-14">Deposit Details</h5>
                 """),
             Row(
                 Column(
@@ -3183,7 +3183,7 @@ class RemainingAmountDetailForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML(
                 """
-                    <h5>Remaining Amount Details</h5>
+                    <h5 class="fs-14">Remaining Amount Details</h5>
                 """),
             Row(
                 Column(
