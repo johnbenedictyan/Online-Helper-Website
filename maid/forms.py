@@ -1205,7 +1205,7 @@ class MaidAboutFDWForm(forms.Form):
             Div(
                 Column(
                     HTML(
-                        '<h4>About FDW</h4>'
+                        '<h4 class="fs-14">About FDW</h4>'
                     ),
                 ),
                 css_class='row',
