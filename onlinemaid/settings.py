@@ -281,7 +281,7 @@ OTP_TOTP_ISSUER = 'om-django-otp'
 
 # Stripe
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')
 
 # Pycryptodome Key
 ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
