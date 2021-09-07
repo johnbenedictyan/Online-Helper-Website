@@ -139,13 +139,13 @@ class EmployerForm(forms.ModelForm):
                     PrependedText(
                         'employer_mobile_number', '+65',
                     ),
-                    css_class='form-group col-xl-6',
+                    css_class='form-group col-xl-12',
                 ),
                 Column(
                     PrependedText(
                         'employer_home_number', '+65',
                     ),
-                    css_class='form-group col-xl-6',
+                    css_class='form-group col-xl-12',
                 )
             ),
             Row(

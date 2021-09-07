@@ -410,7 +410,7 @@ class AgencyUpdateForm(forms.ModelForm):
     def clean_logo(self):
         logo = self.cleaned_data.get('logo', False)
         if logo:
-            if logo._size > 4*1024*1024:
+            if logo.size > 4*1024*1024:
                 raise ValidationError("Image file too large ( > 4mb )")
             return logo
         else:
