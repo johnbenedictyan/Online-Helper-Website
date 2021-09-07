@@ -538,9 +538,9 @@
                             <div class="input-group">
                                 <input id="copy-value-employer-1" type="text" class="form-control" value="{% if employer_1_sigurl %}{{ employer_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" type="button" id="copy-button-employer-1" {% if not employer_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-employer-1" {% if not employer_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -554,9 +554,9 @@
                             <div class="input-group">
                                 <input id="copy-value-employer-spouse" type="text" class="form-control" value="{% if employer_spouse_sigurl %}{{ employer_spouse_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" type="button" id="copy-button-employer-spouse" {% if not employer_spouse_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-employer-spouse" {% if not employer_spouse_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -569,9 +569,9 @@
                             <div class="input-group">
                                 <input id="copy-value-joint-applicant" type="text" class="form-control" value="{% if joint_applicant_sigurl %}{{ joint_applicant_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" type="button" id="copy-button-joint-applicant" {% if not joint_applicant_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_joint_applicant_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_joint_applicant_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-joint-applicant" {% if not joint_applicant_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_joint_applicant_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_joint_applicant_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -584,9 +584,9 @@
                             <div class="input-group">
                                 <input id="copy-value-sponsor-1" type="text" class="form-control" value="{% if sponsor_1_sigurl %}{{ sponsor_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" type="button" id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -599,9 +599,9 @@
                             <div class="input-group">
                                 <input id="copy-value-sponsor-2" type="text" class="form-control" value="{% if sponsor_2_sigurl %}{{ sponsor_2_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" type="button" id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn btn-xs-lg-outline-secondary" href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>

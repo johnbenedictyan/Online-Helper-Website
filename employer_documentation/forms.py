@@ -3435,7 +3435,7 @@ class SignatureForm(forms.ModelForm):
                     StrictButton(
                         "Clear",
                         onclick="signaturePad.clear()",
-                        css_class="btn btn-xs-lg btn btn-xs-lg-secondary"
+                        css_class="btn btn-xs-lg btn-secondary"
                     ),
                 )
             )
