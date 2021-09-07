@@ -3609,7 +3609,7 @@ class EmployerSignatureForm(forms.Form):
                                 'Clear Signatures',
                                 'Clear Signatures',
                                 css_class='''
-                                    btn btn-xs-lg btn btn-xs-lg-outline-secondary w-25 mr-2
+                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2
                                 ''',
                                 css_id='signature-form-clear-button'
                             ),
@@ -3692,7 +3692,7 @@ class EmployerWithSpouseSignatureForm(forms.Form):
                     Button(
                         'Clear Signatures',
                         'Clear Signatures',
-                        css_class='btn btn-xs-lg btn btn-xs-lg-outline-secondary w-25 mr-2',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2',
                         css_id='signature-form-clear-button'
                     ),
                     Button(
@@ -3744,7 +3744,7 @@ class SponsorSignatureForm(forms.Form):
                                 'Clear Signatures',
                                 'Clear Signatures',
                                 css_class='''
-                                    btn btn-xs-lg btn btn-xs-lg-outline-secondary w-25 mr-2
+                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2
                                 ''',
                                 css_id='signature-form-clear-button'
                             ),
@@ -3828,7 +3828,7 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                     Button(
                         'Clear Signatures',
                         'Clear Signatures',
-                        css_class='btn btn-xs-lg btn btn-xs-lg-outline-secondary w-25 mr-2',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2',
                         css_id='signature-form-clear-button'
                     ),
                     Button(
@@ -3931,7 +3931,7 @@ class HandoverSignatureForm(forms.Form):
                     Button(
                         'Clear Signatures',
                         'Clear Signatures',
-                        css_class='btn btn-xs-lg btn btn-xs-lg-outline-secondary w-25 mr-2',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2',
                         css_id='signature-form-clear-button'
                     ),
                     Button(
