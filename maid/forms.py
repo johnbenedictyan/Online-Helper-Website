@@ -588,7 +588,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
             Div(
                 Column(
                     HTML(
-                        '<h4>Spoken Language</h4>'
+                        '<h4 class="fs-14">Spoken Language</h4>'
                     ),
                 ),
                 css_class='row',
