@@ -161,9 +161,12 @@ class Agency(models.Model):
             self.amount_of_biodata_allowed != 0
         )
 
-    def create_stripe_customer(self):
+    def get_agency_owner_email(self):
+        return self.agency_owner.user.email
+
+    def create_or_update_stripe_customer(self):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         if not self.has_customer_relation:
-            stripe.api_key = settings.STRIPE_SECRET_KEY
             stripe_customer = stripe.Customer.create(
                 address={
                     'city': 'Singapore',
@@ -174,10 +177,16 @@ class Agency(models.Model):
                     'state': 'Singapore',
                 },
                 description=f'Customer account for {self.name}',
-                email=None,
+                email=self.get_agency_owner_email(),
                 name=self.name
             )
             return stripe_customer
+        else:
+            stripe_customer_pk = self.customer_account
+            stripe.Customer.modify(
+                stripe_customer_pk,
+                email=self.get_agency_owner_email()
+            )
 
     def has_customer_relation(self):
         return hasattr(self, 'customer_account')
@@ -399,10 +408,10 @@ class AgencyOwner(models.Model):
         related_name='agency_owner'
     )
 
-    agency = models.ForeignKey(
+    agency = models.OneToOneField(
         Agency,
         on_delete=models.CASCADE,
-        related_name='owners'
+        related_name='agency_owner'
     )
 
     name = models.CharField(
