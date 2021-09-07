@@ -2131,11 +2131,11 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     Row(
                         Column(
                             'worked_in_sg',
-                            css_class='form-group col-xl-6'
+                            css_class='form-group col-xl-12'
                         ),
                         Column(
                             'monthly_income',
-                            css_class='form-group col-xl-6',
+                            css_class='form-group col-xl-12',
                         )
                     ),
                 ),
@@ -2321,7 +2321,7 @@ class EmployerDocForm(forms.ModelForm):
             Row(
                 Column(
                     'fdw_off_days',
-                    css_class='form-group col-xl-6',
+                    css_class='form-group col-xl-12',
                 ),
                 Column(
                     PrependedText(

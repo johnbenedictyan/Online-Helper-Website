@@ -151,11 +151,11 @@ class MaidForm(forms.ModelForm):
                 ),
                 Column(
                     'address_1',
-                    css_class='form-group col-xl-6'
+                    css_class='form-group col-xl-12'
                 ),
                 Column(
                     'address_2',
-                    css_class='form-group col-xl-6'
+                    css_class='form-group col-xl-12'
                 ),
                 Column(
                     'education_level',
@@ -900,7 +900,7 @@ class MaidExperienceForm(forms.Form):
             Div(
                 Column(
                     HTML(
-                        '<h4>Experience: Poor (1) ... Excellent(5)</h4>'
+                        '<h4 class="fs-14">Experience: Poor (1) ... Excellent(5)</h4>'
                     ),
                 ),
                 css_class='row',
@@ -936,7 +936,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-6'
+                    css_class='col-xl-12'
                 ),
                 Column(
                     Row(
@@ -967,7 +967,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-6'
+                    css_class='col-xl-12'
                 ),
                 css_class='row'
             ),
@@ -1001,7 +1001,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-6'
+                    css_class='col-xl-12'
                 ),
                 Column(
                     Row(
@@ -1032,7 +1032,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-6'
+                    css_class='col-xl-12'
                 ),
                 css_class='row'
             ),
@@ -1066,7 +1066,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-6'
+                    css_class='col-xl-12'
                 ),
                 css_class='row'
             ),
