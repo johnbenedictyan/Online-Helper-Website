@@ -304,7 +304,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" data-aos="zoom-in" data-aos-duration="3000">
     <div class="col my-3 my-lg-4">
         <div class="row">
             <div class="col mb-2">
@@ -578,7 +578,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" data-aos="zoom-in" data-aos-duration="3000">
     <div class="col my-3 my-lg-4">
         <div class="row">
             <div class="col mb-2">
@@ -655,7 +655,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" data-aos="zoom-in" data-aos-duration="3000">
     <div class="col my-3 my-lg-4">
         <div class="row">
             <div class="col mb-2">
@@ -669,7 +669,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" data-aos="zoom-in" data-aos-duration="3000">
     <div class="col my-3 my-lg-4">
         <div class="row">
             <div class="col mb-3">
@@ -695,17 +695,21 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col mb-2">
-        <h3>Similar Profiles</h3>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        <div class="maid-carousel">
-            {% for maid in similar_maids %}
-                {% include 'components/maid-card.html' with maid=maid %}
-            {% endfor %}
+<div class="row" data-aos="zoom-in" data-aos-duration="3000">
+    <div class="col my-3 my-lg-4">
+        <div class="row">
+            <div class="col mb-3">
+                <h3>Similar Profiles</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="maid-carousel">
+                    {% for maid in similar_maids %}
+                        {% include 'components/maid-card.html' with maid=maid %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
