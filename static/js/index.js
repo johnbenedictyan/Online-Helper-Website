@@ -234,7 +234,9 @@ const maidCreateFormFunc = function(){
 }
 
 $(function () {
-    AOS.init();
+    AOS.init({
+        startEvent: 'load',
+    });
     maidCarousel();
     assessmentProgressBarInitialisation();
     maidCreateFormFunc();
