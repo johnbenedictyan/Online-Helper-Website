@@ -260,4 +260,5 @@ $(function () {
 
 window.onload = () => {
     $(".toast").toast('show');
+    AOS.refresh();
 }
