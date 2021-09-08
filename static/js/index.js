@@ -81,11 +81,7 @@ const maidProfileRedirect = (pk) => {
 
 // Featured Maids
 const displayEmptyContent = function() {
-    let featuredMaidsContent = `<div class="row">
-                <div class="col text-center">
-                    <h1 class="fs-12">No Featured Maids</h1>
-                </div>
-            </div>`;
+    let featuredMaidsContent = '<div class="row"><div class="col text-center"><h1 class="fs-12">No Featured Maids</h1></div></div>';
     $('#featured-maids-wrapper').html(featuredMaidsContent);
 }
 
@@ -94,24 +90,7 @@ const displayContent = function(res) {
     for (let index = 0; index < res.data.featured_maids.length; index++) {
         let maid = res.data.featured_maids[index];
         let url_mask = `{% url 'add_to_shortlist' 1 %}`.replace('1', maid.pk);
-        featuredMaidsContent += `
-            <a class="text-decoration-none" href="{% url 'maid_detail' ${maid.pk} %}">
-                <div class="card maid-card" id='maid-${maid.pk}' data-maid='${maid.pk}'>
-                    <div onclick="maidProfileRedirect(${maid.pk})">
-                        <img src="${maid.photo_url}" class="card-img-top" alt="Maid Photo">
-                        <div class="card-body">
-                            <h5 class="card-title">${maid.name}</h5>
-                            <p class="card-text">${maid.country_of_origin}</p>
-                            <p class="card-text">${maid.age} years old</p>
-                            <p class="card-text">${maid.marital_status}</p>
-                            <p class="card-text">${maid.type}</p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a>
-                    </div>
-                </div>
-            </a>`
+        featuredMaidsContent += `<a class="text-decoration-none" href="{% url 'maid_detail' ${maid.pk} %}"><div class="card maid-card" id='maid-${maid.pk}' data-maid='${maid.pk}'><div onclick="maidProfileRedirect(${maid.pk})"><img src="${maid.photo_url}" class="card-img-top" alt="Maid Photo"><div class="card-body"><h5 class="card-title">${maid.name}</h5><p class="card-text">${maid.country_of_origin}</p><p class="card-text">${maid.age} years old</p><p class="card-text">${maid.marital_status}</p><p class="card-text">${maid.type}</p></div></div><div class="card-footer"><a href="${url_mask}" class="btn btn-primary w-100">Add to Shortlist</a></div></div></a>`;
     };
     featuredMaidsContent += `</div>`;
     $('#featured-maids-wrapper').html(featuredMaidsContent);
@@ -208,20 +187,8 @@ const dashboardAgencyPlanAddToCart = function(){
 // Maid Create Form
 
 const maidCreateFormFunc = function(){
-    $(`
-            #id_cfi_other_remarks, 
-            #id_cfe_other_remarks, 
-            #id_cfd_other_remarks,
-            #id_geh_other_remarks,
-            #id_cok_other_remarks
-        `).prop('disabled', true);
-    $(`
-            #id_cfi_remarks, 
-            #id_cfe_remarks, 
-            #id_cfd_remarks,
-            #id_geh_remarks,
-            #id_cok_remarks
-        `).on('change', function () {
+    $(`#id_cfi_other_remarks, #id_cfe_other_remarks, #id_cfd_other_remarks,#id_geh_other_remarks,#id_cok_other_remarks`).prop('disabled', true);
+    $(`#id_cfi_remarks, #id_cfe_remarks, #id_cfd_remarks,#id_geh_remarks,#id_cok_remarks`).on('change', function () {
         let care_type = $(this).prop('id').split('_')[1];
         let selector_text = '#id_' + care_type + '_other_remarks'
         if ($(this).val() == 'OTH') {

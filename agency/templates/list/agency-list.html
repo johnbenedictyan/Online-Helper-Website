@@ -7,12 +7,15 @@
     <div class="col-lg-20 col-xl-6 mb-3">
         <form action="" method="get">
             <div class="row">
-                <div class="col px-lg-3 mb-lg-2">
-                    {{filter.form|crispy}}
+                <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="0">
+                    {{filter.form.name|as_crispy_field}}
+                </div>
+                <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="300">
+                    {{filter.form.branches__area|as_crispy_field}}
                 </div>
             </div>
             <div class="row">
-                <div class="col px-lg-3">
+                <div class="col px-lg-3" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="600">
                     <a href="{% url 'agency_list' %}" class="btn btn-xs-lg btn-primary w-100">Reset</a>
                 </div>
             </div>
