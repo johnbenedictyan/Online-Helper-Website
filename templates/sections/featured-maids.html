@@ -47,7 +47,7 @@
 {% else %}
 <div class="row">
     <div class="col text-center">
-        <img loading="lazy"  src="{% static 'images/featured-maids.png' %}" alt="Featured Maid Image (No Logo)" class="img-fluid blurred-image">
+        <img loading="lazy"  src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image (No Logo)" class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}";`>
         <div class="featured-maids-overlay">
             <div class="jumbotron jumbotron-fluid bg-transparent">
                 <div class="container text-center">
