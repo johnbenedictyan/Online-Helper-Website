@@ -6,8 +6,8 @@
 
 {% block pdf_content %}
 <div>
-    <img class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}"/>
-    <img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"/>
+    <img loading="lazy"  class="header__mom-logo1" src="{% static 'images/pdf/logo1.png' %}"/>
+    <img loading="lazy"  class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"/>
 </div>
 <br>
 <div class="header-safety-ag--bg-bluegrey" style="margin-top: 48px;">
@@ -40,7 +40,7 @@
                 <td class="text-bold--600">Instructions:</td>
             </tr>
             <tr>
-                <td><img id="safety-instructions-img" src="{% static 'images/pdf/instructions.png' %}"></td>
+                <td><img loading="lazy"  id="safety-instructions-img" src="{% static 'images/pdf/instructions.png' %}"></td>
             </tr>
         </table>
     </div>
@@ -166,7 +166,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.get_employer_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img loading="lazy"  height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.get_employer_signature }}"></td>
         </tr>
     </table>
     <br>
@@ -194,7 +194,7 @@
         </tr>
         <tr>
             <td class="text-align-center" width="24%">Signature / Date</td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img loading="lazy"  height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
 
@@ -256,7 +256,7 @@
             <p class="text-align-center">Signature / Date</p>
             {% include lang_snippet_03 %}
         </td>
-        <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
+        <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img loading="lazy"  height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
         </tr>
     </table>
     {% endwith %}
@@ -277,7 +277,7 @@
             <td width="24%">
                 <p class="text-align-center">Signature / Date</p>
             </td>
-            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td colspan="2">{{ object.agreement_date|date:"d M Y" }} <img loading="lazy"  height="40px" style="width: 50%; height: auto;" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>

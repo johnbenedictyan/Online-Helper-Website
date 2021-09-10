@@ -7,8 +7,8 @@
 {% block pdf_content %}
 <div class="header-workpass--bd-bluegrey"></div>
     <div>
-        <span class="header__mom-logo1"><img style="max-width: 100px; height: auto; margin-top: 16px;" src="{% static 'images/pdf/logo1.png' %}"></span>
-        <span class="header__mom-logo2"><img style="max-width: 100px; height: auto; margin-top: 16px;" src="{% static 'images/pdf/logo2.png' %}"></span>
+        <span class="header__mom-logo1"><img loading="lazy"  style="max-width: 100px; height: auto; margin-top: 16px;" src="{% static 'images/pdf/logo1.png' %}"></span>
+        <span class="header__mom-logo2"><img loading="lazy"  style="max-width: 100px; height: auto; margin-top: 16px;" src="{% static 'images/pdf/logo2.png' %}"></span>
     </div>
     <div class="header-workpass--bd-bluegrey"></div>
     <br>
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td class="text-bold--600" colspan="2">Signature and Date</td>
-            <td colspan="3">{{ object.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.get_employer_signature }}"></td>
+            <td colspan="3">{{ object.agreement_date|date:"d M Y" }} <img loading="lazy"  class="signature__img" src="{{ object.rn_signatures_ed.get_employer_signature }}"></td>
         </tr>
         <tr>
             <td class="main-work-pass--bg-bluegrey text-align-center text-bold--600">S/N</td>
@@ -105,7 +105,7 @@
         </tr>
         <tr>
             <td class="text-bold-600" colspan="2">Signature and Date.</td>
-            <td>{{ object.agreement_date|date:"d M Y" }} <img class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+            <td>{{ object.agreement_date|date:"d M Y" }} <img loading="lazy"  class="signature__img" src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
         </tr>
     </table>
     <br>

@@ -4,7 +4,7 @@
     {% for message in messages %}
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{% if 'sustain' in message.extra_tags%}10000{% else %}2000{% endif %}">
       <div class="toast-header">
-        <img src="{% static 'favicon.ico' %}" class="rounded mr-2" alt="...">
+        <img loading="lazy"  src="{% static 'favicon.ico' %}" class="rounded mr-2" alt="...">
         <strong class="mr-auto {{message.tags}}">
           {% if 'success' in message.extra_tags %}
             <h5 class="my-2">Success</h5>

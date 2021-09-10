@@ -16,7 +16,7 @@
 {% block pdf_content %}
 {% if object.employer.applicant_type == 'SINGLE' or object.employer.applicant_type == 'SPOUSE' %}
 <div>
-    <span><img class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"></span>
+    <span><img loading="lazy"  class="header__mom-logo2" src="{% static 'images/pdf/logo2.png' %}"></span>
     <h3 style="margin: 0;">Work Pass Division</h3>
     <p>18 Havelock Road</p>
     <p>Singapore 059764</p>
@@ -190,9 +190,9 @@
     <tr>
         <td class="border--bottom border--right">Signature: 
             {% if object.employer.applicant_type == 'SPONSR' %}
-                <img class="signature__img" src="">
+                <img loading="lazy"  class="signature__img" src="">
             {% else %}
-                <img class="signature__img" src="{{ object.rn_signatures_ed.get_employer_signature }}">
+                <img loading="lazy"  class="signature__img" src="{{ object.rn_signatures_ed.get_employer_signature }}">
             {% endif %}
             <br>
             <br>
@@ -201,11 +201,11 @@
         </td>
         <td class="border--bottom">Signature: 
             {% if object.employer.applicant_type == 'JNT_AP' %}
-                <img class="signature__img" src="">
+                <img loading="lazy"  class="signature__img" src="">
             {% elif object.employer.applicant_type == 'SPONSR' %}
-                <img class="signature__img" src="">
+                <img loading="lazy"  class="signature__img" src="">
             {% elif object.employer.applicant_type == 'SPOUSE' %}
-                <img class="signature__img" src="{{ object.rn_signatures_ed.spouse_signature }}">
+                <img loading="lazy"  class="signature__img" src="{{ object.rn_signatures_ed.spouse_signature }}">
             {% endif %}
         </td>
     </tr>

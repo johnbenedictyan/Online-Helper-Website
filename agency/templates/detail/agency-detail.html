@@ -8,7 +8,7 @@
     <div class="col-10 d-none d-md-flex agency-thumbnail" style="background-image: url({{agency.logo.url}});">
     </div>
     <div class="col-24 d-md-none mb-2">
-        <img src="{{agency.logo.url}}" alt="" class="img-fluid">
+        <img loading="lazy"  src="{{agency.logo.url}}" alt="" class="img-fluid">
     </div>
     <div class="col-24 col-md-10 offset-md-4 pt-2 pt-md-4" id="agencyInformationGroup">
         <h5 class="fs-16">{{agency.name}}</h5>
@@ -335,7 +335,7 @@
                 {% else %}
                 <div class="row">
                     <div class="col text-center">
-                        <img src="{% static 'images/featured-maids.png' %}" alt="Featured Maid Image" class="img-fluid blurred-image">
+                        <img loading="lazy"  src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image" class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}";`>
                         <div class="featured-maids-overlay">
                             <div class="jumbotron jumbotron-fluid bg-transparent">
                                 <div class="container text-center">

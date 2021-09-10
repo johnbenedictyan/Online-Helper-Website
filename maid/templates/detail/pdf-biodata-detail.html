@@ -245,7 +245,7 @@
                 <p class="bold">Code: {{ object.reference_number }} ({{ object.personal_loan_amount }} 6 months) </p>
                 <p class="bold">Basic Salary: S${{ object.expected_salary }} with {{ object.expected_days_off }} off day(s) per month</p>
                 <p class="bold">Type of Maid: {{ object.get_maid_type_display }}</p>
-                <p class="text-center"><img src="{{ object.photo }}"></p>
+                <p class="text-center"><img loading="lazy"  src="{{ object.photo }}"></p>
             </div>
         </div>
         <div>
