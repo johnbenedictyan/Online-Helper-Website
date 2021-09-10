@@ -308,13 +308,13 @@ html {
 }
 
 .bg-hero {
-  background-image: url("/static/images/hero-image.png");
+  background-image: url("/static/images/hero-image.webp");
   background-size: cover;
   background-position: center;
 }
 
 .bg-featured-maids {
-  background-image: url("/static/images/featured-banner.png");
+  background-image: url("/static/images/featured-banner.webp");
   background-size: cover;
 }
 
@@ -331,7 +331,7 @@ html {
 }
 
 .bg-home-hero {
-  background-image: url("/static/images/hero-image.png");
+  background-image: url("/static/images/hero-image.webp");
 }
 
 .bg-transparent {
@@ -617,7 +617,7 @@ body.dashboard-body {
 }
 
 .logo-image-wrapper {
-  background-image: url("/static/images/logo.png");
+  background-image: url("/static/images/logo.webp");
   background-size: cover;
   background-position: center;
   height: 3rem;
