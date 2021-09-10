@@ -222,7 +222,11 @@ $(function () {
     $('#nationalitySelect').on('change', function () {
         let nationality = $(this).val();
         populateFeaturedMaids(nationality);
-    })
+    });
+    $('.faq-item').on('click', function(){
+        $('.faq-item').removeClass('active');
+        $(this).addClass('active');
+    });
 });
 
 window.onload = () => {

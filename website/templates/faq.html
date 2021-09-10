@@ -405,4 +405,12 @@
 </div>
 {% include 'components/27-ws-section/end.html' %}
 {% include 'sections/cta-banner.html' %}
+<script>
+    $(function(){
+        $('.faq-item').on('click', function(){
+            $('.faq-item').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>
 {% endblock main_content %}
