@@ -520,7 +520,7 @@ class Maid(models.Model):
             <div class="container border">
                 <div class="row bg-custom-bb text-light">
                     <div class="col p-4">
-                        <h5 class="fs-12">{self.name}</h5>
+                        <h6>{self.name}</h6>
                         <p class="fs-11 mb-0">Basic Salary: S${self.name}</p>
                         <p class="fs-11 mb-0">
                             Rest Day Per Mth: {self.expected_days_off}
@@ -534,7 +534,7 @@ class Maid(models.Model):
                     <div class="col p-4">
                         <div class="row">
                             <div class="col">
-                                <h5 class="fs-12">Employment History</h5>
+                                <h6>Employment History</h6>
                             </div>
                         </div>
                         {self.get_employment_history()}

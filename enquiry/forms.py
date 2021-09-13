@@ -141,7 +141,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     Row(
                         Column(
                             HTML(
-                                '<h5 class="fs-12">Maid\'s Nationality</h5>'
+                                '<h6>Maid\'s Nationality</h6>'
                             )
                         ),
                         Column(
@@ -159,7 +159,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     Row(
                         Column(
                             HTML(
-                                '<h5 class="fs-12">Type of Maid</h5>'
+                                '<h6>Type of Maid</h6>'
                             )
                         ),
                         Column(
@@ -179,7 +179,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     Row(
                         Column(
                             HTML(
-                                '<h5 class="fs-12">Job Responsibility</h5>'
+                                '<h6>Job Responsibility</h6>'
                             )
                         ),
                         Column(
@@ -197,7 +197,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     Row(
                         Column(
                             HTML(
-                                '<h5 class="fs-12">Spoken Language</h5>'
+                                '<h6>Spoken Language</h6>'
                             )
                         ),
                         Column(
