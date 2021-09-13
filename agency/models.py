@@ -183,7 +183,7 @@ class Agency(models.Model):
                 name=self.name
             )
             new_customer = Customer.objects.create(
-                id=stripe_customer,
+                id=stripe_customer['id'],
                 agency=self
             )
             new_customer.save()
