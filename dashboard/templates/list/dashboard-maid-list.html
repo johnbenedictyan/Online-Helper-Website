@@ -167,7 +167,7 @@
                                 <p>{{maid.created_on|date:"j M Y"}}</p>
                             </div>
                         </div>
-                        <h5 class="fs-12">Actions:</h5>
+                        <h6>Actions:</h6>
                         <a class="mx-1" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
                         <a class="mx-1" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
                         {% if maid.is_published is False %}
