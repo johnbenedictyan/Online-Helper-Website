@@ -159,6 +159,6 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
                 if authority == AG_OWNERS:
-                    self.request.user.agency_owner.agency.unset_test_email()
+                    self.request.user.agency_owner.unset_test_email()
 
         return super().form_valid(form)
