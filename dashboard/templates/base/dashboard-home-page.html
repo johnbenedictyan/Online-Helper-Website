@@ -395,497 +395,497 @@
 {% endblock dashboard_section %}
 {% block js %}
 <script>
-    class ChartManager{
-        constructor(chartNode,chartProperties,chartAuthority, chartType) {
-            this.chartNode = chartNode;
-            this.chartProperties = chartProperties;
-            this.chartAuthority = chartAuthority;
-            this.chartType = chartType;
-            this.chart = new ApexCharts(document.querySelector(chartNode),chartProperties);
-            this.chart.render();
-        }
-
-        static dataUrl = '/dashboard/data/';
-
-        categoriesManager(type,res){
-            let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            let years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020'];
-            let categories = months;
-            if (type=='month'){
-                categories = months;
-            } else if (type=='year') {
-                categories = years;
+    $(function(){
+        class ChartManager{
+            constructor(chartNode,chartProperties,chartAuthority, chartType) {
+                this.chartNode = chartNode;
+                this.chartProperties = chartProperties;
+                this.chartAuthority = chartAuthority;
+                this.chartType = chartType;
+                this.chart = new ApexCharts(document.querySelector(chartNode),chartProperties);
+                this.chart.render();
             }
-            let max = 0
-            res.data.data.forEach(el => {
-                if (el.data.length>max){
-                    max=el.data.length
+
+            static dataUrl = '/dashboard/data/';
+
+            categoriesManager(type,res){
+                let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                let years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020'];
+                let categories = months;
+                if (type=='month'){
+                    categories = months;
+                } else if (type=='year') {
+                    categories = years;
                 }
-            });
-            if (max != 12) {
-                categories = categories.slice(0,max);
+                let max = 0
+                res.data.data.forEach(el => {
+                    if (el.data.length>max){
+                        max=el.data.length
+                    }
+                });
+                if (max != 12) {
+                    categories = categories.slice(0,max);
+                }
+                return categories
             }
-            return categories
-        }
 
-        chartPropertiesManager(categoriesType, categories, chartProperties){
-            if (categoriesType=='xaxis') {
-                chartProperties = {
-                    ...chartProperties,
-                    ...{
-                        xaxis : {
-                            categories: categories
+            chartPropertiesManager(categoriesType, categories, chartProperties){
+                if (categoriesType=='xaxis') {
+                    chartProperties = {
+                        ...chartProperties,
+                        ...{
+                            xaxis : {
+                                categories: categories
+                            }
                         }
                     }
                 }
+                return chartProperties
             }
-            return chartProperties
-        }
 
-        update(newDataSelectors, newChartProperties, csrftoken, requestorAuthority, categoriesAxis){
-            axios({
-                method: 'post',
-                mode: 'same-origin',
-                headers: {
-                    'X-CSRFToken': csrftoken,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                url: ChartManager.dataUrl,
-                data: {
-                    'authority': requestorAuthority,
-                    'chart': newDataSelectors
-                }
-            }).then((res)=>{
-                if(this.chartType == 'timeline'){
-                    res.data.data.forEach((el)=>{
-                        el.data.forEach((x)=>{
-                            x.y.forEach((o, i, a)=>{
-                                a[i] = new Date(o).getTime();
-                            })
+            update(newDataSelectors, newChartProperties, csrftoken, requestorAuthority, categoriesAxis){
+                axios({
+                    method: 'post',
+                    mode: 'same-origin',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    url: ChartManager.dataUrl,
+                    data: {
+                        'authority': requestorAuthority,
+                        'chart': newDataSelectors
+                    }
+                }).then((res)=>{
+                    if(this.chartType == 'timeline'){
+                        res.data.data.forEach((el)=>{
+                            el.data.forEach((x)=>{
+                                x.y.forEach((o, i, a)=>{
+                                    a[i] = new Date(o).getTime();
+                                })
+                            });
                         });
-                    });
-                }
-                this.chart.updateSeries(res.data.data);
-                this.chart.updateOptions(
-                    this.chartPropertiesManager(
-                        categoriesAxis,
-                        this.categoriesManager(
-                            newDataSelectors['group_by'],
-                            res
-                        ),
-                        newChartProperties
+                    }
+                    this.chart.updateSeries(res.data.data);
+                    this.chart.updateOptions(
+                        this.chartPropertiesManager(
+                            categoriesAxis,
+                            this.categoriesManager(
+                                newDataSelectors['group_by'],
+                                res
+                            ),
+                            newChartProperties
+                        )
                     )
-                )
-            });
-        }
-    }
-    
-    var branchSalesChartOptions = {
-        series: [],
-        chart: {
-            height: 'auto',
-            type: 'bar',
-            toolbar: {
-                show: false
+                });
             }
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 10,
-                dataLabels: {
-                    position: 'top', // top, center, bottom
+        }
+        
+        var branchSalesChartOptions = {
+            series: [],
+            chart: {
+                height: 'auto',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 10,
+                    dataLabels: {
+                        position: 'top', // top, center, bottom
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return `$${val}`;
                 },
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                return `$${val}`;
-            },
-            offsetY: -10,
-            style: {
-                fontSize: '.6rem',
-                colors: ["#304758"]
-            }
-        },
-        xaxis: {
-            categories: [],
-            position: 'bottom',
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
-                    }
+                offsetY: -10,
+                style: {
+                    fontSize: '.6rem',
+                    colors: ["#304758"]
                 }
             },
-            tooltip: {
-                enabled: true,
-            }
-        },
-        yaxis: {
-            max: function(max) {
-                return max * 1.1
-            },
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false,
-            },
-            labels: {
-                show: true,
-                formatter: function (val) {
-                    val = Math.round((val + Number.EPSILON) * 100) / 100
-                    return `$${val}`;
-                }
-            }
-        },
-        title: {
-            text: 'Branch Sales',
-            floating: true,
-            offsetY: 635,
-            align: 'center',
-            style: {
-                color: '#444'
-            }
-        },
-        noData: {
-            text: 'Loading...'
-        }
-    };
-    const branchSalesChartManager = new ChartManager('#chart', branchSalesChartOptions, 'any');
-    
-    var salesStaffPerformanceChartOptions = {
-        series: [],
-        chart: {
-            height: 'auto',
-            type: 'bar',
-            toolbar: {
-                show: false
-            }
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 10,
-                dataLabels: {
-                    position: 'top', // top, center, bottom
+            xaxis: {
+                categories: [],
+                position: 'bottom',
+                axisBorder: {
+                    show: false
                 },
-            }
-        },
-        dataLabels: {
-            enabled: false,
-            formatter: function (val) {
-                return `$${val}`;
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
             },
-            offsetY: -10,
-            style: {
-                fontSize: '.6rem',
-                colors: ["#304758"]
-            }
-        },
-        xaxis: {
-            categories: [],
-            position: 'bottom',
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
+            yaxis: {
+                max: function(max) {
+                    return max * 1.1
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+                labels: {
+                    show: true,
+                    formatter: function (val) {
+                        val = Math.round((val + Number.EPSILON) * 100) / 100
+                        return `$${val}`;
                     }
                 }
             },
-            tooltip: {
-                enabled: true,
-            }
-        },
-        yaxis: {
-            min: function(min) {
-                return min * 0.9
-            },
-            max: function(max) {
-                return max * 1.1
-            },
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false,
-            },
-            labels: {
-                show: true,
-                formatter: function (val) {
-                    val = Math.round((val + Number.EPSILON) * 100) / 100
-                    return `$${val}`;
+            title: {
+                text: 'Branch Sales',
+                floating: true,
+                offsetY: 635,
+                align: 'center',
+                style: {
+                    color: '#444'
                 }
-            }
-        },
-        stroke: {
-            curve: 'smooth',
-        },
-        title: {
-            text: 'Staff Sales Performance',
-            floating: true,
-            offsetY: 610,
-            align: 'center',
-            style: {
-                color: '#444'
-            }
-        },
-        noData: {
-            text: 'Loading...'
-        }
-    }
-    const salesStaffPerformanceChartManager = new ChartManager('#salesStaffPerformanceChart', salesStaffPerformanceChartOptions, 'any');
-    
-    var branchPerformanceChartOption1Options = {
-        series: [],
-        chart: {
-            height: 'auto',
-            type: 'bar',
-            toolbar: {
-                show: false
             },
-            stacked: true,
-            stackType: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
+            noData: {
+                text: 'Loading...'
+            }
+        };
+        const branchSalesChartManager = new ChartManager('#chart', branchSalesChartOptions, 'any');
+        
+        var salesStaffPerformanceChartOptions = {
+            series: [],
+            chart: {
+                height: 'auto',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                }
             },
-        },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            y: {
+            plotOptions: {
+                bar: {
+                    borderRadius: 10,
+                    dataLabels: {
+                        position: 'top', // top, center, bottom
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: false,
                 formatter: function (val) {
                     return `$${val}`;
+                },
+                offsetY: -10,
+                style: {
+                    fontSize: '.6rem',
+                    colors: ["#304758"]
                 }
-            }
-        },
-        xaxis: {
-            categories: [],
-            position: 'top',
-            axisBorder: {
-                show: false
             },
-            axisTicks: {
-                show: false
+            xaxis: {
+                categories: [],
+                position: 'bottom',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
             },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
+            yaxis: {
+                min: function(min) {
+                    return min * 0.9
+                },
+                max: function(max) {
+                    return max * 1.1
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+                labels: {
+                    show: true,
+                    formatter: function (val) {
+                        val = Math.round((val + Number.EPSILON) * 100) / 100
+                        return `$${val}`;
                     }
                 }
             },
-            tooltip: {
-                enabled: true,
+            stroke: {
+                curve: 'smooth',
+            },
+            title: {
+                text: 'Staff Sales Performance',
+                floating: true,
+                offsetY: 610,
+                align: 'center',
+                style: {
+                    color: '#444'
+                }
+            },
+            noData: {
+                text: 'Loading...'
             }
-        },
-        noData: {
-            text: 'Loading...'
         }
-    }
-    const branchPerformanceChart1Manager = new ChartManager('#branchPerformanceChartOption1', branchPerformanceChartOption1Options, 'any');
+        const salesStaffPerformanceChartManager = new ChartManager('#salesStaffPerformanceChart', salesStaffPerformanceChartOptions, 'any');
+        
+        var branchPerformanceChartOption1Options = {
+            series: [],
+            chart: {
+                height: 'auto',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                },
+                stacked: true,
+                stackType: '100%'
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                },
+            },
+            stroke: {
+                width: 1,
+                colors: ['#fff']
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `$${val}`;
+                    }
+                }
+            },
+            xaxis: {
+                categories: [],
+                position: 'top',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            },
+            noData: {
+                text: 'Loading...'
+            }
+        }
+        const branchPerformanceChart1Manager = new ChartManager('#branchPerformanceChartOption1', branchPerformanceChartOption1Options, 'any');
 
-    var branchPerformanceChartOption2Options = {
-        series: [],
-        chart: {
+        var branchPerformanceChartOption2Options = {
+            series: [],
+            chart: {
+                height: 'auto',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                },
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+            },
+            dataLabels: {
+            enabled: false
+            },
+            stroke: {
+                width: 1,
+                colors: ['#fff']
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `$${val}`;
+                    }
+                }
+            },
+            xaxis: {
+                categories: [],
+                position: 'top',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            },
+            noData: {
+                text: 'Loading...'
+            }
+        }
+        const branchPerformanceChart2Manager = new ChartManager('#branchPerformanceChartOption2', branchPerformanceChartOption2Options, 'any');
+
+        var agencyTimelinePerformanceChartOptions = {
+            series: [],
+            chart: {
+                height: 'auto',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                },
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '50%'
+                },
+            },
+            dataLabels: {
+            enabled: false
+            },
+            stroke: {
+                width: 1,
+                colors: ['#fff']
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `${val}`;
+                    }
+                }
+            },
+            xaxis: {
+                categories: [],
+                position: 'top',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            },
+            noData: {
+                text: 'Loading...'
+            }
+        }
+        const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart', agencyTimelinePerformanceChartOptions, 'any');
+
+        var fdwTimelineChartOptions = {
+            series: [],
             height: 'auto',
-            type: 'bar',
-            toolbar: {
-                show: false
+            chart: {
+                type: 'rangeBar'
             },
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return `$${val}`;
-                }
-            }
-        },
-        xaxis: {
-            categories: [],
-            position: 'top',
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
-                    }
+            plotOptions: {
+                bar: {
+                    horizontal: true
                 }
             },
-            tooltip: {
-                enabled: true,
+            dataLabels: {
+                enabled: false,
+                formatter: function(val) {
+                    var a = moment(val[0])
+                    var b = moment(val[1])
+                    var diff = b.diff(a, 'days')
+                    return diff + (diff > 1 ? ' days' : ' day')
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'light',
+                    type: 'vertical',
+                    shadeIntensity: 0.25,
+                    gradientToColors: undefined,
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [50, 0, 100, 100]
+                }
+            },
+            xaxis: {
+                type: 'datetime'
+            },
+            legend: {
+                position: 'top'
+            },
+            noData: {
+                text: 'Loading...'
             }
-        },
-        noData: {
-            text: 'Loading...'
-        }
-    }
-    const branchPerformanceChart2Manager = new ChartManager('#branchPerformanceChartOption2', branchPerformanceChartOption2Options, 'any');
+        };
+        const fdwTimelineChartManager = new ChartManager('#fdwTimelineChart', fdwTimelineChartOptions, 'any', 'timeline');
 
-    var agencyTimelinePerformanceChartOptions = {
-        series: [],
-        chart: {
-            height: 'auto',
-            type: 'bar',
-            toolbar: {
-                show: false
-            },
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '50%'
-            },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return `${val}`;
-                }
-            }
-        },
-        xaxis: {
-            categories: [],
-            position: 'top',
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
-                    }
-                }
-            },
-            tooltip: {
-                enabled: true,
-            }
-        },
-        noData: {
-            text: 'Loading...'
-        }
-    }
-    const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart', agencyTimelinePerformanceChartOptions, 'any');
-
-    var fdwTimelineChartOptions = {
-        series: [],
-        height: 'auto',
-        chart: {
-            type: 'rangeBar'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true
-            }
-        },
-        dataLabels: {
-            enabled: false,
-            formatter: function(val) {
-                var a = moment(val[0])
-                var b = moment(val[1])
-                var diff = b.diff(a, 'days')
-                return diff + (diff > 1 ? ' days' : ' day')
-            }
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: 'vertical',
-                shadeIntensity: 0.25,
-                gradientToColors: undefined,
-                inverseColors: true,
-                opacityFrom: 1,
-                opacityTo: 1,
-                stops: [50, 0, 100, 100]
-            }
-        },
-        xaxis: {
-            type: 'datetime'
-        },
-        legend: {
-            position: 'top'
-        },
-        noData: {
-            text: 'Loading...'
-        }
-    };
-    const fdwTimelineChartManager = new ChartManager('#fdwTimelineChart', fdwTimelineChartOptions, 'any', 'timeline');
-
-    const csrftoken = Cookies.get('csrftoken');
-    const authority = '{{authority}}'
-    
-    $(function(){
+        const csrftoken = Cookies.get('csrftoken');
+        const authority = '{{authority}}'
+        
         let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
         let salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
         let salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
