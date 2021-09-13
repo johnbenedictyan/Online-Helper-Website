@@ -10,6 +10,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Foreign Apps Imports
+from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
@@ -57,6 +58,17 @@ class AgencySignInView(BaseLoginView):
     template_name = 'base/agency-sign-in.html'
     authentication_form = AgencySignInForm
     success_url = reverse_lazy('dashboard_home')
+
+    def get_success_url(self):
+        for auth_name in AUTHORITY_GROUPS:
+            if self.request.user.groups.filter(name=auth_name).exists():
+                authority = auth_name
+                if authority == AG_OWNERS:
+                    success_url = reverse_lazy('user_email_update')
+        if success_url:
+            return success_url
+        else:
+            return super().get_success_url()
 
 
 class CustomPasswordResetView(PasswordResetView):
@@ -134,8 +146,19 @@ class PotentialEmployerDelete(SuccessMessageMixin,
 class UserEmailUpdate(LoginRequiredMixin, UpdateView):
     model = get_user_model()
     form_class = EmailUpdateForm
+    template_name = 'update/email-update.html'
+    success_url = reverse_lazy('dashboard_home')
 
-    def get_queryset(self):
+    def get_object(self):
         return get_user_model().objects.get(
             pk=self.request.user.pk
         )
+
+    def form_valid(self, form):
+        for auth_name in AUTHORITY_GROUPS:
+            if self.request.user.groups.filter(name=auth_name).exists():
+                authority = auth_name
+                if authority == AG_OWNERS:
+                    self.request.user.agency_owner.agency.unset_test_email()
+
+        return super().form_valid(form)

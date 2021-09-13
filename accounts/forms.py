@@ -412,7 +412,7 @@ class EmailUpdateForm(forms.ModelForm):
         except UserModel.DoesNotExist:
             pass
         else:
-            msg = _('You must change the email address')
+            msg = _('The email address has not been changed')
             self.add_error('email', msg)
 
         return cleaned_data

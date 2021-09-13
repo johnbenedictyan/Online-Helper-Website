@@ -450,6 +450,10 @@ class AgencyOwner(models.Model):
     def is_test_email(self):
         return self.test_email
 
+    def unset_test_email(self):
+        self.test_email = False
+        self.save()
+
     class Meta:
         verbose_name = 'Agency Owner'
         verbose_name_plural = 'Agency Owners'
