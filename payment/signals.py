@@ -35,7 +35,7 @@ def provision_subscription(sender, instance, created, **kwargs):
                 SubscriptionLimitMap[
                     product.pk
                 ]['name'] == 'Featured Maid Advertisement'
-            ):
+             ):
             agency.amount_of_featured_biodata_allowed = Subscription.objects.filter(
                 agency=agency,
                 product=product,
