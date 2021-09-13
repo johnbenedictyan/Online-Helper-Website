@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     SignInView, AgencySignInView, SignOutView, PotentialEmployerDetail,
     PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete,
-    CustomPasswordResetView
+    CustomPasswordResetView, UserEmailUpdate
 )
 
 # Start of Urls
@@ -39,6 +39,11 @@ urlpatterns = [
                 '',
                 PotentialEmployerUpdate.as_view(),
                 name='potential_employer_update'
+            ),
+            path(
+                'email',
+                UserEmailUpdate.as_view(),
+                name='user_email_update'
             )
         ])
     ),

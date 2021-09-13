@@ -1,7 +1,7 @@
 # Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.urls import reverse, reverse_lazy
@@ -14,7 +14,8 @@ from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
 from .forms import (
-    EmployerCreationForm, SignInForm, AgencySignInForm, CustomPasswordResetForm
+    EmployerCreationForm, SignInForm, AgencySignInForm,
+    CustomPasswordResetForm, EmailUpdateForm
 )
 from .models import PotentialEmployer
 from .mixins import PotentialEmployerGrpRequiredMixin
@@ -128,3 +129,13 @@ class PotentialEmployerDelete(SuccessMessageMixin,
     model = PotentialEmployer
     success_url = reverse_lazy('home')
     success_message = 'Account deleted'
+
+
+class UserEmailUpdate(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = EmailUpdateForm
+
+    def get_queryset(self):
+        return get_user_model().objects.get(
+            pk=self.request.user.pk
+        )

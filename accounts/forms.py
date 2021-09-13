@@ -369,3 +369,50 @@ class CustomPasswordResetForm(PasswordResetForm):
                 )
             ),
         )
+
+
+class EmailUpdateForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['email']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'email',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Submit',
+                        css_class="btn btn-xs-lg btn-primary w-50"
+                    ),
+                    css_class='form-group col-24 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        UserModel = get_user_model()
+
+        try:
+            UserModel.objects.get(
+                email=email
+            )
+        except UserModel.DoesNotExist:
+            pass
+        else:
+            msg = _('You must change the email address')
+            self.add_error('email', msg)
+
+        return cleaned_data

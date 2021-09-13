@@ -439,8 +439,16 @@ class AgencyOwner(models.Model):
         ]
     )
 
+    test_email = models.BooleanField(
+        default=True,
+        editable=False
+    )
+
     def __str__(self):
         return self.agency.name + ' Owner'
+
+    def is_test_email(self):
+        return self.test_email
 
     class Meta:
         verbose_name = 'Agency Owner'

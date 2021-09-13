@@ -1602,6 +1602,8 @@ class AgencyPlanList(AgencyOwnerRequiredMixin, GetAuthorityMixin, ListView):
     http_method_names = ['get']
     model = AgencyPlan
     template_name = 'list/dashboard-agency-plan-list.html'
+    authority = ''
+    agency_id = ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
