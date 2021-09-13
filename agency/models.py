@@ -165,6 +165,8 @@ class Agency(models.Model):
         return self.agency_owner.user.email
 
     def create_or_update_stripe_customer(self):
+        from payment.models import Customer
+
         stripe.api_key = settings.STRIPE_SECRET_KEY
         if not self.has_customer_relation():
             stripe_customer = stripe.Customer.create(
@@ -180,7 +182,12 @@ class Agency(models.Model):
                 email=self.get_agency_owner_email(),
                 name=self.name
             )
-            return stripe_customer
+            new_customer = Customer.objects.create(
+                id=stripe_customer,
+                user=self
+            )
+            new_customer.save()
+            return new_customer
         else:
             stripe_customer_pk = self.customer_account
             stripe.Customer.modify(
