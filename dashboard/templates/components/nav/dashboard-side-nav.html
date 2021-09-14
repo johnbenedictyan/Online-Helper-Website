@@ -29,7 +29,7 @@
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_outlet_details_update' or url_name == 'dashboard_agency_opening_hours_update' %}show{% endif %}" id="agencyProfileManagementDropdownNav">
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_outlet_details_update' or url_name == 'dashboard_agency_opening_hours_update' %}active{% endif %}">
-                        <a href="{% url 'dashboard_agency_information_update' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_agency_information_update' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Update Agency Profile</p>
                         </a>
                     </div>
@@ -52,12 +52,12 @@
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_agency_employee_create' or url_name == 'dashboard_agency_employee_update' %}show{% endif %}" id="accountManagementDropdownNav">
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_agency_employee_create' %}active{% endif %}">
-                        <a href="{% url 'dashboard_agency_employee_create' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_create' %}active{% endif %}">
+                        <a href="{% url 'dashboard_agency_employee_create' %}" class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_employee_create' %}active{% endif %}">
                             <p class="m-1 pl-4">Add Employee</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_agency_employee_update' %}active{% endif %}">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_agency_employee_update' %}active{% else %}d-none{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link {% if url_name == 'dashboard_agency_employee_update' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Update Employees</p>
                         </a>
                     </div>
@@ -81,17 +81,17 @@
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_detail' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update' %}show{% endif %}" id="fdwManagementDropdownNav">
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_maid_information_create' %}active{% endif %}">
-                        <a href="{% url 'dashboard_maid_information_create' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_maid_information_create' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Add FDW</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_maid_detail' %}active{% else %}d-none{% endif %}">
-                        <a class="nav-link new-side-nav-link text-smaller-slight">
+                        <a class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">FDW Profile</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_loan_update' %}active{% else %}d-none{% endif %}">
-                        <a class="nav-link new-side-nav-link text-smaller-slight">
+                        <a class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Update FDW</p>
                         </a>
                     </div>
@@ -114,17 +114,17 @@
                 </div>
                 <div class="collapse row {% if url_name == 'employer_create_route' or url_name == 'employer_update_route' %}show{% endif %}" id="employersManagementDropdownNav">
                     <div class="col-24 new-side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}">
-                        <a href="{% url 'employer_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'employer_create_route' %}active{% endif %}">
+                        <a href="{% url 'employer_create_route' %}" class="nav-link new-side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}">
                             <p class="m-1 pl-4">Add Employer</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Employer Profile</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Update Employer</p>
                         </a>
                     </div>
@@ -147,17 +147,17 @@
                 </div>
                 <div class="collapse row" id="caseManagementDropdownNav">
                     <div class="col-24 new-side-nav-link">
-                        <a href="{% url 'case_create_route' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'case_create_route' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Add Case</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Case Profile</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link">
-                        <a href="#" class="nav-link new-side-nav-link text-smaller-slight {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
+                        <a href="#" class="nav-link new-side-nav-link {% if url_name == 'dashboard_maid_list' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Update Case</p>
                         </a>
                     </div>
@@ -194,12 +194,12 @@
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_general_enquiries_list' or url_name == 'dashboard_shortlisted_enquiries_list' %}show{% endif %}" id="enquiriesDropdownNav">
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_general_enquiries_list' %}active{% endif %}">
-                        <a href="{% url 'dashboard_general_enquiries_list' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_general_enquiries_list' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">General Enquiries</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link {% if url_name == 'dashboard_shortlisted_enquiries_list' %}active{% endif %}">
-                        <a href="{% url 'dashboard_shortlisted_enquiries_list' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'dashboard_shortlisted_enquiries_list' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Shortlisted Enquiries</p>
                         </a>
                     </div>
@@ -222,12 +222,12 @@
                 </div>
                 <div class="collapse row {% if url_name == 'dashboard_agency_plan_list' or url_name == 'view_cart' %}show{% endif %}" id="subscriptionDropdownNav">
                     <div class="col-24 new-side-nav-link {% if url_name == 'view_cart' %}active{% endif %}">
-                        <a href="{% url 'view_cart' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'view_cart' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Shopping Cart</p>
                         </a>
                     </div>
                     <div class="col-24 new-side-nav-link">
-                        <a href="{% url 'stripe_customer_portal' %}" class="nav-link new-side-nav-link text-smaller-slight">
+                        <a href="{% url 'stripe_customer_portal' %}" class="nav-link new-side-nav-link">
                             <p class="m-1 pl-4">Billing History</p>
                         </a>
                     </div>
