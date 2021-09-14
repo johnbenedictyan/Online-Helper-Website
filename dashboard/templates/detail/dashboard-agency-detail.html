@@ -7,9 +7,9 @@
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col-10 agency-thumbnail" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %}">
+        <div class="col-9 agency-thumbnail" style="{% if agency.logo %}background-image: url({{agency.logo.url}});{% endif %}">
         </div>
-        <div class="col-10 offset-2 pt-4" id="agencyInformationGroup">
+        <div class="col-10 offset-3 pt-4" id="agencyInformationGroup">
             <h5 class="fs-20">{{agency.name}}</h5>
             <p>License Number: {{agency.license_number}}</p>
             <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
