@@ -351,7 +351,8 @@ class AgencyUpdateForm(forms.ModelForm):
                 Column(
                     HTML(
                         '<h5 class="fs-14">Agency Information</h5>'
-                    )
+                    ),
+                    css_class='mb-3'
                 ),
                 css_class='row',
                 css_id='agencyInformationGroup'

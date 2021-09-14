@@ -896,7 +896,7 @@ class AgencyInformationUpdate(BaseUpdateView):
     form_class = AgencyUpdateForm
     model = Agency
     template_name = 'update/dashboard-agency-update.html'
-    success_url = reverse_lazy('dashboard_agency_detail')
+    success_url = reverse_lazy('dashboard_agency_outlet_details_update')
     success_message = 'Agency details updated'
 
     def get_object(self, queryset=None):
