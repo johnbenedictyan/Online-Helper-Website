@@ -167,7 +167,7 @@ class MaidForm(forms.ModelForm):
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-24'
+                    css_class='form-group col-lg-12'
                 ),
                 Column(
                     'passport_status',
@@ -936,7 +936,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-12'
+                    css_class='col-xl-24'
                 ),
                 Column(
                     Row(
@@ -967,7 +967,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-12'
+                    css_class='col-xl-24'
                 ),
                 css_class='row'
             ),
@@ -1001,7 +1001,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-12'
+                    css_class='col-xl-24'
                 ),
                 Column(
                     Row(
@@ -1032,7 +1032,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-12'
+                    css_class='col-xl-24'
                 ),
                 css_class='row'
             ),
@@ -1066,7 +1066,7 @@ class MaidExperienceForm(forms.Form):
                             css_class='form-group'
                         )
                     ),
-                    css_class='col-xl-12'
+                    css_class='col-xl-24'
                 ),
                 css_class='row'
             ),

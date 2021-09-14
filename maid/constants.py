@@ -129,7 +129,7 @@ class MaidDietaryRestrictionChoices(models.TextChoices):
 
 
 class MaidLanguageProficiencyChoices(models.TextChoices):
-    UNABLE = 'UNABLE', _('Unable to speak')
+    UNABLE = 'UNABLE', _('Unable to speak this language')
     BASIC = 'BASIC', _('Basic')
     INTERMEDIATE = 'INTER', _('Intermediate')
     ADVANCED = 'ADVAN', _('Advanced')
