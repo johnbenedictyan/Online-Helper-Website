@@ -521,7 +521,7 @@ class Maid(models.Model):
                 <div class="row bg-custom-bb text-light">
                     <div class="col p-4">
                         <h6>{self.name}</h6>
-                        <p class="fs-11 mb-0">Basic Salary: S${self.name}</p>
+                        <p class="fs-11 mb-0">Basic Salary: S${self.expected_salary}</p>
                         <p class="fs-11 mb-0">
                             Rest Day Per Mth: {self.expected_days_off}
                         </p>
