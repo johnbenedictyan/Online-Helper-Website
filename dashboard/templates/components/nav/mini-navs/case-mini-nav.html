@@ -2,7 +2,7 @@
 {% block mini_nav_section %}
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'case_create_route' or url_name == 'case_update_route' %}active{% endif %}" href="{% if url_name != 'case_create_route' %}{% url 'case_update_route' level_1_pk=level_1_pk %}{% else %}#{% endif %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'case_create_route' or url_name == 'case_update_route' %}active{% endif %}" href="{% if url_name != 'case_create_route' %}{% url 'case_update_route' level_1_pk=level_1_pk %}{% else %}#{% endif %}">
                 <p class="m-1 pl-2">Case Information</p>
             </a>
         </div>
@@ -10,28 +10,28 @@
     {% if url_name != 'case_create_route' %}
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'servicefee_create_route' or url_name == 'servicefee_update_route' %}active{% endif %}" href="{% url 'servicefee_create_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'servicefee_create_route' or url_name == 'servicefee_update_route' %}active{% endif %}" href="{% url 'servicefee_create_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">Service Fee Schedule</p>
             </a>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'serviceagreement_create_route' or url_name == 'serviceagreement_update_route' %}active{% endif %}" href="{% url 'serviceagreement_create_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'serviceagreement_create_route' or url_name == 'serviceagreement_update_route' %}active{% endif %}" href="{% url 'serviceagreement_create_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">Service Agreement</p>
             </a>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'serviceagreement_create_route' or url_name == 'serviceagreement_update_route' %}active{% endif %}" href="{% url 'serviceagreement_create_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'serviceagreement_create_route' or url_name == 'serviceagreement_update_route' %}active{% endif %}" href="{% url 'serviceagreement_create_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">Employment Contract</p>
             </a>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'case_status_update_route' %}active{% endif %}" href="{% url 'case_status_update_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'case_status_update_route' %}active{% endif %}" href="{% url 'case_status_update_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">Status</p>
             </a>
         </div>
@@ -39,7 +39,7 @@
     {% if maid_type == 'NEW' %}
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'safetyagreement_create_route' or url_name == 'safetyagreement_update_route' %}active{% endif %}" href="{% url 'safetyagreement_create_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'safetyagreement_create_route' or url_name == 'safetyagreement_update_route' %}active{% endif %}" href="{% url 'safetyagreement_create_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">Safety Agreement</p>
             </a>
         </div>
@@ -47,14 +47,14 @@
     {% endif %}
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'maid_inventory_route' %}active{% endif %}" href="{% url 'maid_inventory_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'maid_inventory_route' %}active{% endif %}" href="{% url 'maid_inventory_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">Maid Inventory</p>
             </a>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <a class="nav-link mini-side-nav-link text-smaller-slight {% if url_name == 'docupload_create_route' or url_name == 'docupload_update_route' %}active{% endif %}" href="{% url 'docupload_create_route' level_1_pk=level_1_pk %}">
+            <a class="nav-link mini-side-nav-link {% if url_name == 'docupload_create_route' or url_name == 'docupload_update_route' %}active{% endif %}" href="{% url 'docupload_create_route' level_1_pk=level_1_pk %}">
                 <p class="m-1 pl-2">View PDF documents</p>
             </a>
         </div>
