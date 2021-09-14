@@ -578,17 +578,17 @@ body.dashboard-body{
         @media screen and (min-width:1920px) {
             height: 33rem;
         }
-        .card-title {
-            @media screen and (min-width:768px) {
-                height: 4.5rem;
-            }
-            @media screen and (min-width:1024px) {
-                height: 3rem;
-            }
-            @media screen and (min-width:1920px) {
-                height: 4rem;
-            }
-        }
+        // .card-title {
+        //     @media screen and (min-width:768px) {
+        //         height: 4.5rem;
+        //     }
+        //     @media screen and (min-width:1024px) {
+        //         height: 3rem;
+        //     }
+        //     @media screen and (min-width:1920px) {
+        //         height: 4rem;
+        //     }
+        // }
     }
 
     &-thumbnail {

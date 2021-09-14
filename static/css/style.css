@@ -546,24 +546,6 @@ body.dashboard-body {
   }
 }
 
-@media screen and (min-width: 768px) {
-  .agency-card .card-title {
-    height: 4.5rem;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .agency-card .card-title {
-    height: 3rem;
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  .agency-card .card-title {
-    height: 4rem;
-  }
-}
-
 .agency-thumbnail {
   height: 13rem;
   background-size: contain;
