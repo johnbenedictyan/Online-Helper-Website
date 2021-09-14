@@ -12,6 +12,7 @@ from django.views.generic.edit import (
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 
+from agency.models import Agency
 from agency.mixins import (
     AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
     OwnerAccessToEmployerDocAppMixin
@@ -67,7 +68,10 @@ class EmployerDocDetailView(
             'sponsor_2_sigurl': sig_object.get_sigurl('sigslug_sponsor_2'),
             'joint_applicant_sigurl': sig_object.get_sigurl(
                 'sigslug_joint_applicant'
-            )
+            ),
+            'agency_name': Agency.objects.get(
+                pk=self.agency_id
+            ).name
         })
         return context
 
