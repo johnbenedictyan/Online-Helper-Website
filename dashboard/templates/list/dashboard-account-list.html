@@ -19,25 +19,25 @@
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border text-center d-none d-xl-flex">
-            <div class="col-2">
-                <h6 class="dashboard-table-header">S/N</h6>
-            </div>
-            <div class="col">
-                <h6 class="dashboard-table-header">Name</h6>
-            </div>
-            <div class="col">
-                <h6 class="dashboard-table-header">Email</h6>
+            <div class="col-1">
+                <h6 class="dashboard-table-header"></h6>
             </div>
             <div class="col-4">
-                <h6 class="dashboard-table-header">EA Personnel No</h6>
+                <h6 class="dashboard-table-header">Name</h6>
             </div>
-            <div class="col">
+            <div class="col-5">
+                <h6 class="dashboard-table-header">Email</h6>
+            </div>
+            <!-- <div class="col-4">
+                <h6 class="dashboard-table-header">EA Personnel No</h6>
+            </div> -->
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Type</h6>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Branch</h6>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <h6 class="dashboard-table-header">Last Login</h6>
             </div>
             <div class="col-2 text-center">
@@ -46,25 +46,25 @@
         </div>
         {% for account in accounts %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center d-none d-xl-flex">
-            <div class="col-2">
-                <p class="mb-0">{{account.pk}}</p>
-            </div>
-            <div class="col">
-                <p class="mb-0">{{account.name}}</p>
-            </div>
-            <div class="col">
-                <p class="mb-0">{{account.user.email}}</p>
+            <div class="col-1">
+                <p class="mb-0">{{forloop.counter}}</p>
             </div>
             <div class="col-4">
-                <p class="mb-0">{{account.ea_personnel_number}}</p>
+                <p class="mb-0">{{account.name}}</p>
             </div>
-            <div class="col">
+            <div class="col-5">
+                <p class="mb-0">{{account.user.email}}</p>
+            </div>
+            <!-- <div class="col-4">
+                <p class="mb-0">{{account.ea_personnel_number}}</p>
+            </div> -->
+            <div class="col-4">
                 <p class="mb-0">{{account.get_role_display}}</p>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <p class="mb-0">{{account.branch.name}}</p>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <p class="mb-0">{{account.user.last_login|date:"j M g:i A"}}</p>
             </div>
             <div class="col-2">
