@@ -18,7 +18,7 @@
                 <p class="mb-0 mr-1">Account Limit: {{employee_accounts.current}}/{{employee_accounts.max}}</p>
             </div>
         </div>
-        <div class="row bg-primary text-light mx-half py-3 border text-center d-none d-xl-flex">
+        <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col-1">
                 <h6 class="dashboard-table-header"></h6>
             </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         {% for account in accounts %}
-        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 text-center d-none d-xl-flex">
+        <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col-1">
                 <p class="mb-0">{{forloop.counter}}</p>
             </div>
