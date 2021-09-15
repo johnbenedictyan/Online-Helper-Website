@@ -3,7 +3,7 @@ from django import forms
 
 class OMCustomTextarea(forms.Textarea):
     rows = 8
-    cols = 15
+    cols = 16
 
     def __init__(self, attrs=None):
         attrs = {
