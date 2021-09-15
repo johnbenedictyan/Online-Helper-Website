@@ -6,6 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field
 
 # App Imports
+from .constants import MaidLoanDescriptionChoices
 from .forms import MaidLoanTransactionForm, MaidEmploymentHistoryForm
 from .models import Maid, MaidLoanTransaction, MaidEmploymentHistory
 
@@ -38,7 +39,11 @@ class MaidLoanTransactionFormSetHelper(FormHelper):
                     ),
                     Row(
                         Column(
-                            'date',
+                            Field(
+                                'date',
+                                type='text',
+                                onfocus="(this.type='date')"
+                            ),
                             css_class='col-md-8'
                         ),
                         Column(
@@ -82,72 +87,51 @@ class MaidEmploymentHistoryFormSetHelper(FormHelper):
         self.layout = Layout(
             Row(
                 Column(
-                    Row(
-                        Column(
-                            Field(
-                                'DELETE'
-                            ),
-                            css_class='col-24 text-right'
-                        )
+                    Field(
+                        'DELETE'
                     ),
-                    Row(
-                        Column(
-                            Row(
-                                Column(
-                                    Field(
-                                        'start_date',
-                                        type='text',
-                                        onfocus="(this.type='date')",
-                                        placeholder='Start date'
-                                    ),
-                                )
-                            ),
-                            Row(
-                                Column(
-                                    Field(
-                                        'end_date',
-                                        type='text',
-                                        onfocus="(this.type='date')",
-                                        placeholder='End date'
-                                    ),
-                                )
-                            ),
-                            css_class='col-md-12'
-                        ),
-                        Column(
-                            Row(
-                                Column(
-                                    'work_duties'
-                                )
-                            ),
-                            css_class='col-md-12'
-                        )
+                    css_class='col-24 text-right'
+                )
+            ),
+            Row(
+                Column(
+                    Field(
+                        'start_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Start date'
                     ),
-                    Row(
-                        Column(
-                            Row(
-                                Column(
-                                    'country'
-                                )
-                            ),
-                            Row(
-                                Column(
-                                    'race_of_employer'
-                                )
-                            ),
-                            css_class='col-md-12'
-                        ),
-                        Column(
-                            Row(
-                                Column(
-                                    'reason_for_leaving'
-                                )
-                            ),
-                            css_class='col-md-12'
-                        )
-                    )
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
-                css_class='form-group'
+                Column(
+                    Field(
+                        'end_date',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='End date'
+                    ),
+                    css_class='form-group col-md-12 pl-md-3'
+                ),
+                Column(
+                    'country',
+                    css_class='form-group col-md-12 pr-md-3'
+                ),
+                Column(
+                    'race_of_employer',
+                    css_class='form-group col-md-12 pl-md-3'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'work_duties',
+                    css_class='form-group col-md-12 pr-md-3'
+                ),
+                Column(
+                    'reason_for_leaving',
+                    css_class='form-group col-md-12 pl-md-3'
+                ),
+                css_class='form-row'
             )
         )
         self.render_required_fields = True

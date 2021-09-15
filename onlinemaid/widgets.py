@@ -6,8 +6,12 @@ class OMCustomTextarea(forms.Textarea):
     cols = 16
 
     def __init__(self, attrs=None):
-        attrs = {
+        custom_attrs = {
             'cols': self.cols,
             'rows': self.rows
         }
-        super().__init__(attrs=attrs)
+        if attrs:
+            custom_attrs.update(
+                attrs
+            )
+        super().__init__(attrs=custom_attrs)

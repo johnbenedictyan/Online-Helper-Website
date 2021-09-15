@@ -671,7 +671,8 @@ class MaidLoanTransaction(models.Model):
         verbose_name=_('Type of transaction'),
         max_length=3,
         blank=False,
-        choices=MaidLoanDescriptionChoices.choices
+        choices=MaidLoanDescriptionChoices.choices,
+        default=MaidLoanDescriptionChoices.INITIAL_LOAN
     )
 
     remarks = models.TextField(
