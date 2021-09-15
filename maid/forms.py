@@ -17,6 +17,7 @@ from employer_documentation.models import EmployerDoc
 from onlinemaid.constants import TrueFalseChoices
 from onlinemaid.helper_functions import encrypt_string
 from onlinemaid.validators import validate_fin, validate_passport
+from onlinemaid.widgets import OMCustomTextarea
 
 # App Imports
 from .constants import (
@@ -366,12 +367,12 @@ class MaidEmploymentHistoryForm(forms.ModelForm):
         model = MaidEmploymentHistory
         exclude = ['maid']
         widgets = {
-            'work_duties': forms.Textarea(attrs={
+            'work_duties': OMCustomTextarea(attrs={
                 'rows': '4',
                 'cols': '100',
                 'maxlength': '150'
             }),
-            'reason_for_leaving': forms.Textarea(attrs={
+            'reason_for_leaving': OMCustomTextarea(attrs={
                 'rows': '4',
                 'cols': '100',
                 'maxlength': '100'
@@ -764,7 +765,7 @@ class MaidExperienceForm(forms.Form):
 
     cfi_other_remarks = forms.CharField(
         label=_('Other remarks'),
-        widget=forms.Textarea,
+        widget=OMCustomTextarea,
         required=False
     )
 
@@ -795,7 +796,7 @@ class MaidExperienceForm(forms.Form):
 
     cfe_other_remarks = forms.CharField(
         label=_('Other remarks'),
-        widget=forms.Textarea,
+        widget=OMCustomTextarea,
         required=False
     )
 
@@ -826,7 +827,7 @@ class MaidExperienceForm(forms.Form):
 
     cfd_other_remarks = forms.CharField(
         label=_('Other remarks'),
-        widget=forms.Textarea,
+        widget=OMCustomTextarea,
         required=False
     )
 
@@ -857,7 +858,7 @@ class MaidExperienceForm(forms.Form):
 
     geh_other_remarks = forms.CharField(
         label=_('Other remarks'),
-        widget=forms.Textarea,
+        widget=OMCustomTextarea,
         required=False
     )
 
@@ -888,7 +889,7 @@ class MaidExperienceForm(forms.Form):
 
     cok_other_remarks = forms.CharField(
         label=_('Other remarks'),
-        widget=forms.Textarea,
+        widget=OMCustomTextarea,
         required=False
     )
 
@@ -1194,7 +1195,7 @@ class MaidExperienceForm(forms.Form):
 class MaidAboutFDWForm(forms.Form):
     about_me = forms.CharField(
         label=_(''),
-        widget=forms.Textarea(attrs={
+        widget=OMCustomTextarea(attrs={
             'rows': '10',
             'cols': '100',
             'maxlength': '300'
