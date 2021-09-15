@@ -87,67 +87,67 @@ class MaidForm(forms.ModelForm):
                 ),
                 Column(
                     'status',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'expected_salary',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'expected_days_off',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'reference_number',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'name',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'country_of_origin',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'maid_type',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'date_of_birth',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'height',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'weight',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'marital_status',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'number_of_siblings',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'number_of_children',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'age_of_children',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'religion',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'place_of_birth',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'address_1',
@@ -159,37 +159,37 @@ class MaidForm(forms.ModelForm):
                 ),
                 Column(
                     'education_level',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'repatriation_airport',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'passport_status',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     Field(
                         'passport_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     'passport_expiry',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     Field(
                         'fin_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     Submit(
@@ -480,23 +480,23 @@ class MaidLoanTransactionForm(forms.ModelForm):
                     Row(
                         Column(
                             'date',
-                            css_class='col-md-12 pr-xl-3'
+                            css_class='form-group col-md-12 pr-xl-3'
                         ),
                         Column(
                             'description',
-                            css_class='col-md-12 pl-xl-3'
+                            css_class='form-group col-md-12 pl-xl-3'
                         ),
                         Column(
                             'amount',
-                            css_class='col-md-12 pr-xl-3'
+                            css_class='form-group col-md-12 pr-xl-3'
                         ),
                         Column(
                             'remarks',
-                            css_class='col-md-12 pl-xl-3'
+                            css_class='form-group col-md-12 pl-xl-3'
                         )
                     )
                 ),
-                css_class='form-group'
+                css_class='form-row'
             )
         )
 
@@ -597,29 +597,29 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
             Row(
                 Column(
                     'english',
-                    css_class='col-md-12 pr-xl-3'
+                    css_class='form-group col-md-12 pr-xl-3'
                 ),
                 Column(
                     'malay',
-                    css_class='col-md-12 pl-xl-3'
+                    css_class='form-group col-md-12 pl-xl-3'
                 ),
                 Column(
                     'mandarin',
-                    css_class='col-md-12 pr-xl-3'
+                    css_class='form-group col-md-12 pr-xl-3'
                 ),
                 Column(
                     'chinese_dialect',
-                    css_class='col-md-12 pl-xl-3'
+                    css_class='form-group col-md-12 pl-xl-3'
                 ),
                 Column(
                     'hindi',
-                    css_class='col-md-12 pr-xl-3'
+                    css_class='form-group col-md-12 pr-xl-3'
                 ),
                 Column(
                     'tamil',
-                    css_class='col-md-12 pl-xl-3'
+                    css_class='form-group col-md-12 pl-xl-3'
                 ),
-                css_class='form-group mb-xl-3'
+                css_class='form-row mb-xl-3'
             ),
             Div(
                 Column(
@@ -634,29 +634,29 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
             Row(
                 Column(
                     'food_handling_pork',
-                    css_class='col-md-12 pr-xl-3'
+                    css_class='form-group col-md-12 pr-xl-3'
                 ),
                 Column(
                     'dietary_restriction_pork',
-                    css_class='col-md-12 pl-xl-3'
+                    css_class='form-group col-md-12 pl-xl-3'
                 ),
                 Column(
                     'food_handling_beef',
-                    css_class='col-md-12 pr-xl-3'
+                    css_class='form-group col-md-12 pr-xl-3'
                 ),
                 Column(
                     'dietary_restriction_beef',
-                    css_class='col-md-12 pl-xl-3'
+                    css_class='form-group col-md-12 pl-xl-3'
                 ),
                 Column(
                     'dietary_restriction_veg',
-                    css_class='col-md-12 pr-xl-3'
+                    css_class='form-group col-md-12 pr-xl-3'
                 ),
                 Column(
                     'food_handling_veg',
-                    css_class='col-md-12 pl-xl-3'
+                    css_class='form-group col-md-12 pl-xl-3'
                 ),
-                css_class='form-group mb-xl-3'
+                css_class='form-row mb-xl-3'
             ),
             Row(
                 Column(
@@ -934,7 +934,8 @@ class MaidExperienceForm(forms.Form):
                         Column(
                             'cfi_other_remarks',
                             css_class='form-group'
-                        )
+                        ),
+                        css_class='form-row mb-xl-3'
                     ),
                     css_class='col-xl-24'
                 ),
@@ -965,7 +966,8 @@ class MaidExperienceForm(forms.Form):
                         Column(
                             'cfe_other_remarks',
                             css_class='form-group'
-                        )
+                        ),
+                        css_class='form-row mb-xl-3'
                     ),
                     css_class='col-xl-24'
                 ),
@@ -999,7 +1001,8 @@ class MaidExperienceForm(forms.Form):
                         Column(
                             'cfd_other_remarks',
                             css_class='form-group'
-                        )
+                        ),
+                        css_class='form-row mb-xl-3'
                     ),
                     css_class='col-xl-24'
                 ),
@@ -1030,7 +1033,8 @@ class MaidExperienceForm(forms.Form):
                         Column(
                             'geh_other_remarks',
                             css_class='form-group'
-                        )
+                        ),
+                        css_class='form-row mb-xl-3'
                     ),
                     css_class='col-xl-24'
                 ),
@@ -1064,7 +1068,8 @@ class MaidExperienceForm(forms.Form):
                         Column(
                             'cok_other_remarks',
                             css_class='form-group'
-                        )
+                        ),
+                        css_class='form-row mb-xl-3'
                     ),
                     css_class='col-xl-24'
                 ),
@@ -1214,9 +1219,9 @@ class MaidAboutFDWForm(forms.Form):
             Row(
                 Column(
                     'about_me',
-                    css_class='col-24'
+                    css_class='form-group col-24'
                 ),
-                css_class='form-group'
+                css_class='form-row'
             ),
             Row(
                 Column(
