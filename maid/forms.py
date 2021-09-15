@@ -1242,7 +1242,7 @@ class MaidAboutFDWForm(forms.Form):
                     ),
                     css_class='form-group col-24 text-center'
                 ),
-                css_class='form-row'
+                css_class='form-row mb-xl-3'
             )
         )
 
