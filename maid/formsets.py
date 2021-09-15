@@ -39,20 +39,24 @@ class MaidLoanTransactionFormSetHelper(FormHelper):
                     Row(
                         Column(
                             'date',
-                            css_class='col-md-12'
+                            css_class='col-md-8'
                         ),
                         Column(
                             'description',
-                            css_class='col-md-12'
+                            css_class='col-md-8'
                         ),
                         Column(
                             'amount',
-                            css_class='col-md-12'
+                            css_class='col-md-8'
                         ),
+                        css_class='form-row'
+                    ),
+                    Row(
                         Column(
                             'remarks',
-                            css_class='col-md-12'
-                        )
+                            css_class='col-md-24'
+                        ),
+                        css_class='form-row'
                     )
                 ),
                 css_class='form-group'

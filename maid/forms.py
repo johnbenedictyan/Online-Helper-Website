@@ -459,6 +459,9 @@ class MaidLoanTransactionForm(forms.ModelForm):
     class Meta:
         model = MaidLoanTransaction
         exclude = ['maid']
+        widgets = {
+            'remarks': OMCustomTextarea
+        }
 
     def __init__(self, *args, **kwargs):
         self.maid_id = kwargs.pop('maid_id')

@@ -9,6 +9,7 @@ from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
 
 # Project Apps Imports
 from maid.models import MaidResponsibility, MaidLanguage
+from onlinemaid.widgets import OMCustomTextarea
 
 # App Imports
 from .constants import MAID_TYPE_CHOICES, MAID_NATIONALITY_CHOICES
@@ -91,12 +92,7 @@ class GeneralEnquiryForm(forms.ModelForm):
                     'placeholder': ''
                 }
             ),
-            'remarks': forms.Textarea(
-                attrs={
-                    'rows': 8,
-                    'cols': 15
-                }
-            )
+            'remarks': OMCustomTextarea
         }
 
     def __init__(self, *args, **kwargs):
