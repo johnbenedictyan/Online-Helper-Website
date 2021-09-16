@@ -41,7 +41,7 @@
         $('#agency-filter-form').on('change', function(){
             $(this).submit();
         });
-        $('.agency-thumbnail').height($(this).parent.width() * 0.75);
+        $('.agency-thumbnail').height($('.agency-thumbnail').parent().width() * 0.75);
     });
 </script>
 {% endblock js%}
