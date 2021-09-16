@@ -69,7 +69,7 @@
         {% for maid in maids %}
         <div class="row{% cycle ' ' ' bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col-2">
-                <p class="mb-0">{{maid.pk}}</p>
+                <p class="mb-0">{{forloop.counter}}</p>
             </div>
             <div class="col-4">
                 <p class="mb-0">{{maid.name}}</p>
