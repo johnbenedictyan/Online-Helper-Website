@@ -521,24 +521,6 @@ body.dashboard-body {
   cursor: pointer;
 }
 
-@media screen and (min-width: 768px) {
-  .agency-card {
-    height: 34rem;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .agency-card {
-    height: 33rem;
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  .agency-card {
-    height: 30rem;
-  }
-}
-
 .agency-thumbnail {
   background-size: contain;
   background-repeat: no-repeat;
