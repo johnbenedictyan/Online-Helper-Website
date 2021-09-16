@@ -569,15 +569,15 @@ body.dashboard-body{
 .agency{
     &-card {
         cursor: pointer;
-        @media screen and (min-width:768px) {
-            height: 34rem;
-        }
-        @media screen and (min-width:1024px) {
-            height: 33rem;
-        }
-        @media screen and (min-width:1920px) {
-            height: 30rem;
-        }
+        // @media screen and (min-width:768px) {
+        //     height: 34rem;
+        // }
+        // @media screen and (min-width:1024px) {
+        //     height: 33rem;
+        // }
+        // @media screen and (min-width:1920px) {
+        //     height: 30rem;
+        // }
         // .card-title {
         //     @media screen and (min-width:768px) {
         //         height: 4.5rem;
