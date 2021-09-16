@@ -1,5 +1,11 @@
+/* Start of Settings */
+/* End of Settings */
 html, body {
   min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -39,6 +45,9 @@ footer {
   .fs-md-12 {
     font-size: calc(12/12 * 1rem);
   }
+  .fs-md-13 {
+    font-size: calc(13/12 * 1rem);
+  }
   .fs-md-14 {
     font-size: calc(14/12 * 1rem);
   }
@@ -74,6 +83,9 @@ footer {
   }
   .fs-lg-12 {
     font-size: calc(12/12 * 1rem);
+  }
+  .fs-lg-13 {
+    font-size: calc(13/12 * 1rem);
   }
   .fs-lg-14 {
     font-size: calc(14/12 * 1rem);
@@ -117,6 +129,10 @@ footer {
   font-size: calc(12/12 * 1rem);
 }
 
+.fs-13 {
+  font-size: calc(13/12 * 1rem);
+}
+
 .fs-14 {
   font-size: calc(14/12 * 1rem);
 }
@@ -147,6 +163,12 @@ footer {
 
 .fs-32 {
   font-size: calc(32/12 * 1rem);
+}
+
+@media screen and (max-width: 767px) {
+  .w-xs-100 {
+    width: 100% !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -248,8 +270,16 @@ footer {
   }
 }
 
-html {
-  scroll-behavior: smooth;
+.min-height-mini-nav {
+  min-height: 2.5rem !important;
+}
+
+.min-height-75 {
+  min-height: 75vh !important;
+}
+
+.min-height-90 {
+  min-height: 90vh !important;
 }
 
 .dashboard-table-header {
@@ -285,18 +315,6 @@ html {
 
 .br-inherit {
   border-radius: inherit;
-}
-
-.min-height-mini-nav {
-  min-height: 2.5rem !important;
-}
-
-.min-height-75 {
-  min-height: 75vh !important;
-}
-
-.min-height-90 {
-  min-height: 90vh !important;
 }
 
 .bg-hero {
@@ -451,12 +469,6 @@ a.mini-side-nav-link {
   color: #1F4E78 !important;
 }
 
-@media screen and (max-width: 767px) {
-  .w-xs-100 {
-    width: 100% !important;
-  }
-}
-
 body.dashboard-body {
   background-color: #fff !important;
 }
@@ -487,18 +499,6 @@ body.dashboard-body {
 
 #maid-profile-card .custom-card__header {
   margin: 0 0 1rem 0;
-}
-
-.text-smaller {
-  font-size: 0.75rem;
-}
-
-.text-smaller-slight {
-  font-size: 0.9rem;
-}
-
-.text-larger-slight {
-  font-size: 1.05rem;
 }
 
 .maid-card {
@@ -546,24 +546,6 @@ body.dashboard-body {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   width: 100%;
-}
-
-.progress-wrapper {
-  height: 15px;
-}
-
-.vertical-divider {
-  width: .5px;
-  height: 100%;
-  background-color: #ced4da;
-}
-
-.how-it-works-card .card-text {
-  font-size: 1.1rem;
-}
-
-.faq-navbar {
-  font-size: 1.1rem;
 }
 
 .preferences-card {
@@ -631,10 +613,6 @@ body.dashboard-body {
   color: #3d5d9b;
 }
 
-.fill {
-  height: 80vh;
-}
-
 hr.text-light {
   border-top: 1px solid rgba(248, 249, 250, 0.5) !important;
 }
@@ -665,6 +643,7 @@ hr.text-light {
   background-color: #fff;
 }
 
+/* Custom CSS Settings for vendor CSS */
 .slick-caorusel > .slick-list > .slick-track {
   margin-left: 0;
 }
