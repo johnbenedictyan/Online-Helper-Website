@@ -116,10 +116,15 @@ class EmployerForm(forms.ModelForm):
             ),
 
             # Employer Details
-            HTML(
-                """
-                <h5 class="fs-14">Employer Information</h5>
-            """),
+            Row(
+                Column(
+                    HTML(
+                        """
+                        <h5 class="fs-14">Employer Information</h5>
+                    """),
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                )
+            ),
             Row(
                 Column(
                     'employer_name',
@@ -849,10 +854,9 @@ class EmployerSponsorForm(forms.ModelForm):
                                 Column(
                                     HTML(
                                         """
-                                            <h5 class="fs-14">
-                                                Sponsor 1 Spouse's Information
-                                            </h5>
-                                        """),
+                                            <h5 class="fs-14">Sponsor 1 Spouse's Information</h5>
+                                        """
+                                    ),
                                     Row(
                                         Column(
                                             'sponsor_1_marriage_sg_registered',
@@ -1025,9 +1029,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                 Column(
                                     HTML(
                                         """
-                                            <h5 class="fs-14">
-                                                Sponsor 2 Spouse's Information
-                                            </h5>
+                                            <h5 class="fs-14">Sponsor 2 Spouse's Information</h5>
                                         """),
                                     Row(
                                         Column(
@@ -1830,9 +1832,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                         Column(
                             HTML(
                                 """
-                                <h5 class="fs-14">
-                                    Joint Applicant Spouse's Information
-                                </h5>
+                                <h5 class="fs-14">Joint Applicant Spouse's Information</h5>
                                 """),
                             Row(
                                 Column(

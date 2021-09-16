@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
+from django.forms.models import construct_instance
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -136,7 +137,8 @@ class AgencyForm(forms.ModelForm):
                 Column(
                     HTML(
                         '<h5 class="fs-14">Agency Information</h5>'
-                    )
+                    ),
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
                 ),
                 css_class='row',
                 css_id='agencyInformationGroup'
@@ -164,7 +166,8 @@ class AgencyForm(forms.ModelForm):
                 Column(
                     HTML(
                         '<h5 class="fs-14">Main Outlet Details</h5>'
-                    )
+                    ),
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
                 ),
                 css_class='row',
                 css_id='agencyOutletDetailsGroup'
@@ -204,7 +207,8 @@ class AgencyForm(forms.ModelForm):
                 Column(
                     HTML(
                         '<h5 class="fs-14">Opening Hours</h5>'
-                    )
+                    ),
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
                 ),
                 css_class='row',
                 css_id='agencyOpeningHoursGroup'
@@ -254,7 +258,8 @@ class AgencyForm(forms.ModelForm):
                         Column(
                             HTML(
                                 '<h5 class="fs-14">Profile</h5>'
-                            )
+                            ),
+                            css_class='mb-3 mb-lg-4 mb-xl-5'
                         ),
                         css_class='row',
                         css_id='agencyProfileGroup'
@@ -272,7 +277,8 @@ class AgencyForm(forms.ModelForm):
                         Column(
                             HTML(
                                 '<h5 class="fs-14">Our Services</h5>'
-                            )
+                            ),
+                            css_class='mb-3 mb-lg-4 mb-xl-5'
                         ),
                         css_class='row',
                         css_id='agencyServicesGroup'
@@ -352,7 +358,7 @@ class AgencyUpdateForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Agency Information</h5>'
                     ),
-                    css_class='mb-3'
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
                 ),
                 css_class='row',
                 css_id='agencyInformationGroup'
@@ -382,7 +388,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         '<h5 class="fs-14">Profile</h5>'
                     ),
                     'profile',
-                    css_class='form-group col-lg-12',
+                    css_class='form-group col-lg-12 mb-3 mb-lg-4 mb-xl-5',
                     css_id='agencyProfileGroup'
                 ),
                 Column(
@@ -390,7 +396,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         '<h5 class="fs-14">Our Services</h5>'
                     ),
                     'services',
-                    css_class='form-group col-lg-12',
+                    css_class='form-group col-lg-12 mb-3 mb-lg-4 mb-xl-5',
                     css_id='agencyServicesGroup'
                 ),
                 css_class='mb-xl-3'
@@ -574,7 +580,8 @@ class AgencyEmployeeForm(forms.ModelForm):
                 Column(
                     HTML(
                         '<h5 class="fs-14">Employee Information</h5>'
-                    )
+                    ),
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
                 ),
                 css_class='row',
                 css_id='employeeInformationGroup'
@@ -931,7 +938,8 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                 Column(
                     HTML(
                         '<h5 class="fs-14">Opening Hours</h5>'
-                    )
+                    ),
+                    css_class='mb-3 mb-lg-4 mb-xl-5'
                 ),
                 css_class='row'
             ),
