@@ -271,13 +271,6 @@ html {
   margin-right: -1.25rem;
 }
 
-.agency-thumbnail {
-  height: 20vh;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
 .maid-thumbnail {
   background-position-x: center;
   background-size: cover;
@@ -547,7 +540,6 @@ body.dashboard-body {
 }
 
 .agency-thumbnail {
-  height: 13rem;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
