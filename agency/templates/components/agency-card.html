@@ -1,12 +1,12 @@
 {% load agency_tags %}
 <div class="card agency-card hvr-grow">
     <div class="agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
-    <div class="card-body pb-0">
+    <div class="card-body pb-0 top-agency-card-body">
         <h6 class="card-title">{{agency.name}}</h6>
         <p class="card-text text-muted mb-0">{{agency.license_number}}</p>
         <hr>
     </div>
-    <div class="card-body pt-0">
+    <div class="card-body pt-0 bottom-agency-card-body">
         <address>
             {{ agency.get_main_branch.address_1 }}<br/>
             {{ agency.get_main_branch.address_2 }}<br/>
