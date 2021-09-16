@@ -2318,11 +2318,11 @@ class EmployerDocForm(forms.ModelForm):
                         'fdw_monthly_loan_repayment', '$',
                         min='0', max='1000',
                     ),
-                    css_class='form-group col-lg-12 pr-lg-3'
+                    css_class='form-group col-lg-12 pl-lg-3'
                 ),
                 Column(
                     'fdw_off_day_of_week',
-                    css_class='form-group col-lg-12 pl-lg-3',
+                    css_class='form-group col-lg-12 pr-lg-3',
                 )
             ),
             # Submit
