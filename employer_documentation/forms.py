@@ -122,7 +122,7 @@ class EmployerForm(forms.ModelForm):
                         """
                         <h5 class="fs-14">Employer Information</h5>
                     """),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 )
             ),
             Row(

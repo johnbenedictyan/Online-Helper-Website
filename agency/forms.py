@@ -138,7 +138,7 @@ class AgencyForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Agency Information</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='agencyInformationGroup'
@@ -167,7 +167,7 @@ class AgencyForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Main Outlet Details</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='agencyOutletDetailsGroup'
@@ -208,7 +208,7 @@ class AgencyForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Opening Hours</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='agencyOpeningHoursGroup'
@@ -259,7 +259,7 @@ class AgencyForm(forms.ModelForm):
                             HTML(
                                 '<h5 class="fs-14">Profile</h5>'
                             ),
-                            css_class='mb-3 mb-lg-4 mb-xl-5'
+                            css_class='mb-3 mb-lg-4'
                         ),
                         css_class='row',
                         css_id='agencyProfileGroup'
@@ -278,7 +278,7 @@ class AgencyForm(forms.ModelForm):
                             HTML(
                                 '<h5 class="fs-14">Our Services</h5>'
                             ),
-                            css_class='mb-3 mb-lg-4 mb-xl-5'
+                            css_class='mb-3 mb-lg-4'
                         ),
                         css_class='row',
                         css_id='agencyServicesGroup'
@@ -358,7 +358,7 @@ class AgencyUpdateForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Agency Information</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='agencyInformationGroup'
@@ -581,7 +581,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Employee Information</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='employeeInformationGroup'
@@ -939,7 +939,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">Opening Hours</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row'
             ),

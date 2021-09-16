@@ -77,7 +77,7 @@ class MaidForm(forms.ModelForm):
                     HTML(
                         '<h5 class="fs-14">FDW Information</h5>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='fdwInformationGroup'
@@ -595,7 +595,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                     HTML(
                         '<h4 class="fs-14">Spoken Language</h4>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='maidSpokenLanguageGroup'
@@ -633,7 +633,7 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                         '''<h4 class="fs-14">Food Handling and Dietary
                         Restriction</h4>'''
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='maidFoodHandlingAndDietaryRestrictionGroup'
@@ -909,7 +909,7 @@ class MaidExperienceForm(forms.Form):
                     HTML(
                         '<h4 class="fs-14">Experience: Poor (1) ... Excellent(5)</h4>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='maidExperienceGroup'
@@ -921,7 +921,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5 class="fs-14">Infant Child Care</h5>'
                             ),
-                            css_class='col-24 mb-3 mb-lg-4 mb-xl-5'
+                            css_class='col-24 mb-3 mb-lg-4'
                         ),
                         Column(
                             'cfi_assessment',
@@ -953,7 +953,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5 class="fs-14">Elderly Care</h5>'
                             ),
-                            css_class='col-24 mb-3 mb-lg-4 mb-xl-5'
+                            css_class='col-24 mb-3 mb-lg-4'
                         ),
                         Column(
                             'cfe_assessment',
@@ -988,7 +988,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5 class="fs-14">Disabled Care</h5>'
                             ),
-                            css_class='col-24 mb-3 mb-lg-4 mb-xl-5'
+                            css_class='col-24 mb-3 mb-lg-4'
                         ),
                         Column(
                             'cfd_assessment',
@@ -1020,7 +1020,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5 class="fs-14">General Housework</h5>'
                             ),
-                            css_class='col-24 mb-3 mb-lg-4 mb-xl-5'
+                            css_class='col-24 mb-3 mb-lg-4'
                         ),
                         Column(
                             'geh_assessment',
@@ -1055,7 +1055,7 @@ class MaidExperienceForm(forms.Form):
                             HTML(
                                 '<h5 class="fs-14">Cooking</h5>'
                             ),
-                            css_class='col-24 mb-3 mb-lg-4 mb-xl-5'
+                            css_class='col-24 mb-3 mb-lg-4'
                         ),
                         Column(
                             'cok_assessment',
@@ -1220,7 +1220,7 @@ class MaidAboutFDWForm(forms.Form):
                     HTML(
                         '<h4 class="fs-14">About FDW</h4>'
                     ),
-                    css_class='mb-3 mb-lg-4 mb-xl-5'
+                    css_class='mb-3 mb-lg-4'
                 ),
                 css_class='row',
                 css_id='maidAboutMeGroup'
