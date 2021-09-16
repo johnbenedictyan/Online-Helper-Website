@@ -84,14 +84,14 @@ class DashboardEmployerFilter(DjangoFiltersFilterSet):
         widget=TextInput(attrs={'placeholder': 'Name or Mobile'})
     )
 
-    agency_employee = DjangoFilterModelChoiceFilter(
-        field_name='agency_employee',
-        lookup_expr='exact',
-        label=_('Filter By EA Personnel'),
-        queryset=get_agency_employee_list,
-        method='agency_employee_filter',
-        empty_label=_('Any')
-    )
+    # agency_employee = DjangoFilterModelChoiceFilter(
+    #     field_name='agency_employee',
+    #     lookup_expr='exact',
+    #     label=_('Filter By EA Personnel'),
+    #     queryset=get_agency_employee_list,
+    #     method='agency_employee_filter',
+    #     empty_label=_('Any')
+    # )
 
     employer_birthday_month = DjangoFiltersChoiceFilter(
         field_name='employer_date_of_birth',

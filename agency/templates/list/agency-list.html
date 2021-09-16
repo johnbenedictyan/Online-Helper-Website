@@ -5,7 +5,7 @@
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='agencies-section' %}
 <div class="row justify-content-center">
     <div class="col-lg-20 col-xl-6 mb-3">
-        <form action="" method="get">
+        <form action="" method="get" id="agency-filter-form">
             <div class="row">
                 <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="0">
                     {{filter.form.name|as_crispy_field}}
@@ -38,9 +38,9 @@
 {% block js %}
 <script>
     $(function(){
-        $('.form-control').on('change', function(){
-            this.form.submit();
-        })
+        $('#agency-filter-form').on('change', function(){
+            $(this).submit();
+        });
     });
 </script>
 {% endblock js%}
