@@ -146,19 +146,19 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     'logo',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'name',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pl-md-3'
                 ),
                 Column(
                     'license_number',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'website_uri',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pl-md-3'
                 ),
                 css_class='row form-group mb-xl-3'
             ),
@@ -175,7 +175,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     'main_branch_name',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'main_branch_address_1',
@@ -183,7 +183,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'main_branch_address_2',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'main_branch_postal_code',
@@ -191,7 +191,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'main_branch_email',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'main_branch_office_number',
@@ -199,7 +199,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'main_branch_mobile_number',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 css_class='row form-group mb-xl-3'
             ),
@@ -216,7 +216,7 @@ class AgencyForm(forms.ModelForm):
             Div(
                 Column(
                     'opening_hours_type',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'opening_hours_monday',
@@ -224,7 +224,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'opening_hours_tuesday',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'opening_hours_wednesday',
@@ -232,7 +232,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'opening_hours_thursday',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'opening_hours_friday',
@@ -240,7 +240,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'opening_hours_saturday',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'opening_hours_sunday',
@@ -248,7 +248,7 @@ class AgencyForm(forms.ModelForm):
                 ),
                 Column(
                     'opening_hours_public_holiday',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 css_class='row form-group mb-xl-3'
             ),
@@ -448,7 +448,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'password',
@@ -459,7 +459,7 @@ class AgencyOwnerCreationForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'mobile_number',
@@ -589,40 +589,40 @@ class AgencyEmployeeForm(forms.ModelForm):
             Row(
                 Column(
                     'name',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-md-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'ea_personnel_number',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-md-3'
                 ),
                 Column(
                     'password',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-md-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'email',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-md-3'
                 ),
                 Column(
                     'contact_number',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-md-3'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
                     'branch',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
                     'role',
-                    css_class='form-group col-md-12'
+                    css_class='form-group col-md-12 pl-md-3'
                 ),
                 css_class='form-row'
             ),
