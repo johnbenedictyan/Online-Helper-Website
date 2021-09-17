@@ -153,11 +153,11 @@ class MaidForm(forms.ModelForm):
                 ),
                 Column(
                     'address_1',
-                    css_class='form-group col-xl-12'
+                    css_class='form-group col-xl-12 pr-xl-3'
                 ),
                 Column(
                     'address_2',
-                    css_class='form-group col-xl-12'
+                    css_class='form-group col-xl-12 pl-xl-3'
                 ),
                 Column(
                     'education_level',
