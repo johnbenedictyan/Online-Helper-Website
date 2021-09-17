@@ -2,8 +2,8 @@ from django import forms
 
 
 class OMCustomTextarea(forms.Textarea):
-    rows = 8
-    cols = 16
+    rows = 4
+    cols = 100
 
     def __init__(self, attrs=None):
         custom_attrs = {
