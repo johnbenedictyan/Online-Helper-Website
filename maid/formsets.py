@@ -44,15 +44,18 @@ class MaidLoanTransactionFormSetHelper(FormHelper):
                                 type='text',
                                 onfocus="(this.type='date')"
                             ),
-                            css_class='col-md-8'
+                            css_class='col-md-12 pr-md-3'
                         ),
                         Column(
                             'description',
-                            css_class='col-md-8'
+                            css_class='col-md-12 pl-md-3'
                         ),
+                        css_class='form-row'
+                    ),
+                    Row(
                         Column(
                             'amount',
-                            css_class='col-md-8'
+                            css_class='col-md-12 pr-md-3'
                         ),
                         css_class='form-row'
                     ),
