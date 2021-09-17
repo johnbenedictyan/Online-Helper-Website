@@ -312,7 +312,8 @@
                     break;
             }
         })
-        $('#id_name','#id_status').on('change', function(){
+        $('#id_name, #id_status').on('change', function(){
+            console.log($(this).form);
             this.form.submit();
         });
     })
