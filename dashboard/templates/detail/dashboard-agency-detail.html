@@ -17,7 +17,10 @@
     </div>
     <hr class="my-5">
     <div class="row">
-        {% include 'components/agency-outlet-details-snippet.html' %}
+        {% include 'components/snippets/agency-outlet-details.html' %}
+        {% include 'components/snippets/agency-opening-hours.html' %}
+        {% include 'components/snippets/agency-profile.html' %}
+        {% include 'components/snippets/agency-services.html' %}
         <!-- <div class="col-md-12 mb-5" id="agencyOutletDetailsGroup">
             <div class="row">
                 <div class="col mb-lg-3 mb-xl-4">
@@ -111,7 +114,7 @@
             </div>
             {% endfor %}
         </div> -->
-        <div class="col-md-12 mb-5" id="agencyOpeningHoursGroup">
+        <!-- <div class="col-md-12 mb-5" id="agencyOpeningHoursGroup">
             <div class="row">
                 <div class="col">
                     <h5 class="fs-14">Opening Hours</h5>
@@ -189,15 +192,15 @@
                 </div>
             </div>
             {% endif %}
-        </div>
-        <div class="col-md-12" id="agencyProfileGroup">
+        </div> -->
+        <!-- <div class="col-md-12" id="agencyProfileGroup">
             <h5 class="fs-14">Profile</h5>
             <p>{{agency.profile}}</p>
         </div>
         <div class="col-md-12" id="agencyServicesGroup">
             <h5 class="fs-14">Our Services</h5>
             <p>{{agency.services}}</p>
-        </div>
+        </div> -->
     </div>
 </div>
 {% endblock dashboard_section %}
