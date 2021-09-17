@@ -169,7 +169,7 @@ class Employer(models.Model):
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_post_code = models.CharField(
@@ -178,86 +178,84 @@ class Employer(models.Model):
     )
 
     employer_date_of_birth = models.DateField(
-        verbose_name=_('Employer date of birth'),
+        verbose_name=_('Employer date of birth')
     )
 
     employer_nationality = models.CharField(
         verbose_name=_("Employer nationality/citizenship"),
         max_length=3,
         choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True,
+        default=FullNationsChoices.SINGAPORE
     )
 
     employer_residential_status = models.CharField(
         verbose_name=_("Employer residential status"),
         max_length=5,
         choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        default=ResidentialStatusFullChoices.SC
     )
 
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_fin_num = models.BinaryField(
         verbose_name=_('Employer FIN'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_num = models.BinaryField(
         verbose_name=_('Employer passport'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_marital_status = models.CharField(
@@ -266,7 +264,7 @@ class Employer(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_marriage_sg_registered = models.BooleanField(
@@ -280,7 +278,7 @@ class Employer(models.Model):
             Was Employer's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_employer_nric_full(self):
@@ -342,13 +340,13 @@ class Employer(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_date_of_birth = models.DateField(
         verbose_name=_("Spouse's date of birth"),
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_nationality = models.CharField(
@@ -357,7 +355,7 @@ class Employer(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_residential_status = models.CharField(
@@ -366,70 +364,70 @@ class Employer(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_nric_num = models.BinaryField(
         verbose_name=_("Spouse's NRIC"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_fin_num = models.BinaryField(
         verbose_name=_("Spouse's FIN"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_passport_num = models.BinaryField(
         verbose_name=_("Spouse's Passport No"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_employer_spouse_nric_full(self):
@@ -647,7 +645,7 @@ class EmployerSponsor(models.Model):
         verbose_name=_('Sponsor 1 Address Line 2'),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
@@ -672,13 +670,13 @@ class EmployerSponsor(models.Model):
             Was Sponsor 1's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_name = models.CharField(
         verbose_name=_('Sponsor 1 spouse name'),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
@@ -686,12 +684,12 @@ class EmployerSponsor(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 spouse date of birth'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nationality = models.CharField(
         verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
@@ -699,7 +697,7 @@ class EmployerSponsor(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
@@ -707,60 +705,60 @@ class EmployerSponsor(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_fin_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse FIN'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse passport'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 1 spouse passport expiry date'),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Sponsor required?
@@ -780,13 +778,13 @@ class EmployerSponsor(models.Model):
         choices=RelationshipChoices.choices,
         default=RelationshipChoices.DAUGHTER,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_name = models.CharField(
         verbose_name=_('Sponsor 2 Name'),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
@@ -794,28 +792,28 @@ class EmployerSponsor(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 2 date of birth'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 2 NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nationality = models.CharField(
         verbose_name=_("Sponsor 2 nationality/citizenship"),
@@ -823,7 +821,7 @@ class EmployerSponsor(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
@@ -831,7 +829,7 @@ class EmployerSponsor(models.Model):
         choices=ResidentialStatusPartialChoices.choices,
         default=ResidentialStatusPartialChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_mobile_number = models.CharField(
         verbose_name=_('Sponsor 2 mobile number'),
@@ -843,30 +841,30 @@ class EmployerSponsor(models.Model):
             )
         ],
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_email = models.EmailField(
         verbose_name=_('Sponsor 2 email address'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_address_1 = models.CharField(
         verbose_name=_('Sponsor 2 Address Line 1'),
         max_length=100,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_address_2 = models.CharField(
         verbose_name=_('Sponsor 2 Address Line 2'),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_post_code = models.CharField(
         verbose_name=_('Sponsor 2 Postal Code'),
         max_length=25,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
@@ -874,7 +872,7 @@ class EmployerSponsor(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
@@ -887,7 +885,7 @@ class EmployerSponsor(models.Model):
             Was Sponsor 2's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Sponsor 2 spouse details
@@ -895,7 +893,7 @@ class EmployerSponsor(models.Model):
         verbose_name=_('Sponsor 2 spouse name'),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
@@ -903,12 +901,12 @@ class EmployerSponsor(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 2 spouse date of birth'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nationality = models.CharField(
         verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
@@ -916,7 +914,7 @@ class EmployerSponsor(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
@@ -924,60 +922,60 @@ class EmployerSponsor(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_fin_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse FIN'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse passport'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_sponsor_1_nric_full(self):
@@ -1209,7 +1207,7 @@ class EmployerJointApplicant(models.Model):
         verbose_name=_("Joint applicant's Address Line 2"),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
@@ -1232,7 +1230,7 @@ class EmployerJointApplicant(models.Model):
             Was Joint applicant's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Joint applicant's spouse details
@@ -1240,7 +1238,7 @@ class EmployerJointApplicant(models.Model):
         verbose_name=_("Joint applicant's spouse name"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_gender = models.CharField(
         verbose_name=_("Joint applicant's spouse gender"),
@@ -1248,12 +1246,12 @@ class EmployerJointApplicant(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's spouse date of birth"),
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nationality = models.CharField(
         verbose_name=_("Joint applicant's spouse nationality/citizenship"),
@@ -1261,7 +1259,7 @@ class EmployerJointApplicant(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_residential_status = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
@@ -1269,60 +1267,60 @@ class EmployerJointApplicant(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nric_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse NRIC"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_fin_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse FIN"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse passport"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_date = models.DateField(
         verbose_name=_("Joint applicant's spouse passport expiry date"),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_joint_applicant_nric_full(self):
@@ -2047,23 +2045,23 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_("Name of FDW Replaced"),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     fdw_replaced_passport_num = models.BinaryField(
         verbose_name=_('Passport No. of FDW Replaced'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     fdw_replaced_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     fdw_replaced_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
@@ -2108,7 +2106,7 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_("2g. Other services provided (ii)"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     b2g2_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (ii)"),
@@ -2119,7 +2117,7 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_("2g. Other services provided (iii)"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     b2g3_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (iii)"),
@@ -2131,7 +2129,7 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_("2h. Cost for replacement within __ month(s)"),
         choices=MonthChoices.choices,
         blank=True,
-        null=True,
+        null=True
     )
     b2h_replacement_cost = CustomMoneyDecimalField(
         verbose_name=_("2h. Cost for replacement"),
@@ -2369,13 +2367,13 @@ class DocServAgmtEmpCtr(models.Model):
         verbose_name=_("9.1 Independent mediator #1"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     c9_2_independent_mediator_2 = models.CharField(
         verbose_name=_("9.2 Independent mediator #2"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
@@ -2458,7 +2456,7 @@ class DocSafetyAgreement(models.Model):
             _('No supervision'),
         ),
         blank=True,
-        null=True,
+        null=True
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_(
@@ -2928,7 +2926,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Address Line 2'),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_post_code = models.CharField(
@@ -2946,7 +2944,7 @@ class ArchivedDoc(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_residential_status = models.CharField(
@@ -2977,44 +2975,44 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Employer FIN'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_num = models.BinaryField(
         verbose_name=_('Employer passport'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_marital_status = models.CharField(
@@ -3023,7 +3021,7 @@ class ArchivedDoc(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
         blank=True,
-        null=True,
+        null=True
     )
 
     employer_marriage_sg_registered = models.BooleanField(
@@ -3037,7 +3035,7 @@ class ArchivedDoc(models.Model):
             Was Employer's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_employer_nric_full(self):
@@ -3112,12 +3110,12 @@ class ArchivedDoc(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_date_of_birth = models.DateField(
         verbose_name=_("Spouse's date of birth"),
         blank=True,
-        null=True,
+        null=True
     )
     spouse_nationality = models.CharField(
         verbose_name=_("Spouse's nationality/citizenship"),
@@ -3125,7 +3123,7 @@ class ArchivedDoc(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_residential_status = models.CharField(
         verbose_name=_("Spouse's residential status"),
@@ -3133,60 +3131,60 @@ class ArchivedDoc(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_nric_num = models.BinaryField(
         verbose_name=_("Spouse's NRIC"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_fin_num = models.BinaryField(
         verbose_name=_("Spouse's FIN"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_passport_num = models.BinaryField(
         verbose_name=_("Spouse's Passport No"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Sponsors
@@ -3200,7 +3198,7 @@ class ArchivedDoc(models.Model):
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
         max_length=40,
-        null=True,
+        null=True
     )
     sponsor_1_gender = models.CharField(
         verbose_name=_("Sponsor 1 gender"),
@@ -3210,20 +3208,20 @@ class ArchivedDoc(models.Model):
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
-        null=True,
+        null=True
     )
     sponsor_1_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 NRIC'),
         editable=True,
-        null=True,
+        null=True
     )
     sponsor_1_nric_nonce = models.BinaryField(
         editable=True,
-        null=True,
+        null=True
     )
     sponsor_1_nric_tag = models.BinaryField(
         editable=True,
-        null=True,
+        null=True
     )
     sponsor_1_nationality = models.CharField(
         verbose_name=_("Sponsor 1 nationality/citizenship"),
@@ -3250,23 +3248,23 @@ class ArchivedDoc(models.Model):
     )
     sponsor_1_email = models.EmailField(
         verbose_name=_('Sponsor 1 email address'),
-        null=True,
+        null=True
     )
     sponsor_1_address_1 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 1'),
         max_length=100,
-        null=True,
+        null=True
     )
     sponsor_1_address_2 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 2'),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
         max_length=25,
-        null=True,
+        null=True
     )
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
@@ -3287,13 +3285,13 @@ class ArchivedDoc(models.Model):
             Was Sponsor 1's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_name = models.CharField(
         verbose_name=_('Sponsor 1 spouse name'),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 1 spouse gender"),
@@ -3301,12 +3299,12 @@ class ArchivedDoc(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 spouse date of birth'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nationality = models.CharField(
         verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
@@ -3314,7 +3312,7 @@ class ArchivedDoc(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 spouse residential status"),
@@ -3322,60 +3320,60 @@ class ArchivedDoc(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_fin_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse FIN'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_num = models.BinaryField(
         verbose_name=_('Sponsor 1 spouse passport'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_1_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 1 spouse passport expiry date'),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Sponsor required?
@@ -3395,13 +3393,13 @@ class ArchivedDoc(models.Model):
         choices=RelationshipChoices.choices,
         default=RelationshipChoices.DAUGHTER,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_name = models.CharField(
         verbose_name=_('Sponsor 2 Name'),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_gender = models.CharField(
         verbose_name=_("Sponsor 2 gender"),
@@ -3409,28 +3407,28 @@ class ArchivedDoc(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 2 date of birth'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 2 NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_nationality = models.CharField(
         verbose_name=_("Sponsor 2 nationality/citizenship"),
@@ -3438,7 +3436,7 @@ class ArchivedDoc(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 residential status"),
@@ -3446,7 +3444,7 @@ class ArchivedDoc(models.Model):
         choices=ResidentialStatusPartialChoices.choices,
         default=ResidentialStatusPartialChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_mobile_number = models.CharField(
         verbose_name=_('Sponsor 2 mobile number'),
@@ -3458,30 +3456,30 @@ class ArchivedDoc(models.Model):
             )
         ],
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_email = models.EmailField(
         verbose_name=_('Sponsor 2 email address'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_address_1 = models.CharField(
         verbose_name=_('Sponsor 2 Address Line 1'),
         max_length=100,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_address_2 = models.CharField(
         verbose_name=_('Sponsor 2 Address Line 2'),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_post_code = models.CharField(
         verbose_name=_('Sponsor 2 Postal Code'),
         max_length=25,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_marital_status = models.CharField(
         verbose_name=_("Sponsor 2 marital status"),
@@ -3489,7 +3487,7 @@ class ArchivedDoc(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_marriage_sg_registered = models.BooleanField(
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
@@ -3502,7 +3500,7 @@ class ArchivedDoc(models.Model):
             Was Sponsor 2's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Sponsor 2 spouse details
@@ -3510,7 +3508,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_('Sponsor 2 spouse name'),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_gender = models.CharField(
         verbose_name=_("Sponsor 2 spouse gender"),
@@ -3518,12 +3516,12 @@ class ArchivedDoc(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 2 spouse date of birth'),
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nationality = models.CharField(
         verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
@@ -3531,7 +3529,7 @@ class ArchivedDoc(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_residential_status = models.CharField(
         verbose_name=_("Sponsor 2 spouse residential status"),
@@ -3539,60 +3537,60 @@ class ArchivedDoc(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse NRIC'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_fin_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse FIN'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_num = models.BinaryField(
         verbose_name=_('Sponsor 2 spouse passport'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     sponsor_2_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_sponsor_1_nric_full(self):
@@ -3669,7 +3667,7 @@ class ArchivedDoc(models.Model):
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
         max_length=40,
-        null=True,
+        null=True
     )
     joint_applicant_gender = models.CharField(
         verbose_name=_("Joint applicant's gender"),
@@ -3679,7 +3677,7 @@ class ArchivedDoc(models.Model):
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
-        null=True,
+        null=True
     )
     joint_applicant_nric_num = models.BinaryField(
         verbose_name=_('Joint applicant NRIC'),
@@ -3706,18 +3704,18 @@ class ArchivedDoc(models.Model):
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
         max_length=100,
-        null=True,
+        null=True
     )
     joint_applicant_address_2 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 2"),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
         max_length=25,
-        null=True,
+        null=True
     )
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
@@ -3736,7 +3734,7 @@ class ArchivedDoc(models.Model):
             Was Joint applicant's marriage registered in Singapore?
         '''),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Joint applicant's spouse details
@@ -3744,7 +3742,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Joint applicant's spouse name"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_gender = models.CharField(
         verbose_name=_("Joint applicant's spouse gender"),
@@ -3752,12 +3750,12 @@ class ArchivedDoc(models.Model):
         choices=GenderChoices.choices,
         default=GenderChoices.F,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's spouse date of birth"),
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nationality = models.CharField(
         verbose_name=_("Joint applicant's spouse nationality/citizenship"),
@@ -3765,7 +3763,7 @@ class ArchivedDoc(models.Model):
         choices=FullNationsChoices.choices,
         default=FullNationsChoices.SINGAPORE,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_residential_status = models.CharField(
         verbose_name=_("Joint applicant's spouse residential status"),
@@ -3773,60 +3771,60 @@ class ArchivedDoc(models.Model):
         choices=ResidentialStatusFullChoices.choices,
         default=ResidentialStatusFullChoices.SC,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nric_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse NRIC"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nric_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_nric_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_fin_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse FIN"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_fin_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_fin_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse passport"),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     joint_applicant_spouse_passport_date = models.DateField(
         verbose_name=_("Joint applicant's spouse passport expiry date"),
         blank=True,
-        null=True,
+        null=True
     )
 
     def get_joint_applicant_nric_full(self):
@@ -3926,23 +3924,23 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Name of FDW Replaced"),
         max_length=50,
         blank=True,
-        null=True,
+        null=True
     )
     fdw_replaced_passport_num = models.BinaryField(
         verbose_name=_('Passport No. of FDW Replaced'),
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     fdw_replaced_passport_nonce = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     fdw_replaced_passport_tag = models.BinaryField(
         editable=True,
         blank=True,
-        null=True,
+        null=True
     )
     b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
@@ -3987,7 +3985,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("2g. Other services provided (ii)"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     b2g2_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (ii)"),
@@ -3998,7 +3996,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("2g. Other services provided (iii)"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     b2g3_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (iii)"),
@@ -4010,7 +4008,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("2h. Cost for replacement within __ month(s)"),
         choices=MonthChoices.choices,
         blank=True,
-        null=True,
+        null=True
     )
     b2h_replacement_cost = CustomMoneyDecimalField(
         verbose_name=_("2h. Cost for replacement"),
@@ -4213,13 +4211,13 @@ class ArchivedDoc(models.Model):
         verbose_name=_("9.1 Independent mediator #1"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     c9_2_independent_mediator_2 = models.CharField(
         verbose_name=_("9.2 Independent mediator #2"),
         max_length=40,
         blank=True,
-        null=True,
+        null=True
     )
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
@@ -4300,7 +4298,7 @@ class ArchivedDoc(models.Model):
             _('No supervision'),
         ),
         blank=True,
-        null=True,
+        null=True
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_(
@@ -4401,7 +4399,7 @@ class ArchivedDoc(models.Model):
         upload_to=generate_archive_path,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
         blank=True,
-        null=True,
+        null=True
     )
 
     # Uploaded PDF files

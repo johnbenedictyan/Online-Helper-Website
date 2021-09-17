@@ -219,7 +219,7 @@ class EmployerForm(forms.ModelForm):
                 ),
                 Column(
                     'employer_marital_status',
-                    css_class='form-group col-lg-12 pl-md-3'
+                    css_class='form-group col-lg-12 pr-md-3'
                 )
             ),
 
