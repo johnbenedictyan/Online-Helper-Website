@@ -52,7 +52,8 @@
                                 </div>
                                 <div class="col">
                                     {% for employee in agency.get_main_branch.get_employees %}
-                                    <p class="mb-1">{{employee.name}} ({{employee.ea_personnel_number}})</p>
+                                    <p class="mb-1">{{employee.name}}</p>
+                                    <p class="mb-1">Reg No: {{employee.ea_personnel_number}}</p>
                                     <p>Mobile: {{employee.contact_number}}</p>
                                     {% endfor %}
                                 </div>
