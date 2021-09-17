@@ -6,7 +6,6 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field
 
 # App Imports
-from .constants import MaidLoanDescriptionChoices
 from .forms import MaidLoanTransactionForm, MaidEmploymentHistoryForm
 from .models import Maid, MaidLoanTransaction, MaidEmploymentHistory
 

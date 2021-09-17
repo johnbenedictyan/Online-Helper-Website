@@ -34,13 +34,13 @@
             <div class="col-2">
                 <h6 class="dashboard-table-header">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
             </div>
-            <div class="col">
+            <div class="col-5">
                 <h6 class="dashboard-table-header">Employer <i class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="employerNameSortToggle"></i></h6>
             </div>
-            <div class="col">
+            <div class="col-3">
                 <h6 class="dashboard-table-header">Mobile</h6>
             </div>
-            <div class="col">
+            <div class="col-3">
                 <h6 class="dashboard-table-header">Home No</h6>
             </div>
             <div class="col">
@@ -58,13 +58,13 @@
             <div class="col-2">
                 <p class="mb-0">{{forloop.counter}}</p>
             </div>
-            <div class="col">
+            <div class="col-5">
                 <p class="mb-0">{{object.employer_name}}</p>
             </div>
-            <div class="col">
+            <div class="col-3">
                 <p class="mb-0">{{object.employer_mobile_number}}</p>
             </div>
-            <div class="col">
+            <div class="col-3">
                 <p class="mb-0">{{object.employer_home_number}}</p>
             </div>
             <div class="col">
