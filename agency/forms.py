@@ -665,7 +665,7 @@ class AgencyEmployeeForm(forms.ModelForm):
         ea_personnel_number = cleaned_data.get('ea_personnel_number')
         if role == AgencyEmployeeRoleChoices.SALES_STAFF:
             if not ea_personnel_number:
-                msg = _('EA Personnle Number is required')
+                msg = _('EA Personnel Number is required')
                 self.add_error('ea_personnel_number', msg)
 
         return cleaned_data

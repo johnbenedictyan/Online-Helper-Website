@@ -17,7 +17,7 @@ class AgencyEmployeeRoleChoices(models.TextChoices):
     ADMINISTRATOR = 'AD', _('Administrator')
     MANAGER = 'MA', _('Manager')
     SALES_STAFF = 'SS', _('Sales Staff')
-    ADMIN_STAFF = 'AM', _('Admin Staff (No EA Personnel Number)')
+    ADMIN_STAFF = 'AM', _('Admin Staff')
 
 
 class OpeningHoursTypeChoices(models.TextChoices):
