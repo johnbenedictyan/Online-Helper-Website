@@ -1,0 +1,93 @@
+<div class="col-md-12 mb-5" id="agencyOutletDetailsGroup" data-aos={{data-aos}} data-aos-duration={{data-aos-duration}}>
+    <div class="row">
+        <div class="col mb-lg-3 mb-xl-4">
+            <div class="row">
+                <div class="col">
+                    <h5 class="fs-14">Main Branch</h5>
+                    <p class="mb-1">{{agency.get_main_branch.address_1}}</p>
+                    <p class="mb-1">{{agency.get_main_branch.address_2}}</p>
+                    <p>Singapore {{agency.get_main_branch.postal_code}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-7">
+                            <p class="mb-1">Office No:</p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-1">{{agency.get_main_branch.office_number}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <p class="mb-1">Mobile No:</p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-1">{{agency.get_main_branch.mobile_number}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <p class="mb-1">EA Personnel:</p>
+                        </div>
+                        <div class="col">
+                            {% for employee in agency.get_main_branch.get_employees %}
+                            <p class="mb-1">{{employee.name}}</p>
+                            <p class="mb-1">Reg No: {{employee.ea_personnel_number}}</p>
+                            <p>Mobile: {{employee.contact_number}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for branch in agency.get_branches %}
+    <div class="row">
+        <div class="col mb-lg-3 mb-xl-4">
+            <div class="row">
+                <div class="col">
+                    <h5 class="fs-14">{{branch.name|title}}</h5>
+                    <p>
+                        {{branch.address_1}} <br>
+                        {{branch.address_2}} <br>
+                        Singapore {{branch.postal_code}}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-4">
+                            Office No:
+                        </div>
+                        <div class="col">
+                            {{branch.office_number}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            Mobile No:
+                        </div>
+                        <div class="col">
+                            {{branch.mobile_number}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            EA Personnel:
+                        </div>
+                        <div class="col">
+                            {% for employee in branch.get_employees %}
+                            <p class="mb-0">{{employee.name}} ({{employee.ea_personnel_number}})</p>
+                            <p>Mobile: {{employee.contact_number}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
