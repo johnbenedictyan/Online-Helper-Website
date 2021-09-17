@@ -12,7 +12,7 @@
         <div class="col-10 offset-3 pt-4" id="agencyInformationGroup">
             <h5 class="fs-20">{{agency.name}}</h5>
             <p>License Number: {{agency.license_number}}</p>
-            <a href="{{agency.website_uri}}">{{agency.website_uri}}</a>
+            {% if agency.website_uri %}<p>Website Url: <a href="{{agency.website_uri}}">{{agency.website_uri}}</a></p>{% endif %}
         </div>
     </div>
     <hr class="my-5">
