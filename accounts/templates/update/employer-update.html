@@ -1,10 +1,10 @@
 {% extends 'employer-base.html' %}
 {% load crispy_forms_tags %}
 {% block accounts_section %}
-    {% include 'components/crispy-form-error.html' %}
-    <div class="container">
-        <form method="post" enctype="multipart/form-data">
-            {% crispy form %}
-        </form>
-    </div>
+{% include 'components/crispy-form-error.html' %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% crispy form %}
+    </form>
+</div>
 {% endblock accounts_section %}

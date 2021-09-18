@@ -12,18 +12,19 @@
             <div class="col col-xl-11">
                 <div class="row">
                     {% for maid in shortlist %}
-                        <div class="col col-md-8 col-lg-6 mb-4">
-                            <div class="card">
-                                <div class="maid-thumbnail" style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
-                                <div class="card-body">
-                                    <h6 class="card-title mb-0">{{maid.name}}</h6>
-                                    <p class="card-text mb-1">{{maid.get_country_of_origin_display}}</p>
-                                    <p class="card-text mb-1">{{maid.age}} years old</p>
-                                    <p class="card-text mb-1">{{maid.get_marital_status_display}}</p>
-                                    <p class="card-text mb-1">{{maid.get_maid_type_display}}</p>
-                                </div>
+                    <div class="col col-md-8 col-lg-6 mb-4">
+                        <div class="card">
+                            <div class="maid-thumbnail"
+                                style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
+                            <div class="card-body">
+                                <h6 class="card-title mb-0">{{maid.name}}</h6>
+                                <p class="card-text mb-1">{{maid.get_country_of_origin_display}}</p>
+                                <p class="card-text mb-1">{{maid.age}} years old</p>
+                                <p class="card-text mb-1">{{maid.get_marital_status_display}}</p>
+                                <p class="card-text mb-1">{{maid.get_maid_type_display}}</p>
                             </div>
                         </div>
+                    </div>
                     {% empty %}
                     <div class="col text-center my-auto">
                         <h6>No Maids Shortlisted Yet</h6>

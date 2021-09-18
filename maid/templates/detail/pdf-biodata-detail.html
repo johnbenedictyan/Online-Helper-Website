@@ -213,45 +213,69 @@
 <body>
     <div>
         <div style="background-color:#c6d9ec;" class="text-center">
-            <h1 class="bold text-center" style="padding:5px 0; margin:0;">{{ object.agency.name }} ({{ object.agency.license_number }})</h1>
-            <p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ object.agency.get_main_branch.address_1 }}, {{ object.agency.get_main_branch.address_2 }}, {{ object.agency.get_main_branch.postal_code }} &nbsp; Tel: {{ object.agency.get_main_branch_number }}</p>
-            {% if agency_employee %}<p class="bold text-center" style="padding:0 0 5px 0; margin:0;">{{ agency_employee.name }}&nbsp; Mobile: {{ agency_employee.contact_number }}</p>{% endif %}
+            <h1 class="bold text-center" style="padding:5px 0; margin:0;">{{ object.agency.name }}
+                ({{ object.agency.license_number }})</h1>
+            <p class="bold text-center" style="padding:0 0 5px 0; margin:0;">
+                {{ object.agency.get_main_branch.address_1 }}, {{ object.agency.get_main_branch.address_2 }},
+                {{ object.agency.get_main_branch.postal_code }} &nbsp; Tel: {{ object.agency.get_main_branch_number }}
+            </p>
+            {% if agency_employee %}<p class="bold text-center" style="padding:0 0 5px 0; margin:0;">
+                {{ agency_employee.name }}&nbsp; Mobile: {{ agency_employee.contact_number }}</p>{% endif %}
         </div>
         <h1 class="text-center"><strong>BIO-DATA OF FOREIGN DOMESTIC WORKER (Maid)</strong></h1>
-        <p class="text-center">*Please ensure that you run through the information within the Biodata as it is an important document to help you select a suitable Maid </p>
+        <p class="text-center">*Please ensure that you run through the information within the Biodata as it is an
+            important document to help you select a suitable Maid </p>
         <h2 class="">(A) PROFILE OF Maid</h2>
         <div style="display: flex;flex-direction: row;">
             <div style="width:400px; margin-right:20px">
 
                 <h3>A1: Personal Information</h3>
 
-                <p class="ul mt-15"><span class="nu">1. Name: </span><span class="bold"> &nbsp; {{ object.name }}</span></p>
-                <p class="ul mt-15"><span class="nu">2. Date of Birth: </span><span class="bold"> &nbsp; {{ object.date_of_birth|date:"d M Y" }} &nbsp; </span><span class="nu"> &nbsp; Age: </span><span class="bold">&nbsp; {{ object.get_age }} years old</span></p>
-                <p class="ul mt-15"><span class="nu">3. Place of Birth: </span><span class="bold"> &nbsp; {{ object.place_of_birth }}</span></p>
-                <p class="ul mt-15"><span class="nu">4. Height &#38; Weight: </span><span class="bold"> &nbsp; {{ object.height|floatformat }} cm &nbsp; {{ object.weight|floatformat }} kg</span></p>
-                <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp; {{ object.get_country_of_origin_display }}</span></p>
-                <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold"> &nbsp; {{ object.address_1 }}, {{ object.address_2 }}</span></p>
-                <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span class="bold"> &nbsp; {{ object.repatriation_airport }}</span></p>
-                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp; {{ object.contact_number }}</span></p>
-                <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp; {{ object.get_religion_display }}</span></p>
-                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp; {{ object.get_education_level_display }}</span></p>
-                <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp; {{ object.number_of_siblings }}</span></p>
-                <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp; {{ object.marital_status }}</span></p>
-                <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp; {{ object.number_of_children }}</span></p>
-                <p class="ul mt-15"><span class="nu">-Age(s) of children (if any): </span><span class="bold"> &nbsp;{{ object.age_of_children }}</span></p>
-                <p class="ul mt-15"><span class="nu">-Passport Status: </span><span class="bold"> &nbsp; {{ object.get_passport_status_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">1. Name: </span><span class="bold"> &nbsp; {{ object.name }}</span>
+                </p>
+                <p class="ul mt-15"><span class="nu">2. Date of Birth: </span><span class="bold"> &nbsp;
+                        {{ object.date_of_birth|date:"d M Y" }} &nbsp; </span><span class="nu"> &nbsp; Age: </span><span
+                        class="bold">&nbsp; {{ object.get_age }} years old</span></p>
+                <p class="ul mt-15"><span class="nu">3. Place of Birth: </span><span class="bold"> &nbsp;
+                        {{ object.place_of_birth }}</span></p>
+                <p class="ul mt-15"><span class="nu">4. Height &#38; Weight: </span><span class="bold"> &nbsp;
+                        {{ object.height|floatformat }} cm &nbsp; {{ object.weight|floatformat }} kg</span></p>
+                <p class="ul mt-15"><span class="nu">5. Nationality: </span><span class="bold"> &nbsp;
+                        {{ object.get_country_of_origin_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">6. Residential Address in Home Country: </span><span class="bold">
+                        &nbsp; {{ object.address_1 }}, {{ object.address_2 }}</span></p>
+                <p class="ul mt-15"><span class="nu">7. Name of Port / Airport to be Repatriated to: </span><span
+                        class="bold"> &nbsp; {{ object.repatriation_airport }}</span></p>
+                <p class="ul mt-15"><span class="nu">8. Contact No. in Home Country: </span><span class="bold">&nbsp;
+                        {{ object.contact_number }}</span></p>
+                <p class="ul mt-15"><span class="nu">9. Religion: </span><span class="bold"> &nbsp;
+                        {{ object.get_religion_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">10. Education Level: </span><span class="bold"> &nbsp;
+                        {{ object.get_education_level_display }}</span></p>
+                <p class="ul mt-15"><span class="nu">11. No. of Siblings: </span><span class="bold"> &nbsp;
+                        {{ object.number_of_siblings }}</span></p>
+                <p class="ul mt-15"><span class="nu">12. Marital Status: </span><span class="bold"> &nbsp;
+                        {{ object.marital_status }}</span></p>
+                <p class="ul mt-15"><span class="nu">13. No. of Children: </span><span class="bold"> &nbsp;
+                        {{ object.number_of_children }}</span></p>
+                <p class="ul mt-15"><span class="nu">-Age(s) of children (if any): </span><span class="bold">
+                        &nbsp;{{ object.age_of_children }}</span></p>
+                <p class="ul mt-15"><span class="nu">-Passport Status: </span><span class="bold"> &nbsp;
+                        {{ object.get_passport_status_display }}</span></p>
             </div>
             <div>
                 <p class="bold">Code: {{ object.reference_number }} ({{ object.personal_loan_amount }} 6 months) </p>
-                <p class="bold">Basic Salary: S${{ object.expected_salary }} with {{ object.expected_days_off }} off day(s) per month</p>
+                <p class="bold">Basic Salary: S${{ object.expected_salary }} with {{ object.expected_days_off }} off
+                    day(s) per month</p>
                 <p class="bold">Type of Maid: {{ object.get_maid_type_display }}</p>
-                <p class="text-center"><img loading="lazy"  src="{{ object.photo }}"></p>
+                <p class="text-center"><img loading="lazy" src="{{ object.photo }}"></p>
             </div>
         </div>
         <div>
             <h3 class="mt">A2: Medical History/Dietary Restrictions</h3>
             <p class="ul mt-15"><span class="nu">14. Allergies (if any): </span> &nbsp; Nil</p>
-            <p class="mt-15">15. Past and existing illnesses (including chronic ailments and illnesses requiring medication):</p>
+            <p class="mt-15">15. Past and existing illnesses (including chronic ailments and illnesses requiring
+                medication):</p>
         </div>
 
         <div>
@@ -310,15 +334,18 @@
 
         <div>
             <p class="ul"><span class="nu">16. Physical disabilities: </span> &nbsp; Nil</p>
-            <p class="ul mt-15"><span class="nu">17. Dietary restrictions: </span> &nbsp; {{ object.dietary_restrictions.get_restriction_display }}</p>
-            <p class="ul mt-15"><span class="nu">18. Food handling preferences: </span> &nbsp; {{ object.food_handling_preferences.get_preference_display }}</p>
+            <p class="ul mt-15"><span class="nu">17. Dietary restrictions: </span> &nbsp;
+                {{ object.dietary_restrictions.get_restriction_display }}</p>
+            <p class="ul mt-15"><span class="nu">18. Food handling preferences: </span> &nbsp;
+                {{ object.food_handling_preferences.get_preference_display }}</p>
         </div>
 
         <div class="mt-3" style="page-break-before: always;">
             <h3 class="mt">(B) SKILLS OF Maid</h3>
             <h4>B1: Method of Evaluation of Skills</h4>
             <p class="mb">Please indicate the method(s) used to evaluate the Maid’s skills (can tick more than one):</p>
-            <p>&#9744; Based on Maid’s declaration, no evaluation/observation by Singapore EA or overseas training centre/EA</p>
+            <p>&#9744; Based on Maid’s declaration, no evaluation/observation by Singapore EA or overseas training
+                centre/EA</p>
             <p>&#9744; Interviewed by Singapore EA</p>
             <p>&#9744; Interviewed via telephone/teleconference</p>
             <p>&#9744; Interviewed via videoconference</p>
@@ -433,7 +460,7 @@
                             {% if object.other_care.care_for_pets == True %}
                             Care for pets
                             {% endif %}
-                            <br/>
+                            <br />
                             {% if object.other_care.gardening == True %}
                             Gardening
                             {% endif %}
@@ -583,7 +610,7 @@
                         {% if object.other_care.care_for_pets == True %}
                         Care for pets
                         {% endif %}
-                        <br/>
+                        <br />
                         {% if object.other_care.gardening == True %}
                         Gardening
                         {% endif %}
@@ -660,7 +687,8 @@
             <tr>
                 <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">Maid Name and Signature</td>
                 <td class="w-15"></td>
-                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">EA Personnel Name and Registration Number</td>
+                <td class="w-30" style="border-top: 0.8px solid black;padding-top:5px;">EA Personnel Name and
+                    Registration Number</td>
             </tr>
             <tr>
                 <td class="w-30">Date:</td>

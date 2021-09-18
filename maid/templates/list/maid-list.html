@@ -13,16 +13,20 @@
                         <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000">
                             {{filter.form.name|as_crispy_field}}
                         </div>
-                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="300">
+                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000"
+                            data-aos-delay="300">
                             {{filter.form.maid_type|as_crispy_field}}
                         </div>
-                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="600">
+                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000"
+                            data-aos-delay="600">
                             {{filter.form.country_of_origin|as_crispy_field}}
                         </div>
-                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="900" data-aos-offset="-10000">
+                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000"
+                            data-aos-delay="900" data-aos-offset="-10000">
                             {{filter.form.age|as_crispy_field}}
                         </div>
-                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="1200" data-aos-offset="-10000">
+                        <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000"
+                            data-aos-delay="1200" data-aos-offset="-10000">
                             {{filter.form.languages|as_crispy_field}}
                         </div>
                         <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000">
@@ -50,9 +54,9 @@
     <div class="col-24 col-xl-18 mt-md-3 pl-md-3 pl-lg-4 pl-xl-5">
         <div class="row row-cols-1 row-cols-md-3">
             {% for maid in maids %}
-                <div class="col mb-4">
-                    {% include 'components/maid-card.html' with maid=maid %}
-                </div>
+            <div class="col mb-4">
+                {% include 'components/maid-card.html' with maid=maid %}
+            </div>
             {% empty %}
             <h6>No Maids. Try a different search criteria.</h6>
             {% endfor %}
@@ -69,7 +73,7 @@
         'trigger': 'hover',
         'html': true
     })
-    $('#maid-filter-form').on('change', function(){
+    $('#maid-filter-form').on('change', function () {
         $(this).submit();
     });
 </script>

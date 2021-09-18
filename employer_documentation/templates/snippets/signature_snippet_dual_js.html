@@ -8,11 +8,11 @@
         document.getElementById("{{signature_input_2_id}}").value = signaturePad2.toDataURL();
         return true;
     }
-    document.getElementById("{{signature_submit_button_id}}").addEventListener("click", function(event) {
+    document.getElementById("{{signature_submit_button_id}}").addEventListener("click", function (event) {
         appendImageToForm();
         this.form.submit();
     });
-    document.getElementById("{{signature_clear_button_id}}").addEventListener("click", function(event) {
+    document.getElementById("{{signature_clear_button_id}}").addEventListener("click", function (event) {
         signaturePad1.clear();
         signaturePad2.clear();
     });

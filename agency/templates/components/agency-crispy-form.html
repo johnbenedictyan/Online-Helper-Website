@@ -1,14 +1,14 @@
 {% extends 'agency-base.html' %}
 {% load crispy_forms_tags %}
 {% block agency_section %}
-    {% block title_banner_section %}
-    {% endblock title_banner_section %}
-    {% include 'components/crispy-form-error.html' %}
-    <div class="container">
-        <form method="post" enctype="multipart/form-data">
-            {% crispy form %}
-        </form>
-        {% block post_form_section %}
-        {% endblock post_form_section %}
-    </div>
+{% block title_banner_section %}
+{% endblock title_banner_section %}
+{% include 'components/crispy-form-error.html' %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% crispy form %}
+    </form>
+    {% block post_form_section %}
+    {% endblock post_form_section %}
+</div>
 {% endblock agency_section %}

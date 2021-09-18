@@ -52,7 +52,8 @@
             </div>
             <div class="col-1">
                 <div class="row justify-content-center">
-                    <a class="mx-1" href="{% url 'remove_from_cart' product_price.pk %}"><i class="far fa-trash-alt"></i></a>
+                    <a class="mx-1" href="{% url 'remove_from_cart' product_price.pk %}"><i
+                            class="far fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>
@@ -73,9 +74,11 @@
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <script>
     window.onload = () => {
-        let stripe = Stripe('pk_test_51I6Hj9KvEbGNaxrCUAuP3WLcbL1IhF7qDi3BP9vlfEAHClG55uWBnwsEFGaTjkk91AxKPIbSrbMJOJbJWAQ7aR4F00vitT5nV4');
+        let stripe = Stripe(
+            'pk_test_51I6Hj9KvEbGNaxrCUAuP3WLcbL1IhF7qDi3BP9vlfEAHClG55uWBnwsEFGaTjkk91AxKPIbSrbMJOJbJWAQ7aR4F00vitT5nV4'
+            );
         const csrftoken = Cookies.get('csrftoken');
-        var createCheckoutSession = function() {
+        var createCheckoutSession = function () {
             return fetch(`${location.origin}/payment/create-checkout-session/`, {
                 method: 'POST',
                 headers: {
@@ -83,22 +86,22 @@
                     'X-CSRFToken': csrftoken
                 },
                 mode: 'same-origin'
-            }).then(function(result) {
+            }).then(function (result) {
                 return result.json();
             });
         };
         document
-        .getElementById("checkout-btn btn-xs-lg")
-        .addEventListener("click", function(evt) {
-            createCheckoutSession().then(function(data) {
-            // Call Stripe.js method to redirect to the new Checkout page
-            stripe
-                .redirectToCheckout({
-                sessionId: data.sessionId
-                })
-                .then(handleResult);
+            .getElementById("checkout-btn btn-xs-lg")
+            .addEventListener("click", function (evt) {
+                createCheckoutSession().then(function (data) {
+                    // Call Stripe.js method to redirect to the new Checkout page
+                    stripe
+                        .redirectToCheckout({
+                            sessionId: data.sessionId
+                        })
+                        .then(handleResult);
+                });
             });
-        });
     }
 </script>
 {% endblock js %}

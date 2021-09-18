@@ -1,11 +1,11 @@
 {% extends 'maid-base.html' %}
 {% load crispy_forms_tags %}
 {% block maid_section %}
-{   % include 'components/crispy-form-error.html' %}
-    <div class="container">
-        <h1>Update Maid Agency Fee Transaction</h1>
-        <form method="post" enctype="multipart/form-data">
-            {% crispy form %}
-        </form>
-    </div>
+{% include 'components/crispy-form-error.html' %}
+<div class="container">
+    <h1>Update Maid Agency Fee Transaction</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% crispy form %}
+    </form>
+</div>
 {% endblock maid_section %}

@@ -4,26 +4,30 @@
             <div class="col-24">
                 <p class="text-dark">
                     {% if page_name == 'Agency Login' %}
-                        For employment agency without an account, kindly sign up via the link below
+                    For employment agency without an account, kindly sign up via the link below
                     {% elif page_name == 'Agency Sign Up' %}
-                        The above form is for employment agencies. For user please sign up via the link below.
+                    The above form is for employment agencies. For user please sign up via the link below.
                     {% elif page_name == 'User Login' %}
-                        For user without an account, kindly sign up via the link below
+                    For user without an account, kindly sign up via the link below
                     {% elif page_name == 'User Sign Up' %}
-                        For employment agency without an account, kindly sign up via the link below
-                    {% endif %} 
+                    For employment agency without an account, kindly sign up via the link below
+                    {% endif %}
                 </p>
             </div>
             <div class="col-24 my-2 mx-auto">
                 {% if page_name == 'Agency Login' %}
-                    <a href="{% url 'agency_sign_up' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create an agency account</a>
+                <a href="{% url 'agency_sign_up' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create an
+                    agency account</a>
                 {% elif page_name == 'Agency Sign Up' %}
-                    <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create a free account</a>
+                <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create a free
+                    account</a>
                 {% elif page_name == 'User Login' %}
-                    <a href="{% url 'potential_employer_create' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create a free account</a>
+                <a href="{% url 'potential_employer_create' %}"
+                    class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create a free account</a>
                 {% elif page_name == 'User Sign Up' %}
-                    <a href="{% url 'agency_sign_up' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create an agency account</a>
-                {% endif %} 
+                <a href="{% url 'agency_sign_up' %}" class="btn btn-xs-lg btn-outline-primary w-100 w-md-30">Create an
+                    agency account</a>
+                {% endif %}
 
             </div>
         </div>

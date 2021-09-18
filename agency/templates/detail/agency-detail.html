@@ -8,7 +8,7 @@
     <div class="col-10 d-none d-md-flex agency-thumbnail" style="background-image: url({{agency.logo.url}});">
     </div>
     <div class="col-24 d-md-none mb-2">
-        <img loading="lazy"  src="{{agency.logo.url}}" alt="" class="img-fluid">
+        <img loading="lazy" src="{{agency.logo.url}}" alt="" class="img-fluid">
     </div>
     <div class="col-24 col-md-10 offset-md-4 pt-2 pt-md-4" id="agencyInformationGroup">
         <h5 class="fs-16">{{agency.name}}</h5>
@@ -35,18 +35,22 @@
                 {% if request.user.is_authenticated %}
                 <div class="maid-carousel">
                     {% for maid in agency.maid.all %}
-                        {% include 'components/maid-card.html' with maid=maid %}
+                    {% include 'components/maid-card.html' with maid=maid %}
                     {% endfor %}
                 </div>
                 {% else %}
                 <div class="row">
                     <div class="col text-center">
-                        <img loading="lazy"  src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image" class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}";`>
+                        <img loading="lazy" src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image"
+                            class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}"
+                            ;`>
                         <div class="featured-maids-overlay">
                             <div class="jumbotron jumbotron-fluid bg-transparent">
                                 <div class="container text-center">
-                                <h3 class="display-4">Login to view biodata</h3>
-                                <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-primary"><h5 class="mb-0">Login</h5></a>
+                                    <h3 class="display-4">Login to view biodata</h3>
+                                    <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-primary">
+                                        <h5 class="mb-0">Login</h5>
+                                    </a>
                                 </div>
                             </div>
                         </div>

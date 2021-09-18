@@ -11,20 +11,24 @@
             <div class="col-md-8 d-flex flex-column">
                 <div class="row d-md-none">
                     <div class="col my-3">
-                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-xs-lg w-100 my-1 btn-primary">Add to Shortlist</a>
-                        <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn btn-xs-lg w-100 my-1 btn btn-xs-lg-outline-primary">Download Bio-data</a>
+                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-xs-lg w-100 my-1 btn-primary">Add
+                            to Shortlist</a>
+                        <a href="{% url 'maid_biodata_pdf' maid.pk %}"
+                            class="btn btn-xs-lg w-100 my-1 btn btn-xs-lg-outline-primary">Download Bio-data</a>
                     </div>
                 </div>
                 <div class="row d-md-none">
                     <div class="col my-3">
-                        <img loading="lazy"  class="img-fluid" src="{{maid.photo.url}}" alt="">
+                        <img loading="lazy" class="img-fluid" src="{{maid.photo.url}}" alt="">
                     </div>
                 </div>
                 <div class="d-none d-md-flex maid-thumbnail" style="background-image:url({{maid.photo.url}});"></div>
                 <div class="row d-none d-md-flex">
                     <div class="col-xl-16 mt-2 offset-xl-4">
-                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-xs-lg w-100 my-2 btn-primary">Add to Shortlist</a>
-                        <a href="{% url 'maid_biodata_pdf' maid.pk %}" class="btn btn-xs-lg w-100 my-2 btn btn-xs-lg-outline-primary">Download Bio-data</a>
+                        <a href="{% url 'add_to_shortlist' maid.pk %}" class="btn btn-xs-lg w-100 my-2 btn-primary">Add
+                            to Shortlist</a>
+                        <a href="{% url 'maid_biodata_pdf' maid.pk %}"
+                            class="btn btn-xs-lg w-100 my-2 btn btn-xs-lg-outline-primary">Download Bio-data</a>
                     </div>
                 </div>
             </div>
@@ -706,7 +710,7 @@
             <div class="col">
                 <div class="maid-carousel">
                     {% for maid in similar_maids %}
-                        {% include 'components/maid-card.html' with maid=maid %}
+                    {% include 'components/maid-card.html' with maid=maid %}
                     {% endfor %}
                 </div>
             </div>

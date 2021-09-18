@@ -13,9 +13,11 @@
         margin: 0;
         padding: 0;
     }
+
     p {
         font-size: 12px;
     }
+
     .part-b {
         background-color: orange;
         color: white;
@@ -24,10 +26,12 @@
         font-size: 1.1rem;
         font-weight: bold;
     }
+
     .box-black-border {
         border: solid 2px black;
         padding: 0.5rem;
     }
+
     .answer {
         font-weight: normal;
         margin-left: 24px;
@@ -40,36 +44,52 @@
 
 <section>
     <span class="part-b">PART B</span>
-    <span style="font-size: 0.9rem; font-weight: bold;">Complete both Parts A and B if you are applying under the Sponsorship scheme</span>
+    <span style="font-size: 0.9rem; font-weight: bold;">Complete both Parts A and B if you are applying under the
+        Sponsorship scheme</span>
 </section>
 
 <section style="margin: 1rem 0;">
-    <h5 style="border: solid 0.3rem #DAE3EA; padding: 0.5rem;">You can apply based on the income of up to 2 Sponsors. The Sponsor(s) may be the Employer’s sibling, sibling’s spouse, child, child’s spouse, grandchild or grandchild’s spouse.</h5>
+    <h5 style="border: solid 0.3rem #DAE3EA; padding: 0.5rem;">You can apply based on the income of up to 2 Sponsors.
+        The Sponsor(s) may be the Employer’s sibling, sibling’s spouse, child, child’s spouse, grandchild or
+        grandchild’s spouse.</h5>
 </section>
 
 <section class="box-black-border">
     <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">Income details of Sponsor(s)</h3>
     <h5>If the Employer has:</h5>
     <ul style="margin: 0.5rem 0;">
-        <li><h5 style="margin: 0.5rem 0;">&nbsp;1 Sponsor, answer question 1.</h5></li>
-        <li><h5 style="margin: 0.5rem 0;">&nbsp;2 Sponsors, answer question 2.</h5></li>
+        <li>
+            <h5 style="margin: 0.5rem 0;">&nbsp;1 Sponsor, answer question 1.</h5>
+        </li>
+        <li>
+            <h5 style="margin: 0.5rem 0;">&nbsp;2 Sponsors, answer question 2.</h5>
+        </li>
     </ul>
     <h5>Do not include the Employer's income.</h5>
     <br>
-    <h5>1.&nbsp;Sponsor's monthly income (S$)<span class="answer">{% if object.rn_sponsor_ed.number_of_sponsors == 1 %}{{ object.rn_sponsor_ed.single_sponsor_monthly_income|floatformat:2|intcomma }}{% endif %}</span></h5>
+    <h5>1.&nbsp;Sponsor's monthly income (S$)<span
+            class="answer">{% if object.rn_sponsor_ed.number_of_sponsors == 1 %}{{ object.rn_sponsor_ed.single_sponsor_monthly_income|floatformat:2|intcomma }}{% endif %}</span>
+    </h5>
     <p style="margin-top: 0.2rem; padding-left: 0.9rem; font-size: 10px;">(rounded to the nearest dollar)</p>
     <br>
     <br>
-    <h5>2.&nbsp;Sponsors' combined monthly income (S$)<span class="answer">{% if object.rn_sponsor_ed.number_of_sponsors == 2 %}{{ object.rn_sponsor_ed.combined_sponsor_monthly_income|floatformat:2|intcomma }}{% endif %}</span></h5>
+    <h5>2.&nbsp;Sponsors' combined monthly income (S$)<span
+            class="answer">{% if object.rn_sponsor_ed.number_of_sponsors == 2 %}{{ object.rn_sponsor_ed.combined_sponsor_monthly_income|floatformat:2|intcomma }}{% endif %}</span>
+    </h5>
     <p style="margin-top: 0.2rem; padding-left: 0.9rem; font-size: 10px;">(rounded to the nearest dollar)</p>
     <br>
     <br>
     <h5>Has either Sponsor 1 or Sponsor 2 (if applicable) worked in Singapore for the last 2 years?</h5>
     <p>{{ object.rn_sponsor_ed.get_sponsor_worked_in_sg_display }}</p>
     <br>
-    <h5>If the Sponsor(s) are agreeable for us to verify their incomes directly with IRAS, please enter their tax reference numbers below. If not, please refer to Page 2 for the additional documents you need to <a href="#">upload</a>.</h5>
-    <h5 style="margin: 0.5rem 0;">Sponsor 1's Singapore tax reference number (e.g. NRIC no./FIN):<span class="answer">{{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}</span></h5>
-    <h5>Sponsor 2's Singapore tax reference number (e.g. NRIC no./FIN):<span class="answer">{% if object.rn_sponsor_ed.number_of_sponsors == 2 %}{{ object.rn_sponsor_ed.get_sponsor_2_nric_full }}{% endif %}</span></h5>
+    <h5>If the Sponsor(s) are agreeable for us to verify their incomes directly with IRAS, please enter their tax
+        reference numbers below. If not, please refer to Page 2 for the additional documents you need to <a
+            href="#">upload</a>.</h5>
+    <h5 style="margin: 0.5rem 0;">Sponsor 1's Singapore tax reference number (e.g. NRIC no./FIN):<span
+            class="answer">{{ object.rn_sponsor_ed.get_sponsor_1_nric_full }}</span></h5>
+    <h5>Sponsor 2's Singapore tax reference number (e.g. NRIC no./FIN):<span
+            class="answer">{% if object.rn_sponsor_ed.number_of_sponsors == 2 %}{{ object.rn_sponsor_ed.get_sponsor_2_nric_full }}{% endif %}</span>
+    </h5>
 </section>
 
 <div class="page-break">
@@ -112,7 +132,8 @@
     <h5>Residential address:</h5>
     <p>{{ object.rn_sponsor_ed.sponsor_1_address_1 }}</p>
     <p>{{ object.rn_sponsor_ed.sponsor_1_address_2 }}</p>
-    <h5 style="padding-left: 400px;">Postal code:<span class="answer">{{ object.rn_sponsor_ed.sponsor_1_post_code }}</span></h5>
+    <h5 style="padding-left: 400px;">Postal code:<span
+            class="answer">{{ object.rn_sponsor_ed.sponsor_1_post_code }}</span></h5>
     <br>
     <br>
     <h5>Marital status:</h5>
@@ -149,12 +170,16 @@
         <col style="width:50%">
         <col style="width:50%">
         <tr>
-            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's NRIC number <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
-            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's NRIC number <span
+                    style="font-size: 10px; font-weight: normal;">(if any):</span></th>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span
+                    style="font-size: 10px; font-weight: normal;">(if any):</span></th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_nric_spouse_full }}</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_fin_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_sponsor_ed.get_sponsor_1_nric_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_fin_spouse_full }}
+            </td>
         </tr>
     </table>
     <br>
@@ -167,8 +192,10 @@
             <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's passport expiry date:</th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_1_passport_spouse_full }}</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.sponsor_1_passport_date_spouse|date:"d M Y" }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_sponsor_ed.get_sponsor_1_passport_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_sponsor_ed.sponsor_1_passport_date_spouse|date:"d M Y" }}</td>
         </tr>
     </table>
     <br>
@@ -227,14 +254,16 @@
     <h5>Residential address:</h5>
     <p>{{ object.rn_sponsor_ed.sponsor_2_address_1 }}</p>
     <p>{{ object.rn_sponsor_ed.sponsor_2_address_2 }}</p>
-    <h5 style="padding-left: 400px;">Postal code:<span class="answer">{{ object.rn_sponsor_ed.sponsor_2_post_code }}</span></h5>
+    <h5 style="padding-left: 400px;">Postal code:<span
+            class="answer">{{ object.rn_sponsor_ed.sponsor_2_post_code }}</span></h5>
     <br>
     <h5>Marital status:</h5>
     <p>{{ object.rn_sponsor_ed.get_sponsor_2_gender_display }}</p>
     <br>
     {% if object.rn_sponsor_ed.sponsor_2_marital_status == 'MARRIED' %}
     <h5>If Sponsor 2 is married, please enter the marriage and Spouse's details below:</h5>
-    <h5>Was the marriage registered in Singapore?<span class="answer">{{ object.rn_sponsor_ed.get_sponsor_2_marriage_sg_registered_display }}</span></h5>
+    <h5>Was the marriage registered in Singapore?<span
+            class="answer">{{ object.rn_sponsor_ed.get_sponsor_2_marriage_sg_registered_display }}</span></h5>
     <br>
     <h5>Spouse's name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
     <p>{{ object.rn_sponsor_ed.sponsor_2_name_spouse }}</p>
@@ -249,12 +278,16 @@
         <col style="width:50%">
         <col style="width:50%">
         <tr>
-            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's NRIC number <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
-            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span style="font-size: 10px; font-weight: normal;">(if any):</span></th>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's NRIC number <span
+                    style="font-size: 10px; font-weight: normal;">(if any):</span></th>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span
+                    style="font-size: 10px; font-weight: normal;">(if any):</span></th>
         </tr>
         <tr>
-            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_2_nric_spouse_full }}</td>
-            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_2_fin_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_sponsor_ed.get_sponsor_2_nric_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">{{ object.rn_sponsor_ed.get_sponsor_2_fin_spouse_full }}
+            </td>
         </tr>
     </table>
 </section>

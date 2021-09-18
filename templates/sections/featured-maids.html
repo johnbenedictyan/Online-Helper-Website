@@ -41,18 +41,21 @@
 </div>
 <div class="maid-carousel">
     {% for maid in featured_maids %}
-        {% include 'components/maid-card.html' with maid=maid %}
+    {% include 'components/maid-card.html' with maid=maid %}
     {% endfor %}
 </div>
 {% else %}
 <div class="row">
     <div class="col text-center">
-        <img loading="lazy"  src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image (No Logo)" class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}";`>
+        <img loading="lazy" src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image (No Logo)"
+            class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}" ;`>
         <div class="featured-maids-overlay">
             <div class="jumbotron jumbotron-fluid bg-transparent">
                 <div class="container text-center">
                     <h3 class="display-4">Login to view biodata</h3>
-                    <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-primary w-25"><h5 class="mb-0">Login</h5></a>
+                    <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-primary w-25">
+                        <h5 class="mb-0">Login</h5>
+                    </a>
                 </div>
             </div>
         </div>
@@ -62,7 +65,7 @@
 {% include 'components/27-ws-section/end.html' %}
 {% block js %}
 <script>
-    function populateFeaturedMaids(nationality='ANY') {
+    function populateFeaturedMaids(nationality = 'ANY') {
         let csrftoken = Cookies.get('csrftoken');
         axios({
             method: 'post',
