@@ -3,7 +3,8 @@
         <h5 class="card-title fs-16 my-3 mb-4">{{name}}</h5>
         <p class="fs-20">S${{price}}/ mth</p>
         <p class="card-text fs-12 mb-4">{{slots}} limited slots</p>
-        <button type="button" class="btn btn-xs-lg btn-primary w-50 my-4" data-toggle="modal" data-target="#{{plan_id}}Modal">Select</button>
+        <button type="button" class="btn btn-xs-lg btn-primary w-50 my-4" data-toggle="modal"
+            data-target="#{{plan_id}}Modal">Select</button>
     </div>
 </div>
 
@@ -11,36 +12,54 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="{{plan_id}}ModalLabel">{% if plan_id == 'featured_maids_ad' %}Featured Maids Advertisement{% elif plan_id == 'home_page_ad' %}Advertisement on Home Page{% elif plan_id == 'search_maid_ad' %}Advertisement on Search Maid Page{% elif plan_id == 'maid_profile_ad' %}Advertisement on Maid Profile Page{% elif plan_id == 'faq_ad' %}Advertisement on FAQ Page{% elif plan_id == 'maid_agencies_ad' %}Advertisement on Maid Agencies Page{% elif plan_id == 'about_us_ad' %}Advertisement on About Us Page{% elif plan_id == 'enquiry_ad' %}Advertisement on Enquiry Page{% endif %}</h5>
+                <h5 class="modal-title" id="{{plan_id}}ModalLabel">{% if plan_id == 'featured_maids_ad' %}Featured Maids
+                    Advertisement{% elif plan_id == 'home_page_ad' %}Advertisement on Home
+                    Page{% elif plan_id == 'search_maid_ad' %}Advertisement on Search Maid
+                    Page{% elif plan_id == 'maid_profile_ad' %}Advertisement on Maid Profile
+                    Page{% elif plan_id == 'faq_ad' %}Advertisement on FAQ
+                    Page{% elif plan_id == 'maid_agencies_ad' %}Advertisement on Maid Agencies
+                    Page{% elif plan_id == 'about_us_ad' %}Advertisement on About Us
+                    Page{% elif plan_id == 'enquiry_ad' %}Advertisement on Enquiry Page{% endif %}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form action="#">
                     {% if plan_id == 'featured_maids_ad' %}
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="advertisementPlan" id="featuredMaidRadio" value="price_1JMn4wKvEbGNaxrCvpY4fVig" checked>
+                        <input class="form-check-input" type="radio" name="advertisementPlan" id="featuredMaidRadio"
+                            value="price_1JMn4wKvEbGNaxrCvpY4fVig" checked>
                         <label class="form-check-label" for="featuredMaidRadio">
                             Monthly
                         </label>
                     </div>
                     {% else %}
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="advertisementPlan" id="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios1" value="{% if plan_id == 'home_page_ad' %}price_1IRuy0KvEbGNaxrCHC8qmMsU{% elif plan_id == 'search_maid_ad' or plan_id == 'maid_profile_ad' %}price_1IRv0hKvEbGNaxrCidzck1UF{% elif plan_id == 'faq_ad' or plan_id == 'maid_agencies_ad' or plan_id == 'about_us_ad' or plan_id == 'enquiry_ad' %}price_1JMnGsKvEbGNaxrCSbzJ1l8D{% endif %}" checked>
-                        <label class="form-check-label" for="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios1">
+                        <input class="form-check-input" type="radio" name="advertisementPlan"
+                            id="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios1"
+                            value="{% if plan_id == 'home_page_ad' %}price_1IRuy0KvEbGNaxrCHC8qmMsU{% elif plan_id == 'search_maid_ad' or plan_id == 'maid_profile_ad' %}price_1IRv0hKvEbGNaxrCidzck1UF{% elif plan_id == 'faq_ad' or plan_id == 'maid_agencies_ad' or plan_id == 'about_us_ad' or plan_id == 'enquiry_ad' %}price_1JMnGsKvEbGNaxrCSbzJ1l8D{% endif %}"
+                            checked>
+                        <label class="form-check-label"
+                            for="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios1">
                             3 Months
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="advertisementPlan" id="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios2" value="{% if plan_id == 'home_page_ad' %}price_1IRuzqKvEbGNaxrCa1E9LoSk{% elif plan_id == 'search_maid_ad' or plan_id == 'maid_profile_ad' %}price_1IRv0hKvEbGNaxrClpHJQJno{% elif plan_id == 'faq_ad' or plan_id == 'maid_agencies_ad' or plan_id == 'about_us_ad' or plan_id == 'enquiry_ad' %}price_1JMnGsKvEbGNaxrCoNiSgbf6{% endif %}">
-                        <label class="form-check-label" for="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios2">
+                        <input class="form-check-input" type="radio" name="advertisementPlan"
+                            id="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios2"
+                            value="{% if plan_id == 'home_page_ad' %}price_1IRuzqKvEbGNaxrCa1E9LoSk{% elif plan_id == 'search_maid_ad' or plan_id == 'maid_profile_ad' %}price_1IRv0hKvEbGNaxrClpHJQJno{% elif plan_id == 'faq_ad' or plan_id == 'maid_agencies_ad' or plan_id == 'about_us_ad' or plan_id == 'enquiry_ad' %}price_1JMnGsKvEbGNaxrCoNiSgbf6{% endif %}">
+                        <label class="form-check-label"
+                            for="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios2">
                             6 Months
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="advertisementPlan" id="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios3" value="{% if plan_id == 'home_page_ad' %}price_1IRuzqKvEbGNaxrCXDtsX3Jl{% elif plan_id == 'search_maid_ad' or plan_id == 'maid_profile_ad' %}price_1IRv0hKvEbGNaxrCBVxaVk0O{% elif plan_id == 'faq_ad' or plan_id == 'maid_agencies_ad' or plan_id == 'about_us_ad' or plan_id == 'enquiry_ad' %}price_1JMnGsKvEbGNaxrCbL5v5jN4{% endif %}">
-                        <label class="form-check-label" for="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios3">
+                        <input class="form-check-input" type="radio" name="advertisementPlan"
+                            id="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios3"
+                            value="{% if plan_id == 'home_page_ad' %}price_1IRuzqKvEbGNaxrCXDtsX3Jl{% elif plan_id == 'search_maid_ad' or plan_id == 'maid_profile_ad' %}price_1IRv0hKvEbGNaxrCBVxaVk0O{% elif plan_id == 'faq_ad' or plan_id == 'maid_agencies_ad' or plan_id == 'about_us_ad' or plan_id == 'enquiry_ad' %}price_1JMnGsKvEbGNaxrCbL5v5jN4{% endif %}">
+                        <label class="form-check-label"
+                            for="{% if plan_id == 'home_page_ad' %}homePage{% elif plan_id == 'search_maid_ad' %}searchMaidPage{% elif plan_id == 'maid_profile_ad' %}maidProfilePage{% elif plan_id == 'faq_ad' %}faqPage{% elif plan_id == 'maid_agencies_ad' %}maidAgenciesPage{% elif plan_id == 'about_us_ad' %}aboutUsPage{% elif plan_id == 'enquiry_ad' %}enquiryPage{% endif %}Radios3">
                             12 Months
                         </label>
                     </div>

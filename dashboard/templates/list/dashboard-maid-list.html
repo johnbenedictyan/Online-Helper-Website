@@ -25,7 +25,8 @@
             <div class="col">
                 <div class="row">
                     <div class="col text-right pb-2">
-                        <a href="{% url 'dashboard_maid_information_create' %}" class="btn btn-xs-lg btn-primary mr-1 fs-14">Add Biodata</a>
+                        <a href="{% url 'dashboard_maid_information_create' %}"
+                            class="btn btn-xs-lg btn-primary mr-1 fs-14">Add Biodata</a>
                     </div>
                 </div>
                 <div class="row">
@@ -42,25 +43,39 @@
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col-2">
-                <h6 class="dashboard-table-header">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">S/N <i
+                        class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="serialNoSortToggle"></i></h6>
             </div>
             <div class="col-4">
-                <h6 class="dashboard-table-header">Name <i class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nameSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Name <i
+                        class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="nameSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">Nationality <i class="fas {% if order_by == 'nationality' %}fa-sort-alpha-down{% elif order_by == '-nationality' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="nationalitySortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Nationality <i
+                        class="fas {% if order_by == 'nationality' %}fa-sort-alpha-down{% elif order_by == '-nationality' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="nationalitySortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">Type <i class="fas {% if order_by == 'type' %}fa-sort-alpha-down{% elif order_by == '-type' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="typeSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Type <i
+                        class="fas {% if order_by == 'type' %}fa-sort-alpha-down{% elif order_by == '-type' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="typeSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">PP Expiry <i class="fas {% if order_by == 'ppExpiry' %}fa-sort-amount-down{% elif order_by == '-ppExpiry' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="ppExpirySortToggle"></i></h6>
+                <h6 class="dashboard-table-header">PP Expiry <i
+                        class="fas {% if order_by == 'ppExpiry' %}fa-sort-amount-down{% elif order_by == '-ppExpiry' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="ppExpirySortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">Status <i class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="statusSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Status <i
+                        class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="statusSortToggle"></i></h6>
             </div>
             <div class="col-4">
-                <h6 class="dashboard-table-header">Date Created <i class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateCreatedSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Date Created <i
+                        class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="dateCreatedSortToggle"></i></h6>
             </div>
             <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
@@ -91,12 +106,15 @@
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-2" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
-                    <a class="mx-2" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i
+                            class="far fa-edit"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_detail' maid.pk %}"><i
+                            class="far fa-file-image"></i></a>
                     {% if maid.is_published is False %}
                     <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"></i></a>
                     {% else %}
-                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"></i></a>
+                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i
+                            class="fas fa-eye-slash"></i></a>
                     {% endif %}
                     <a class="mx-2" href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
@@ -168,12 +186,15 @@
                             </div>
                         </div>
                         <h6>Actions:</h6>
-                        <a class="mx-1" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"></i></a>
-                        <a class="mx-1" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"></i></a>
+                        <a class="mx-1" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i
+                                class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'dashboard_maid_detail' maid.pk %}"><i
+                                class="far fa-file-image"></i></a>
                         {% if maid.is_published is False %}
                         <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"></i></a>
                         {% else %}
-                        <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"></i></a>
+                        <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i
+                                class="fas fa-eye-slash"></i></a>
                         {% endif %}
                         <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
                     </div>
@@ -186,9 +207,9 @@
 {% endblock dashboard_section %}
 {% block js %}
 <script>
-    $(function(){
-        $('.sortToggle').on('click', function(){
-            $('.sortToggle').not(this).each(function(){
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
                 $(this).removeClass('fa-sort-alpha-up');
                 $(this).removeClass('fa-sort-alpha-down');
                 $(this).removeClass('fa-sort-amount-up');
@@ -312,7 +333,7 @@
                     break;
             }
         })
-        $('#id_name, #id_status').on('change', function(){
+        $('#id_name, #id_status').on('change', function () {
             console.log($(this).form);
             this.form.submit();
         });

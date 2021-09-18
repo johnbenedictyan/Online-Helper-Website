@@ -1,38 +1,43 @@
 {% extends 'components/nav/mini-navs/base-mini-nav.html' %}
 {% block mini_nav_section %}
-    <div class="row">
-        <div class="col">
-            <a class="nav-link mini-side-nav-link {% if url_name == 'dashboard_agency_information_update' %}active{% endif %}" href="{% url 'dashboard_agency_information_update' %}">
-                <p class="m-1 pl-2">Agency Information</p>
-            </a>
-        </div>
+<div class="row">
+    <div class="col">
+        <a class="nav-link mini-side-nav-link {% if url_name == 'dashboard_agency_information_update' %}active{% endif %}"
+            href="{% url 'dashboard_agency_information_update' %}">
+            <p class="m-1 pl-2">Agency Information</p>
+        </a>
     </div>
-    <div class="row">
-        <div class="col">
-            <a class="nav-link mini-side-nav-link" href="{% if url_name != 'dashboard_agency_information_update' %}{% url 'dashboard_agency_information_update' %}{% endif %}#agencyProfileGroup">
-                <p class="m-1 pl-2">Profile</p>
-            </a>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="nav-link mini-side-nav-link"
+            href="{% if url_name != 'dashboard_agency_information_update' %}{% url 'dashboard_agency_information_update' %}{% endif %}#agencyProfileGroup">
+            <p class="m-1 pl-2">Profile</p>
+        </a>
     </div>
-    <div class="row">
-        <div class="col">
-            <a class="nav-link mini-side-nav-link" href="{% if url_name != 'dashboard_agency_information_update' %}{% url 'dashboard_agency_information_update' %}{% endif %}#agencyServicesGroup">
-                <p class="m-1 pl-2">Our Services</p>
-            </a>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="nav-link mini-side-nav-link"
+            href="{% if url_name != 'dashboard_agency_information_update' %}{% url 'dashboard_agency_information_update' %}{% endif %}#agencyServicesGroup">
+            <p class="m-1 pl-2">Our Services</p>
+        </a>
     </div>
-    <div class="row">
-        <div class="col">
-            <a class="nav-link mini-side-nav-link {% if url_name == 'dashboard_agency_outlet_details_update' %}active{% endif %}" href="{% url 'dashboard_agency_outlet_details_update' %}">
-                <p class="m-1 pl-2">Branch Details</p>
-            </a>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="nav-link mini-side-nav-link {% if url_name == 'dashboard_agency_outlet_details_update' %}active{% endif %}"
+            href="{% url 'dashboard_agency_outlet_details_update' %}">
+            <p class="m-1 pl-2">Branch Details</p>
+        </a>
     </div>
-    <div class="row">
-        <div class="col">
-            <a class="nav-link mini-side-nav-link {% if url_name == 'dashboard_agency_opening_hours_update' %}active{% endif %}" href="{% url 'dashboard_agency_opening_hours_update' %}">
-                <p class="m-1 pl-2">Opening Hours</p>
-            </a>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="nav-link mini-side-nav-link {% if url_name == 'dashboard_agency_opening_hours_update' %}active{% endif %}"
+            href="{% url 'dashboard_agency_opening_hours_update' %}">
+            <p class="m-1 pl-2">Opening Hours</p>
+        </a>
     </div>
+</div>
 {% endblock mini_nav_section %}

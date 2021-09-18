@@ -40,13 +40,13 @@
             </div>
             <div class="col">
                 {% for maid in enquiry.maids.all|enquirymaidfilter:agency_id %}
-                    <div class="row">
-                        <div class="col mb-2">
-                            <p class="mb-0">Name: {{maid.name}}</p>
-                            <p class="mb-0">Nationality: {{maid.get_country_of_origin_display }}</p>
-                            <p class="mb-0">Type: {{maid.get_maid_type_display}}</p>
-                        </div>
+                <div class="row">
+                    <div class="col mb-2">
+                        <p class="mb-0">Name: {{maid.name}}</p>
+                        <p class="mb-0">Nationality: {{maid.get_country_of_origin_display }}</p>
+                        <p class="mb-0">Type: {{maid.get_maid_type_display}}</p>
                     </div>
+                </div>
                 {% endfor %}
             </div>
             <div class="col">
@@ -105,39 +105,39 @@
                         </div>
                         <div class="row">
                             {% for maid in enquiry.maids.all|enquirymaidfilter:agency_id %}
-                                <div class="col-24 my-2">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col">
-                                                    Name:
-                                                </div>
-                                                <div class="col">
-                                                    {{maid.name}}
-                                                </div>
+                            <div class="col-24 my-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                Name:
                                             </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    Nationality:
-                                                </div>
-                                                <div class="col">
-                                                    {{maid.get_country_of_origin_display}}
-                                                </div>
+                                            <div class="col">
+                                                {{maid.name}}
                                             </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    Type:
-                                                </div>
-                                                <div class="col">
-                                                    {{maid.get_maid_type_display}}
-                                                </div>
-                                            </div>
-                                            <p class="mb-0">Name: {{maid.name}}</p>
-                                            <p class="mb-0">Nationality: {{maid.get_country_of_origin_display }}</p>
-                                            <p class="mb-0">Type: {{maid.get_maid_type_display}}</p>
                                         </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                Nationality:
+                                            </div>
+                                            <div class="col">
+                                                {{maid.get_country_of_origin_display}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                Type:
+                                            </div>
+                                            <div class="col">
+                                                {{maid.get_maid_type_display}}
+                                            </div>
+                                        </div>
+                                        <p class="mb-0">Name: {{maid.name}}</p>
+                                        <p class="mb-0">Nationality: {{maid.get_country_of_origin_display }}</p>
+                                        <p class="mb-0">Type: {{maid.get_maid_type_display}}</p>
                                     </div>
                                 </div>
+                            </div>
                             {% endfor %}
                         </div>
                         <div class="row">

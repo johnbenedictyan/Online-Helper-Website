@@ -10,7 +10,8 @@
                             <h3>Account Management</h3>
                             <i class="fas fa-user fa-5x my-3"></i>
                             <h3 class="card-title">{{accounts.current}} &#47; {{accounts.max}}</h3>
-                            <h5><a href="{% url 'dashboard_agency_employee_create' %}" class="card-link">Add Account</a></h5>
+                            <h5><a href="{% url 'dashboard_agency_employee_create' %}" class="card-link">Add Account</a>
+                            </h5>
                             <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Accounts</a></h5>
                         </div>
                     </div>
@@ -20,11 +21,12 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col text-center my-2">
-                            <h3>Agency <br/>Management</h3>
+                            <h3>Agency <br />Management</h3>
                             <i class="fas fa-building fa-5x my-3"></i>
                             <h3 class="card-title">{{branches.current}}</h3>
                             <h5><a href="{% url 'dashboard_branches_list' %}" class="card-link">View Branches</a></h5>
-                            <h5><a href="{% url 'dashboard_agency_detail' %}" class="card-link">View Agency Details</a></h5>
+                            <h5><a href="{% url 'dashboard_agency_detail' %}" class="card-link">View Agency Details</a>
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -33,10 +35,11 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col text-center my-2">
-                            <h3>FDW <br/>Biodata</h3>
+                            <h3>FDW <br />Biodata</h3>
                             <i class="fas fa-portrait fa-5x my-3"></i>
                             <h3 class="card-title">{{biodata.current}} &#47; {{biodata.max}}</h3>
-                            <h5><a href="{% url 'dashboard_maid_information_create' %}" class="card-link">Add Biodata</a></h5>
+                            <h5><a href="{% url 'dashboard_maid_information_create' %}" class="card-link">Add
+                                    Biodata</a></h5>
                             <h5><a href="{% url 'dashboard_maid_list' %}" class="card-link">View Biodata</a></h5>
                         </div>
                     </div>
@@ -49,7 +52,8 @@
                             <h3 class="mb-4">Subscriptions</h3>
                             <i class="fas fa-file-invoice-dollar fa-5x my-3"></i>
                             <h3 class="card-title">{{subscriptions.current}}</h3>
-                            <h5><a href="{% url 'dashboard_agency_plan_list' %}" class="card-link">View Subscriptions</a></h5>
+                            <h5><a href="{% url 'dashboard_agency_plan_list' %}" class="card-link">View
+                                    Subscriptions</a></h5>
                             <h5>&nbsp;</h5>
                         </div>
                     </div>
@@ -59,7 +63,7 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col text-center my-2">
-                            <h3>Employer <br/>Summary</h3>
+                            <h3>Employer <br />Summary</h3>
                             <i class="fas fa-users fa-5x my-3"></i>
                             <h3 class="card-title">{{employers.current}}</h3>
                             <h5><a href="{% url 'employer_create_route' %}" class="card-link">Add Employer</a></h5>
@@ -85,7 +89,7 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col text-center my-2">
-                            <h3>Sales <br/>Summary</h3>
+                            <h3>Sales <br />Summary</h3>
                             <i class="fas fa-money-check fa-5x my-3"></i>
                             <h3 class="card-title">{{sales.current}}</h3>
                             <h5><a href="{% url 'dashboard_sales_list' %}" class="card-link">View Sales</a></h5>
@@ -98,7 +102,7 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col text-center my-2">
-                            <h3>Status <br/>Summary</h3>
+                            <h3>Status <br />Summary</h3>
                             <i class="fas fa-signal fa-5x my-3"></i>
                             <h3 class="card-title">&nbsp;</h3>
                             <h5><a href="{% url 'dashboard_status_list' %}" class="card-link">View Status</a></h5>
@@ -111,7 +115,7 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col text-center my-2">
-                            <h3>Billing <br/>History</h3>
+                            <h3>Billing <br />History</h3>
                             <i class="fas fa-history fa-5x my-3"></i>
                             <h3 class="card-title">&nbsp;</h3>
                             <h5><a href="#" class="card-link">View History</a></h5>
@@ -173,14 +177,16 @@
                     <div class="row justify-content-end">
                         <div class="col-md-6 mb-2">
                             <label for="sales-staff-performance-chart-type">Type</label>
-                            <select name="type" id="sales-staff-performance-chart-type" class="form-control sales-staff-performance-chart-controls">
+                            <select name="type" id="sales-staff-performance-chart-type"
+                                class="form-control sales-staff-performance-chart-controls">
                                 <option value="Sales">Sales</option>
                                 <option value="Cases">Cases</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="sales-staff-performance-chart-year">Staff</label>
-                            <select name="year" id="sales-staff-performance-chart-staff" class="form-control sales-staff-performance-chart-controls">
+                            <select name="year" id="sales-staff-performance-chart-staff"
+                                class="form-control sales-staff-performance-chart-controls">
                                 <option value="john">John</option>
                                 <option value="jane">Jane</option>
                                 <option value="dave">Dave</option>
@@ -188,7 +194,8 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="sales-staff-performance-chart-year">Year</label>
-                            <select name="year" id="sales-staff-performance-chart-year" class="form-control sales-staff-performance-chart-controls">
+                            <select name="year" id="sales-staff-performance-chart-year"
+                                class="form-control sales-staff-performance-chart-controls">
                                 <option value="2010">2010</option>
                                 <option value="2011">2011</option>
                                 <option value="2012">2012</option>
@@ -216,7 +223,7 @@
                     </div>
                     <div class="row py-2">
                         <div class="col-16">
-                            <p class="mb-0">Biodata & CRM - Basic Plan</p>
+                            <p class="mb-0">Biodata &#38; CRM - Basic Plan</p>
                         </div>
                         <div class="col-8 text-center">
                             <p class="mb-0">31 May 2021</p>
@@ -395,46 +402,50 @@
 {% endblock dashboard_section %}
 {% block js %}
 <script>
-    $(function(){
-        class ChartManager{
-            constructor(chartNode,chartProperties,chartAuthority, chartType) {
+    $(function () {
+        class ChartManager {
+            constructor(chartNode, chartProperties, chartAuthority, chartType) {
                 this.chartNode = chartNode;
                 this.chartProperties = chartProperties;
                 this.chartAuthority = chartAuthority;
                 this.chartType = chartType;
-                this.chart = new ApexCharts(document.querySelector(chartNode),chartProperties);
+                this.chart = new ApexCharts(document.querySelector(chartNode), chartProperties);
                 this.chart.render();
             }
 
             static dataUrl = '/dashboard/data/';
 
-            categoriesManager(type,res){
-                let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                let years = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020'];
+            categoriesManager(type, res) {
+                let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                    "Dec"
+                ];
+                let years = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019',
+                    '2020'
+                ];
                 let categories = months;
-                if (type=='month'){
+                if (type == 'month') {
                     categories = months;
-                } else if (type=='year') {
+                } else if (type == 'year') {
                     categories = years;
                 }
                 let max = 0
                 res.data.data.forEach(el => {
-                    if (el.data.length>max){
-                        max=el.data.length
+                    if (el.data.length > max) {
+                        max = el.data.length
                     }
                 });
                 if (max != 12) {
-                    categories = categories.slice(0,max);
+                    categories = categories.slice(0, max);
                 }
                 return categories
             }
 
-            chartPropertiesManager(categoriesType, categories, chartProperties){
-                if (categoriesType=='xaxis') {
+            chartPropertiesManager(categoriesType, categories, chartProperties) {
+                if (categoriesType == 'xaxis') {
                     chartProperties = {
                         ...chartProperties,
                         ...{
-                            xaxis : {
+                            xaxis: {
                                 categories: categories
                             }
                         }
@@ -443,7 +454,7 @@
                 return chartProperties
             }
 
-            update(newDataSelectors, newChartProperties, csrftoken, requestorAuthority, categoriesAxis){
+            update(newDataSelectors, newChartProperties, csrftoken, requestorAuthority, categoriesAxis) {
                 axios({
                     method: 'post',
                     mode: 'same-origin',
@@ -456,11 +467,11 @@
                         'authority': requestorAuthority,
                         'chart': newDataSelectors
                     }
-                }).then((res)=>{
-                    if(this.chartType == 'timeline'){
-                        res.data.data.forEach((el)=>{
-                            el.data.forEach((x)=>{
-                                x.y.forEach((o, i, a)=>{
+                }).then((res) => {
+                    if (this.chartType == 'timeline') {
+                        res.data.data.forEach((el) => {
+                            el.data.forEach((x) => {
+                                x.y.forEach((o, i, a) => {
                                     a[i] = new Date(o).getTime();
                                 })
                             });
@@ -480,7 +491,7 @@
                 });
             }
         }
-        
+
         var branchSalesChartOptions = {
             series: [],
             chart: {
@@ -535,7 +546,7 @@
                 }
             },
             yaxis: {
-                max: function(max) {
+                max: function (max) {
                     return max * 1.1
                 },
                 axisBorder: {
@@ -566,7 +577,7 @@
             }
         };
         const branchSalesChartManager = new ChartManager('#chart', branchSalesChartOptions, 'any');
-        
+
         var salesStaffPerformanceChartOptions = {
             series: [],
             chart: {
@@ -621,10 +632,10 @@
                 }
             },
             yaxis: {
-                min: function(min) {
+                min: function (min) {
                     return min * 0.9
                 },
-                max: function(max) {
+                max: function (max) {
                     return max * 1.1
                 },
                 axisBorder: {
@@ -657,8 +668,9 @@
                 text: 'Loading...'
             }
         }
-        const salesStaffPerformanceChartManager = new ChartManager('#salesStaffPerformanceChart', salesStaffPerformanceChartOptions, 'any');
-        
+        const salesStaffPerformanceChartManager = new ChartManager('#salesStaffPerformanceChart',
+            salesStaffPerformanceChartOptions, 'any');
+
         var branchPerformanceChartOption1Options = {
             series: [],
             chart: {
@@ -715,7 +727,8 @@
                 text: 'Loading...'
             }
         }
-        const branchPerformanceChart1Manager = new ChartManager('#branchPerformanceChartOption1', branchPerformanceChartOption1Options, 'any');
+        const branchPerformanceChart1Manager = new ChartManager('#branchPerformanceChartOption1',
+            branchPerformanceChartOption1Options, 'any');
 
         var branchPerformanceChartOption2Options = {
             series: [],
@@ -734,7 +747,7 @@
                 },
             },
             dataLabels: {
-            enabled: false
+                enabled: false
             },
             stroke: {
                 width: 1,
@@ -776,7 +789,8 @@
                 text: 'Loading...'
             }
         }
-        const branchPerformanceChart2Manager = new ChartManager('#branchPerformanceChartOption2', branchPerformanceChartOption2Options, 'any');
+        const branchPerformanceChart2Manager = new ChartManager('#branchPerformanceChartOption2',
+            branchPerformanceChartOption2Options, 'any');
 
         var agencyTimelinePerformanceChartOptions = {
             series: [],
@@ -794,7 +808,7 @@
                 },
             },
             dataLabels: {
-            enabled: false
+                enabled: false
             },
             stroke: {
                 width: 1,
@@ -836,7 +850,8 @@
                 text: 'Loading...'
             }
         }
-        const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart', agencyTimelinePerformanceChartOptions, 'any');
+        const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart',
+            agencyTimelinePerformanceChartOptions, 'any');
 
         var fdwTimelineChartOptions = {
             series: [],
@@ -851,7 +866,7 @@
             },
             dataLabels: {
                 enabled: false,
-                formatter: function(val) {
+                formatter: function (val) {
                     var a = moment(val[0])
                     var b = moment(val[1])
                     var diff = b.diff(a, 'days')
@@ -881,28 +896,34 @@
                 text: 'Loading...'
             }
         };
-        const fdwTimelineChartManager = new ChartManager('#fdwTimelineChart', fdwTimelineChartOptions, 'any', 'timeline');
+        const fdwTimelineChartManager = new ChartManager('#fdwTimelineChart', fdwTimelineChartOptions, 'any',
+            'timeline');
 
         const csrftoken = Cookies.get('csrftoken');
         const authority = '{{authority}}'
-        
+
         let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
         let salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
         let salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
 
-        let branchPerformanceOption1Type = $('#branch-performance-chart-type-option-1').find(':selected').text();
-        let branchPerformanceOption1GroupBy = $('#branch-performance-group-by-option-1').find(':selected').text();
-        let branchPerformanceOption1ChartYear = $('#branch-performance-chart-year-option-1').find(':selected').text();
+        let branchPerformanceOption1Type = $('#branch-performance-chart-type-option-1').find(':selected')
+    .text();
+        let branchPerformanceOption1GroupBy = $('#branch-performance-group-by-option-1').find(':selected')
+        .text();
+        let branchPerformanceOption1ChartYear = $('#branch-performance-chart-year-option-1').find(':selected')
+            .text();
 
-        let branchPerformanceOption2Type = $('#branch-performance-chart-type-option-2').find(':selected').text();
-        let branchPerformanceOption2GroupBy = $('#branch-performance-group-by-option-2').find(':selected').text();
-        let branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected').text();
+        let branchPerformanceOption2Type = $('#branch-performance-chart-type-option-2').find(':selected')
+    .text();
+        let branchPerformanceOption2GroupBy = $('#branch-performance-group-by-option-2').find(':selected')
+        .text();
+        let branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected')
+            .text();
 
         let fdwTimelineChartGroupBy = $('#fdw-timeline-chart-group-by').find(':selected').text();
 
         let salesChartProperties = {
-            responsive: [
-                {
+            responsive: [{
                     breakpoint: 768,
                     options: {
                         dataLabels: {
@@ -975,37 +996,42 @@
             'group_by': 'month',
             'year': $('#year-select-chart').find(":selected").text()
         }
-        branchSalesChartManager.update(salesChartDataSelectors, salesChartProperties, csrftoken, 'Agency Managers', 'xaxis');
-        
+        branchSalesChartManager.update(salesChartDataSelectors, salesChartProperties, csrftoken,
+            'Agency Managers', 'xaxis');
+
         let salesStaffPerformanceDataSelectors = {
             'name': 'salesStaffPerformance' + salesStaffPerformanceType,
             'group_by': 'month',
             'year': salesStaffPerformanceChartYear,
             'staff': salesStaffPerformanceStaff
         }
-        salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
+        salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, null, csrftoken,
+            'Agency Managers', 'xaxis');
 
         let branchPerformanceOption1DataSelectors = {
             'name': 'branchPerformance' + branchPerformanceOption1Type,
             'year': branchPerformanceOption1ChartYear,
             'group_by': branchPerformanceOption1GroupBy
         }
-        branchPerformanceChart1Manager.update(branchPerformanceOption1DataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
+        branchPerformanceChart1Manager.update(branchPerformanceOption1DataSelectors, null, csrftoken,
+            'Agency Managers', 'xaxis');
 
         let branchPerformanceOption2DataSelectors = {
             'name': 'branchPerformance' + branchPerformanceOption2Type,
             'year': branchPerformanceOption2ChartYear,
             'group_by': branchPerformanceOption2GroupBy
         }
-        branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
+        branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors, null, csrftoken,
+            'Agency Managers', 'xaxis');
 
         let agencyTimelinePerformanceDataSelectors = {
             'name': 'agencyTimelinePerformance',
             'year': null,
             'group_by': null
         }
-        agencyTimelinePerformanceChartManager.update(agencyTimelinePerformanceDataSelectors, null, csrftoken, 'Agency Managers', 'xaxis');
-        
+        agencyTimelinePerformanceChartManager.update(agencyTimelinePerformanceDataSelectors, null, csrftoken,
+            'Agency Managers', 'xaxis');
+
         let fdwTimelineDataSelectors = {
             'name': 'fdwTimeline',
             'year': null,
@@ -1014,7 +1040,7 @@
         fdwTimelineChartManager.update(fdwTimelineDataSelectors, null, csrftoken, 'Agency Managers', null);
     })
 
-    $('#year-select-chart').on('change', function(event){
+    $('#year-select-chart').on('change', function (event) {
         salesChartYear = $(this).find(":selected").text()
         let max = 0;
         axios({
@@ -1037,12 +1063,12 @@
                 chart.updateSeries(res.data.data);
                 let categories = months;
                 res.data.data.forEach(el => {
-                    if (el.data.length>max){
-                        max=el.data.length
+                    if (el.data.length > max) {
+                        max = el.data.length
                     }
                 });
                 if (max != 12) {
-                    categories = months.slice(0,max);
+                    categories = months.slice(0, max);
                 }
                 chart.updateOptions({
                     xaxis: {
@@ -1053,7 +1079,7 @@
         })
     });
 
-    $('.sales-staff-performance-chart-controls').on('change', function(event){
+    $('.sales-staff-performance-chart-controls').on('change', function (event) {
         let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
         salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
         salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
@@ -1068,7 +1094,7 @@
                     },
                     yaxis: {
                         min: 0,
-                        max: function(max) {
+                        max: function (max) {
                             return max + 1
                         },
                         labels: {
@@ -1081,7 +1107,7 @@
                     }
                 }
                 break;
-                
+
             case 'Sales':
                 salesStaffPerformanceChartUpdatedProperties = {
                     dataLabels: {
@@ -1090,10 +1116,10 @@
                         }
                     },
                     yaxis: {
-                        min: function(min) {
+                        min: function (min) {
                             return min * 0.9
                         },
-                        max: function(max) {
+                        max: function (max) {
                             return max * 1.1
                         },
                         labels: {
@@ -1113,24 +1139,26 @@
             'name': 'salesStaffPerformance' + salesStaffPerformanceType,
             'group_by': 'month',
             'year': salesStaffPerformanceChartYear,
-            'staff':  salesStaffPerformanceStaff
+            'staff': salesStaffPerformanceStaff
         }
-        salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, salesStaffPerformanceChartUpdatedProperties, csrftoken, 'Agency Managers', 'xaxis');
+        salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors,
+            salesStaffPerformanceChartUpdatedProperties, csrftoken, 'Agency Managers', 'xaxis');
     });
 
-    $('.branch-performance-chart-option-1-controls').on('change', function(event){
+    $('.branch-performance-chart-option-1-controls').on('change', function (event) {
         branchPerformanceOption1Type = $('#branch-performance-chart-type-option-1').find(':selected').text();
         branchPerformanceOption1GroupBy = $('#branch-performance-group-by-option-1').find(':selected').text();
-        
-        if(branchPerformanceOption1GroupBy == 'Year'){
+
+        if (branchPerformanceOption1GroupBy == 'Year') {
             $('#branch-performance-chart-year-option-1').parent().hide();
         } else {
             $('#branch-performance-chart-year-option-1').parent().show();
-            branchPerformanceOption1ChartYear = $('#branch-performance-chart-year-option-1').find(':selected').text();
+            branchPerformanceOption1ChartYear = $('#branch-performance-chart-year-option-1').find(':selected')
+                .text();
         }
-        
+
         var branchPerformanceChartOption1UpdatedOptions = {}
-        
+
         switch (branchPerformanceOption1Type) {
             case 'Cases':
                 branchPerformanceChartOption1UpdatedOptions['tooltip'] = {
@@ -1141,7 +1169,7 @@
                     }
                 }
                 break;
-                
+
             case 'Sales':
                 branchPerformanceChartOption1UpdatedOptions['tooltip'] = {
                     y: {
@@ -1155,29 +1183,31 @@
             default:
                 break;
         }
-        
+
         branchPerformanceOption1DataSelectors = {
             'name': 'branchPerformance' + branchPerformanceOption1Type,
             'year': branchPerformanceOption1ChartYear,
             'group_by': branchPerformanceOption1GroupBy
         }
-        
-        branchPerformanceChart1Manager.update(branchPerformanceOption1DataSelectors, branchPerformanceChartOption1UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
+
+        branchPerformanceChart1Manager.update(branchPerformanceOption1DataSelectors,
+            branchPerformanceChartOption1UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
     });
 
-    $('.branch-performance-chart-option-2-controls').on('change', function(event){
+    $('.branch-performance-chart-option-2-controls').on('change', function (event) {
         branchPerformanceOption2Type = $('#branch-performance-chart-type-option-2').find(':selected').text();
         branchPerformanceOption2GroupBy = $('#branch-performance-group-by-option-2').find(':selected').text();
-        
-        if(branchPerformanceOption2GroupBy == 'Year'){
+
+        if (branchPerformanceOption2GroupBy == 'Year') {
             $('#branch-performance-chart-year-option-2').parent().hide();
         } else {
             $('#branch-performance-chart-year-option-2').parent().show();
-            branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected').text();
+            branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected')
+                .text();
         }
-        
+
         var branchPerformanceChartOption2UpdatedOptions = {}
-        
+
         switch (branchPerformanceOption2Type) {
             case 'Cases':
                 branchPerformanceChartOption2UpdatedOptions['tooltip'] = {
@@ -1188,7 +1218,7 @@
                     }
                 }
                 break;
-                
+
             case 'Sales':
                 branchPerformanceChartOption2UpdatedOptions['tooltip'] = {
                     y: {
@@ -1202,17 +1232,18 @@
             default:
                 break;
         }
-        
+
         branchPerformanceOption2DataSelectors = {
             'name': 'branchPerformance' + branchPerformanceOption2Type,
             'year': branchPerformanceOption2ChartYear,
             'group_by': branchPerformanceOption2GroupBy
         }
-        
-        branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors, branchPerformanceChartOption2UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
+
+        branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors,
+            branchPerformanceChartOption2UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
     });
 
-    $('.fdw-timeline-chart-controls').on('change', function(event){
+    $('.fdw-timeline-chart-controls').on('change', function (event) {
         fdwTimelineChartGroupBy = $('#fdw-timeline-chart-group-by').find(':selected').text();
 
         fdwTimelineDataSelectors = {

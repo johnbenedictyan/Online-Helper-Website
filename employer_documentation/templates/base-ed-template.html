@@ -10,43 +10,49 @@
                 {% with request.resolver_match.url_name as url_name %}
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}" href="{% url 'dashboard_home' %}">
-                        <p class="m-1 pl-2">Dashboard</p>
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_home' %}active{% endif %}"
+                            href="{% url 'dashboard_home' %}">
+                            <p class="m-1 pl-2">Dashboard</p>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}" href="{% url 'dashboard_account_list' %}">
-                        <p class="m-1 pl-2">Account Management</p>
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_account_list' %}active{% endif %}"
+                            href="{% url 'dashboard_account_list' %}">
+                            <p class="m-1 pl-2">Account Management</p>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_employers_list' %}active{% endif %}" href="{% url 'dashboard_employers_list' %}">
-                        <p class="m-1 pl-2">Employers Summary</p>
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_employers_list' %}active{% endif %}"
+                            href="{% url 'dashboard_employers_list' %}">
+                            <p class="m-1 pl-2">Employers Summary</p>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_sales_list' %}active{% endif %}" href="{% url 'dashboard_sales_list' %}">
-                        <p class="m-1 pl-2">Sales Summary</p>
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_sales_list' %}active{% endif %}"
+                            href="{% url 'dashboard_sales_list' %}">
+                            <p class="m-1 pl-2">Sales Summary</p>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_status_list' %}active{% endif %}" href="{% url 'dashboard_status_list' %}">
-                        <p class="m-1 pl-2">Status Summary</p>
+                        <a class="nav-link side-nav-link {% if url_name == 'dashboard_status_list' %}active{% endif %}"
+                            href="{% url 'dashboard_status_list' %}">
+                            <p class="m-1 pl-2">Status Summary</p>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col px-0">
-                        <a class="nav-link side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}" href="{% url 'employer_create_route' %}">
-                        <p class="m-1 pl-2">Add Employer</p>
+                        <a class="nav-link side-nav-link {% if url_name == 'employer_create_route' %}active{% endif %}"
+                            href="{% url 'employer_create_route' %}">
+                            <p class="m-1 pl-2">Add Employer</p>
                         </a>
                     </div>
                 </div>

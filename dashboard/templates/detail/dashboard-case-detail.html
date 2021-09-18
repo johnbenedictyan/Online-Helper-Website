@@ -9,7 +9,8 @@
                     <h5 class="fs-16 mb-0">FDW Information</h5>
                 </div>
                 <div class="col-9">
-                    <a href="{% url 'dashboard_maid_information_update' object.fdw.pk %}" class="btn btn-xs-lg btn-primary w-100">Edit FDW Info</a>
+                    <a href="{% url 'dashboard_maid_information_update' object.fdw.pk %}"
+                        class="btn btn-xs-lg btn-primary w-100">Edit FDW Info</a>
                 </div>
             </div>
             <div class="row">
@@ -41,7 +42,8 @@
                     <h5 class="fs-16 mb-0">Employer Information</h5>
                 </div>
                 <div class="col-9">
-                    <a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}" class="btn btn-xs-lg btn-primary w-100">Edit Employer Info</a>
+                    <a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}"
+                        class="btn btn-xs-lg btn-primary w-100">Edit Employer Info</a>
                 </div>
             </div>
             <div class="row">
@@ -61,7 +63,9 @@
                 </div>
                 <div class="col">
                     <p class="mb-1">Address Line 2</p>
-                    <h6 class="text-dark mb-3">{% if object.employer.employer_address_2 %}{{ object.employer.employer_address_2 }}{% endif %}</h6>
+                    <h6 class="text-dark mb-3">
+                        {% if object.employer.employer_address_2 %}{{ object.employer.employer_address_2 }}{% endif %}
+                    </h6>
                 </div>
             </div>
             <div class="row">
@@ -79,7 +83,8 @@
                     <h5 class="fs-16 mb-0">Case Information</h5>
                 </div>
                 <div class="col-9">
-                    <a href="{% url 'case_update_route' level_1_pk=object.pk %}" class="btn btn-xs-lg btn-primary w-100">Edit Case Info</a>
+                    <a href="{% url 'case_update_route' level_1_pk=object.pk %}"
+                        class="btn btn-xs-lg btn-primary w-100">Edit Case Info</a>
                 </div>
             </div>
             <div class="row">
@@ -143,7 +148,8 @@
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">Balance Loan of FDW Replaced</p>
-                    <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b4_loan_transferred|intcomma }}</h6>
+                    <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b4_loan_transferred|intcomma }}
+                    </h6>
                 </div>
             </div>
             {% endif %}
@@ -157,7 +163,8 @@
                     <div class="row">
                         <div class="col">
                             <p class="mb-1">1. Service Fee</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b1_service_fee|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b1_service_fee|intcomma }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -172,23 +179,29 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="mb-1">2a. Application / Collection of Work Permit</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2a_work_permit_application_collection|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2a_work_permit_application_collection|intcomma }}
+                            </h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2b. Medical Examination Fee</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2b_medical_examination_fee|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2b_medical_examination_fee|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2c. Security Bond and Personal Accident Insurance</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2d. Reimbursement of Indemnity Policy</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2e. Home Services</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2e_home_service|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2e_home_service|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2f. Settling-In-Programme (SIP)</p>
@@ -196,27 +209,33 @@
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2g. Other Sevices Provided (i)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.b2g1_other_services_description }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_servicefeeschedule_ed.b2g1_other_services_description }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2g. Other Service Fee (i)</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2g1_other_services_fee|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2g1_other_services_fee|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2g. Other Sevices Provided (ii)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.b2g2_other_services_description }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_servicefeeschedule_ed.b2g2_other_services_description }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2g. Other Service Fee (ii)</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2g2_other_services_fee|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2g2_other_services_fee|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2g. Other Sevices Provided (iii)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.b2g3_other_services_description }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_servicefeeschedule_ed.b2g3_other_services_description }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2g. Other Service Fee (iii)</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2g3_other_services_fee|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2g3_other_services_fee|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2h. Cost of replacement within ___ month(s)</p>
@@ -224,11 +243,13 @@
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2h. Cost for replacement</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2h_replacement_cost|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2h_replacement_cost|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">2i. Renewal of Work Permit</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2i_work_permit_renewal|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2i_work_permit_renewal|intcomma }}</h6>
                         </div>
                     </div>
                 </div>
@@ -243,7 +264,8 @@
                     <div class="row">
                         <div class="col">
                             <p class="mb-1">3a. Agency Fee Charged on FDW</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -258,7 +280,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="mb-1">Deposit - Upon confirmation of FDW</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">Deposit Paid Date</p>
@@ -305,19 +328,23 @@
                     <div class="row">
                         <div class="col-md-24">
                             <p class="mb-1">3.2 No Replacement Under The Following Circumstances (i)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1|intcomma }}</h6>
                         </div>
                         <div class="col-md-24">
                             <p class="mb-1">3.2 No Replacement Under The Following Circumstances (ii)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2|intcomma }}</h6>
                         </div>
                         <div class="col-md-24">
                             <p class="mb-1">3.2 No Replacement Under The Following Circumstances (iii)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_3|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_3|intcomma }}</h6>
                         </div>
                         <div class="col-md-24">
                             <p class="mb-1">3.4 Refund Amount If No Replacement Pursuant to Clause 3.1</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c3_4_no_replacement_refund|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c3_4_no_replacement_refund|intcomma }}</h6>
                         </div>
                     </div>
                 </div>
@@ -332,7 +359,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="mb-1">4.1 No of Replacement</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_number_of_replacements }}</h6>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_number_of_replacements }}
+                            </h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">4.1 Replacement Period (months)</p>
@@ -340,11 +368,13 @@
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">4.1 FDW Required to Worked For Minimum (Days)</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_replacement_after_min_working_days }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c4_1_replacement_after_min_working_days }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">4.1 5 Replacement Within (Months) From FDW Returned Date</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_5_replacement_deadline }}</h6>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_5_replacement_deadline }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -359,31 +389,38 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="mb-1">5.1.1 Deploy Within (Days) from Service Agreement Date</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_1_1_deployment_deadline }}</h6>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_1_1_deployment_deadline }}
+                            </h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">'5.1.1. Failed Deployment Refund Amount</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">5.1.2 Refund Within (Days) If Employer Terminate Agreement</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_1_2_refund_within_days }}</h6>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_1_2_refund_within_days }}
+                            </h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">5.1.2 Charges If Terminates BEFORE Arrival</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">5.1.2 Charges If Terminates AFTER Arrival</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">5.2.2 Refund Within (Weeks) If FDW Can Be Transferred</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_2_2_can_transfer_refund_within }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c5_2_2_can_transfer_refund_within }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">5.3.2 Refund Within (Weeks) If FDW Cannot Be Transferred</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_3_2_cannot_transfer_refund_within }}</h6>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c5_3_2_cannot_transfer_refund_within }}</h6>
                         </div>
                     </div>
                 </div>
@@ -398,11 +435,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="mb-1">6.4 Food and Lodging cost per day</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c6_4_per_day_food_accommodation_cost|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c6_4_per_day_food_accommodation_cost|intcomma }}</h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">6.6 Counselling cost per day</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_serviceagreement_ed.c6_6_per_session_counselling_cost|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c6_6_per_session_counselling_cost|intcomma }}</h6>
                         </div>
                     </div>
                 </div>
@@ -417,11 +456,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="mb-1">9.1 Independent Mediator #1</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_1_independent_mediator_1 }}</h6>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_1_independent_mediator_1 }}
+                            </h6>
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">9.2 Independent Mediator #2</p>
-                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_2_independent_mediator_2 }}</h6>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_2_independent_mediator_2 }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -453,7 +494,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <p class="mb-1">3.5 FDW Sleeping Arrangement</p>
-                    <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.get_c3_5_fdw_sleeping_arrangement_display }}</h6>
+                    <h6 class="text-dark mb-3">
+                        {{ object.rn_serviceagreement_ed.get_c3_5_fdw_sleeping_arrangement_display }}</h6>
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">4.1 Employment Contract Termination Notice (Days)</p>
@@ -473,19 +515,23 @@
             <div class="row">
                 <div class="col-md-12">
                     <p class="mb-1">Residential Dwelling Type</p>
-                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_residential_dwelling_type_display }}</h6>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_residential_dwelling_type_display }}
+                    </h6>
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">Does Employer Required FDW to Clean Window Exterior?</p>
-                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_fdw_clean_window_exterior_display }}</h6>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_fdw_clean_window_exterior_display }}
+                    </h6>
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">(i) Location of Window Exterior</p>
-                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_window_exterior_location_display }}</h6>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_window_exterior_location_display }}
+                    </h6>
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">(ii) Grills Installed on Windows required to Be Cleaned</p>
-                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_grilles_installed_require_cleaning_display }}</h6>
+                    <h6 class="text-dark mb-3">
+                        {{ object.rn_safetyagreement_ed.get_grilles_installed_require_cleaning_display }}</h6>
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">(iii) Adult Supervision When Cleaning Window Exterior?</p>
@@ -493,7 +539,8 @@
                 </div>
                 <div class="col-md-12">
                     <p class="mb-1">Verify Employer Understands Window Cleaning Conditions</p>
-                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_verifiy_employer_understands_window_cleaning_display }}</h6>
+                    <h6 class="text-dark mb-3">
+                        {{ object.rn_safetyagreement_ed.get_verifiy_employer_understands_window_cleaning_display }}</h6>
                 </div>
             </div>
         </div>
@@ -507,19 +554,48 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_service_fee_schedule' level_1_pk=object.pk %}"><p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form A{% else %}Form B{% endif %})</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_handover_checklist' level_1_pk=object.pk %}"><p class="mb-1">Handover Checklist</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_service_agreement' level_1_pk=object.pk %}"><p class="mb-1">Service Agreement</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_transfer_consent' level_1_pk=object.pk %}"><p class="mb-1">Transfer Consent</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_employment_contract' level_1_pk=object.pk %}"><p class="mb-1">Employment Contract</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}"><p class="mb-1">Work Pass Authorisation</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_repayment_schedule' level_1_pk=object.pk %}"><p class="mb-1">Loan Repayment Schedule</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_job_order_route' level_1_pk=object.pk %}"><p class="mb-1">Job Order</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_rest_day_agreement' level_1_pk=object.pk %}"><p class="mb-1">Rest Day Agreement</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_ipa_route' level_1_pk=object.pk %}"><p class="mb-1">IPA</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_safety_agreement' level_1_pk=object.pk %}"><p class="mb-1">Safety Agreement</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_income_tax_declaration' level_1_pk=object.pk %}"><p class="mb-1">Income Tax Declaration</p></a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_medical_report_route' level_1_pk=object.pk %}"><p class="mb-1">Medical Report</p></a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_service_fee_schedule' level_1_pk=object.pk %}">
+                        <p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form
+                            A{% else %}Form B{% endif %})</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_handover_checklist' level_1_pk=object.pk %}">
+                        <p class="mb-1">Handover Checklist</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_service_agreement' level_1_pk=object.pk %}">
+                        <p class="mb-1">Service Agreement</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_transfer_consent' level_1_pk=object.pk %}">
+                        <p class="mb-1">Transfer Consent</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_employment_contract' level_1_pk=object.pk %}">
+                        <p class="mb-1">Employment Contract</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}">
+                        <p class="mb-1">Work Pass Authorisation</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_repayment_schedule' level_1_pk=object.pk %}">
+                        <p class="mb-1">Loan Repayment Schedule</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_job_order_route' level_1_pk=object.pk %}">
+                        <p class="mb-1">Job Order</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_rest_day_agreement' level_1_pk=object.pk %}">
+                        <p class="mb-1">Rest Day Agreement</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_ipa_route' level_1_pk=object.pk %}">
+                        <p class="mb-1">IPA</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_safety_agreement' level_1_pk=object.pk %}">
+                        <p class="mb-1">Safety Agreement</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'pdf_agency_income_tax_declaration' level_1_pk=object.pk %}">
+                        <p class="mb-1">Income Tax Declaration</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_medical_report_route' level_1_pk=object.pk %}">
+                        <p class="mb-1">Medical Report</p>
+                    </a></div>
             </div>
         </div>
     </div>
@@ -532,15 +608,24 @@
             </div>
             <div class="row">
                 <div class="col-md-12 my-2">
-                    <label for="disabled_sigslug_employer_1">Employer's Signature Link (Except handover checklist)</label>
+                    <label for="disabled_sigslug_employer_1">Employer's Signature Link (Except handover
+                        checklist)</label>
                     <div class="row">
                         <div class="col-22">
                             <div class="input-group">
-                                <input id="copy-value-employer-1" type="text" class="form-control" value="{% if employer_1_sigurl %}{{ employer_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-employer-1" type="text" class="form-control"
+                                    value="{% if employer_1_sigurl %}{{ employer_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
+                                    disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-employer-1" {% if not employer_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                                        id="copy-button-employer-1" {% if not employer_1_sigurl %}disabled{% endif %}><i
+                                            class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i
+                                            class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i
+                                            class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -551,11 +636,20 @@
                     <div class="row">
                         <div class="col-22">
                             <div class="input-group">
-                                <input id="copy-value-employer-spouse" type="text" class="form-control" value="{% if employer_spouse_sigurl %}{{ employer_spouse_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-employer-spouse" type="text" class="form-control"
+                                    value="{% if employer_spouse_sigurl %}{{ employer_spouse_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
+                                    disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-employer-spouse" {% if not employer_spouse_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                                        id="copy-button-employer-spouse"
+                                        {% if not employer_spouse_sigurl %}disabled{% endif %}><i
+                                            class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i
+                                            class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i
+                                            class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -566,11 +660,20 @@
                     <div class="row">
                         <div class="col-22">
                             <div class="input-group">
-                                <input id="copy-value-joint-applicant" type="text" class="form-control" value="{% if joint_applicant_sigurl %}{{ joint_applicant_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-joint-applicant" type="text" class="form-control"
+                                    value="{% if joint_applicant_sigurl %}{{ joint_applicant_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
+                                    disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-joint-applicant" {% if not joint_applicant_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_joint_applicant_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_joint_applicant_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                                        id="copy-button-joint-applicant"
+                                        {% if not joint_applicant_sigurl %}disabled{% endif %}><i
+                                            class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_joint_applicant_generate_route' object.pk %}"><i
+                                            class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_joint_applicant_revoke_route' object.pk %}"><i
+                                            class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -581,11 +684,19 @@
                     <div class="row">
                         <div class="col-22">
                             <div class="input-group">
-                                <input id="copy-value-sponsor-1" type="text" class="form-control" value="{% if sponsor_1_sigurl %}{{ sponsor_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-sponsor-1" type="text" class="form-control"
+                                    value="{% if sponsor_1_sigurl %}{{ sponsor_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
+                                    disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                                        id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i
+                                            class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i
+                                            class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i
+                                            class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -596,11 +707,19 @@
                     <div class="row">
                         <div class="col-22">
                             <div class="input-group">
-                                <input id="copy-value-sponsor-2" type="text" class="form-control" value="{% if sponsor_2_sigurl %}{{ sponsor_2_sigurl }}{% else %}No URL, Please Generate.{% endif %}" disabled>
+                                <input id="copy-value-sponsor-2" type="text" class="form-control"
+                                    value="{% if sponsor_2_sigurl %}{{ sponsor_2_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
+                                    disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button" id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary" href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i class="far fa-trash-alt"></i></a>
+                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                                        id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i
+                                            class="far fa-copy"></i></button>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i
+                                            class="fas fa-undo"></i></a>
+                                    <a class="btn btn-xs-lg btn-outline-secondary"
+                                        href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i
+                                            class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -608,12 +727,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}"><p class="mb-1">EA personnel's signature Link (All doc)</p></a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}">
+                        <p class="mb-1">EA personnel's signature Link (All doc)</p>
+                    </a></div>
                 <!-- <div class="col-md-12 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div> -->
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="{% url 'handover_form_view' object.pk %}" class="btn btn-xs-lg btn-xs-lg btn-primary">Handover FDW</a>
+                    <a href="{% url 'handover_form_view' object.pk %}"
+                        class="btn btn-xs-lg btn-xs-lg btn-primary">Handover FDW</a>
                 </div>
             </div>
         </div>
@@ -628,7 +750,8 @@
             <div class="row">
                 <div class="col">
                     <p>Step 1 - EA personnel signs on all documents</p>
-                    <p>Step 2 - Employer/ spouse sign on the documents (except handover checklist) that contain the EA personnel's signature</p>
+                    <p>Step 2 - Employer/ spouse sign on the documents (except handover checklist) that contain the EA
+                        personnel's signature</p>
                     <p>Step 3 - FDW signs on documents . Employer sign on handover checklist</p>
                 </div>
             </div>
@@ -639,43 +762,50 @@
 
 {% block js %}
 <script>
-function copyToClipboard(element) {
-    navigator.clipboard.writeText(element.value)
-        .then(() => {
-            // Animate copy button
-            element.animate([
-                { transform: 'scale(1)' },
-                { transform: 'scale(1)', backgroundColor: '#666666', color: 'white', },
-                { transform: 'scale(1)' },
-            ], {
-                duration: 500, //milliseconds
-                easing: 'ease-in', //'linear', a bezier curve, etc.
-                delay: 0, //milliseconds
-                iterations: 1, //or a number
-                direction: 'normal', //'normal', 'reverse', etc.
-                fill: 'forwards' //'backwards', 'both', 'none', 'auto'
+    function copyToClipboard(element) {
+        navigator.clipboard.writeText(element.value)
+            .then(() => {
+                // Animate copy button
+                element.animate([{
+                        transform: 'scale(1)'
+                    },
+                    {
+                        transform: 'scale(1)',
+                        backgroundColor: '#666666',
+                        color: 'white',
+                    },
+                    {
+                        transform: 'scale(1)'
+                    },
+                ], {
+                    duration: 500, //milliseconds
+                    easing: 'ease-in', //'linear', a bezier curve, etc.
+                    delay: 0, //milliseconds
+                    iterations: 1, //or a number
+                    direction: 'normal', //'normal', 'reverse', etc.
+                    fill: 'forwards' //'backwards', 'both', 'none', 'auto'
+                });
+            })
+            .catch(err => {
+                console.log('Error in copying text: ', err);
             });
-        })
-        .catch(err => {
-            console.log('Error in copying text: ', err);
-        });
-}
+    }
 
-let copyElements = {
-    'copy-button-employer-1': 'copy-value-employer-1',
-    'copy-button-employer-spouse': 'copy-value-employer-spouse',
-    'copy-button-joint-applicant': 'copy-value-joint-applicant',
-    'copy-button-sponsor-1': 'copy-value-sponsor-1',
-    'copy-button-sponsor-2': 'copy-value-sponsor-2',
-}
+    let copyElements = {
+        'copy-button-employer-1': 'copy-value-employer-1',
+        'copy-button-employer-spouse': 'copy-value-employer-spouse',
+        'copy-button-joint-applicant': 'copy-value-joint-applicant',
+        'copy-button-sponsor-1': 'copy-value-sponsor-1',
+        'copy-button-sponsor-2': 'copy-value-sponsor-2',
+    }
 
-if (copyElements) {
-    for (let button in copyElements) {
-        let valueElement = document.getElementById(copyElements[button]);
-        if (copyElements.hasOwnProperty(button)) {
-            document.getElementById(button).addEventListener('click', () => copyToClipboard(valueElement));
+    if (copyElements) {
+        for (let button in copyElements) {
+            let valueElement = document.getElementById(copyElements[button]);
+            if (copyElements.hasOwnProperty(button)) {
+                document.getElementById(button).addEventListener('click', () => copyToClipboard(valueElement));
+            }
         }
     }
-}
 </script>
 {% endblock js %}

@@ -25,17 +25,22 @@
             <div class="col">
                 <div class="row h-100">
                     <div class="col text-right mt-auto mb-4 pb-3">
-                        <a href="{% url 'employer_create_route' %}" class="btn btn-xs-lg btn-primary mr-1">Add Employer</a>
+                        <a href="{% url 'employer_create_route' %}" class="btn btn-xs-lg btn-primary mr-1">Add
+                            Employer</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col-2">
-                <h6 class="dashboard-table-header">S/N <i class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="serialNoSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">S/N <i
+                        class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="serialNoSortToggle"></i></h6>
             </div>
             <div class="col-7">
-                <h6 class="dashboard-table-header">Employer <i class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="employerNameSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Employer <i
+                        class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="employerNameSortToggle"></i></h6>
             </div>
             <div class="col-3">
                 <h6 class="dashboard-table-header">Mobile</h6>
@@ -44,10 +49,14 @@
                 <h6 class="dashboard-table-header">Home No</h6>
             </div>
             <div class="col-3">
-                <h6 class="dashboard-table-header">Date of Birth <i class="fas {% if order_by == 'dateOfBirth' %}fa-sort-amount-down{% elif order_by == '-dateOfBirth' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="dateOfBirthSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">Date of Birth <i
+                        class="fas {% if order_by == 'dateOfBirth' %}fa-sort-amount-down{% elif order_by == '-dateOfBirth' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="dateOfBirthSortToggle"></i></h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">EA Personnel <i class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle" id="eaPersonnelSortToggle"></i></h6>
+                <h6 class="dashboard-table-header">EA Personnel <i
+                        class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="eaPersonnelSortToggle"></i></h6>
             </div>
             <div class="col-2 text-center">
                 <h6 class="dashboard-table-header">Actions</h6>
@@ -75,9 +84,12 @@
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-1" href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i class="far fa-edit"></i></a>
-                    <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i class="far fa-file-image"></i></a>
-                    <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i class="far fa-trash-alt"></i></a>
+                    <a class="mx-1" href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i
+                            class="far fa-edit"></i></a>
+                    <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i
+                            class="far fa-file-image"></i></a>
+                    <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i
+                            class="far fa-trash-alt"></i></a>
                 </div>
             </div>
         </div>
@@ -139,9 +151,12 @@
                             </div>
                         </div>
                         <h6>Actions:</h6>
-                        <a class="mx-1" href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i class="far fa-edit"></i></a>
-                        <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i class="far fa-file-image"></i></a>
-                        <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i class="far fa-trash-alt"></i></a>
+                        <a class="mx-1" href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i
+                                class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i
+                                class="far fa-file-image"></i></a>
+                        <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i
+                                class="far fa-trash-alt"></i></a>
                     </div>
                 </div>
             </div>
@@ -152,9 +167,9 @@
 {% endblock dashboard_section %}
 {% block js %}
 <script>
-    $(function(){
-        $('.sortToggle').on('click', function(){
-            $('.sortToggle').not(this).each(function(){
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
                 $(this).removeClass('fa-sort-alpha-up');
                 $(this).removeClass('fa-sort-alpha-down');
                 $(this).removeClass('fa-sort-amount-up');
@@ -209,8 +224,8 @@
                         location.href = "{% url 'dashboard_employers_list' %}?order-by=dateOfBirth"
                     }
                     break;
-                    
-                    case 'eaPersonnelSortToggle':
+
+                case 'eaPersonnelSortToggle':
                     if ($(this).hasClass('fa-sort')) {
                         $(this).removeClass('fa-sort');
                         $(this).addClass('fa-sort-alpha-down');
@@ -225,13 +240,14 @@
                         location.href = "{% url 'dashboard_employers_list' %}?order-by=eaPersonnel"
                     }
                     break;
-                    
+
                 default:
                     break;
             }
         })
         $('#id_employer_name,#id_agency_employee,#id_employer_birthday_month').on(
-            'change', function(){
+            'change',
+            function () {
                 this.form.submit();
             }
         )

@@ -31,7 +31,7 @@
                 <h6 class="dashboard-table-header">Deployment</h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">Employer & FDW</h6>
+                <h6 class="dashboard-table-header">Employer &#38; FDW</h6>
             </div>
             <div class="col col-3">
                 <h6 class="dashboard-table-header">Type</h6>
@@ -59,20 +59,24 @@
                 <p class="mb-0">{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">Employer: {{sale.employer.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.employer.agency_employee.name}}</p>
+                <p class="mb-0">Employer: {{sale.employer.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
+                    {{sale.employer.agency_employee.name}}</p>
             </div>
             <div class="col col-3">
-                <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
+                <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New
+                    Case{% else %}Replacement{% endif %}</p>
             </div>
             <div class="col-4">
-                <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br/>Balance:$ {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
+                <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
+                    {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
             </div>
             <div class="col col-3">
                 <p class="mb-0">{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"></i></a>
+                    <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i
+                            class="far fa-edit"></i></a>
                     <a class="mx-1" href="#"><i class="fas fa-file-invoice"></i></a>
                     <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
@@ -88,13 +92,14 @@
                 <p class="mb-0">{{sale.fdw_work_commencement_date}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">Employer: {{sale.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.agency.agency_employee_name}} {{sale.agency.agency_employee_ea_personnel_number}}</p>
+                <p class="mb-0">Employer: {{sale.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
+                    {{sale.agency.agency_employee_name}} {{sale.agency.agency_employee_ea_personnel_number}}</p>
             </div>
             <div class="col col-3">
                 <p class="mb-0">{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
             </div>
             <div class="col-4">
-                <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br/>Balance:$ {{sale.calc_bal}}</p>
+                <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.calc_bal}}</p>
             </div>
             <div class="col col-3">
                 <p class="mb-0">{{sale.ca_deposit_date}}</p>
@@ -102,7 +107,8 @@
             <div class="col-2">
                 <div class="row justify-content-center">
                     <a class="mx-1" href="#"><i class="far fa-unlink"></i></a>
-                    <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="far fa-file-image"></i></a>
+                    <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
+                            class="far fa-file-image"></i></a>
                     <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
                 </div>
             </div>
@@ -144,10 +150,11 @@
                         </div>
                         <div class="row">
                             <div class="col-8 col-lg-10">
-                                <p>Employer & FDW:</p>
+                                <p>Employer &#38; FDW:</p>
                             </div>
                             <div class="col">
-                                <p>Employer: {{sale.employer.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.employer.agency_employee.name}}</p>
+                                <p>Employer: {{sale.employer.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
+                                    {{sale.employer.agency_employee.name}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -155,7 +162,8 @@
                                 <p>Type:</p>
                             </div>
                             <div class="col">
-                                <p>{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
+                                <p>{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New
+                                    Case{% else %}Replacement{% endif %}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -163,7 +171,8 @@
                                 <p>Amount:</p>
                             </div>
                             <div class="col">
-                                <p>Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br/>Balance:$ {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
+                                <p>Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
+                                    {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -175,7 +184,8 @@
                             </div>
                         </div>
                         <h6>Actions:</h6>
-                        <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i
+                                class="far fa-edit"></i></a>
                         <a class="mx-1" href="#"><i class="fas fa-file-invoice-dollar"></i></a>
                         <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
                         {% else %}
@@ -202,10 +212,12 @@
                         </div>
                         <div class="row">
                             <div class="col-8 col-lg-10">
-                                <p>Employer & FDW:</p>
+                                <p>Employer &#38; FDW:</p>
                             </div>
                             <div class="col">
-                                <p>Employer: {{sale.employer_name}}<br/>FDW: {{sale.fdw.name}}<br/>Personnel: {{sale.agency.agency_employee_name}} {{sale.agency.agency_employee_ea_personnel_number}}</p>
+                                <p>Employer: {{sale.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
+                                    {{sale.agency.agency_employee_name}}
+                                    {{sale.agency.agency_employee_ea_personnel_number}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -221,7 +233,7 @@
                                 <p>Amount:</p>
                             </div>
                             <div class="col">
-                                <p>Deposit:$ {{sale.ca_deposit_amount}}<br/>Balance:$ {{sale.calc_bal}}</p>
+                                <p>Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.calc_bal}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -234,7 +246,8 @@
                         </div>
                         <h6>Actions:</h6>
                         <a class="mx-1" href="#"><i class="far fa-unlink"></i></a>
-                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="far fa-file-image"></i></a>
+                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
+                                class="far fa-file-image"></i></a>
                         <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
                         {% endif %}
                     </div>
@@ -247,8 +260,8 @@
 {% endblock dashboard_section %}
 {% block js %}
 <script>
-    $(function(){
-        $('#id_employer_fdw_search').on('change', function(){
+    $(function () {
+        $('#id_employer_fdw_search').on('change', function () {
             this.form.submit();
         });
     })
