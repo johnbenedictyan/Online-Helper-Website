@@ -296,6 +296,14 @@ footer {
   font-size: .75rem !important;
 }
 
+.custom-add-button {
+  background-color: #EFF6FB !important;
+}
+
+.custom-add-button :hover {
+  background-color: #DDEBF7 !important;
+}
+
 .plan-card-custom-horizontal-divider {
   margin-left: -1.25rem;
   margin-right: -1.25rem;
