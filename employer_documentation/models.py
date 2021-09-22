@@ -154,6 +154,8 @@ class Employer(models.Model):
                 message=_('Please enter a valid home telephone number')
             )
         ],
+        null=True,
+        blank=True
     )
 
     employer_email = models.EmailField(
@@ -2911,6 +2913,8 @@ class ArchivedDoc(models.Model):
                 message=_('Please enter a valid home telephone number')
             )
         ],
+        null=True,
+        blank=True
     )
 
     employer_email = models.EmailField(
