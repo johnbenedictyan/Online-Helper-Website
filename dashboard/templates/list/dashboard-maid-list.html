@@ -16,8 +16,11 @@
                         <div class="col-10">
                             {{filter.form.name|as_crispy_field}}
                         </div>
-                        <div class="col-10 offset-2">
+                        <div class="col-10">
                             {{filter.form.status|as_crispy_field}}
+                        </div>
+                        <div class="col-3 mb-3 mt-auto">
+                            <a href="{% url 'dashboard_maid_list' %}" class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
                     </div>
                 </form>
