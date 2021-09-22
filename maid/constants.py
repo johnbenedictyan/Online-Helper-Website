@@ -3,6 +3,18 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # Start of Constants
+CARE_OWN_COUNTRY = 'OC', _('Experience in own country')
+CARE_OVERSEAS = 'OV', _('Experience in overseas')
+CARE_SINGAPORE = 'SG', _('Experience in Singapore')
+CARE_OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
+    'Experience in own country and Singapore'
+)
+CARE_OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
+CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
+    'Experience in own country, overseas and Singapore'
+)
+CARE_NO_EXP = 'NE', _('No experience, but willing to learn')
+CARE_OTHERS = 'OTH', _('Other remarks (Please specify)')
 
 
 class MaidCountryOfOrigin(models.TextChoices):
@@ -149,20 +161,6 @@ class MaidEmploymentCountry(models.TextChoices):
     SINGAPORE = 'SGP', _('Singapore')
     HONG_KONG = 'HKG', _('Hong Kong')
     MALAYSIA = 'MYS', _('Malaysia')
-
-
-CARE_OWN_COUNTRY = 'OC', _('Experience in own country')
-CARE_OVERSEAS = 'OV', _('Experience in overseas')
-CARE_SINGAPORE = 'SG', _('Experience in Singapore')
-CARE_OWN_COUNTRY_SINGAPORE = 'OC_SG', _(
-    'Experience in own country and Singapore'
-)
-CARE_OWN_COUNTRY_OVERSEAS = 'OC_O', _('Experience in own country and overseas')
-CARE_OWN_COUNTRY_OVERSEAS_SINGPAPORE = 'OC_O_SG', _(
-    'Experience in own country, overseas and Singapore'
-)
-CARE_NO_EXP = 'NE', _('No experience, but willing to learn')
-CARE_OTHERS = 'OTH', _('Other remarks (Please specify)')
 
 
 class InfantChildCareRemarksChoices(models.TextChoices):

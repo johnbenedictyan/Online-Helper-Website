@@ -23,6 +23,7 @@ from django.utils.translation import ugettext_lazy as _
 from onlinemaid.constants import (
     TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
 )
+from onlinemaid.fields import CustomBinaryField, NullableCharField
 from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
@@ -131,7 +132,7 @@ class Employer(models.Model):
         verbose_name=_("Employer gender"),
         max_length=1,
         choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        default=GenderChoices.F
     )
 
     employer_mobile_number = models.CharField(
@@ -162,19 +163,17 @@ class Employer(models.Model):
 
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
-        max_length=100,
+        max_length=100
     )
 
-    employer_address_2 = models.CharField(
+    employer_address_2 = NullableCharField(
         verbose_name=_('Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50
     )
 
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
-        max_length=25,
+        max_length=25
     )
 
     employer_date_of_birth = models.DateField(
@@ -195,62 +194,29 @@ class Employer(models.Model):
         default=ResidentialStatusFullChoices.SC
     )
 
-    employer_nric_num = models.BinaryField(
-        verbose_name=_('Employer NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    employer_nric_num = CustomBinaryField(
+        verbose_name=_('Employer NRIC')
     )
 
-    employer_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_nric_nonce = CustomBinaryField()
+
+    employer_nric_tag = CustomBinaryField()
+
+    employer_fin_num = CustomBinaryField(
+        verbose_name=_('Employer FIN')
     )
 
-    employer_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_fin_nonce = CustomBinaryField()
+
+    employer_fin_tag = CustomBinaryField()
+
+    employer_passport_num = CustomBinaryField(
+        verbose_name=_('Employer passport')
     )
 
-    employer_fin_num = models.BinaryField(
-        verbose_name=_('Employer FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
+    employer_passport_nonce = CustomBinaryField()
 
-    employer_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_num = models.BinaryField(
-        verbose_name=_('Employer passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    employer_passport_tag = CustomBinaryField()
 
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
@@ -331,7 +297,7 @@ class Employer(models.Model):
         max_length=40,
         blank=True,
         null=True,
-        default=None,
+        default=None
     )
 
     spouse_gender = models.CharField(
@@ -367,62 +333,29 @@ class Employer(models.Model):
         null=True
     )
 
-    spouse_nric_num = models.BinaryField(
-        verbose_name=_("Spouse's NRIC"),
-        editable=True,
-        blank=True,
-        null=True
+    spouse_nric_num = CustomBinaryField(
+        verbose_name=_("Spouse's NRIC")
     )
 
-    spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    spouse_nric_nonce = CustomBinaryField()
+
+    spouse_nric_tag = CustomBinaryField()
+
+    spouse_fin_num = CustomBinaryField(
+        verbose_name=_("Spouse's FIN")
     )
 
-    spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    spouse_fin_nonce = CustomBinaryField()
+
+    spouse_fin_tag = CustomBinaryField()
+
+    spouse_passport_num = CustomBinaryField(
+        verbose_name=_("Spouse's Passport No")
     )
 
-    spouse_fin_num = models.BinaryField(
-        verbose_name=_("Spouse's FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
+    spouse_passport_nonce = CustomBinaryField()
 
-    spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_num = models.BinaryField(
-        verbose_name=_("Spouse's Passport No"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    spouse_passport_tag = CustomBinaryField()
 
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
@@ -597,20 +530,20 @@ class EmployerSponsor(models.Model):
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
         choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        default=GenderChoices.F
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
     )
     sponsor_1_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 NRIC'),
-        editable=True,
+        editable=True
     )
     sponsor_1_nric_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     sponsor_1_nric_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
     sponsor_1_nationality = models.CharField(
         verbose_name=_("Sponsor 1 nationality/citizenship"),
@@ -622,7 +555,7 @@ class EmployerSponsor(models.Model):
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        default=ResidentialStatusPartialChoices.SC
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -635,11 +568,11 @@ class EmployerSponsor(models.Model):
         ],
     )
     sponsor_1_email = models.EmailField(
-        verbose_name=_('Sponsor 1 email address'),
+        verbose_name=_('Sponsor 1 email address')
     )
     sponsor_1_address_1 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 1'),
-        max_length=100,
+        max_length=100
     )
     sponsor_1_address_2 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 2'),
@@ -649,7 +582,7 @@ class EmployerSponsor(models.Model):
     )
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
-        max_length=25,
+        max_length=25
     )
     sponsor_1_marital_status = models.CharField(
         verbose_name=_("Sponsor 1 marital status"),
@@ -707,54 +640,21 @@ class EmployerSponsor(models.Model):
         blank=True,
         null=True
     )
-    sponsor_1_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse NRIC')
     )
-    sponsor_1_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nric_nonce = CustomBinaryField()
+    sponsor_1_spouse_nric_tag = CustomBinaryField()
+    sponsor_1_spouse_fin_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse FIN')
     )
-    sponsor_1_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_fin_nonce = CustomBinaryField()
+    sponsor_1_spouse_fin_tag = CustomBinaryField()
+    sponsor_1_spouse_passport_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse passport')
     )
-    sponsor_1_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    sponsor_1_spouse_passport_nonce = CustomBinaryField()
+    sponsor_1_spouse_passport_tag = CustomBinaryField()
     sponsor_1_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 1 spouse passport expiry date'),
         blank=True,
@@ -799,22 +699,11 @@ class EmployerSponsor(models.Model):
         blank=True,
         null=True
     )
-    sponsor_2_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 NRIC')
     )
-    sponsor_2_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    sponsor_2_nric_nonce = CustomBinaryField()
+    sponsor_2_nric_tag = CustomBinaryField()
     sponsor_2_nationality = models.CharField(
         verbose_name=_("Sponsor 2 nationality/citizenship"),
         max_length=3,
@@ -924,54 +813,21 @@ class EmployerSponsor(models.Model):
         blank=True,
         null=True
     )
-    sponsor_2_spouse_nric_num = models.BinaryField(
+    sponsor_2_spouse_nric_num = CustomBinaryField(
         verbose_name=_('Sponsor 2 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
     )
-    sponsor_2_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_num = models.BinaryField(
+    sponsor_2_spouse_nric_nonce = CustomBinaryField()
+    sponsor_2_spouse_nric_tag = CustomBinaryField()
+    sponsor_2_spouse_fin_num = CustomBinaryField(
         verbose_name=_('Sponsor 2 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
     )
-    sponsor_2_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_fin_nonce = CustomBinaryField()
+    sponsor_2_spouse_fin_tag = CustomBinaryField()
+    sponsor_2_spouse_passport_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse passport')
     )
-    sponsor_2_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    sponsor_2_spouse_passport_nonce = CustomBinaryField()
+    sponsor_2_spouse_passport_tag = CustomBinaryField()
     sponsor_2_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
         blank=True,
@@ -1172,20 +1028,20 @@ class EmployerJointApplicant(models.Model):
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
         choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        default=GenderChoices.F
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
     )
     joint_applicant_nric_num = models.BinaryField(
         verbose_name=_('Joint applicant NRIC'),
-        editable=True,
+        editable=True
     )
     joint_applicant_nric_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     joint_applicant_nric_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
     joint_applicant_nationality = models.CharField(
         verbose_name=_("Joint applicant's nationality/citizenship"),
@@ -1197,11 +1053,11 @@ class EmployerJointApplicant(models.Model):
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        default=ResidentialStatusPartialChoices.SC
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
-        max_length=100,
+        max_length=100
     )
     joint_applicant_address_2 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 2"),
@@ -1211,7 +1067,7 @@ class EmployerJointApplicant(models.Model):
     )
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
-        max_length=25,
+        max_length=25
     )
     joint_applicant_marital_status = models.CharField(
         verbose_name=_("Joint applicant's marital status"),
@@ -1275,48 +1131,18 @@ class EmployerJointApplicant(models.Model):
         blank=True,
         null=True
     )
-    joint_applicant_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_nric_nonce = CustomBinaryField()
+    joint_applicant_spouse_nric_tag = CustomBinaryField()
+    joint_applicant_spouse_fin_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse FIN")
     )
-    joint_applicant_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_fin_nonce = CustomBinaryField()
+    joint_applicant_spouse_fin_tag = CustomBinaryField()
+    joint_applicant_spouse_passport_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse passport")
     )
-    joint_applicant_spouse_fin_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse passport"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    joint_applicant_spouse_passport_nonce = CustomBinaryField()
+    joint_applicant_spouse_passport_tag = CustomBinaryField()
     joint_applicant_spouse_passport_date = models.DateField(
         verbose_name=_("Joint applicant's spouse passport expiry date"),
         blank=True,
@@ -1456,13 +1282,13 @@ class EmployerHousehold(models.Model):
     )
     household_id_num = models.BinaryField(
         verbose_name=_("Household member's ID number"),
-        editable=True,
+        editable=True
     )
     household_id_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     household_id_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
     household_date_of_birth = models.DateField(
         verbose_name=_("Household member's date of birth"),
@@ -2047,22 +1873,11 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True
     )
-    fdw_replaced_passport_num = models.BinaryField(
-        verbose_name=_('Passport No. of FDW Replaced'),
-        editable=True,
-        blank=True,
-        null=True
+    fdw_replaced_passport_num = CustomBinaryField(
+        verbose_name=_('Passport No. of FDW Replaced')
     )
-    fdw_replaced_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    fdw_replaced_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    fdw_replaced_passport_nonce = CustomBinaryField()
+    fdw_replaced_passport_tag = CustomBinaryField()
     b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
         blank=True,
@@ -2888,7 +2703,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Employer gender"),
         max_length=1,
         choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        default=GenderChoices.F
     )
 
     employer_mobile_number = models.CharField(
@@ -2919,7 +2734,7 @@ class ArchivedDoc(models.Model):
 
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
-        max_length=100,
+        max_length=100
     )
 
     employer_address_2 = models.CharField(
@@ -2931,7 +2746,7 @@ class ArchivedDoc(models.Model):
 
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
-        max_length=25,
+        max_length=25
     )
 
     employer_date_of_birth = models.DateField(
@@ -2951,63 +2766,33 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Employer residential status"),
         max_length=5,
         choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
+        default=ResidentialStatusFullChoices.SC
     )
 
     employer_nric_num = models.BinaryField(
         verbose_name=_('Employer NRIC'),
-        editable=True,
+        editable=True
     )
 
-    employer_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_nric_nonce = CustomBinaryField()
+
+    employer_nric_tag = CustomBinaryField()
+
+    employer_fin_num = CustomBinaryField(
+        verbose_name=_('Employer FIN')
     )
 
-    employer_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_fin_nonce = CustomBinaryField()
+
+    employer_fin_tag = CustomBinaryField()
+
+    employer_passport_num = CustomBinaryField(
+        verbose_name=_('Employer passport')
     )
 
-    employer_fin_num = models.BinaryField(
-        verbose_name=_('Employer FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
+    employer_passport_nonce = CustomBinaryField()
 
-    employer_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_num = models.BinaryField(
-        verbose_name=_('Employer passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    employer_passport_tag = CustomBinaryField()
 
     employer_passport_date = models.DateField(
         verbose_name=_('Employer passport expiry date'),
@@ -3102,7 +2887,7 @@ class ArchivedDoc(models.Model):
         max_length=40,
         blank=True,
         null=True,
-        default=None,
+        default=None
     )
     spouse_gender = models.CharField(
         verbose_name=_("Spouse's gender"),
@@ -3133,54 +2918,21 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    spouse_nric_num = models.BinaryField(
-        verbose_name=_("Spouse's NRIC"),
-        editable=True,
-        blank=True,
-        null=True
+    spouse_nric_num = CustomBinaryField(
+        verbose_name=_("Spouse's NRIC")
     )
-    spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    spouse_nric_nonce = CustomBinaryField()
+    spouse_nric_tag = CustomBinaryField()
+    spouse_fin_num = CustomBinaryField(
+        verbose_name=_("Spouse's FIN")
     )
-    spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    spouse_fin_nonce = CustomBinaryField()
+    spouse_fin_tag = CustomBinaryField()
+    spouse_passport_num = CustomBinaryField(
+        verbose_name=_("Spouse's Passport No")
     )
-    spouse_fin_num = models.BinaryField(
-        verbose_name=_("Spouse's FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_num = models.BinaryField(
-        verbose_name=_("Spouse's Passport No"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    spouse_passport_nonce = CustomBinaryField()
+    spouse_passport_tag = CustomBinaryField()
     spouse_passport_date = models.DateField(
         verbose_name=_("Spouse's Passport Expiry Date"),
         blank=True,
@@ -3204,7 +2956,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Sponsor 1 gender"),
         max_length=1,
         choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        default=GenderChoices.F
     )
     sponsor_1_date_of_birth = models.DateField(
         verbose_name=_('Sponsor 1 date of birth'),
@@ -3233,7 +2985,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        default=ResidentialStatusPartialChoices.SC
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -3322,54 +3074,21 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    sponsor_1_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse NRIC')
     )
-    sponsor_1_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nric_nonce = CustomBinaryField()
+    sponsor_1_spouse_nric_tag = CustomBinaryField()
+    sponsor_1_spouse_fin_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse FIN')
     )
-    sponsor_1_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_fin_nonce = CustomBinaryField()
+    sponsor_1_spouse_fin_tag = CustomBinaryField()
+    sponsor_1_spouse_passport_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse passport')
     )
-    sponsor_1_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    sponsor_1_spouse_passport_nonce = CustomBinaryField()
+    sponsor_1_spouse_passport_tag = CustomBinaryField()
     sponsor_1_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 1 spouse passport expiry date'),
         blank=True,
@@ -3414,22 +3133,11 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    sponsor_2_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 NRIC')
     )
-    sponsor_2_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    sponsor_2_nric_nonce = CustomBinaryField()
+    sponsor_2_nric_tag = CustomBinaryField()
     sponsor_2_nationality = models.CharField(
         verbose_name=_("Sponsor 2 nationality/citizenship"),
         max_length=3,
@@ -3539,54 +3247,21 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    sponsor_2_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse NRIC')
     )
-    sponsor_2_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_nric_nonce = CustomBinaryField()
+    sponsor_2_spouse_nric_tag = CustomBinaryField()
+    sponsor_2_spouse_fin_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse FIN')
     )
-    sponsor_2_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_fin_nonce = CustomBinaryField()
+    sponsor_2_spouse_fin_tag = CustomBinaryField()
+    sponsor_2_spouse_passport_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse passport')
     )
-    sponsor_2_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    sponsor_2_spouse_passport_nonce = CustomBinaryField()
+    sponsor_2_spouse_passport_tag = CustomBinaryField()
     sponsor_2_spouse_passport_date = models.DateField(
         verbose_name=_('Sponsor 2 spouse passport expiry date'),
         blank=True,
@@ -3673,7 +3348,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Joint applicant's gender"),
         max_length=1,
         choices=GenderChoices.choices,
-        default=GenderChoices.F,
+        default=GenderChoices.F
     )
     joint_applicant_date_of_birth = models.DateField(
         verbose_name=_("Joint applicant's date of birth"),
@@ -3681,13 +3356,13 @@ class ArchivedDoc(models.Model):
     )
     joint_applicant_nric_num = models.BinaryField(
         verbose_name=_('Joint applicant NRIC'),
-        editable=True,
+        editable=True
     )
     joint_applicant_nric_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     joint_applicant_nric_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
     joint_applicant_nationality = models.CharField(
         verbose_name=_("Joint applicant's nationality/citizenship"),
@@ -3699,7 +3374,7 @@ class ArchivedDoc(models.Model):
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        default=ResidentialStatusPartialChoices.SC
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
@@ -3773,54 +3448,21 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    joint_applicant_spouse_nric_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse NRIC"),
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_nric_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse NRIC")
     )
-    joint_applicant_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_nric_nonce = CustomBinaryField()
+    joint_applicant_spouse_nric_tag = CustomBinaryField()
+    joint_applicant_spouse_fin_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse FIN")
     )
-    joint_applicant_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_fin_nonce = CustomBinaryField()
+    joint_applicant_spouse_fin_tag = CustomBinaryField()
+    joint_applicant_spouse_passport_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse passport")
     )
-    joint_applicant_spouse_fin_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse passport"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    joint_applicant_spouse_passport_nonce = CustomBinaryField()
+    joint_applicant_spouse_passport_tag = CustomBinaryField()
     joint_applicant_spouse_passport_date = models.DateField(
         verbose_name=_("Joint applicant's spouse passport expiry date"),
         blank=True,
@@ -3926,22 +3568,11 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
-    fdw_replaced_passport_num = models.BinaryField(
-        verbose_name=_('Passport No. of FDW Replaced'),
-        editable=True,
-        blank=True,
-        null=True
+    fdw_replaced_passport_num = CustomBinaryField(
+        verbose_name=_('Passport No. of FDW Replaced')
     )
-    fdw_replaced_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    fdw_replaced_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    fdw_replaced_passport_nonce = CustomBinaryField()
+    fdw_replaced_passport_tag = CustomBinaryField()
     b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
         blank=True,
