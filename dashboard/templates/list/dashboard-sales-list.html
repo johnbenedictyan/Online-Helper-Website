@@ -24,10 +24,10 @@
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
-            <div class="col col-2">
+            <div class="col col-1">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <h6 class="dashboard-table-header">Contract Date</h6>
             </div>
             <div class="col col-3">
@@ -36,13 +36,13 @@
             <div class="col">
                 <h6 class="dashboard-table-header">Employer &#38; FDW</h6>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <h6 class="dashboard-table-header">Type</h6>
             </div>
             <div class="col-4">
                 <h6 class="dashboard-table-header">Amount</h6>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <h6 class="dashboard-table-header">Received On</h6>
             </div>
             <div class="col-2 text-center">
@@ -52,10 +52,10 @@
         {% for sale in sales %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             {% if sale.is_archived_doc is False %}
-            <div class="col col-2">
+            <div class="col col-1">
                 <p class="mb-0"></p>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <p class="mb-0">{{sale.agreement_date}}</p>
             </div>
             <div class="col col-3">
@@ -65,7 +65,7 @@
                 <p class="mb-0">Employer: {{sale.employer.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
                     {{sale.employer.agency_employee.name}}</p>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New
                     Case{% else %}Replacement{% endif %}</p>
             </div>
@@ -73,7 +73,7 @@
                 <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
                     {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <p class="mb-0">{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
             </div>
             <div class="col-2">
