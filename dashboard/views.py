@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 # Django Imports
 from django.contrib import messages
 from django.db.models import Q
+from django.db.models.expressions import Case
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
 from django.forms.models import model_to_dict
@@ -13,7 +14,9 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView, UpdateView, CreateView
+from django.views.generic.edit import (
+    DeleteView, FormView, UpdateView, CreateView
+)
 
 # Project Apps Imports
 from agency.forms import (
@@ -60,15 +63,6 @@ class BaseDashboardView(AgencyLoginRequiredMixin, GetAuthorityMixin):
     authority = ''
     agency_id = ''
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'agency_name': Agency.objects.get(
-                pk=self.agency_id
-            ).name
-        })
-        return context
-
 
 class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
                            ListFilteredMixin, ListView):
@@ -79,9 +73,6 @@ class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'agency_name': Agency.objects.get(
-                pk=self.agency_id
-            ).name,
             'order_by': self.request.GET.get('order-by')
         })
         return context
@@ -1621,11 +1612,43 @@ class AgencyPlanList(AgencyOwnerRequiredMixin, GetAuthorityMixin, ListView):
     authority = ''
     agency_id = ''
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'agency_name': Agency.objects.get(
-                pk=self.agency_id
-            ).name
-        })
-        return context
+
+class DashboardBaseDeleteView(DeleteView):
+    http_method_names = ['post']
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return JsonResponse({'status': 'ok'}, status=200)
+
+
+class DashboardEmployeeDelete(DashboardBaseDeleteView):
+    model = AgencyEmployee
+
+
+class DashboardFDWDelete(DashboardBaseDeleteView):
+    model = Maid
+
+
+class DashboardEmployerDelete(DashboardBaseDeleteView):
+    model = Employer
+
+
+class DashboardCaseDelete(DashboardBaseDeleteView):
+    model = EmployerDoc
+
+
+class DashboardSalesDelete(DashboardBaseDeleteView):
+    model = EmployerDoc
+
+
+class DashboardStatusDelete(DashboardBaseDeleteView):
+    model = CaseStatus
+
+
+class DashboardGeneralEnquiryDelete(DashboardBaseDeleteView):
+    model = GeneralEnquiry
+
+
+class DashboardShortlisedEnquiryDelete(DashboardBaseDeleteView):
+    model = ShortlistedEnquiry

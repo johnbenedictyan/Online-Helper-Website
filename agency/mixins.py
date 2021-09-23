@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 
 # Project Apps Imports
 from accounts.models import User
+from agency.models import Agency
 from onlinemaid.constants import (
     AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
 )
@@ -181,3 +182,12 @@ class GetAuthorityMixin:
         self.authority = self.get_authority()['authority']
         self.agency_id = self.get_authority()['agency_id']
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'agency_name': Agency.objects.get(
+                pk=self.agency_id
+            ).name
+        })
+        return context
