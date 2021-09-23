@@ -39,35 +39,35 @@ class AgencyBranchFormSetHelper(FormHelper):
                     Row(
                         Column(
                             'name',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pr-md-3'
                         ),
                         Column(
                             'address_1',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pl-md-3'
                         ),
                         Column(
                             'address_2',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pr-md-3'
                         ),
                         Column(
                             'postal_code',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pl-md-3'
                         ),
                         Column(
                             'email',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pr-md-3'
                         ),
                         Column(
                             'office_number',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pl-md-3'
                         ),
                         Column(
                             'mobile_number',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pr-md-3'
                         ),
                         Column(
                             'main_branch',
-                            css_class='col-md-12'
+                            css_class='col-md-12 pl-md-3'
                         )
                     )
                 ),
