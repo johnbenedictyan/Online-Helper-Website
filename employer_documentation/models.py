@@ -2164,6 +2164,7 @@ class DocServiceFeeSchedule(models.Model):
     )
     ca_remaining_payment_date = models.DateField(
         verbose_name=_('Remaining Amount Paid Date'),
+        blank=True,
         null=True
     )
     ca_deposit_receipt_no = models.CharField(
