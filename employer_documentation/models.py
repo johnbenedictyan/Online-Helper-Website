@@ -2275,17 +2275,23 @@ class DocServAgmtEmpCtr(models.Model):
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (i)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_2 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (ii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_3 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (iii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
         verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
