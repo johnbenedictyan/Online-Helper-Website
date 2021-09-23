@@ -1529,7 +1529,7 @@ class EmployerDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=DayChoices.choices[0:5],
+        choices=DayChoices.choices[0:9],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
@@ -3903,7 +3903,7 @@ class ArchivedDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=DayChoices.choices[0:5],
+        choices=DayChoices.choices[0:9],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
