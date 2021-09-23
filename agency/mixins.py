@@ -185,9 +185,10 @@ class GetAuthorityMixin:
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            'agency_name': Agency.objects.get(
-                pk=self.agency_id
-            ).name
-        })
+        if self.agency_id != '':
+            context.update({
+                'agency_name': Agency.objects.get(
+                    pk=self.agency_id
+                ).name
+            })
         return context
