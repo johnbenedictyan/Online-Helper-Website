@@ -370,15 +370,15 @@ class AgencyUpdateForm(forms.ModelForm):
                 ),
                 Column(
                     'name',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-md-3'
                 ),
                 Column(
                     'license_number',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pl-md-3'
                 ),
                 Column(
                     'website_uri',
-                    css_class='form-group col-lg-12'
+                    css_class='form-group col-lg-12 pr-md-3'
                 ),
                 css_class='mb-xl-3'
             ),
@@ -388,7 +388,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         '<h5 class="fs-14">Profile</h5>'
                     ),
                     'profile',
-                    css_class='form-group col-lg-12 mb-3 mb-lg-4 mb-xl-5',
+                    css_class='form-group col-lg-12 mb-3 mb-lg-4 mb-xl-5 pr-md-3',
                     css_id='agencyProfileGroup'
                 ),
                 Column(
@@ -396,7 +396,7 @@ class AgencyUpdateForm(forms.ModelForm):
                         '<h5 class="fs-14">Our Services</h5>'
                     ),
                     'services',
-                    css_class='form-group col-lg-12 mb-3 mb-lg-4 mb-xl-5',
+                    css_class='form-group col-lg-12 mb-3 mb-lg-4 mb-xl-5 pl-md-3',
                     css_id='agencyServicesGroup'
                 ),
                 css_class='mb-xl-3'
