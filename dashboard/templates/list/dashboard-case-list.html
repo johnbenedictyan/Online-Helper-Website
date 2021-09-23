@@ -35,19 +35,27 @@
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col-2">
-                <h6 class="dashboard-table-header">S/N</h6>
+                <h6 class="dashboard-table-header">S/N <i
+                        class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="serialNoSortToggle"></i></h6>
             </div>
             <div class="col-3">
-                <h6 class="dashboard-table-header">Contract Date</h6>
+                <h6 class="dashboard-table-header">Contract Date <i
+                        class="fas {% if order_by == 'contractDate' %}fa-sort-amount-down{% elif order_by == '-contractDate' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="contractDateSortToggle"></i></h6>
             </div>
             <div class="col-3">
-                <h6 class="dashboard-table-header">Case No</h6>
+                <h6 class="dashboard-table-header">Case No <i
+                        class="fas {% if order_by == 'caseNo' %}fa-sort-amount-down{% elif order_by == '-caseNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="caseNoSortToggle"></i></h6>
             </div>
             <div class="col-7">
                 <h6 class="dashboard-table-header">Employer</h6>
             </div>
             <div class="col">
-                <h6 class="dashboard-table-header">Case Type</h6>
+                <h6 class="dashboard-table-header">Case Type <i
+                        class="fas {% if order_by == 'caseType' %}fa-sort-alpha-down{% elif order_by == '-caseType' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="caseTypeSortToggle"></i></h6>
             </div>
             <div class="col-4">
                 <h6 class="dashboard-table-header">EA Personnel</h6>
@@ -161,3 +169,86 @@
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'contractDateSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=contractDate"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-contractDate"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=contractDate"
+                    }
+                    break;
+
+                case 'caseNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseNo"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-caseNo"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseNo"
+                    }
+                    break;
+
+                case 'caseTypeSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseType"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-caseType"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseType"
+                    }
+                    break;
+    
+                default:
+                    break;
+            }
+        })
+    })
+</script>
+{% endblock js%}

@@ -81,7 +81,8 @@ class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
         context.update({
             'agency_name': Agency.objects.get(
                 pk=self.agency_id
-            ).name
+            ).name,
+            'order_by': self.request.GET.get('order-by')
         })
         return context
 
@@ -109,6 +110,20 @@ class CaseList(BaseFilteredListView):
         else:
             qs = None
 
+        order_by = self.request.GET.get('order-by')
+        employee_order_by_map = {
+            'serialNo': 'user_id',
+            '-serialNo': '-user_id',
+            'contractDate': 'agreement_date',
+            '-contractDate': '-agreement_date',
+            'caseNo': 'case_ref_no',
+            '-caseNo': '-case_ref_no',
+            'caseType': 'employer__applicant_type',
+            '-caseType': '-employer__applicant_type',
+        }
+        if order_by and order_by in employee_order_by_map:
+            order_by = employee_order_by_map[order_by]
+            qs = qs.order_by(order_by)
         return qs
 
 
@@ -314,7 +329,8 @@ class AccountList(BaseListView):
             'employee_accounts': {
                 'current': agency.amount_of_employees,
                 'max': agency.amount_of_employees_allowed
-            }
+            },
+            'order_by': self.request.GET.get('order-by')
         })
         return kwargs
 
@@ -331,16 +347,14 @@ class AccountList(BaseListView):
 
         order_by = self.request.GET.get('order-by')
         employee_order_by_map = {
-            # 'serialNo': 'id',
-            # '-serialNo': '-id',
-            # 'nationality': 'country_of_origin',
-            # '-nationality': '-country_of_origin',
-            # 'type': 'maid_type',
-            # '-type': '-maid_type',
-            # 'ppExpiry': 'passport_expiry',
-            # '-ppExpiry': '-passport_expiry',
-            # 'dateCreated': 'created_on',
-            # '-dateCreated': '-created_on'
+            'serialNo': 'user_id',
+            '-serialNo': '-user_id',
+            'employeeName': 'name',
+            '-employeeName': '-name',
+            'employeeType': 'role',
+            '-employeeType': '-role',
+            'employeeBranch': 'branch',
+            '-employeeBranch': '-branch',
         }
         if order_by and order_by in employee_order_by_map:
             order_by = employee_order_by_map[order_by]

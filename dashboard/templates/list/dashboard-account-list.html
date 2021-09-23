@@ -36,10 +36,14 @@
                 <h6 class="dashboard-table-header">Email</h6>
             </div>
             <div class="col-3">
-                <h6 class="dashboard-table-header">Type</h6>
+                <h6 class="dashboard-table-header">Type <i
+                        class="fas {% if order_by == 'employeeType' %}fa-sort-alpha-down{% elif order_by == '-employeeType' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="employeeTypeSortToggle"></i></h6>
             </div>
             <div class="col-3">
-                <h6 class="dashboard-table-header">Branch</h6>
+                <h6 class="dashboard-table-header">Branch <i
+                        class="fas {% if order_by == 'employeeBranch' %}fa-sort-alpha-down{% elif order_by == '-employeeBranch' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="employeeBranchSortToggle"></i></h6>
             </div>
             <div class="col-3">
                 <h6 class="dashboard-table-header">Last Login</h6>
@@ -147,3 +151,86 @@
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'employeeNameSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=employeeName"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=-employeeName"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=employeeName"
+                    }
+                    break;
+
+                case 'employeeTypeSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=employeeType"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=-employeeType"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=employeeType"
+                    }
+                    break;
+
+                case 'employeeBranchSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=employeeBranch"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=-employeeBranch"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_account_list' %}?order-by=employeeBranch"
+                    }
+                    break;
+    
+                default:
+                    break;
+            }
+        })
+    })
+</script>
+{% endblock js%}
