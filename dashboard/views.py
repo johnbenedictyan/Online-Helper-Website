@@ -1624,31 +1624,39 @@ class DashboardBaseDeleteView(DeleteView):
 
 class DashboardEmployeeDelete(DashboardBaseDeleteView):
     model = AgencyEmployee
+    template_name = 'delete/delete.html'
 
 
 class DashboardFDWDelete(DashboardBaseDeleteView):
     model = Maid
+    template_name = 'delete/delete.html'
 
 
 class DashboardEmployerDelete(DashboardBaseDeleteView):
     model = Employer
+    template_name = 'delete/delete.html'
 
 
 class DashboardCaseDelete(DashboardBaseDeleteView):
     model = EmployerDoc
+    template_name = 'delete/delete.html'
 
 
 class DashboardSalesDelete(DashboardBaseDeleteView):
     model = EmployerDoc
+    template_name = 'delete/delete.html'
 
 
 class DashboardStatusDelete(DashboardBaseDeleteView):
     model = CaseStatus
+    template_name = 'delete/delete.html'
 
 
 class DashboardGeneralEnquiryDelete(DashboardBaseDeleteView):
     model = GeneralEnquiry
+    template_name = 'delete/delete.html'
 
 
 class DashboardShortlisedEnquiryDelete(DashboardBaseDeleteView):
     model = ShortlistedEnquiry
+    template_name = 'delete/delete.html'

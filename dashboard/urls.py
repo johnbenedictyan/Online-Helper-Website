@@ -34,6 +34,13 @@ from .views import (
 # Generic Views
 from .views import DataProviderView
 
+# Delete Views
+from .views import (
+    DashboardCaseDelete, DashboardEmployeeDelete, DashboardEmployerDelete,
+    DashboardFDWDelete, DashboardSalesDelete, DashboardShortlisedEnquiryDelete,
+    DashboardStatusDelete
+)
+
 # Start of Urls
 
 urlpatterns = [

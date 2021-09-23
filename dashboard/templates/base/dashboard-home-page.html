@@ -499,6 +499,12 @@
             }
         }
 
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        });
+
         var branchSalesChartOptions = {
             series: [],
             chart: {
@@ -510,7 +516,7 @@
             },
             plotOptions: {
                 bar: {
-                    borderRadius: 10,
+                    borderRadius: 3,
                     dataLabels: {
                         position: 'top', // top, center, bottom
                     },
@@ -519,11 +525,12 @@
             dataLabels: {
                 enabled: true,
                 formatter: function (val) {
-                    return `$${val}`;
+                    return formatter.format(val);
                 },
                 offsetY: -10,
                 style: {
-                    fontSize: '.6rem',
+                    fontSize: '10px',
+                    fontWeight: '400',
                     colors: ["#304758"]
                 }
             },
@@ -596,7 +603,7 @@
             },
             plotOptions: {
                 bar: {
-                    borderRadius: 10,
+                    borderRadius: 3,
                     dataLabels: {
                         position: 'top', // top, center, bottom
                     },
