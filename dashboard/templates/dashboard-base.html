@@ -43,37 +43,37 @@
                     <div id="dashboardPageNavWrapper"
                         class="col col-md-5 col-lg-5 col-xl-4 bg-dashboard-pagebar-color text-dashboard-text-color">
                         {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
                         </div>
                         {% endif %}
                         {% if url_name == 'dashboard_agency_detail' %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
                         </div>
                         {% endif %}
                         {% if url_name == 'dashboard_agency_update' %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
                         </div>
                         {% endif %}
                         {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' or url_name == 'dashboard_agency_outlet_details_update' %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/agency-update-mini-nav.html' %}
                         </div>
                         {% endif %}
                         {% if url_name == 'dashboard_agency_employee_create' or url_name == 'dashboard_agency_employee_update' %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/agency-employee-mini-nav.html' %}
                         </div>
                         {% endif %}
                         {% if url_name in employer_crud_pagebar_urls %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/employer-mini-nav.html' %}
                         </div>
                         {% endif %}
                         {% if url_name in case_crud_pagebar_urls %}
-                        <div class="col">
+                        <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/case-mini-nav.html' %}
                         </div>
                         {% endif %}
