@@ -188,28 +188,20 @@ class MaidList(BaseFilteredListView):
     def get_queryset(self):
         qs = super().get_queryset()
         order_by = self.request.GET.get('order-by')
-
-        if order_by:
-            if order_by == 'serialNo':
-                order_by = 'id'
-            elif order_by == '-serialNo':
-                order_by = '-id'
-            elif order_by == 'nationality':
-                order_by = 'country_of_origin'
-            elif order_by == '-nationality':
-                order_by = '-country_of_origin'
-            elif order_by == 'type':
-                order_by = 'maid_type'
-            elif order_by == '-type':
-                order_by = '-maid_type'
-            elif order_by == 'ppExpiry':
-                order_by = 'passport_expiry'
-            elif order_by == '-ppExpiry':
-                order_by = '-passport_expiry'
-            elif order_by == 'dateCreated':
-                order_by = 'created_on'
-            elif order_by == '-dateCreated':
-                order_by = '-created_on'
+        maid_order_by_map = {
+            'serialNo': 'id',
+            '-serialNo': '-id',
+            'nationality': 'country_of_origin',
+            '-nationality': '-country_of_origin',
+            'type': 'maid_type',
+            '-type': '-maid_type',
+            'ppExpiry': 'passport_expiry',
+            '-ppExpiry': '-passport_expiry',
+            'dateCreated': 'created_on',
+            '-dateCreated': '-created_on'
+        }
+        if order_by and order_by in maid_order_by_map:
+            order_by = maid_order_by_map[order_by]
             return qs.filter(
                 agency__pk=self.agency_id
             ).order_by(order_by)
@@ -328,14 +320,33 @@ class AccountList(BaseListView):
 
     def get_queryset(self):
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            return AgencyEmployee.objects.filter(
+            qs = AgencyEmployee.objects.filter(
                 agency__pk=self.agency_id
             )
         else:
-            return AgencyEmployee.objects.filter(
+            qs = AgencyEmployee.objects.filter(
                 agency__pk=self.agency_id,
                 branch=self.request.user.agency_employee.branch
             )
+
+        order_by = self.request.GET.get('order-by')
+        employee_order_by_map = {
+            # 'serialNo': 'id',
+            # '-serialNo': '-id',
+            # 'nationality': 'country_of_origin',
+            # '-nationality': '-country_of_origin',
+            # 'type': 'maid_type',
+            # '-type': '-maid_type',
+            # 'ppExpiry': 'passport_expiry',
+            # '-ppExpiry': '-passport_expiry',
+            # 'dateCreated': 'created_on',
+            # '-dateCreated': '-created_on'
+        }
+        if order_by and order_by in employee_order_by_map:
+            order_by = employee_order_by_map[order_by]
+            return qs.order_by(order_by)
+        else:
+            return qs
 
 
 class AgencyBranchList(BaseListView):

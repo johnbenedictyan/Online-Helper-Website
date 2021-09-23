@@ -23,10 +23,14 @@
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
             <div class="col-1">
-                <h6 class="dashboard-table-header">S/N</h6>
+                <h6 class="dashboard-table-header">S/N <i
+                        class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="serialNoSortToggle"></i></h6>
             </div>
             <div class="col-6">
-                <h6 class="dashboard-table-header">Name</h6>
+                <h6 class="dashboard-table-header">Name <i
+                        class="fas {% if order_by == 'employeeName' %}fa-sort-alpha-down{% elif order_by == '-employeeName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="employeeNameSortToggle"></i></h6>
             </div>
             <div class="col-6">
                 <h6 class="dashboard-table-header">Email</h6>

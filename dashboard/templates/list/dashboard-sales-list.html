@@ -17,7 +17,8 @@
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
                         <div class="col-3 mb-3 mt-auto">
-                            <a href="{% url 'dashboard_sales_list' %}" class="btn btn-outline-secondary form-control">Reset</a>
+                            <a href="{% url 'dashboard_sales_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -153,7 +154,8 @@
                                 <p>Deployment:</p>
                             </div>
                             <div class="col">
-                                <p>{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
+                                <p>{% if sale.rn_casestatus_ed.fdw_work_commencement_date %}{{sale.rn_casestatus_ed.fdw_work_commencement_date}}{% else %}Not
+                                    Set Yet{% endif %}</p>
                             </div>
                         </div>
                         <div class="row">
