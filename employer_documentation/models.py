@@ -2288,12 +2288,10 @@ class DocServAgmtEmpCtr(models.Model):
         max_length=100
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund amount if no replacement pursuant to \
-            Clause 3.1")
+        verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
-            entitled to"),
+        verbose_name=_("4.1 Number of replacement Employer is entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -2321,18 +2319,18 @@ class DocServAgmtEmpCtr(models.Model):
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
-            from date FDW returned"),
+        verbose_name=_("4.1.5 Replacement must occur within __ month(s) \
+            from FDW return date"),
         choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
-            of Service Agreement"),
+        verbose_name=_("5.1.1 Deployment within __ day(s) of Service \
+            Agreement date"),
         choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
-        verbose_name=_("5.1.1 Failed FDW deployment refund amount")
+        verbose_name=_("5.1.1 Failed deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
@@ -2357,7 +2355,7 @@ class DocServAgmtEmpCtr(models.Model):
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
         verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
-            CAN be transferred to new employer, refund within __ week(s)"),
+            CANNOT be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
@@ -4121,25 +4119,29 @@ class ArchivedDoc(models.Model):
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (i)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_2 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (ii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_3 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (iii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
-            3.1")
+        verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
-            entitled to"),
+        verbose_name=_("4.1 Number of replacement Employer is entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -4167,18 +4169,18 @@ class ArchivedDoc(models.Model):
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
-            from date FDW returned"),
+        verbose_name=_("4.1.5 Replacement must occur within __ month(s) \
+            from FDW return date"),
         choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
-            of Service Agreement"),
+        verbose_name=_("5.1.1 Deployment within __ day(s) from Service \
+            Agreement date"),
         choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
-        verbose_name=_("5.1.1 Failed FDW deployment refund amount")
+        verbose_name=_("5.1.1 Failed deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
@@ -4203,7 +4205,7 @@ class ArchivedDoc(models.Model):
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
         verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
-            CAN be transferred to new employer, refund within __ week(s)"),
+            CANNOT be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
