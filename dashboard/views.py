@@ -133,13 +133,6 @@ class EmployerList(BaseFilteredListView):
     template_name = 'list/dashboard-employer-list.html'
     filter_set = DashboardEmployerFilter
 
-    def get_context_data(self, **kwargs):
-        kwargs = super().get_context_data()
-        kwargs.update({
-            'order_by': self.request.GET.get('order-by')
-        })
-        return kwargs
-
     def get_queryset(self):
         order_by = self.request.GET.get('order-by')
         qs = super().get_queryset()
@@ -192,7 +185,6 @@ class MaidList(BaseFilteredListView):
         kwargs = super().get_context_data()
         agency = Agency.objects.get(pk=self.agency_id)
         kwargs.update({
-            'order_by': self.request.GET.get('order-by'),
             'biodata': agency.amount_of_biodata,
             'featured': agency.amount_of_featured_biodata,
             'biodata_allowed': agency.amount_of_biodata_allowed,
@@ -329,8 +321,7 @@ class AccountList(BaseListView):
             'employee_accounts': {
                 'current': agency.amount_of_employees,
                 'max': agency.amount_of_employees_allowed
-            },
-            'order_by': self.request.GET.get('order-by')
+            }
         })
         return kwargs
 
