@@ -678,257 +678,12 @@
         const salesStaffPerformanceChartManager = new ChartManager('#salesStaffPerformanceChart',
             salesStaffPerformanceChartOptions, 'any');
 
-        var branchPerformanceChartOption1Options = {
-            series: [],
-            chart: {
-                height: 'auto',
-                type: 'bar',
-                toolbar: {
-                    show: false
-                },
-                stacked: true,
-                stackType: '100%'
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                },
-            },
-            stroke: {
-                width: 1,
-                colors: ['#fff']
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return `$${val}`;
-                    }
-                }
-            },
-            xaxis: {
-                categories: [],
-                position: 'top',
-                axisBorder: {
-                    show: false
-                },
-                axisTicks: {
-                    show: false
-                },
-                crosshairs: {
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            colorFrom: '#D8E3F0',
-                            colorTo: '#BED1E6',
-                            stops: [0, 100],
-                            opacityFrom: 0.4,
-                            opacityTo: 0.5,
-                        }
-                    }
-                },
-                tooltip: {
-                    enabled: true,
-                }
-            },
-            noData: {
-                text: 'Loading...'
-            }
-        }
-        const branchPerformanceChart1Manager = new ChartManager('#branchPerformanceChartOption1',
-            branchPerformanceChartOption1Options, 'any');
-
-        var branchPerformanceChartOption2Options = {
-            series: [],
-            chart: {
-                height: 'auto',
-                type: 'bar',
-                toolbar: {
-                    show: false
-                },
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    endingShape: 'rounded'
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                width: 1,
-                colors: ['#fff']
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return `$${val}`;
-                    }
-                }
-            },
-            xaxis: {
-                categories: [],
-                position: 'top',
-                axisBorder: {
-                    show: false
-                },
-                axisTicks: {
-                    show: false
-                },
-                crosshairs: {
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            colorFrom: '#D8E3F0',
-                            colorTo: '#BED1E6',
-                            stops: [0, 100],
-                            opacityFrom: 0.4,
-                            opacityTo: 0.5,
-                        }
-                    }
-                },
-                tooltip: {
-                    enabled: true,
-                }
-            },
-            noData: {
-                text: 'Loading...'
-            }
-        }
-        const branchPerformanceChart2Manager = new ChartManager('#branchPerformanceChartOption2',
-            branchPerformanceChartOption2Options, 'any');
-
-        var agencyTimelinePerformanceChartOptions = {
-            series: [],
-            chart: {
-                height: 'auto',
-                type: 'bar',
-                toolbar: {
-                    show: false
-                },
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '50%'
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                width: 1,
-                colors: ['#fff']
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return `${val}`;
-                    }
-                }
-            },
-            xaxis: {
-                categories: [],
-                position: 'top',
-                axisBorder: {
-                    show: false
-                },
-                axisTicks: {
-                    show: false
-                },
-                crosshairs: {
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            colorFrom: '#D8E3F0',
-                            colorTo: '#BED1E6',
-                            stops: [0, 100],
-                            opacityFrom: 0.4,
-                            opacityTo: 0.5,
-                        }
-                    }
-                },
-                tooltip: {
-                    enabled: true,
-                }
-            },
-            noData: {
-                text: 'Loading...'
-            }
-        }
-        const agencyTimelinePerformanceChartManager = new ChartManager('#agencyTimelinePerformanceChart',
-            agencyTimelinePerformanceChartOptions, 'any');
-
-        var fdwTimelineChartOptions = {
-            series: [],
-            height: 'auto',
-            chart: {
-                type: 'rangeBar'
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true
-                }
-            },
-            dataLabels: {
-                enabled: false,
-                formatter: function (val) {
-                    var a = moment(val[0])
-                    var b = moment(val[1])
-                    var diff = b.diff(a, 'days')
-                    return diff + (diff > 1 ? ' days' : ' day')
-                }
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shade: 'light',
-                    type: 'vertical',
-                    shadeIntensity: 0.25,
-                    gradientToColors: undefined,
-                    inverseColors: true,
-                    opacityFrom: 1,
-                    opacityTo: 1,
-                    stops: [50, 0, 100, 100]
-                }
-            },
-            xaxis: {
-                type: 'datetime'
-            },
-            legend: {
-                position: 'top'
-            },
-            noData: {
-                text: 'Loading...'
-            }
-        };
-        const fdwTimelineChartManager = new ChartManager('#fdwTimelineChart', fdwTimelineChartOptions, 'any',
-            'timeline');
-
         const csrftoken = Cookies.get('csrftoken');
-        console.log(csrftoken);
         const authority = '{{authority}}'
 
         let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
         let salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
         let salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
-
-        let branchPerformanceOption1Type = $('#branch-performance-chart-type-option-1').find(':selected')
-            .text();
-        let branchPerformanceOption1GroupBy = $('#branch-performance-group-by-option-1').find(':selected')
-            .text();
-        let branchPerformanceOption1ChartYear = $('#branch-performance-chart-year-option-1').find(':selected')
-            .text();
-
-        let branchPerformanceOption2Type = $('#branch-performance-chart-type-option-2').find(':selected')
-            .text();
-        let branchPerformanceOption2GroupBy = $('#branch-performance-group-by-option-2').find(':selected')
-            .text();
-        let branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected')
-            .text();
-
-        let fdwTimelineChartGroupBy = $('#fdw-timeline-chart-group-by').find(':selected').text();
 
         let salesChartProperties = {
             responsive: [{
@@ -1016,250 +771,116 @@
         salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, null, csrftoken,
             'Agency Managers', 'xaxis');
 
-        let branchPerformanceOption1DataSelectors = {
-            'name': 'branchPerformance' + branchPerformanceOption1Type,
-            'year': branchPerformanceOption1ChartYear,
-            'group_by': branchPerformanceOption1GroupBy
-        }
-        branchPerformanceChart1Manager.update(branchPerformanceOption1DataSelectors, null, csrftoken,
-            'Agency Managers', 'xaxis');
-
-        let branchPerformanceOption2DataSelectors = {
-            'name': 'branchPerformance' + branchPerformanceOption2Type,
-            'year': branchPerformanceOption2ChartYear,
-            'group_by': branchPerformanceOption2GroupBy
-        }
-        branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors, null, csrftoken,
-            'Agency Managers', 'xaxis');
-
-        let agencyTimelinePerformanceDataSelectors = {
-            'name': 'agencyTimelinePerformance',
-            'year': null,
-            'group_by': null
-        }
-        agencyTimelinePerformanceChartManager.update(agencyTimelinePerformanceDataSelectors, null, csrftoken,
-            'Agency Managers', 'xaxis');
-
-        let fdwTimelineDataSelectors = {
-            'name': 'fdwTimeline',
-            'year': null,
-            'group_by': fdwTimelineChartGroupBy
-        }
-        fdwTimelineChartManager.update(fdwTimelineDataSelectors, null, csrftoken, 'Agency Managers', null);
-    })
-
-    $('#year-select-chart').on('change', function (event) {
-        salesChartYear = $(this).find(":selected").text()
-        let max = 0;
-        axios({
-            method: 'post',
-            mode: 'same-origin',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            url: '/dashboard/data/',
-            data: {
-                'authority': authority,
-                'chart': {
-                    'name': 'salesChart',
-                    'year': salesChartYear
-                }
-            }
-        }).then(function (res) {
-            if (res) {
-                chart.updateSeries(res.data.data);
-                let categories = months;
-                res.data.data.forEach(el => {
-                    if (el.data.length > max) {
-                        max = el.data.length
+        $('#year-select-chart').on('change', function (event) {
+            salesChartYear = $(this).find(":selected").text()
+            let max = 0;
+            axios({
+                method: 'post',
+                mode: 'same-origin',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                url: '/dashboard/data/',
+                data: {
+                    'authority': authority,
+                    'chart': {
+                        'name': 'salesChart',
+                        'year': salesChartYear
                     }
-                });
-                if (max != 12) {
-                    categories = months.slice(0, max);
                 }
-                chart.updateOptions({
-                    xaxis: {
-                        categories: categories
-                    }
-                })
-            }
-        })
-    });
-
-    $('.sales-staff-performance-chart-controls').on('change', function (event) {
-        let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
-        salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
-        salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
-        var salesStaffPerformanceChartUpdatedProperties = {}
-        switch (salesStaffPerformanceType) {
-            case 'Cases':
-                salesStaffPerformanceChartUpdatedProperties = {
-                    dataLabels: {
-                        formatter: function (val) {
-                            return `$${val}`;
+            }).then(function (res) {
+                if (res) {
+                    branchSalesChartManager.chart.updateSeries(res.data.data);
+                    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                    ];
+                    let categories = months;
+                    res.data.data.forEach(el => {
+                        if (el.data.length > max) {
+                            max = el.data.length
                         }
-                    },
-                    yaxis: {
-                        min: 0,
-                        max: function (max) {
-                            return max + 1
-                        },
-                        labels: {
-                            show: true,
+                    });
+                    if (max != 12) {
+                        categories = months.slice(0, max);
+                    }
+                    branchSalesChartManager.chart.updateOptions({
+                        xaxis: {
+                            categories: categories
+                        }
+                    })
+                }
+            })
+        });
+
+        $('.sales-staff-performance-chart-controls').on('change', function (event) {
+            let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected')
+                .val();
+            salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected')
+                .val();
+            salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected')
+                .val();
+            var salesStaffPerformanceChartUpdatedProperties = {}
+            switch (salesStaffPerformanceType) {
+                case 'Cases':
+                    salesStaffPerformanceChartUpdatedProperties = {
+                        dataLabels: {
                             formatter: function (val) {
-                                val = Math.round(val)
-                                return val;
-                            }
-                        }
-                    }
-                }
-                break;
-
-            case 'Sales':
-                salesStaffPerformanceChartUpdatedProperties = {
-                    dataLabels: {
-                        formatter: function (val) {
-                            return val;
-                        }
-                    },
-                    yaxis: {
-                        min: function (min) {
-                            return min * 0.9
-                        },
-                        max: function (max) {
-                            return max * 1.1
-                        },
-                        labels: {
-                            show: true,
-                            formatter: function (val) {
-                                val = Math.round((val + Number.EPSILON) * 100) / 100
                                 return `$${val}`;
                             }
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: function (max) {
+                                return max + 1
+                            },
+                            labels: {
+                                show: true,
+                                formatter: function (val) {
+                                    val = Math.round(val)
+                                    return val;
+                                }
+                            }
                         }
                     }
-                }
+                    break;
 
-            default:
-                break;
-        }
-        salesStaffPerformanceDataSelectors = {
-            'name': 'salesStaffPerformance' + salesStaffPerformanceType,
-            'group_by': 'month',
-            'year': salesStaffPerformanceChartYear,
-            'staff': salesStaffPerformanceStaff
-        }
-        salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors,
-            salesStaffPerformanceChartUpdatedProperties, csrftoken, 'Agency Managers', 'xaxis');
-    });
-
-    $('.branch-performance-chart-option-1-controls').on('change', function (event) {
-        branchPerformanceOption1Type = $('#branch-performance-chart-type-option-1').find(':selected').text();
-        branchPerformanceOption1GroupBy = $('#branch-performance-group-by-option-1').find(':selected').text();
-
-        if (branchPerformanceOption1GroupBy == 'Year') {
-            $('#branch-performance-chart-year-option-1').parent().hide();
-        } else {
-            $('#branch-performance-chart-year-option-1').parent().show();
-            branchPerformanceOption1ChartYear = $('#branch-performance-chart-year-option-1').find(':selected')
-                .text();
-        }
-
-        var branchPerformanceChartOption1UpdatedOptions = {}
-
-        switch (branchPerformanceOption1Type) {
-            case 'Cases':
-                branchPerformanceChartOption1UpdatedOptions['tooltip'] = {
-                    y: {
-                        formatter: function (val) {
-                            return `${val} Cases`;
+                case 'Sales':
+                    salesStaffPerformanceChartUpdatedProperties = {
+                        dataLabels: {
+                            formatter: function (val) {
+                                return val;
+                            }
+                        },
+                        yaxis: {
+                            min: function (min) {
+                                return min * 0.9
+                            },
+                            max: function (max) {
+                                return max * 1.1
+                            },
+                            labels: {
+                                show: true,
+                                formatter: function (val) {
+                                    val = Math.round((val + Number.EPSILON) * 100) / 100
+                                    return `$${val}`;
+                                }
+                            }
                         }
                     }
-                }
-                break;
 
-            case 'Sales':
-                branchPerformanceChartOption1UpdatedOptions['tooltip'] = {
-                    y: {
-                        formatter: function (val) {
-                            return `$${val}`;
-                        }
-                    }
-                }
-                break;
-
-            default:
-                break;
-        }
-
-        branchPerformanceOption1DataSelectors = {
-            'name': 'branchPerformance' + branchPerformanceOption1Type,
-            'year': branchPerformanceOption1ChartYear,
-            'group_by': branchPerformanceOption1GroupBy
-        }
-
-        branchPerformanceChart1Manager.update(branchPerformanceOption1DataSelectors,
-            branchPerformanceChartOption1UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
-    });
-
-    $('.branch-performance-chart-option-2-controls').on('change', function (event) {
-        branchPerformanceOption2Type = $('#branch-performance-chart-type-option-2').find(':selected').text();
-        branchPerformanceOption2GroupBy = $('#branch-performance-group-by-option-2').find(':selected').text();
-
-        if (branchPerformanceOption2GroupBy == 'Year') {
-            $('#branch-performance-chart-year-option-2').parent().hide();
-        } else {
-            $('#branch-performance-chart-year-option-2').parent().show();
-            branchPerformanceOption2ChartYear = $('#branch-performance-chart-year-option-2').find(':selected')
-                .text();
-        }
-
-        var branchPerformanceChartOption2UpdatedOptions = {}
-
-        switch (branchPerformanceOption2Type) {
-            case 'Cases':
-                branchPerformanceChartOption2UpdatedOptions['tooltip'] = {
-                    y: {
-                        formatter: function (val) {
-                            return `${val} Cases`;
-                        }
-                    }
-                }
-                break;
-
-            case 'Sales':
-                branchPerformanceChartOption2UpdatedOptions['tooltip'] = {
-                    y: {
-                        formatter: function (val) {
-                            return `$${val}`;
-                        }
-                    }
-                }
-                break;
-
-            default:
-                break;
-        }
-
-        branchPerformanceOption2DataSelectors = {
-            'name': 'branchPerformance' + branchPerformanceOption2Type,
-            'year': branchPerformanceOption2ChartYear,
-            'group_by': branchPerformanceOption2GroupBy
-        }
-
-        branchPerformanceChart2Manager.update(branchPerformanceOption2DataSelectors,
-            branchPerformanceChartOption2UpdatedOptions, csrftoken, 'Agency Managers', 'xaxis');
-    });
-
-    $('.fdw-timeline-chart-controls').on('change', function (event) {
-        fdwTimelineChartGroupBy = $('#fdw-timeline-chart-group-by').find(':selected').text();
-
-        fdwTimelineDataSelectors = {
-            'name': 'fdwTimeline',
-            'year': null,
-            'group_by': fdwTimelineChartGroupBy
-        }
-        fdwTimelineChartManager.update(fdwTimelineDataSelectors, null, csrftoken, 'Agency Managers', null)
+                default:
+                    break;
+            }
+            salesStaffPerformanceDataSelectors = {
+                'name': 'salesStaffPerformance' + salesStaffPerformanceType,
+                'group_by': 'month',
+                'year': salesStaffPerformanceChartYear,
+                'staff': salesStaffPerformanceStaff
+            }
+            salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors,
+                salesStaffPerformanceChartUpdatedProperties, csrftoken, 'Agency Managers', 'xaxis');
+        });
     })
 </script>
 {% endblock js%}
