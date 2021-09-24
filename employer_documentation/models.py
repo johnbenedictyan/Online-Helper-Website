@@ -4051,7 +4051,8 @@ class ArchivedDoc(models.Model):
         null=True
     )
     ca_remaining_payment_amount = CustomMoneyDecimalField(
-        verbose_name=_("Remaining Amount Paid")
+        verbose_name=_("Remaining Amount Paid"),
+        default=0
     )
     ca_remaining_payment_detail = models.CharField(
         verbose_name=_("Deposit Remaining Payment Detail"),
