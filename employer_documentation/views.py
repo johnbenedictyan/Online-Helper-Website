@@ -1923,7 +1923,7 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
     http_method_names = ['get', 'post']
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
-    success_url = 'dashboard_sales_list'
+    success_url = reverse_lazy('dashboard_sales_list')
 
     def get_queryset(self):
         return models.DocServiceFeeSchedule.objects.get(
