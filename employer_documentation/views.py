@@ -1941,3 +1941,10 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
 
     def form_valid(self, form: forms.RemainingAmountDetailForm):
         return super().form_valid(form)
+
+    def get_success_url(self):
+        self.object.generate_remaining_invoice()
+        success_url = reverse_lazy('case_detail_route', kwargs={
+            'level_1_pk': self.object.employer_doc.pk
+        })
+        return success_url

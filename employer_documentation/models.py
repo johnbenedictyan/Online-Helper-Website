@@ -2242,14 +2242,13 @@ class DocServiceFeeSchedule(models.Model):
         invoice_number = f'{running_receipt_no}/{month}/{year}'
         return invoice_number
 
-    def generate_invoice(self, invoice_type, detail=None):
+    def generate_invoice(self, invoice_type):
         if invoice_type == 'Deposit':
             self.ca_deposit_date = timezone.now()
             self.ca_deposit_receipt_no = self.generate_receipt_no()
         else:
             self.ca_remaining_payment_date = timezone.now()
             self.ca_remaining_payment_amount = self.calc_bal()
-            self.ca_remaining_payment_detail = detail
             self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
 
         self.save()
@@ -2257,8 +2256,8 @@ class DocServiceFeeSchedule(models.Model):
     def generate_deposit_invoice(self):
         self.generate_invoice(invoice_type='Deposit')
 
-    def generate_remaining_invoice(self, detail):
-        self.generate_invoice(invoice_type='Remaining Amount', detail=detail)
+    def generate_remaining_invoice(self):
+        self.generate_invoice(invoice_type='Remaining Amount')
 
 
 class DocServAgmtEmpCtr(models.Model):
