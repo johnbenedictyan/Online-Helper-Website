@@ -1922,6 +1922,7 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
     form_class = forms.RemainingAmountDetailForm
     http_method_names = ['get']
     pk_url_kwarg = 'level_1_pk'
+    template_name = 'crispy_form.html'
 
     def get_queryset(self):
         return models.DocServiceFeeSchedule.objects.get(
