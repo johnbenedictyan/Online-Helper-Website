@@ -54,7 +54,7 @@
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             {% if sale.is_archived_doc is False %}
             <div class="col col-1">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ forloop.counter }}</p>
             </div>
             <div class="col col-2">
                 <p class="mb-0">{{sale.agreement_date}}</p>
@@ -89,7 +89,7 @@
             </div>
             {% else %}
             <div class="col col-2">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ forloop.counter }}</p>
             </div>
             <div class="col col-3">
                 <p class="mb-0">{{sale.agreement_date}}</p>
