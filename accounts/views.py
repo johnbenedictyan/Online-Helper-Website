@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 # Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
@@ -162,3 +164,10 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
                     self.request.user.agency_owner.unset_test_email()
 
         return super().form_valid(form)
+
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'user': self.request.user
+        })
+        return kwargs
