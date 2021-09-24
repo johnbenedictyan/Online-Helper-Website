@@ -3120,45 +3120,6 @@ class DocSafetyAgreementForm(forms.ModelForm):
         return super().save()
 
 
-class DepositDetailForm(forms.ModelForm):
-    class Meta:
-        model = models.DocServiceFeeSchedule
-        fields = [
-            'ca_deposit_detail',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            HTML(
-                """
-                    <h5 class="fs-14">Deposit Details</h5>
-                """),
-            Row(
-                Column(
-                    'ca_deposit_detail'
-                ),
-            ),
-
-            # Submit
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-xs-lg btn-primary w-25"
-                    ),
-                    css_class='form-group col-24 text-center'
-                )
-            )
-        )
-
-    def save(self):
-        return super().save()
-
-
 class RemainingAmountDetailForm(forms.ModelForm):
     class Meta:
         model = models.DocServiceFeeSchedule

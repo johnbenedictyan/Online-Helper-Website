@@ -470,6 +470,7 @@ class DocServiceFeeScheduleCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
+        self.object.generate_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -943,6 +944,7 @@ class DocServiceFeeScheduleUpdateView(
         return kwargs
 
     def get_success_url(self):
+        self.object.generate_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -1915,9 +1917,9 @@ class CaseStatusAPIView(View):
         return JsonResponse(data, status=200)
 
 
-class GenerateDepositReceipt(UpdateView):
+class GenerateRemainingAmountDepositReceipt(UpdateView):
     model = models.DocServiceFeeSchedule
-    form_class = forms.DepositDetailForm
+    form_class = forms.RemainingAmountDetailForm
     http_method_names = ['get']
     pk_url_kwarg = 'level_1_pk'
 
@@ -1927,6 +1929,6 @@ class GenerateDepositReceipt(UpdateView):
                 self.pk_url_kwarg
             )
         )
-    
-    def form_valid(self, form: forms.DepositDetailForm):
+
+    def form_valid(self, form: forms.RemainingAmountDetailForm):
         return super().form_valid(form)

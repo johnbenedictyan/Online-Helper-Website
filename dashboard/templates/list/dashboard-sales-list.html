@@ -81,7 +81,7 @@
                 <div class="row justify-content-center">
                     <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"
                             data-toggle="tooltip" data-placement="top" title="Edit Sales Information"></i></a>
-                    <a class="mx-1" href="#"><i class="fas fa-file-invoice" data-toggle="tooltip" data-placement="top"
+                    <a class="mx-1" href="{% url 'servicefee_update_remaining_amount' level_1_pk=sale.pk %}"><i class="fas fa-file-invoice" data-toggle="tooltip" data-placement="top"
                             title="Invoice Sales"></i></a>
                     <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
                             title="Delete Sales Information"></i></a>

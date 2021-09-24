@@ -2240,23 +2240,23 @@ class DocServiceFeeSchedule(models.Model):
         invoice_number = f'{running_receipt_no}/{month}/{year}'
         return invoice_number
 
-    def generate_invoice(self, detail, invoice_type):
+    def generate_invoice(self, invoice_type, detail=None):
         if invoice_type == 'Deposit':
             self.ca_deposit_date = timezone.now()
-            self.ca_deposit_detail = detail
             self.ca_deposit_receipt_no = self.generate_receipt_no()
         else:
             self.ca_remaining_payment_date = timezone.now()
-            self.ca_deposit_detail = detail
+            self.ca_remaining_payment_amount = self.calc_bal()
+            self.ca_remaining_payment_detail = detail
             self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
 
         self.save()
 
-    def generate_deposit_invoice(self, detail):
-        self.generate_invoice(detail=detail, invoice_type='Deposit')
+    def generate_deposit_invoice(self):
+        self.generate_invoice(invoice_type='Deposit')
 
     def generate_remaining_invoice(self, detail):
-        self.generate_invoice(detail=detail, invoice_type='Remaining Amount')
+        self.generate_invoice(invoice_type='Remaining Amount', detail=detail)
 
 
 class DocServAgmtEmpCtr(models.Model):
@@ -4049,6 +4049,9 @@ class ArchivedDoc(models.Model):
         max_length=255,
         blank=True,
         null=True
+    )
+    ca_remaining_payment_amount = CustomMoneyDecimalField(
+        verbose_name=_("Remaining Amount Paid")
     )
     ca_remaining_payment_detail = models.CharField(
         verbose_name=_("Deposit Remaining Payment Detail"),
