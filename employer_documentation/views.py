@@ -1924,7 +1924,7 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
     pk_url_kwarg = 'level_1_pk'
 
     def get_queryset(self):
-        return models.DocServiceFeeSchedule.get(
+        return models.DocServiceFeeSchedule.objects.get(
             employer_doc__pk=self.kwargs.get(
                 self.pk_url_kwarg
             )
