@@ -1448,7 +1448,8 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
         context.update({
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ),
+            'maid_type': self.get_object().fdw.maid_type
         })
         helper = MaidInventoryFormSetHelper()
         helper.form_tag = False
