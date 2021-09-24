@@ -81,6 +81,10 @@ class SitemapView(BaseTemplateView):
     template_name = 'sitemap.xml'
 
 
+class LoaderIOView(BaseTemplateView):
+    template_name = 'loader.io.txt'
+
+
 class AdminPanelView(OMStaffRequiredMixin, ListView):
     http_method_names = ['get']
     template_name = 'admin-panel.html'
