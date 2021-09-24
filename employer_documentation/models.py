@@ -4,7 +4,7 @@ import uuid
 import requests
 import secrets
 from decimal import Decimal, ROUND_HALF_UP
-from datetime import datetime, timezone
+from datetime import datetime
 
 # Django Imports
 from django.db import models
@@ -17,6 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import FileExtensionValidator
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 # Project Apps Imports
