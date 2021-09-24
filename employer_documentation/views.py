@@ -1930,5 +1930,12 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
             )
         )
 
+    def get_object(self):
+        return models.DocServiceFeeSchedule.objects.get(
+            employer_doc__pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+
     def form_valid(self, form: forms.RemainingAmountDetailForm):
         return super().form_valid(form)
