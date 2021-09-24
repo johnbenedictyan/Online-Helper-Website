@@ -1850,6 +1850,7 @@ class EmployerDoc(models.Model):
                 ca_deposit_detail=self.rn_servicefeeschedule_ed.ca_deposit_detail,
                 ca_deposit_receipt_no=self.rn_servicefeeschedule_ed.ca_deposit_receipt_no,
                 ca_remaining_payment_date=self.rn_servicefeeschedule_ed.ca_remaining_payment_date,
+                ca_remaining_payment_amount=self.rn_servicefeeschedule_ed.ca_remaining_payment_amount,
                 ca_remaining_payment_detail=self.rn_servicefeeschedule_ed.ca_remaining_payment_detail,
                 ca_remaining_payment_receipt_no=self.rn_servicefeeschedule_ed.ca_remaining_payment_receipt_no,
                 c1_3_handover_days=self.rn_serviceagreement_ed.c1_3_handover_days,
@@ -2186,6 +2187,10 @@ class DocServiceFeeSchedule(models.Model):
         blank=True,
         null=True
     )
+    ca_remaining_payment_amount = CustomMoneyDecimalField(
+        verbose_name=_("Remaining Amount Paid"),
+        default=0
+    )
 
     def calc_admin_cost(self):
         # Method to calculate total administrative cost
@@ -2249,7 +2254,7 @@ class DocServiceFeeSchedule(models.Model):
         else:
             self.ca_remaining_payment_date = timezone.now()
             self.ca_remaining_payment_amount = self.calc_bal()
-            self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
+            # self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
 
         self.save()
 
