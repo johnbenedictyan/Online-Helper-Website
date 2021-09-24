@@ -2234,8 +2234,9 @@ class DocServiceFeeSchedule(models.Model):
         )
 
     def generate_receipt_no(self):
-        running_receipt_no = ReceiptMaster.get_running_number()
-        ReceiptMaster.increment_running_number()
+        receipt_master = ReceiptMaster()
+        running_receipt_no = receipt_master.get_running_number()
+        receipt_master.increment_running_number()
         month = datetime.now().strftime('%m')
         year = datetime.now().strftime('%Y')
         invoice_number = f'{running_receipt_no}/{month}/{year}'
