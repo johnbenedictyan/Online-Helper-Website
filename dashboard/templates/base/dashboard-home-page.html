@@ -1,7 +1,7 @@
 {% extends 'dashboard-base.html' %}
 {% block dashboard_section %}
 <section class="my-3">
-    <div class="container d-none">
+    {% comment %} <div class="container d-none">
         <div class="row">
             <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
                 <div class="card custom-card">
@@ -125,9 +125,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
     <div class="container-fluid">
-        <div class="row d-none">
+        {% comment %} <div class="row d-none">
             <div class="col-md-12 col-xl-6">
                 <div class="card custom-card">
                     <div class="row">
@@ -139,7 +139,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <div class="row">
             {% if authority == 'Agency Owners' %}
             <div class="col-xl-24 mb-xl-5">
@@ -270,7 +270,7 @@
                             <p class="mb-0">Featured</p>
                         </div>
                         <div class="col-8 text-center">
-                            <p class="mb-0">3</p>
+                            <p class="mb-0">{{ agency.get_number_of_featured_fdw() }}</p>
                         </div>
                     </div>
                     <div class="row py-2">
@@ -278,7 +278,7 @@
                             <p class="mb-0">Published</p>
                         </div>
                         <div class="col-8 text-center">
-                            <p class="mb-0">30</p>
+                            <p class="mb-0">{{ agency.get_number_of_published_fdw() }}</p>
                         </div>
                     </div>
                     <div class="row py-2">
@@ -286,7 +286,7 @@
                             <p class="mb-0">Unpublished</p>
                         </div>
                         <div class="col-8 text-center">
-                            <p class="mb-0">50</p>
+                            <p class="mb-0">{{ agency.get_number_of_unpublished_fdw() }}</p>
                         </div>
                     </div>
                 </div>
