@@ -88,7 +88,6 @@
                 </div>
             </div>
         </div>
-        {% include 'pagination.html' %}
         {% empty %}
         <div class="row mx-half py-3 border border-top-0">
             <div class="col text-center">
@@ -96,6 +95,7 @@
             </div>
         </div>
         {% endfor %}
+        {% include 'pagination.html' %}
         <!-- Modal -->
         <div class="modal fade" id="caseStatusFormModal" tabindex="-1" aria-labelledby="caseStatusFormModalLabel"
             aria-hidden="true">

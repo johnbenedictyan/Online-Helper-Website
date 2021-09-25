@@ -98,7 +98,6 @@
                 </div>
             </div>
         </div>
-        {% include 'pagination.html' %}
         {% empty %}
         <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
             <div class="col text-center">
@@ -106,6 +105,7 @@
             </div>
         </div>
         {% endfor %}
+        {% include 'pagination.html' %}
         <div class="row d-xl-none">
             {% for object in object_list %}
             <div class="col col-lg-12">
