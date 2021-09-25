@@ -3,9 +3,9 @@ import json
 from datetime import datetime, timedelta
 
 # Django Imports
+from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q
-from django.db.models.expressions import Case
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
 from django.forms.models import model_to_dict
@@ -46,7 +46,6 @@ from maid.models import (
     MaidElderlyCare, MaidFoodHandlingPreference, MaidGeneralHousework,
     MaidInfantChildCare, MaidLanguageProficiency
 )
-from payment.models import Customer
 from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
@@ -69,6 +68,7 @@ class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     http_method_names = ['get']
     authority = ''
     agency_id = ''
+    paginate_by = settings.DASHBOARD_PAGINATE_BY
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -296,6 +296,7 @@ class BaseListView(BaseDashboardView, ListView):
     http_method_names = ['get']
     authority = ''
     agency_id = ''
+    paginate_by = settings.DASHBOARD_PAGINATE_BY
 
 
 class AccountList(BaseListView):
