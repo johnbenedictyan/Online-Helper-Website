@@ -35,11 +35,7 @@ from .views import (
 from .views import DataProviderView
 
 # Delete Views
-from .views import (
-    DashboardCaseDelete, DashboardEmployeeDelete, DashboardEmployerDelete,
-    DashboardFDWDelete, DashboardSalesDelete, DashboardShortlisedEnquiryDelete,
-    DashboardStatusDelete
-)
+from .views import DashboardEmployeeDelete, DashboardFDWDelete
 
 # Start of Urls
 
@@ -191,6 +187,21 @@ urlpatterns = [
                         name='dashboard_maid_loan_update'
                     )
                 ])
+            )
+        ])
+    ),
+    path(
+        'delete/<int:pk>/',
+        include([
+            path(
+                'agency-employee/',
+                DashboardEmployeeDelete.as_view(),
+                name='dashboard_agency_employee_delete'
+            ),
+            path(
+                'maid/',
+                DashboardFDWDelete.as_view(),
+                name='dashboard_maid_delete'
             )
         ])
     ),

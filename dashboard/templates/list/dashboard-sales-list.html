@@ -75,16 +75,19 @@
                     {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
             </div>
             <div class="col col-2">
-                <p class="mb-0">{{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}</p>
+                <p class="mb-0">
+                    {{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                </p>
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
                     <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"
                             data-toggle="tooltip" data-placement="top" title="Edit Sales Information"></i></a>
-                    <a class="mx-1" href="{% url 'servicefee_update_remaining_amount' level_1_pk=sale.pk %}"><i class="fas fa-file-invoice" data-toggle="tooltip" data-placement="top"
+                    <a class="mx-1" href="{% url 'servicefee_update_remaining_amount' level_1_pk=sale.pk %}"><i
+                            class="fas fa-file-invoice" data-toggle="tooltip" data-placement="top"
                             title="Invoice Sales"></i></a>
-                    <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
-                            title="Delete Sales Information"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                            title="Delete Sales Information"></i></a> {% endcomment %}
                 </div>
             </div>
             {% else %}
@@ -108,17 +111,19 @@
                 <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.calc_bal}}</p>
             </div>
             <div class="col col-3">
-                <p class="mb-0">{{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}</p>
+                <p class="mb-0">
+                    {{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                </p>
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-1" href="#"><i class="far fa-unlink" data-toggle="tooltip" data-placement="top"
-                            title="Unlink Sales Information"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-unlink" data-toggle="tooltip" data-placement="top"
+                            title="Unlink Sales Information"></i></a> {% endcomment %}
                     <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
                             class="far fa-file-image" data-toggle="tooltip" data-placement="top"
                             title="View Archived Sales Information"></i></a>
-                    <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
-                            title="Delete Archived Sales Information"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                            title="Delete Archived Sales Information"></i></a> {% endcomment %}
                 </div>
             </div>
             {% endif %}
@@ -190,14 +195,15 @@
                                 <p>Received On:</p>
                             </div>
                             <div class="col">
-                                <p>{{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}</p>
+                                <p>{{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                                </p>
                             </div>
                         </div>
                         <h6>Actions:</h6>
                         <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i
                                 class="far fa-edit"></i></a>
-                        <a class="mx-1" href="#"><i class="fas fa-file-invoice-dollar"></i></a>
-                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="fas fa-file-invoice-dollar"></i></a>
+                        {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a> {% endcomment %}
                         {% else %}
                         <div class="row">
                             <div class="col py-2">
@@ -251,14 +257,15 @@
                                 <p>Received On:</p>
                             </div>
                             <div class="col">
-                                <p>{{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}</p>
+                                <p>{{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                                </p>
                             </div>
                         </div>
                         <h6>Actions:</h6>
-                        <a class="mx-1" href="#"><i class="far fa-unlink"></i></a>
+                        {% comment %} <a class="mx-1" href="#"><i class="far fa-unlink"></i></a> {% endcomment %}
                         <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
                                 class="far fa-file-image"></i></a>
-                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a> {% endcomment %}
                         {% endif %}
                     </div>
                 </div>

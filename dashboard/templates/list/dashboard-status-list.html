@@ -17,7 +17,8 @@
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
                         <div class="col-3 mb-3 mt-auto">
-                            <a href="{% url 'dashboard_status_list' %}" class="btn btn-outline-secondary form-control">Reset</a>
+                            <a href="{% url 'dashboard_status_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -82,8 +83,8 @@
                 <div class="row justify-content-center">
                     <a class="mx-1 showModalLink" data-case-pk="{{status.employer_doc.pk}}"><i class="far fa-edit"
                             data-toggle="tooltip" data-placement="top" title="Edit Status Information"></i></a>
-                    <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
-                            title="Delete Status Information"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                            title="Delete Status Information"></i></a> {% endcomment %}
                 </div>
             </div>
         </div>

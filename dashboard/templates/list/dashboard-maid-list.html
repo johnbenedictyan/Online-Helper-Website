@@ -20,7 +20,8 @@
                             {{filter.form.status|as_crispy_field}}
                         </div>
                         <div class="col-3 mb-3 mt-auto">
-                            <a href="{% url 'dashboard_maid_list' %}" class="btn btn-outline-secondary form-control">Reset</a>
+                            <a href="{% url 'dashboard_maid_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -120,8 +121,8 @@
                     <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"
                             data-toggle="tooltip" data-placement="top" title="Unpublish Maid"></i></a>
                     {% endif %}
-                    <a class="mx-2" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
-                            title="Delete Maid Information"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_delete' maid.pk %}"><i class="far fa-trash-alt"
+                            data-toggle="tooltip" data-placement="top" title="Delete Maid Information"></i></a>
                 </div>
             </div>
         </div>
@@ -201,7 +202,7 @@
                         <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i
                                 class="fas fa-eye-slash"></i></a>
                         {% endif %}
-                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        <a class="mx-1" href="{% url 'dashboard_maid_delete' maid.pk %}"><i class="far fa-trash-alt"></i></a>
                     </div>
                 </div>
             </div>
