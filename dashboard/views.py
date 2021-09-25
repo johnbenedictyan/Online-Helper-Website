@@ -1555,52 +1555,9 @@ class HomePage(BaseDashboardView, TemplateView):
         agency = Agency.objects.get(
             pk=self.agency_id
         )
-        try:
-            customer = Customer.objects.get(
-                agency=agency
-            )
-        except Customer.DoesNotExist as e:
-            print(e)
-
-        dashboard_home_page_kwargs = {
-            'accounts': {
-                'current': AgencyEmployee.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': agency.amount_of_employees_allowed
-            },
-            'biodata': {
-                'current': Maid.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': agency.amount_of_biodata_allowed
-            },
-            'branches': {
-                'current': AgencyBranch.objects.filter(
-                    agency=agency
-                ).count(),
-                'max': None
-            },
-            # 'subscriptions': {
-            #     'current': Subscription.objects.filter(
-            #         customer=customer
-            #     ).count(),
-            #     'max': None
-            # },
-            'employers': {
-                'current': 123,
-                'max': None
-            },
-            'sales': {
-                'current': 123,
-                'max': None
-            },
-            'enquiries': {
-                'current': 0,
-                'max': None
-            }
-        }
-        kwargs.update(dashboard_home_page_kwargs)
+        kwargs.update({
+            'agency': agency
+        })
         return kwargs
 
 
