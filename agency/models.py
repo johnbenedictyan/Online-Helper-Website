@@ -168,10 +168,10 @@ class Agency(models.Model):
         return self.amount_of_featured_biodata
 
     def get_number_of_unpublished_fdw(self):
-        return self.maids.filter(is_published=False)
+        return self.maid.filter(is_published=False)
 
     def get_number_of_published_fdw(self):
-        return self.maids.filter(is_published=True)
+        return self.maid.filter(is_published=True)
 
     def create_or_update_stripe_customer(self):
         from payment.models import Customer
