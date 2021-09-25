@@ -6,7 +6,7 @@
                 {% if page_obj.has_previous %}
                 <li class="page-item">
                     <a class="page-link"
-                        href="?page=1{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">Previous</a>
+                        href="?page={{ page_obj.previous_page_number }}{% for arg in request.GET.items %}{% if arg.0 != 'page' %}&{{ arg.0 }}={{ arg.1 }}{% endif %}{% endfor %}">Previous</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled">
