@@ -54,7 +54,7 @@ urlpatterns = [
                 name='agency_list'
             ),
             path(
-                '<int:pk>/',
+                '<slug:pk>/',
                 AgencyDetail.as_view(),
                 name='agency_detail'
             )

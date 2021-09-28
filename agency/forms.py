@@ -6,7 +6,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
-from django.forms.models import construct_instance
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,6 +15,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
 
 # Project Apps Imports
 from employer_documentation.models import EmployerDoc
+from onlinemaid.helper_functions import slugify_text
 
 # App Imports
 from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
@@ -422,6 +422,10 @@ class AgencyUpdateForm(forms.ModelForm):
             return logo
         else:
             raise ValidationError("Couldn't read uploaded image")
+
+    def save(self):
+        self.instance.name_url = slugify_text(self.instance.name)
+        return super().save()
 
 
 class AgencyOwnerCreationForm(forms.ModelForm):

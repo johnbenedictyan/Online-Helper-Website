@@ -120,6 +120,11 @@ class Agency(models.Model):
         editable=False
     )
 
+    name_url = models.CharField(
+        null=True,
+        blank=True
+    )
+
     __original_branch_address_line_1 = None
     __original_branch_address_line_2 = None
     __original_branch_postal_code = None

@@ -38,6 +38,24 @@ class AgencyDetail(DetailView):
     model = Agency
     template_name = 'detail/agency-detail.html'
 
+    def get_queryset(self):
+        try:
+            pk = int(
+                self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        except Exception:
+            return Agency.objects.get(
+                name_url=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        else:
+            return Agency.objects.get(
+                pk=pk
+            )
+
 
 class AgencyCreate(OMStaffRequiredMixin, SuccessMessageMixin, CreateView):
     context_object_name = 'agency'

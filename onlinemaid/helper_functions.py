@@ -4,6 +4,7 @@ import random
 import string
 import traceback
 from datetime import date, datetime, timedelta
+from slugify import slugify
 
 # Django Imports
 from django.conf import settings
@@ -19,6 +20,10 @@ from Crypto.Random import get_random_bytes
 from .constants import MaritalStatusChoices
 
 UserModel = get_user_model()
+
+
+def slugify_text(text):
+    return slugify(text)
 
 
 def is_married(marital_status):
