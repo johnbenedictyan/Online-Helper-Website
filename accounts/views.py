@@ -65,7 +65,10 @@ class AgencySignInView(BaseLoginView):
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
-                if authority == AG_OWNERS:
+                if (
+                    authority == AG_OWNERS and
+                    self.request.user.agency_owner.is_test_email()
+                ):
                     success_url = reverse_lazy('user_email_update')
         if success_url:
             return success_url
