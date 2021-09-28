@@ -43,7 +43,7 @@
             <div class="col-4">
                 <h6 class="dashboard-table-header">Amount</h6>
             </div>
-            <div class="col col-2">
+            <div class="col col-3">
                 <h6 class="dashboard-table-header">Received On</h6>
             </div>
             <div class="col-2 text-center">
@@ -74,7 +74,7 @@
                 <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
                     {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
             </div>
-            <div class="col col-2">
+            <div class="col col-3">
                 <p class="mb-0">
                     {{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}
                 </p>
