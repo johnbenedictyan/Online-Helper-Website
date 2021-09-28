@@ -142,13 +142,13 @@
                             <p class="m-1 pl-4">Add Employer</p>
                         </a>
                     </div>
-                    <div class="col-24 new-side-nav-link">
+                    <div class="col-24 new-side-nav-link {% if url_name == 'employer_detail_route' %}active{% endif %}">
                         <a href="#"
                             class="nav-link new-side-nav-link {% if url_name == 'employer_detail_route' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Employer Profile</p>
                         </a>
                     </div>
-                    <div class="col-24 new-side-nav-link">
+                    <div class="col-24 new-side-nav-link {% if url_name == 'employer_update_route' %}active{% endif %}">
                         <a href="#"
                             class="nav-link new-side-nav-link {% if url_name == 'employer_update_route' %}active{% else %}d-none{% endif %}">
                             <p class="m-1 pl-4">Update Employer</p>
