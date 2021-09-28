@@ -2378,6 +2378,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             'employer_doc',
             'fdw_replaced_passport_nonce',
             'fdw_replaced_passport_tag',
+            'ca_remaining_payment_amount'
         ]
 
     def __init__(self, *args, **kwargs):
