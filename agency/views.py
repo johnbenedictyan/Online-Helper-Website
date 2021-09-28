@@ -46,13 +46,13 @@ class AgencyDetail(DetailView):
                 )
             )
         except Exception:
-            return Agency.objects.get(
+            return Agency.objects.filter(
                 name_url=self.kwargs.get(
                     self.pk_url_kwarg
                 )
             )
         else:
-            return Agency.objects.get(
+            return Agency.objects.filter(
                 pk=pk
             )
 
