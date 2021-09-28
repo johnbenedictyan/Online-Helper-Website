@@ -3439,11 +3439,11 @@ class TokenChallengeForm(forms.Form):
             Row(
                 Column(
                     'nric_fin',
-                    css_class='form-group col-18 my-2',
+                    css_class='form-group col-md-18 my-2',
                 ),
                 Column(
                     'mobile',
-                    css_class='form-group col-18 my-2',
+                    css_class='form-group col-md-18 my-2',
                 ),
                 Column(
                     Submit(
@@ -3451,7 +3451,7 @@ class TokenChallengeForm(forms.Form):
                         'Confirm',
                         css_class="btn btn-xs-lg btn-primary w-75",
                     ),
-                    css_class='form-group col-18 my-3 text-center',
+                    css_class='form-group col-md-18 my-3 text-center',
                 )
             )
         )
