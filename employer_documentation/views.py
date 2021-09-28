@@ -1285,7 +1285,7 @@ class HtmlToRenderPdfTokenView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            return self.get_object_from_slug(slug)
+            return self.get_object_from_slug(slug).employer_doc
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
