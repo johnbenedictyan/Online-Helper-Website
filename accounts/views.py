@@ -70,10 +70,8 @@ class AgencySignInView(BaseLoginView):
                     self.request.user.agency_owner.is_test_email()
                 ):
                     success_url = reverse_lazy('user_email_update')
-        if success_url:
-            return success_url
-        else:
-            return super().get_success_url()
+                    return success_url
+        return super().get_success_url()
 
 
 class CustomPasswordResetView(PasswordResetView):
