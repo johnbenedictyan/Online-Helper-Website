@@ -424,7 +424,10 @@ class AgencyUpdateForm(forms.ModelForm):
             raise ValidationError("Couldn't read uploaded image")
 
     def save(self):
+        print(self.instance.name_url)
+        print(self.instance.name)
         self.instance.name_url = slugify_text(self.instance.name)
+        print(self.instance.name_url)
         return super().save()
 
 
