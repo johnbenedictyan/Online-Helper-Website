@@ -3568,7 +3568,7 @@ class EmployerSignatureForm(forms.Form):
                             Button(
                                 'Confirm',
                                 'Confirm',
-                                css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                                css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                                 css_id='signature-form-submit-button'
                             ),
                             css_class='d-flex justify-content-center mt-4'
@@ -3650,7 +3650,7 @@ class EmployerWithSpouseSignatureForm(forms.Form):
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
@@ -3703,7 +3703,7 @@ class SponsorSignatureForm(forms.Form):
                             Button(
                                 'Confirm',
                                 'Confirm',
-                                css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                                css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                                 css_id='signature-form-submit-button'
                             ),
                             css_class='d-flex justify-content-center mt-4'
@@ -3786,7 +3786,7 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
@@ -3889,7 +3889,7 @@ class HandoverSignatureForm(forms.Form):
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
