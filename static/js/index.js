@@ -227,6 +227,10 @@ $(function () {
         $('.faq-item').removeClass('active');
         $(this).addClass('active');
     });
+    $('.cta-slick-carousel').slick({
+        infinite: true,
+        speed: 300,
+    })
 });
 
 window.onload = () => {
