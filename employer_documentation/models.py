@@ -1604,6 +1604,8 @@ class EmployerDoc(models.Model):
 
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
+        elif not self.rn_signatures_ed.agency_staff_signature:
+            error_msg_list.append('agency_staff_signature')
 
         if (
             self.fdw.maid_type == TypeOfMaidChoices.NEW and
@@ -2730,6 +2732,15 @@ class CaseSignature(models.Model):
         self.sponsor_2_signature = None if self.sponsor_2_signature else self.sponsor_2_signature
         self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
         self.save()
+
+    def get_stage(self):
+        return 2 if self.employer_signature_2 else 1
+
+    def is_stage_1(self):
+        return self.get_stage == 1
+
+    def is_stage_2(self):
+        return not self.is_stage_1
 
     # Verification Tokens
     token_employer_1 = models.BinaryField(
