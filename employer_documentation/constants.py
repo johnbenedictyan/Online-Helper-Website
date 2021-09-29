@@ -43,11 +43,6 @@ class RelationshipChoices(models.TextChoices):
     OTHER = 'OTHER', _('Other')
 
 
-class GenderChoices(models.TextChoices):
-    M = 'M', _('Male')
-    F = 'F', _('Female')
-
-
 class ResidentialStatusFullChoices(models.TextChoices):
     SC = 'SC', _('Singapore citizen')
     PR = 'PR', _('Singapore permanent resident')

@@ -286,3 +286,8 @@ class MaritalStatusChoices(models.TextChoices):
     WIDOWED = 'WIDOWED', _('Widowed')
     SEPARATED = 'SEPARATED', _('Separated')
     SINGLE_PARENT = 'SINGLEPAR', _('Single Parent')
+
+
+class GenderChoices(models.TextChoices):
+    M = 'M', _('Male')
+    F = 'F', _('Female')
