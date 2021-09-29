@@ -125,4 +125,8 @@ style.css.*
 !**/migrations
 !**/migrations/__init__.py
 delete_migrations.sh
-**/static/**
+**/images/**
+**/svgs/**
+**.css
+**/slick
+**.min.js
