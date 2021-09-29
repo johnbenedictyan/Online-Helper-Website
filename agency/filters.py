@@ -19,7 +19,7 @@ class AgencyFilter(DjangoFiltersFilterSet):
     name = DjangoFiltersCharFilter(
         label='Search',
         method='custom_agency_filter',
-        widget=TextInput(attrs={'placeholder': 'Agency, address, tel...'}),
+        widget=TextInput(attrs={'placeholder': 'Agency, address, tel...'})
     )
     branches__area = DjangoFiltersChoiceFilter(
         label=_('Location'),

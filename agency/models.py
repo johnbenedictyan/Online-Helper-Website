@@ -363,7 +363,7 @@ class AgencyOwner(models.Model):
 
     name = models.CharField(
         verbose_name=_('Agency Owner Name'),
-        max_length=50,
+        max_length=50
     )
 
     mobile_number = models.CharField(
@@ -534,7 +534,7 @@ class AgencyEmployee(models.Model):
 
     name = models.CharField(
         verbose_name=_('Name'),
-        max_length=255,
+        max_length=255
     )
 
     contact_number = models.CharField(
@@ -559,7 +559,7 @@ class AgencyEmployee(models.Model):
     )
 
     email = models.EmailField(
-        verbose_name=_('Employee\'s Email Address'),
+        verbose_name=_('Employee\'s Email Address')
     )
 
     agency = models.ForeignKey(

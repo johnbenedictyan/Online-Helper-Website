@@ -73,7 +73,7 @@ class AgencyForm(forms.ModelForm):
     opening_hours_type = forms.ChoiceField(
         label=_('Agency\'s operating hours type'),
         required=True,
-        choices=OpeningHoursTypeChoices.choices,
+        choices=OpeningHoursTypeChoices.choices
     )
 
     opening_hours_monday = forms.CharField(

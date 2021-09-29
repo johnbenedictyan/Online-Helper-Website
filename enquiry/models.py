@@ -32,25 +32,21 @@ class GeneralEnquiry(models.Model):
 
     name = models.CharField(
         verbose_name=_('Name'),
-        
         max_length=100
     )
 
     mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
-        
         max_length=100
     )
 
     email = models.EmailField(
         verbose_name=_('Email'),
-        
         max_length=255
     )
 
     property_type = models.CharField(
         verbose_name=_('Type of Property'),
-        
         choices=PROPERTY_CHOICES,
         default=PROPERTY_2_ROOM_HDB,
         max_length=7
@@ -59,7 +55,6 @@ class GeneralEnquiry(models.Model):
     maid_nationality = ArrayField(
         models.CharField(
             verbose_name=_('Maid\'s Nationality'),
-            
             choices=MAID_NATIONALITY_CHOICES,
             default=NO_PREFERENCE,
             max_length=3
@@ -79,7 +74,6 @@ class GeneralEnquiry(models.Model):
     maid_type = ArrayField(
         models.CharField(
             verbose_name=_('Type of maid'),
-            
             choices=MAID_TYPE_CHOICES,
             default=NO_PREFERENCE,
             max_length=3
@@ -87,18 +81,15 @@ class GeneralEnquiry(models.Model):
     )
 
     no_of_family_members = models.IntegerField(
-        verbose_name=_('Number of Family Members'),
-        
+        verbose_name=_('Number of Family Members')
     )
 
     no_of_below_5 = models.IntegerField(
-        verbose_name=_('Number of Children below 5'),
-        
+        verbose_name=_('Number of Children below 5')
     )
 
     remarks = models.CharField(
         verbose_name=_('Remarks'),
-        
         max_length=3000,
         validators=[
             validate_links,
@@ -181,43 +172,36 @@ class ShortlistedEnquiry(models.Model):
 
     name = models.CharField(
         verbose_name=_('Name'),
-        
         max_length=100
     )
 
     mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
-        
         max_length=100
     )
 
     email = models.EmailField(
         verbose_name=_('Email'),
-        
         max_length=255
     )
 
     property_type = models.CharField(
         verbose_name=_('Type of Property'),
-        
         choices=PROPERTY_CHOICES,
         default=PROPERTY_2_ROOM_HDB,
         max_length=7
     )
 
     no_of_family_members = models.IntegerField(
-        verbose_name=_('Number of Family Members'),
-        
+        verbose_name=_('Number of Family Members')
     )
 
     no_of_below_5 = models.IntegerField(
-        verbose_name=_('Number of Children below 5'),
-        
+        verbose_name=_('Number of Children below 5')
     )
 
     remarks = models.CharField(
         verbose_name=_('Remarks'),
-        
         max_length=3000,
         validators=[
             validate_links,

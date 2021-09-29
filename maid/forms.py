@@ -754,19 +754,19 @@ class MaidExperienceForm(forms.Form):
     cfi_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cfi_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cfi_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=False,
-        choices=InfantChildCareRemarksChoices.choices,
+        choices=InfantChildCareRemarksChoices.choices
     )
 
     cfi_other_remarks = forms.CharField(
@@ -785,13 +785,13 @@ class MaidExperienceForm(forms.Form):
     cfe_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cfe_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cfe_remarks = forms.ChoiceField(
@@ -816,19 +816,19 @@ class MaidExperienceForm(forms.Form):
     cfd_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cfd_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cfd_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=True,
-        choices=DisabledCareRemarksChoices.choices,
+        choices=DisabledCareRemarksChoices.choices
     )
 
     cfd_other_remarks = forms.CharField(
@@ -847,13 +847,13 @@ class MaidExperienceForm(forms.Form):
     geh_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     geh_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     geh_remarks = forms.ChoiceField(
@@ -878,13 +878,13 @@ class MaidExperienceForm(forms.Form):
     cok_willingness = forms.ChoiceField(
         label=_('Willingness '),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cok_experience = forms.ChoiceField(
         label=_('Experience '),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cok_remarks = forms.ChoiceField(

@@ -68,7 +68,7 @@ urlpatterns = [
                     )
                 ]),
             ),
-        ]),
+        ])
     ),
     path(
         'cases/',
@@ -473,7 +473,7 @@ urlpatterns = [
                     ),
                 ]),
             ),
-        ]),
+        ])
     ),
     path(
         'token/',
@@ -609,7 +609,7 @@ urlpatterns = [
                     ),
                 ]),
             ),
-        ]),
+        ])
     ),
     path(
         'status/',
@@ -624,6 +624,6 @@ urlpatterns = [
                     ),
                 ]),
             )
-        ]),
+        ])
     ),
 ]
