@@ -8,6 +8,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices, MaritalStatusChoices
+from onlinemaid.fields import CustomBinaryField
 from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
@@ -82,21 +83,11 @@ class Maid(models.Model):
         null=True
     )
 
-    passport_number = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    passport_number = CustomBinaryField()
 
-    passport_number_nonce = models.BinaryField(
-        editable=True,
-        blank=True
-    )
+    passport_number_nonce = CustomBinaryField()
 
-    passport_number_tag = models.BinaryField(
-        editable=True,
-        blank=True
-    )
+    passport_number_tag = CustomBinaryField()
 
     photo = models.FileField(
         verbose_name=_('Maid Photo'),
@@ -276,24 +267,13 @@ class Maid(models.Model):
         null=True
     )
 
-    fin_number = models.BinaryField(
+    fin_number = CustomBinaryField(
         verbose_name=_('FDW FIN'),
-        editable=True,
-        blank=True,
-        null=True
     )
 
-    fin_number_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    fin_number_nonce = CustomBinaryField()
 
-    fin_number_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    fin_number_tag = CustomBinaryField()
 
     class Meta:
         verbose_name = _("Maid")
