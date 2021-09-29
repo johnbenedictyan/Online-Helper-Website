@@ -244,4 +244,5 @@ ERROR_MESSAGES_VERBOSE_NAME_MAP = {
     'rn_ja_employer': "The employer's joint applicant is not set.",
     'rn_income_employer': "The employer's income details is not set.",
     'rn_household_employer': "The employer's household details is not set.",
+    'agency_staff_signature': "The agency staff has not signed the documents."
 }

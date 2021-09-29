@@ -152,6 +152,11 @@ urlpatterns = [
                         name='case_status_update_route'
                     ),
                     path(
+                        'remaining-amount/update/',
+                        views.GenerateRemainingAmountDepositReceipt.as_view(),
+                        name='servicefee_update_remaining_amount'
+                    ),
+                    path(
                         'signature/generate-url/',
                         include([
                             path(

@@ -4,7 +4,7 @@ import uuid
 import requests
 import secrets
 from decimal import Decimal, ROUND_HALF_UP
-from datetime import datetime, timezone
+from datetime import datetime
 
 # Django Imports
 from django.db import models
@@ -17,6 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import FileExtensionValidator
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 # Project Apps Imports
@@ -155,6 +156,8 @@ class Employer(models.Model):
                 message=_('Please enter a valid home telephone number')
             )
         ],
+        null=True,
+        blank=True
     )
 
     employer_email = models.EmailField(
@@ -1353,7 +1356,7 @@ class EmployerDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=DayChoices.choices[0:5],
+        choices=DayChoices.choices[0:9],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
@@ -1427,6 +1430,8 @@ class EmployerDoc(models.Model):
 
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
+        elif not self.rn_signatures_ed.agency_staff_signature:
+            error_msg_list.append('agency_staff_signature')
 
         if (
             self.fdw.maid_type == TypeOfMaidChoices.NEW and
@@ -1673,6 +1678,7 @@ class EmployerDoc(models.Model):
                 ca_deposit_detail=self.rn_servicefeeschedule_ed.ca_deposit_detail,
                 ca_deposit_receipt_no=self.rn_servicefeeschedule_ed.ca_deposit_receipt_no,
                 ca_remaining_payment_date=self.rn_servicefeeschedule_ed.ca_remaining_payment_date,
+                ca_remaining_payment_amount=self.rn_servicefeeschedule_ed.ca_remaining_payment_amount,
                 ca_remaining_payment_detail=self.rn_servicefeeschedule_ed.ca_remaining_payment_detail,
                 ca_remaining_payment_receipt_no=self.rn_servicefeeschedule_ed.ca_remaining_payment_receipt_no,
                 c1_3_handover_days=self.rn_serviceagreement_ed.c1_3_handover_days,
@@ -1977,6 +1983,7 @@ class DocServiceFeeSchedule(models.Model):
     )
     ca_remaining_payment_date = models.DateField(
         verbose_name=_('Remaining Amount Paid Date'),
+        blank=True,
         null=True
     )
     ca_deposit_receipt_no = models.CharField(
@@ -1996,6 +2003,10 @@ class DocServiceFeeSchedule(models.Model):
         max_length=255,
         blank=True,
         null=True
+    )
+    ca_remaining_payment_amount = CustomMoneyDecimalField(
+        verbose_name=_("Remaining Amount Paid"),
+        default=0
     )
 
     def calc_admin_cost(self):
@@ -2045,30 +2056,30 @@ class DocServiceFeeSchedule(models.Model):
         )
 
     def generate_receipt_no(self):
-        running_receipt_no = ReceiptMaster.get_running_number()
-        ReceiptMaster.increment_running_number()
+        receipt_master = ReceiptMaster()
+        running_receipt_no = receipt_master.get_running_number()
+        receipt_master.increment_running_number()
         month = datetime.now().strftime('%m')
         year = datetime.now().strftime('%Y')
         invoice_number = f'{running_receipt_no}/{month}/{year}'
         return invoice_number
 
-    def generate_invoice(self, detail, invoice_type):
+    def generate_invoice(self, invoice_type):
         if invoice_type == 'Deposit':
             self.ca_deposit_date = timezone.now()
-            self.ca_deposit_detail = detail
             self.ca_deposit_receipt_no = self.generate_receipt_no()
         else:
             self.ca_remaining_payment_date = timezone.now()
-            self.ca_deposit_detail = detail
-            self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
+            self.ca_remaining_payment_amount = self.calc_bal()
+            # self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
 
         self.save()
 
-    def generate_deposit_invoice(self, detail):
-        self.generate_invoice(detail=detail, invoice_type='Deposit')
+    def generate_deposit_invoice(self):
+        self.generate_invoice(invoice_type='Deposit')
 
-    def generate_remaining_invoice(self, detail):
-        self.generate_invoice(detail=detail, invoice_type='Remaining Amount')
+    def generate_remaining_invoice(self):
+        self.generate_invoice(invoice_type='Remaining Amount')
 
 
 class DocServAgmtEmpCtr(models.Model):
@@ -2087,25 +2098,29 @@ class DocServAgmtEmpCtr(models.Model):
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (i)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_2 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (ii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_3 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (iii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund amount if no replacement pursuant to \
-            Clause 3.1")
+        verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
-            entitled to"),
+        verbose_name=_("4.1 Number of replacement Employer is entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -2133,18 +2148,18 @@ class DocServAgmtEmpCtr(models.Model):
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
-            from date FDW returned"),
+        verbose_name=_("4.1.5 Replacement must occur within __ month(s) \
+            from FDW return date"),
         choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
-            of Service Agreement"),
+        verbose_name=_("5.1.1 Deployment within __ day(s) of Service \
+            Agreement date"),
         choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
-        verbose_name=_("5.1.1 Failed FDW deployment refund amount")
+        verbose_name=_("5.1.1 Failed deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
@@ -2169,7 +2184,7 @@ class DocServAgmtEmpCtr(models.Model):
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
         verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
-            CAN be transferred to new employer, refund within __ week(s)"),
+            CANNOT be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
@@ -2533,6 +2548,15 @@ class CaseSignature(models.Model):
         self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
         self.save()
 
+    def get_stage(self):
+        return 2 if self.employer_signature_2 else 1
+
+    def is_stage_1(self):
+        return self.get_stage == 1
+
+    def is_stage_2(self):
+        return not self.is_stage_1
+
     # Verification Tokens
     token_employer_1 = models.BinaryField(
         blank=True,
@@ -2726,6 +2750,8 @@ class ArchivedDoc(models.Model):
                 message=_('Please enter a valid home telephone number')
             )
         ],
+        null=True,
+        blank=True
     )
 
     employer_email = models.EmailField(
@@ -3540,7 +3566,7 @@ class ArchivedDoc(models.Model):
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
-        choices=DayChoices.choices[0:5],
+        choices=DayChoices.choices[0:9],
         default=4,
         help_text=_("FDW off-days a month per contract"),
     )
@@ -3672,6 +3698,10 @@ class ArchivedDoc(models.Model):
         blank=True,
         null=True
     )
+    ca_remaining_payment_amount = CustomMoneyDecimalField(
+        verbose_name=_("Remaining Amount Paid"),
+        default=0
+    )
     ca_remaining_payment_detail = models.CharField(
         verbose_name=_("Deposit Remaining Payment Detail"),
         max_length=255,
@@ -3747,25 +3777,29 @@ class ArchivedDoc(models.Model):
     c3_2_no_replacement_criteria_1 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (i)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_2 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (ii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_2_no_replacement_criteria_3 = models.CharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (iii)"),
-        max_length=100
+        max_length=100,
+        blank=True,
+        null=True
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund amount if no replacement pursuant to Clause \
-            3.1")
+        verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
     )
     c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement FDWs that Employer is \
-            entitled to"),
+        verbose_name=_("4.1 Number of replacement Employer is entitled to"),
         choices=[
             (0, _("0 replacements")),
             (1, _("1 replacement")),
@@ -3793,18 +3827,18 @@ class ArchivedDoc(models.Model):
     )
     c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
         # months
-        verbose_name=_("4.1.5 Replacement FDW provided within __ month(s) \
-            from date FDW returned"),
+        verbose_name=_("4.1.5 Replacement must occur within __ month(s) \
+            from FDW return date"),
         choices=MonthChoices.choices
     )
     c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
         # days
-        verbose_name=_("5.1.1 Deploy FDW to Employer within __ day(s) of date \
-            of Service Agreement"),
+        verbose_name=_("5.1.1 Deployment within __ day(s) from Service \
+            Agreement date"),
         choices=DayChoices.choices
     )
     c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
-        verbose_name=_("5.1.1 Failed FDW deployment refund amount")
+        verbose_name=_("5.1.1 Failed deployment refund amount")
     )
     c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
         # days
@@ -3829,7 +3863,7 @@ class ArchivedDoc(models.Model):
     c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
         # weeks
         verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
-            CAN be transferred to new employer, refund within __ week(s)"),
+            CANNOT be transferred to new employer, refund within __ week(s)"),
         choices=WeekChoices.choices
     )
     c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(

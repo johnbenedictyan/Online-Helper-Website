@@ -14,6 +14,10 @@
         </address>
         <p class="card-text">{{agency.get_main_branch_number|fcn}}</p>
         <p class="card-text mb-0">{{agency.sales_email}}</p>
+        {% if agency.name_url %}
+        <a href="{% url 'agency_detail' pk=agency.name_url %}" class="card-link stretched-link"></a>
+        {% else %}
         <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
+        {% endif %}
     </div>
 </div>

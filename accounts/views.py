@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 # Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
@@ -63,12 +65,13 @@ class AgencySignInView(BaseLoginView):
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
-                if authority == AG_OWNERS:
+                if (
+                    authority == AG_OWNERS and
+                    self.request.user.agency_owner.is_test_email()
+                ):
                     success_url = reverse_lazy('user_email_update')
-        if success_url:
-            return success_url
-        else:
-            return super().get_success_url()
+                    return success_url
+        return super().get_success_url()
 
 
 class CustomPasswordResetView(PasswordResetView):
@@ -162,3 +165,10 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
                     self.request.user.agency_owner.unset_test_email()
 
         return super().form_valid(form)
+
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'user': self.request.user
+        })
+        return kwargs

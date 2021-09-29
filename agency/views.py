@@ -1,5 +1,6 @@
 # Django Imports
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -37,6 +38,26 @@ class AgencyDetail(DetailView):
     http_method_names = ['get']
     model = Agency
     template_name = 'detail/agency-detail.html'
+
+    def get_object(self):
+        try:
+            pk = int(
+                self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        except Exception:
+            return get_object_or_404(
+                Agency,
+                name_url=self.kwargs.get(
+                    self.pk_url_kwarg
+                )
+            )
+        else:
+            return get_object_or_404(
+                Agency,
+                pk=pk
+            )
 
 
 class AgencyCreate(OMStaffRequiredMixin, SuccessMessageMixin, CreateView):

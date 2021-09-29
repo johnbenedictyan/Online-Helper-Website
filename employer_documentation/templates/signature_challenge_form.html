@@ -3,19 +3,19 @@
 {% load crispy_forms_tags %}
 {% block main_content %}
 <div class="container">
-    <div class="row my-5">
+    <div class="row my-md-5">
         <div class="col-lg-16 offset-lg-4 my-5">
             <div class="row">
-                <div class="col-12 p-4">
+                <div class="col-md-12 p-2 p-md-4">
                     <div class="row">
-                        <div class="col px-4">
+                        <div class="col px-md-4">
                             <h4>Secure Signing</h4>
                             <p class="mb-0">You are about to enter a secure signing session.</p>
                             <p class="mb-0">Please verify your identity by submitting this form.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 p-4">
+                <div class="col-md-12 p-2 p-md-4">
                     {% crispy form %}
                 </div>
             </div>

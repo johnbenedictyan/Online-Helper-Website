@@ -470,6 +470,7 @@ class DocServiceFeeScheduleCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
+        self.object.generate_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -943,6 +944,7 @@ class DocServiceFeeScheduleUpdateView(
         return kwargs
 
     def get_success_url(self):
+        self.object.generate_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -1283,7 +1285,7 @@ class HtmlToRenderPdfTokenView(
         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
         if stakeholder:
             self.stakeholder = stakeholder
-            return self.get_object_from_slug(slug)
+            return self.get_object_from_slug(slug).employer_doc
         else:
             # SLUG DOES NOT HAVE FRONT HEADER
             # TODO: Special Error Page thing
@@ -1448,7 +1450,8 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
         context.update({
             'level_1_pk': self.kwargs.get(
                 self.pk_url_kwarg
-            )
+            ),
+            'maid_type': self.get_object().fdw.maid_type
         })
         helper = MaidInventoryFormSetHelper()
         helper.form_tag = False
@@ -1914,18 +1917,34 @@ class CaseStatusAPIView(View):
         return JsonResponse(data, status=200)
 
 
-class GenerateDepositReceipt(UpdateView):
+class GenerateRemainingAmountDepositReceipt(UpdateView):
     model = models.DocServiceFeeSchedule
-    form_class = forms.DepositDetailForm
-    http_method_names = ['get']
+    form_class = forms.RemainingAmountDetailForm
+    http_method_names = ['get', 'post']
     pk_url_kwarg = 'level_1_pk'
+    template_name = 'crispy_form.html'
+    success_url = reverse_lazy('dashboard_sales_list')
 
     def get_queryset(self):
-        return models.DocServiceFeeSchedule.get(
+        return models.DocServiceFeeSchedule.objects.get(
             employer_doc__pk=self.kwargs.get(
                 self.pk_url_kwarg
             )
         )
-    
-    def form_valid(self, form: forms.DepositDetailForm):
+
+    def get_object(self):
+        return models.DocServiceFeeSchedule.objects.get(
+            employer_doc__pk=self.kwargs.get(
+                self.pk_url_kwarg
+            )
+        )
+
+    def form_valid(self, form: forms.RemainingAmountDetailForm):
         return super().form_valid(form)
+
+    def get_success_url(self):
+        self.object.generate_remaining_invoice()
+        success_url = reverse_lazy('case_detail_route', kwargs={
+            'level_1_pk': self.object.employer_doc.pk
+        })
+        return success_url

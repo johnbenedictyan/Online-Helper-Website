@@ -16,8 +16,12 @@
                         <div class="col-10">
                             {{filter.form.name|as_crispy_field}}
                         </div>
-                        <div class="col-10 offset-2">
+                        <div class="col-10">
                             {{filter.form.status|as_crispy_field}}
+                        </div>
+                        <div class="col-3 mb-3 mt-auto">
+                            <a href="{% url 'dashboard_maid_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -106,17 +110,19 @@
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-2" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i
-                            class="far fa-edit"></i></a>
-                    <a class="mx-2" href="{% url 'dashboard_maid_detail' maid.pk %}"><i
-                            class="far fa-file-image"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"
+                            data-toggle="tooltip" data-placement="top" title="Update Maid Information"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"
+                            data-toggle="tooltip" data-placement="top" title="View Maid Information"></i></a>
                     {% if maid.is_published is False %}
-                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"></i></a>
+                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"
+                            data-toggle="tooltip" data-placement="top" title="Publish Maid"></i></a>
                     {% else %}
-                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i
-                            class="fas fa-eye-slash"></i></a>
+                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"
+                            data-toggle="tooltip" data-placement="top" title="Unpublish Maid"></i></a>
                     {% endif %}
-                    <a class="mx-2" href="#"><i class="far fa-trash-alt"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_delete' maid.pk %}"><i class="far fa-trash-alt"
+                            data-toggle="tooltip" data-placement="top" title="Delete Maid Information"></i></a>
                 </div>
             </div>
         </div>
@@ -127,6 +133,7 @@
             </div>
         </div>
         {% endfor %}
+        {% include 'pagination.html' %}
         <div class="row d-xl-none">
             {% for maid in maids %}
             <div class="col col-lg-12">
@@ -196,7 +203,7 @@
                         <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i
                                 class="fas fa-eye-slash"></i></a>
                         {% endif %}
-                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        <a class="mx-1" href="{% url 'dashboard_maid_delete' maid.pk %}"><i class="far fa-trash-alt"></i></a>
                     </div>
                 </div>
             </div>

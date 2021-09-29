@@ -8,7 +8,7 @@
                 <div class="col my-auto">
                     <h5 class="fs-16 mb-0">FDW Information</h5>
                 </div>
-                <div class="col-9">
+                <div class="col-4 px-0">
                     <a href="{% url 'dashboard_maid_information_update' object.fdw.pk %}"
                         class="btn btn-xs-lg btn-primary w-100">Edit FDW Info</a>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="col my-auto">
                     <h5 class="fs-16 mb-0">Employer Information</h5>
                 </div>
-                <div class="col-9">
+                <div class="col-4 px-0">
                     <a href="{% url 'employer_update_route' level_0_pk=object.employer.pk %}"
                         class="btn btn-xs-lg btn-primary w-100">Edit Employer Info</a>
                 </div>
@@ -82,7 +82,7 @@
                 <div class="col my-auto">
                     <h5 class="fs-16 mb-0">Case Information</h5>
                 </div>
-                <div class="col-9">
+                <div class="col-4 px-0">
                     <a href="{% url 'case_update_route' level_1_pk=object.pk %}"
                         class="btn btn-xs-lg btn-primary w-100">Edit Case Info</a>
                 </div>
@@ -595,6 +595,9 @@
                     </a></div>
                 <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_medical_report_route' level_1_pk=object.pk %}">
                         <p class="mb-1">Medical Report</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_deposit_invoice' level_1_pk=object.pk %}">
+                        <p class="mb-1">Invoice</p>
                     </a></div>
             </div>
         </div>

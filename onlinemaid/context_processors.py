@@ -108,6 +108,7 @@ def page_bar_url_helper(request):
     CASE_MINI_NAV_URLS = [
         'case_create_route',
         'case_update_route',
+        'case_detail_route',
         'servicefee_create_route',
         'servicefee_update_route',
         'serviceagreement_create_route',

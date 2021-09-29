@@ -16,15 +16,19 @@
                         <div class="col-md-8">
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
+                        <div class="col-3 mb-3 mt-auto">
+                            <a href="{% url 'dashboard_sales_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
         <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
-            <div class="col col-2">
+            <div class="col col-1">
                 <h6 class="dashboard-table-header">S/N</h6>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <h6 class="dashboard-table-header">Contract Date</h6>
             </div>
             <div class="col col-3">
@@ -33,7 +37,7 @@
             <div class="col">
                 <h6 class="dashboard-table-header">Employer &#38; FDW</h6>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <h6 class="dashboard-table-header">Type</h6>
             </div>
             <div class="col-4">
@@ -49,10 +53,10 @@
         {% for sale in sales %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
             {% if sale.is_archived_doc is False %}
-            <div class="col col-2">
-                <p class="mb-0"></p>
+            <div class="col col-1">
+                <p class="mb-0">{{ forloop.counter }}</p>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <p class="mb-0">{{sale.agreement_date}}</p>
             </div>
             <div class="col col-3">
@@ -62,7 +66,7 @@
                 <p class="mb-0">Employer: {{sale.employer.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
                     {{sale.employer.agency_employee.name}}</p>
             </div>
-            <div class="col col-3">
+            <div class="col col-2">
                 <p class="mb-0">{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New
                     Case{% else %}Replacement{% endif %}</p>
             </div>
@@ -71,19 +75,24 @@
                     {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
             </div>
             <div class="col col-3">
-                <p class="mb-0">{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
+                <p class="mb-0">
+                    {{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                </p>
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i
-                            class="far fa-edit"></i></a>
-                    <a class="mx-1" href="#"><i class="fas fa-file-invoice"></i></a>
-                    <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                    <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i class="far fa-edit"
+                            data-toggle="tooltip" data-placement="top" title="Edit Sales Information"></i></a>
+                    <a class="mx-1" href="{% url 'servicefee_update_remaining_amount' level_1_pk=sale.pk %}"><i
+                            class="fas fa-file-invoice" data-toggle="tooltip" data-placement="top"
+                            title="Invoice Sales"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                            title="Delete Sales Information"></i></a> {% endcomment %}
                 </div>
             </div>
             {% else %}
             <div class="col col-2">
-                <p class="mb-0"></p>
+                <p class="mb-0">{{ forloop.counter }}</p>
             </div>
             <div class="col col-3">
                 <p class="mb-0">{{sale.agreement_date}}</p>
@@ -102,14 +111,19 @@
                 <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.calc_bal}}</p>
             </div>
             <div class="col col-3">
-                <p class="mb-0">{{sale.ca_deposit_date}}</p>
+                <p class="mb-0">
+                    {{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                </p>
             </div>
             <div class="col-2">
                 <div class="row justify-content-center">
-                    <a class="mx-1" href="#"><i class="far fa-unlink"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-unlink" data-toggle="tooltip" data-placement="top"
+                            title="Unlink Sales Information"></i></a> {% endcomment %}
                     <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
-                            class="far fa-file-image"></i></a>
-                    <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                            class="far fa-file-image" data-toggle="tooltip" data-placement="top"
+                            title="View Archived Sales Information"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                            title="Delete Archived Sales Information"></i></a> {% endcomment %}
                 </div>
             </div>
             {% endif %}
@@ -121,6 +135,7 @@
             </div>
         </div>
         {% endfor %}
+        {% include 'pagination.html' %}
         <div class="row d-xl-none">
             {% for sale in sales %}
             <div class="col col-lg-12">
@@ -129,7 +144,7 @@
                         {% if sale.is_archived_doc is False %}
                         <div class="row">
                             <div class="col py-2">
-                                <h5 class="card-title fs-16">#{{sale.pk}}</h5>
+                                <h5 class="card-title fs-16">{{forloop.counter}}</h5>
                             </div>
                         </div>
                         <div class="row">
@@ -145,7 +160,8 @@
                                 <p>Deployment:</p>
                             </div>
                             <div class="col">
-                                <p>{{sale.rn_casestatus_ed.fdw_work_commencement_date}}</p>
+                                <p>{% if sale.rn_casestatus_ed.fdw_work_commencement_date %}{{sale.rn_casestatus_ed.fdw_work_commencement_date}}{% else %}Not
+                                    Set Yet{% endif %}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -180,14 +196,15 @@
                                 <p>Received On:</p>
                             </div>
                             <div class="col">
-                                <p>{{sale.rn_servicefeeschedule_ed.ca_deposit_date}}</p>
+                                <p>{{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                                </p>
                             </div>
                         </div>
                         <h6>Actions:</h6>
                         <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i
                                 class="far fa-edit"></i></a>
-                        <a class="mx-1" href="#"><i class="fas fa-file-invoice-dollar"></i></a>
-                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="fas fa-file-invoice-dollar"></i></a>
+                        {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a> {% endcomment %}
                         {% else %}
                         <div class="row">
                             <div class="col py-2">
@@ -241,14 +258,15 @@
                                 <p>Received On:</p>
                             </div>
                             <div class="col">
-                                <p>{{sale.ca_deposit_date}}</p>
+                                <p>{{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}
+                                </p>
                             </div>
                         </div>
                         <h6>Actions:</h6>
-                        <a class="mx-1" href="#"><i class="far fa-unlink"></i></a>
+                        {% comment %} <a class="mx-1" href="#"><i class="far fa-unlink"></i></a> {% endcomment %}
                         <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
                                 class="far fa-file-image"></i></a>
-                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                        {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a> {% endcomment %}
                         {% endif %}
                     </div>
                 </div>

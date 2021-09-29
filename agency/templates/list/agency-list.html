@@ -7,15 +7,15 @@
     <div class="col-lg-20 col-xl-6 mb-3">
         <form action="" method="get" id="agency-filter-form">
             <div class="row">
-                <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="0">
+                <div class="col-24 fs-12 mb-2 mb-md-0">
                     {{filter.form.name|as_crispy_field}}
                 </div>
-                <div class="col-24 fs-12 mb-2 mb-md-0" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="300">
+                <div class="col-24 fs-12 mb-2 mb-md-0">
                     {{filter.form.branches__area|as_crispy_field}}
                 </div>
             </div>
             <div class="row">
-                <div class="col px-lg-3" data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="600">
+                <div class="col px-lg-3">
                     <a href="{% url 'agency_list' %}" class="btn btn-xs-lg btn-primary w-100">Reset</a>
                 </div>
             </div>
@@ -24,7 +24,7 @@
     <div class="col-24 col-xl-18 mt-md-3 pl-md-3 pl-lg-4 pl-xl-5">
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
             {% for agency in agencies %}
-            <div class="col mb-4">
+            <div class="col mb-4" data-aos="zoom-in" data-aos-duration="2000">
                 {% include 'components/agency-card.html' with agency=agency %}
             </div>
             {% endfor %}

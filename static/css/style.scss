@@ -9,6 +9,8 @@ $bahama-blue: #1F4E78 !default;
 $curious-blue: #2F75B5 !default;
 $custom-light-blue2: #3482cb !default;
 $CUSTOM_NAV_LINK_COLOR: #3d5d9b;
+$light-alice-blue: #EFF6FB !default;
+$patterns-blue: #DDEBF7 !default;
 
 // Custom Typography
 $FONT_SIZE_10: calc(10/12 * 1rem);
@@ -324,6 +326,13 @@ footer {
 
 .nav-fa {
     font-size: .75rem !important;
+}
+
+.custom-add-button {
+    background-color: $light-alice-blue !important;
+    :hover {
+        background-color: $patterns-blue !important;
+    }
 }
 
 .plan-card-custom-horizontal-divider {

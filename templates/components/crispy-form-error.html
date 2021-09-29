@@ -5,6 +5,8 @@
         {% for error in field.errors %}
         <div class="alert alert-danger">
             <strong>{{ error|escape }}</strong>
+            {{field}}
+            {{form_errors}}
         </div>
         {% endfor %}
         {% endfor %}

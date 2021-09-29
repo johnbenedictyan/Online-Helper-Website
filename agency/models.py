@@ -120,6 +120,12 @@ class Agency(models.Model):
         editable=False
     )
 
+    name_url = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+
     __original_branch_address_line_1 = None
     __original_branch_address_line_2 = None
     __original_branch_postal_code = None
@@ -163,6 +169,19 @@ class Agency(models.Model):
 
     def get_agency_owner_email(self):
         return self.agency_owner.user.email
+
+    def get_number_of_featured_fdw(self):
+        return self.amount_of_featured_biodata
+
+    def get_number_of_unpublished_fdw(self):
+        return len(
+            list(maid for maid in self.maid.all() if not maid.is_published)
+        )
+
+    def get_number_of_published_fdw(self):
+        return len(
+            list(maid for maid in self.maid.all() if maid.is_published)
+        )
 
     def create_or_update_stripe_customer(self):
         from payment.models import Customer

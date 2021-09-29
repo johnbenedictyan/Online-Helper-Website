@@ -2378,6 +2378,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
             'employer_doc',
             'fdw_replaced_passport_nonce',
             'fdw_replaced_passport_tag',
+            'ca_remaining_payment_amount'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -3120,45 +3121,6 @@ class DocSafetyAgreementForm(forms.ModelForm):
         return super().save()
 
 
-class DepositDetailForm(forms.ModelForm):
-    class Meta:
-        model = models.DocServiceFeeSchedule
-        fields = [
-            'ca_deposit_detail',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            HTML(
-                """
-                    <h5 class="fs-14">Deposit Details</h5>
-                """),
-            Row(
-                Column(
-                    'ca_deposit_detail'
-                ),
-            ),
-
-            # Submit
-            Row(
-                Column(
-                    Submit(
-                        'submit',
-                        'Submit',
-                        css_class="btn btn-xs-lg btn-primary w-25"
-                    ),
-                    css_class='form-group col-24 text-center'
-                )
-            )
-        )
-
-    def save(self):
-        return super().save()
-
-
 class RemainingAmountDetailForm(forms.ModelForm):
     class Meta:
         model = models.DocServiceFeeSchedule
@@ -3477,11 +3439,11 @@ class TokenChallengeForm(forms.Form):
             Row(
                 Column(
                     'nric_fin',
-                    css_class='form-group col-18 my-2',
+                    css_class='form-group col-md-18 my-2',
                 ),
                 Column(
                     'mobile',
-                    css_class='form-group col-18 my-2',
+                    css_class='form-group col-md-18 my-2',
                 ),
                 Column(
                     Submit(
@@ -3489,7 +3451,7 @@ class TokenChallengeForm(forms.Form):
                         'Confirm',
                         css_class="btn btn-xs-lg btn-primary w-75",
                     ),
-                    css_class='form-group col-18 my-3 text-center',
+                    css_class='form-group col-md-18 my-3 text-center',
                 )
             )
         )
@@ -3599,14 +3561,14 @@ class EmployerSignatureForm(forms.Form):
                                 'Clear Signatures',
                                 'Clear Signatures',
                                 css_class='''
-                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2
+                                    btn btn-xs-lg btn-outline-secondary w-xs-100 w-25 mr-2
                                 ''',
                                 css_id='signature-form-clear-button'
                             ),
                             Button(
                                 'Confirm',
                                 'Confirm',
-                                css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                                css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                                 css_id='signature-form-submit-button'
                             ),
                             css_class='d-flex justify-content-center mt-4'
@@ -3682,13 +3644,13 @@ class EmployerWithSpouseSignatureForm(forms.Form):
                     Button(
                         'Clear Signatures',
                         'Clear Signatures',
-                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
                         css_id='signature-form-clear-button'
                     ),
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
@@ -3734,14 +3696,14 @@ class SponsorSignatureForm(forms.Form):
                                 'Clear Signatures',
                                 'Clear Signatures',
                                 css_class='''
-                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2
+                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100
                                 ''',
                                 css_id='signature-form-clear-button'
                             ),
                             Button(
                                 'Confirm',
                                 'Confirm',
-                                css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                                css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                                 css_id='signature-form-submit-button'
                             ),
                             css_class='d-flex justify-content-center mt-4'
@@ -3818,13 +3780,13 @@ class EmployerWithJointApplicantSignatureForm(forms.Form):
                     Button(
                         'Clear Signatures',
                         'Clear Signatures',
-                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
                         css_id='signature-form-clear-button'
                     ),
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'
@@ -3921,13 +3883,13 @@ class HandoverSignatureForm(forms.Form):
                     Button(
                         'Clear Signatures',
                         'Clear Signatures',
-                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
                         css_id='signature-form-clear-button'
                     ),
                     Button(
                         'Confirm',
                         'Confirm',
-                        css_class='btn btn-xs-lg btn-primary w-25 ml-2',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
                         css_id='signature-form-submit-button'
                     ),
                     css_class='d-flex justify-content-center mt-4'

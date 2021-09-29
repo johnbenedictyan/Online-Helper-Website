@@ -377,6 +377,8 @@ class EmailUpdateForm(forms.ModelForm):
         fields = ['email']
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.get('user')
+        kwargs.pop('user')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -405,14 +407,18 @@ class EmailUpdateForm(forms.ModelForm):
         email = cleaned_data.get("email")
         UserModel = get_user_model()
 
-        try:
-            UserModel.objects.get(
-                email=email
-            )
-        except UserModel.DoesNotExist:
-            pass
-        else:
+        if email == self.user.email:
             msg = _('The email address has not been changed')
             self.add_error('email', msg)
+        else:
+            try:
+                UserModel.objects.get(
+                    email=email
+                )
+            except UserModel.DoesNotExist:
+                pass
+            else:
+                msg = _('The email address is being used')
+                self.add_error('email', msg)
 
         return cleaned_data

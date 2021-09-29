@@ -6,7 +6,8 @@ from .views import (
     AboutUsView, AdminPanelEnquiryListView, AdminPanelView, ContactUsView,
     Error403View, Error404View, Error500View, FAQView, HomeView,
     HowItWorksView, PrivacyPolicyView, RobotsTxt, SitemapView,
-    TermsAndConditionsAgencyView, TermsAndConditionsUserView, UsefulLinksView
+    TermsAndConditionsAgencyView, TermsAndConditionsUserView, UsefulLinksView,
+    LoaderIOView
 )
 
 # Start of Urls
@@ -106,5 +107,10 @@ urlpatterns = [
         'sitemap.xml',
         SitemapView.as_view(),
         name="site_map"
+    ),
+    path(
+        'loaderio-03efabeaabfb72e90f648bd86d913ad9/',
+        LoaderIOView.as_view(),
+        name='loader_io_view'
     )
 ]
