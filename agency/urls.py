@@ -3,8 +3,7 @@ from django.urls import include, path
 
 # App Imports
 from .views import (
-    AgencySignUp, AgencyList, AgencyDetail, AgencyCreate, AgencyOwnerCreate,
-    AgencyDelete, AgencyEmployeeDelete, AgencyPlanDelete
+    AgencySignUp, AgencyList, AgencyDetail, AgencyCreate, AgencyOwnerCreate
 )
 
 # Start of Urls
@@ -23,26 +22,6 @@ urlpatterns = [
                 AgencyOwnerCreate.as_view(),
                 name='agency_owner_create'
             )
-        ])
-    ),
-    path(
-        'delete/',
-        include([
-            path(
-                '<int:pk>/',
-                AgencyDelete.as_view(),
-                name='agency_delete'
-            ),
-            path(
-                'employee/<int:pk>/',
-                AgencyEmployeeDelete.as_view(),
-                name='agency_employee_delete'
-            ),
-            path(
-                'plan/<int:pk>/',
-                AgencyPlanDelete.as_view(),
-                name='agency_plan_delete'
-            ),
         ])
     ),
     path(

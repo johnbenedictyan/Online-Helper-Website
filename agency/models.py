@@ -17,7 +17,6 @@ from onlinemaid.storage_backends import PublicMediaStorage
 # App Imports
 from .constants import (
     AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices,
-    OpeningHoursChoices
 )
 from .fields import OpeningHoursField
 from .validators import validate_postcode
@@ -65,50 +64,42 @@ class Agency(models.Model):
 
     amount_of_biodata = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of FDW Biodata'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_biodata_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of FDW Biodata allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_featured_biodata = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of featured FDW Biodata'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_featured_biodata_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of featured FDW Biodata allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_employees = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employee accounts'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_employees_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employee accounts allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_documents = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employer documents'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_documents_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employer documents allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     active = models.BooleanField(
@@ -151,9 +142,6 @@ class Agency(models.Model):
 
     def get_branches(self):
         return self.branches.filter(main_branch=False)
-
-    # def get_enquiries(self):
-    #     return self.enquiries.all()
 
     def get_biodata_limit_status(self):
         return (
