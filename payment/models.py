@@ -81,7 +81,6 @@ class SubscriptionProductImage(models.Model):
 
     photo = models.FileField(
         verbose_name=_('Subscription Product\'s Photo'),
-        blank=False,
         null=True,
         storage=PublicMediaStorage()
     )
@@ -178,7 +177,6 @@ class Subscription(models.Model):
     subscription_type = models.CharField(
         verbose_name=_('Subscription type'),
         max_length=4,
-        blank=False,
         choices=SubscriptionTypeChoices.choices,
         default=SubscriptionTypeChoices.PLAN
     )
