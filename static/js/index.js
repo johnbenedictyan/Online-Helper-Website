@@ -15,7 +15,7 @@ const MO = (node_settings, callback_function, needMutations) => {
         }
     });
 
-    if(node_settings.nodeName){
+    if (node_settings.nodeName) {
         observer.observe(
             node_settings.nodeName,
             node_settings.settings
@@ -24,7 +24,7 @@ const MO = (node_settings, callback_function, needMutations) => {
 }
 
 // Django Filters range slider
-const rangeSliderInitialisation = function(){
+const rangeSliderInitialisation = function () {
     $('.noUi-handle').on('click', function () {
         $(this).width(50);
     });
@@ -80,12 +80,12 @@ const maidProfileRedirect = (pk) => {
 }
 
 // Featured Maids
-const displayEmptyContent = function() {
+const displayEmptyContent = function () {
     let featuredMaidsContent = '<div class="row"><div class="col text-center"><h1 class="fs-12">No Featured Maids</h1></div></div>';
     $('#featured-maids-wrapper').html(featuredMaidsContent);
 }
 
-const displayContent = function(res) {
+const displayContent = function (res) {
     let featuredMaidsContent = `<div class="maid-carousel">`;
     for (let index = 0; index < res.data.featured_maids.length; index++) {
         let maid = res.data.featured_maids[index];
@@ -97,12 +97,14 @@ const displayContent = function(res) {
     maidCarousel();
 }
 
-function populateFeaturedMaids(nationality='ANY') {
+function populateFeaturedMaids(nationality = 'ANY') {
     let csrftoken = Cookies.get('csrftoken');
     axios({
         method: 'post',
         mode: 'same-origin',
-        headers: { 'X-CSRFToken': csrftoken },
+        headers: {
+            'X-CSRFToken': csrftoken
+        },
         url: '/maids/view/featured/',
         data: {
             'nationality': nationality
@@ -117,15 +119,14 @@ function populateFeaturedMaids(nationality='ANY') {
 }
 
 // Maid Carousel
-const maidCarousel = function(){
+const maidCarousel = function () {
     $('.maid-carousel').slick({
         dots: true,
         infinite: false,
         speed: 300,
         slidesToShow: 4,
         slidesToScroll: 4,
-        responsive: [
-            {
+        responsive: [{
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
@@ -163,7 +164,7 @@ const maidApititudeWidthMap = {
     '5': '100'
 }
 
-const assessmentProgressBarInitialisation = function(){
+const assessmentProgressBarInitialisation = function () {
     $('.assessment-progress-bar').each(function () {
         let width_value = $(this).data('value');
         $(this).css('width', maidApititudeWidthMap[width_value] + '%');
@@ -171,13 +172,13 @@ const assessmentProgressBarInitialisation = function(){
 }
 
 // Dashboard Agency Plans
-const dashboardAgencyPlanChangePlan = function() {
+const dashboardAgencyPlanChangePlan = function () {
     plan_name = document.getElementById("plansFormControlSelect").value;
     $('.tab-pane').removeClass('active');
     $(`#${plan_name}`).tab('show');
 }
 
-const dashboardAgencyPlanAddToCart = function(){
+const dashboardAgencyPlanAddToCart = function () {
     $('.cart-button').click(function () {
         let priceId = document.querySelector(`input[name="${String($(this).attr('id')).split('btn')[0]}"]:checked`).value;
         location.replace(location.origin.concat(`/payment/cart/add/${priceId}`))
@@ -186,7 +187,7 @@ const dashboardAgencyPlanAddToCart = function(){
 
 // Maid Create Form
 
-const maidCreateFormFunc = function(){
+const maidCreateFormFunc = function () {
     $(`#id_cfi_other_remarks, #id_cfe_other_remarks, #id_cfd_other_remarks,#id_geh_other_remarks,#id_cok_other_remarks`).prop('disabled', true);
     $(`#id_cfi_remarks, #id_cfe_remarks, #id_cfd_remarks,#id_geh_remarks,#id_cok_remarks`).on('change', function () {
         let care_type = $(this).prop('id').split('_')[1];
@@ -200,30 +201,36 @@ const maidCreateFormFunc = function(){
     });
 }
 
+const imageCarousel = function () {
+    $('.image-carousel').slick({
+        infinite: true,
+        autoplay: true
+    });
+}
+
 $(function () {
     AOS.init({
         startEvent: 'load',
     });
     maidCarousel();
+    imageCarousel();
     assessmentProgressBarInitialisation();
     maidCreateFormFunc();
     rangeSliderInitialisation();
     populateFeaturedMaids();
-    MO(
-        {
-            "nodeName": document.getElementById('featured-maids-wrapper'),
-            "settings": {
-                attributes: true,
-                childList: true,
-                subtree: false
-            }
+    MO({
+        "nodeName": document.getElementById('featured-maids-wrapper'),
+        "settings": {
+            attributes: true,
+            childList: true,
+            subtree: false
         }
-    );
+    });
     $('#nationalitySelect').on('change', function () {
         let nationality = $(this).val();
         populateFeaturedMaids(nationality);
     });
-    $('.faq-item').on('click', function(){
+    $('.faq-item').on('click', function () {
         $('.faq-item').removeClass('active');
         $(this).addClass('active');
     });
