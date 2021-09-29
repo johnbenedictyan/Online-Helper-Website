@@ -18,3 +18,12 @@ class NullableCharField(models.CharField):
             'null': True
         })
         super().__init__(*args, **kwargs)
+
+
+class NullableBooleanField(models.BooleanField):
+    def __init__(self, *args, **kwargs) -> None:
+        kwargs.update({
+            'blank': True,
+            'null': True
+        })
+        super().__init__(*args, **kwargs)

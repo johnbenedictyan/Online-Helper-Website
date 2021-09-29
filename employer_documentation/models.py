@@ -24,7 +24,9 @@ from django.utils.translation import ugettext_lazy as _
 from onlinemaid.constants import (
     TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
 )
-from onlinemaid.fields import CustomBinaryField, NullableCharField
+from onlinemaid.fields import (
+    CustomBinaryField, NullableCharField, NullableBooleanField
+)
 from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 from agency.models import AgencyEmployee
@@ -232,7 +234,7 @@ class Employer(models.Model):
         default=MaritalStatusChoices.SINGLE
     )
 
-    employer_marriage_sg_registered = models.BooleanField(
+    employer_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -241,9 +243,7 @@ class Employer(models.Model):
         ),
         help_text=_('''
             Was Employer's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     def get_employer_nric_full(self):
@@ -581,7 +581,7 @@ class EmployerSponsor(models.Model):
     )
 
     # Sponsor 1 spouse details
-    sponsor_1_marriage_sg_registered = models.BooleanField(
+    sponsor_1_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Sponsor 1 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -590,9 +590,7 @@ class EmployerSponsor(models.Model):
         ),
         help_text=_('''
             Was Sponsor 1's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
     sponsor_1_spouse_name = NullableCharField(
         verbose_name=_('Sponsor 1 spouse name'),
@@ -724,7 +722,7 @@ class EmployerSponsor(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE
     )
-    sponsor_2_marriage_sg_registered = models.BooleanField(
+    sponsor_2_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -733,9 +731,7 @@ class EmployerSponsor(models.Model):
         ),
         help_text=_('''
             Was Sponsor 2's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     # Sponsor 2 spouse details
@@ -1026,7 +1022,7 @@ class EmployerJointApplicant(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE
     )
-    joint_applicant_marriage_sg_registered = models.BooleanField(
+    joint_applicant_marriage_sg_registered = NullableBooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
         default=True,
         choices=TrueFalseChoices(
@@ -1035,9 +1031,7 @@ class EmployerJointApplicant(models.Model):
         ),
         help_text=_('''
             Was Joint applicant's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     # Joint applicant's spouse details
@@ -2177,7 +2171,7 @@ class DocSafetyAgreement(models.Model):
         ],
         help_text=_("If 'Other' is selected, must complete field (ii).")
     )
-    grilles_installed_require_cleaning = models.BooleanField(
+    grilles_installed_require_cleaning = NullableBooleanField(
         verbose_name=_(
             '(ii) Grilles installed on windows required to be cleaned by FDW?'
         ),
@@ -2185,20 +2179,16 @@ class DocSafetyAgreement(models.Model):
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
         ),
-        blank=True,
-        null=True,
         help_text=_('If yes, must complete field (iii).')
     )
-    adult_supervision = models.BooleanField(
+    adult_supervision = NullableBooleanField(
         verbose_name=_(
             '(iii) Adult supervision when cleaning window exterior?'
         ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
-        ),
-        blank=True,
-        null=True
+        )
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_(
@@ -2739,7 +2729,7 @@ class ArchivedDoc(models.Model):
         default=MaritalStatusChoices.SINGLE
     )
 
-    employer_marriage_sg_registered = models.BooleanField(
+    employer_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -2748,9 +2738,7 @@ class ArchivedDoc(models.Model):
         ),
         help_text=_('''
             Was Employer's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     def get_employer_nric_full(self):
@@ -2946,7 +2934,7 @@ class ArchivedDoc(models.Model):
     )
 
     # Sponsor 1 spouse details
-    sponsor_1_marriage_sg_registered = models.BooleanField(
+    sponsor_1_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Sponsor 1 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -2955,9 +2943,7 @@ class ArchivedDoc(models.Model):
         ),
         help_text=_('''
             Was Sponsor 1's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
     sponsor_1_spouse_name = NullableCharField(
         verbose_name=_('Sponsor 1 spouse name'),
@@ -3089,7 +3075,7 @@ class ArchivedDoc(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE
     )
-    sponsor_2_marriage_sg_registered = models.BooleanField(
+    sponsor_2_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -3098,9 +3084,7 @@ class ArchivedDoc(models.Model):
         ),
         help_text=_('''
             Was Sponsor 2's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     # Sponsor 2 spouse details
@@ -3280,7 +3264,7 @@ class ArchivedDoc(models.Model):
         choices=MaritalStatusChoices.choices,
         default=MaritalStatusChoices.SINGLE
     )
-    joint_applicant_marriage_sg_registered = models.BooleanField(
+    joint_applicant_marriage_sg_registered = NullableBooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
         default=True,
         choices=TrueFalseChoices(
@@ -3289,9 +3273,7 @@ class ArchivedDoc(models.Model):
         ),
         help_text=_('''
             Was Joint applicant's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     # Joint applicant's spouse details
@@ -3739,14 +3721,12 @@ class ArchivedDoc(models.Model):
         ],
         default='HDB'
     )
-    fdw_clean_window_exterior = models.BooleanField(
+    fdw_clean_window_exterior = NullableBooleanField(
         verbose_name=_('Does Employer require FDW to clean window exterior?'),
         choices=TrueFalseChoices(
             _('Yes, clean window exterior'),
             _('No, not required'),
         ),
-        blank=True,
-        null=True,
         default=False,
         help_text=_('If yes, must complete field (i).')
     )
@@ -3760,7 +3740,7 @@ class ArchivedDoc(models.Model):
         ],
         help_text=_("If 'Other' is selected, must complete field (ii).")
     )
-    grilles_installed_require_cleaning = models.BooleanField(
+    grilles_installed_require_cleaning = NullableBooleanField(
         verbose_name=_(
             '(ii) Grilles installed on windows required to be cleaned by FDW?'
         ),
@@ -3768,20 +3748,16 @@ class ArchivedDoc(models.Model):
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
         ),
-        blank=True,
-        null=True,
         help_text=_('If yes, must complete field (iii).')
     )
-    adult_supervision = models.BooleanField(
+    adult_supervision = NullableBooleanField(
         verbose_name=_(
             '(iii) Adult supervision when cleaning window exterior?'
         ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
-        ),
-        blank=True,
-        null=True
+        )
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_(
