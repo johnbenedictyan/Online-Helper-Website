@@ -406,7 +406,7 @@ class AgencyUpdateForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25"
                     ),
                     css_class='form-group col-24 text-center'
                 ),

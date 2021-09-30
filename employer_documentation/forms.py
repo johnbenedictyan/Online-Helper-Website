@@ -1112,13 +1112,13 @@ class EmployerSponsorForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'employer_update_route' level_0_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -1910,13 +1910,13 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'employer_update_route' level_0_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2138,13 +2138,13 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     HTML(
                         f'''
                         <a href="{{% url '{back_url}' level_0_pk %}}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2331,7 +2331,7 @@ class EmployerDocForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2610,13 +2610,13 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'case_update_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2869,13 +2869,13 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                         '''
                         <a
                         href="{% url 'servicefee_create_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -2975,13 +2975,13 @@ class DocSafetyAgreementForm(forms.ModelForm):
                         '''
                         <a
                         href="{% url 'case_status_update_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3149,7 +3149,7 @@ class RemainingAmountDetailForm(forms.ModelForm):
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3214,13 +3214,13 @@ class DocUploadForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'safetyagreement_create_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
@@ -3298,13 +3298,13 @@ class CaseStatusForm(forms.ModelForm):
                     HTML(
                         '''
                         <a href="{% url 'serviceagreement_create_route' level_1_pk %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Next',
-                        css_class="btn btn-xs-lg btn-primary w-25"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
