@@ -5,18 +5,18 @@
 <section>
     <div class="container-fluid min-height-75">
         <div class="row">
-            <div class="col mb-3 ml-1">
+            <div class="col mb-3 ml-md-1">
                 <h4 class="fs-20">Status Summary</h4>
             </div>
         </div>
         <div class="row">
-            <div class="col mb-4 ml-1">
+            <div class="col mb-4 ml-md-1">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-24 col-md-8">
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
-                        <div class="col-3 mb-3 mt-auto">
+                        <div class="col-24 col-md-3 mb-3 mt-auto">
                             <a href="{% url 'dashboard_status_list' %}"
                                 class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
