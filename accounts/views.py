@@ -13,7 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Foreign Apps Imports
 from enquiry.constants import EnquiryStatusChoices
-from enquiry.models import ShortlistedEnquiry
+from enquiry.models import MaidShortlistedEnquiryIM
 from maid.models import Maid
 from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
 from onlinemaid.mixins import SuccessMessageMixin
@@ -180,12 +180,13 @@ class FDWAccountDetail(DetailView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        maid_qs = Maid.objects.filter(
+            fdw_account__user=self.request.user
+        )
         context.update({
-            'jobs': ShortlistedEnquiry.objects.filter(
-                maids__in=Maid.objects.filter(
-                    fdw_account__user=self.request.user
-                ),
-                maid_shortlist_enquiry_im__status=EnquiryStatusChoices.OPEN
+            'jobs': MaidShortlistedEnquiryIM.objects.filter(
+                maid__in=maid_qs,
+                status=EnquiryStatusChoices.OPEN
             )
         })
         return context

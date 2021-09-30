@@ -10,7 +10,6 @@
 </div>
 <div class="row">
     {% for job in jobs %}
-    {% for maid_shortlist_enquiry_im in job.maid_shortlist_enquiry_im.all %}
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -19,7 +18,7 @@
                         <h5 class="card-title mb-0">Job #{{job.pk}}</h5>
                     </div>
                     <div class="col-2">
-                        <a href="{% url 'reject_shortlisted_enquiry' pk=maid_shortlist_enquiry_im.shortlisted_enquiry.pk maid_pk=maid_shortlist_enquiry_im.maid.pk %}"
+                        <a href="{% url 'reject_shortlisted_enquiry' pk=job.shortlisted_enquiry.pk maid_pk=job.maid.pk %}"
                             class="close">
                         <span aria-hidden="true">&times;</span></a>
                     </div>
@@ -29,7 +28,7 @@
                         <p>Name:</p>
                     </div>
                     <div class="col-24 col-md">
-                        <p>{{job.name}}</p>
+                        <p>{{job.shortlisted_enquiry.name}}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -37,7 +36,7 @@
                         <p>House Type:</p>
                     </div>
                     <div class="col-24 col-md">
-                        <p>{{job.get_property_type_display}}</p>
+                        <p>{{job.shortlisted_enquiry.get_property_type_display}}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -45,7 +44,7 @@
                         <p>Number of family members:</p>
                     </div>
                     <div class="col-24 col-md">
-                        <p>{{job.no_of_family_members}}</p>
+                        <p>{{job.shortlisted_enquiry.no_of_family_members}}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -53,7 +52,7 @@
                         <p>Number of children below 5:</p>
                     </div>
                     <div class="col-24 col-md">
-                        <p>{{job.no_of_below_5}}</p>
+                        <p>{{job.shortlisted_enquiry.no_of_below_5}}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -61,19 +60,18 @@
                         <p>Remarks:</p>
                     </div>
                     <div class="col-24 col-md">
-                        <p>{{job.remarks}}</p>
+                        <p>{{job.shortlisted_enquiry.remarks}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col text-center my-2">
-                        <a href="{% url 'accept_shortlisted_enquiry' pk=maid_shortlist_enquiry_im.shortlisted_enquiry.pk maid_pk=maid_shortlist_enquiry_im.maid.pk %}"
+                        <a href="{% url 'accept_shortlisted_enquiry' pk=job.shortlisted_enquiry.pk maid_pk=job.maid.pk %}"
                             class="btn btn-primary w-50">Accept</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
     {% endfor %}
 </div>
 <!-- <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
