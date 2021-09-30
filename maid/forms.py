@@ -172,26 +172,30 @@ class MaidForm(forms.ModelForm):
                     css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
-                    'passport_status',
+                    'email',
                     css_class='form-group col-lg-12 pl-xl-3'
+                ),
+                Column(
+                    'passport_status',
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     Field(
                         'passport_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-lg-12 pr-xl-3'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'passport_expiry',
-                    css_class='form-group col-lg-12 pl-xl-3'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     Field(
                         'fin_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-lg-12 pr-xl-3'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     Submit(
@@ -360,6 +364,18 @@ class MaidForm(forms.ModelForm):
                 )
                 for employer_doc in employer_doc_qs:
                     employer_doc.increment_version_number()
+            elif 'email' in self.changed_data:
+                self.instance.set_fdw_account_relation(
+                    self.cleaned_data.get(
+                        'email'
+                    )
+                )
+        else:
+            self.instance.set_fdw_account_relation(
+                self.cleaned_data.get(
+                    'email'
+                )
+            )
         return super().save(*args, **kwargs)
 
 

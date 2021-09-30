@@ -18,9 +18,9 @@ from onlinemaid.mixins import SuccessMessageMixin
 # Imports from local app
 from .forms import (
     EmployerCreationForm, SignInForm, AgencySignInForm,
-    CustomPasswordResetForm, EmailUpdateForm
+    CustomPasswordResetForm, EmailUpdateForm, FDWAccountCreationForm
 )
-from .models import PotentialEmployer
+from .models import FDWAccount, PotentialEmployer
 from .mixins import PotentialEmployerGrpRequiredMixin
 
 # Start of Views
@@ -144,6 +144,24 @@ class PotentialEmployerDelete(SuccessMessageMixin,
     model = PotentialEmployer
     success_url = reverse_lazy('home')
     success_message = 'Account deleted'
+
+
+class FDWAccountCreate(SuccessMessageMixin, CreateView):
+    context_object_name = 'fdw'
+    form_class = FDWAccountCreationForm
+    http_method_names = ['get', 'post']
+    model = FDWAccount
+    template_name = 'create/fdw-create.html'
+    success_url = reverse_lazy('home')
+    form_type = 'CREATE'
+    success_message = 'Account created'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'form_type': self.form_type
+        })
+        return kwargs
 
 
 class UserEmailUpdate(LoginRequiredMixin, UpdateView):

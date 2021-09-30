@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     SignInView, AgencySignInView, SignOutView, PotentialEmployerDetail,
     PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete,
-    CustomPasswordResetView, UserEmailUpdate
+    CustomPasswordResetView, UserEmailUpdate, FDWAccountCreate
 )
 
 # Start of Urls
@@ -16,9 +16,14 @@ urlpatterns = [
         'create/',
         include([
             path(
-                '',
+                'PE',
                 PotentialEmployerCreate.as_view(),
                 name='potential_employer_create'
+            ),
+            path(
+                'FDW',
+                FDWAccountCreate.as_view(),
+                name='fdw_account_create'
             )
         ])
     ),
@@ -56,7 +61,7 @@ urlpatterns = [
         'login/',
         include([
             path(
-                'employers',
+                '',
                 SignInView.as_view(),
                 name='sign_in'
             ),

@@ -8,11 +8,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Imports from project
 from onlinemaid.constants import TrueFalseChoices, MaritalStatusChoices
-from onlinemaid.fields import CustomBinaryField
+from onlinemaid.fields import CustomBinaryField, NullableEmailField
 from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
 # Project Apps Imports
+from accounts.models import FDWAccount
 from agency.models import Agency
 
 # App Imports
@@ -70,6 +71,14 @@ class Maid(models.Model):
         Agency,
         on_delete=models.CASCADE,
         related_name='maid'
+    )
+
+    fdw_account = models.ForeignKey(
+        FDWAccount,
+        on_delete=models.SET_NULL,
+        related_name='maids',
+        null=True,
+        blank=True
     )
 
     reference_number = models.CharField(
@@ -265,6 +274,10 @@ class Maid(models.Model):
         verbose_name=_('About Me'),
         max_length=350,
         null=True
+    )
+
+    email = NullableEmailField(
+        verbose_name=_('Email Address')
     )
 
     fin_number = CustomBinaryField(
@@ -500,6 +513,17 @@ class Maid(models.Model):
         </div>
         """
         return content
+
+    def set_fdw_account_relation(self, new_email):
+        try:
+            fdw_account = FDWAccount.objects.get(
+                user__email=new_email
+            )
+        except FDWAccount.DoesNotExist:
+            pass
+        else:
+            self.fdw_account = fdw_account
+            self.save()
 
     @property
     def is_published(self):

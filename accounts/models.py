@@ -50,6 +50,21 @@ class PotentialEmployer(models.Model):
         verbose_name_plural = 'Potential Employers'
 
 
+class FDWAccount(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+
+    def __str__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Foreign Domestic Worker'
+        verbose_name_plural = 'Foreign Domestic Workers'
+
+
 class AuditEntry(models.Model):
     action = models.CharField(max_length=64)
     ip = models.GenericIPAddressField(null=True)

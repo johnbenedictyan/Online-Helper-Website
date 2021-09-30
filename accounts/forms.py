@@ -13,10 +13,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div
 
 # Project Apps Imports
-from onlinemaid.constants import AG_OWNERS, EMPLOYERS
+from onlinemaid.constants import AG_OWNERS, EMPLOYERS, FDW
 
 # App Imports
-from .models import PotentialEmployer
+from .models import PotentialEmployer, FDWAccount
 
 # Start of Forms
 
@@ -337,7 +337,137 @@ class EmployerCreationForm(forms.ModelForm):
             pass
         else:
             potential_employer_group = Group.objects.get(
-                name='Potential Employers'
+                name=EMPLOYERS
+            )
+            potential_employer_group.user_set.add(
+                new_user
+            )
+            self.instance.user = new_user
+            return super().save(*args, **kwargs)
+
+
+class FDWAccountCreationForm(forms.ModelForm):
+    email = forms.CharField(
+        label=_('Email Address'),
+        required=True,
+        max_length=255
+    )
+
+    password = forms.CharField(
+        label=_('Password'),
+        required=True,
+        max_length=255,
+        widget=forms.PasswordInput()
+    )
+
+    terms_and_conditions = forms.BooleanField()
+
+    placeholders = {
+        'email': '',
+        'password': ''
+    }
+
+    class Meta:
+        model = FDWAccount
+        exclude = ['user']
+
+    def __init__(self, *args, **kwargs):
+        self.form_type = kwargs.pop('form_type', None)
+        super().__init__(*args, **kwargs)
+        if self.form_type == 'UPDATE':
+            kwargs.update(initial={
+                'email': kwargs.pop('email_address', None)
+            })
+        else:
+            for k, v in self.placeholders.items():
+                self.fields[k].widget.attrs['placeholder'] = v
+        self.fields['terms_and_conditions'].label = f'''
+            I agree to the
+            <a href="{
+                reverse_lazy('terms_and_conditions_user')
+            }" target="_blank">
+                terms of service
+            </a>
+            as well as the
+            <a href="{reverse_lazy('privacy_policy')}" target="_blank">
+                privacy policy
+            </a> of Online Maid
+        '''
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'email',
+                    css_class='form-group col-24'
+                ),
+                Column(
+                    'password',
+                    css_class='form-group col-24'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    'terms_and_conditions',
+                    css_class='form-group col'
+                ),
+                css_class='form-row'
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Create',
+                        css_class="btn btn-xs-lg btn-primary w-100"
+                    ),
+                    css_class='col-24 text-center'
+                ),
+                css_class='form-row'
+            )
+        )
+
+    def clean_terms_and_conditions(self):
+        terms_and_conditions = self.cleaned_data.get('terms_and_conditions')
+        if not terms_and_conditions:
+            msg = -('You must agree to sign up for our services')
+            self.add_error('terms_and_conditions', msg)
+
+        return terms_and_conditions
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        password = cleaned_data.get("password")
+
+        UserModel = get_user_model()
+        try:
+            UserModel.objects.get(
+                email=email
+            )
+        except UserModel.DoesNotExist:
+            pass
+        else:
+            msg = _('This email is taken')
+            self.add_error('email', msg)
+
+        if validate_password(password):
+            msg = _('This password does not meet our requirements')
+            self.add_error('password', msg)
+
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        cleaned_data = super().clean()
+        try:
+            new_user = get_user_model().objects.create_user(
+                email=cleaned_data.get('email'),
+                password=cleaned_data.get('password')
+            )
+        except Exception:
+            pass
+        else:
+            potential_employer_group = Group.objects.get(
+                name=FDW
             )
             potential_employer_group.user_set.add(
                 new_user

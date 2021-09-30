@@ -98,3 +98,12 @@ class NullableMaritalStatusCharField(NullableCharField):
             'default': MaritalStatusChoices.SINGLE
         })
         super().__init__(*args, **kwargs)
+
+
+class NullableEmailField(models.EmailField):
+    def __init__(self, *args, **kwargs) -> None:
+        kwargs.update({
+            'blank': True,
+            'null': True
+        })
+        super().__init__(*args, **kwargs)
