@@ -713,7 +713,7 @@ class EmployerForm(forms.ModelForm):
 
             if 'employer_email' in self.changed_data:
                 self.instance.set_potential_employer_relation(
-                    self.changed_data.get(
+                    self.cleaned_data.get(
                         'employer_email'
                     )
                 )

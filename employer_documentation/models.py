@@ -1,6 +1,5 @@
 # Global Imports
 import os
-from project.accounts.models import PotentialEmployer
 import uuid
 import requests
 import secrets
@@ -22,6 +21,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 # Project Apps Imports
+from accounts.models import PotentialEmployer
 from onlinemaid.constants import TrueFalseChoices
 from onlinemaid.fields import (
     CustomBinaryField, NullableCharField, NullableBooleanField,
@@ -107,6 +107,7 @@ class Employer(models.Model):
     potential_employer = models.ForeignKey(
         PotentialEmployer,
         related_name='employers',
+        blank=True,
         null=True,
         on_delete=models.SET_NULL
     )
