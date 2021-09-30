@@ -13,7 +13,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div
 
 # Project Apps Imports
-from onlinemaid.constants import AG_OWNERS, P_EMPLOYERS
+from onlinemaid.constants import AG_OWNERS, EMPLOYERS
 
 # App Imports
 from .models import PotentialEmployer
@@ -177,7 +177,7 @@ class AgencySignInForm(AuthenticationForm):
         except UserModel.DoesNotExist:
             pass
         else:
-            if user.groups.filter(name=P_EMPLOYERS).exists():
+            if user.groups.filter(name=EMPLOYERS).exists():
                 self.add_error(
                     'username',
                     ValidationError(

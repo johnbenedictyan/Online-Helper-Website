@@ -1,5 +1,6 @@
 # Global Imports
 import os
+from project.accounts.models import PotentialEmployer
 import uuid
 import requests
 import secrets
@@ -101,6 +102,13 @@ class Employer(models.Model):
         default=uuid.uuid4,
         editable=False,
         unique=True
+    )
+
+    potential_employer = models.ForeignKey(
+        PotentialEmployer,
+        related_name='employers',
+        null=True,
+        on_delete=models.SET_NULL
     )
 
     applicant_type = models.CharField(
@@ -367,6 +375,17 @@ class Employer(models.Model):
             self.spouse_passport_nonce,
             self.spouse_passport_tag,
         )
+
+    def set_potential_employer_relation(self, new_email):
+        try:
+            potential_employer = PotentialEmployer.objects.get(
+                user__email=new_email
+            )
+        except PotentialEmployer.DoesNotExist:
+            pass
+        else:
+            self.potential_employer = potential_employer
+            self.save()
 
     # Utility Functions
     def details_missing_spouse(self):

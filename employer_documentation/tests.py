@@ -6,7 +6,7 @@
 # from django.contrib.auth.models import AnonymousUser, Group
 
 # import accounts
-# from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, P_EMPLOYERS
+# from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, EMPLOYERS
 # from onlinemaid.helper_functions import encrypt_string
 # from agency.models import Agency, AgencyBranch, AgencyOwner, AgencyEmployee, PotentialAgency
 # from maid.models import Maid
@@ -28,7 +28,7 @@
 #             'AA': AG_ADMINS,
 #             'AM': AG_MANAGERS,
 #             'AS': AG_SALES,
-#             'PE': P_EMPLOYERS,
+#             'PE': EMPLOYERS,
 #         }
 #         for k,v in group_choices.items():
 #             group_instance = Group(name=v)
