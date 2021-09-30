@@ -969,7 +969,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -995,7 +995,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1021,7 +1021,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1047,7 +1047,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1073,7 +1073,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1099,7 +1099,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1125,7 +1125,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1155,7 +1155,7 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '-',
                     ),
                     css_class='''
-                        col-0-5 form-group text-center align-self-center
+                        col-sm-1 form-group text-center align-self-center
                     '''
                 ),
                 Div(
@@ -1174,13 +1174,13 @@ class AgencyOpeningHoursForm(forms.ModelForm):
                         '''
                         <a href="
                         {% url 'dashboard_agency_outlet_details_update' %}"
-                        class="btn btn-xs-lg btn-outline-primary w-25 mx-2">Back</a>
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
                         '''
                     ),
                     Submit(
                         'submit',
                         'Submit',
-                        css_class="btn btn-xs-lg btn-primary w-25 mx-2"
+                        css_class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2"
                     ),
                     css_class='form-group col-24 text-center'
                 )
