@@ -1,3 +1,5 @@
+from typing import Any, Optional
+
 # Django Imports
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
@@ -14,7 +16,7 @@ from onlinemaid.mixins import SuccessMessageMixin
 
 # App Imports
 from .forms import GeneralEnquiryForm
-from .models import GeneralEnquiry, ShortlistedEnquiry
+from .models import GeneralEnquiry, MaidShortlistedEnquiryIM, ShortlistedEnquiry
 
 # Start of Views
 
@@ -167,3 +169,41 @@ class RejectShortlistedEnquiryView(BaseApproveEnquiryView):
         return reverse_lazy(
             'admin_panel'
         )
+
+
+class AcceptShortlistedEnquiry(RedirectView):
+    http_method_names = ['get']
+    pattern_name = 'fdw_account_detail'
+
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
+        try:
+            maid_shortlist_enquiry_im = MaidShortlistedEnquiryIM.objects.get(
+                shortlisted_enquiry__pk=self.kwargs.get('pk'),
+                maid__pk=self.kwargs.get('maid_pk')
+            )
+        except MaidShortlistedEnquiryIM.DoesNotExist:
+            pass
+        else:
+            maid_shortlist_enquiry_im.set_status_accepted()
+        finally:
+            kwargs = {}
+            return super().get_redirect_url(*args, **kwargs)
+
+
+class RejectShortlistedEnquiry(RedirectView):
+    http_method_names = ['get']
+    pattern_name = 'fdw_account_detail'
+
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
+        try:
+            maid_shortlist_enquiry_im = MaidShortlistedEnquiryIM.objects.get(
+                shortlisted_enquiry__pk=self.kwargs.get('pk'),
+                maid__pk=self.kwargs.get('maid_pk')
+            )
+        except MaidShortlistedEnquiryIM.DoesNotExist:
+            pass
+        else:
+            maid_shortlist_enquiry_im.set_status_rejected()
+        finally:
+            kwargs = {}
+            return super().get_redirect_url(*args, **kwargs)

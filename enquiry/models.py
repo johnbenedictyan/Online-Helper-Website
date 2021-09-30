@@ -16,7 +16,7 @@ from maid.models import Maid, MaidResponsibility, MaidLanguage
 # App Imports
 from .constants import (
     PROPERTY_CHOICES, PROPERTY_2_ROOM_HDB, MAID_NATIONALITY_CHOICES,
-    MAID_TYPE_CHOICES, NO_PREFERENCE
+    MAID_TYPE_CHOICES, NO_PREFERENCE, EnquiryStatusChoices
 )
 from .validators import validate_links
 
@@ -167,6 +167,7 @@ class ShortlistedEnquiry(models.Model):
 
     maids = models.ManyToManyField(
         Maid,
+        through='MaidShortlistedEnquiryIM',
         related_name='enquiries'
     )
 
@@ -249,3 +250,31 @@ class ShortlistedEnquiry(models.Model):
         return self.maids.filter(
             agency__pk=agency_id
         )
+
+
+class MaidShortlistedEnquiryIM(models.Model):
+    maid = models.ForeignKey(
+        Maid,
+        related_name='maid_shortlist_enquiry_im',
+        on_delete=models.CASCADE
+    )
+
+    shortlisted_enquiry = models.ForeignKey(
+        ShortlistedEnquiry,
+        related_name='maid_shortlist_enquiry_im',
+        on_delete=models.CASCADE
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=EnquiryStatusChoices.choices,
+        default=EnquiryStatusChoices.OPEN
+    )
+
+    def set_status_accepted(self):
+        self.status = EnquiryStatusChoices.ACCEPTED
+        self.save()
+
+    def set_status_rejected(self):
+        self.status = EnquiryStatusChoices.REJECTED
+        self.save()

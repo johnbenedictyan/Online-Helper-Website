@@ -6,7 +6,8 @@ from django.urls import reverse_lazy
 from accounts.models import User
 from agency.models import Agency
 from onlinemaid.constants import (
-    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, EMPLOYERS
+    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, EMPLOYERS,
+    FDW
 )
 from onlinemaid.mixins import (
     LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
@@ -160,7 +161,7 @@ class GetAuthorityMixin:
                 authority = auth_name
                 if authority == AG_OWNERS:
                     agency_id = self.request.user.agency_owner.agency.pk
-                elif authority != EMPLOYERS:
+                elif authority != EMPLOYERS and authority != FDW:
                     agency_id = self.request.user.agency_employee.agency.pk
 
         return {

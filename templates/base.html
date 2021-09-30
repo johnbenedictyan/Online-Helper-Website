@@ -85,6 +85,8 @@
                             <!-- <a class="dropdown-item" href="{% url 'potential_employer_detail' %}">Profile</a> -->
                             <a class="fs-11 dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
                             <a class="fs-11 dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
+                            {% elif authority == 'Foreign Domestic Workers' %}
+                            <a class="dropdown-item" href="{% url 'fdw_account_detail' %}">Profile</a>
                             {% elif request.user.is_superuser %}
                             <a class="fs-11 dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
                             {% else %}
@@ -210,6 +212,8 @@
                             <!-- <a class="dropdown-item" href="{% url 'potential_employer_detail' %}">Profile</a> -->
                             <a class="fs-11 dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
                             <a class="fs-11 dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
+                            {% elif authority == 'Foreign Domestic Workers' %}
+                            <a class="dropdown-item" href="{% url 'fdw_account_detail' %}">Profile</a>
                             {% elif request.user.is_superuser %}
                             <a class="fs-11 dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
                             {% else %}

@@ -7,7 +7,8 @@ from .views import (
     DeactivateGeneralEnquiryView, ToggleApproveEnquiryView,
     SuccessfulEnquiryView, EnquiryListView, GeneralEnquiryView,
     ApproveGeneralEnquiryView, ApproveShortlistedlEnquiryView,
-    RejectGeneralEnquiryView, RejectShortlistedEnquiryView
+    RejectGeneralEnquiryView, RejectShortlistedEnquiryView,
+    AcceptShortlistedEnquiry, RejectShortlistedEnquiry
 )
 
 # Start of Urls
@@ -62,6 +63,16 @@ urlpatterns = [
                 name='reject_shortlisted_enquiry'
             )
         ])
+    ),
+    path(
+        'accept/<int:pk>/<int:maid_pk>',
+        AcceptShortlistedEnquiry.as_view(),
+        name='accept_shortlisted_enquiry'
+    ),
+    path(
+        'reject/<int:pk>/<int:maid_pk>',
+        RejectShortlistedEnquiry.as_view(),
+        name='reject_shortlisted_enquiry'
     ),
     path(
         'success/',

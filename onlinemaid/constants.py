@@ -11,7 +11,7 @@ AG_MANAGERS = 'Agency Managers'
 AG_SALES = 'Agency Sales Staff'
 AG_ADMIN_STAFF = 'Agency Admin Staff'
 EMPLOYERS = 'Employers'
-FDW = 'Foreign Domestic Worker'
+FDW = 'Foreign Domestic Workers'
 AUTHORITY_GROUPS = [
     AG_OWNERS,
     AG_ADMINS,

@@ -12,6 +12,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Foreign Apps Imports
+from enquiry.constants import EnquiryStatusChoices
+from enquiry.models import ShortlistedEnquiry
+from maid.models import Maid
 from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
 from onlinemaid.mixins import SuccessMessageMixin
 
@@ -162,6 +165,30 @@ class FDWAccountCreate(SuccessMessageMixin, CreateView):
             'form_type': self.form_type
         })
         return kwargs
+
+
+class FDWAccountDetail(DetailView):
+    context_object_name = 'fdw'
+    http_method_names = ['get']
+    model = FDWAccount
+    template_name = 'detail/fdw-account-detail.html'
+
+    def get_object(self, queryset=None):
+        return FDWAccount.objects.get(
+            user=self.request.user
+        )
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'jobs': ShortlistedEnquiry.objects.filter(
+                maids__in=Maid.objects.filter(
+                    fdw_account__user=self.request.user
+                ),
+                maid_shortlist_enquiry_im__status=EnquiryStatusChoices.OPEN
+            )
+        })
+        return context
 
 
 class UserEmailUpdate(LoginRequiredMixin, UpdateView):
