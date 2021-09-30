@@ -42,7 +42,7 @@
                         {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
                     </div>
                     <div id="dashboardPageNavWrapper"
-                        class="col col-md-5 col-lg-5 col-xl-4 bg-dashboard-pagebar-color text-dashboard-text-color">
+                        class="col-24 col-md-5 col-lg-5 col-xl-4 bg-dashboard-pagebar-color text-dashboard-text-color">
                         {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
                         <div class="row sticky-top">
                             {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
