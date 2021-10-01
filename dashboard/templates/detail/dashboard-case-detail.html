@@ -736,9 +736,11 @@
                 <!-- <div class="col-md-12 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div> -->
             </div>
             <div class="row">
-                <div class="col">
-                    <a href="{% url 'handover_form_view' object.pk %}"
-                        class="btn btn-xs-lg btn-xs-lg btn-primary">Handover FDW</a>
+                <div class="col d-flex">
+                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="{% if object.is_stage_1 %}Proceed to Sign the Handover Form{% else %}The Employer has not signed the documents{% endif %}">
+                        <a href="{% if object.is_stage_1 %}{% url 'handover_form_view' object.pk %}{% endif %}"
+                        class="btn btn-xs-lg btn-xs-lg btn-primary {% if not object.is_stage_1 %}disabled{% endif %}">Handover FDW</a>
+                    </div>
                 </div>
             </div>
         </div>

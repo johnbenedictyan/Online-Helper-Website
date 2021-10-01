@@ -1396,6 +1396,26 @@ class EmployerDoc(models.Model):
         self.version += 1
         self.save()
 
+    def get_stage(self):
+        if self.rn_signatures_ed.employer_signature_1:
+            return 1
+        elif self.rn_signatures_ed.employer_signature_2:
+            return 2
+        else:
+            return 0
+
+    @property
+    def is_stage_0(self):
+        return self.get_stage() == 0
+
+    @property
+    def is_stage_1(self):
+        return self.get_stage() == 1
+
+    @property
+    def is_stage_2(self):
+        return self.get_stage() == 2
+
     @property
     def is_archived_doc(self):
         return self.status == CaseStatusChoices.ARCHIVED
@@ -1948,15 +1968,6 @@ class CaseSignature(models.Model):
         self.sponsor_2_signature = None if self.sponsor_2_signature else self.sponsor_2_signature
         self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
         self.save()
-
-    def get_stage(self):
-        return 2 if self.employer_signature_2 else 1
-
-    def is_stage_1(self):
-        return self.get_stage == 1
-
-    def is_stage_2(self):
-        return not self.is_stage_1
 
 
 class CaseStatus(models.Model):
