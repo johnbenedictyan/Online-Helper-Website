@@ -3672,11 +3672,11 @@ class EmployerWithSpouseSignatureForm(forms.Form):
         )
 
 
-class EmployerWithOneSponsor(forms.Form):
+class EmployerWithOneSponsorForm(forms.Form):
     employer_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
-    employer_spouse1_signature = forms.CharField(
+    employer_sponsor1_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
 
@@ -3751,14 +3751,14 @@ class EmployerWithOneSponsor(forms.Form):
         )
 
 
-class EmployerWithTwoSponsor(forms.Form):
+class EmployerWithTwoSponsorForm(forms.Form):
     employer_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
-    employer_spouse1_signature = forms.CharField(
+    employer_sponsor1_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
-    employer_spouse2_signature = forms.CharField(
+    employer_sponsor2_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
 

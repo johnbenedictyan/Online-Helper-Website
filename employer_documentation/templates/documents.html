@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block main_content %}
+{% include 'sections/title-banner.html' with page_name='Employer Documents' %}
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='employer-documents-section' %}
+<div class="row justify-content-center">
+    <div class="col-lg-16">
+        {% include 'components/documents.html' %}
+    </div>
+</div>
+{% include 'components/27-ws-section/end.html' %}
+{% endblock main_content %}

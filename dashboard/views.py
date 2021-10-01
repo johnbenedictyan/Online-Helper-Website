@@ -221,8 +221,8 @@ class SalesList(BaseFilteredListView):
     def get_queryset(self):
         qs = super().get_queryset()
         # qsArchived = ArchivedDoc.objects.none()
-        if self.request.GET.get('employer_fdw_search'):
-            search_terms = self.request.GET.get('employer_fdw_search')
+        # if self.request.GET.get('employer_fdw_search'):
+            # search_terms = self.request.GET.get('employer_fdw_search')
             # qsArchived = ArchivedDoc.objects.filter(
             #     Q(employer_name__icontains=search_terms) |
             #     Q(fdw__name__icontains=search_terms)

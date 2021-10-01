@@ -224,123 +224,249 @@ urlpatterns = [
                     path(
                         'pdf/',
                         include([
-                            # HTML to PDF - First signing event
                             path(
-                                'service-fees/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/01-service-fee-schedule.html',
-                                    content_disposition='inline; filename="service_fee_schedule.pdf"',
-                                ),
-                                name='pdf_agency_service_fee_schedule'
+                                'agency/',
+                                include([
+                                    # HTML to PDF - First signing event
+                                    path(
+                                        'service-fees/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/01-service-fee-schedule.html',
+                                            content_disposition='inline; filename="service_fee_schedule.pdf"',
+                                        ),
+                                        name='pdf_agency_service_fee_schedule'
+                                    ),
+                                    path(
+                                        'service-agreement/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/03-service-agreement.html',
+                                            content_disposition='inline; filename="service_agreement.pdf"',
+                                        ),
+                                        name='pdf_agency_service_agreement'
+                                    ),
+                                    path(
+                                        'employment-contract/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/04-employment-contract.html',
+                                            content_disposition='inline; filename="employment-contract.pdf"',
+                                        ),
+                                        name='pdf_agency_employment_contract'
+                                    ),
+                                    path(
+                                        'repayment-schedule/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/05-repayment-schedule.html',
+                                            content_disposition='inline; filename="repayment-schedule.pdf"',
+                                            use_repayment_table=True
+                                        ),
+                                        name='pdf_agency_repayment_schedule'
+                                    ),
+                                    path(
+                                        'rest-day-agreement/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/06-rest-day-agreement.html',
+                                            content_disposition='inline; filename="rest-day-agreement.pdf"',
+                                        ),
+                                        name='pdf_agency_rest_day_agreement'
+                                    ),
+                                    path(
+                                        'transfer-consent/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/09-transfer-consent.html',
+                                            content_disposition='inline; filename="transfer-consent.pdf"',
+                                        ),
+                                        name='pdf_agency_transfer_consent'
+                                    ),
+                                    path(
+                                        'work-pass-authorisation/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/10-work-pass-authorisation.html',
+                                            content_disposition='inline; filename="work-pass-authorisation.pdf"',
+                                        ),
+                                        name='pdf_agency_work_pass_authorisation'
+                                    ),
+                                    path(
+                                        'income-tax-declaration/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/13-income-tax-declaration.html',
+                                            content_disposition='inline; filename="income-tax-declaration.pdf"',
+                                        ),
+                                        name='pdf_agency_income_tax_declaration'
+                                    ),
+                                    path(
+                                        'safety-agreement/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/14-safety-agreement.html',
+                                            content_disposition='inline; filename="safety-agreement.pdf"',
+                                        ),
+                                        name='pdf_agency_safety_agreement'
+                                    ),
+                                    # HTML to PDF - Second signing event
+                                    path(
+                                        'handover-checklist/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/08-handover-checklist.html',
+                                            content_disposition='inline; filename="handover-checklist.pdf"'
+                                        ),
+                                        name='pdf_agency_handover_checklist'
+                                    ),
+                                    # File to PDF
+                                    path(
+                                        'job-order/',
+                                        views.UploadedPdfAgencyView.as_view(
+                                            field_name='job_order_pdf',
+                                            filename='job_order.pdf'
+                                        ),
+                                        name='pdf_agency_job_order_route'
+                                    ),
+                                    path(
+                                        'ipa/',
+                                        views.UploadedPdfAgencyView.as_view(
+                                            field_name='ipa_pdf',
+                                            filename='ipa.pdf'
+                                        ),
+                                        name='pdf_agency_ipa_route'
+                                    ),
+                                    path(
+                                        'medical-report/',
+                                        views.UploadedPdfAgencyView.as_view(
+                                            field_name='medical_report_pdf',
+                                            filename='medical_report.pdf'
+                                        ),
+                                        name='pdf_agency_medical_report_route'
+                                    ),
+                                    path(
+                                        'deposit-invoice/',
+                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                            template_name='pdf/deposit-invoice.html',
+                                            content_disposition='inline; filename="deposit-invoice.pdf"'
+                                        ),
+                                        name='pdf_agency_deposit_invoice'
+                                    ),
+                                ])
                             ),
                             path(
-                                'service-agreement/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/03-service-agreement.html',
-                                    content_disposition='inline; filename="service_agreement.pdf"',
-                                ),
-                                name='pdf_agency_service_agreement'
-                            ),
-                            path(
-                                'employment-contract/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/04-employment-contract.html',
-                                    content_disposition='inline; filename="employment-contract.pdf"',
-                                ),
-                                name='pdf_agency_employment_contract'
-                            ),
-                            path(
-                                'repayment-schedule/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/05-repayment-schedule.html',
-                                    content_disposition='inline; filename="repayment-schedule.pdf"',
-                                    use_repayment_table=True
-                                ),
-                                name='pdf_agency_repayment_schedule'
-                            ),
-                            path(
-                                'rest-day-agreement/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/06-rest-day-agreement.html',
-                                    content_disposition='inline; filename="rest-day-agreement.pdf"',
-                                ),
-                                name='pdf_agency_rest_day_agreement'
-                            ),
-                            path(
-                                'transfer-consent/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/09-transfer-consent.html',
-                                    content_disposition='inline; filename="transfer-consent.pdf"',
-                                ),
-                                name='pdf_agency_transfer_consent'
-                            ),
-                            path(
-                                'work-pass-authorisation/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/10-work-pass-authorisation.html',
-                                    content_disposition='inline; filename="work-pass-authorisation.pdf"',
-                                ),
-                                name='pdf_agency_work_pass_authorisation'
-                            ),
-                            path(
-                                'income-tax-declaration/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/13-income-tax-declaration.html',
-                                    content_disposition='inline; filename="income-tax-declaration.pdf"',
-                                ),
-                                name='pdf_agency_income_tax_declaration'
-                            ),
-                            path(
-                                'safety-agreement/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/14-safety-agreement.html',
-                                    content_disposition='inline; filename="safety-agreement.pdf"',
-                                ),
-                                name='pdf_agency_safety_agreement'
-                            ),
-                            # HTML to PDF - Second signing event
-                            path(
-                                'handover-checklist/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/08-handover-checklist.html',
-                                    content_disposition='inline; filename="handover-checklist.pdf"'
-                                ),
-                                name='pdf_agency_handover_checklist'
-                            ),
-                            # File to PDF
-                            path(
-                                'job-order/',
-                                views.UploadedPdfAgencyView.as_view(
-                                    field_name='job_order_pdf',
-                                    filename='job_order.pdf'
-                                ),
-                                name='pdf_agency_job_order_route'
-                            ),
-                            path(
-                                'ipa/',
-                                views.UploadedPdfAgencyView.as_view(
-                                    field_name='ipa_pdf',
-                                    filename='ipa.pdf'
-                                ),
-                                name='pdf_agency_ipa_route'
-                            ),
-                            path(
-                                'medical-report/',
-                                views.UploadedPdfAgencyView.as_view(
-                                    field_name='medical_report_pdf',
-                                    filename='medical_report.pdf'
-                                ),
-                                name='pdf_agency_medical_report_route'
-                            ),
-                            path(
-                                'deposit-invoice/',
-                                views.HtmlToRenderPdfAgencyView.as_view(
-                                    template_name='pdf/deposit-invoice.html',
-                                    content_disposition='inline; filename="deposit-invoice.pdf"'
-                                ),
-                                name='pdf_deposit_invoice'
-                            ),
-                        ]),
+                                'employers/',
+                                include([
+                                    # HTML to PDF - First signing event
+                                    path(
+                                        'service-fees/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/01-service-fee-schedule.html',
+                                            content_disposition='inline; filename="service_fee_schedule.pdf"',
+                                        ),
+                                        name='pdf_employer_service_fee_schedule'
+                                    ),
+                                    path(
+                                        'service-agreement/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/03-service-agreement.html',
+                                            content_disposition='inline; filename="service_agreement.pdf"',
+                                        ),
+                                        name='pdf_employer_service_agreement'
+                                    ),
+                                    path(
+                                        'employment-contract/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/04-employment-contract.html',
+                                            content_disposition='inline; filename="employment-contract.pdf"',
+                                        ),
+                                        name='pdf_employer_employment_contract'
+                                    ),
+                                    path(
+                                        'repayment-schedule/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/05-repayment-schedule.html',
+                                            content_disposition='inline; filename="repayment-schedule.pdf"',
+                                            use_repayment_table=True
+                                        ),
+                                        name='pdf_employer_repayment_schedule'
+                                    ),
+                                    path(
+                                        'rest-day-agreement/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/06-rest-day-agreement.html',
+                                            content_disposition='inline; filename="rest-day-agreement.pdf"',
+                                        ),
+                                        name='pdf_employer_rest_day_agreement'
+                                    ),
+                                    path(
+                                        'transfer-consent/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/09-transfer-consent.html',
+                                            content_disposition='inline; filename="transfer-consent.pdf"',
+                                        ),
+                                        name='pdf_employer_transfer_consent'
+                                    ),
+                                    path(
+                                        'work-pass-authorisation/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/10-work-pass-authorisation.html',
+                                            content_disposition='inline; filename="work-pass-authorisation.pdf"',
+                                        ),
+                                        name='pdf_employer_work_pass_authorisation'
+                                    ),
+                                    path(
+                                        'income-tax-declaration/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/13-income-tax-declaration.html',
+                                            content_disposition='inline; filename="income-tax-declaration.pdf"',
+                                        ),
+                                        name='pdf_employer_income_tax_declaration'
+                                    ),
+                                    path(
+                                        'safety-agreement/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/14-safety-agreement.html',
+                                            content_disposition='inline; filename="safety-agreement.pdf"',
+                                        ),
+                                        name='pdf_employer_safety_agreement'
+                                    ),
+                                    # HTML to PDF - Second signing event
+                                    path(
+                                        'handover-checklist/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/08-handover-checklist.html',
+                                            content_disposition='inline; filename="handover-checklist.pdf"'
+                                        ),
+                                        name='pdf_employer_handover_checklist'
+                                    ),
+                                    # File to PDF
+                                    path(
+                                        'job-order/',
+                                        views.UploadedPdfAgencyView.as_view(
+                                            field_name='job_order_pdf',
+                                            filename='job_order.pdf'
+                                        ),
+                                        name='pdf_employer_job_order_route'
+                                    ),
+                                    path(
+                                        'ipa/',
+                                        views.UploadedPdfAgencyView.as_view(
+                                            field_name='ipa_pdf',
+                                            filename='ipa.pdf'
+                                        ),
+                                        name='pdf_employer_ipa_route'
+                                    ),
+                                    path(
+                                        'medical-report/',
+                                        views.UploadedPdfAgencyView.as_view(
+                                            field_name='medical_report_pdf',
+                                            filename='medical_report.pdf'
+                                        ),
+                                        name='pdf_employer_medical_report_route'
+                                    ),
+                                    path(
+                                        'deposit-invoice/',
+                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                            template_name='pdf/deposit-invoice.html',
+                                            content_disposition='inline; filename="deposit-invoice.pdf"'
+                                        ),
+                                        name='pdf_employer_deposit_invoice'
+                                    ),
+                                ])
+                            )
+                        ])
                     ),
                     # path(
                     #     'archived-pdf/',
@@ -476,6 +602,11 @@ urlpatterns = [
                             )
                         ]),
                     ),
+                    path(
+                        'view-documents/',
+                        views.EmployerDocumentDetailView.as_view(),
+                        name='employer_document_detail'
+                    )
                 ]),
             ),
         ])

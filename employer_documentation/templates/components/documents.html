@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col my-2 px-4">
+        <div class="row bg-dashboard-navbar-color">
+            <div class="col">
+                <h5 class="my-1">Case Information</h5>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <h6>Name of Employer</h6>
+                <p>{{ object.employer.employer_name }}</p>
+            </div>
+            <div class="col-md-12">
+                <h6>Name of Maid</h6>
+                <p>{{ object.fdw.name }}</p>
+            </div>
+            <div class="col-md-12">
+                <h6>Name of Agency Employee</h6>
+                <p>{{ object.employer.employer_employee.name }}</p>
+            </div>
+            <div class="col-md-12">
+                <h6>Case Ref No</h6>
+                <p>{{ object.case_ref_no }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col my-2 px-4">
+        <div class="row bg-dashboard-navbar-color">
+            <div class="col">
+                <h5 class="my-1">View Documents</h5>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_service_fee_schedule' level_1_pk=object.pk %}" target="_blank">Service Fee
+                    Schedule</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_handover_checklist' level_1_pk=object.pk %}" target="_blank">Handover
+                    Checklist</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_service_agreement' level_1_pk=object.pk %}" target="_blank">Service
+                    Agreement</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_transfer_consent' level_1_pk=object.pk %}" target="_blank">Transfer
+                    Consent</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_employment_contract' level_1_pk=object.pk %}" target="_blank">Employment
+                    Contract</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_work_pass_authorisation' level_1_pk=object.pk %}" target="_blank">Work
+                    Pass Authorisation</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_repayment_schedule' level_1_pk=object.pk %}" target="_blank">Repayment
+                    Schedule</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_rest_day_agreement' level_1_pk=object.pk %}" target="_blank">Rest
+                    Day Agreement</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_safety_agreement' level_1_pk=object.pk %}" target="_blank">Safety
+                    Agreement</a>
+            </div>
+            <div class="col-md-12 my-2">
+                <a href="{% url 'pdf_employer_income_tax_declaration' level_1_pk=object.pk %}" target="_blank">Income
+                    Tax Declaration</a>
+            </div>
+        </div>
+    </div>
+</div>
