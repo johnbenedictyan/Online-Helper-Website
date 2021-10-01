@@ -1933,111 +1933,6 @@ class CaseSignature(models.Model):
         null=True
     )
 
-    # Signature URL slugs
-    sigslug_employer_1 = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_employer_spouse = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_sponsor_1 = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_sponsor_2 = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_joint_applicant = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_header_dict = {
-        'employer_1':       'EMPLO',
-        'employer_spouse':  'EMSPO',
-        'sponsor_1':        'SPON1',
-        'sponsor_2':        'SPON2',
-        'joint_applicant':  'JOAPP'
-    }
-
-    reverse_sigslug_header_dict = {
-        'EMPLO': 'employer_1',
-        'EMSPO': 'employer_spouse',
-        'SPON1': 'sponsor_1',
-        'SPON2': 'sponsor_2',
-        'JOAPP': 'joint_applicant'
-    }
-
-    def generate_sigslug(self, stakeholder):
-        if stakeholder == 'employer_1':
-            self.sigslug_employer_1 = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'employer_spouse':
-            self.sigslug_employer_spouse = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'sponsor_1':
-            self.sigslug_sponsor_1 = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'sponsor_2':
-            self.sigslug_sponsor_2 = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'joint_applicant':
-            self.sigslug_joint_applicant = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        super().save()
-
-    def revoke_sigslug(self, stakeholder):
-        if stakeholder == 'employer_1':
-            self.sigslug_employer_1 = None
-        elif stakeholder == 'employer_spouse':
-            self.sigslug_employer_spouse = None
-        elif stakeholder == 'sponsor_1':
-            self.sigslug_sponsor_1 = None
-        elif stakeholder == 'sponsor_2':
-            self.sigslug_sponsor_2 = None
-        elif stakeholder == 'joint_applicant':
-            self.sigslug_joint_applicant = None
-        super().save()
-
-    def get_sigurl(self, field_name):
-        slug = getattr(self, field_name, None)
-        if slug:
-            current_site = Site.objects.get_current()
-            relative_url = reverse(
-                'token_challenge_route',
-                kwargs={'slug': slug},
-            )
-            return current_site.domain + relative_url
-        else:
-            return None
-
     def get_employer_signature(self):
         if self.employer_signature_2:
             return self.employer_signature_2
@@ -2062,12 +1957,6 @@ class CaseSignature(models.Model):
 
     def is_stage_2(self):
         return not self.is_stage_1
-
-    # Verification Tokens
-    token_employer_1 = models.BinaryField(
-        blank=True,
-        null=True
-    )
 
 
 class CaseStatus(models.Model):
