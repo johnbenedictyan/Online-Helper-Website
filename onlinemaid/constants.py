@@ -1,4 +1,5 @@
 # Django Imports
+from typing import TypeVar
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -21,6 +22,7 @@ AUTHORITY_GROUPS = [
     EMPLOYERS,
     FDW
 ]
+T = TypeVar('T', bound=models.Model)
 
 
 def TrueFalseChoices(TrueMessage, FalseMessage):

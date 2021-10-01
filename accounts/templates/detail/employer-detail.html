@@ -1,28 +1,226 @@
 {% extends 'employer-base.html' %}
 {% block accounts_section %}
 {% include 'sections/title-banner.html' with page_name='Profile' %}
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col-8 text-center">
-                {{employer.name}}
-            </div>
-            <div class="col-16">
-                <h5>Information</h5>
-                <hr>
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='fdw-account-detail-section' %}
+{% include 'components/crispy-form-error.html' %}
+<div class="row">
+    <div class="col mb-3 ml-1">
+        <h4 class="fs-16">My Enquiries</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col mb-3 ml-1">
+        <h4 class="fs-16">My Documents</h4>
+    </div>
+</div>
+<div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
+    <div class="col-2">
+        <h6 class="dashboard-table-header">S/N</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">Contract Date</h6>
+    </div>
+    <div class="col-6">
+        <h6 class="dashboard-table-header">FDW</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">Agency</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">EA Personnel</h6>
+    </div>
+    <div class="col-2">
+        <h6 class="dashboard-table-header">Status</h6>
+    </div>
+    <div class="col-2 text-center">
+        <h6 class="dashboard-table-header">Actions</h6>
+    </div>
+</div>
+{% for doc in documents %}
+<div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
+    <div class="col-2">
+        <p class="mb-0">{{ forloop.counter }}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-0">{{ doc.agreement_date }}</p>
+    </div>
+    <div class="col-6">
+        <p class="mb-0">{{ doc.fdw.name }}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-0">{{ doc.employer }}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-0">{{ doc.employer.agency_employee }}</p>
+    </div>
+    <div class="col-2">
+        <p class="mb-0">{{ doc.get_status_display }}</p>
+    </div>
+    <div class="col-2">
+        <div class="row justify-content-center">
+            <a class="mx-1" href="{% url 'case_update_route' level_1_pk=doc.pk %}"><i class="fas fa-signature"
+                    data-toggle="tooltip" data-placement="top" title="Sign Documents"></i></a>
+            <a class="mx-1" href="{% url 'case_detail_route' level_1_pk=doc.pk %}"><i
+                    class="far fa-file-image" data-toggle="tooltip" data-placement="top"
+                    title="View Document"></i></a>
+            <a class="mx-1" href="{% url 'case_delete_route' level_1_pk=doc.pk %}"><i
+                    class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                    title="Delete Document"></i></a>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
+    <div class="col text-center">
+        <p class="mb-0">No Cases</p>
+    </div>
+</div>
+{% endfor %}
+{% include 'pagination.html' %}
+<div class="row d-xl-none">
+    {% for doc in doc_list %}
+    <div class="col col-lg-12">
+        <div class="card">
+            <div class="card-body">
                 <div class="row">
-                    <div class="col-12">
-                        {{employer.user.email}}
+                    <div class="col py-2">
+                        <h5 class="card-title fs-16">#{{doc.case_ref_no}}</h5>
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Contract Date:</p>
+                    </div>
                     <div class="col">
-                        <a href="{% url 'potential_employer_update' %}" class="btn btn-xs-lg btn-primary">Edit
-                            Profile</a>
+                        <p>{{doc.agreement_date}}</p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Case No:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.case_ref_no}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Employer:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.employer}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Case Type:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.employer.get_applicant_type_display}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>EA Personnel:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.employer.agency_employee}}</p>
+                    </div>
+                </div>
+                <h6>Actions:</h6>
+                <a class="mx-1" href="{% url 'case_update_route' level_1_pk=doc.pk %}"><i
+                        class="far fa-edit"></i></a>
+                <a class="mx-1" href="{% url 'case_detail_route' level_1_pk=doc.pk %}"><i
+                        class="far fa-file-image"></i></a>
+                <a class="mx-1" href="{% url 'case_delete_route' level_1_pk=doc.pk %}"><i
+                        class="far fa-trash-alt"></i></a>
             </div>
         </div>
     </div>
-</section>
+    {% endfor %}
+</div>
+<!-- {% block js %}
+<script>
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'contractDateSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=contractDate"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-contractDate"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=contractDate"
+                    }
+                    break;
+
+                case 'caseNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseNo"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-caseNo"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseNo"
+                    }
+                    break;
+
+                case 'caseTypeSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseType"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=-caseType"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseType"
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        })
+    })
+</script>
+{% endblock js%} -->
+{% include 'components/27-ws-section/end.html' %}
 {% endblock accounts_section %}

@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 # Django Imports
 from django.core.exceptions import ImproperlyConfigured
@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
+from django.db import models
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
@@ -15,7 +16,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from enquiry.constants import EnquiryStatusChoices
 from enquiry.models import MaidShortlistedEnquiryIM
 from maid.models import Maid
-from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
+from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS, T
 from onlinemaid.mixins import SuccessMessageMixin
 
 # Imports from local app
@@ -100,6 +101,21 @@ class PotentialEmployerDetail(PotentialEmployerGrpRequiredMixin, DetailView):
     http_method_names = ['get']
     model = PotentialEmployer
     template_name = 'detail/employer-detail.html'
+    potential_employer = None
+
+    def get_object(self, queryset: Optional[models.query.QuerySet] = ...) -> T:
+        self.potential_employer = PotentialEmployer.objects.get(
+            user=self.request.user
+        )
+        return self.potential_employer
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'documents': self.potential_employer.get_documents(),
+            'enquiries': self.potential_employer.get_enquiries()
+        })
+        return context
 
 
 class PotentialEmployerCreate(SuccessMessageMixin, CreateView):

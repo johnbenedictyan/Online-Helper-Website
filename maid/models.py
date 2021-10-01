@@ -292,7 +292,7 @@ class Maid(models.Model):
         verbose_name = _("Maid")
         verbose_name_plural = _("Maids")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.reference_number + ' - ' + self.name
 
     def get_main_responsibility(self):

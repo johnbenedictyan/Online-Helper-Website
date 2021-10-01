@@ -1,3 +1,5 @@
+from itertools import chain
+
 # Django Imports
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -27,7 +29,7 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.email
 
     class Meta:
@@ -42,8 +44,27 @@ class PotentialEmployer(models.Model):
         primary_key=True
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.email
+
+    def get_general_enquiries(self):
+        pass
+
+    def get_shortlisted_enquiries(self):
+        pass
+
+    def get_enquiries(self):
+        return {
+            'general': self.get_general_enquiries(),
+            'shortlisted': self.get_shortlisted_enquiries()
+        }
+
+    def get_documents(self):
+        return list(
+            chain.from_iterable(
+                x.rn_ed_employer.all() for x in self.employers.all()
+            )
+        )
 
     class Meta:
         verbose_name = 'Potential Employer'
@@ -57,7 +78,7 @@ class FDWAccount(models.Model):
         primary_key=True
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.email
 
     class Meta:
@@ -73,7 +94,7 @@ class AuditEntry(models.Model):
     def __unicode__(self):
         return '{0} - {1} - {2}'.format(self.action, self.username, self.ip)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '{0} - {1} - {2}'.format(self.action, self.username, self.ip)
 
     class Meta:

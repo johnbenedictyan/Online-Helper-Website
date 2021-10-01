@@ -3672,8 +3672,11 @@ class EmployerWithSpouseSignatureForm(forms.Form):
         )
 
 
-class SponsorSignatureForm(forms.Form):
-    sponsor_signature = forms.CharField(
+class EmployerWithOneSponsor(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_spouse1_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
 
@@ -3685,7 +3688,29 @@ class SponsorSignatureForm(forms.Form):
                 Column(
                     Row(
                         Column(
-                            'sponsor_signature'
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse1_signature'
                         )
                     ),
                     Row(
@@ -3694,7 +3719,7 @@ class SponsorSignatureForm(forms.Form):
                                 """
                                 <h6>Sponsor Signature</h6>
                                 <canvas
-                                    id="sponsor-signature-pad"
+                                    id="sponsor-1-signature-pad"
                                     class=""
                                     style="border: 1px solid #d2d2d2"
                                 >
@@ -3703,29 +3728,187 @@ class SponsorSignatureForm(forms.Form):
                             )
                         )
                     ),
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
+                        css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
+            )
+        )
+
+
+class EmployerWithTwoSponsor(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_spouse1_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_spouse2_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
                     Row(
                         Column(
-                            Button(
-                                'Clear Signatures',
-                                'Clear Signatures',
-                                css_class='''
-                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100
-                                ''',
-                                css_id='signature-form-clear-button'
-                            ),
-                            Button(
-                                'Confirm',
-                                'Confirm',
-                                css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
-                                css_id='signature-form-submit-button'
-                            ),
-                            css_class='d-flex justify-content-center mt-4'
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
                         )
                     )
                 ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse1_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Sponsor 1 Signature</h6>
+                                <canvas
+                                    id="sponsor-1-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_spouse2_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Sponsor 2 Signature</h6>
+                                <canvas
+                                    id="sponsor-2-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                ),
                 css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
+                        css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
             )
         )
+
+
+# class SponsorSignatureForm(forms.Form):
+#     sponsor_signature = forms.CharField(
+#         widget=forms.HiddenInput()
+#     )
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper = FormHelper()
+#         self.helper.layout = Layout(
+#             Row(
+#                 Column(
+#                     Row(
+#                         Column(
+#                             'sponsor_signature'
+#                         )
+#                     ),
+#                     Row(
+#                         Column(
+#                             HTML(
+#                                 """
+#                                 <h6>Sponsor Signature</h6>
+#                                 <canvas
+#                                     id="sponsor-signature-pad"
+#                                     class=""
+#                                     style="border: 1px solid #d2d2d2"
+#                                 >
+#                                 </canvas>
+#                                 """
+#                             )
+#                         )
+#                     ),
+#                     Row(
+#                         Column(
+#                             Button(
+#                                 'Clear Signatures',
+#                                 'Clear Signatures',
+#                                 css_class='''
+#                                     btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100
+#                                 ''',
+#                                 css_id='signature-form-clear-button'
+#                             ),
+#                             Button(
+#                                 'Confirm',
+#                                 'Confirm',
+#                                 css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
+#                                 css_id='signature-form-submit-button'
+#                             ),
+#                             css_class='d-flex justify-content-center mt-4'
+#                         )
+#                     )
+#                 ),
+#                 css_class='form-group'
+#             )
+#         )
 
 
 class EmployerWithJointApplicantSignatureForm(forms.Form):

@@ -76,14 +76,14 @@ class EmployerDocDetailView(
         return context
 
 
-class ArchivedEmployerDocDetailView(
-    # AgencyAccessToEmployerDocAppMixin,
-    GetAuthorityMixin,
-    DetailView
-):
-    model = models.ArchivedDoc
-    pk_url_kwarg = 'level_1_pk'
-    template_name = 'detail/dashboard-archived-case-detail.html'
+# class ArchivedEmployerDocDetailView(
+#     # AgencyAccessToEmployerDocAppMixin,
+#     GetAuthorityMixin,
+#     DetailView
+# ):
+#     model = models.ArchivedDoc
+#     pk_url_kwarg = 'level_1_pk'
+#     template_name = 'detail/dashboard-archived-case-detail.html'
 
 
 class SignedDocumentsDetailView(
@@ -1210,31 +1210,31 @@ class HtmlToRenderPdfAgencyView(
         return self.generate_pdf_response(request, context)
 
 
-class ArchivedPdfAgencyView(
-    # AgencyAccessToEmployerDocAppMixin,
-    GetAuthorityMixin,
-    DetailView
-):
-    model = models.ArchivedDoc
-    pk_url_kwarg = 'level_1_pk'
-    as_attachment = False
-    filename = 'document.pdf'
-    field_name = None
+# class ArchivedPdfAgencyView(
+#     # AgencyAccessToEmployerDocAppMixin,
+#     GetAuthorityMixin,
+#     DetailView
+# ):
+#     model = models.ArchivedDoc
+#     pk_url_kwarg = 'level_1_pk'
+#     as_attachment = False
+#     filename = 'document.pdf'
+#     field_name = None
 
-    def get_object(self):
-        return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
+#     def get_object(self):
+#         return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        try:
-            return FileResponse(
-                getattr(self.object, self.field_name).open(),
-                as_attachment=self.as_attachment,
-                filename=self.filename,
-                content_type='application/pdf'
-            )
-        except Exception:
-            pass
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         try:
+#             return FileResponse(
+#                 getattr(self.object, self.field_name).open(),
+#                 as_attachment=self.as_attachment,
+#                 filename=self.filename,
+#                 content_type='application/pdf'
+#             )
+#         except Exception:
+#             pass
 
 
 class UploadedPdfAgencyView(
@@ -1271,61 +1271,61 @@ class UploadedPdfAgencyView(
             )
 
 
-class HtmlToRenderPdfTokenView(
-    PdfHtmlViewMixin,
-    GetObjFromSigSlugMixin,
-    DetailView
-):
-    model = models.CaseSignature
-    slug_url_kwarg = 'slug'
-    stakeholder = None
+# class HtmlToRenderPdfTokenView(
+#     PdfHtmlViewMixin,
+#     GetObjFromSigSlugMixin,
+#     DetailView
+# ):
+#     model = models.CaseSignature
+#     slug_url_kwarg = 'slug'
+#     stakeholder = None
 
-    def get_object(self):
-        slug = self.kwargs.get(self.slug_url_kwarg)
-        stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
-        if stakeholder:
-            self.stakeholder = stakeholder
-            return self.get_object_from_slug(slug).employer_doc
-        else:
-            # SLUG DOES NOT HAVE FRONT HEADER
-            # TODO: Special Error Page thing
-            pass
+#     def get_object(self):
+#         slug = self.kwargs.get(self.slug_url_kwarg)
+#         stakeholder = self.model.reverse_sigslug_header_dict.get(slug[0:5])
+#         if stakeholder:
+#             self.stakeholder = stakeholder
+#             return self.get_object_from_slug(slug).employer_doc
+#         else:
+#             # SLUG DOES NOT HAVE FRONT HEADER
+#             # TODO: Special Error Page thing
+#             pass
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        stakeholder_referrer_map = {
-            # Stakeholder: Referrer Url Name
-            'employer_1':       'token_employer_signature_form_view',
-            'employer_spouse':  'token_employer_spouse_signature_form_view',
-            'sponsor_1':        'token_sponsor_1_signature_form_view',
-            'sponsor_2':        'token_sponsor_2_signature_form_view',
-            'joint_applicant':  'token_joint_applicant_signature_form_view'
-        }
-        url_route_name = stakeholder_referrer_map.get(self.stakeholder)
-        referrer = '/' + '/'.join(
-            request.META.get('HTTP_REFERER', '').split('/')[3:]
-        )
-        signed_doc_rev_url = reverse(
-            'pdf_signed_documents',
-            kwargs={
-                'slug': self.kwargs.get(self.slug_url_kwarg)
-            }
-        )
-        rev_url = reverse(url_route_name, kwargs={
-            'slug': self.kwargs.get(self.slug_url_kwarg)
-        })
-        if self.object and (
-            referrer == rev_url or
-            referrer == signed_doc_rev_url
-        ):
-            context = self.get_context_data()
-            if self.use_repayment_table:
-                context.update({
-                    'repayment_table': self.calc_repayment_schedule()
-                })
-            return self.generate_pdf_response(request, context)
-        else:
-            return HttpResponseRedirect(reverse('error_404'))
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         stakeholder_referrer_map = {
+#             # Stakeholder: Referrer Url Name
+#             'employer_1':       'token_employer_signature_form_view',
+#             'employer_spouse':  'token_employer_spouse_signature_form_view',
+#             'sponsor_1':        'token_sponsor_1_signature_form_view',
+#             'sponsor_2':        'token_sponsor_2_signature_form_view',
+#             'joint_applicant':  'token_joint_applicant_signature_form_view'
+#         }
+#         url_route_name = stakeholder_referrer_map.get(self.stakeholder)
+#         referrer = '/' + '/'.join(
+#             request.META.get('HTTP_REFERER', '').split('/')[3:]
+#         )
+#         signed_doc_rev_url = reverse(
+#             'pdf_signed_documents',
+#             kwargs={
+#                 'slug': self.kwargs.get(self.slug_url_kwarg)
+#             }
+#         )
+#         rev_url = reverse(url_route_name, kwargs={
+#             'slug': self.kwargs.get(self.slug_url_kwarg)
+#         })
+#         if self.object and (
+#             referrer == rev_url or
+#             referrer == signed_doc_rev_url
+#         ):
+#             context = self.get_context_data()
+#             if self.use_repayment_table:
+#                 context.update({
+#                     'repayment_table': self.calc_repayment_schedule()
+#                 })
+#             return self.generate_pdf_response(request, context)
+#         else:
+#             return HttpResponseRedirect(reverse('error_404'))
 
 # Form Views
 
@@ -1514,48 +1514,54 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
 
 
 class SignatureFormView(FormView):
-    form_class = None
     slug_url_kwarg = 'slug'
     http_method_names = ['get', 'post']
     template_name = 'signature_form_token.html'
+    pk_url_kwarg = 'level_1_pk'
+    form_type = None
 
-    def get_object(self, request):
-        url_name = resolve(request.path).url_name
-        url_name_resolver_map = [
-            'token_employer_signature_form_view',
-            'token_employer_with_spouse_signature_form_view',
-            'token_employer_spouse_signature_form_view',
-            'token_sponsor_1_signature_form_view',
-            'token_sponsor_2_signature_form_view',
-            'token_joint_applicant_signature_form_view'
-        ]
-        if url_name in url_name_resolver_map:
-            if url_name == 'token_employer_signature_form_view':
-                return models.CaseSignature.objects.get(
-                    sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-                )
-            if url_name == 'token_employer_with_spouse_signature_form_view':
-                return models.CaseSignature.objects.get(
-                    sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
-                )
-            if url_name == 'token_employer_spouse_signature_form_view':
-                return models.CaseSignature.objects.get(
-                    sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
-                )
-            if url_name == 'token_sponsor_1_signature_form_view':
-                return models.CaseSignature.objects.get(
-                    sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
-                )
-            if url_name == 'token_sponsor_2_signature_form_view':
-                return models.CaseSignature.objects.get(
-                    sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
-                )
-            if url_name == 'token_joint_applicant_signature_form_view':
-                return models.CaseSignature.objects.get(
-                    sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
-                )
-        else:
-            return HttpResponseRedirect(reverse('error_404'))
+    #def get_object(self, request):
+        # url_name = resolve(request.path).url_name
+        # url_name_resolver_map = [
+        #     'token_employer_signature_form_view',
+        #     'token_employer_with_spouse_signature_form_view',
+        #     'token_employer_spouse_signature_form_view',
+        #     'token_sponsor_1_signature_form_view',
+        #     'token_sponsor_2_signature_form_view',
+        #     'token_joint_applicant_signature_form_view'
+        # ]
+        # if url_name in url_name_resolver_map:
+        #     if url_name == 'token_employer_signature_form_view':
+        #         return models.CaseSignature.objects.get(
+        #             sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+        #         )
+        #     if url_name == 'token_employer_with_spouse_signature_form_view':
+        #         return models.CaseSignature.objects.get(
+        #             sigslug_employer_1=self.kwargs.get(self.slug_url_kwarg)
+        #         )
+        #     if url_name == 'token_employer_spouse_signature_form_view':
+        #         return models.CaseSignature.objects.get(
+        #             sigslug_employer_spouse=self.kwargs.get(self.slug_url_kwarg)
+        #         )
+        #     if url_name == 'token_sponsor_1_signature_form_view':
+        #         return models.CaseSignature.objects.get(
+        #             sigslug_sponsor_1=self.kwargs.get(self.slug_url_kwarg)
+        #         )
+        #     if url_name == 'token_sponsor_2_signature_form_view':
+        #         return models.CaseSignature.objects.get(
+        #             sigslug_sponsor_2=self.kwargs.get(self.slug_url_kwarg)
+        #         )
+        #     if url_name == 'token_joint_applicant_signature_form_view':
+        #         return models.CaseSignature.objects.get(
+        #             sigslug_joint_applicant=self.kwargs.get(self.slug_url_kwarg)
+        #         )
+        # else:
+        #     return HttpResponseRedirect(reverse('error_404'))
+
+    def get_object(self):
+        return models.EmployerDoc.objects.get(
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1582,6 +1588,16 @@ class SignatureFormView(FormView):
             return super().get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(reverse('error_404'))
+
+    def get_form_class(self):
+        case_type_form_class_map = {
+            'SINGLE': forms.EmployerSignatureForm,
+            'SPOUSE': '',
+            'SPONSR1': '',
+            'SPONSR2': '',
+            'JNT_AP': '',
+        }
+        return super().get_form_class()
 
     def get_success_url(self):
         return reverse(
@@ -1619,28 +1635,28 @@ class EmployerWithSpouseSignatureFormView(SignatureFormView):
         return super().form_valid(form)
 
 
-class Sponsor1SignatureFormView(SignatureFormView):
-    form_class = forms.SponsorSignatureForm
+# class Sponsor1SignatureFormView(SignatureFormView):
+#     form_class = forms.SponsorSignatureForm
 
-    def form_valid(self, form):
-        self.object = super().get_object(self.request)
-        self.object.sponsor_1_signature = form.cleaned_data.get(
-            'sponsor_signature'
-        )
-        self.object.save()
-        return super().form_valid(form)
+#     def form_valid(self, form):
+#         self.object = super().get_object(self.request)
+#         self.object.sponsor_1_signature = form.cleaned_data.get(
+#             'sponsor_signature'
+#         )
+#         self.object.save()
+#         return super().form_valid(form)
 
 
-class Sponsor2SignatureFormView(SignatureFormView):
-    form_class = forms.SponsorSignatureForm
+# class Sponsor2SignatureFormView(SignatureFormView):
+#     form_class = forms.SponsorSignatureForm
 
-    def form_valid(self, form):
-        self.object = super().get_object(self.request)
-        self.object.sponsor_2_signature = form.cleaned_data.get(
-            'sponsor_signature'
-        )
-        self.object.save()
-        return super().form_valid(form)
+#     def form_valid(self, form):
+#         self.object = super().get_object(self.request)
+#         self.object.sponsor_2_signature = form.cleaned_data.get(
+#             'sponsor_signature'
+#         )
+#         self.object.save()
+#         return super().form_valid(form)
 
 
 class EmployerWithJointApplicantSignatureFormView(SignatureFormView):
@@ -1727,107 +1743,107 @@ class HandoverFormView(FormView):
 # Base View Class for all generate and revoke signature slug redirect views
 
 
-class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
-                        RedirectView):
-    model = models.CaseSignature
-    pk_url_kwarg = 'level_1_pk'
-    pattern_name = 'case_detail_route'
-    stakeholder = ''
-    view_type = ''
+# class ModifySigSlugView(AgencyAccessToEmployerDocAppMixin, GetAuthorityMixin,
+#                         RedirectView):
+#     model = models.CaseSignature
+#     pk_url_kwarg = 'level_1_pk'
+#     pattern_name = 'case_detail_route'
+#     stakeholder = ''
+#     view_type = ''
 
-    def get_object(self):
-        obj, created = self.model.objects.get_or_create(
-            employer_doc__pk=self.kwargs.get(
-                self.pk_url_kwarg
-            ),
-            defaults={
-                'employer_doc': models.EmployerDoc.objects.get(
-                    pk=self.kwargs.get(
-                        self.pk_url_kwarg
-                    )
-                )
-            }
-        )
-        return obj
+#     def get_object(self):
+#         obj, created = self.model.objects.get_or_create(
+#             employer_doc__pk=self.kwargs.get(
+#                 self.pk_url_kwarg
+#             ),
+#             defaults={
+#                 'employer_doc': models.EmployerDoc.objects.get(
+#                     pk=self.kwargs.get(
+#                         self.pk_url_kwarg
+#                     )
+#                 )
+#             }
+#         )
+#         return obj
 
-    def get_redirect_url(self, *args, **kwargs):
-        self.object = self.get_object()
-        if self.view_type == 'generate':
-            ed = self.object.employer_doc
-            missing_details = ed.details_missing_case_pre_signing_1()
-            if missing_details:
-                for md in missing_details:
-                    messages.warning(
-                        self.request,
-                        ERROR_MESSAGES_VERBOSE_NAME_MAP[md],
-                        extra_tags='error'
-                    )
-                return super().get_redirect_url(
-                    *args,
-                    **kwargs
-                )
-            else:
-                self.object.generate_sigslug(self.stakeholder)
-        elif self.view_type == 'revoke':
-            self.object.revoke_sigslug(self.stakeholder)
-        kwargs = {
-            'level_1_pk': self.object.employer_doc.pk
-        }
-        return super().get_redirect_url(
-            *args,
-            **kwargs
-        ) + "#signatureUrlSection"
-
-
-class GenerateSigSlugView(ModifySigSlugView):
-    view_type = 'generate'
+#     def get_redirect_url(self, *args, **kwargs):
+#         self.object = self.get_object()
+#         if self.view_type == 'generate':
+#             ed = self.object.employer_doc
+#             missing_details = ed.details_missing_case_pre_signing_1()
+#             if missing_details:
+#                 for md in missing_details:
+#                     messages.warning(
+#                         self.request,
+#                         ERROR_MESSAGES_VERBOSE_NAME_MAP[md],
+#                         extra_tags='error'
+#                     )
+#                 return super().get_redirect_url(
+#                     *args,
+#                     **kwargs
+#                 )
+#             else:
+#                 self.object.generate_sigslug(self.stakeholder)
+#         elif self.view_type == 'revoke':
+#             self.object.revoke_sigslug(self.stakeholder)
+#         kwargs = {
+#             'level_1_pk': self.object.employer_doc.pk
+#         }
+#         return super().get_redirect_url(
+#             *args,
+#             **kwargs
+#         ) + "#signatureUrlSection"
 
 
-class RevokeSigSlugView(ModifySigSlugView):
-    view_type = 'revoke'
+# class GenerateSigSlugView(ModifySigSlugView):
+#     view_type = 'generate'
 
 
-class GenerateSigSlugEmployer1View(GenerateSigSlugView):
-    stakeholder = 'employer_1'
+# class RevokeSigSlugView(ModifySigSlugView):
+#     view_type = 'revoke'
 
 
-class GenerateSigSlugEmployerSpouseView(GenerateSigSlugView):
-    stakeholder = 'employer_spouse'
+# class GenerateSigSlugEmployer1View(GenerateSigSlugView):
+#     stakeholder = 'employer_1'
 
 
-class GenerateSigSlugSponsor1View(GenerateSigSlugView):
-    stakeholder = 'sponsor_1'
+# class GenerateSigSlugEmployerSpouseView(GenerateSigSlugView):
+#     stakeholder = 'employer_spouse'
 
 
-class GenerateSigSlugSponsor2View(GenerateSigSlugView):
-    stakeholder = 'sponsor_2'
+# class GenerateSigSlugSponsor1View(GenerateSigSlugView):
+#     stakeholder = 'sponsor_1'
 
 
-class GenerateSigSlugJointApplicantView(GenerateSigSlugView):
-    stakeholder = 'joint_applicant'
+# class GenerateSigSlugSponsor2View(GenerateSigSlugView):
+#     stakeholder = 'sponsor_2'
 
 
-class RevokeSigSlugEmployer1View(RevokeSigSlugView):
-    stakeholder = 'employer_1'
+# class GenerateSigSlugJointApplicantView(GenerateSigSlugView):
+#     stakeholder = 'joint_applicant'
 
 
-class RevokeSigSlugEmployerSpouseView(RevokeSigSlugView):
-    stakeholder = 'employer_spouse'
+# class RevokeSigSlugEmployer1View(RevokeSigSlugView):
+#     stakeholder = 'employer_1'
 
 
-class RevokeSigSlugSponsor1View(RevokeSigSlugView):
-    stakeholder = 'sponsor_1'
+# class RevokeSigSlugEmployerSpouseView(RevokeSigSlugView):
+#     stakeholder = 'employer_spouse'
 
 
-class RevokeSigSlugSponsor2View(RevokeSigSlugView):
-    stakeholder = 'sponsor_2'
+# class RevokeSigSlugSponsor1View(RevokeSigSlugView):
+#     stakeholder = 'sponsor_1'
 
 
-class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
-    stakeholder = 'joint_applicant'
+# class RevokeSigSlugSponsor2View(RevokeSigSlugView):
+#     stakeholder = 'sponsor_2'
 
 
-class TokenChallengeView(
+# class RevokeSigSlugJointApplicantView(RevokeSigSlugView):
+#     stakeholder = 'joint_applicant'
+
+
+class EmployerVerificationView(
     SuccessMessageMixin,
     GetObjFromSigSlugMixin,
     FormView,

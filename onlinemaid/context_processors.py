@@ -11,7 +11,7 @@ from enquiry.forms import GeneralEnquiryForm
 def authority(request):
     authority = None
     authority_groups = [
-        'Potential Employers',
+        'Employers',
         'Agency Owners',
         'Agency Administrators',
         'Agency Managers',

@@ -123,7 +123,7 @@ class Agency(models.Model):
             self.__original_branch_address_line_2 = main_branch.address_2
             self.__original_branch_postal_code = main_branch.postal_code
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     def get_main_branch(self):
@@ -325,7 +325,7 @@ class AgencyOpeningHours(models.Model):
         default=False
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Operating Hours for {self.agency.name}'
 
     class Meta:
@@ -370,7 +370,7 @@ class AgencyOwner(models.Model):
         editable=False
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.agency.name + ' Owner'
 
     def is_test_email(self):
@@ -462,7 +462,7 @@ class AgencyBranch(models.Model):
         verbose_name=_('Branch Email Address')
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.name:
             return self.agency.name + ', ' + self.name
         else:
@@ -579,7 +579,7 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.ea_personnel_number + ' - ' + self.name
 
     def get_ea_personnel_no(self):

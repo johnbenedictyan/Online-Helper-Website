@@ -168,6 +168,11 @@ class DayOfWeekChoices(models.IntegerChoices):
     SUN = 6, _('Sunday')
 
 
+class CaseStatusChoices(models.TextChoices):
+    LIVE = 'L', _('Live')
+    ARCHIVED = 'A', _('Archived')
+
+
 NUMBER_OF_WORK_DAYS_IN_MONTH = 26
 
 ERROR_MESSAGES_VERBOSE_NAME_MAP = {
