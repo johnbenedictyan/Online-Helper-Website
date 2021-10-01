@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 # Django Imports
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Q
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
 from django.forms.models import model_to_dict
@@ -30,7 +29,7 @@ from agency.mixins import (
     AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
 )
 from employer_documentation.models import (
-    Employer, EmployerDoc, CaseStatus, 
+    Employer, EmployerDoc, CaseStatus,
     # ArchivedDoc
 )
 from enquiry.models import (

@@ -2111,9 +2111,9 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         employer = models.Employer.objects.get(pk=self.level_0_pk)
-        if employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if employer.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
             back_url = 'employer_sponsor_update_route'
-        elif employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif employer.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             back_url = 'employer_jointapplicant_update_route'
         else:
             back_url = 'employer_update_route'
@@ -2270,7 +2270,7 @@ class EmployerDocForm(forms.ModelForm):
             )
         else:
             self.fields['employer'].queryset = employers_qs.filter(
-                agency_employee = current_user.agency_employee
+                agency_employee=current_user.agency_employee
             )
 
         self.helper = FormHelper()
