@@ -32,7 +32,9 @@ from agency.mixins import (
 from employer_documentation.models import (
     Employer, EmployerDoc, CaseStatus, ArchivedDoc
 )
-from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
+from enquiry.models import (
+    GeneralEnquiry, ShortlistedEnquiry, MaidShortlistedEnquiryIM
+)
 from maid.constants import MaidFoodPreferenceChoices
 from maid.forms import (
     MaidForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm, MaidAboutFDWForm
