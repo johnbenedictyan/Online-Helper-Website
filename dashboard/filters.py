@@ -142,8 +142,8 @@ class DashboardCaseFilter(DjangoFiltersFilterSet):
 
     def custom_employer_fdw_filter(self, queryset, name, value):
         return queryset.filter(
-            Q(employer__employer_name__icontains=value) |
-            Q(fdw__name__icontains=value)
+            Q(employer__employer_name__icontains=value)
+            | Q(fdw__name__icontains=value)
         )
 
     def agency_employee_filter(self, queryset, name, value):
@@ -170,8 +170,8 @@ class DashboardSalesFilter(DjangoFiltersFilterSet):
 
     def custom_employer_fdw_filter(self, queryset, name, value):
         return queryset.filter(
-            Q(employer__employer_name__icontains=value) |
-            Q(fdw__name__icontains=value)
+            Q(employer__employer_name__icontains=value)
+            | Q(fdw__name__icontains=value)
         )
 
 
@@ -194,6 +194,6 @@ class DashboardStatusFilter(DjangoFiltersFilterSet):
 
     def custom_employer_fdw_filter(self, queryset, name, value):
         return queryset.filter(
-            Q(employer_doc__employer__employer_name__icontains=value) |
-            Q(employer_doc__fdw__name__icontains=value)
+            Q(employer_doc__employer__employer_name__icontains=value)
+            | Q(employer_doc__fdw__name__icontains=value)
         )

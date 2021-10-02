@@ -5,8 +5,8 @@ from .constants import (EmployerTypeOfApplicantChoices,
 
 def is_local(rs):
     return (
-        rs == ResidentialStatusFullChoices.SC or
-        rs == ResidentialStatusFullChoices.PR
+        rs == ResidentialStatusFullChoices.SC
+        or rs == ResidentialStatusFullChoices.PR
     )
 
 

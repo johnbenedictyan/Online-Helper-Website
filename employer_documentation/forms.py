@@ -477,8 +477,7 @@ class EmployerForm(forms.ModelForm):
         applicant_type = self.cleaned_data.get('applicant_type')
         if (
             applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
-            and
-            cleaned_field != om_constants.MaritalStatusChoices.MARRIED
+            and cleaned_field != om_constants.MaritalStatusChoices.MARRIED
         ):
             raise ValidationError(
                 _('''
@@ -2251,9 +2250,9 @@ class EmployerDocForm(forms.ModelForm):
         self.fields['fdw'].queryset = fdw_qs
 
         if (
-            self.authority == om_constants.AG_OWNERS or
-            self.authority == om_constants.AG_ADMINS or
-            self.authority == om_constants.AG_ADMIN_STAFF
+            self.authority == om_constants.AG_OWNERS
+            or self.authority == om_constants.AG_ADMINS
+            or self.authority == om_constants.AG_ADMIN_STAFF
         ):
             self.fields['employer'].queryset = employers_qs
         elif self.authority == om_constants.AG_MANAGERS:
@@ -3002,8 +3001,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
             w_s_l_verbose_name + ' field cannot be blank'
         )
         if (
-            self.cleaned_data.get('fdw_clean_window_exterior') and
-            not self.cleaned_data.get('window_exterior_location')
+            self.cleaned_data.get('fdw_clean_window_exterior')
+            and not self.cleaned_data.get('window_exterior_location')
         ):
             self.add_error(
                 'window_exterior_location',
@@ -3023,8 +3022,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
             g_l_verbose_name + ' field cannot be blank'
         )
         if (
-            self.cleaned_data.get('window_exterior_location') == 'OTHER' and
-            self.cleaned_data.get('grilles_installed_require_cleaning')
+            self.cleaned_data.get('window_exterior_location') == 'OTHER'
+            and self.cleaned_data.get('grilles_installed_require_cleaning')
         ):
             self.add_error(
                 'grilles_installed_require_cleaning',
@@ -3045,8 +3044,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
             to be cleaned by FDW
         '''
         if (
-            self.cleaned_data.get('grilles_installed_require_cleaning') and
-            not self.cleaned_data.get('adult_supervision')
+            self.cleaned_data.get('grilles_installed_require_cleaning')
+            and not self.cleaned_data.get('adult_supervision')
         ):
             self.add_error(
                 'adult_supervision',
@@ -3071,8 +3070,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
         if (
             (
-                not self.cleaned_data.get('fdw_clean_window_exterior') and
-                not self.cleaned_data.get(
+                not self.cleaned_data.get('fdw_clean_window_exterior')
+                and not self.cleaned_data.get(
                     'verifiy_employer_understands_window_cleaning'
                 ) == 1
             )
@@ -3080,17 +3079,18 @@ class DocSafetyAgreementForm(forms.ModelForm):
             or w_e_l == 'COMMON' and not v_e_u_w_c == 3
             or w_e_l == 'OTHER' and not v_e_u_w_c == 4
             or (
-                v_e_u_w_c == 1 and
-                self.cleaned_data.get('fdw_clean_window_exterior')
+                v_e_u_w_c == 1
+                and self.cleaned_data.get('fdw_clean_window_exterior')
             )
             or v_e_u_w_c == 2 and not w_e_l == 'GROUND'
             or v_e_u_w_c == 3 and not w_e_l == 'COMMON'
             or v_e_u_w_c == 4 and not w_e_l == 'OTHER'
-            or
-            (
-                v_e_u_w_c == 4 and
-                w_e_l == 'OTHER' and
-                not self.cleaned_data.get('grilles_installed_require_cleaning')
+            or (
+                v_e_u_w_c == 4
+                and w_e_l == 'OTHER'
+                and not self.cleaned_data.get(
+                    'grilles_installed_require_cleaning'
+                )
             )
         ):
             veu_v_n = verifiy_employer_understands_verbose_name
@@ -3431,8 +3431,8 @@ class TokenChallengeForm(forms.Form):
 
     def is_local(self, rs):
         return (
-            rs == constants.ResidentialStatusFullChoices.SC or
-            rs == constants.ResidentialStatusFullChoices.PR
+            rs == constants.ResidentialStatusFullChoices.SC
+            or rs == constants.ResidentialStatusFullChoices.PR
         )
 
     def __init__(self, *args, **kwargs):

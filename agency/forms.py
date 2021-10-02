@@ -409,7 +409,7 @@ class AgencyUpdateForm(forms.ModelForm):
     def clean_logo(self):
         logo = self.cleaned_data.get('logo', False)
         if logo:
-            if logo.size > 4*1024*1024:
+            if logo.size > 4 * 1024 * 1024:
                 raise ValidationError("Image file too large ( > 4mb )")
             return logo
         else:
@@ -708,8 +708,8 @@ class AgencyEmployeeForm(forms.ModelForm):
 
             if self.changed_data:
                 if (
-                    'name' in self.changed_data or
-                    'ea_personnel_number' in self.changed_data
+                    'name' in self.changed_data
+                    or 'ea_personnel_number' in self.changed_data
                 ):
                     employer_doc_qs = EmployerDoc.objects.filter(
                         employer__agency_employee=self.instance
@@ -818,10 +818,10 @@ class AgencyBranchForm(forms.ModelForm):
         main_branch = cleaned_data.get("main_branch")
         if main_branch:
             if not (
-                self.agency.get_main_branch() == self.instance and
-                not(
-                    'address_1' in self.changed_data or
-                    'address_2' in self.changed_data
+                self.agency.get_main_branch() == self.instance
+                and not(
+                    'address_1' in self.changed_data
+                    or 'address_2' in self.changed_data
                 )
             ):
                 employer_doc_qs = EmployerDoc.objects.filter(

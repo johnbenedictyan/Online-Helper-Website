@@ -1,6 +1,11 @@
 # Global Imports
 from datetime import datetime
 
+# Foreign Apps Imports
+import stripe
+# Project Apps Imports
+from agency.mixins import (AgencyOwnerRequiredMixin, GetAuthorityMixin,
+                           OMStaffRequiredMixin)
 # Django Imports
 from django.conf import settings
 from django.contrib import messages
@@ -8,36 +13,24 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_list_or_404, redirect
 from django.urls.base import reverse_lazy
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
-from django.utils import timezone
-from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
-import stripe
-
-# Project Apps Imports
-from agency.mixins import (
-    AgencyOwnerRequiredMixin, GetAuthorityMixin, OMStaffRequiredMixin
-)
 from onlinemaid.mixins import SuccessMessageMixin
 
 # App Imports
-from .constants import (
-    SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
-)
-from .forms import (
-    SubscriptionProductCreationForm, SubscriptionProductImageCreationForm,
-    SubscriptionProductPriceCreationForm
-)
-from .models import (
-    Customer, Invoice, Subscription, SubscriptionProduct,
-    SubscriptionProductPrice, SubscriptionProductImage
-)
+from .constants import (SubscriptionLimitMap, SubscriptionStatusChoices,
+                        SubscriptionTypeChoices)
+from .forms import (SubscriptionProductCreationForm,
+                    SubscriptionProductImageCreationForm,
+                    SubscriptionProductPriceCreationForm)
+from .models import (Customer, Invoice, Subscription, SubscriptionProduct,
+                     SubscriptionProductImage, SubscriptionProductPrice)
 
 # Stripe Settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -144,8 +137,8 @@ class AddToCart(View):
 
     def post(self, request, *args, **kwargs):
         if (
-            request.POST.get('agencySubscriptionPlan') or
-            request.POST.get('advertisementPlan')
+            request.POST.get('agencySubscriptionPlan')
+            or request.POST.get('advertisementPlan')
         ):
             current_cart = self.request.session.get('cart', [])
             if request.POST.get('agencySubscriptionPlan'):

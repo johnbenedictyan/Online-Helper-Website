@@ -47,7 +47,7 @@ class PdfHtmlViewMixin:
             SAFETY_AGREEMENT_SNIPPETS_URI = '''pdf/safety_agreement_snippets'''
             for i in range(1, 4):
                 # DO NOT FORMAT TO PEP8, IT WILL BREAK
-                context['lang_snippet_0'+str(i)] = f'''{SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html'''
+                context['lang_snippet_0' + str(i)] = f'''{SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html'''
 
         return context
 
@@ -97,8 +97,8 @@ class PdfHtmlViewMixin:
         fdw_loan_balance = self.object.fdw_loan
 
         if (
-            hasattr(self.object, 'rn_casestatus_ed') and
-            self.object.rn_casestatus_ed.fdw_work_commencement_date
+            hasattr(self.object, 'rn_casestatus_ed')
+            and self.object.rn_casestatus_ed.fdw_work_commencement_date
         ):
             DEPLOYMENT_DATE = (
                 self.object.rn_casestatus_ed.fdw_work_commencement_date
@@ -320,8 +320,8 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
 
             # Check agency user permissions vs employer object
             if (
-                employer_obj and
-                employer_obj.agency_employee.agency == agency_user_obj.agency
+                employer_obj
+                and employer_obj.agency_employee.agency == agency_user_obj.agency
             ):
                 if self.authority == AG_OWNERS:
                     access_granted = True

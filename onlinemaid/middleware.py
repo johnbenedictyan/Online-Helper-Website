@@ -14,8 +14,10 @@ class AdminAccessIPWhiteListMiddleware:
     def __call__(self, request):
         # Check whether request starts with '/admin' and
         # if so check whether IP address is in the whitelist.
-        if request.path.startswith('/admin') and \
-          (not request.META.get('REMOTE_ADDR') in self.ip_address_list):
+        if (
+            request.path.startswith('/admin')
+            and not request.META.get('REMOTE_ADDR') in self.ip_address_list
+        ):
             return HttpResponseForbidden(
                 "You are unauthorized to view this page!"
             )

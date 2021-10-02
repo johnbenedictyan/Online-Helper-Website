@@ -202,48 +202,14 @@ class SalesList(BaseFilteredListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        # qsArchived = ArchivedDoc.objects.none()
-        # if self.request.GET.get('employer_fdw_search'):
-            # search_terms = self.request.GET.get('employer_fdw_search')
-            # qsArchived = ArchivedDoc.objects.filter(
-            #     Q(employer_name__icontains=search_terms) |
-            #     Q(fdw__name__icontains=search_terms)
-            # )
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            # qs = list(
-            #     qs.filter(
-            #         employer__agency_employee__agency__pk=self.agency_id
-            #         )
-            #     ) + list(
-            #         qsArchived.filter(
-            #             agency__agency_license_no=Agency.objects.get(
-            #                 pk=self.agency_id
-            #             ).license_number
-            #         )
-            #     )
             qs.filter(employer__agency_employee__agency__pk=self.agency_id)
         elif self.authority == AG_MANAGERS:
             ae = self.request.user.agency_employee
             ag_branch = ae.branch
-            # ea_p_nos = ae.get_all_ea_personnel_no_in_branch()
-            # qs = list(
-            #     qs.filter(
-            #         employer__agency_employee__branch=ag_branch
-            #     )) + list(
-            #     qsArchived.filter(
-            #         agency__agency_employee_ea_personnel_number__in=ea_p_nos
-            #     ))
             qs.filter(employer__agency_employee__branch=ag_branch)
         elif self.authority == AG_SALES:
             ae = self.request.user.agency_employee
-            # ae_p_no = ae.ea_personnel_number
-            # qs = list(
-            #     qs.filter(
-            #         employer__agency_employee=self.request.user.agency_employee
-            #     )) + list(
-            #     qsArchived.filter(
-            #         agency__agency_employee_ea_personnel_number=ae_p_no
-            #     ))
             qs.filter(
                 employer__agency_employee=self.request.user.agency_employee
             )
@@ -1496,12 +1462,15 @@ class DataProviderView(View):
                                 'x': k.replace('_', ' ').title(),
                                 'y': [
                                     datetime.strptime(v, '%d/%m/%Y'),
-                                    datetime.strptime(v, '%d/%m/%Y') +
-                                    timedelta(days=1)
+                                    datetime.strptime(v, '%d/%m/%Y')
+                                    + timedelta(days=1)
                                 ]
                             } for k, v in i['data'].items() if (
-                                datetime.now().isocalendar()[1] + 1 ==
-                                datetime.strptime(v, '%d/%m/%Y').isocalendar(
+                                datetime.now().isocalendar()[1] + 1
+                                == datetime.strptime(
+                                    v,
+                                    '%d/%m/%Y'
+                                ).isocalendar(
                                 )[1]
                             )
                         ]
@@ -1516,8 +1485,8 @@ class DataProviderView(View):
                                 'x': k.replace('_', ' ').title(),
                                 'y': [
                                     datetime.strptime(v, '%d/%m/%Y'),
-                                    datetime.strptime(v, '%d/%m/%Y') +
-                                    timedelta(days=1)
+                                    datetime.strptime(v, '%d/%m/%Y')
+                                    + timedelta(days=1)
                                 ]
                             } for k, v in i['data'].items() if (
                                 datetime.strptime(

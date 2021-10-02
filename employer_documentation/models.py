@@ -292,7 +292,7 @@ class Employer(models.Model):
     def get_employer_nric_partial(self, padded=True):
         plaintext = self.get_employer_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -307,7 +307,7 @@ class Employer(models.Model):
     def get_employer_fin_partial(self, padded=True):
         plaintext = self.get_employer_fin_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -320,10 +320,10 @@ class Employer(models.Model):
         )
 
     def get_mobile_partial_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x' * 4
 
     def get_email_partial(self):
-        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
+        return self.employer_email[:3] + '_' * 8 + self.employer_email[-3:]
 
     def get_employer_spouse_nric_full(self):
         return decrypt_string(
@@ -336,7 +336,7 @@ class Employer(models.Model):
     def get_employer_spouse_nric_partial(self, padded=True):
         plaintext = self.get_employer_spouse_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -351,7 +351,7 @@ class Employer(models.Model):
     def get_employer_spouse_fin_partial(self, padded=True):
         plaintext = self.get_employer_spouse_fin_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -378,8 +378,8 @@ class Employer(models.Model):
         error_msg_list = []
 
         if (
-            is_married(self.employer_marital_status) or
-            is_applicant_spouse(self.applicant_type)
+            is_married(self.employer_marital_status)
+            or is_applicant_spouse(self.applicant_type)
         ):
             mandatory_fields = [
                 'spouse_name',
@@ -443,8 +443,8 @@ class Employer(models.Model):
             error_msg_list.append('rn_income_employer')
 
         if (
-            self.household_details_required and
-            not self.rn_household_employer.all().count()
+            self.household_details_required
+            and not self.rn_household_employer.all().count()
         ):
             error_msg_list.append('rn_household_employer')
 
@@ -729,7 +729,7 @@ class EmployerSponsor(models.Model):
     def get_sponsor_1_nric_partial(self, padded=True):
         plaintext = self.get_sponsor_1_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -768,7 +768,7 @@ class EmployerSponsor(models.Model):
     def get_sponsor_2_nric_partial(self, padded=True):
         plaintext = self.get_sponsor_2_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -1010,7 +1010,7 @@ class EmployerJointApplicant(models.Model):
     def get_joint_applicant_nric_partial(self, padded=True):
         plaintext = self.get_joint_applicant_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -1272,7 +1272,7 @@ class EmployerDoc(models.Model):
 
     def get_per_off_day_compensation(self):
         return Decimal(
-            self.fdw_salary/NUMBER_OF_WORK_DAYS_IN_MONTH
+            self.fdw_salary / NUMBER_OF_WORK_DAYS_IN_MONTH
         ).quantize(
             Decimal('.01'),
             rounding=ROUND_HALF_UP
@@ -1315,8 +1315,8 @@ class EmployerDoc(models.Model):
             error_msg_list.append('agency_staff_signature')
 
         if (
-            self.fdw.maid_type == TypeOfMaidChoices.NEW and
-            not hasattr(self, 'rn_safetyagreement_ed')
+            self.fdw.maid_type == TypeOfMaidChoices.NEW
+            and not hasattr(self, 'rn_safetyagreement_ed')
         ):
             error_msg_list.append('rn_safetyagreement_ed')
 

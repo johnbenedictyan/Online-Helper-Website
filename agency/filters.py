@@ -32,10 +32,10 @@ class AgencyFilter(DjangoFiltersFilterSet):
 
     def custom_agency_filter(self, queryset, name, value):
         return queryset.filter(
-            Q(name__icontains=value) |
-            Q(branches__address_1__icontains=value) |
-            Q(branches__address_2__icontains=value) |
-            Q(branches__postal_code__icontains=value) |
-            Q(branches__office_number__icontains=value) |
-            Q(branches__mobile_number__icontains=value)
+            Q(name__icontains=value)
+            | Q(branches__address_1__icontains=value)
+            | Q(branches__address_2__icontains=value)
+            | Q(branches__postal_code__icontains=value)
+            | Q(branches__office_number__icontains=value)
+            | Q(branches__mobile_number__icontains=value)
         )

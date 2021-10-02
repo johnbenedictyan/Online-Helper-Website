@@ -353,7 +353,7 @@ class Maid(models.Model):
     def get_fdw_fin_partial(self, padded=True):
         plaintext = self.get_fdw_fin_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -527,8 +527,8 @@ class Maid(models.Model):
     @property
     def is_published(self):
         return (
-            self.status == MaidStatusChoices.PUBLISHED or
-            self.status == MaidStatusChoices.FEATURED
+            self.status == MaidStatusChoices.PUBLISHED
+            or self.status == MaidStatusChoices.FEATURED
         )
 
     @property
