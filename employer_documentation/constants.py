@@ -169,8 +169,11 @@ class DayOfWeekChoices(models.IntegerChoices):
 
 
 class CaseStatusChoices(models.TextChoices):
-    LIVE = 'L', _('Live')
-    ARCHIVED = 'A', _('Archived')
+    LIVE = 'LIVE', _('Live')
+    REQUIRED_EMPLOYEE_SIGNATURE = 'REQEA', _('Require Employee Signature')
+    REQUIRED_EMPLOYER_SIGNATURE = 'REQEMP', _('Require Employer Signature')
+    WAITING_TO_HANDOVER = 'WAITTH', _('Waiting to Handover')
+    ARCHIVED = 'ARCHIV', _('Archived')
 
 
 NUMBER_OF_WORK_DAYS_IN_MONTH = 26

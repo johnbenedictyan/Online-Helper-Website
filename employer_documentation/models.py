@@ -1218,7 +1218,7 @@ class EmployerDoc(models.Model):
     )
     status = models.CharField(
         verbose_name=_('Case Status'),
-        max_length=1,
+        max_length=6,
         blank=True,
         choices=CaseStatusChoices.choices,
         default=CaseStatusChoices.LIVE
