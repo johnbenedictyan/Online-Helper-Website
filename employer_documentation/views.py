@@ -1392,10 +1392,11 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
         return context
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        # self.object = self.get_object()
         return super().get(request, *args, **kwargs)
 
     def get_form_class(self):
+        self.object = self.get_object()
         case_type_form_class_map = {
             'SINGLE': forms.EmployerSignatureForm,
             'SPOUSE': forms.EmployerWithSpouseSignatureForm,
@@ -1407,42 +1408,43 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
 
     def get_success_url(self):
         return reverse(
-            'pdf_signed_documents', kwargs={
-                'slug': self.kwargs.get(
-                    self.slug_url_kwarg
+            'employer_document_detail', kwargs={
+                'level_1_pk': self.kwargs.get(
+                    self.pk_url_kwarg
                 )
             })
 
     def form_valid(self, form) -> HttpResponse:
         case_type = self.object.get_case_type()
-        self.object.employer_signature_1 = form.cleaned_data.get(
+        signature_obj = self.object.rn_signatures_ed
+        signature_obj.employer_signature_1 = form.cleaned_data.get(
             'employer_signature'
         )
         if case_type == 'SINGLE':
-            self.object.save()
+            signature_obj.save()
         if case_type == 'SPOUSE':
-            self.object.employer_spouse_signature = form.cleaned_data.get(
+            signature_obj.employer_spouse_signature = form.cleaned_data.get(
                 'employer_spouse_signature'
             )
-            self.object.save()
+            signature_obj.save()
         elif case_type == 'SPONSR1':
-            self.object.sponsor_1_signature = form.cleaned_data.get(
+            signature_obj.sponsor_1_signature = form.cleaned_data.get(
                 'employer_sponsor1_signature'
             )
-            self.object.save()
+            signature_obj.save()
         elif case_type == 'SPONSR2':
-            self.object.sponsor_1_signature = form.cleaned_data.get(
+            signature_obj.sponsor_1_signature = form.cleaned_data.get(
                 'employer_sponsor1_signature'
             )
-            self.object.sponsor_2_signature = form.cleaned_data.get(
+            signature_obj.sponsor_2_signature = form.cleaned_data.get(
                 'employer_sponsor2_signature'
             )
-            self.object.save()
+            signature_obj.save()
         elif case_type == 'JNT_AP':
-            self.object.joint_applicant_signature = form.cleaned_data.get(
+            signature_obj.joint_applicant_signature = form.cleaned_data.get(
                 'joint_applicant_signature'
             )
-            self.object.save()
+            signature_obj.save()
         return super().form_valid(form)
 
 

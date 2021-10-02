@@ -2,12 +2,11 @@
 {% block accounts_section %}
 {% include 'sections/title-banner.html' with page_name='Profile' %}
 {% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='fdw-account-detail-section' %}
-{% include 'components/crispy-form-error.html' %}
-<div class="row">
+{% comment %} <div class="row">
     <div class="col mb-3 ml-1">
         <h4 class="fs-16">My Enquiries</h4>
     </div>
-</div>
+</div> {% endcomment %}
 <div class="row">
     <div class="col mb-3 ml-1">
         <h4 class="fs-16">My Documents</h4>
@@ -137,88 +136,5 @@
     </div>
     {% endfor %}
 </div>
-<!-- {% block js %}
-<script>
-    $(function () {
-        $('.sortToggle').on('click', function () {
-            $('.sortToggle').not(this).each(function () {
-                $(this).removeClass('fa-sort-alpha-up');
-                $(this).removeClass('fa-sort-alpha-down');
-                $(this).removeClass('fa-sort-amount-up');
-                $(this).removeClass('fa-sort-amount-down');
-                $(this).addClass('fa-sort');
-            });
-            switch (this.id) {
-                case 'serialNoSortToggle':
-                    if ($(this).hasClass('fa-sort')) {
-                        $(this).removeClass('fa-sort');
-                        $(this).addClass('fa-sort-amount-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=serialNo"
-                    } else if ($(this).hasClass('fa-sort-amount-down')) {
-                        $(this).removeClass('fa-sort-amount-down');
-                        $(this).addClass('fa-sort-amount-up');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=-serialNo"
-                    } else {
-                        $(this).removeClass('fa-sort-amount-up');
-                        $(this).addClass('fa-sort-amount-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=serialNo"
-                    }
-                    break;
-
-                case 'contractDateSortToggle':
-                    if ($(this).hasClass('fa-sort')) {
-                        $(this).removeClass('fa-sort');
-                        $(this).addClass('fa-sort-alpha-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=contractDate"
-                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
-                        $(this).removeClass('fa-sort-alpha-down');
-                        $(this).addClass('fa-sort-alpha-up');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=-contractDate"
-                    } else {
-                        $(this).removeClass('fa-sort-alpha-up');
-                        $(this).addClass('fa-sort-alpha-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=contractDate"
-                    }
-                    break;
-
-                case 'caseNoSortToggle':
-                    if ($(this).hasClass('fa-sort')) {
-                        $(this).removeClass('fa-sort');
-                        $(this).addClass('fa-sort-alpha-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseNo"
-                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
-                        $(this).removeClass('fa-sort-alpha-down');
-                        $(this).addClass('fa-sort-alpha-up');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=-caseNo"
-                    } else {
-                        $(this).removeClass('fa-sort-alpha-up');
-                        $(this).addClass('fa-sort-alpha-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseNo"
-                    }
-                    break;
-
-                case 'caseTypeSortToggle':
-                    if ($(this).hasClass('fa-sort')) {
-                        $(this).removeClass('fa-sort');
-                        $(this).addClass('fa-sort-alpha-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseType"
-                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
-                        $(this).removeClass('fa-sort-alpha-down');
-                        $(this).addClass('fa-sort-alpha-up');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=-caseType"
-                    } else {
-                        $(this).removeClass('fa-sort-alpha-up');
-                        $(this).addClass('fa-sort-alpha-down');
-                        location.href = "{% url 'dashboard_case_list' %}?order-by=caseType"
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        })
-    })
-</script>
-{% endblock js%} -->
 {% include 'components/27-ws-section/end.html' %}
 {% endblock accounts_section %}
