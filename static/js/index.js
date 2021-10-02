@@ -238,6 +238,7 @@ $(function () {
         infinite: true,
         speed: 300,
     })
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 window.onload = () => {

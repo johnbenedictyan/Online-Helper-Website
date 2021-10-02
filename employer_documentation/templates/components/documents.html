@@ -38,7 +38,9 @@
                     Schedule</a>
             </div>
             <div class="col-md-12 my-2">
-                <a href="{% url 'pdf_employer_handover_checklist' level_1_pk=object.pk %}" target="_blank">Handover
+                <a {% if object.is_stage_2 %}href="{% url 'pdf_employer_handover_checklist' level_1_pk=object.pk %}"
+                    target="_blank" {% else %}data-toggle="tooltip" data-placement="top"
+                    title="The handover checklist will be available after the handover signature" {% endif %}>Handover
                     Checklist</a>
             </div>
             <div class="col-md-12 my-2">
@@ -46,7 +48,9 @@
                     Agreement</a>
             </div>
             <div class="col-md-12 my-2">
-                <a href="{% url 'pdf_employer_transfer_consent' level_1_pk=object.pk %}" target="_blank">Transfer
+                <a {% if object.is_stage_2 %}href="{% url 'pdf_employer_transfer_consent' level_1_pk=object.pk %}"
+                    target="_blank" {% else %}data-toggle="tooltip" data-placement="top"
+                    title="The transfer consent will be available after the handover signature" {% endif %}>Transfer
                     Consent</a>
             </div>
             <div class="col-md-12 my-2">
