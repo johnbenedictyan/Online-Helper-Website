@@ -1294,7 +1294,7 @@ class EmployerDoc(models.Model):
         else:
             return _('Sunday')
 
-    def get_details_missing_case_pre_signing_1(self):
+    def get_missing_case_dets_pre_signing_1(self):
         error_msg_list = self.employer.get_details_missing_employer()
 
         if not hasattr(self, 'rn_servicefeeschedule_ed'):
@@ -1311,8 +1311,6 @@ class EmployerDoc(models.Model):
 
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
-        elif not self.rn_signatures_ed.agency_staff_signature:
-            error_msg_list.append('agency_staff_signature')
 
         if (
             self.fdw.maid_type == TypeOfMaidChoices.NEW
@@ -1322,8 +1320,16 @@ class EmployerDoc(models.Model):
 
         return error_msg_list
 
-    def get_details_missing_case_pre_signing_2(self):
-        error_msg_list = self.get_details_missing_case_pre_signing_1()
+    def get_missing_case_dets_pre_signing_1_5(self):
+        error_msg_list = self.get_missing_case_dets_pre_signing_1()
+
+        if not self.rn_signatures_ed.agency_staff_signature:
+            error_msg_list.append('agency_staff_signature')
+
+        return error_msg_list
+
+    def get_missing_case_dets_pre_signing_2(self):
+        error_msg_list = self.get_missing_case_dets_pre_signing_1_5()
 
         if hasattr(self, 'rn_docupload_ed'):
             if not self.rn_docupload_ed.ipa_pdf:
@@ -1392,6 +1398,22 @@ class EmployerDoc(models.Model):
         self.version += 1
         self.save()
 
+    def set_status_wait_emp_sign(self):
+        self.status = CaseStatusChoices.REQUIRED_EMPLOYER_SIGNATURE
+        self.save()
+
+    def set_status_wait_ea_sign(self):
+        self.status = CaseStatusChoices.REQUIRED_EMPLOYEE_SIGNATURE
+        self.save()
+
+    def set_status_wait_to_handover(self):
+        self.status = CaseStatusChoices.WAITING_TO_HANDOVER
+        self.save()
+
+    def set_status_archvied(self):
+        self.status = CaseStatusChoices.ARCHIVED
+        self.save()
+
     @property
     def is_stage_0(self):
         return self.get_stage() == 0
@@ -1407,6 +1429,30 @@ class EmployerDoc(models.Model):
     @property
     def is_archived_doc(self):
         return self.status == CaseStatusChoices.ARCHIVED
+
+    @property
+    def is_wait_emp_sign(self):
+        return self.status == CaseStatusChoices.REQUIRED_EMPLOYER_SIGNATURE
+
+    @property
+    def is_wait_ea_sign(self):
+        return self.status == CaseStatusChoices.REQUIRED_EMPLOYEE_SIGNATURE
+
+    @property
+    def is_wait_to_handover(self):
+        return self.status == CaseStatusChoices.WAITING_TO_HANDOVER
+
+    @property
+    def is_ready_for_ea_to_sign(self):
+        return True if self.get_missing_case_dets_pre_signing_1() else False
+
+    @property
+    def is_ready_for_emp_to_sign(self):
+        return True if self.get_missing_case_dets_pre_signing_1_5() else False
+
+    @property
+    def is_ready_for_handover(self):
+        return True if self.get_missing_case_dets_pre_signing_2() else False
 
 
 class DocServiceFeeSchedule(models.Model):

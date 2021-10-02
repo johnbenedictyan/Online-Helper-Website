@@ -1072,6 +1072,28 @@ class SignatureUpdateByAgentView(
     model_field_name = None
     form_fields = None
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        ed = self.object.employer_doc
+        missing_details = ed.get_missing_case_dets_pre_signing_1()
+        if missing_details:
+            for md in missing_details:
+                messages.warning(
+                    self.request,
+                    ERROR_MESSAGES_VERBOSE_NAME_MAP[md],
+                    extra_tags='error'
+                )
+            return redirect(
+                reverse(
+                    'case_detail_route',
+                    kwargs={
+                        'level_1_pk': self.object.employer_doc.pk
+                    }
+                )
+            )
+
+        return super().get(request, *args, **kwargs)
+
     def get_object(self):
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
@@ -1476,7 +1498,7 @@ class HandoverFormView(FormView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         ed = self.object.employer_doc
-        missing_details = ed.get_details_missing_case_pre_signing_2()
+        missing_details = ed.get_missing_case_dets_pre_signing_2()
         if missing_details:
             for md in missing_details:
                 messages.warning(
