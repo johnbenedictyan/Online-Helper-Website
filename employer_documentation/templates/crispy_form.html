@@ -13,18 +13,18 @@
             {% if url_name == 'employer_householddetails_route' %}
             {% if income_obj %}
             <a href="{% url 'employer_incomedetails_update_route' level_0_pk %}"
-                class="btn btn-xs-lg btn-outline-primary w-25 mb-2 mx-2">Back</a>
+                class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
             {% else %}
             <a href="{% url 'employer_incomedetails_create_route' level_0_pk %}"
-                class="btn btn-xs-lg btn-outline-primary w-25 mb-2 mx-2">Back</a>
+                class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
             {% endif %}
             {% elif url_name == 'maid_inventory_route' %}
             <a href="{% url 'safetyagreement_update_route' level_1_pk %}"
-                class="btn btn-xs-lg btn-outline-primary w-25 mb-2 mx-2">Back</a>
+                class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
             {% else %}
-            <a href="#" class="btn btn-xs-lg btn-outline-primary w-25 mb-2 mx-2">Back</a>
+            <a href="#" class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
             {% endif %}
-            <button type="submit" id="submitButton" class="btn btn-xs-lg btn-primary w-25 mb-2 mx-2">Submit</button>
+            <button type="submit" id="submitButton" class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2">Submit</button>
         </div>
     </div>
 </form>

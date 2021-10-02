@@ -4,7 +4,7 @@
 <section>
     <div class="container-fluid min-height-75">
         <div class="row">
-            <div class="col mb-3 ml-1">
+            <div class="col mb-3 ml-md-1">
                 <h4 class="fs-20">Shortlisted Enquiries</h4>
             </div>
         </div>
@@ -98,10 +98,9 @@
             </div>
         </div>
         {% endfor %}
-        {% include 'pagination.html' %}
         <div class="row d-xl-none">
             {% for enquiry in enquiries %}
-            <div class="col col-lg-12">
+            <div class="col-24 col-lg-12 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -199,6 +198,7 @@
             </div>
             {% endfor %}
         </div>
+        {% include 'pagination.html' %}
     </div>
 </section>
 {% endblock dashboard_section %}

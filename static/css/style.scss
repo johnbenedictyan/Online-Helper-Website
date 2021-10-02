@@ -193,6 +193,9 @@ footer {
 .w{
     &-xs{
         @media screen and (max-width: 767px) {
+            &-40 {
+                width: 40% !important;
+            }
             &-100 {
                 width: 100% !important;
             }

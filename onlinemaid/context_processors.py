@@ -126,3 +126,33 @@ def page_bar_url_helper(request):
         'employer_crud_pagebar_urls': EMPLOYER_MINI_NAV_URLS,
         'case_crud_pagebar_urls': CASE_MINI_NAV_URLS,
     }
+
+
+def meta_formatter(request):
+    url_name_title_map = {
+        'agency_sign_up': 'Agency Sign Up | Online Maid',
+        'agency_sign_in': 'Agency Log In |  Online Maid',
+        'potential_employer_create': 'User Sign Up | Online Maid',
+        'sign_in': 'User Log In | Online Maid',
+        # 'agency_sign_up': '',
+        'password_reset': 'Reset Password | Online Maid',
+        'terms_and_conditions_agency': 'T&C for Agency | Online Maid',
+        'terms_and_conditions_user': 'T&C for User | Online Maid',
+        'privacy_policy': 'Privacy Policy | Online Maid',
+        'home': 'Online Maid | #1 Maid Platform in Singapore ',
+        'about_us': 'About US | #1 Maid Platform in Singapore | Online Maid',
+        'maid_list': 'Search Maid | #1 Maid Platform in Singapore | Online Maid',
+        'agency_list': 'Maid Agency | #1 Maid Platform in Singapore | Online Maid',
+        'faq': 'FAQ | #1 Maid Platform in Singapore | Online Maid',
+        'view_shortlist': 'Shortlist | #1 Maid Platform in Singapore | Online Maid',
+        'enquiry_list': 'Enquiry | #1 Maid Platform in Singapore | Online Maid'
+    }
+
+    if request.resolver_match.url_name in url_name_title_map.keys():
+        meta_title = url_name_title_map[request.resolver_match.url_name]
+    else:
+        meta_title = url_name_title_map['home']
+
+    return {
+        'meta_title': meta_title
+    }

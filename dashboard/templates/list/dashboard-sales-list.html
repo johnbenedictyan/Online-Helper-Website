@@ -5,18 +5,18 @@
 <section>
     <div class="container-fluid min-height-75">
         <div class="row">
-            <div class="col mb-3 ml-1">
+            <div class="col mb-3 ml-md-1">
                 <h4 class="fs-20">Sales Summary</h4>
             </div>
         </div>
         <div class="row">
-            <div class="col mb-4 ml-1">
+            <div class="col mb-4 ml-md-1">
                 <form action="" method="get">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-24 col-md-8">
                             {{filter.form.employer_fdw_search|as_crispy_field}}
                         </div>
-                        <div class="col-3 mb-3 mt-auto">
+                        <div class="col-24 col-md-3 mb-3 mt-auto">
                             <a href="{% url 'dashboard_sales_list' %}"
                                 class="btn btn-outline-secondary form-control">Reset</a>
                         </div>
@@ -97,10 +97,9 @@
             </div>
         </div>
         {% endfor %}
-        {% include 'pagination.html' %}
         <div class="row d-xl-none">
             {% for sale in sales %}
-            <div class="col col-lg-12">
+            <div class="col-24 col-lg-12 mb-4">
                 <div class="card">
                     <div class="card-body">
                         {% if sale.is_archived_doc is False %}
@@ -110,54 +109,54 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Contract Date:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{{sale.agreement_date}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Deployment:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{% if sale.rn_casestatus_ed.fdw_work_commencement_date %}{{sale.rn_casestatus_ed.fdw_work_commencement_date}}{% else %}Not
                                     Set Yet{% endif %}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Employer &#38; FDW:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>Employer: {{sale.employer.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
                                     {{sale.employer.agency_employee.name}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Type:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{% if sale.rn_servicefeeschedule_ed.is_new_case is True %}New
                                     Case{% else %}Replacement{% endif %}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Amount:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
                                     {{sale.rn_servicefeeschedule_ed.get_balance}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Received On:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{{sale.rn_servicefeeschedule_ed.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.rn_servicefeeschedule_ed.ca_remaining_payment_date|default_if_none:"Have not received"}}
                                 </p>
                             </div>
@@ -174,52 +173,52 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Contract Date:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{{sale.agreement_date}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Deployment:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{{sale.fdw_work_commencement_date}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Employer &#38; FDW:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>Employer: {{sale.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
                                     {{sale.agency.agency_employee_name}}
                                     {{sale.agency.agency_employee_ea_personnel_number}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Type:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Amount:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.get_balance}}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8 col-lg-10">
+                            <div class="col-9 col-lg-10">
                                 <p>Received On:</p>
                             </div>
-                            <div class="col">
+                            <div class="col-13 col-lg-12">
                                 <p>{{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}
                                 </p>
                             </div>
@@ -235,6 +234,7 @@
             </div>
             {% endfor %}
         </div>
+        {% include 'pagination.html' %}
     </div>
 </section>
 {% endblock dashboard_section %}
