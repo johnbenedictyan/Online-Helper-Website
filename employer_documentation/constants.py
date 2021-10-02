@@ -43,11 +43,6 @@ class RelationshipChoices(models.TextChoices):
     OTHER = 'OTHER', _('Other')
 
 
-class GenderChoices(models.TextChoices):
-    M = 'M', _('Male')
-    F = 'F', _('Female')
-
-
 class ResidentialStatusFullChoices(models.TextChoices):
     SC = 'SC', _('Singapore citizen')
     PR = 'PR', _('Singapore permanent resident')
@@ -147,19 +142,19 @@ monthly_income_label_map = {
     EmployerTypeOfApplicantChoices.SINGLE: [
         'Employer Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ],
+    ],
     EmployerTypeOfApplicantChoices.SPOUSE: [
         'Employer and Spouse Combined Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ],
+    ],
     EmployerTypeOfApplicantChoices.SPONSOR: [
         'Sponsor(s) Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ],
+    ],
     EmployerTypeOfApplicantChoices.JOINT_APPLICANT: [
         'Employer and Joint Applicant Combined Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ]
+    ]
 }
 
 
@@ -171,6 +166,14 @@ class DayOfWeekChoices(models.IntegerChoices):
     FRI = 4, _('Friday')
     SAT = 5, _('Saturday')
     SUN = 6, _('Sunday')
+
+
+class CaseStatusChoices(models.TextChoices):
+    LIVE = 'LIVE', _('Live')
+    REQUIRED_EMPLOYEE_SIGNATURE = 'REQEA', _('Require Employee Signature')
+    REQUIRED_EMPLOYER_SIGNATURE = 'REQEMP', _('Require Employer Signature')
+    WAITING_TO_HANDOVER = 'WAITTH', _('Waiting to Handover')
+    ARCHIVED = 'ARCHIV', _('Archived')
 
 
 NUMBER_OF_WORK_DAYS_IN_MONTH = 26

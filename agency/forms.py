@@ -1,28 +1,20 @@
-# Django Imports
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Column, Div, Layout, Row, Submit
 from django import forms
-from django.core.exceptions import ValidationError
-from django.core.mail import BadHeaderError, send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.core.mail import BadHeaderError, send_mail
 from django.urls.base import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, HTML
-
-# Project Apps Imports
 from employer_documentation.models import EmployerDoc
 from onlinemaid.helper_functions import slugify_text
 
-# App Imports
 from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
-from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyOwner,
-    PotentialAgency
-)
+from .models import (Agency, AgencyBranch, AgencyEmployee, AgencyOpeningHours,
+                     AgencyOwner, PotentialAgency)
 
 # Start of Forms
 
@@ -73,7 +65,7 @@ class AgencyForm(forms.ModelForm):
     opening_hours_type = forms.ChoiceField(
         label=_('Agency\'s operating hours type'),
         required=True,
-        choices=OpeningHoursTypeChoices.choices,
+        choices=OpeningHoursTypeChoices.choices
     )
 
     opening_hours_monday = forms.CharField(
@@ -417,7 +409,7 @@ class AgencyUpdateForm(forms.ModelForm):
     def clean_logo(self):
         logo = self.cleaned_data.get('logo', False)
         if logo:
-            if logo.size > 4*1024*1024:
+            if logo.size > 4 * 1024 * 1024:
                 raise ValidationError("Image file too large ( > 4mb )")
             return logo
         else:
@@ -716,14 +708,14 @@ class AgencyEmployeeForm(forms.ModelForm):
 
             if self.changed_data:
                 if (
-                    'name' in self.changed_data or
-                    'ea_personnel_number' in self.changed_data
+                    'name' in self.changed_data
+                    or 'ea_personnel_number' in self.changed_data
                 ):
                     employer_doc_qs = EmployerDoc.objects.filter(
                         employer__agency_employee=self.instance
                     )
                     for employer_doc in employer_doc_qs:
-                        employer_doc.increment_version_number()
+                        employer_doc.set_increment_version_number()
 
         else:
             try:
@@ -826,17 +818,17 @@ class AgencyBranchForm(forms.ModelForm):
         main_branch = cleaned_data.get("main_branch")
         if main_branch:
             if not (
-                self.agency.get_main_branch() == self.instance and
-                not(
-                    'address_1' in self.changed_data or
-                    'address_2' in self.changed_data
+                self.agency.get_main_branch() == self.instance
+                and not(
+                    'address_1' in self.changed_data
+                    or 'address_2' in self.changed_data
                 )
             ):
                 employer_doc_qs = EmployerDoc.objects.filter(
                     employer__agency_employee__agency=self.agency
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
 
         return super().save(*args, **kwargs)
 

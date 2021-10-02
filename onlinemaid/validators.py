@@ -32,7 +32,7 @@ def validate_nric(test_id):
         total = 0
 
         for i, (c, w) in enumerate(zip(test_id[1:8], WEIGHTS)):
-            c = int(ord(c)-48)
+            c = int(ord(c) - 48)
             check_weight = c * w
             total += check_weight
 
@@ -67,7 +67,7 @@ def validate_fin(test_id):
         total = 0
 
         for i, (c, w) in enumerate(zip(test_id[1:8], WEIGHTS)):
-            c = int(ord(c)-48)
+            c = int(ord(c) - 48)
             check_weight = c * w
             total += check_weight
 

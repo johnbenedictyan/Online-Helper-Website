@@ -1,13 +1,12 @@
 # Django Imports
-from django.forms.models import inlineformset_factory
-
 # Foreign Apps Imports
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Field
+from crispy_forms.layout import Column, Field, Layout, Row
+from django.forms.models import inlineformset_factory
 
 # App Imports
-from .forms import MaidLoanTransactionForm, MaidEmploymentHistoryForm
-from .models import Maid, MaidLoanTransaction, MaidEmploymentHistory
+from .forms import MaidEmploymentHistoryForm, MaidLoanTransactionForm
+from .models import Maid, MaidEmploymentHistory, MaidLoanTransaction
 
 # Start of Formsets
 

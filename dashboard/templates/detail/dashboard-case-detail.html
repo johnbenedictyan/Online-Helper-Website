@@ -124,7 +124,7 @@
                 </div>
                 <div class="col">
                     <p class="mb-1">FDW Per Off Day Compensation</p>
-                    <h6 class="text-dark mb-3">S$ {{ object.per_off_day_compensation|intcomma }}</h6>
+                    <h6 class="text-dark mb-3">S$ {{ object.get_per_off_day_compensation|intcomma }}</h6>
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>1. Service Fee</h6>
+                            <h6 class="fs-14">1. Service Fee</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -173,7 +173,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>2. Administrative Cost</h6>
+                            <h6 class="fs-14">2. Administrative Cost</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -258,7 +258,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>3. Placement Fee</h6>
+                            <h6 class="fs-14">3. Placement Fee</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -274,7 +274,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>Payment</h6>
+                            <h6 class="fs-14">Payment</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -289,7 +289,8 @@
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">Balance Payment - Upon Collection of FDW</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.calc_bal|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.get_balance|intcomma }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -307,7 +308,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>1. Appointment of Services</h6>
+                            <h6 class="fs-14">1. Appointment of Services</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -322,7 +323,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>3. Replacement Policy Before FDW Deployment</h6>
+                            <h6 class="fs-14">3. Replacement Policy Before FDW Deployment</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -353,7 +354,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>4. Replacement Policy After FDW Deployment</h6>
+                            <h6 class="fs-14">4. Replacement Policy After FDW Deployment</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -383,7 +384,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>5. Refund Policy for Service Fee and Placement Fee</h6>
+                            <h6 class="fs-14">5. Refund Policy for Service Fee and Placement Fee</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -429,7 +430,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>6. Special Provisions</h6>
+                            <h6 class="fs-14">6. Special Provisions</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -450,7 +451,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>9. Dispute Resolution</h6>
+                            <h6 class="fs-14">9. Dispute Resolution</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -471,7 +472,7 @@
                 <div class="col mb-4">
                     <div class="row">
                         <div class="col mb-1">
-                            <h6>13. Termination of Agreement</h6>
+                            <h6 class="fs-14">13. Termination of Agreement</h6>
                         </div>
                     </div>
                     <div class="row">
@@ -596,7 +597,7 @@
                 <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_medical_report_route' level_1_pk=object.pk %}">
                         <p class="mb-1">Medical Report</p>
                     </a></div>
-                <div class="col-md-12 my-2"><a href="{% url 'pdf_deposit_invoice' level_1_pk=object.pk %}">
+                <div class="col-md-12 my-2"><a href="{% url 'pdf_agency_deposit_invoice' level_1_pk=object.pk %}">
                         <p class="mb-1">Invoice</p>
                     </a></div>
             </div>
@@ -604,141 +605,26 @@
     </div>
     <div class="row" id="signatureUrlSection">
         <div class="col-24 mb-5">
-            <div class="row bg-dashboard-pagebar-color mb-2">
+            <div class="row bg-dashboard-pagebar-color mb-4">
                 <div class="col my-2">
-                    <h5 class="fs-14 mb-0">Signature URL</h5>
+                    <h5 class="fs-16 mb-0">Signatures</h5>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 my-2">
-                    <label for="disabled_sigslug_employer_1">Employer's Signature Link (Except handover
-                        checklist)</label>
-                    <div class="row">
-                        <div class="col-22">
-                            <div class="input-group">
-                                <input id="copy-value-employer-1" type="text" class="form-control"
-                                    value="{% if employer_1_sigurl %}{{ employer_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
-                                    disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
-                                        id="copy-button-employer-1" {% if not employer_1_sigurl %}disabled{% endif %}><i
-                                            class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_employer1_generate_route' object.pk %}"><i
-                                            class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_employer1_revoke_route' object.pk %}"><i
-                                            class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="{% url 'signature_agencyemployee_route' object.pk %}" class="btn btn-xs-lg btn-primary">
+                        EA Personnel Signature
+                    </a>
                 </div>
                 <div class="col-md-12 my-2">
-                    <label for="disabled_sigslug_employer_spouse">Employer Spouse Signature</label>
-                    <div class="row">
-                        <div class="col-22">
-                            <div class="input-group">
-                                <input id="copy-value-employer-spouse" type="text" class="form-control"
-                                    value="{% if employer_spouse_sigurl %}{{ employer_spouse_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
-                                    disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
-                                        id="copy-button-employer-spouse"
-                                        {% if not employer_spouse_sigurl %}disabled{% endif %}><i
-                                            class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_employer_spouse_generate_route' object.pk %}"><i
-                                            class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_employer_spouse_revoke_route' object.pk %}"><i
-                                            class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
+                    <div class="d-flex">
+                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="top"
+                            title="{% if object.is_stage_1 %}Proceed to Sign the Handover Form{% else %}The Employer has not signed the documents{% endif %}">
+                            <a href="{% if object.is_stage_1 %}{% url 'handover_form_view' object.pk %}{% endif %}"
+                                class="btn btn-xs-lg btn-primary {% if not object.is_stage_1 %}disabled{% endif %}">Handover
+                                FDW</a>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12 my-2">
-                    <label for="disabled_sigslug_joint_applicant">Joint Applicant Signature</label>
-                    <div class="row">
-                        <div class="col-22">
-                            <div class="input-group">
-                                <input id="copy-value-joint-applicant" type="text" class="form-control"
-                                    value="{% if joint_applicant_sigurl %}{{ joint_applicant_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
-                                    disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
-                                        id="copy-button-joint-applicant"
-                                        {% if not joint_applicant_sigurl %}disabled{% endif %}><i
-                                            class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_joint_applicant_generate_route' object.pk %}"><i
-                                            class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_joint_applicant_revoke_route' object.pk %}"><i
-                                            class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 my-2">
-                    <label for="disabled_sigslug_sponsor_1">Sponsor 1 Signature</label>
-                    <div class="row">
-                        <div class="col-22">
-                            <div class="input-group">
-                                <input id="copy-value-sponsor-1" type="text" class="form-control"
-                                    value="{% if sponsor_1_sigurl %}{{ sponsor_1_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
-                                    disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
-                                        id="copy-button-sponsor-1" {% if not sponsor_1_sigurl %}disabled{% endif %}><i
-                                            class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_sponsor1_generate_route' object.pk %}"><i
-                                            class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_sponsor1_revoke_route' object.pk %}"><i
-                                            class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 my-2">
-                    <label for="disabled_sigslug_sponsor_1">Sponsor 2 Signature</label>
-                    <div class="row">
-                        <div class="col-22">
-                            <div class="input-group">
-                                <input id="copy-value-sponsor-2" type="text" class="form-control"
-                                    value="{% if sponsor_2_sigurl %}{{ sponsor_2_sigurl }}{% else %}No URL, Please Generate.{% endif %}"
-                                    disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-xs-lg btn-outline-secondary" type="button"
-                                        id="copy-button-sponsor-2" {% if not sponsor_2_sigurl %}disabled{% endif %}><i
-                                            class="far fa-copy"></i></button>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_sponsor2_generate_route' object.pk %}"><i
-                                            class="fas fa-undo"></i></a>
-                                    <a class="btn btn-xs-lg btn-outline-secondary"
-                                        href="{% url 'sigslug_sponsor2_revoke_route' object.pk %}"><i
-                                            class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 my-2"><a href="{% url 'signature_agencyemployee_route' object.pk %}">
-                        <p class="mb-1">EA personnel's signature Link (All doc)</p>
-                    </a></div>
-                <!-- <div class="col-md-12 my-2"><a href="#"><p class="mb-1">FDW's Signature Link</p></a></div> -->
-            </div>
-            <div class="row">
-                <div class="col">
-                    <a href="{% url 'handover_form_view' object.pk %}"
-                        class="btn btn-xs-lg btn-xs-lg btn-primary">Handover FDW</a>
                 </div>
             </div>
         </div>
@@ -762,53 +648,3 @@
     </div>
 </div>
 {% endblock dashboard_section %}
-
-{% block js %}
-<script>
-    function copyToClipboard(element) {
-        navigator.clipboard.writeText(element.value)
-            .then(() => {
-                // Animate copy button
-                element.animate([{
-                        transform: 'scale(1)'
-                    },
-                    {
-                        transform: 'scale(1)',
-                        backgroundColor: '#666666',
-                        color: 'white',
-                    },
-                    {
-                        transform: 'scale(1)'
-                    },
-                ], {
-                    duration: 500, //milliseconds
-                    easing: 'ease-in', //'linear', a bezier curve, etc.
-                    delay: 0, //milliseconds
-                    iterations: 1, //or a number
-                    direction: 'normal', //'normal', 'reverse', etc.
-                    fill: 'forwards' //'backwards', 'both', 'none', 'auto'
-                });
-            })
-            .catch(err => {
-                console.log('Error in copying text: ', err);
-            });
-    }
-
-    let copyElements = {
-        'copy-button-employer-1': 'copy-value-employer-1',
-        'copy-button-employer-spouse': 'copy-value-employer-spouse',
-        'copy-button-joint-applicant': 'copy-value-joint-applicant',
-        'copy-button-sponsor-1': 'copy-value-sponsor-1',
-        'copy-button-sponsor-2': 'copy-value-sponsor-2',
-    }
-
-    if (copyElements) {
-        for (let button in copyElements) {
-            let valueElement = document.getElementById(copyElements[button]);
-            if (copyElements.hasOwnProperty(button)) {
-                document.getElementById(button).addEventListener('click', () => copyToClipboard(valueElement));
-            }
-        }
-    }
-</script>
-{% endblock js %}

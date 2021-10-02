@@ -1,48 +1,41 @@
-# Global Imports
 import os
 import uuid
-import requests
-import secrets
-from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
+from decimal import ROUND_HALF_UP, Decimal
 
-# Django Imports
-from django.db import models
-from django.urls import reverse
+from accounts.models import PotentialEmployer
+from agency.models import AgencyEmployee
 from django.conf import settings
-from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, RegexValidator
+from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
-# Project Apps Imports
-from onlinemaid.constants import (
-    TrueFalseChoices, FullNationsChoices, MaritalStatusChoices
-)
+from maid.constants import TypeOfMaidChoices
+from maid.models import Maid
+from onlinemaid.constants import TrueFalseChoices
+from onlinemaid.fields import (CustomBinaryField, GenderCharField,
+                               MaritalStatusCharField, NationalityCharField,
+                               NullableBooleanField, NullableCharField,
+                               NullableDateField, NullableGenderCharField,
+                               NullableMaritalStatusCharField,
+                               NullableNationalityCharField)
 from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
-from agency.models import AgencyEmployee
-from maid.models import Maid
-from maid.constants import TypeOfMaidChoices
 
 # App Imports
-from .constants import (
-    EmployerTypeOfApplicantChoices, GenderChoices, RelationshipChoices,
-    ResidentialStatusFullChoices, ResidentialStatusPartialChoices,
-    IncomeChoices, HouseholdIdTypeChoices, DayChoices, DayOfWeekChoices,
-    MonthChoices, WeekChoices,
-    NUMBER_OF_WORK_DAYS_IN_MONTH
-)
-from .fields import CustomMoneyDecimalField
-from .helper_functions import (
-    is_local, is_applicant_joint_applicant, is_applicant_sponsor,
-    is_applicant_spouse
-)
+from .constants import (NUMBER_OF_WORK_DAYS_IN_MONTH, CaseStatusChoices,
+                        DayChoices, DayOfWeekChoices,
+                        EmployerTypeOfApplicantChoices, HouseholdIdTypeChoices,
+                        IncomeChoices, MonthChoices, RelationshipChoices,
+                        ResidentialStatusPartialChoices, WeekChoices)
+from .fields import (CustomMoneyDecimalField,
+                     NullableResidentialStatusCharField,
+                     ResidentialStatusCharField)
+from .helper_functions import (is_applicant_joint_applicant,
+                               is_applicant_sponsor, is_applicant_spouse,
+                               is_local)
 
 # Utiliy Classes and Functions
 
@@ -82,7 +75,7 @@ class ReceiptMaster(models.Model):
     def get_running_number(self):
         return self.number
 
-    def increment_running_number(self):
+    def set_increment_running_number(self):
         self.number += 1
         self.save()
 
@@ -94,14 +87,22 @@ class Employer(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
-        unique=True,
+        unique=True
+    )
+
+    potential_employer = models.ForeignKey(
+        PotentialEmployer,
+        related_name='employers',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL
     )
 
     applicant_type = models.CharField(
         verbose_name=_("Type of Applicant"),
         max_length=6,
         choices=EmployerTypeOfApplicantChoices.choices,
-        default=EmployerTypeOfApplicantChoices.SINGLE,
+        default=EmployerTypeOfApplicantChoices.SINGLE
     )
 
     household_details_required = models.BooleanField(
@@ -113,26 +114,23 @@ class Employer(models.Model):
         ),
         help_text=_('''
             If yes, please fill in household details section
-        '''),
+        ''')
     )
 
     agency_employee = models.ForeignKey(
         AgencyEmployee,
         verbose_name=_('Assigned EA Personnel'),
-        on_delete=models.RESTRICT,
+        on_delete=models.RESTRICT
     )
 
     # Employer Information
     employer_name = models.CharField(
         verbose_name=_('Employer Name'),
-        max_length=40,
+        max_length=40
     )
 
-    employer_gender = models.CharField(
-        verbose_name=_("Employer gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+    employer_gender = GenderCharField(
+        verbose_name=_("Employer gender")
     )
 
     employer_mobile_number = models.CharField(
@@ -143,10 +141,10 @@ class Employer(models.Model):
                 regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid mobile number')
             )
-        ],
+        ]
     )
 
-    employer_home_number = models.CharField(
+    employer_home_number = NullableCharField(
         verbose_name=_('Home Tel Number'),
         max_length=10,
         validators=[
@@ -154,9 +152,7 @@ class Employer(models.Model):
                 regex='^[6][0-9]{7}$',  # Singapore landline numbers
                 message=_('Please enter a valid home telephone number')
             )
-        ],
-        null=True,
-        blank=True
+        ]
     )
 
     employer_email = models.EmailField(
@@ -165,112 +161,64 @@ class Employer(models.Model):
 
     employer_address_1 = models.CharField(
         verbose_name=_('Address Line 1'),
-        max_length=100,
+        max_length=100
     )
 
-    employer_address_2 = models.CharField(
+    employer_address_2 = NullableCharField(
         verbose_name=_('Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50
     )
 
     employer_post_code = models.CharField(
         verbose_name=_('Postal Code'),
-        max_length=25,
+        max_length=25
     )
 
     employer_date_of_birth = models.DateField(
         verbose_name=_('Employer date of birth')
     )
 
-    employer_nationality = models.CharField(
-        verbose_name=_("Employer nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE
+    employer_nationality = NationalityCharField(
+        verbose_name=_("Employer nationality/citizenship")
     )
 
-    employer_residential_status = models.CharField(
-        verbose_name=_("Employer residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC
+    employer_residential_status = ResidentialStatusCharField(
+        verbose_name=_("Employer residential status")
     )
 
-    employer_nric_num = models.BinaryField(
-        verbose_name=_('Employer NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    employer_nric_num = CustomBinaryField(
+        verbose_name=_('Employer NRIC')
     )
 
-    employer_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_nric_nonce = CustomBinaryField()
+
+    employer_nric_tag = CustomBinaryField()
+
+    employer_fin_num = CustomBinaryField(
+        verbose_name=_('Employer FIN')
     )
 
-    employer_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_fin_nonce = CustomBinaryField()
+
+    employer_fin_tag = CustomBinaryField()
+
+    employer_passport_num = CustomBinaryField(
+        verbose_name=_('Employer passport')
     )
 
-    employer_fin_num = models.BinaryField(
-        verbose_name=_('Employer FIN'),
-        editable=True,
-        blank=True,
-        null=True
+    employer_passport_nonce = CustomBinaryField()
+
+    employer_passport_tag = CustomBinaryField()
+
+    employer_passport_date = NullableDateField(
+        verbose_name=_('Employer passport expiry date')
     )
 
-    employer_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    employer_marital_status = NullableMaritalStatusCharField(
+        verbose_name=_("Employer marital status")
     )
 
-    employer_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_num = models.BinaryField(
-        verbose_name=_('Employer passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_date = models.DateField(
-        verbose_name=_('Employer passport expiry date'),
-        blank=True,
-        null=True
-    )
-
-    employer_marital_status = models.CharField(
-        verbose_name=_("Employer marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True
-    )
-
-    employer_marriage_sg_registered = models.BooleanField(
+    employer_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Employer marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -279,9 +227,58 @@ class Employer(models.Model):
         ),
         help_text=_('''
             Was Employer's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
+    )
+
+    # Employer Spouse
+    spouse_name = NullableCharField(
+        verbose_name=_("Spouse's Name"),
+        max_length=40,
+        default=None
+    )
+
+    spouse_gender = NullableGenderCharField(
+        verbose_name=_("Spouse's gender")
+    )
+
+    spouse_date_of_birth = NullableDateField(
+        verbose_name=_("Spouse's date of birth")
+    )
+
+    spouse_nationality = NullableNationalityCharField(
+        verbose_name=_("Spouse's nationality/citizenship")
+    )
+
+    spouse_residential_status = NullableResidentialStatusCharField(
+        verbose_name=_("Spouse's residential status")
+    )
+
+    spouse_nric_num = CustomBinaryField(
+        verbose_name=_("Spouse's NRIC")
+    )
+
+    spouse_nric_nonce = CustomBinaryField()
+
+    spouse_nric_tag = CustomBinaryField()
+
+    spouse_fin_num = CustomBinaryField(
+        verbose_name=_("Spouse's FIN")
+    )
+
+    spouse_fin_nonce = CustomBinaryField()
+
+    spouse_fin_tag = CustomBinaryField()
+
+    spouse_passport_num = CustomBinaryField(
+        verbose_name=_("Spouse's Passport No")
+    )
+
+    spouse_passport_nonce = CustomBinaryField()
+
+    spouse_passport_tag = CustomBinaryField()
+
+    spouse_passport_date = NullableDateField(
+        verbose_name=_("Spouse's Passport Expiry Date")
     )
 
     def get_employer_nric_full(self):
@@ -295,7 +292,7 @@ class Employer(models.Model):
     def get_employer_nric_partial(self, padded=True):
         plaintext = self.get_employer_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -310,7 +307,7 @@ class Employer(models.Model):
     def get_employer_fin_partial(self, padded=True):
         plaintext = self.get_employer_fin_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -322,116 +319,11 @@ class Employer(models.Model):
             self.employer_passport_tag,
         )
 
-    def mobile_partial_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
+    def get_mobile_partial_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x' * 4
 
     def get_email_partial(self):
-        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
-
-    # Employer Spouse
-    spouse_name = models.CharField(
-        verbose_name=_("Spouse's Name"),
-        max_length=40,
-        blank=True,
-        null=True,
-        default=None,
-    )
-
-    spouse_gender = models.CharField(
-        verbose_name=_("Spouse's gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
-    )
-
-    spouse_date_of_birth = models.DateField(
-        verbose_name=_("Spouse's date of birth"),
-        blank=True,
-        null=True
-    )
-
-    spouse_nationality = models.CharField(
-        verbose_name=_("Spouse's nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-
-    spouse_residential_status = models.CharField(
-        verbose_name=_("Spouse's residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
-    )
-
-    spouse_nric_num = models.BinaryField(
-        verbose_name=_("Spouse's NRIC"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_fin_num = models.BinaryField(
-        verbose_name=_("Spouse's FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_num = models.BinaryField(
-        verbose_name=_("Spouse's Passport No"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    spouse_passport_date = models.DateField(
-        verbose_name=_("Spouse's Passport Expiry Date"),
-        blank=True,
-        null=True
-    )
+        return self.employer_email[:3] + '_' * 8 + self.employer_email[-3:]
 
     def get_employer_spouse_nric_full(self):
         return decrypt_string(
@@ -444,7 +336,7 @@ class Employer(models.Model):
     def get_employer_spouse_nric_partial(self, padded=True):
         plaintext = self.get_employer_spouse_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -459,7 +351,7 @@ class Employer(models.Model):
     def get_employer_spouse_fin_partial(self, padded=True):
         plaintext = self.get_employer_spouse_fin_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -471,13 +363,23 @@ class Employer(models.Model):
             self.spouse_passport_tag,
         )
 
-    # Utility Functions
-    def details_missing_spouse(self):
+    def set_potential_employer_relation(self, new_email):
+        try:
+            potential_employer = PotentialEmployer.objects.get(
+                user__email=new_email
+            )
+        except PotentialEmployer.DoesNotExist:
+            pass
+        else:
+            self.potential_employer = potential_employer
+            self.save()
+
+    def get_details_missing_spouse(self):
         error_msg_list = []
 
         if (
-            is_married(self.employer_marital_status) or
-            is_applicant_spouse(self.applicant_type)
+            is_married(self.employer_marital_status)
+            or is_applicant_spouse(self.applicant_type)
         ):
             mandatory_fields = [
                 'spouse_name',
@@ -504,7 +406,7 @@ class Employer(models.Model):
 
         return error_msg_list
 
-    def details_missing_employer(self):
+    def get_details_missing_employer(self):
         # Retrieve verbose name ->
         # self._meta.get_field('field_name_str').verbose_name
         error_msg_list = []
@@ -521,18 +423,18 @@ class Employer(models.Model):
                 error_msg_list.append('employer_passport_date')
 
         # Check spouse details completeness
-        error_msg_list += self.details_missing_spouse()
+        error_msg_list += self.get_details_missing_spouse()
 
         if is_applicant_sponsor(self.applicant_type):
             if hasattr(self, 'rn_sponsor_employer'):
-                m_s = self.rn_sponsor_employer.details_missing_sponsors()
+                m_s = self.rn_sponsor_employer.get_details_missing_sponsors()
                 error_msg_list += m_s
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
         elif is_applicant_joint_applicant(self.applicant_type):
             if hasattr(self, 'rn_ja_employer'):
-                m_ja = self.rn_ja_employer.details_missing_joint_applicant()
+                m_ja = self.rn_ja_employer.get_details_missing_joint_applicant()
                 error_msg_list += m_ja
             else:
                 error_msg_list.append('rn_ja_employer')
@@ -541,14 +443,14 @@ class Employer(models.Model):
             error_msg_list.append('rn_income_employer')
 
         if (
-            self.household_details_required and
-            not self.rn_household_employer.all().count()
+            self.household_details_required
+            and not self.rn_household_employer.all().count()
         ):
             error_msg_list.append('rn_household_employer')
 
         return error_msg_list
 
-    def has_income_obj(self):
+    def get_income_obj(self):
         try:
             income_obj = self.rn_income_employer
         except ObjectDoesNotExist:
@@ -556,7 +458,7 @@ class Employer(models.Model):
         else:
             return income_obj
 
-    def has_sponsor_obj(self):
+    def get_sponsor_obj(self):
         try:
             sponsor_obj = self.rn_sponsor_employer
         except ObjectDoesNotExist:
@@ -564,7 +466,7 @@ class Employer(models.Model):
         else:
             return sponsor_obj
 
-    def has_joint_applicant_obj(self):
+    def get_joint_applicant_obj(self):
         try:
             joint_applicant_obj = self.rn_ja_employer
         except ObjectDoesNotExist:
@@ -572,7 +474,7 @@ class Employer(models.Model):
         else:
             return joint_applicant_obj
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.employer_name
 
 # Sponsors
@@ -590,42 +492,36 @@ class EmployerSponsor(models.Model):
         verbose_name=_("Sponsor 1 relationship with Employer"),
         max_length=30,
         choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
+        default=RelationshipChoices.DAUGHTER
     )
     sponsor_1_name = models.CharField(
         verbose_name=_('Sponsor 1 Name'),
-        max_length=40,
+        max_length=40
     )
-    sponsor_1_gender = models.CharField(
-        verbose_name=_("Sponsor 1 gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+    sponsor_1_gender = GenderCharField(
+        verbose_name=_("Sponsor 1 gender")
     )
     sponsor_1_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 1 date of birth'),
+        verbose_name=_('Sponsor 1 date of birth')
     )
     sponsor_1_nric_num = models.BinaryField(
         verbose_name=_('Sponsor 1 NRIC'),
-        editable=True,
+        editable=True
     )
     sponsor_1_nric_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     sponsor_1_nric_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
-    sponsor_1_nationality = models.CharField(
-        verbose_name=_("Sponsor 1 nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
+    sponsor_1_nationality = NationalityCharField(
+        verbose_name=_("Sponsor 1 nationality/citizenship")
     )
     sponsor_1_residential_status = models.CharField(
         verbose_name=_("Sponsor 1 residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        default=ResidentialStatusPartialChoices.SC
     )
     sponsor_1_mobile_number = models.CharField(
         verbose_name=_('Sponsor 1 mobile number'),
@@ -635,34 +531,29 @@ class EmployerSponsor(models.Model):
                 regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
-        ],
+        ]
     )
     sponsor_1_email = models.EmailField(
-        verbose_name=_('Sponsor 1 email address'),
+        verbose_name=_('Sponsor 1 email address')
     )
     sponsor_1_address_1 = models.CharField(
         verbose_name=_('Sponsor 1 Address Line 1'),
-        max_length=100,
+        max_length=100
     )
-    sponsor_1_address_2 = models.CharField(
+    sponsor_1_address_2 = NullableCharField(
         verbose_name=_('Sponsor 1 Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50
     )
     sponsor_1_post_code = models.CharField(
         verbose_name=_('Sponsor 1 Postal Code'),
-        max_length=25,
+        max_length=25
     )
-    sponsor_1_marital_status = models.CharField(
-        verbose_name=_("Sponsor 1 marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
+    sponsor_1_marital_status = MaritalStatusCharField(
+        verbose_name=_("Sponsor 1 marital status")
     )
 
     # Sponsor 1 spouse details
-    sponsor_1_marriage_sg_registered = models.BooleanField(
+    sponsor_1_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Sponsor 1 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -671,97 +562,41 @@ class EmployerSponsor(models.Model):
         ),
         help_text=_('''
             Was Sponsor 1's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
-    sponsor_1_spouse_name = models.CharField(
+    sponsor_1_spouse_name = NullableCharField(
         verbose_name=_('Sponsor 1 spouse name'),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
-    sponsor_1_spouse_gender = models.CharField(
-        verbose_name=_("Sponsor 1 spouse gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
+    sponsor_1_spouse_gender = NullableGenderCharField(
+        verbose_name=_("Sponsor 1 spouse gender")
     )
-    sponsor_1_spouse_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 1 spouse date of birth'),
-        blank=True,
-        null=True
+    sponsor_1_spouse_date_of_birth = NullableDateField(
+        verbose_name=_('Sponsor 1 spouse date of birth')
     )
-    sponsor_1_spouse_nationality = models.CharField(
-        verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nationality = NullableNationalityCharField(
+        verbose_name=_("Sponsor 1 spouse nationality/citizenship")
     )
-    sponsor_1_spouse_residential_status = models.CharField(
-        verbose_name=_("Sponsor 1 spouse residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
+    sponsor_1_spouse_residential_status = NullableResidentialStatusCharField(
+        verbose_name=_("Sponsor 1 spouse residential status")
     )
-    sponsor_1_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse NRIC')
     )
-    sponsor_1_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_nric_nonce = CustomBinaryField()
+    sponsor_1_spouse_nric_tag = CustomBinaryField()
+    sponsor_1_spouse_fin_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse FIN')
     )
-    sponsor_1_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_1_spouse_fin_nonce = CustomBinaryField()
+    sponsor_1_spouse_fin_tag = CustomBinaryField()
+    sponsor_1_spouse_passport_num = CustomBinaryField(
+        verbose_name=_('Sponsor 1 spouse passport')
     )
-    sponsor_1_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_date = models.DateField(
-        verbose_name=_('Sponsor 1 spouse passport expiry date'),
-        blank=True,
-        null=True
+    sponsor_1_spouse_passport_nonce = CustomBinaryField()
+    sponsor_1_spouse_passport_tag = CustomBinaryField()
+    sponsor_1_spouse_passport_date = NullableDateField(
+        verbose_name=_('Sponsor 1 spouse passport expiry date')
     )
 
     # Sponsor required?
@@ -771,70 +606,41 @@ class EmployerSponsor(models.Model):
         choices=TrueFalseChoices(
             _('Yes'),
             _('No'),
-        ),
+        )
     )
 
     # Sponsor 2 details
-    sponsor_2_relationship = models.CharField(
+    sponsor_2_relationship = NullableCharField(
         verbose_name=_("Sponsor 2 relationship with Employer"),
         max_length=30,
         choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True
+        default=RelationshipChoices.DAUGHTER
     )
-    sponsor_2_name = models.CharField(
+    sponsor_2_name = NullableCharField(
         verbose_name=_('Sponsor 2 Name'),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
-    sponsor_2_gender = models.CharField(
-        verbose_name=_("Sponsor 2 gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
+    sponsor_2_gender = NullableGenderCharField(
+        verbose_name=_("Sponsor 2 gender")
     )
-    sponsor_2_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 2 date of birth'),
-        blank=True,
-        null=True
+    sponsor_2_date_of_birth = NullableDateField(
+        verbose_name=_('Sponsor 2 date of birth')
     )
-    sponsor_2_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 NRIC')
     )
-    sponsor_2_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_nric_nonce = CustomBinaryField()
+    sponsor_2_nric_tag = CustomBinaryField()
+    sponsor_2_nationality = NullableNationalityCharField(
+        verbose_name=_("Sponsor 2 nationality/citizenship")
     )
-    sponsor_2_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_nationality = models.CharField(
-        verbose_name=_("Sponsor 2 nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-    sponsor_2_residential_status = models.CharField(
+    sponsor_2_residential_status = NullableCharField(
         verbose_name=_("Sponsor 2 residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
-        blank=True,
-        null=True
+        default=ResidentialStatusPartialChoices.SC
     )
-    sponsor_2_mobile_number = models.CharField(
+    sponsor_2_mobile_number = NullableCharField(
         verbose_name=_('Sponsor 2 mobile number'),
         max_length=10,
         validators=[
@@ -842,42 +648,29 @@ class EmployerSponsor(models.Model):
                 regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
                 message=_('Please enter a valid contact number')
             )
-        ],
-        blank=True,
-        null=True
+        ]
     )
     sponsor_2_email = models.EmailField(
         verbose_name=_('Sponsor 2 email address'),
         blank=True,
         null=True
     )
-    sponsor_2_address_1 = models.CharField(
+    sponsor_2_address_1 = NullableCharField(
         verbose_name=_('Sponsor 2 Address Line 1'),
-        max_length=100,
-        blank=True,
-        null=True
+        max_length=100
     )
-    sponsor_2_address_2 = models.CharField(
+    sponsor_2_address_2 = NullableCharField(
         verbose_name=_('Sponsor 2 Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50
     )
-    sponsor_2_post_code = models.CharField(
+    sponsor_2_post_code = NullableCharField(
         verbose_name=_('Sponsor 2 Postal Code'),
-        max_length=25,
-        blank=True,
-        null=True
+        max_length=25
     )
-    sponsor_2_marital_status = models.CharField(
-        verbose_name=_("Sponsor 2 marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True
+    sponsor_2_marital_status = NullableMaritalStatusCharField(
+        verbose_name=_("Sponsor 2 marital status")
     )
-    sponsor_2_marriage_sg_registered = models.BooleanField(
+    sponsor_2_marriage_sg_registered = NullableBooleanField(
         verbose_name=_('Sponsor 2 marriage registered in SG?'),
         default=True,
         choices=TrueFalseChoices(
@@ -886,99 +679,43 @@ class EmployerSponsor(models.Model):
         ),
         help_text=_('''
             Was Sponsor 2's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     # Sponsor 2 spouse details
-    sponsor_2_spouse_name = models.CharField(
+    sponsor_2_spouse_name = NullableCharField(
         verbose_name=_('Sponsor 2 spouse name'),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
-    sponsor_2_spouse_gender = models.CharField(
-        verbose_name=_("Sponsor 2 spouse gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
+    sponsor_2_spouse_gender = NullableGenderCharField(
+        verbose_name=_("Sponsor 2 spouse gender")
     )
-    sponsor_2_spouse_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 2 spouse date of birth'),
-        blank=True,
-        null=True
+    sponsor_2_spouse_date_of_birth = NullableDateField(
+        verbose_name=_('Sponsor 2 spouse date of birth')
     )
-    sponsor_2_spouse_nationality = models.CharField(
-        verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
+    sponsor_2_spouse_nationality = NullableNationalityCharField(
+        verbose_name=_("Sponsor 2 spouse nationality/citizenship")
     )
-    sponsor_2_spouse_residential_status = models.CharField(
-        verbose_name=_("Sponsor 2 spouse residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
+    sponsor_2_spouse_residential_status = NullableResidentialStatusCharField(
+        verbose_name=_("Sponsor 2 spouse residential status")
     )
-    sponsor_2_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_nric_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse NRIC')
     )
-    sponsor_2_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_nric_nonce = CustomBinaryField()
+    sponsor_2_spouse_nric_tag = CustomBinaryField()
+    sponsor_2_spouse_fin_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse FIN')
     )
-    sponsor_2_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    sponsor_2_spouse_fin_nonce = CustomBinaryField()
+    sponsor_2_spouse_fin_tag = CustomBinaryField()
+    sponsor_2_spouse_passport_num = CustomBinaryField(
+        verbose_name=_('Sponsor 2 spouse passport')
     )
-    sponsor_2_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_date = models.DateField(
-        verbose_name=_('Sponsor 2 spouse passport expiry date'),
-        blank=True,
-        null=True
+    sponsor_2_spouse_passport_nonce = CustomBinaryField()
+    sponsor_2_spouse_passport_tag = CustomBinaryField()
+    sponsor_2_spouse_passport_date = NullableDateField(
+        verbose_name=_('Sponsor 2 spouse passport expiry date')
     )
 
     def get_sponsor_1_nric_full(self):
@@ -992,7 +729,7 @@ class EmployerSponsor(models.Model):
     def get_sponsor_1_nric_partial(self, padded=True):
         plaintext = self.get_sponsor_1_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -1031,7 +768,7 @@ class EmployerSponsor(models.Model):
     def get_sponsor_2_nric_partial(self, padded=True):
         plaintext = self.get_sponsor_2_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -1059,7 +796,7 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_tag,
         )
 
-    def details_missing_sponsor_2_spouse(self):
+    def get_details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
         if is_married(self.sponsor_2_marital_status):
@@ -1088,7 +825,7 @@ class EmployerSponsor(models.Model):
 
         return error_msg_list
 
-    def details_missing_sponsor_2(self):
+    def get_details_missing_sponsor_2(self):
         error_msg_list = []
 
         if self.sponsor_2_required:
@@ -1113,11 +850,11 @@ class EmployerSponsor(models.Model):
             if not self.get_sponsor_2_nric_full():
                 error_msg_list.append('rn_sponsor_employer.sponsor_2_nric_num')
 
-            error_msg_list += self.details_missing_sponsor_2_spouse()
+            error_msg_list += self.get_details_missing_sponsor_2_spouse()
 
         return error_msg_list
 
-    def details_missing_sponsor_1_spouse(self):
+    def get_details_missing_sponsor_1_spouse(self):
         error_msg_list = []
 
         if is_married(self.sponsor_1_marital_status):
@@ -1146,10 +883,10 @@ class EmployerSponsor(models.Model):
 
         return error_msg_list
 
-    def details_missing_sponsors(self):
+    def get_details_missing_sponsors(self):
         error_msg_list = []
-        error_msg_list += self.details_missing_sponsor_1_spouse()
-        error_msg_list += self.details_missing_sponsor_2()
+        error_msg_list += self.get_details_missing_sponsor_1_spouse()
+        error_msg_list += self.get_details_missing_sponsor_2()
         return error_msg_list
 
 # Joint Applicants
@@ -1165,64 +902,53 @@ class EmployerJointApplicant(models.Model):
         verbose_name=_("Joint applicant's relationship with Employer"),
         max_length=30,
         choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
+        default=RelationshipChoices.DAUGHTER
     )
     joint_applicant_name = models.CharField(
         verbose_name=_("Joint applicant's Name"),
-        max_length=40,
+        max_length=40
     )
-    joint_applicant_gender = models.CharField(
-        verbose_name=_("Joint applicant's gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
+    joint_applicant_gender = GenderCharField(
+        verbose_name=_("Joint applicant's gender")
     )
     joint_applicant_date_of_birth = models.DateField(
-        verbose_name=_("Joint applicant's date of birth"),
+        verbose_name=_("Joint applicant's date of birth")
     )
     joint_applicant_nric_num = models.BinaryField(
         verbose_name=_('Joint applicant NRIC'),
-        editable=True,
+        editable=True
     )
     joint_applicant_nric_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     joint_applicant_nric_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
-    joint_applicant_nationality = models.CharField(
-        verbose_name=_("Joint applicant's nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
+    joint_applicant_nationality = NationalityCharField(
+        verbose_name=_("Joint applicant's nationality/citizenship")
     )
     joint_applicant_residential_status = models.CharField(
         verbose_name=_("Joint applicant's residential status"),
         max_length=2,
         choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
+        default=ResidentialStatusPartialChoices.SC
     )
     joint_applicant_address_1 = models.CharField(
         verbose_name=_("Joint applicant's Address Line 1"),
-        max_length=100,
+        max_length=100
     )
-    joint_applicant_address_2 = models.CharField(
+    joint_applicant_address_2 = NullableCharField(
         verbose_name=_("Joint applicant's Address Line 2"),
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50
     )
     joint_applicant_post_code = models.CharField(
         verbose_name=_("Joint applicant's Postal Code"),
-        max_length=25,
+        max_length=25
     )
-    joint_applicant_marital_status = models.CharField(
-        verbose_name=_("Joint applicant's marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
+    joint_applicant_marital_status = MaritalStatusCharField(
+        verbose_name=_("Joint applicant's marital status")
     )
-    joint_applicant_marriage_sg_registered = models.BooleanField(
+    joint_applicant_marriage_sg_registered = NullableBooleanField(
         verbose_name=_("Joint applicant's marriage registered in SG?"),
         default=True,
         choices=TrueFalseChoices(
@@ -1231,46 +957,25 @@ class EmployerJointApplicant(models.Model):
         ),
         help_text=_('''
             Was Joint applicant's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
+        ''')
     )
 
     # Joint applicant's spouse details
-    joint_applicant_spouse_name = models.CharField(
+    joint_applicant_spouse_name = NullableCharField(
         verbose_name=_("Joint applicant's spouse name"),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
-    joint_applicant_spouse_gender = models.CharField(
-        verbose_name=_("Joint applicant's spouse gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
+    joint_applicant_spouse_gender = NullableGenderCharField(
+        verbose_name=_("Joint applicant's spouse gender")
     )
-    joint_applicant_spouse_date_of_birth = models.DateField(
-        verbose_name=_("Joint applicant's spouse date of birth"),
-        blank=True,
-        null=True
+    joint_applicant_spouse_date_of_birth = NullableDateField(
+        verbose_name=_("Joint applicant's spouse date of birth")
     )
-    joint_applicant_spouse_nationality = models.CharField(
-        verbose_name=_("Joint applicant's spouse nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
+    joint_applicant_spouse_nationality = NullableNationalityCharField(
+        verbose_name=_("Joint applicant's spouse nationality/citizenship")
     )
-    joint_applicant_spouse_residential_status = models.CharField(
-        verbose_name=_("Joint applicant's spouse residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
+    joint_applicant_spouse_residential_status = NullableResidentialStatusCharField(
+        verbose_name=_("Joint applicant's spouse residential status")
     )
     joint_applicant_spouse_nric_num = models.BinaryField(
         verbose_name=_("Joint applicant's spouse NRIC"),
@@ -1278,52 +983,20 @@ class EmployerJointApplicant(models.Model):
         blank=True,
         null=True
     )
-    joint_applicant_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_nric_nonce = CustomBinaryField()
+    joint_applicant_spouse_nric_tag = CustomBinaryField()
+    joint_applicant_spouse_fin_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse FIN")
     )
-    joint_applicant_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
+    joint_applicant_spouse_fin_nonce = CustomBinaryField()
+    joint_applicant_spouse_fin_tag = CustomBinaryField()
+    joint_applicant_spouse_passport_num = CustomBinaryField(
+        verbose_name=_("Joint applicant's spouse passport")
     )
-    joint_applicant_spouse_fin_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse passport"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_date = models.DateField(
-        verbose_name=_("Joint applicant's spouse passport expiry date"),
-        blank=True,
-        null=True
+    joint_applicant_spouse_passport_nonce = CustomBinaryField()
+    joint_applicant_spouse_passport_tag = CustomBinaryField()
+    joint_applicant_spouse_passport_date = NullableDateField(
+        verbose_name=_("Joint applicant's spouse passport expiry date")
     )
 
     def get_joint_applicant_nric_full(self):
@@ -1337,7 +1010,7 @@ class EmployerJointApplicant(models.Model):
     def get_joint_applicant_nric_partial(self, padded=True):
         plaintext = self.get_joint_applicant_nric_full()
         if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
+            return 'x' * 5 + plaintext[-4:] if plaintext else ''
         else:
             return plaintext[-4:] if plaintext else ''
 
@@ -1365,7 +1038,7 @@ class EmployerJointApplicant(models.Model):
             self.joint_applicant_spouse_passport_tag,
         )
 
-    def details_missing_joint_applicant_spouse(self):
+    def get_details_missing_joint_applicant_spouse(self):
         error_msg_list = []
 
         if is_married(self.joint_applicant_marital_status):
@@ -1398,7 +1071,7 @@ class EmployerJointApplicant(models.Model):
 
         return error_msg_list
 
-    def details_missing_joint_applicant(self):
+    def get_details_missing_joint_applicant(self):
         error_msg_list = []
 
         if is_local(self.joint_applicant_residential_status):
@@ -1412,7 +1085,7 @@ class EmployerJointApplicant(models.Model):
             if not self.joint_applicant_passport_date:
                 error_msg_list.append('joint_applicant_passport_date')
 
-        error_msg_list += self.details_missing_joint_applicant_spouse()
+        error_msg_list += self.get_details_missing_joint_applicant_spouse()
         return error_msg_list
 
 
@@ -1421,7 +1094,7 @@ class EmployerIncome(models.Model):
         Employer,
         verbose_name=_("Name of Employer"),
         on_delete=models.CASCADE,
-        related_name="rn_income_employer",
+        related_name="rn_income_employer"
     )
     # Income Details
     worked_in_sg = models.BooleanField(
@@ -1430,12 +1103,12 @@ class EmployerIncome(models.Model):
         choices=TrueFalseChoices(
             _('Yes'),
             _('No'),
-        ),
+        )
     )
     monthly_income = models.PositiveSmallIntegerField(
         verbose_name=_("Monthly Income"),
         choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
+        default=IncomeChoices.INCOME_3
     )
 
 
@@ -1444,37 +1117,37 @@ class EmployerHousehold(models.Model):
         Employer,
         verbose_name=_("Name of Employer"),
         on_delete=models.CASCADE,
-        related_name="rn_household_employer",
+        related_name="rn_household_employer"
     )
     # Household Details
     household_name = models.CharField(
         verbose_name=_("Household member's name"),
-        max_length=40,
+        max_length=40
     )
     household_id_type = models.CharField(
         verbose_name=_("Household member ID type"),
         max_length=8,
         choices=HouseholdIdTypeChoices.choices,
-        # default=HouseholdIdTypeChoices.NRIC,
+        # default=HouseholdIdTypeChoices.NRIC
     )
     household_id_num = models.BinaryField(
         verbose_name=_("Household member's ID number"),
-        editable=True,
+        editable=True
     )
     household_id_nonce = models.BinaryField(
-        editable=True,
+        editable=True
     )
     household_id_tag = models.BinaryField(
-        editable=True,
+        editable=True
     )
     household_date_of_birth = models.DateField(
-        verbose_name=_("Household member's date of birth"),
+        verbose_name=_("Household member's date of birth")
     )
     household_relationship = models.CharField(
         verbose_name=_("Household member's relationship with Employer"),
         max_length=30,
         choices=RelationshipChoices.choices,
-        # default=RelationshipChoices.DAUGHTER,
+        # default=RelationshipChoices.DAUGHTER
     )
 
     def get_household_id_full(self):
@@ -1492,59 +1165,83 @@ class EmployerDoc(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
-        unique=True,
+        unique=True
     )
     version = models.PositiveSmallIntegerField(
         editable=False,
-        default=0,
+        default=0
     )
 
     # User input fields
     case_ref_no = models.CharField(
         verbose_name=_("Case Reference Number"),
         max_length=20,
-        unique=True,
+        unique=True
     )
     agreement_date = models.DateField(
-        verbose_name=_("Contract Date"),
+        verbose_name=_("Contract Date")
     )
     employer = models.ForeignKey(
         Employer,
         verbose_name=_("Name of Employer"),
         on_delete=models.CASCADE,
-        related_name="rn_ed_employer",
+        related_name="rn_ed_employer"
     )
     fdw = models.ForeignKey(
         Maid,
         verbose_name=_("Name of FDW"),
-        on_delete=models.RESTRICT,
+        on_delete=models.RESTRICT
     )
     fdw_salary = CustomMoneyDecimalField(
         verbose_name=_("FDW Basic Salary"),
-        help_text=_("FDW monthly salary per contract"),
+        help_text=_("FDW monthly salary per contract")
     )
     fdw_loan = CustomMoneyDecimalField(
         verbose_name=_("FDW Loan Amount"),
-        help_text=_("FDW loan amount per contract"),
+        help_text=_("FDW loan amount per contract")
     )
     fdw_off_days = models.PositiveSmallIntegerField(
         # days
         verbose_name=_("FDW No. of off-days per month"),
         choices=DayChoices.choices[0:9],
         default=4,
-        help_text=_("FDW off-days a month per contract"),
+        help_text=_("FDW off-days a month per contract")
     )
     fdw_monthly_loan_repayment = CustomMoneyDecimalField(
         verbose_name=_("FDW Monthly Loan Repayment"),
-        help_text=_("Should be less than basic salary"),
+        help_text=_("Should be less than basic salary")
     )
     fdw_off_day_of_week = models.PositiveSmallIntegerField(
         verbose_name=_("FDW Off Day Day of Week"),
         choices=DayOfWeekChoices.choices,
         default=DayOfWeekChoices.SUN
     )
+    status = models.CharField(
+        verbose_name=_('Case Status'),
+        max_length=6,
+        blank=True,
+        choices=CaseStatusChoices.choices,
+        default=CaseStatusChoices.LIVE
+    )
+    archived_agency_details = models.OneToOneField(
+        'ArchivedAgencyDetails',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+    archived_maid = models.OneToOneField(
+        'ArchivedMaid',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+    key_uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Case # {self.case_ref_no}'
 
     def save(self, *args, **kwargs):
@@ -1563,15 +1260,25 @@ class EmployerDoc(models.Model):
     def get_version(self):
         return str(self.version).zfill(4)
 
-    def per_off_day_compensation(self):
+    def get_case_type(self) -> str:
+        app_type = self.employer.applicant_type
+        if app_type == EmployerTypeOfApplicantChoices.SPONSOR:
+            if self.employer.rn_sponsor_employer.sponsor_2_required:
+                return 'SPONSR2'
+            else:
+                return 'SPONSR1'
+        else:
+            return app_type
+
+    def get_per_off_day_compensation(self):
         return Decimal(
-            self.fdw_salary/NUMBER_OF_WORK_DAYS_IN_MONTH
+            self.fdw_salary / NUMBER_OF_WORK_DAYS_IN_MONTH
         ).quantize(
             Decimal('.01'),
             rounding=ROUND_HALF_UP
         )
 
-    def fdw_off_day_of_week_display(self):
+    def get_fdw_off_day_of_week_display(self):
         if int(self.fdw_off_day_of_week) == DayOfWeekChoices.MON:
             return _('Monday')
         elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.TUE:
@@ -1587,8 +1294,8 @@ class EmployerDoc(models.Model):
         else:
             return _('Sunday')
 
-    def details_missing_case_pre_signing_1(self):
-        error_msg_list = self.employer.details_missing_employer()
+    def get_missing_case_dets_pre_signing_1(self):
+        error_msg_list = self.employer.get_details_missing_employer()
 
         if not hasattr(self, 'rn_servicefeeschedule_ed'):
             error_msg_list.append('rn_servicefeeschedule_ed')
@@ -1604,19 +1311,25 @@ class EmployerDoc(models.Model):
 
         if not hasattr(self, 'rn_signatures_ed'):
             error_msg_list.append('rn_signatures_ed')
-        elif not self.rn_signatures_ed.agency_staff_signature:
-            error_msg_list.append('agency_staff_signature')
 
         if (
-            self.fdw.maid_type == TypeOfMaidChoices.NEW and
-            not hasattr(self, 'rn_safetyagreement_ed')
+            self.fdw.maid_type == TypeOfMaidChoices.NEW
+            and not hasattr(self, 'rn_safetyagreement_ed')
         ):
             error_msg_list.append('rn_safetyagreement_ed')
 
         return error_msg_list
 
-    def details_missing_case_pre_signing_2(self):
-        error_msg_list = self.details_missing_case_pre_signing_1()
+    def get_missing_case_dets_pre_signing_1_5(self):
+        error_msg_list = self.get_missing_case_dets_pre_signing_1()
+
+        if not self.rn_signatures_ed.agency_staff_signature:
+            error_msg_list.append('agency_staff_signature')
+
+        return error_msg_list
+
+    def get_missing_case_dets_pre_signing_2(self):
+        error_msg_list = self.get_missing_case_dets_pre_signing_1_5()
 
         if hasattr(self, 'rn_docupload_ed'):
             if not self.rn_docupload_ed.ipa_pdf:
@@ -1643,132 +1356,16 @@ class EmployerDoc(models.Model):
 
         return error_msg_list
 
-    def archive(self):
-        service_fee_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_service_fee_schedule',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        service_fee_pdf = ContentFile(
-            service_fee_pdf_bytes,
-            name='Service-Fee-Schedule.pdf'
-        )
-        service_agreement_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_service_agreement',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        service_agreement_pdf = ContentFile(
-            service_agreement_pdf_bytes,
-            name='Service-Agreement.pdf'
-        )
-        agency_employment_contract_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_employment_contract',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        agency_employment_contract_pdf = ContentFile(
-            agency_employment_contract_pdf_bytes,
-            name='Agency-Employment-Contract.pdf'
-        )
-        agency_repayment_schedule_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_repayment_schedule',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        agency_repayment_schedule_pdf = ContentFile(
-            agency_repayment_schedule_pdf_bytes,
-            name='Agency-Repayment-Schedule.pdf'
-        )
-        rest_day_agreement_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_rest_day_agreement',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        rest_day_agreement_pdf = ContentFile(
-            rest_day_agreement_pdf_bytes,
-            name='Rest-Day-Agreement.pdf'
-        )
-        handover_checklist_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_handover_checklist',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        handover_checklist_pdf = ContentFile(
-            handover_checklist_pdf_bytes,
-            name='Handover-Checklist.pdf'
-        )
-        transfer_consent_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_transfer_consent',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        transfer_consent_pdf = ContentFile(
-            transfer_consent_pdf_bytes,
-            name='Transfer-Consent.pdf'
-        )
-        work_pass_authorisation_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_work_pass_authorisation',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        work_pass_authorisation_pdf = ContentFile(
-            work_pass_authorisation_pdf_bytes,
-            name='Work-Pass-Authorisation.pdf'
-        )
-        income_tax_declaration_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_income_tax_declaration',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        income_tax_declaration_pdf = ContentFile(
-            income_tax_declaration_pdf_bytes,
-            name='Income-Tax-Declaration.pdf'
-        )
-        safety_agreement_pdf_bytes = requests.get(
-            f'http://{get_current_site(None).domain}'+reverse(
-                'pdf_agency_safety_agreement',
-                kwargs={
-                    'level_1_pk': self.pk
-                }
-            )
-        ).content
-        safety_agreement_pdf = ContentFile(
-            safety_agreement_pdf_bytes,
-            name='Safety-Agreement.pdf'
-        )
-        try:
-            ArchivedDoc.objects.get(
-                pk=self.id
-            )
-        except ArchivedDoc.DoesNotExist:
+    def get_stage(self):
+        if self.rn_signatures_ed.employer_signature_1:
+            return 1
+        elif self.rn_signatures_ed.employer_signature_2:
+            return 2
+        else:
+            return 0
+
+    def set_archive(self):
+        if not self.is_archived_doc():
             archived_agency_details = ArchivedAgencyDetails.objects.create(
                 agency_name=self.employer.agency_employee.agency.name,
                 agency_license_no=self.employer.agency_employee.agency.license_number,
@@ -1789,248 +1386,73 @@ class EmployerDoc(models.Model):
                 fin_number_nonce=self.fdw.fin_number_nonce,
                 fin_number_tag=self.fdw.fin_number_tag
             )
-            archived_doc = ArchivedDoc(
-                applicant_type=self.employer.applicant_type,
-                agency=archived_agency_details,
-                fdw=archived_maid,
-                employer_name=self.employer.employer_name,
-                employer_gender=self.employer.employer_gender,
-                employer_mobile_number=self.employer.employer_mobile_number,
-                employer_home_number=self.employer.employer_home_number,
-                employer_email=self.employer.employer_email,
-                employer_address_1=self.employer.employer_address_1,
-                employer_address_2=self.employer.employer_address_2,
-                employer_post_code=self.employer.employer_post_code,
-                employer_date_of_birth=self.employer.employer_date_of_birth,
-                employer_nationality=self.employer.employer_nationality,
-                employer_residential_status=self.employer.employer_residential_status,
-                employer_nric_num=self.employer.employer_nric_num,
-                employer_nric_nonce=self.employer.employer_nric_nonce,
-                employer_nric_tag=self.employer.employer_nric_tag,
-                employer_fin_num=self.employer.employer_fin_num,
-                employer_fin_nonce=self.employer.employer_fin_nonce,
-                employer_fin_tag=self.employer.employer_fin_tag,
-                employer_passport_num=self.employer.employer_passport_num,
-                employer_passport_nonce=self.employer.employer_passport_nonce,
-                employer_passport_tag=self.employer.employer_passport_tag,
-                employer_passport_date=self.employer.employer_passport_date,
-                employer_marital_status=self.employer.employer_marital_status,
-                worked_in_sg=self.employer.rn_income_employer.worked_in_sg,
-                monthly_income=self.employer.rn_income_employer.monthly_income,
-                version=self.version,
-                case_ref_no=self.case_ref_no,
-                agreement_date=self.agreement_date,
-                fdw_salary=self.fdw_salary,
-                fdw_loan=self.fdw_loan,
-                fdw_off_days=self.fdw_off_days,
-                fdw_off_day_of_week=self.fdw_off_day_of_week,
-                is_new_case=self.rn_servicefeeschedule_ed.is_new_case,
-                fdw_replaced_name=self.rn_servicefeeschedule_ed.fdw_replaced_name,
-                fdw_replaced_passport_num=self.rn_servicefeeschedule_ed.fdw_replaced_passport_num,
-                fdw_replaced_passport_nonce=self.rn_servicefeeschedule_ed.fdw_replaced_passport_nonce,
-                fdw_replaced_passport_tag=self.rn_servicefeeschedule_ed.fdw_replaced_passport_tag,
-                b4_loan_transferred=self.rn_servicefeeschedule_ed.b4_loan_transferred,
-                b1_service_fee=self.rn_servicefeeschedule_ed.b1_service_fee,
-                b2a_work_permit_application_collection=self.rn_servicefeeschedule_ed.b2a_work_permit_application_collection,
-                b2b_medical_examination_fee=self.rn_servicefeeschedule_ed.b2b_medical_examination_fee,
-                b2c_security_bond_accident_insurance=self.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance,
-                b2d_indemnity_policy_reimbursement=self.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement,
-                b2e_home_service=self.rn_servicefeeschedule_ed.b2e_home_service,
-                b2f_sip=self.rn_servicefeeschedule_ed.b2f_sip,
-                b2g1_other_services_description=self.rn_servicefeeschedule_ed.b2g1_other_services_description,
-                b2g1_other_services_fee=self.rn_servicefeeschedule_ed.b2g1_other_services_fee,
-                b2g2_other_services_description=self.rn_servicefeeschedule_ed.b2g2_other_services_description,
-                b2g2_other_services_fee=self.rn_servicefeeschedule_ed.b2g2_other_services_fee,
-                b2g3_other_services_description=self.rn_servicefeeschedule_ed.b2g3_other_services_description,
-                b2g3_other_services_fee=self.rn_servicefeeschedule_ed.b2g3_other_services_fee,
-                b2h_replacement_months=self.rn_servicefeeschedule_ed.b2h_replacement_months,
-                b2h_replacement_cost=self.rn_servicefeeschedule_ed.b2h_replacement_cost,
-                b2i_work_permit_renewal=self.rn_servicefeeschedule_ed.b2i_work_permit_renewal,
-                b3_agency_fee=self.rn_servicefeeschedule_ed.b3_agency_fee,
-                ca_deposit_amount=self.rn_servicefeeschedule_ed.ca_deposit_amount,
-                ca_deposit_date=self.rn_servicefeeschedule_ed.ca_deposit_date,
-                ca_deposit_detail=self.rn_servicefeeschedule_ed.ca_deposit_detail,
-                ca_deposit_receipt_no=self.rn_servicefeeschedule_ed.ca_deposit_receipt_no,
-                ca_remaining_payment_date=self.rn_servicefeeschedule_ed.ca_remaining_payment_date,
-                ca_remaining_payment_amount=self.rn_servicefeeschedule_ed.ca_remaining_payment_amount,
-                ca_remaining_payment_detail=self.rn_servicefeeschedule_ed.ca_remaining_payment_detail,
-                ca_remaining_payment_receipt_no=self.rn_servicefeeschedule_ed.ca_remaining_payment_receipt_no,
-                c1_3_handover_days=self.rn_serviceagreement_ed.c1_3_handover_days,
-                c3_2_no_replacement_criteria_1=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1,
-                c3_2_no_replacement_criteria_2=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2,
-                c3_2_no_replacement_criteria_3=self.rn_serviceagreement_ed.c3_2_no_replacement_criteria_3,
-                c3_4_no_replacement_refund=self.rn_serviceagreement_ed.c3_4_no_replacement_refund,
-                c4_1_number_of_replacements=self.rn_serviceagreement_ed.c4_1_number_of_replacements,
-                c4_1_replacement_period=self.rn_serviceagreement_ed.c4_1_replacement_period,
-                c4_1_replacement_after_min_working_days=self.rn_serviceagreement_ed.c4_1_replacement_after_min_working_days,
-                c4_1_5_replacement_deadline=self.rn_serviceagreement_ed.c4_1_5_replacement_deadline,
-                c5_1_1_deployment_deadline=self.rn_serviceagreement_ed.c5_1_1_deployment_deadline,
-                c5_1_1_failed_deployment_refund=self.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund,
-                c5_1_2_refund_within_days=self.rn_serviceagreement_ed.c5_1_2_refund_within_days,
-                c5_1_2_before_fdw_arrives_charge=self.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge,
-                c5_1_2_after_fdw_arrives_charge=self.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge,
-                c5_2_2_can_transfer_refund_within=self.rn_serviceagreement_ed.c5_2_2_can_transfer_refund_within,
-                c5_3_2_cannot_transfer_refund_within=self.rn_serviceagreement_ed.c5_3_2_cannot_transfer_refund_within,
-                c6_4_per_day_food_accommodation_cost=self.rn_serviceagreement_ed.c6_4_per_day_food_accommodation_cost,
-                c6_6_per_session_counselling_cost=self.rn_serviceagreement_ed.c6_6_per_session_counselling_cost,
-                c9_1_independent_mediator_1=self.rn_serviceagreement_ed.c9_1_independent_mediator_1,
-                c9_2_independent_mediator_2=self.rn_serviceagreement_ed.c9_2_independent_mediator_2,
-                c13_termination_notice=self.rn_serviceagreement_ed.c13_termination_notice,
-                c3_5_fdw_sleeping_arrangement=self.rn_serviceagreement_ed.c3_5_fdw_sleeping_arrangement,
-                c4_1_termination_notice=self.rn_serviceagreement_ed.c4_1_termination_notice,
-                residential_dwelling_type=self.rn_safetyagreement_ed.residential_dwelling_type,
-                fdw_clean_window_exterior=self.rn_safetyagreement_ed.fdw_clean_window_exterior,
-                window_exterior_location=self.rn_safetyagreement_ed.window_exterior_location,
-                grilles_installed_require_cleaning=self.rn_safetyagreement_ed.grilles_installed_require_cleaning,
-                adult_supervision=self.rn_safetyagreement_ed.adult_supervision,
-                verifiy_employer_understands_window_cleaning=self.rn_safetyagreement_ed.verifiy_employer_understands_window_cleaning,
-                employer_signature=self.rn_signatures_ed.employer_signature_2,
-                fdw_signature=self.rn_signatures_ed.fdw_signature,
-                agency_staff_signature=self.rn_signatures_ed.agency_staff_signature,
-                ipa_approval_date=self.rn_casestatus_ed.ipa_approval_date,
-                arrival_date=self.rn_casestatus_ed.arrival_date,
-                shn_end_date=self.rn_casestatus_ed.shn_end_date,
-                thumb_print_date=self.rn_casestatus_ed.thumb_print_date,
-                fdw_work_commencement_date=self.rn_casestatus_ed.fdw_work_commencement_date,
-                f01_service_fee_schedule=service_fee_pdf,
-                f03_service_agreement=service_agreement_pdf,
-                f04_employment_contract=agency_employment_contract_pdf,
-                f05_repayment_schedule=agency_repayment_schedule_pdf,
-                f06_rest_day_agreement=rest_day_agreement_pdf,
-                f08_handover_checklist=handover_checklist_pdf,
-                f09_transfer_consent=transfer_consent_pdf,
-                f10_work_pass_authorisation=work_pass_authorisation_pdf,
-                f13_income_tax_declaration=income_tax_declaration_pdf,
-                f14_safety_agreement=safety_agreement_pdf,
-                job_order_pdf=self.rn_docupload_ed.job_order_pdf,
-                ipa_pdf=self.rn_docupload_ed.ipa_pdf,
-                medical_report_pdf=self.rn_docupload_ed.medical_report_pdf
-            )
-        if is_married(archived_doc.employer_marital_status):
-            archived_doc.employer_marriage_sg_registered = self.employer.employer_marriage_sg_registered
-            archived_doc.spouse_name = self.employer.spouse_name
-            archived_doc.spouse_gender = self.employer.spouse_gender
-            archived_doc.spouse_date_of_birth = self.employer.spouse_date_of_birth
-            archived_doc.spouse_nationality = self.employer.spouse_nationality
-            archived_doc.spouse_residential_status = self.employer.spouse_residential_status
-            archived_doc.spouse_nric_num = self.employer.spouse_nric_num
-            archived_doc.spouse_nric_nonce = self.employer.spouse_nric_nonce
-            archived_doc.spouse_nric_tag = self.employer.spouse_nric_tag
-            archived_doc.spouse_fin_num = self.employer.spouse_fin_num
-            archived_doc.spouse_fin_nonce = self.employer.spouse_fin_nonce
-            archived_doc.spouse_fin_tag = self.employer.spouse_fin_tag
-            archived_doc.spouse_passport_num = self.employer.spouse_passport_num
-            archived_doc.spouse_passport_nonce = self.employer.spouse_passport_nonce
-            archived_doc.spouse_passport_tag = self.employer.spouse_passport_tag
-            archived_doc.spouse_passport_date = self.employer.spouse_passport_date
 
-        elif is_applicant_sponsor(archived_doc.applicant_type):
-            archived_doc.sponsor_1_relationship = self.employer.rn_sponsor_employer.sponsor_1_relationship
-            archived_doc.sponsor_1_name = self.employer.rn_sponsor_employer.sponsor_1_name
-            archived_doc.sponsor_1_gender = self.employer.rn_sponsor_employer.sponsor_1_gender
-            archived_doc.sponsor_1_date_of_birth = self.employer.rn_sponsor_employer.sponsor_1_date_of_birth
-            archived_doc.sponsor_1_nric_num = self.employer.rn_sponsor_employer.sponsor_1_nric_num
-            archived_doc.sponsor_1_nric_nonce = self.employer.rn_sponsor_employer.sponsor_1_nric_nonce
-            archived_doc.sponsor_1_nric_tag = self.employer.rn_sponsor_employer.sponsor_1_nric_tag
-            archived_doc.sponsor_1_nationality = self.employer.rn_sponsor_employer.sponsor_1_nationality
-            archived_doc.sponsor_1_residential_status = self.employer.rn_sponsor_employer.sponsor_1_residential_status
-            archived_doc.sponsor_1_mobile_number = self.employer.rn_sponsor_employer.sponsor_1_mobile_number
-            archived_doc.sponsor_1_email = self.employer.rn_sponsor_employer.sponsor_1_email
-            archived_doc.sponsor_1_address_1 = self.employer.rn_sponsor_employer.sponsor_1_address_1
-            archived_doc.sponsor_1_address_2 = self.employer.rn_sponsor_employer.sponsor_1_address_2
-            archived_doc.sponsor_1_post_code = self.employer.rn_sponsor_employer.sponsor_1_post_code
-            archived_doc.sponsor_1_marital_status = self.employer.rn_sponsor_employer.sponsor_1_marital_status
-            archived_doc.sponsor_1_marriage_sg_registered = self.employer.rn_sponsor_employer.sponsor_1_marriage_sg_registered
-            archived_doc.sponsor_1_spouse_name = self.employer.rn_sponsor_employer.sponsor_1_spouse_name
-            archived_doc.sponsor_1_spouse_gender = self.employer.rn_sponsor_employer.sponsor_1_spouse_gender
-            archived_doc.sponsor_1_spouse_date_of_birth = self.employer.rn_sponsor_employer.sponsor_1_spouse_date_of_birth
-            archived_doc.sponsor_1_spouse_nationality = self.employer.rn_sponsor_employer.sponsor_1_spouse_nationality
-            archived_doc.sponsor_1_spouse_residential_status = self.employer.rn_sponsor_employer.sponsor_1_spouse_residential_status
-            archived_doc.sponsor_1_spouse_nric_num = self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_num
-            archived_doc.sponsor_1_spouse_nric_nonce = self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_nonce
-            archived_doc.sponsor_1_spouse_nric_tag = self.employer.rn_sponsor_employer.sponsor_1_spouse_nric_tag
-            archived_doc.sponsor_1_spouse_fin_num = self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_num
-            archived_doc.sponsor_1_spouse_fin_nonce = self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_nonce
-            archived_doc.sponsor_1_spouse_fin_tag = self.employer.rn_sponsor_employer.sponsor_1_spouse_fin_tag
-            archived_doc.sponsor_1_spouse_passport_num = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_num
-            archived_doc.sponsor_1_spouse_passport_nonce = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_nonce
-            archived_doc.sponsor_1_spouse_passport_tag = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_tag
-            archived_doc.sponsor_1_spouse_passport_date = self.employer.rn_sponsor_employer.sponsor_1_spouse_passport_date
-            archived_doc.sponsor_2_required = self.employer.rn_sponsor_employer.sponsor_2_required
-            if archived_doc.sponsor_2_required:
-                archived_doc.sponsor_2_relationship = self.employer.rn_sponsor_employer.sponsor_2_relationship
-                archived_doc.sponsor_2_name = self.employer.rn_sponsor_employer.sponsor_2_name
-                archived_doc.sponsor_2_gender = self.employer.rn_sponsor_employer.sponsor_2_gender
-                archived_doc.sponsor_2_date_of_birth = self.employer.rn_sponsor_employer.sponsor_2_date_of_birth
-                archived_doc.sponsor_2_nric_num = self.employer.rn_sponsor_employer.sponsor_2_nric_num
-                archived_doc.sponsor_2_nric_nonce = self.employer.rn_sponsor_employer.sponsor_2_nric_nonce
-                archived_doc.sponsor_2_nric_tag = self.employer.rn_sponsor_employer.sponsor_2_nric_tag
-                archived_doc.sponsor_2_nationality = self.employer.rn_sponsor_employer.sponsor_2_nationality
-                archived_doc.sponsor_2_residential_status = self.employer.rn_sponsor_employer.sponsor_2_residential_status
-                archived_doc.sponsor_2_mobile_number = self.employer.rn_sponsor_employer.sponsor_2_mobile_number
-                archived_doc.sponsor_2_email = self.employer.rn_sponsor_employer.sponsor_2_email
-                archived_doc.sponsor_2_address_1 = self.employer.rn_sponsor_employer.sponsor_2_address_1
-                archived_doc.sponsor_2_address_2 = self.employer.rn_sponsor_employer.sponsor_2_address_2
-                archived_doc.sponsor_2_post_code = self.employer.rn_sponsor_employer.sponsor_2_post_code
-                archived_doc.sponsor_2_marital_status = self.employer.rn_sponsor_employer.sponsor_2_marital_status
-                archived_doc.sponsor_2_marriage_sg_registered = self.employer.rn_sponsor_employer.sponsor_2_marriage_sg_registered
-                archived_doc.sponsor_2_spouse_name = self.employer.rn_sponsor_employer.sponsor_2_spouse_name
-                archived_doc.sponsor_2_spouse_gender = self.employer.rn_sponsor_employer.sponsor_2_spouse_gender
-                archived_doc.sponsor_2_spouse_date_of_birth = self.employer.rn_sponsor_employer.sponsor_2_spouse_date_of_birth
-                archived_doc.sponsor_2_spouse_nationality = self.employer.rn_sponsor_employer.sponsor_2_spouse_nationality
-                archived_doc.sponsor_2_spouse_residential_status = self.employer.rn_sponsor_employer.sponsor_2_spouse_residential_status
-                archived_doc.sponsor_2_spouse_nric_num = self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_num
-                archived_doc.sponsor_2_spouse_nric_nonce = self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_nonce
-                archived_doc.sponsor_2_spouse_nric_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_nric_tag
-                archived_doc.sponsor_2_spouse_fin_num = self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_num
-                archived_doc.sponsor_2_spouse_fin_nonce = self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_nonce
-                archived_doc.sponsor_2_spouse_fin_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_fin_tag
-                archived_doc.sponsor_2_spouse_passport_num = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_num
-                archived_doc.sponsor_2_spouse_passport_nonce = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_nonce
-                archived_doc.sponsor_2_spouse_passport_tag = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_tag
-                archived_doc.sponsor_2_spouse_passport_date = self.employer.rn_sponsor_employer.sponsor_2_spouse_passport_date
+            self.archived_agency_details = archived_agency_details
+            self.archived_maid = archived_maid
 
-        elif is_applicant_joint_applicant(archived_doc.applicant_type):
-            archived_doc.joint_applicant_relationship = self.employer.rn_ja_employer.joint_applicant_relationship
-            archived_doc.joint_applicant_name = self.employer.rn_ja_employer.joint_applicant_name
-            archived_doc.joint_applicant_gender = self.employer.rn_ja_employer.joint_applicant_gender
-            archived_doc.joint_applicant_date_of_birth = self.employer.rn_ja_employer.joint_applicant_date_of_birth
-            archived_doc.joint_applicant_nric_num = self.employer.rn_ja_employer.joint_applicant_nric_num
-            archived_doc.joint_applicant_nric_nonce = self.employer.rn_ja_employer.joint_applicant_nric_nonce
-            archived_doc.joint_applicant_nric_tag = self.employer.rn_ja_employer.joint_applicant_nric_tag
-            archived_doc.joint_applicant_nationality = self.employer.rn_ja_employer.joint_applicant_nationality
-            archived_doc.joint_applicant_residential_status = self.employer.rn_ja_employer.joint_applicant_residential_status
-            archived_doc.joint_applicant_address_1 = self.employer.rn_ja_employer.joint_applicant_address_1
-            archived_doc.joint_applicant_address_2 = self.employer.rn_ja_employer.joint_applicant_address_2
-            archived_doc.joint_applicant_post_code = self.employer.rn_ja_employer.joint_applicant_post_code
-            archived_doc.joint_applicant_marital_status = self.employer.rn_ja_employer.joint_applicant_marital_status
-            archived_doc.joint_applicant_marriage_sg_registered = self.employer.rn_ja_employer.joint_applicant_marriage_sg_registered
-            archived_doc.joint_applicant_spouse_name = self.employer.rn_ja_employer.joint_applicant_spouse_name
-            archived_doc.joint_applicant_spouse_gender = self.employer.rn_ja_employer.joint_applicant_spouse_gender
-            archived_doc.joint_applicant_spouse_date_of_birth = self.employer.rn_ja_employer.joint_applicant_spouse_date_of_birth
-            archived_doc.joint_applicant_spouse_nationality = self.employer.rn_ja_employer.joint_applicant_spouse_nationality
-            archived_doc.joint_applicant_spouse_residential_status = self.employer.rn_ja_employer.joint_applicant_spouse_residential_status
-            archived_doc.joint_applicant_spouse_nric_num = self.employer.rn_ja_employer.joint_applicant_spouse_nric_num
-            archived_doc.joint_applicant_spouse_nric_nonce = self.employer.rn_ja_employer.joint_applicant_spouse_nric_nonce
-            archived_doc.joint_applicant_spouse_nric_tag = self.employer.rn_ja_employer.joint_applicant_spouse_nric_tag
-            archived_doc.joint_applicant_spouse_fin_num = self.employer.rn_ja_employer.joint_applicant_spouse_fin_num
-            archived_doc.joint_applicant_spouse_fin_nonce = self.employer.rn_ja_employer.joint_applicant_spouse_fin_nonce
-            archived_doc.joint_applicant_spouse_fin_tag = self.employer.rn_ja_employer.joint_applicant_spouse_fin_tag
-            archived_doc.joint_applicant_spouse_passport_num = self.employer.rn_ja_employer.joint_applicant_spouse_passport_num
-            archived_doc.joint_applicant_spouse_passport_nonce = self.employer.rn_ja_employer.joint_applicant_spouse_passport_nonce
-            archived_doc.joint_applicant_spouse_passport_tag = self.employer.rn_ja_employer.joint_applicant_spouse_passport_tag
-            archived_doc.joint_applicant_spouse_passport_date = self.employer.rn_ja_employer.joint_applicant_spouse_passport_date
+            self.status = CaseStatusChoices.ARCHIVED
+            self.save()
 
-        archived_doc.save()
-
-    def increment_version_number(self):
-        self.rn_signatures_ed.erase_signatures()
+    def set_increment_version_number(self):
+        self.rn_signatures_ed.set_erase_signatures()
         self.version += 1
         self.save()
 
+    def set_status_wait_emp_sign(self):
+        self.status = CaseStatusChoices.REQUIRED_EMPLOYER_SIGNATURE
+        self.save()
+
+    def set_status_wait_ea_sign(self):
+        self.status = CaseStatusChoices.REQUIRED_EMPLOYEE_SIGNATURE
+        self.save()
+
+    def set_status_wait_to_handover(self):
+        self.status = CaseStatusChoices.WAITING_TO_HANDOVER
+        self.save()
+
+    def set_status_archvied(self):
+        self.status = CaseStatusChoices.ARCHIVED
+        self.save()
+
+    @property
+    def is_stage_0(self):
+        return self.get_stage() == 0
+
+    @property
+    def is_stage_1(self):
+        return self.get_stage() == 1
+
+    @property
+    def is_stage_2(self):
+        return self.get_stage() == 2
+
     @property
     def is_archived_doc(self):
-        return False
+        return self.status == CaseStatusChoices.ARCHIVED
+
+    @property
+    def is_wait_emp_sign(self):
+        return self.status == CaseStatusChoices.REQUIRED_EMPLOYER_SIGNATURE
+
+    @property
+    def is_wait_ea_sign(self):
+        return self.status == CaseStatusChoices.REQUIRED_EMPLOYEE_SIGNATURE
+
+    @property
+    def is_wait_to_handover(self):
+        return self.status == CaseStatusChoices.WAITING_TO_HANDOVER
+
+    @property
+    def is_ready_for_ea_to_sign(self):
+        return True if self.get_missing_case_dets_pre_signing_1() else False
+
+    @property
+    def is_ready_for_emp_to_sign(self):
+        return True if self.get_missing_case_dets_pre_signing_1_5() else False
+
+    @property
+    def is_ready_for_handover(self):
+        return True if self.get_missing_case_dets_pre_signing_2() else False
 
 
 class DocServiceFeeSchedule(models.Model):
@@ -2045,35 +1467,22 @@ class DocServiceFeeSchedule(models.Model):
             _('New case (Form A)'),
             _('Replacement case (Form B)'),
         ),
-        default=True,
+        default=True
     )
-    fdw_replaced_name = models.CharField(
+    fdw_replaced_name = NullableCharField(
         verbose_name=_("Name of FDW Replaced"),
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50
     )
-    fdw_replaced_passport_num = models.BinaryField(
-        verbose_name=_('Passport No. of FDW Replaced'),
-        editable=True,
-        blank=True,
-        null=True
+    fdw_replaced_passport_num = CustomBinaryField(
+        verbose_name=_('Passport No. of FDW Replaced')
     )
-    fdw_replaced_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    fdw_replaced_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
+    fdw_replaced_passport_nonce = CustomBinaryField()
+    fdw_replaced_passport_tag = CustomBinaryField()
     b4_loan_transferred = CustomMoneyDecimalField(
         verbose_name=_("4. Loan Transferred"),
         blank=True,
         null=True,
-        help_text=_("Loan amount brought forward from FDW replaced"),
+        help_text=_("Loan amount brought forward from FDW replaced")
     )
 
     b1_service_fee = CustomMoneyDecimalField(
@@ -2097,33 +1506,27 @@ class DocServiceFeeSchedule(models.Model):
     b2f_sip = CustomMoneyDecimalField(
         verbose_name=_("2f. Settling-In-Programme (SIP)")
     )
-    b2g1_other_services_description = models.CharField(
+    b2g1_other_services_description = NullableCharField(
         verbose_name=_("2g. Other services provided (i)"),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
     b2g1_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (i)"),
         blank=True,
         null=True
     )
-    b2g2_other_services_description = models.CharField(
+    b2g2_other_services_description = NullableCharField(
         verbose_name=_("2g. Other services provided (ii)"),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
     b2g2_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (ii)"),
         blank=True,
         null=True
     )
-    b2g3_other_services_description = models.CharField(
+    b2g3_other_services_description = NullableCharField(
         verbose_name=_("2g. Other services provided (iii)"),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
     b2g3_other_services_fee = CustomMoneyDecimalField(
         verbose_name=_("2g. Other services fee (iii)"),
@@ -2155,46 +1558,34 @@ class DocServiceFeeSchedule(models.Model):
         verbose_name=_("2c. Deposit - upon confirmation of FDW"),
         help_text=_('Deposit paid by Employer')
     )
-    ca_deposit_date = models.DateField(
-        verbose_name=_('Deposit Paid Date'),
-        blank=True,
-        null=True
+    ca_deposit_date = NullableDateField(
+        verbose_name=_('Deposit Paid Date')
     )
-    ca_deposit_detail = models.CharField(
+    ca_deposit_detail = NullableCharField(
         verbose_name=_("Deposit Payment Detail"),
+        max_length=255
+    )
+    ca_remaining_payment_date = NullableDateField(
+        verbose_name=_('Remaining Amount Paid Date')
+    )
+    ca_deposit_receipt_no = NullableCharField(
         max_length=255,
-        blank=True,
-        null=True
+        verbose_name=_('Deposit Receipt No')
     )
-    ca_remaining_payment_date = models.DateField(
-        verbose_name=_('Remaining Amount Paid Date'),
-        blank=True,
-        null=True
-    )
-    ca_deposit_receipt_no = models.CharField(
+    ca_remaining_payment_receipt_no = NullableCharField(
         max_length=255,
-        verbose_name=_('Deposit Receipt No'),
-        blank=True,
-        null=True
+        verbose_name=_('Remaining Payment Receipt No')
     )
-    ca_remaining_payment_receipt_no = models.CharField(
-        max_length=255,
-        verbose_name=_('Remaining Payment Receipt No'),
-        blank=True,
-        null=True
-    )
-    ca_remaining_payment_detail = models.CharField(
+    ca_remaining_payment_detail = NullableCharField(
         verbose_name=_("Deposit Remaining Payment Detail"),
-        max_length=255,
-        blank=True,
-        null=True
+        max_length=255
     )
     ca_remaining_payment_amount = CustomMoneyDecimalField(
         verbose_name=_("Remaining Amount Paid"),
         default=0
     )
 
-    def calc_admin_cost(self):
+    def get_admin_cost(self):
         # Method to calculate total administrative cost
         total = 0
         fields = [
@@ -2215,19 +1606,19 @@ class DocServiceFeeSchedule(models.Model):
             total += field if field else 0
         return total
 
-    def calc_placement_fee(self):
+    def get_placement_fee(self):
         # Method to calculate placement fee
         return self.b3_agency_fee + self.employer_doc.fdw_loan
 
-    def calc_total_fee(self):
+    def get_total_fee(self):
         # Method to calculate total fee
-        return self.calc_admin_cost() + self.calc_placement_fee()
+        return self.get_admin_cost() + self.get_placement_fee()
 
-    def calc_bal(self):
+    def get_balance(self):
         # Method to calculate outstanding balance owed by employer
         balance = (
-            self.calc_admin_cost()
-            + self.calc_placement_fee()
+            self.get_admin_cost()
+            + self.get_placement_fee()
             - self.ca_deposit_amount
         )
         return balance
@@ -2240,31 +1631,31 @@ class DocServiceFeeSchedule(models.Model):
             self.fdw_replaced_passport_tag,
         )
 
-    def generate_receipt_no(self):
+    def get_receipt_no(self):
         receipt_master = ReceiptMaster()
         running_receipt_no = receipt_master.get_running_number()
-        receipt_master.increment_running_number()
+        receipt_master.set_increment_running_number()
         month = datetime.now().strftime('%m')
         year = datetime.now().strftime('%Y')
         invoice_number = f'{running_receipt_no}/{month}/{year}'
         return invoice_number
 
-    def generate_invoice(self, invoice_type):
+    def set_invoice(self, invoice_type):
         if invoice_type == 'Deposit':
             self.ca_deposit_date = timezone.now()
-            self.ca_deposit_receipt_no = self.generate_receipt_no()
+            self.ca_deposit_receipt_no = self.get_receipt_no()
         else:
             self.ca_remaining_payment_date = timezone.now()
-            self.ca_remaining_payment_amount = self.calc_bal()
-            # self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
+            self.ca_remaining_payment_amount = self.get_balance()
+            # self.ca_remaining_payment_receipt_no = self.get_receipt_no()
 
         self.save()
 
-    def generate_deposit_invoice(self):
-        self.generate_invoice(invoice_type='Deposit')
+    def set_deposit_invoice(self):
+        self.set_invoice(invoice_type='Deposit')
 
-    def generate_remaining_invoice(self):
-        self.generate_invoice(invoice_type='Remaining Amount')
+    def set_remaining_invoice(self):
+        self.set_invoice(invoice_type='Remaining Amount')
 
 
 class DocServAgmtEmpCtr(models.Model):
@@ -2280,26 +1671,20 @@ class DocServAgmtEmpCtr(models.Model):
         verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
         choices=DayChoices.choices
     )
-    c3_2_no_replacement_criteria_1 = models.CharField(
+    c3_2_no_replacement_criteria_1 = NullableCharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (i)"),
-        max_length=100,
-        blank=True,
-        null=True
+        max_length=100
     )
-    c3_2_no_replacement_criteria_2 = models.CharField(
+    c3_2_no_replacement_criteria_2 = NullableCharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (ii)"),
-        max_length=100,
-        blank=True,
-        null=True
+        max_length=100
     )
-    c3_2_no_replacement_criteria_3 = models.CharField(
+    c3_2_no_replacement_criteria_3 = NullableCharField(
         verbose_name=_("3.2 No need to provide Employer with replacement FDW \
             if any of following circumstances (iii)"),
-        max_length=100,
-        blank=True,
-        null=True
+        max_length=100
     )
     c3_4_no_replacement_refund = CustomMoneyDecimalField(
         verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
@@ -2378,17 +1763,13 @@ class DocServAgmtEmpCtr(models.Model):
     c6_6_per_session_counselling_cost = CustomMoneyDecimalField(
         verbose_name=_("6.6 Counselling cost per day")
     )
-    c9_1_independent_mediator_1 = models.CharField(
+    c9_1_independent_mediator_1 = NullableCharField(
         verbose_name=_("9.1 Independent mediator #1"),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
-    c9_2_independent_mediator_2 = models.CharField(
+    c9_2_independent_mediator_2 = NullableCharField(
         verbose_name=_("9.2 Independent mediator #2"),
-        max_length=40,
-        blank=True,
-        null=True
+        max_length=40
     )
     c13_termination_notice = models.PositiveSmallIntegerField(
         # days
@@ -2405,7 +1786,7 @@ class DocServAgmtEmpCtr(models.Model):
             ("SHARE", _("sharing room with someone")),
             ("COMMON", _("sleeping in common area")),
         ],
-        default='OWN',
+        default='OWN'
     )
     c4_1_termination_notice = models.PositiveSmallIntegerField(
         # days
@@ -2427,7 +1808,7 @@ class DocSafetyAgreement(models.Model):
             ("CONDO", _("Private Apartment/Condominium")),
             ("LANDED", _("Landed Property")),
         ],
-        default='HDB',
+        default='HDB'
     )
     fdw_clean_window_exterior = models.BooleanField(
         verbose_name=_('Does Employer require FDW to clean window exterior?'),
@@ -2436,9 +1817,9 @@ class DocSafetyAgreement(models.Model):
             _('No, not required'),
         ),
         default=False,
-        help_text=_('If yes, must complete field (i).'),
+        help_text=_('If yes, must complete field (i).')
     )
-    window_exterior_location = models.CharField(
+    window_exterior_location = NullableCharField(
         verbose_name=_("(i) Location of window exterior"),
         max_length=6,
         choices=[
@@ -2446,11 +1827,9 @@ class DocSafetyAgreement(models.Model):
             ("COMMON", _("Facing common corridor")),
             ("OTHER", _("Other")),
         ],
-        blank=True,
-        null=True,
-        help_text=_("If 'Other' is selected, must complete field (ii)."),
+        help_text=_("If 'Other' is selected, must complete field (ii).")
     )
-    grilles_installed_require_cleaning = models.BooleanField(
+    grilles_installed_require_cleaning = NullableBooleanField(
         verbose_name=_(
             '(ii) Grilles installed on windows required to be cleaned by FDW?'
         ),
@@ -2458,20 +1837,16 @@ class DocSafetyAgreement(models.Model):
             _('Yes, grilles installed require cleaning'),
             _('No, not required'),
         ),
-        blank=True,
-        null=True,
-        help_text=_('If yes, must complete field (iii).'),
+        help_text=_('If yes, must complete field (iii).')
     )
-    adult_supervision = models.BooleanField(
+    adult_supervision = NullableBooleanField(
         verbose_name=_(
             '(iii) Adult supervision when cleaning window exterior?'
         ),
         choices=TrueFalseChoices(
             _('Yes, adult supervision'),
             _('No supervision'),
-        ),
-        blank=True,
-        null=True
+        )
     )
     verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
         verbose_name=_(
@@ -2492,7 +1867,7 @@ class DocSafetyAgreement(models.Model):
                     supervision")
             )
         ],
-        default='not_required_to_clean_window_exterior',
+        default='not_required_to_clean_window_exterior'
     )
 
     def save(self):
@@ -2523,7 +1898,7 @@ class DocUpload(models.Model):
         blank=True,
         null=True,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
     )
     ipa_pdf = models.FileField(
         verbose_name=_('IPA (PDF)'),
@@ -2531,7 +1906,7 @@ class DocUpload(models.Model):
         blank=True,
         null=True,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
     )
     medical_report_pdf = models.FileField(
         verbose_name=_('Medical Report (PDF)'),
@@ -2539,7 +1914,7 @@ class DocUpload(models.Model):
         blank=True,
         null=True,
         storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
     )
 
 
@@ -2612,118 +1987,13 @@ class CaseSignature(models.Model):
         null=True
     )
 
-    # Signature URL slugs
-    sigslug_employer_1 = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_employer_spouse = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_sponsor_1 = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_sponsor_2 = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_joint_applicant = models.SlugField(
-        max_length=255,
-        unique=True,
-        default=None,
-        blank=True,
-        null=True
-    )
-
-    sigslug_header_dict = {
-        'employer_1':       'EMPLO',
-        'employer_spouse':  'EMSPO',
-        'sponsor_1':        'SPON1',
-        'sponsor_2':        'SPON2',
-        'joint_applicant':  'JOAPP'
-    }
-
-    reverse_sigslug_header_dict = {
-        'EMPLO': 'employer_1',
-        'EMSPO': 'employer_spouse',
-        'SPON1': 'sponsor_1',
-        'SPON2': 'sponsor_2',
-        'JOAPP': 'joint_applicant'
-    }
-
-    def generate_sigslug(self, stakeholder):
-        if stakeholder == 'employer_1':
-            self.sigslug_employer_1 = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'employer_spouse':
-            self.sigslug_employer_spouse = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'sponsor_1':
-            self.sigslug_sponsor_1 = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'sponsor_2':
-            self.sigslug_sponsor_2 = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        elif stakeholder == 'joint_applicant':
-            self.sigslug_joint_applicant = self.sigslug_header_dict[
-                stakeholder
-            ] + secrets.token_urlsafe(128)
-        super().save()
-
-    def revoke_sigslug(self, stakeholder):
-        if stakeholder == 'employer_1':
-            self.sigslug_employer_1 = None
-        elif stakeholder == 'employer_spouse':
-            self.sigslug_employer_spouse = None
-        elif stakeholder == 'sponsor_1':
-            self.sigslug_sponsor_1 = None
-        elif stakeholder == 'sponsor_2':
-            self.sigslug_sponsor_2 = None
-        elif stakeholder == 'joint_applicant':
-            self.sigslug_joint_applicant = None
-        super().save()
-
-    def get_sigurl(self, field_name):
-        slug = getattr(self, field_name, None)
-        if slug:
-            current_site = Site.objects.get_current()
-            relative_url = reverse(
-                'token_challenge_route',
-                kwargs={'slug': slug},
-            )
-            return current_site.domain + relative_url
-        else:
-            return None
-
     def get_employer_signature(self):
         if self.employer_signature_2:
             return self.employer_signature_2
         else:
             return self.employer_signature_1
 
-    def erase_signatures(self):
+    def set_erase_signatures(self):
         self.employer_signature_1 = None if self.employer_signature_1 else self.employer_signature_1
         self.fdw_signature = None if self.fdw_signature else self.fdw_signature
         self.agency_staff_signature = None if self.agency_staff_signature else self.agency_staff_signature
@@ -2733,21 +2003,6 @@ class CaseSignature(models.Model):
         self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
         self.save()
 
-    def get_stage(self):
-        return 2 if self.employer_signature_2 else 1
-
-    def is_stage_1(self):
-        return self.get_stage == 1
-
-    def is_stage_2(self):
-        return not self.is_stage_1
-
-    # Verification Tokens
-    token_employer_1 = models.BinaryField(
-        blank=True,
-        null=True
-    )
-
 
 class CaseStatus(models.Model):
     employer_doc = models.OneToOneField(
@@ -2755,30 +2010,20 @@ class CaseStatus(models.Model):
         on_delete=models.CASCADE,
         related_name='rn_casestatus_ed'
     )
-    ipa_approval_date = models.DateField(
-        verbose_name=_('In Principle Approval (IPA) Date'),
-        blank=True,
-        null=True
+    ipa_approval_date = NullableDateField(
+        verbose_name=_('In Principle Approval (IPA) Date')
     )
-    arrival_date = models.DateField(
-        verbose_name=_('FDW Arrival Date'),
-        blank=True,
-        null=True
+    arrival_date = NullableDateField(
+        verbose_name=_('FDW Arrival Date')
     )
-    shn_end_date = models.DateField(
-        verbose_name=_('SHN End Date'),
-        blank=True,
-        null=True
+    shn_end_date = NullableDateField(
+        verbose_name=_('SHN End Date')
     )
-    thumb_print_date = models.DateField(
-        verbose_name=_('FDW Thumb Print Date'),
-        blank=True,
-        null=True
+    thumb_print_date = NullableDateField(
+        verbose_name=_('FDW Thumb Print Date')
     )
-    fdw_work_commencement_date = models.DateField(
-        verbose_name=_('Deployment Date'),
-        blank=True,
-        null=True
+    fdw_work_commencement_date = NullableDateField(
+        verbose_name=_('Deployment Date')
     )
 
 
@@ -2810,8 +2055,7 @@ class ArchivedAgencyDetails(models.Model):
 
     agency_employee_name = models.CharField(
         verbose_name=_('Name'),
-        max_length=255,
-        blank=False
+        max_length=255
     )
 
     agency_employee_ea_personnel_number = models.CharField(
@@ -2824,22 +2068,19 @@ class ArchivedAgencyDetails(models.Model):
 
     agency_employee_branch = models.CharField(
         verbose_name=_('Branch Name'),
-        max_length=255,
-        blank=False
+        max_length=255
     )
 
 
 class ArchivedMaid(models.Model):
     name = models.CharField(
         verbose_name=_('Name'),
-        max_length=255,
-        blank=False
+        max_length=255
     )
 
     nationality = models.CharField(
         verbose_name=_('Nationality'),
-        max_length=255,
-        blank=False
+        max_length=255
     )
 
     passport_number = models.BinaryField(
@@ -2871,1597 +2112,3 @@ class ArchivedMaid(models.Model):
         editable=True,
         blank=True
     )
-
-
-class ArchivedDoc(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
-
-    applicant_type = models.CharField(
-        verbose_name=_("Type of Applicant"),
-        max_length=6,
-        choices=EmployerTypeOfApplicantChoices.choices,
-        default=EmployerTypeOfApplicantChoices.SINGLE,
-    )
-
-    # Agency Information
-    agency = models.OneToOneField(
-        ArchivedAgencyDetails,
-        verbose_name=_("Name of Agency"),
-        on_delete=models.RESTRICT
-    )
-
-    # Maid Information
-    fdw = models.OneToOneField(
-        ArchivedMaid,
-        verbose_name=_("Name of FDW"),
-        on_delete=models.RESTRICT
-    )
-
-    # Employer Information
-    employer_name = models.CharField(
-        verbose_name=_('Employer Name'),
-        max_length=40,
-    )
-
-    employer_gender = models.CharField(
-        verbose_name=_("Employer gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-    )
-
-    employer_mobile_number = models.CharField(
-        verbose_name=_('Mobile Number'),
-        max_length=10,
-        validators=[
-            RegexValidator(
-                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
-                message=_('Please enter a valid mobile number')
-            )
-        ],
-    )
-
-    employer_home_number = models.CharField(
-        verbose_name=_('Home Tel Number'),
-        max_length=10,
-        validators=[
-            RegexValidator(
-                regex='^[6][0-9]{7}$',  # Singapore landline numbers
-                message=_('Please enter a valid home telephone number')
-            )
-        ],
-        null=True,
-        blank=True
-    )
-
-    employer_email = models.EmailField(
-        verbose_name=_('Email Address')
-    )
-
-    employer_address_1 = models.CharField(
-        verbose_name=_('Address Line 1'),
-        max_length=100,
-    )
-
-    employer_address_2 = models.CharField(
-        verbose_name=_('Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
-    )
-
-    employer_post_code = models.CharField(
-        verbose_name=_('Postal Code'),
-        max_length=25,
-    )
-
-    employer_date_of_birth = models.DateField(
-        verbose_name=_('Employer date of birth'),
-    )
-
-    employer_nationality = models.CharField(
-        verbose_name=_("Employer nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-
-    employer_residential_status = models.CharField(
-        verbose_name=_("Employer residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-    )
-
-    employer_nric_num = models.BinaryField(
-        verbose_name=_('Employer NRIC'),
-        editable=True,
-    )
-
-    employer_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_fin_num = models.BinaryField(
-        verbose_name=_('Employer FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_num = models.BinaryField(
-        verbose_name=_('Employer passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-
-    employer_passport_date = models.DateField(
-        verbose_name=_('Employer passport expiry date'),
-        blank=True,
-        null=True
-    )
-
-    employer_marital_status = models.CharField(
-        verbose_name=_("Employer marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True
-    )
-
-    employer_marriage_sg_registered = models.BooleanField(
-        verbose_name=_('Employer marriage registered in SG?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            Was Employer's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
-    )
-
-    def get_employer_nric_full(self):
-        return decrypt_string(
-            self.employer_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.employer_nric_nonce,
-            self.employer_nric_tag,
-        )
-
-    def get_employer_nric_partial(self):
-        plaintext = self.get_employer_nric_full()
-        return 'x'*5 + plaintext[-4:] if plaintext else ''
-
-    def get_employer_fin_full(self):
-        return decrypt_string(
-            self.employer_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.employer_fin_nonce,
-            self.employer_fin_tag,
-        )
-
-    def get_employer_passport_full(self):
-        return decrypt_string(
-            self.employer_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.employer_passport_nonce,
-            self.employer_passport_tag,
-        )
-
-    def get_employer_spouse_nric_full(self):
-        return decrypt_string(
-            self.spouse_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_nric_nonce,
-            self.spouse_nric_tag,
-        )
-
-    def get_employer_spouse_fin_full(self):
-        return decrypt_string(
-            self.spouse_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_fin_nonce,
-            self.spouse_fin_tag,
-        )
-
-    def get_employer_spouse_passport_full(self):
-        return decrypt_string(
-            self.spouse_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.spouse_passport_nonce,
-            self.spouse_passport_tag,
-        )
-
-    def mobile_partial_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
-
-    def get_email_partial(self):
-        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
-
-    # Employer Spouse
-    spouse_name = models.CharField(
-        verbose_name=_("Spouse's Name"),
-        max_length=40,
-        blank=True,
-        null=True,
-        default=None,
-    )
-    spouse_gender = models.CharField(
-        verbose_name=_("Spouse's gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
-    )
-    spouse_date_of_birth = models.DateField(
-        verbose_name=_("Spouse's date of birth"),
-        blank=True,
-        null=True
-    )
-    spouse_nationality = models.CharField(
-        verbose_name=_("Spouse's nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-    spouse_residential_status = models.CharField(
-        verbose_name=_("Spouse's residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
-    )
-    spouse_nric_num = models.BinaryField(
-        verbose_name=_("Spouse's NRIC"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_fin_num = models.BinaryField(
-        verbose_name=_("Spouse's FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_num = models.BinaryField(
-        verbose_name=_("Spouse's Passport No"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    spouse_passport_date = models.DateField(
-        verbose_name=_("Spouse's Passport Expiry Date"),
-        blank=True,
-        null=True
-    )
-
-    # Sponsors
-    # Sponsor 1 details
-    sponsor_1_relationship = models.CharField(
-        verbose_name=_("Sponsor 1 relationship with Employer"),
-        max_length=30,
-        choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
-    )
-    sponsor_1_name = models.CharField(
-        verbose_name=_('Sponsor 1 Name'),
-        max_length=40,
-        null=True
-    )
-    sponsor_1_gender = models.CharField(
-        verbose_name=_("Sponsor 1 gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-    )
-    sponsor_1_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 1 date of birth'),
-        null=True
-    )
-    sponsor_1_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 NRIC'),
-        editable=True,
-        null=True
-    )
-    sponsor_1_nric_nonce = models.BinaryField(
-        editable=True,
-        null=True
-    )
-    sponsor_1_nric_tag = models.BinaryField(
-        editable=True,
-        null=True
-    )
-    sponsor_1_nationality = models.CharField(
-        verbose_name=_("Sponsor 1 nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-    )
-    sponsor_1_residential_status = models.CharField(
-        verbose_name=_("Sponsor 1 residential status"),
-        max_length=2,
-        choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
-    )
-    sponsor_1_mobile_number = models.CharField(
-        verbose_name=_('Sponsor 1 mobile number'),
-        max_length=10,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
-                message=_('Please enter a valid contact number')
-            )
-        ],
-    )
-    sponsor_1_email = models.EmailField(
-        verbose_name=_('Sponsor 1 email address'),
-        null=True
-    )
-    sponsor_1_address_1 = models.CharField(
-        verbose_name=_('Sponsor 1 Address Line 1'),
-        max_length=100,
-        null=True
-    )
-    sponsor_1_address_2 = models.CharField(
-        verbose_name=_('Sponsor 1 Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
-    )
-    sponsor_1_post_code = models.CharField(
-        verbose_name=_('Sponsor 1 Postal Code'),
-        max_length=25,
-        null=True
-    )
-    sponsor_1_marital_status = models.CharField(
-        verbose_name=_("Sponsor 1 marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
-    )
-
-    # Sponsor 1 spouse details
-    sponsor_1_marriage_sg_registered = models.BooleanField(
-        verbose_name=_('Sponsor 1 marriage registered in SG?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            Was Sponsor 1's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_name = models.CharField(
-        verbose_name=_('Sponsor 1 spouse name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_gender = models.CharField(
-        verbose_name=_("Sponsor 1 spouse gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 1 spouse date of birth'),
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_nationality = models.CharField(
-        verbose_name=_("Sponsor 1 spouse nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_residential_status = models.CharField(
-        verbose_name=_("Sponsor 1 spouse residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 1 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_1_spouse_passport_date = models.DateField(
-        verbose_name=_('Sponsor 1 spouse passport expiry date'),
-        blank=True,
-        null=True
-    )
-
-    # Sponsor required?
-    sponsor_2_required = models.BooleanField(
-        verbose_name=_('Do you need to add Sponsor 2?'),
-        default=False,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-    )
-
-    # Sponsor 2 details
-    sponsor_2_relationship = models.CharField(
-        verbose_name=_("Sponsor 2 relationship with Employer"),
-        max_length=30,
-        choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
-        blank=True,
-        null=True
-    )
-    sponsor_2_name = models.CharField(
-        verbose_name=_('Sponsor 2 Name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    sponsor_2_gender = models.CharField(
-        verbose_name=_("Sponsor 2 gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
-    )
-    sponsor_2_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 2 date of birth'),
-        blank=True,
-        null=True
-    )
-    sponsor_2_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 NRIC'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_nationality = models.CharField(
-        verbose_name=_("Sponsor 2 nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-    sponsor_2_residential_status = models.CharField(
-        verbose_name=_("Sponsor 2 residential status"),
-        max_length=2,
-        choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
-        blank=True,
-        null=True
-    )
-    sponsor_2_mobile_number = models.CharField(
-        verbose_name=_('Sponsor 2 mobile number'),
-        max_length=10,
-        validators=[
-            RegexValidator(
-                regex='^[8-9][0-9]{7}$',  # Singapore mobile numbers
-                message=_('Please enter a valid contact number')
-            )
-        ],
-        blank=True,
-        null=True
-    )
-    sponsor_2_email = models.EmailField(
-        verbose_name=_('Sponsor 2 email address'),
-        blank=True,
-        null=True
-    )
-    sponsor_2_address_1 = models.CharField(
-        verbose_name=_('Sponsor 2 Address Line 1'),
-        max_length=100,
-        blank=True,
-        null=True
-    )
-    sponsor_2_address_2 = models.CharField(
-        verbose_name=_('Sponsor 2 Address Line 2'),
-        max_length=50,
-        blank=True,
-        null=True
-    )
-    sponsor_2_post_code = models.CharField(
-        verbose_name=_('Sponsor 2 Postal Code'),
-        max_length=25,
-        blank=True,
-        null=True
-    )
-    sponsor_2_marital_status = models.CharField(
-        verbose_name=_("Sponsor 2 marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
-        blank=True,
-        null=True
-    )
-    sponsor_2_marriage_sg_registered = models.BooleanField(
-        verbose_name=_('Sponsor 2 marriage registered in SG?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            Was Sponsor 2's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
-    )
-
-    # Sponsor 2 spouse details
-    sponsor_2_spouse_name = models.CharField(
-        verbose_name=_('Sponsor 2 spouse name'),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_gender = models.CharField(
-        verbose_name=_("Sponsor 2 spouse gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_date_of_birth = models.DateField(
-        verbose_name=_('Sponsor 2 spouse date of birth'),
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_nationality = models.CharField(
-        verbose_name=_("Sponsor 2 spouse nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_residential_status = models.CharField(
-        verbose_name=_("Sponsor 2 spouse residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_nric_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse NRIC'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse FIN'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_num = models.BinaryField(
-        verbose_name=_('Sponsor 2 spouse passport'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    sponsor_2_spouse_passport_date = models.DateField(
-        verbose_name=_('Sponsor 2 spouse passport expiry date'),
-        blank=True,
-        null=True
-    )
-
-    def get_sponsor_1_nric_full(self):
-        return decrypt_string(
-            self.sponsor_1_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_nric_nonce,
-            self.sponsor_1_nric_tag,
-        )
-
-    def get_sponsor_1_spouse_nric_full(self):
-        return decrypt_string(
-            self.sponsor_1_spouse_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_spouse_nric_nonce,
-            self.sponsor_1_spouse_nric_tag,
-        )
-
-    def get_sponsor_1_spouse_fin_full(self):
-        return decrypt_string(
-            self.sponsor_1_spouse_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_spouse_fin_nonce,
-            self.sponsor_1_spouse_fin_tag,
-        )
-
-    def get_sponsor_1_spouse_passport_full(self):
-        return decrypt_string(
-            self.sponsor_1_spouse_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_1_spouse_passport_nonce,
-            self.sponsor_1_spouse_passport_tag,
-        )
-
-    def get_sponsor_2_nric_full(self):
-        return decrypt_string(
-            self.sponsor_2_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_nric_nonce,
-            self.sponsor_2_nric_tag,
-        )
-
-    def get_sponsor_2_spouse_nric_full(self):
-        return decrypt_string(
-            self.sponsor_2_spouse_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_spouse_nric_nonce,
-            self.sponsor_2_spouse_nric_tag,
-        )
-
-    def get_sponsor_2_spouse_fin_full(self):
-        return decrypt_string(
-            self.sponsor_2_spouse_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_spouse_fin_nonce,
-            self.sponsor_2_spouse_fin_tag,
-        )
-
-    def get_sponsor_2_spouse_passport_full(self):
-        return decrypt_string(
-            self.sponsor_2_spouse_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.sponsor_2_spouse_passport_nonce,
-            self.sponsor_2_spouse_passport_tag,
-        )
-
-    # Joint Applicants
-    joint_applicant_relationship = models.CharField(
-        verbose_name=_("Joint applicant's relationship with Employer"),
-        max_length=30,
-        choices=RelationshipChoices.choices,
-        default=RelationshipChoices.DAUGHTER,
-    )
-    joint_applicant_name = models.CharField(
-        verbose_name=_("Joint applicant's Name"),
-        max_length=40,
-        null=True
-    )
-    joint_applicant_gender = models.CharField(
-        verbose_name=_("Joint applicant's gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-    )
-    joint_applicant_date_of_birth = models.DateField(
-        verbose_name=_("Joint applicant's date of birth"),
-        null=True
-    )
-    joint_applicant_nric_num = models.BinaryField(
-        verbose_name=_('Joint applicant NRIC'),
-        editable=True,
-    )
-    joint_applicant_nric_nonce = models.BinaryField(
-        editable=True,
-    )
-    joint_applicant_nric_tag = models.BinaryField(
-        editable=True,
-    )
-    joint_applicant_nationality = models.CharField(
-        verbose_name=_("Joint applicant's nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-    )
-    joint_applicant_residential_status = models.CharField(
-        verbose_name=_("Joint applicant's residential status"),
-        max_length=2,
-        choices=ResidentialStatusPartialChoices.choices,
-        default=ResidentialStatusPartialChoices.SC,
-    )
-    joint_applicant_address_1 = models.CharField(
-        verbose_name=_("Joint applicant's Address Line 1"),
-        max_length=100,
-        null=True
-    )
-    joint_applicant_address_2 = models.CharField(
-        verbose_name=_("Joint applicant's Address Line 2"),
-        max_length=50,
-        blank=True,
-        null=True
-    )
-    joint_applicant_post_code = models.CharField(
-        verbose_name=_("Joint applicant's Postal Code"),
-        max_length=25,
-        null=True
-    )
-    joint_applicant_marital_status = models.CharField(
-        verbose_name=_("Joint applicant's marital status"),
-        max_length=10,
-        choices=MaritalStatusChoices.choices,
-        default=MaritalStatusChoices.SINGLE,
-    )
-    joint_applicant_marriage_sg_registered = models.BooleanField(
-        verbose_name=_("Joint applicant's marriage registered in SG?"),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-        help_text=_('''
-            Was Joint applicant's marriage registered in Singapore?
-        '''),
-        blank=True,
-        null=True
-    )
-
-    # Joint applicant's spouse details
-    joint_applicant_spouse_name = models.CharField(
-        verbose_name=_("Joint applicant's spouse name"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_gender = models.CharField(
-        verbose_name=_("Joint applicant's spouse gender"),
-        max_length=1,
-        choices=GenderChoices.choices,
-        default=GenderChoices.F,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_date_of_birth = models.DateField(
-        verbose_name=_("Joint applicant's spouse date of birth"),
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_nationality = models.CharField(
-        verbose_name=_("Joint applicant's spouse nationality/citizenship"),
-        max_length=3,
-        choices=FullNationsChoices.choices,
-        default=FullNationsChoices.SINGAPORE,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_residential_status = models.CharField(
-        verbose_name=_("Joint applicant's spouse residential status"),
-        max_length=5,
-        choices=ResidentialStatusFullChoices.choices,
-        default=ResidentialStatusFullChoices.SC,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_nric_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse NRIC"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_nric_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_nric_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse FIN"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_fin_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_num = models.BinaryField(
-        verbose_name=_("Joint applicant's spouse passport"),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    joint_applicant_spouse_passport_date = models.DateField(
-        verbose_name=_("Joint applicant's spouse passport expiry date"),
-        blank=True,
-        null=True
-    )
-
-    def get_joint_applicant_nric_full(self):
-        return decrypt_string(
-            self.joint_applicant_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_nric_nonce,
-            self.joint_applicant_nric_tag,
-        )
-
-    def get_joint_applicant_spouse_nric_full(self):
-        return decrypt_string(
-            self.joint_applicant_spouse_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_spouse_nric_nonce,
-            self.joint_applicant_spouse_nric_tag,
-        )
-
-    def get_joint_applicant_spouse_fin_full(self):
-        return decrypt_string(
-            self.joint_applicant_spouse_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_spouse_fin_nonce,
-            self.joint_applicant_spouse_fin_tag,
-        )
-
-    def get_joint_applicant_spouse_passport_full(self):
-        return decrypt_string(
-            self.joint_applicant_spouse_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.joint_applicant_spouse_passport_nonce,
-            self.joint_applicant_spouse_passport_tag,
-        )
-
-    # Income Details
-    worked_in_sg = models.BooleanField(
-        verbose_name=_('Have you worked in Singapore for the last 2 Years?'),
-        default=True,
-        choices=TrueFalseChoices(
-            _('Yes'),
-            _('No'),
-        ),
-    )
-    monthly_income = models.PositiveSmallIntegerField(
-        verbose_name=_("Monthly Income"),
-        choices=IncomeChoices.choices,
-        default=IncomeChoices.INCOME_3,
-    )
-
-    # Doc Base
-    version = models.PositiveSmallIntegerField(
-        editable=False,
-        default=0,
-    )
-    case_ref_no = models.CharField(
-        verbose_name=_("Case Reference Number"),
-        max_length=20,
-        unique=True,
-    )
-    agreement_date = models.DateField(
-        verbose_name=_("Contract Date"),
-    )
-    fdw_salary = CustomMoneyDecimalField(
-        verbose_name=_("FDW Basic Salary"),
-        help_text=_("FDW monthly salary per contract")
-    )
-    fdw_loan = CustomMoneyDecimalField(
-        verbose_name=_("FDW Loan Amount"),
-        help_text=_("FDW loan amount per contract")
-    )
-    fdw_off_days = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("FDW No. of off-days per month"),
-        choices=DayChoices.choices[0:9],
-        default=4,
-        help_text=_("FDW off-days a month per contract"),
-    )
-    fdw_off_day_of_week = models.PositiveSmallIntegerField(
-        verbose_name=_("FDW Off Day Day of Week"),
-        choices=DayOfWeekChoices.choices,
-        default=DayOfWeekChoices.SUN
-    )
-
-    def get_version(self):
-        return str(self.version).zfill(4)
-
-    # Service Fee Schedule
-    is_new_case = models.BooleanField(
-        verbose_name=_("Type of case (Form A / Form B)"),
-        choices=TrueFalseChoices(
-            _('New case (Form A)'),
-            _('Replacement case (Form B)'),
-        ),
-        default=True,
-    )
-    fdw_replaced_name = models.CharField(
-        verbose_name=_("Name of FDW Replaced"),
-        max_length=50,
-        blank=True,
-        null=True
-    )
-    fdw_replaced_passport_num = models.BinaryField(
-        verbose_name=_('Passport No. of FDW Replaced'),
-        editable=True,
-        blank=True,
-        null=True
-    )
-    fdw_replaced_passport_nonce = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    fdw_replaced_passport_tag = models.BinaryField(
-        editable=True,
-        blank=True,
-        null=True
-    )
-    b4_loan_transferred = CustomMoneyDecimalField(
-        verbose_name=_("4. Loan Transferred"),
-        blank=True,
-        null=True,
-        help_text=_("Loan amount brought forward from FDW replaced")
-    )
-
-    b1_service_fee = CustomMoneyDecimalField(
-        verbose_name=_("1. Service Fee")
-    )
-    b2a_work_permit_application_collection = CustomMoneyDecimalField(
-        verbose_name=_("2a. Application / Collection of Work Permit")
-    )
-    b2b_medical_examination_fee = CustomMoneyDecimalField(
-        verbose_name=_("2b. Medical Examination Fee")
-    )
-    b2c_security_bond_accident_insurance = CustomMoneyDecimalField(
-        verbose_name=_("2c. Security Bond and Personal Accident Insurance")
-    )
-    b2d_indemnity_policy_reimbursement = CustomMoneyDecimalField(
-        verbose_name=_("2d. Reimbursement of Indemnity Policy")
-    )
-    b2e_home_service = CustomMoneyDecimalField(
-        verbose_name=_("2e. Home Service")
-    )
-    b2f_sip = CustomMoneyDecimalField(
-        verbose_name=_("2f. Settling-In-Programme (SIP)")
-    )
-    b2g1_other_services_description = models.CharField(
-        verbose_name=_("2g. Other services provided (i)"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    b2g1_other_services_fee = CustomMoneyDecimalField(
-        verbose_name=_("2g. Other services fee (i)"),
-        blank=True,
-        null=True
-    )
-    b2g2_other_services_description = models.CharField(
-        verbose_name=_("2g. Other services provided (ii)"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    b2g2_other_services_fee = CustomMoneyDecimalField(
-        verbose_name=_("2g. Other services fee (ii)"),
-        blank=True,
-        null=True
-    )
-    b2g3_other_services_description = models.CharField(
-        verbose_name=_("2g. Other services provided (iii)"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    b2g3_other_services_fee = CustomMoneyDecimalField(
-        verbose_name=_("2g. Other services fee (iii)"),
-        blank=True,
-        null=True
-    )
-    b2h_replacement_months = models.PositiveSmallIntegerField(
-        # months
-        verbose_name=_("2h. Cost for replacement within __ month(s)"),
-        choices=MonthChoices.choices,
-        blank=True,
-        null=True
-    )
-    b2h_replacement_cost = CustomMoneyDecimalField(
-        verbose_name=_("2h. Cost for replacement"),
-        blank=True,
-        null=True
-    )
-    b2i_work_permit_renewal = CustomMoneyDecimalField(
-        verbose_name=_("2i. Renewal of Work Permit"),
-        blank=True,
-        null=True
-    )
-    b3_agency_fee = CustomMoneyDecimalField(
-        verbose_name=_("3a. Agency fee"),
-        help_text=_('Agency fee charged on the FDW by the Agency')
-    )
-    ca_deposit_amount = CustomMoneyDecimalField(
-        verbose_name=_("2c. Deposit - upon confirmation of FDW"),
-        help_text=_('Deposit paid by Employer')
-    )
-    ca_deposit_date = models.DateField(
-        verbose_name=_('Deposit Paid Date'),
-    )
-    ca_remaining_payment_date = models.DateField(
-        verbose_name=_('Remaining Amount Paid Date'),
-        null=True
-    )
-    ca_deposit_detail = models.CharField(
-        verbose_name=_("Deposit Payment Detail"),
-        max_length=255,
-        blank=True,
-        null=True
-    )
-    ca_remaining_payment_amount = CustomMoneyDecimalField(
-        verbose_name=_("Remaining Amount Paid"),
-        default=0
-    )
-    ca_remaining_payment_detail = models.CharField(
-        verbose_name=_("Deposit Remaining Payment Detail"),
-        max_length=255,
-        blank=True,
-        null=True
-    )
-    ca_deposit_receipt_no = models.CharField(
-        max_length=255,
-        verbose_name=_('Deposit Receipt No'),
-        blank=True,
-        null=True
-    )
-    ca_remaining_payment_receipt_no = models.CharField(
-        max_length=255,
-        verbose_name=_('Remaining Payment Receipt No'),
-        blank=True,
-        null=True
-    )
-
-    def calc_admin_cost(self):
-        # Method to calculate total administrative cost
-        total = 0
-        fields = [
-            self.b2a_work_permit_application_collection,
-            self.b2b_medical_examination_fee,
-            self.b2c_security_bond_accident_insurance,
-            self.b2d_indemnity_policy_reimbursement,
-            self.b2e_home_service,
-            self.b2f_sip,
-            self.b2g1_other_services_fee,
-            self.b2g2_other_services_fee,
-            self.b2g3_other_services_fee,
-            self.b2h_replacement_cost,
-            self.b2i_work_permit_renewal,
-        ]
-        for field in fields:
-            # Sum this way because some fields may be null
-            total += field if field else 0
-        return total
-
-    def calc_placement_fee(self):
-        # Method to calculate placement fee
-        return self.b3_agency_fee + self.fdw_loan
-
-    def calc_total_fee(self):
-        # Method to calculate total fee
-        return self.calc_admin_cost() + self.calc_placement_fee()
-
-    def calc_bal(self):
-        # Method to calculate outstanding balance owed by employer
-        balance = (
-            self.calc_admin_cost()
-            + self.calc_placement_fee()
-            - self.ca_deposit_amount
-        )
-
-        return balance
-
-    def get_fdw_replaced_passport_full(self):
-        return decrypt_string(
-            self.fdw_replaced_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.fdw_replaced_passport_nonce,
-            self.fdw_replaced_passport_tag,
-        )
-
-    # Service Agreement
-    c1_3_handover_days = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("1.3 handover FDW to Employer within __ day(s)"),
-        choices=DayChoices.choices
-    )
-    c3_2_no_replacement_criteria_1 = models.CharField(
-        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
-            if any of following circumstances (i)"),
-        max_length=100,
-        blank=True,
-        null=True
-    )
-    c3_2_no_replacement_criteria_2 = models.CharField(
-        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
-            if any of following circumstances (ii)"),
-        max_length=100,
-        blank=True,
-        null=True
-    )
-    c3_2_no_replacement_criteria_3 = models.CharField(
-        verbose_name=_("3.2 No need to provide Employer with replacement FDW \
-            if any of following circumstances (iii)"),
-        max_length=100,
-        blank=True,
-        null=True
-    )
-    c3_4_no_replacement_refund = CustomMoneyDecimalField(
-        verbose_name=_("3.4 Refund if no replacement pursuant to Clause 3.1")
-    )
-    c4_1_number_of_replacements = models.PositiveSmallIntegerField(
-        verbose_name=_("4.1 Number of replacement Employer is entitled to"),
-        choices=[
-            (0, _("0 replacements")),
-            (1, _("1 replacement")),
-            (2, _("2 replacements")),
-            (3, _("3 replacements")),
-            (4, _("4 replacements")),
-            (5, _("5 replacements")),
-            (6, _("6 replacements")),
-            (7, _("7 replacements")),
-            (8, _("8 replacements")),
-            (9, _("9 replacements")),
-            (10, _("10 replacements")),
-        ]
-    )
-    c4_1_replacement_period = models.PositiveSmallIntegerField(
-        # months
-        verbose_name=_("4.1 Replacement FDW period validity (months)"),
-        choices=MonthChoices.choices
-    )
-    c4_1_replacement_after_min_working_days = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("4.1 Replacement only after FDW has worked for minimum \
-            of __ day(s)"),
-        choices=DayChoices.choices
-    )
-    c4_1_5_replacement_deadline = models.PositiveSmallIntegerField(
-        # months
-        verbose_name=_("4.1.5 Replacement must occur within __ month(s) \
-            from FDW return date"),
-        choices=MonthChoices.choices
-    )
-    c5_1_1_deployment_deadline = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("5.1.1 Deployment within __ day(s) from Service \
-            Agreement date"),
-        choices=DayChoices.choices
-    )
-    c5_1_1_failed_deployment_refund = CustomMoneyDecimalField(
-        verbose_name=_("5.1.1 Failed deployment refund amount")
-    )
-    c5_1_2_refund_within_days = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("5.1.2 If Employer terminates Agreement, Employer \
-            entitled to Service Fee refund within __ day(s)"),
-        choices=DayChoices.choices
-    )
-    c5_1_2_before_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates BEFORE FDW \
-            arrives in Singapore")
-    )
-    c5_1_2_after_fdw_arrives_charge = CustomMoneyDecimalField(
-        verbose_name=_("5.1.2 Charge if Employer terminates AFTER FDW arrives \
-            in Singapore")
-    )
-    c5_2_2_can_transfer_refund_within = models.PositiveSmallIntegerField(
-        # weeks
-        verbose_name=_("5.2.2 If new FDW deployed to Employer and former FDW \
-            CAN be transferred to new employer, refund within __ week(s)"),
-        choices=WeekChoices.choices
-    )
-    c5_3_2_cannot_transfer_refund_within = models.PositiveSmallIntegerField(
-        # weeks
-        verbose_name=_("5.3.2 If new FDW deployed to Employer and former FDW \
-            CANNOT be transferred to new employer, refund within __ week(s)"),
-        choices=WeekChoices.choices
-    )
-    c6_4_per_day_food_accommodation_cost = CustomMoneyDecimalField(
-        verbose_name=_("6.4 Food and Accommodation cost per day")
-    )
-    c6_6_per_session_counselling_cost = CustomMoneyDecimalField(
-        verbose_name=_("6.6 Counselling cost per day")
-    )
-    c9_1_independent_mediator_1 = models.CharField(
-        verbose_name=_("9.1 Independent mediator #1"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    c9_2_independent_mediator_2 = models.CharField(
-        verbose_name=_("9.2 Independent mediator #2"),
-        max_length=40,
-        blank=True,
-        null=True
-    )
-    c13_termination_notice = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("13. Service Agreement termination notice (days)"),
-        choices=DayChoices.choices
-    )
-
-    # Employment Contract
-    c3_5_fdw_sleeping_arrangement = models.CharField(
-        verbose_name=_("3.5 FDW sleeping arrangement"),
-        max_length=6,
-        choices=[
-            ("OWN", _("have her own room")),
-            ("SHARE", _("sharing room with someone")),
-            ("COMMON", _("sleeping in common area")),
-        ],
-        default='OWN',
-    )
-    c4_1_termination_notice = models.PositiveSmallIntegerField(
-        # days
-        verbose_name=_("4.1 Employment Contract termination notice (days)"),
-        choices=DayChoices.choices
-    )
-
-    # Safety Agreement
-    residential_dwelling_type = models.CharField(
-        max_length=6,
-        choices=[
-            ("HDB", _("HDB Apartment")),
-            ("CONDO", _("Private Apartment/Condominium")),
-            ("LANDED", _("Landed Property")),
-        ],
-        blank=True,
-        null=True,
-        default='HDB',
-    )
-    fdw_clean_window_exterior = models.BooleanField(
-        verbose_name=_('Does Employer require FDW to clean window exterior?'),
-        choices=TrueFalseChoices(
-            _('Yes, clean window exterior'),
-            _('No, not required'),
-        ),
-        blank=True,
-        null=True,
-        default=False,
-        help_text=_('If yes, must complete field (i).'),
-    )
-    window_exterior_location = models.CharField(
-        verbose_name=_("(i) Location of window exterior"),
-        max_length=6,
-        choices=[
-            ("GROUND", _("On the ground floor")),
-            ("COMMON", _("Facing common corridor")),
-            ("OTHER", _("Other")),
-        ],
-        blank=True,
-        null=True,
-        help_text=_("If 'Other' is selected, must complete field (ii)."),
-    )
-    grilles_installed_require_cleaning = models.BooleanField(
-        verbose_name=_(
-            '(ii) Grilles installed on windows required to be cleaned by FDW?'
-        ),
-        choices=TrueFalseChoices(
-            _('Yes, grilles installed require cleaning'),
-            _('No, not required'),
-        ),
-        blank=True,
-        null=True,
-        help_text=_('If yes, must complete field (iii).'),
-    )
-    adult_supervision = models.BooleanField(
-        verbose_name=_(
-            '(iii) Adult supervision when cleaning window exterior?'
-        ),
-        choices=TrueFalseChoices(
-            _('Yes, adult supervision'),
-            _('No supervision'),
-        ),
-        blank=True,
-        null=True
-    )
-    verifiy_employer_understands_window_cleaning = models.PositiveSmallIntegerField(
-        verbose_name=_(
-            "Verifiy employer understands window cleaning conditions"
-        ),
-        choices=[
-            (
-                1, _("FDW not required to clean window exterior")
-            ),
-            (
-                2, _("FDW to clean only window exterior on ground floor")
-            ),
-            (
-                3, _("FDW to clean only window exterior along common corridor")
-            ),
-            (
-                4, _("Ensure grilles are locked and only cleaned under adult \
-                    supervision")
-            )
-        ],
-        blank=True,
-        null=True,
-        default='not_required_to_clean_window_exterior',
-    )
-
-    # Mandatory signatures
-    employer_signature = models.TextField(
-        verbose_name=_('Employer Signature'),
-        blank=True,
-        null=True
-    )
-    fdw_signature = models.TextField(
-        verbose_name=_('FDW Signature'),
-        blank=True,
-        null=True
-    )
-    agency_staff_signature = models.TextField(
-        verbose_name=_('Agency Staff Member Signature'),
-        blank=True,
-        null=True
-    )
-
-    # Status dates
-    ipa_approval_date = models.DateField(
-        verbose_name=_('In Principle Approval (IPA) Date'),
-    )
-    arrival_date = models.DateField(
-        verbose_name=_('FDW Arrival Date'),
-    )
-    shn_end_date = models.DateField(
-        verbose_name=_('SHN End Date'),
-    )
-    thumb_print_date = models.DateField(
-        verbose_name=_('FDW Thumb Print Date'),
-    )
-    fdw_work_commencement_date = models.DateField(
-        verbose_name=_('Deployment Date'),
-    )
-
-    # System generated PDF files
-    f01_service_fee_schedule = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f03_service_agreement = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f04_employment_contract = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f05_repayment_schedule = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f06_rest_day_agreement = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f08_handover_checklist = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f09_transfer_consent = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f10_work_pass_authorisation = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f13_income_tax_declaration = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-    )
-    f14_safety_agreement = models.FileField(
-        upload_to=generate_archive_path,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        blank=True,
-        null=True
-    )
-
-    # Uploaded PDF files
-    job_order_pdf = models.FileField(
-        verbose_name=_('Upload Job Order (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-    ipa_pdf = models.FileField(
-        verbose_name=_('Upload IPA (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-    medical_report_pdf = models.FileField(
-        verbose_name=_('Upload Medical Report (PDF)'),
-        upload_to=generate_joborder_path,
-        blank=True,
-        null=True,
-        storage=EmployerDocumentationStorage() if settings.USE_S3 else OverwriteStorage(),
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
-    )
-
-    @property
-    def is_archived_doc(self):
-        return True

@@ -1,4 +1,6 @@
 # Django Imports
+from typing import TypeVar
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -10,15 +12,18 @@ AG_ADMINS = 'Agency Administrators'
 AG_MANAGERS = 'Agency Managers'
 AG_SALES = 'Agency Sales Staff'
 AG_ADMIN_STAFF = 'Agency Admin Staff'
-P_EMPLOYERS = 'Potential Employers'
+EMPLOYERS = 'Employers'
+FDW = 'Foreign Domestic Workers'
 AUTHORITY_GROUPS = [
     AG_OWNERS,
     AG_ADMINS,
     AG_MANAGERS,
     AG_SALES,
     AG_ADMIN_STAFF,
-    P_EMPLOYERS
+    EMPLOYERS,
+    FDW
 ]
+T = TypeVar('T', bound=models.Model)
 
 
 def TrueFalseChoices(TrueMessage, FalseMessage):
@@ -286,3 +291,8 @@ class MaritalStatusChoices(models.TextChoices):
     WIDOWED = 'WIDOWED', _('Widowed')
     SEPARATED = 'SEPARATED', _('Separated')
     SINGLE_PARENT = 'SINGLEPAR', _('Single Parent')
+
+
+class GenderChoices(models.TextChoices):
+    M = 'M', _('Male')
+    F = 'F', _('Female')

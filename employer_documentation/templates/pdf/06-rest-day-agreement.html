@@ -59,8 +59,8 @@
     </tr>
     <tr>
         <td colspan="3">It was agreed between the contracting parties that the abovementioned Maid is entitled to 1 rest
-            day per week, on {{ object.fdw_off_day_of_week_display }}, with compensation of
-            S${{ object.per_off_day_compensation|intcomma }} for each rest day forgone.</td>
+            day per week, on {{ object.get_fdw_off_day_of_week_display }}, with compensation of
+            S${{ object.get_per_off_day_compensation|intcomma }} for each rest day forgone.</td>
     </tr>
 
     {% include 'pdf/00-signatures-employer-fdw.html' %}

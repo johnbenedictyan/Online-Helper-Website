@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import (
-    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction, MaidEmploymentHistory,
-    MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare, MaidGeneralHousework, MaidCooking,
-    MaidResponsibility, MaidLoanTransaction, MaidLanguage
+    Maid, MaidFoodHandlingPreference, MaidDietaryRestriction,
+    MaidEmploymentHistory, MaidInfantChildCare, MaidElderlyCare,
+    MaidDisabledCare, MaidGeneralHousework, MaidCooking, MaidResponsibility,
+    MaidLoanTransaction, MaidLanguage
 )
 
 # Register your models here.

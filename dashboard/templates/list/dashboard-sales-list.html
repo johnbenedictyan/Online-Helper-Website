@@ -52,7 +52,6 @@
         </div>
         {% for sale in sales %}
         <div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
-            {% if sale.is_archived_doc is False %}
             <div class="col col-1">
                 <p class="mb-0">{{ forloop.counter }}</p>
             </div>
@@ -72,7 +71,7 @@
             </div>
             <div class="col-4">
                 <p class="mb-0">Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
-                    {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
+                    {{sale.rn_servicefeeschedule_ed.get_balance}}</p>
             </div>
             <div class="col col-3">
                 <p class="mb-0">
@@ -90,43 +89,6 @@
                             title="Delete Sales Information"></i></a> {% endcomment %}
                 </div>
             </div>
-            {% else %}
-            <div class="col col-2">
-                <p class="mb-0">{{ forloop.counter }}</p>
-            </div>
-            <div class="col col-3">
-                <p class="mb-0">{{sale.agreement_date}}</p>
-            </div>
-            <div class="col col-3">
-                <p class="mb-0">{{sale.fdw_work_commencement_date}}</p>
-            </div>
-            <div class="col">
-                <p class="mb-0">Employer: {{sale.employer_name}}<br />FDW: {{sale.fdw.name}}<br />Personnel:
-                    {{sale.agency.agency_employee_name}} {{sale.agency.agency_employee_ea_personnel_number}}</p>
-            </div>
-            <div class="col col-3">
-                <p class="mb-0">{% if sale.is_new_case is True %}New Case{% else %}Replacement{% endif %}</p>
-            </div>
-            <div class="col-4">
-                <p class="mb-0">Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.calc_bal}}</p>
-            </div>
-            <div class="col col-3">
-                <p class="mb-0">
-                    {{sale.ca_deposit_date|default_if_none:"Have not received"}}<br />{{sale.ca_remaining_payment_date|default_if_none:"Have not received"}}
-                </p>
-            </div>
-            <div class="col-2">
-                <div class="row justify-content-center">
-                    {% comment %} <a class="mx-1" href="#"><i class="far fa-unlink" data-toggle="tooltip" data-placement="top"
-                            title="Unlink Sales Information"></i></a> {% endcomment %}
-                    <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
-                            class="far fa-file-image" data-toggle="tooltip" data-placement="top"
-                            title="View Archived Sales Information"></i></a>
-                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
-                            title="Delete Archived Sales Information"></i></a> {% endcomment %}
-                </div>
-            </div>
-            {% endif %}
         </div>
         {% empty %}
         <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
@@ -187,7 +149,7 @@
                             </div>
                             <div class="col-13 col-lg-12">
                                 <p>Deposit:$ {{sale.rn_servicefeeschedule_ed.ca_deposit_amount}}<br />Balance:$
-                                    {{sale.rn_servicefeeschedule_ed.calc_bal}}</p>
+                                    {{sale.rn_servicefeeschedule_ed.get_balance}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -202,7 +164,7 @@
                         <h6>Actions:</h6>
                         <a class="mx-1" href="{% url 'case_update_route' level_1_pk=sale.pk %}"><i
                                 class="far fa-edit"></i></a>
-                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="fas fa-file-invoice-dollar"></i></a>
+                        {% comment %} <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i class="fas fa-file-invoice-dollar"></i></a> {% endcomment %}
                         {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a> {% endcomment %}
                         {% else %}
                         <div class="row">
@@ -249,7 +211,7 @@
                                 <p>Amount:</p>
                             </div>
                             <div class="col-13 col-lg-12">
-                                <p>Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.calc_bal}}</p>
+                                <p>Deposit:$ {{sale.ca_deposit_amount}}<br />Balance:$ {{sale.get_balance}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -263,8 +225,8 @@
                         </div>
                         <h6>Actions:</h6>
                         {% comment %} <a class="mx-1" href="#"><i class="far fa-unlink"></i></a> {% endcomment %}
-                        <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
-                                class="far fa-file-image"></i></a>
+                        {% comment %} <a class="mx-1" href="{% url 'archived_case_detail_route' level_1_pk=sale.pk %}"><i
+                                class="far fa-file-image"></i></a> {% endcomment %}
                         {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a> {% endcomment %}
                         {% endif %}
                     </div>

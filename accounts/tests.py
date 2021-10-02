@@ -1,14 +1,9 @@
-# Django Imports
 from django.contrib.auth.models import Group, Permission
 from django.test import TestCase
 from django.urls import reverse_lazy
+from onlinemaid.helper_functions import (create_test_user, r_contact_number,
+                                         r_string)
 
-# Foreign Apps Imports
-from onlinemaid.helper_functions import (
-    r_string, r_contact_number, create_test_user
-)
-
-# App Imports
 from .forms import EmployerCreationForm
 from .models import Employer
 
@@ -273,11 +268,11 @@ class PotentialEmployerCreationFormTest(TestCase):
             'email': 'asd@asd.com',
             'password': 'Password123!',
             'contact_number': '81234567'
-            }
+        }
 
         test_form = EmployerCreationForm(
             data=test_form_data
-            )
+        )
         self.assertFalse(
             test_form.is_valid()
         )
@@ -290,7 +285,7 @@ class PotentialEmployerCreationFormTest(TestCase):
             'form',
             'name',
             'This field is required.'
-            )
+        )
 
     def testMissingLastNameErrorMessage(self):
         test_form_data = {

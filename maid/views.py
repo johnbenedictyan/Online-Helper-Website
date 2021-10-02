@@ -2,7 +2,6 @@
 import json
 from random import shuffle
 
-# Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,9 +11,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import DeleteView, UpdateView
 
-# Project Apps Imports
 from agency.mixins import GetAuthorityMixin
 from employer_documentation.mixins import PdfHtmlViewMixin
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin

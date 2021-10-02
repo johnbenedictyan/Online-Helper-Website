@@ -1,23 +1,10 @@
 # Django Imports
 from django.urls import include, path
 
-# Redirect Views
-from .views import MaidTogglePublished, MaidToggleFeatured
-
-# List Views
-from .views import MaidList
-
-# Detail Views
-from .views import MaidDetail, PdfMaidBiodataView
-
-# Update Views
-from .views import MaidLoanTransactionUpdate
-
-# Delete Views
-from .views import MaidDelete
-
-# Generic Views
-from .views import MaidProfileView, FeaturedMaidListView
+from .views import (FeaturedMaidListView, MaidDelete, MaidDetail, MaidList,
+                    MaidLoanTransactionUpdate, MaidProfileView,
+                    MaidToggleFeatured, MaidTogglePublished,
+                    PdfMaidBiodataView)
 
 # Start of Urls
 

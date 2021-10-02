@@ -1,27 +1,25 @@
-from typing import Dict, Any
+from typing import Any, Dict, Optional
 
-# Django Imports
-from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
+from django.core.exceptions import ImproperlyConfigured
+from django.db import models
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-# Foreign Apps Imports
-from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from enquiry.constants import EnquiryStatusChoices
+from enquiry.models import MaidShortlistedEnquiryIM
+from maid.models import Maid
+from onlinemaid.constants import AG_OWNERS, AUTHORITY_GROUPS, T
 from onlinemaid.mixins import SuccessMessageMixin
 
-# Imports from local app
-from .forms import (
-    EmployerCreationForm, SignInForm, AgencySignInForm,
-    CustomPasswordResetForm, EmailUpdateForm
-)
-from .models import PotentialEmployer
+from .forms import (AgencySignInForm, CustomPasswordResetForm, EmailUpdateForm,
+                    EmployerCreationForm, FDWAccountCreationForm, SignInForm)
 from .mixins import PotentialEmployerGrpRequiredMixin
+from .models import FDWAccount, PotentialEmployer
 
 # Start of Views
 
@@ -66,8 +64,8 @@ class AgencySignInView(BaseLoginView):
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
                 if (
-                    authority == AG_OWNERS and
-                    self.request.user.agency_owner.is_test_email()
+                    authority == AG_OWNERS
+                    and self.request.user.agency_owner.is_test_email()
                 ):
                     success_url = reverse_lazy('user_email_update')
                     return success_url
@@ -97,6 +95,21 @@ class PotentialEmployerDetail(PotentialEmployerGrpRequiredMixin, DetailView):
     http_method_names = ['get']
     model = PotentialEmployer
     template_name = 'detail/employer-detail.html'
+    potential_employer = None
+
+    def get_object(self, queryset: Optional[models.query.QuerySet] = ...) -> T:
+        self.potential_employer = PotentialEmployer.objects.get(
+            user=self.request.user
+        )
+        return self.potential_employer
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'documents': self.potential_employer.get_documents(),
+            'enquiries': self.potential_employer.get_enquiries()
+        })
+        return context
 
 
 class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
@@ -144,6 +157,49 @@ class PotentialEmployerDelete(SuccessMessageMixin,
     model = PotentialEmployer
     success_url = reverse_lazy('home')
     success_message = 'Account deleted'
+
+
+class FDWAccountCreate(SuccessMessageMixin, CreateView):
+    context_object_name = 'fdw'
+    form_class = FDWAccountCreationForm
+    http_method_names = ['get', 'post']
+    model = FDWAccount
+    template_name = 'create/fdw-create.html'
+    success_url = reverse_lazy('home')
+    form_type = 'CREATE'
+    success_message = 'Account created'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'form_type': self.form_type
+        })
+        return kwargs
+
+
+class FDWAccountDetail(DetailView):
+    context_object_name = 'fdw'
+    http_method_names = ['get']
+    model = FDWAccount
+    template_name = 'detail/fdw-account-detail.html'
+
+    def get_object(self, queryset=None):
+        return FDWAccount.objects.get(
+            user=self.request.user
+        )
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        maid_qs = Maid.objects.filter(
+            fdw_account__user=self.request.user
+        )
+        context.update({
+            'jobs': MaidShortlistedEnquiryIM.objects.filter(
+                maid__in=maid_qs,
+                status=EnquiryStatusChoices.OPEN
+            )
+        })
+        return context
 
 
 class UserEmailUpdate(LoginRequiredMixin, UpdateView):

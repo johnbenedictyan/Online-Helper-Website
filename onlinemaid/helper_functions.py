@@ -4,17 +4,14 @@ import random
 import string
 import traceback
 from datetime import date, datetime, timedelta
-from slugify import slugify
 
-# Django Imports
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
-
-# Foreign Apps Imports
-from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
+from slugify import slugify
 
 # App Imports
 from .constants import MaritalStatusChoices
@@ -110,6 +107,7 @@ def decrypt_string(ciphertext, encryption_key, nonce, tag):
 def populate_necessary_rows():
     from maid.constants import MaidLanguageChoices, MaidResponsibilityChoices
     from maid.models import MaidLanguage, MaidResponsibility
+
     from .constants import AUTHORITY_GROUPS
     for language in MaidLanguageChoices.choices:
         MaidLanguage.objects.get_or_create(
@@ -183,22 +181,22 @@ def humanise_time_duration(duration):
             return str(duration.seconds) + " seconds"
 
     if (
-        duration.days == 0 and
-        duration.seconds >= 60 and
-        duration.seconds < 3600
+        duration.days == 0
+        and duration.seconds >= 60
+        and duration.seconds < 3600
     ):
-        minutes = math.floor(duration.seconds/60)
+        minutes = math.floor(duration.seconds / 60)
         if minutes == 1:
             return str(minutes) + " minute"
         else:
             return str(minutes) + " minutes"
 
     if (
-        duration.days == 0 and
-        duration.seconds >= 3600 and
-        duration.seconds < 86400
+        duration.days == 0
+        and duration.seconds >= 3600
+        and duration.seconds < 86400
     ):
-        hours = math.floor(duration.seconds/3600)
+        hours = math.floor(duration.seconds / 3600)
         return str(hours) + " hour" if hours == 1 else str(hours) + " hours"
 
     if duration.days >= 1 and duration.days < 30:
@@ -208,7 +206,7 @@ def humanise_time_duration(duration):
             return str(duration.days) + " days"
 
     if duration.days >= 30 and duration.days < 365:
-        months = math.floor(duration.days/(365/12))
+        months = math.floor(duration.days / (365 / 12))
         if months == 1:
             return str(months) + " month"
         else:
@@ -216,7 +214,7 @@ def humanise_time_duration(duration):
 
     if duration.days >= 365:
         years = math.floor(duration.days / 365)
-        months = math.floor(duration.days % 365 / (365/12))
+        months = math.floor(duration.days % 365 / (365 / 12))
         if years == 1:
             years_str = str(years) + " year"
         else:
@@ -229,19 +227,15 @@ def humanise_time_duration(duration):
 
 
 def maid_seed_data():
-    from agency.models import Agency
-
-    from maid.constants import (
-        TypeOfMaidChoices, MaidCareRemarksChoices, MaidPassportStatusChoices,
-        MaidGeneralHouseworkRemarksChoices
-    )
-
-    from maid.models import (
-        Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare,
-        MaidGeneralHousework, MaidCooking, MaidLoanTransaction
-    )
-
     import json
+
+    from agency.models import Agency
+    from maid.constants import (MaidCareRemarksChoices,
+                                MaidGeneralHouseworkRemarksChoices,
+                                MaidPassportStatusChoices, TypeOfMaidChoices)
+    from maid.models import (Maid, MaidCooking, MaidDisabledCare,
+                             MaidElderlyCare, MaidGeneralHousework,
+                             MaidInfantChildCare, MaidLoanTransaction)
     maid_data = json.load(open('./maid.json'))
 
     # small_gif = (
@@ -329,9 +323,9 @@ def maid_seed_data():
 
 
 def subscription_seed_data():
-    from payment.models import SubscriptionProduct, SubscriptionProductPrice
-
     import json
+
+    from payment.models import SubscriptionProduct, SubscriptionProductPrice
     subscription_data = json.load(open('./subscriptions.json'))
 
     for subscription in subscription_data:

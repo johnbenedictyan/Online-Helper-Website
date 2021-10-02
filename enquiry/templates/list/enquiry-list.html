@@ -2,81 +2,81 @@
 {% load crispy_forms_tags %}
 {% block enquiry_section %}
 {% include 'sections/title-banner.html' with page_name='Enquiries' %}
-<section>
-    <div class="container">
-        {% for enquiry in enquiries %}
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title mb-3">Enquiry #{{ enquiry.pk }}</h3>
-                        <div class="row">
-                            <div class="col">
-                                <p class="text-muted mb-1">First Name</p>
-                                <h5 class="card-subtitle">{{ enquiry.name }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Contact Number</p>
-                                <h5 class="card-subtitle">{{ enquiry.contact_number }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Email Address</p>
-                                <h5 class="card-subtitle">{{ enquiry.email }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Type of Property</p>
-                                <h5 class="card-subtitle">{{ enquiry.get_property_type_display }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Maid Nationality</p>
-                                <h5 class="card-subtitle">{{ enquiry.get_maid_nationality_display }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Maid Type</p>
-                                <h5 class="card-subtitle">{{ enquiry.get_maid_type_display }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Maid Age Group</p>
-                                <h5 class="card-subtitle">{{ enquiry.get_maid_age_group_display }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Maid Responsibilities</p>
-                                {% for responsibility in enquiry.maid_responsibility.all %}
-                                <h5 class="card-subtitle">{{ responsibility.get_name_display }}</h5>
-                                {% endfor %}
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Maid Rest Days</p>
-                                <h5 class="card-subtitle">{{ enquiry.get_rest_days_display }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Number of family members</p>
-                                <h5 class="card-subtitle">{{ enquiry.no_of_family_members }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Number of Children below 12</p>
-                                <h5 class="card-subtitle">{{ enquiry.no_of_below_12 }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Number of Babies</p>
-                                <h5 class="card-subtitle">{{ enquiry.no_of_babies }}</h5>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted mb-1">Remarks</p>
-                                <h5 class="card-subtitle">{{ enquiry.remarks }}</h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <a href="{% url 'deactivate_enquiry' enquiry.pk %}"
-                                    class="btn btn-xs-lg btn btn-xs-lg-danger">Deactivate</a>
-                            </div>
-                        </div>
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='enquiries-section' %}
+{% for enquiry in enquiries %}
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title mb-3">Enquiry #{{ enquiry.pk }}</h3>
+                <div class="row">
+                    <div class="col">
+                        <p class="text-muted mb-1">First Name</p>
+                        <h5 class="card-subtitle">{{ enquiry.name }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Contact Number</p>
+                        <h5 class="card-subtitle">{{ enquiry.contact_number }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Email Address</p>
+                        <h5 class="card-subtitle">{{ enquiry.email }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Type of Property</p>
+                        <h5 class="card-subtitle">{{ enquiry.get_property_type_display }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Maid Nationality</p>
+                        <h5 class="card-subtitle">{{ enquiry.get_maid_nationality_display }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Maid Type</p>
+                        <h5 class="card-subtitle">{{ enquiry.get_maid_type_display }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Maid Age Group</p>
+                        <h5 class="card-subtitle">{{ enquiry.get_maid_age_group_display }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Maid Responsibilities</p>
+                        {% for responsibility in enquiry.maid_responsibility.all %}
+                        <h5 class="card-subtitle">{{ responsibility.get_name_display }}</h5>
+                        {% endfor %}
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Maid Rest Days</p>
+                        <h5 class="card-subtitle">{{ enquiry.get_rest_days_display }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Number of family members</p>
+                        <h5 class="card-subtitle">{{ enquiry.no_of_family_members }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Number of Children below 12</p>
+                        <h5 class="card-subtitle">{{ enquiry.no_of_below_12 }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Number of Babies</p>
+                        <h5 class="card-subtitle">{{ enquiry.no_of_babies }}</h5>
+                    </div>
+                    <div class="col">
+                        <p class="text-muted mb-1">Remarks</p>
+                        <h5 class="card-subtitle">{{ enquiry.remarks }}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a href="{% url 'deactivate_enquiry' enquiry.pk %}"
+                            class="btn btn-xs-lg btn btn-xs-lg-danger">Deactivate</a>
                     </div>
                 </div>
             </div>
         </div>
-        {% endfor %}
     </div>
-</section>
+</div>
+{% empty %}
+<h6 class="fs-14">No enquiries</h6>
+{% endfor %}
+{% include 'components/27-ws-section/end.html' %}
 {% endblock enquiry_section %}

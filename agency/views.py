@@ -1,21 +1,15 @@
-# Django Imports
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView
-
-# Project Apps Imports
+from django.views.generic.edit import CreateView
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# App Imports
 from .filters import AgencyFilter
 from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
+from .mixins import GetAuthorityMixin, OMStaffRequiredMixin
 from .models import Agency, AgencyOwner, PotentialAgency
-from .mixins import (
-    GetAuthorityMixin, OMStaffRequiredMixin, AgencyOwnerRequiredMixin,
-)
 
 # Start of Views
 
@@ -97,48 +91,3 @@ class AgencySignUp(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('home')
     success_message = '''
         Your request has been submitted. We will get back to you shortly!'''
-
-
-class AgencyDelete(AgencyOwnerRequiredMixin, SuccessMessageMixin, DeleteView):
-    pass
-#     context_object_name = 'agency'
-#     http_method_names = ['post']
-#     model = Agency
-#     success_url = reverse_lazy('home')
-#     success_message = 'Agency deleted'
-
-#     def get_object(self, queryset=None):
-#         return Agency.objects.get(
-#             pk = self.request.user.pk
-#         )
-
-
-class AgencyEmployeeDelete(SuccessMessageMixin, DeleteView):
-    pass
-#     context_object_name = 'agency_employee'
-#     http_method_names = ['post']
-#     model = AgencyEmployee
-#     check_type = 'employee'
-#     success_message = 'Employee account deleted'
-
-#     def delete(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         success_url = self.get_success_url()
-
-#         # Executes the soft delete of the agency employee object so that the
-#         # transaction history of the particular agency employee does not
-#         # get deleted.
-#         self.object.deleted = True
-#         self.object.save()
-
-#         return HttpResponseRedirect(success_url)
-
-
-class AgencyPlanDelete(SuccessMessageMixin, DeleteView):
-    pass
-#     context_object_name = 'agency_plan'
-#     http_method_names = ['post']
-#     model = AgencyPlan
-#     success_url = reverse_lazy('dashboard_agency_plan_list')
-#     check_type = 'plan'
-#     success_message = 'Agency plan unsubscribed'

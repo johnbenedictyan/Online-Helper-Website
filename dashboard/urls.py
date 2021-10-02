@@ -1,41 +1,16 @@
-# Django Imports
 from django.urls import include, path
 
-# Start of urls
-
-# List Views
-from .views import (
-    MaidList, AccountList, AgencyPlanList, GeneralEnquiriesList,
-    AgencyBranchList, CaseList, SalesList, EmployerList, StatusList,
-    ShortlistedEnquiriesList
-)
-
-# Detail Views
-from .views import AgencyDetail, MaidDetail
-
-# Form Views
-from .views import (
-    MaidLanguagesAndFHPDRFormView, MaidExperienceFormView,
-    MaidAboutFDWFormView, AgencyOutletDetailsFormView, MaidLoanFormView,
-    MaidEmploymentHistoryFormView
-)
-# Create Views
-from .views import MaidInformationCreate, AgencyEmployeeCreate
-
-# Template Views
-from .views import HomePage
-
-# Update Views
-from .views import (
-    AgencyInformationUpdate, AgencyOpeningHoursUpdate,
-    AgencyEmployeeUpdate, MaidInformationUpdate
-)
-
-# Generic Views
-from .views import DataProviderView
-
-# Delete Views
-from .views import DashboardEmployeeDelete, DashboardFDWDelete
+from .views import (AccountList, AgencyBranchList, AgencyDetail,
+                    AgencyEmployeeCreate, AgencyEmployeeUpdate,
+                    AgencyInformationUpdate, AgencyOpeningHoursUpdate,
+                    AgencyOutletDetailsFormView, AgencyPlanList, CaseList,
+                    DashboardEmployeeDelete, DashboardFDWDelete,
+                    DataProviderView, EmployerList, GeneralEnquiriesList,
+                    HomePage, MaidAboutFDWFormView, MaidDetail,
+                    MaidEmploymentHistoryFormView, MaidExperienceFormView,
+                    MaidInformationCreate, MaidInformationUpdate,
+                    MaidLanguagesAndFHPDRFormView, MaidList, MaidLoanFormView,
+                    SalesList, ShortlistedEnquiriesList, StatusList)
 
 # Start of Urls
 

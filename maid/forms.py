@@ -1,18 +1,16 @@
 # Global Imports
 from decimal import Decimal
 
+# Project Apps Imports
+from agency.models import Agency
+# Foreign Apps Imports
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Column, Div, Field, Layout, Row, Submit
 # Django Imports
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div, Field
-
-# Project Apps Imports
-from agency.models import Agency
 from employer_documentation.models import EmployerDoc
 from onlinemaid.constants import TrueFalseChoices
 from onlinemaid.helper_functions import encrypt_string
@@ -20,19 +18,18 @@ from onlinemaid.validators import validate_fin, validate_passport
 from onlinemaid.widgets import OMCustomTextarea
 
 # App Imports
-from .constants import (
-    CookingRemarksChoices, DisabledCareRemarksChoices,
-    ElderlyCareRemarksChoices, GeneralHouseworkRemarksChoices,
-    InfantChildCareRemarksChoices, MaidAssessmentChoices,
-    MaidDietaryRestrictionChoices, MaidFoodPreferenceChoices,
-    MaidLanguageProficiencyChoices
-)
-from .models import (
-    Maid, MaidCooking, MaidDietaryRestriction, MaidDisabledCare,
-    MaidElderlyCare, MaidEmploymentHistory, MaidFoodHandlingPreference,
-    MaidGeneralHousework, MaidInfantChildCare, MaidLanguageProficiency,
-    MaidLoanTransaction
-)
+from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
+                        ElderlyCareRemarksChoices,
+                        GeneralHouseworkRemarksChoices,
+                        InfantChildCareRemarksChoices, MaidAssessmentChoices,
+                        MaidDietaryRestrictionChoices,
+                        MaidFoodPreferenceChoices,
+                        MaidLanguageProficiencyChoices)
+from .models import (Maid, MaidCooking, MaidDietaryRestriction,
+                     MaidDisabledCare, MaidElderlyCare, MaidEmploymentHistory,
+                     MaidFoodHandlingPreference, MaidGeneralHousework,
+                     MaidInfantChildCare, MaidLanguageProficiency,
+                     MaidLoanTransaction)
 from .widgets import CustomDateInput
 
 # Start of Forms
@@ -172,26 +169,30 @@ class MaidForm(forms.ModelForm):
                     css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
-                    'passport_status',
+                    'email',
                     css_class='form-group col-lg-12 pl-xl-3'
+                ),
+                Column(
+                    'passport_status',
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     Field(
                         'passport_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-lg-12 pr-xl-3'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     'passport_expiry',
-                    css_class='form-group col-lg-12 pl-xl-3'
+                    css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
                     Field(
                         'fin_number',
                         maxlength=self.FIELD_MAXLENGTH,
                     ),
-                    css_class='form-group col-lg-12 pr-xl-3'
+                    css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
                     Submit(
@@ -339,7 +340,7 @@ class MaidForm(forms.ModelForm):
     def clean_photo(self):
         photo = self.cleaned_data.get('photo', False)
         if photo:
-            if photo.size > 4*1024*1024:
+            if photo.size > 4 * 1024 * 1024:
                 raise ValidationError("Image file too large ( > 4mb )")
             return photo
         else:
@@ -351,15 +352,27 @@ class MaidForm(forms.ModelForm):
         )
         if self.changed_data:
             if (
-                'name' in self.changed_data or
-                'passport_number' in self.changed_data or
-                'country_of_origin' in self.changed_data
+                'name' in self.changed_data
+                or 'passport_number' in self.changed_data
+                or 'country_of_origin' in self.changed_data
             ):
                 employer_doc_qs = EmployerDoc.objects.filter(
                     fdw=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
+            elif 'email' in self.changed_data:
+                self.instance.set_fdw_account_relation(
+                    self.cleaned_data.get(
+                        'email'
+                    )
+                )
+        else:
+            self.instance.set_fdw_account_relation(
+                self.cleaned_data.get(
+                    'email'
+                )
+            )
         return super().save(*args, **kwargs)
 
 
@@ -754,19 +767,19 @@ class MaidExperienceForm(forms.Form):
     cfi_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cfi_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cfi_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=False,
-        choices=InfantChildCareRemarksChoices.choices,
+        choices=InfantChildCareRemarksChoices.choices
     )
 
     cfi_other_remarks = forms.CharField(
@@ -785,13 +798,13 @@ class MaidExperienceForm(forms.Form):
     cfe_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cfe_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cfe_remarks = forms.ChoiceField(
@@ -816,19 +829,19 @@ class MaidExperienceForm(forms.Form):
     cfd_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cfd_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cfd_remarks = forms.ChoiceField(
         label=_('Remarks'),
         required=True,
-        choices=DisabledCareRemarksChoices.choices,
+        choices=DisabledCareRemarksChoices.choices
     )
 
     cfd_other_remarks = forms.CharField(
@@ -847,13 +860,13 @@ class MaidExperienceForm(forms.Form):
     geh_willingness = forms.ChoiceField(
         label=_('Willingness'),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     geh_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     geh_remarks = forms.ChoiceField(
@@ -878,13 +891,13 @@ class MaidExperienceForm(forms.Form):
     cok_willingness = forms.ChoiceField(
         label=_('Willingness '),
         required=True,
-        choices=TrueFalseChoices('Willing', 'Not willing'),
+        choices=TrueFalseChoices('Willing', 'Not willing')
     )
 
     cok_experience = forms.ChoiceField(
         label=_('Experience '),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience'),
+        choices=TrueFalseChoices('Experience', 'No experience')
     )
 
     cok_remarks = forms.ChoiceField(

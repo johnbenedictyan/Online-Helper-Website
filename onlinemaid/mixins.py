@@ -1,25 +1,24 @@
 # Global Imports
-import inspect
 import datetime
+import inspect
 import re
+
 import six
-
-
 # Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.views import redirect_to_login, logout_then_login
+from django.contrib.auth.views import logout_then_login, redirect_to_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-from django.http import (
-    HttpResponseRedirect, HttpResponsePermanentRedirect, Http404, HttpResponse,
-    StreamingHttpResponse
-)
+from django.http import (Http404, HttpResponse, HttpResponsePermanentRedirect,
+                         HttpResponseRedirect, StreamingHttpResponse)
 from django.shortcuts import resolve_url
+
 try:
     from django.utils.encoding import force_str as force_string
 except ImportError:
     from django.utils.encoding import force_text as force_string
+
 from django.utils.timezone import now
 
 # Start of Mixins

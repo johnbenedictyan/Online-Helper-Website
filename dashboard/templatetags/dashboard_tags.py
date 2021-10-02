@@ -12,8 +12,15 @@ def format_agency_employee_email(value):
         return ''
 
 
-@register.filter(name='enquirymaidfilter', is_safe=True)
-def get_maids(value, agency_id):
+# @register.filter(name='enquirymaidfilter', is_safe=True)
+# def get_maids(value, agency_id):
+#     return value.filter(
+#         agency__pk=agency_id
+#     )
+
+
+@register.filter(name='enquiryimfilter', is_safe=True)
+def get_im(value, agency_id):
     return value.filter(
-        agency__pk=agency_id
+        maid__agency__pk=agency_id
     )

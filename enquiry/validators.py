@@ -20,7 +20,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 def validate_links(value):
-    url_regex = "(?P<url>https?://[^\s]+)"
+    url_regex = r"(?P<url>https?://[^\s]+)"
     try:
         re.search(url_regex, value).group('url')
     except Exception:

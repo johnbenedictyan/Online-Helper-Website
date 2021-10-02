@@ -1,31 +1,22 @@
-#  Django Imports
+from agency.models import Agency, AgencyEmployee
+from crispy_forms.bootstrap import PrependedText, StrictButton
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (HTML, Button, Column, Field, Hidden, Layout,
+                                 Row, Submit)
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import (
-    Layout, Field, Submit, Row, Column, HTML, Hidden, Button
-)
-from crispy_forms.bootstrap import PrependedText, StrictButton
-
-# Project Apps Imports
+from maid.models import Maid
 from onlinemaid import constants as om_constants
 from onlinemaid.helper_functions import encrypt_string
-from onlinemaid.validators import (
-    validate_ea_personnel_number, validate_passport, validate_nric,
-    validate_fin
-)
-from agency.models import Agency, AgencyEmployee
-from maid.models import Maid
+from onlinemaid.validators import (validate_ea_personnel_number, validate_fin,
+                                   validate_nric, validate_passport)
 
-# App Imports
-from .helper_functions import is_local, is_foreigner
-from . import models, constants
+from . import constants, models
+from .helper_functions import is_foreigner, is_local
 
 # Start of Forms
 
@@ -486,8 +477,7 @@ class EmployerForm(forms.ModelForm):
         applicant_type = self.cleaned_data.get('applicant_type')
         if (
             applicant_type == constants.EmployerTypeOfApplicantChoices.SPOUSE
-            and
-            cleaned_field != om_constants.MaritalStatusChoices.MARRIED
+            and cleaned_field != om_constants.MaritalStatusChoices.MARRIED
         ):
             raise ValidationError(
                 _('''
@@ -709,7 +699,20 @@ class EmployerForm(forms.ModelForm):
                     employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
+
+            if 'employer_email' in self.changed_data:
+                self.instance.set_potential_employer_relation(
+                    self.cleaned_data.get(
+                        'employer_email'
+                    )
+                )
+        else:
+            self.instance.set_potential_employer_relation(
+                self.cleaned_data.get(
+                    'employer_email'
+                )
+            )
         return super().save()
 
 
@@ -1219,7 +1222,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     _("""
                         Sponsor 1 spouse residential status field cannot be
                         empty""")
-                    )
+                )
         else:
             return None
 
@@ -1716,7 +1719,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     employer__rn_sponsor_employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2078,7 +2081,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     employer__rn_ja_employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2098,9 +2101,9 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         employer = models.Employer.objects.get(pk=self.level_0_pk)
-        if employer.applicant_type==constants.EmployerTypeOfApplicantChoices.SPONSOR:
+        if employer.applicant_type == constants.EmployerTypeOfApplicantChoices.SPONSOR:
             back_url = 'employer_sponsor_update_route'
-        elif employer.applicant_type==constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
+        elif employer.applicant_type == constants.EmployerTypeOfApplicantChoices.JOINT_APPLICANT:
             back_url = 'employer_jointapplicant_update_route'
         else:
             back_url = 'employer_update_route'
@@ -2162,7 +2165,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     employer__rn_income_employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2194,7 +2197,8 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('household_id_num')
         error_msg = validate_nric(cleaned_field)
         if error_msg:
-            raise ValidationError(_('Invalid NRIC or birth certificate number'))
+            raise ValidationError(
+                _('Invalid NRIC or birth certificate number'))
         else:
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
@@ -2246,9 +2250,9 @@ class EmployerDocForm(forms.ModelForm):
         self.fields['fdw'].queryset = fdw_qs
 
         if (
-            self.authority == om_constants.AG_OWNERS or
-            self.authority == om_constants.AG_ADMINS or
-            self.authority == om_constants.AG_ADMIN_STAFF
+            self.authority == om_constants.AG_OWNERS
+            or self.authority == om_constants.AG_ADMINS
+            or self.authority == om_constants.AG_ADMIN_STAFF
         ):
             self.fields['employer'].queryset = employers_qs
         elif self.authority == om_constants.AG_MANAGERS:
@@ -2257,7 +2261,7 @@ class EmployerDocForm(forms.ModelForm):
             )
         else:
             self.fields['employer'].queryset = employers_qs.filter(
-                agency_employee = current_user.agency_employee
+                agency_employee=current_user.agency_employee
             )
 
         self.helper = FormHelper()
@@ -2367,7 +2371,7 @@ class EmployerDocForm(forms.ModelForm):
                 'fdw_off_day_of_week'
             ]
             if not set(strict_fields).isdisjoint(self.changed_data):
-                self.instance.increment_version_number()
+                self.instance.set_increment_version_number()
         return super().save()
 
 
@@ -2391,7 +2395,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         passport_num = self.instance.get_fdw_replaced_passport_full()
         self.initial.update({
             'fdw_replaced_passport_num': passport_num
-            })
+        })
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -2683,7 +2687,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     rn_servicefeeschedule_ed=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2914,7 +2918,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                     rn_serviceagreement_ed=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2997,8 +3001,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
             w_s_l_verbose_name + ' field cannot be blank'
         )
         if (
-            self.cleaned_data.get('fdw_clean_window_exterior') and
-            not self.cleaned_data.get('window_exterior_location')
+            self.cleaned_data.get('fdw_clean_window_exterior')
+            and not self.cleaned_data.get('window_exterior_location')
         ):
             self.add_error(
                 'window_exterior_location',
@@ -3018,8 +3022,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
             g_l_verbose_name + ' field cannot be blank'
         )
         if (
-            self.cleaned_data.get('window_exterior_location') == 'OTHER' and
-            self.cleaned_data.get('grilles_installed_require_cleaning')
+            self.cleaned_data.get('window_exterior_location') == 'OTHER'
+            and self.cleaned_data.get('grilles_installed_require_cleaning')
         ):
             self.add_error(
                 'grilles_installed_require_cleaning',
@@ -3040,8 +3044,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
             to be cleaned by FDW
         '''
         if (
-            self.cleaned_data.get('grilles_installed_require_cleaning') and
-            not self.cleaned_data.get('adult_supervision')
+            self.cleaned_data.get('grilles_installed_require_cleaning')
+            and not self.cleaned_data.get('adult_supervision')
         ):
             self.add_error(
                 'adult_supervision',
@@ -3066,8 +3070,8 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
         if (
             (
-                not self.cleaned_data.get('fdw_clean_window_exterior') and
-                not self.cleaned_data.get(
+                not self.cleaned_data.get('fdw_clean_window_exterior')
+                and not self.cleaned_data.get(
                     'verifiy_employer_understands_window_cleaning'
                 ) == 1
             )
@@ -3075,17 +3079,18 @@ class DocSafetyAgreementForm(forms.ModelForm):
             or w_e_l == 'COMMON' and not v_e_u_w_c == 3
             or w_e_l == 'OTHER' and not v_e_u_w_c == 4
             or (
-                v_e_u_w_c == 1 and
-                self.cleaned_data.get('fdw_clean_window_exterior')
+                v_e_u_w_c == 1
+                and self.cleaned_data.get('fdw_clean_window_exterior')
             )
             or v_e_u_w_c == 2 and not w_e_l == 'GROUND'
             or v_e_u_w_c == 3 and not w_e_l == 'COMMON'
             or v_e_u_w_c == 4 and not w_e_l == 'OTHER'
-            or
-            (
-                v_e_u_w_c == 4 and
-                w_e_l == 'OTHER' and
-                not self.cleaned_data.get('grilles_installed_require_cleaning')
+            or (
+                v_e_u_w_c == 4
+                and w_e_l == 'OTHER'
+                and not self.cleaned_data.get(
+                    'grilles_installed_require_cleaning'
+                )
             )
         ):
             veu_v_n = verifiy_employer_understands_verbose_name
@@ -3117,7 +3122,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                     rn_safetyagreement_ed=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -3426,8 +3431,8 @@ class TokenChallengeForm(forms.Form):
 
     def is_local(self, rs):
         return (
-            rs == constants.ResidentialStatusFullChoices.SC or
-            rs == constants.ResidentialStatusFullChoices.PR
+            rs == constants.ResidentialStatusFullChoices.SC
+            or rs == constants.ResidentialStatusFullChoices.PR
         )
 
     def __init__(self, *args, **kwargs):
@@ -3519,8 +3524,8 @@ class TokenChallengeForm(forms.Form):
         else:
             error_msg = _('Invalid Credentials')
             raise ValidationError(
-                    error_msg,
-                    code='invalid',
+                error_msg,
+                code='invalid',
             )
 
 
@@ -3659,8 +3664,11 @@ class EmployerWithSpouseSignatureForm(forms.Form):
         )
 
 
-class SponsorSignatureForm(forms.Form):
-    sponsor_signature = forms.CharField(
+class EmployerWithOneSponsorForm(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_sponsor1_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
 
@@ -3672,7 +3680,29 @@ class SponsorSignatureForm(forms.Form):
                 Column(
                     Row(
                         Column(
-                            'sponsor_signature'
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    )
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_sponsor1_signature'
                         )
                     ),
                     Row(
@@ -3681,7 +3711,7 @@ class SponsorSignatureForm(forms.Form):
                                 """
                                 <h6>Sponsor Signature</h6>
                                 <canvas
-                                    id="sponsor-signature-pad"
+                                    id="sponsor-1-signature-pad"
                                     class=""
                                     style="border: 1px solid #d2d2d2"
                                 >
@@ -3690,27 +3720,129 @@ class SponsorSignatureForm(forms.Form):
                             )
                         )
                     ),
+                ),
+                css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
+                        css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
+            )
+        )
+
+
+class EmployerWithTwoSponsorForm(forms.Form):
+    employer_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_sponsor1_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+    employer_sponsor2_signature = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
                     Row(
                         Column(
-                            Button(
-                                'Clear Signatures',
-                                'Clear Signatures',
-                                css_class='''
-                                    btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100
-                                ''',
-                                css_id='signature-form-clear-button'
-                            ),
-                            Button(
-                                'Confirm',
-                                'Confirm',
-                                css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
-                                css_id='signature-form-submit-button'
-                            ),
-                            css_class='d-flex justify-content-center mt-4'
+                            'employer_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Employer Signature</h6>
+                                <canvas
+                                    id="employer-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
                         )
                     )
                 ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_sponsor1_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Sponsor 1 Signature</h6>
+                                <canvas
+                                    id="sponsor-1-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                ),
+                Column(
+                    Row(
+                        Column(
+                            'employer_sponsor2_signature'
+                        )
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                """
+                                <h6>Sponsor 2 Signature</h6>
+                                <canvas
+                                    id="sponsor-2-signature-pad"
+                                    class=""
+                                    style="border: 1px solid #d2d2d2"
+                                >
+                                </canvas>
+                                """
+                            )
+                        )
+                    ),
+                ),
                 css_class='form-group'
+            ),
+            Row(
+                Column(
+                    Button(
+                        'Clear Signatures',
+                        'Clear Signatures',
+                        css_class='btn btn-xs-lg btn-outline-secondary w-25 mr-2 w-xs-100',
+                        css_id='signature-form-clear-button'
+                    ),
+                    Button(
+                        'Confirm',
+                        'Confirm',
+                        css_class='btn btn-xs-lg btn-primary w-25 ml-2 w-xs-100',
+                        css_id='signature-form-submit-button'
+                    ),
+                    css_class='d-flex justify-content-center mt-4'
+                )
             )
         )
 

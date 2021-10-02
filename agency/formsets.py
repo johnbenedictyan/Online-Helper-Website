@@ -1,11 +1,7 @@
-# Django Imports
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Column, Field, Layout, Row
 from django.forms.models import inlineformset_factory
 
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Field
-
-# App Imports
 from .forms import AgencyBranchForm
 from .models import Agency, AgencyBranch
 

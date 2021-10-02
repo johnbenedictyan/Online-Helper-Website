@@ -1,13 +1,12 @@
 # App Imports
-from .constants import (
-    ResidentialStatusFullChoices, EmployerTypeOfApplicantChoices
-)
+from .constants import (EmployerTypeOfApplicantChoices,
+                        ResidentialStatusFullChoices)
 
 
 def is_local(rs):
     return (
-        rs == ResidentialStatusFullChoices.SC or
-        rs == ResidentialStatusFullChoices.PR
+        rs == ResidentialStatusFullChoices.SC
+        or rs == ResidentialStatusFullChoices.PR
     )
 
 

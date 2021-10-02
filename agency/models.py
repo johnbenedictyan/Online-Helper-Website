@@ -1,23 +1,17 @@
-# Global Imports
 import stripe
-
-# Django Imports
-from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator, URLValidator
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-# Project Apps Imports
+from onlinemaid.fields import NullableCharField
 from onlinemaid.helper_functions import get_sg_region
-from onlinemaid.validators import validate_ea_personnel_number
 from onlinemaid.storage_backends import PublicMediaStorage
+from onlinemaid.validators import validate_ea_personnel_number
 
-# App Imports
-from .constants import (
-    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices,
-    OpeningHoursChoices
-)
+from .constants import (AgencyEmployeeRoleChoices, AreaChoices,
+                        OpeningHoursTypeChoices)
+from .fields import OpeningHoursField
 from .validators import validate_postcode
 
 # Utiliy Classes and Functions
@@ -28,21 +22,17 @@ from .validators import validate_postcode
 class Agency(models.Model):
     name = models.CharField(
         verbose_name=_('Company Name'),
-        max_length=100,
-        blank=False
+        max_length=100
     )
 
     license_number = models.CharField(
         verbose_name=_('License number'),
-        max_length=100,
-        blank=False
+        max_length=100
     )
 
-    website_uri = models.CharField(
+    website_uri = NullableCharField(
         verbose_name=_('Website URL'),
         max_length=100,
-        blank=True,
-        null=True,
         validators=[
             URLValidator(
                 message=_('Please enter a valid URL')
@@ -58,61 +48,51 @@ class Agency(models.Model):
     )
 
     profile = models.TextField(
-        verbose_name=_('Profile'),
-        blank=False
+        verbose_name=_('Profile')
     )
 
     services = models.TextField(
-        verbose_name=_('Services'),
-        blank=False
+        verbose_name=_('Services')
     )
 
     amount_of_biodata = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of FDW Biodata'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_biodata_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of FDW Biodata allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_featured_biodata = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of featured FDW Biodata'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_featured_biodata_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of featured FDW Biodata allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_employees = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employee accounts'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_employees_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employee accounts allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_documents = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employer documents'),
-        default=0,
-        null=False
+        default=0
     )
 
     amount_of_documents_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Amount of employer documents allowed'),
-        default=0,
-        null=False
+        default=0
     )
 
     active = models.BooleanField(
@@ -120,10 +100,8 @@ class Agency(models.Model):
         editable=False
     )
 
-    name_url = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True
+    name_url = NullableCharField(
+        max_length=255
     )
 
     __original_branch_address_line_1 = None
@@ -138,7 +116,7 @@ class Agency(models.Model):
             self.__original_branch_address_line_2 = main_branch.address_2
             self.__original_branch_postal_code = main_branch.postal_code
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     def get_main_branch(self):
@@ -158,13 +136,10 @@ class Agency(models.Model):
     def get_branches(self):
         return self.branches.filter(main_branch=False)
 
-    # def get_enquiries(self):
-    #     return self.enquiries.all()
-
     def get_biodata_limit_status(self):
         return (
-            self.amount_of_biodata < self.amount_of_biodata_allowed and
-            self.amount_of_biodata_allowed != 0
+            self.amount_of_biodata < self.amount_of_biodata_allowed
+            and self.amount_of_biodata_allowed != 0
         )
 
     def get_agency_owner_email(self):
@@ -235,188 +210,115 @@ class AgencyOpeningHours(models.Model):
     type = models.CharField(
         verbose_name=_('Agency\'s operating hours type'),
         max_length=2,
-        blank=False,
         choices=OpeningHoursTypeChoices.choices,
         default=OpeningHoursTypeChoices.OPENING_HOURS
     )
 
-    monday_start = models.CharField(
-        verbose_name=_('Monday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    monday_start = OpeningHoursField(
+        verbose_name=_('Monday\'s opening time')
     )
 
-    monday_end = models.CharField(
-        verbose_name=_('Monday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    monday_end = OpeningHoursField(
+        verbose_name=_('Monday\'s closing time')
     )
 
     monday_closed = models.BooleanField(
         verbose_name=_('Monday opening status'),
-        blank=False,
         default=False
     )
 
-    tuesday_start = models.CharField(
-        verbose_name=_('Tuesday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    tuesday_start = OpeningHoursField(
+        verbose_name=_('Tuesday\'s opening time')
     )
 
-    tuesday_end = models.CharField(
-        verbose_name=_('Tuesday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    tuesday_end = OpeningHoursField(
+        verbose_name=_('Tuesday\'s closing time')
     )
 
     tuesday_closed = models.BooleanField(
         verbose_name=_('Tuesday opening status'),
-        blank=False,
         default=False
     )
 
-    wednesday_start = models.CharField(
-        verbose_name=_('Wednesday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    wednesday_start = OpeningHoursField(
+        verbose_name=_('Wednesday\'s opening time')
     )
 
-    wednesday_end = models.CharField(
-        verbose_name=_('Wednesday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    wednesday_end = OpeningHoursField(
+        verbose_name=_('Wednesday\'s closing time')
     )
 
     wednesday_closed = models.BooleanField(
         verbose_name=_('Wednesday opening status'),
-        blank=False,
         default=False
     )
 
-    thursday_start = models.CharField(
-        verbose_name=_('Thursday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    thursday_start = OpeningHoursField(
+        verbose_name=_('Thursday\'s opening time')
     )
 
-    thursday_end = models.CharField(
-        verbose_name=_('Thursday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    thursday_end = OpeningHoursField(
+        verbose_name=_('Thursday\'s closing time')
     )
 
     thursday_closed = models.BooleanField(
         verbose_name=_('Thursday opening status'),
-        blank=False,
         default=False
     )
 
-    friday_start = models.CharField(
-        verbose_name=_('Friday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    friday_start = OpeningHoursField(
+        verbose_name=_('Friday\'s opening time')
     )
 
-    friday_end = models.CharField(
-        verbose_name=_('Friday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    friday_end = OpeningHoursField(
+        verbose_name=_('Friday\'s closing time')
     )
 
     friday_closed = models.BooleanField(
         verbose_name=_('Friday opening status'),
-        blank=False,
         default=False
     )
 
-    saturday_start = models.CharField(
-        verbose_name=_('Saturday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    saturday_start = OpeningHoursField(
+        verbose_name=_('Saturday\'s opening time')
     )
 
-    saturday_end = models.CharField(
-        verbose_name=_('Saturday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    saturday_end = OpeningHoursField(
+        verbose_name=_('Saturday\'s closing time')
     )
 
     saturday_closed = models.BooleanField(
         verbose_name=_('Saturday opening status'),
-        blank=False,
         default=False
     )
 
-    sunday_start = models.CharField(
-        verbose_name=_('Sunday\'s opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    sunday_start = OpeningHoursField(
+        verbose_name=_('Sunday\'s opening time')
     )
 
-    sunday_end = models.CharField(
-        verbose_name=_('Sunday\'s closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    sunday_end = OpeningHoursField(
+        verbose_name=_('Sunday\'s closing time')
     )
 
     sunday_closed = models.BooleanField(
         verbose_name=_('Sunday opening status'),
-        blank=False,
         default=False
     )
 
-    public_holiday_start = models.CharField(
-        verbose_name=_('Public holiday opening time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    public_holiday_start = OpeningHoursField(
+        verbose_name=_('Public holiday opening time')
     )
 
-    public_holiday_end = models.CharField(
-        verbose_name=_('Public holiday closing time'),
-        max_length=8,
-        blank=False,
-        choices=OpeningHoursChoices.choices,
-        default=OpeningHoursChoices.TIME0000
+    public_holiday_end = OpeningHoursField(
+        verbose_name=_('Public holiday closing time')
     )
 
     public_holiday_closed = models.BooleanField(
         verbose_name=_('Public Holiday opening status'),
-        blank=False,
         default=False
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Operating Hours for {self.agency.name}'
 
     class Meta:
@@ -442,14 +344,12 @@ class AgencyOwner(models.Model):
 
     name = models.CharField(
         verbose_name=_('Agency Owner Name'),
-        max_length=50,
-        blank=False
+        max_length=50
     )
 
     mobile_number = models.CharField(
         verbose_name=_('Agency Owner Mobile Number'),
         max_length=50,
-        blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -463,7 +363,7 @@ class AgencyOwner(models.Model):
         editable=False
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.agency.name + ' Owner'
 
     def is_test_email(self):
@@ -492,34 +392,29 @@ class AgencyBranch(models.Model):
 
     name = models.CharField(
         verbose_name=_('Branch Name'),
-        max_length=50,
-        blank=False
+        max_length=50
     )
 
     address_1 = models.CharField(
         verbose_name=_('Street Address'),
-        max_length=100,
-        blank=False
+        max_length=100
     )
 
     address_2 = models.CharField(
         verbose_name=_('Unit Number'),
-        max_length=50,
-        blank=False
+        max_length=50
     )
 
     postal_code = models.CharField(
         verbose_name=_('Postal Code'),
         max_length=25,
-        blank=False,
-        validators=[validate_postcode],
+        validators=[validate_postcode]
     )
 
     area = models.CharField(
         verbose_name=_('Area'),
         max_length=2,
         editable=False,
-        blank=False,
         choices=AreaChoices.choices,
         default=AreaChoices.CENTRAL
     )
@@ -527,7 +422,6 @@ class AgencyBranch(models.Model):
     office_number = models.CharField(
         verbose_name=_('Office Number'),
         max_length=10,
-        blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -541,7 +435,6 @@ class AgencyBranch(models.Model):
     mobile_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=10,
-        blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -559,11 +452,10 @@ class AgencyBranch(models.Model):
     )
 
     email = models.EmailField(
-        verbose_name=_('Branch Email Address'),
-        blank=False
+        verbose_name=_('Branch Email Address')
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.name:
             return self.agency.name + ', ' + self.name
         else:
@@ -596,7 +488,6 @@ class AgencyPlan(models.Model):
     choice = models.CharField(
         verbose_name=_('Plan type'),
         max_length=4,
-        blank=False,
         choices=PlanTypeChoices.choices,
         default=PlanTypeChoices.BIODATA_100
     )
@@ -606,10 +497,9 @@ class AgencyPlan(models.Model):
         editable=False
     )
 
-    remarks = models.CharField(
+    remarks = NullableCharField(
         verbose_name=_('Remarks'),
-        max_length=100,
-        blank=True
+        max_length=100
     )
 
 # Agency Employee Models
@@ -625,14 +515,12 @@ class AgencyEmployee(models.Model):
 
     name = models.CharField(
         verbose_name=_('Name'),
-        max_length=255,
-        blank=False
+        max_length=255
     )
 
     contact_number = models.CharField(
         verbose_name=_('Contact Number'),
         max_length=50,
-        blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -652,8 +540,7 @@ class AgencyEmployee(models.Model):
     )
 
     email = models.EmailField(
-        verbose_name=_('Employee\'s Email Address'),
-        blank=False
+        verbose_name=_('Employee\'s Email Address')
     )
 
     agency = models.ForeignKey(
@@ -671,7 +558,6 @@ class AgencyEmployee(models.Model):
     role = models.CharField(
         verbose_name=_('Employee Role'),
         max_length=2,
-        blank=False,
         choices=AgencyEmployeeRoleChoices.choices,
         default=AgencyEmployeeRoleChoices.SALES_STAFF
     )
@@ -686,7 +572,7 @@ class AgencyEmployee(models.Model):
         default=False
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.ea_personnel_number + ' - ' + self.name
 
     def get_ea_personnel_no(self):
@@ -717,26 +603,22 @@ class AgencyEmployee(models.Model):
 class PotentialAgency(models.Model):
     name = models.CharField(
         verbose_name=_('Agency Name'),
-        max_length=100,
-        blank=False
+        max_length=100
     )
 
     license_number = models.CharField(
         verbose_name=_('License number'),
-        max_length=100,
-        blank=False
+        max_length=100
     )
 
     person_in_charge = models.CharField(
         verbose_name=_('Person In Charge'),
-        max_length=100,
-        blank=False
+        max_length=100
     )
 
     contact_number = models.CharField(
         verbose_name=_('Mobile Number'),
         max_length=8,
-        blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -750,7 +632,6 @@ class PotentialAgency(models.Model):
     office_number = models.CharField(
         verbose_name=_('Office Number'),
         max_length=8,
-        blank=False,
         validators=[
             RegexValidator(
                 regex='^[0-9]*$',
@@ -762,6 +643,5 @@ class PotentialAgency(models.Model):
     )
 
     email = models.EmailField(
-        verbose_name=_('Email Address'),
-        blank=False
+        verbose_name=_('Email Address')
     )

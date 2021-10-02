@@ -16,21 +16,18 @@ class AdvertisementLocation(models.Model):
 
     name = models.CharField(
         verbose_name=_('Page name'),
-        max_length=30,
-        blank=False
+        max_length=30
     )
 
     tier = models.CharField(
         verbose_name=_('Advertisment tier'),
         max_length=8,
-        blank=False,
         choices=AdvertisementTierChoices.choices,
         default=AdvertisementTierChoices.STANDARD
     )
 
     total_amount_allowed = models.PositiveSmallIntegerField(
         verbose_name=_('Total number of allowed advertisements'),
-        blank=False,
         default=5
     )
 
@@ -55,7 +52,6 @@ class Advertisement(models.Model):
     ad_type = models.CharField(
         verbose_name=_('Advertisment type'),
         max_length=6,
-        blank=False,
         choices=AdvertisementTypeChoices.choices,
         default=AdvertisementTypeChoices.BANNER
     )
@@ -86,14 +82,12 @@ class Advertisement(models.Model):
 
     photo = models.FileField(
         verbose_name=_('Advertisement Photo'),
-        blank=False,
         null=True,
         storage=PublicMediaStorage()
     )
 
     remarks = models.TextField(
         verbose_name=_('Testimonial statment'),
-        blank=False,
         null=True
     )
 

@@ -1,4 +1,5 @@
 # Django Imports
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # Start of Constants
@@ -66,3 +67,10 @@ PROPERTY_CHOICES = (
     (PROPERTY_BUNGALOW, _('Bungalow')),
     (PROPERTY_OTHERS, _('Others')),
 )
+
+
+class EnquiryStatusChoices(models.TextChoices):
+    OPEN = 'O', _("Open")
+    ACCEPTED = 'A', _("Accepted")
+    REJECTED = 'R', _("Rejected")
+    CLOSED = 'C', _("Closed")

@@ -1,13 +1,11 @@
-# Django Imports
-from django.urls import include, path
 from django.contrib.auth import views as auth_views
+from django.urls import include, path
 
-# App Imports
-from .views import (
-    SignInView, AgencySignInView, SignOutView, PotentialEmployerDetail,
-    PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete,
-    CustomPasswordResetView, UserEmailUpdate
-)
+from .views import (AgencySignInView, CustomPasswordResetView,
+                    FDWAccountCreate, FDWAccountDetail,
+                    PotentialEmployerCreate, PotentialEmployerDelete,
+                    PotentialEmployerDetail, PotentialEmployerUpdate,
+                    SignInView, SignOutView, UserEmailUpdate)
 
 # Start of Urls
 
@@ -16,9 +14,14 @@ urlpatterns = [
         'create/',
         include([
             path(
-                '',
+                'PE',
                 PotentialEmployerCreate.as_view(),
                 name='potential_employer_create'
+            ),
+            path(
+                'FDW',
+                FDWAccountCreate.as_view(),
+                name='fdw_account_create'
             )
         ])
     ),
@@ -49,14 +52,24 @@ urlpatterns = [
     ),
     path(
         'profile/',
-        PotentialEmployerDetail.as_view(),
-        name='potential_employer_detail'
+        include([
+            path(
+                '',
+                PotentialEmployerDetail.as_view(),
+                name='potential_employer_detail'
+            ),
+            path(
+                'fdw',
+                FDWAccountDetail.as_view(),
+                name='fdw_account_detail'
+            )
+        ])
     ),
     path(
         'login/',
         include([
             path(
-                'employers',
+                '',
                 SignInView.as_view(),
                 name='sign_in'
             ),

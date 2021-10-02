@@ -11,11 +11,12 @@ from enquiry.forms import GeneralEnquiryForm
 def authority(request):
     authority = None
     authority_groups = [
-        'Potential Employers',
+        'Employers',
         'Agency Owners',
         'Agency Administrators',
         'Agency Managers',
-        'Agency Sales Staff'
+        'Agency Sales Staff',
+        'Foreign Domestic Workers'
     ]
     if not request.user.is_anonymous:
         for authority_name in authority_groups:

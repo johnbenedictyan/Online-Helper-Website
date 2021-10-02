@@ -1,9 +1,7 @@
-# Django Imports
 from django.contrib.auth.signals import user_logged_in, user_login_failed
 from django.dispatch import receiver
 from django.utils import timezone
 
-# App Imports
 from .models import AuditEntry
 
 # Start of Signals

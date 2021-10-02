@@ -1,59 +1,44 @@
-# Global Imports
 import json
 from datetime import datetime, timedelta
 
-# Django Imports
+from agency.forms import (AgencyEmployeeForm, AgencyOpeningHoursForm,
+                          AgencyUpdateForm)
+from agency.formsets import AgencyBranchFormSet, AgencyBranchFormSetHelper
+from agency.mixins import (AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin,
+                           GetAuthorityMixin)
+from agency.models import (Agency, AgencyBranch, AgencyEmployee,
+                           AgencyOpeningHours, AgencyPlan)
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Q
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.http.response import HttpResponseRedirect
-from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import (
-    DeleteView, FormView, UpdateView, CreateView
-)
-
-# Project Apps Imports
-from agency.forms import (
-    AgencyUpdateForm, AgencyOpeningHoursForm, AgencyEmployeeForm
-)
-from agency.formsets import AgencyBranchFormSetHelper, AgencyBranchFormSet
-from agency.models import (
-    Agency, AgencyEmployee, AgencyPlan, AgencyBranch, AgencyOpeningHours
-)
-from agency.mixins import (
-    AgencyLoginRequiredMixin, AgencyOwnerRequiredMixin, GetAuthorityMixin
-)
-from employer_documentation.models import (
-    Employer, EmployerDoc, CaseStatus, ArchivedDoc
-)
+from django.views.generic.edit import (CreateView, DeleteView, FormView,
+                                       UpdateView)
+from employer_documentation.models import CaseStatus, Employer, EmployerDoc
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.constants import MaidFoodPreferenceChoices
-from maid.forms import (
-    MaidForm, MaidLanguagesAndFHPDRForm, MaidExperienceForm, MaidAboutFDWForm
-)
-from maid.formsets import (
-    MaidLoanTransactionFormSet, MaidLoanTransactionFormSetHelper,
-    MaidEmploymentHistoryFormSet, MaidEmploymentHistoryFormSetHelper
-)
-from maid.models import (
-    Maid, MaidCooking, MaidDietaryRestriction, MaidDisabledCare,
-    MaidElderlyCare, MaidFoodHandlingPreference, MaidGeneralHousework,
-    MaidInfantChildCare, MaidLanguageProficiency
-)
-from onlinemaid.constants import AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
+from maid.forms import (MaidAboutFDWForm, MaidExperienceForm, MaidForm,
+                        MaidLanguagesAndFHPDRForm)
+from maid.formsets import (MaidEmploymentHistoryFormSet,
+                           MaidEmploymentHistoryFormSetHelper,
+                           MaidLoanTransactionFormSet,
+                           MaidLoanTransactionFormSetHelper)
+from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
+                         MaidDisabledCare, MaidElderlyCare,
+                         MaidFoodHandlingPreference, MaidGeneralHousework,
+                         MaidInfantChildCare, MaidLanguageProficiency)
+from onlinemaid.constants import AG_ADMINS, AG_MANAGERS, AG_OWNERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# App Imports
-from .filters import (
-    DashboardCaseFilter, DashboardEmployerFilter, DashboardMaidFilter,
-    DashboardSalesFilter, DashboardStatusFilter
-)
+from .filters import (DashboardCaseFilter, DashboardEmployerFilter,
+                      DashboardMaidFilter, DashboardSalesFilter,
+                      DashboardStatusFilter)
 
 # Start of Views
 
@@ -217,46 +202,17 @@ class SalesList(BaseFilteredListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qsArchived = ArchivedDoc.objects.none()
-        if self.request.GET.get('employer_fdw_search'):
-            search_terms = self.request.GET.get('employer_fdw_search')
-            qsArchived = ArchivedDoc.objects.filter(
-                Q(employer_name__icontains=search_terms) |
-                Q(fdw__name__icontains=search_terms)
-            )
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
-            qs = list(
-                qs.filter(
-                    employer__agency_employee__agency__pk=self.agency_id
-                    )
-                ) + list(
-                    qsArchived.filter(
-                        agency__agency_license_no=Agency.objects.get(
-                            pk=self.agency_id
-                        ).license_number
-                    )
-                )
+            qs.filter(employer__agency_employee__agency__pk=self.agency_id)
         elif self.authority == AG_MANAGERS:
             ae = self.request.user.agency_employee
             ag_branch = ae.branch
-            ea_p_nos = ae.get_all_ea_personnel_no_in_branch()
-            qs = list(
-                qs.filter(
-                    employer__agency_employee__branch=ag_branch
-                )) + list(
-                qsArchived.filter(
-                    agency__agency_employee_ea_personnel_number__in=ea_p_nos
-                ))
+            qs.filter(employer__agency_employee__branch=ag_branch)
         elif self.authority == AG_SALES:
             ae = self.request.user.agency_employee
-            ae_p_no = ae.ea_personnel_number
-            qs = list(
-                qs.filter(
-                    employer__agency_employee=self.request.user.agency_employee
-                )) + list(
-                qsArchived.filter(
-                    agency__agency_employee_ea_personnel_number=ae_p_no
-                ))
+            qs.filter(
+                employer__agency_employee=self.request.user.agency_employee
+            )
         else:
             qs = None
 
@@ -1506,12 +1462,15 @@ class DataProviderView(View):
                                 'x': k.replace('_', ' ').title(),
                                 'y': [
                                     datetime.strptime(v, '%d/%m/%Y'),
-                                    datetime.strptime(v, '%d/%m/%Y') +
-                                    timedelta(days=1)
+                                    datetime.strptime(v, '%d/%m/%Y')
+                                    + timedelta(days=1)
                                 ]
                             } for k, v in i['data'].items() if (
-                                datetime.now().isocalendar()[1] + 1 ==
-                                datetime.strptime(v, '%d/%m/%Y').isocalendar(
+                                datetime.now().isocalendar()[1] + 1
+                                == datetime.strptime(
+                                    v,
+                                    '%d/%m/%Y'
+                                ).isocalendar(
                                 )[1]
                             )
                         ]
@@ -1526,8 +1485,8 @@ class DataProviderView(View):
                                 'x': k.replace('_', ' ').title(),
                                 'y': [
                                     datetime.strptime(v, '%d/%m/%Y'),
-                                    datetime.strptime(v, '%d/%m/%Y') +
-                                    timedelta(days=1)
+                                    datetime.strptime(v, '%d/%m/%Y')
+                                    + timedelta(days=1)
                                 ]
                             } for k, v in i['data'].items() if (
                                 datetime.strptime(
