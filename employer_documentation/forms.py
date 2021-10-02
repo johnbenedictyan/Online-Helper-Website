@@ -709,7 +709,7 @@ class EmployerForm(forms.ModelForm):
                     employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
 
             if 'employer_email' in self.changed_data:
                 self.instance.set_potential_employer_relation(
@@ -1729,7 +1729,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     employer__rn_sponsor_employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2091,7 +2091,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     employer__rn_ja_employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2175,7 +2175,7 @@ class EmployerIncomeDetailsForm(forms.ModelForm):
                     employer__rn_income_employer=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2380,7 +2380,7 @@ class EmployerDocForm(forms.ModelForm):
                 'fdw_off_day_of_week'
             ]
             if not set(strict_fields).isdisjoint(self.changed_data):
-                self.instance.increment_version_number()
+                self.instance.set_increment_version_number()
         return super().save()
 
 
@@ -2696,7 +2696,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                     rn_servicefeeschedule_ed=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -2927,7 +2927,7 @@ class DocServAgmtEmpCtrForm(forms.ModelForm):
                     rn_serviceagreement_ed=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 
@@ -3130,7 +3130,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
                     rn_safetyagreement_ed=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
         return super().save()
 
 

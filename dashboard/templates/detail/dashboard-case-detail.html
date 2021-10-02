@@ -124,7 +124,7 @@
                 </div>
                 <div class="col">
                     <p class="mb-1">FDW Per Off Day Compensation</p>
-                    <h6 class="text-dark mb-3">S$ {{ object.per_off_day_compensation|intcomma }}</h6>
+                    <h6 class="text-dark mb-3">S$ {{ object.get_per_off_day_compensation|intcomma }}</h6>
                 </div>
             </div>
         </div>
@@ -289,7 +289,7 @@
                         </div>
                         <div class="col-md-12">
                             <p class="mb-1">Balance Payment - Upon Collection of FDW</p>
-                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.calc_bal|intcomma }}</h6>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.get_balance|intcomma }}</h6>
                         </div>
                     </div>
                 </div>

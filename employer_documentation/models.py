@@ -1,15 +1,12 @@
 # Global Imports
 import os
 import uuid
-import secrets
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
 
 # Django Imports
 from django.db import models
-from django.urls import reverse
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage
@@ -86,7 +83,7 @@ class ReceiptMaster(models.Model):
     def get_running_number(self):
         return self.number
 
-    def increment_running_number(self):
+    def set_increment_running_number(self):
         self.number += 1
         self.save()
 
@@ -241,50 +238,6 @@ class Employer(models.Model):
         ''')
     )
 
-    def get_employer_nric_full(self):
-        return decrypt_string(
-            self.employer_nric_num,
-            settings.ENCRYPTION_KEY,
-            self.employer_nric_nonce,
-            self.employer_nric_tag,
-        )
-
-    def get_employer_nric_partial(self, padded=True):
-        plaintext = self.get_employer_nric_full()
-        if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
-        else:
-            return plaintext[-4:] if plaintext else ''
-
-    def get_employer_fin_full(self):
-        return decrypt_string(
-            self.employer_fin_num,
-            settings.ENCRYPTION_KEY,
-            self.employer_fin_nonce,
-            self.employer_fin_tag,
-        )
-
-    def get_employer_fin_partial(self, padded=True):
-        plaintext = self.get_employer_fin_full()
-        if padded:
-            return 'x'*5 + plaintext[-4:] if plaintext else ''
-        else:
-            return plaintext[-4:] if plaintext else ''
-
-    def get_employer_passport_full(self):
-        return decrypt_string(
-            self.employer_passport_num,
-            settings.ENCRYPTION_KEY,
-            self.employer_passport_nonce,
-            self.employer_passport_tag,
-        )
-
-    def mobile_partial_sg(self):
-        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
-
-    def get_email_partial(self):
-        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
-
     # Employer Spouse
     spouse_name = NullableCharField(
         verbose_name=_("Spouse's Name"),
@@ -336,6 +289,50 @@ class Employer(models.Model):
         verbose_name=_("Spouse's Passport Expiry Date")
     )
 
+    def get_employer_nric_full(self):
+        return decrypt_string(
+            self.employer_nric_num,
+            settings.ENCRYPTION_KEY,
+            self.employer_nric_nonce,
+            self.employer_nric_tag,
+        )
+
+    def get_employer_nric_partial(self, padded=True):
+        plaintext = self.get_employer_nric_full()
+        if padded:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
+
+    def get_employer_fin_full(self):
+        return decrypt_string(
+            self.employer_fin_num,
+            settings.ENCRYPTION_KEY,
+            self.employer_fin_nonce,
+            self.employer_fin_tag,
+        )
+
+    def get_employer_fin_partial(self, padded=True):
+        plaintext = self.get_employer_fin_full()
+        if padded:
+            return 'x'*5 + plaintext[-4:] if plaintext else ''
+        else:
+            return plaintext[-4:] if plaintext else ''
+
+    def get_employer_passport_full(self):
+        return decrypt_string(
+            self.employer_passport_num,
+            settings.ENCRYPTION_KEY,
+            self.employer_passport_nonce,
+            self.employer_passport_tag,
+        )
+
+    def get_mobile_partial_sg(self):
+        return '+65 ' + self.employer_mobile_number[:4] + ' ' + 'x'*4
+
+    def get_email_partial(self):
+        return self.employer_email[:3] + '_'*8 + self.employer_email[-3:]
+
     def get_employer_spouse_nric_full(self):
         return decrypt_string(
             self.spouse_nric_num,
@@ -385,8 +382,7 @@ class Employer(models.Model):
             self.potential_employer = potential_employer
             self.save()
 
-    # Utility Functions
-    def details_missing_spouse(self):
+    def get_details_missing_spouse(self):
         error_msg_list = []
 
         if (
@@ -418,7 +414,7 @@ class Employer(models.Model):
 
         return error_msg_list
 
-    def details_missing_employer(self):
+    def get_details_missing_employer(self):
         # Retrieve verbose name ->
         # self._meta.get_field('field_name_str').verbose_name
         error_msg_list = []
@@ -435,18 +431,18 @@ class Employer(models.Model):
                 error_msg_list.append('employer_passport_date')
 
         # Check spouse details completeness
-        error_msg_list += self.details_missing_spouse()
+        error_msg_list += self.get_details_missing_spouse()
 
         if is_applicant_sponsor(self.applicant_type):
             if hasattr(self, 'rn_sponsor_employer'):
-                m_s = self.rn_sponsor_employer.details_missing_sponsors()
+                m_s = self.rn_sponsor_employer.get_details_missing_sponsors()
                 error_msg_list += m_s
             else:
                 error_msg_list.append('rn_sponsor_employer')
 
         elif is_applicant_joint_applicant(self.applicant_type):
             if hasattr(self, 'rn_ja_employer'):
-                m_ja = self.rn_ja_employer.details_missing_joint_applicant()
+                m_ja = self.rn_ja_employer.get_details_missing_joint_applicant()
                 error_msg_list += m_ja
             else:
                 error_msg_list.append('rn_ja_employer')
@@ -462,7 +458,7 @@ class Employer(models.Model):
 
         return error_msg_list
 
-    def has_income_obj(self):
+    def get_income_obj(self):
         try:
             income_obj = self.rn_income_employer
         except ObjectDoesNotExist:
@@ -470,7 +466,7 @@ class Employer(models.Model):
         else:
             return income_obj
 
-    def has_sponsor_obj(self):
+    def get_sponsor_obj(self):
         try:
             sponsor_obj = self.rn_sponsor_employer
         except ObjectDoesNotExist:
@@ -478,7 +474,7 @@ class Employer(models.Model):
         else:
             return sponsor_obj
 
-    def has_joint_applicant_obj(self):
+    def get_joint_applicant_obj(self):
         try:
             joint_applicant_obj = self.rn_ja_employer
         except ObjectDoesNotExist:
@@ -808,7 +804,7 @@ class EmployerSponsor(models.Model):
             self.sponsor_2_spouse_passport_tag,
         )
 
-    def details_missing_sponsor_2_spouse(self):
+    def get_details_missing_sponsor_2_spouse(self):
         error_msg_list = []
 
         if is_married(self.sponsor_2_marital_status):
@@ -837,7 +833,7 @@ class EmployerSponsor(models.Model):
 
         return error_msg_list
 
-    def details_missing_sponsor_2(self):
+    def get_details_missing_sponsor_2(self):
         error_msg_list = []
 
         if self.sponsor_2_required:
@@ -862,11 +858,11 @@ class EmployerSponsor(models.Model):
             if not self.get_sponsor_2_nric_full():
                 error_msg_list.append('rn_sponsor_employer.sponsor_2_nric_num')
 
-            error_msg_list += self.details_missing_sponsor_2_spouse()
+            error_msg_list += self.get_details_missing_sponsor_2_spouse()
 
         return error_msg_list
 
-    def details_missing_sponsor_1_spouse(self):
+    def get_details_missing_sponsor_1_spouse(self):
         error_msg_list = []
 
         if is_married(self.sponsor_1_marital_status):
@@ -895,10 +891,10 @@ class EmployerSponsor(models.Model):
 
         return error_msg_list
 
-    def details_missing_sponsors(self):
+    def get_details_missing_sponsors(self):
         error_msg_list = []
-        error_msg_list += self.details_missing_sponsor_1_spouse()
-        error_msg_list += self.details_missing_sponsor_2()
+        error_msg_list += self.get_details_missing_sponsor_1_spouse()
+        error_msg_list += self.get_details_missing_sponsor_2()
         return error_msg_list
 
 # Joint Applicants
@@ -1050,7 +1046,7 @@ class EmployerJointApplicant(models.Model):
             self.joint_applicant_spouse_passport_tag,
         )
 
-    def details_missing_joint_applicant_spouse(self):
+    def get_details_missing_joint_applicant_spouse(self):
         error_msg_list = []
 
         if is_married(self.joint_applicant_marital_status):
@@ -1083,7 +1079,7 @@ class EmployerJointApplicant(models.Model):
 
         return error_msg_list
 
-    def details_missing_joint_applicant(self):
+    def get_details_missing_joint_applicant(self):
         error_msg_list = []
 
         if is_local(self.joint_applicant_residential_status):
@@ -1097,7 +1093,7 @@ class EmployerJointApplicant(models.Model):
             if not self.joint_applicant_passport_date:
                 error_msg_list.append('joint_applicant_passport_date')
 
-        error_msg_list += self.details_missing_joint_applicant_spouse()
+        error_msg_list += self.get_details_missing_joint_applicant_spouse()
         return error_msg_list
 
 
@@ -1282,7 +1278,7 @@ class EmployerDoc(models.Model):
         else:
             return app_type
 
-    def per_off_day_compensation(self):
+    def get_per_off_day_compensation(self):
         return Decimal(
             self.fdw_salary/NUMBER_OF_WORK_DAYS_IN_MONTH
         ).quantize(
@@ -1290,7 +1286,7 @@ class EmployerDoc(models.Model):
             rounding=ROUND_HALF_UP
         )
 
-    def fdw_off_day_of_week_display(self):
+    def get_fdw_off_day_of_week_display(self):
         if int(self.fdw_off_day_of_week) == DayOfWeekChoices.MON:
             return _('Monday')
         elif int(self.fdw_off_day_of_week) == DayOfWeekChoices.TUE:
@@ -1306,8 +1302,8 @@ class EmployerDoc(models.Model):
         else:
             return _('Sunday')
 
-    def details_missing_case_pre_signing_1(self):
-        error_msg_list = self.employer.details_missing_employer()
+    def get_details_missing_case_pre_signing_1(self):
+        error_msg_list = self.employer.get_details_missing_employer()
 
         if not hasattr(self, 'rn_servicefeeschedule_ed'):
             error_msg_list.append('rn_servicefeeschedule_ed')
@@ -1334,8 +1330,8 @@ class EmployerDoc(models.Model):
 
         return error_msg_list
 
-    def details_missing_case_pre_signing_2(self):
-        error_msg_list = self.details_missing_case_pre_signing_1()
+    def get_details_missing_case_pre_signing_2(self):
+        error_msg_list = self.get_details_missing_case_pre_signing_1()
 
         if hasattr(self, 'rn_docupload_ed'):
             if not self.rn_docupload_ed.ipa_pdf:
@@ -1362,7 +1358,15 @@ class EmployerDoc(models.Model):
 
         return error_msg_list
 
-    def archive(self):
+    def get_stage(self):
+        if self.rn_signatures_ed.employer_signature_1:
+            return 1
+        elif self.rn_signatures_ed.employer_signature_2:
+            return 2
+        else:
+            return 0
+
+    def set_archive(self):
         if not self.is_archived_doc():
             archived_agency_details = ArchivedAgencyDetails.objects.create(
                 agency_name=self.employer.agency_employee.agency.name,
@@ -1391,18 +1395,10 @@ class EmployerDoc(models.Model):
             self.status = CaseStatusChoices.ARCHIVED
             self.save()
 
-    def increment_version_number(self):
-        self.rn_signatures_ed.erase_signatures()
+    def set_increment_version_number(self):
+        self.rn_signatures_ed.set_erase_signatures()
         self.version += 1
         self.save()
-
-    def get_stage(self):
-        if self.rn_signatures_ed.employer_signature_1:
-            return 1
-        elif self.rn_signatures_ed.employer_signature_2:
-            return 2
-        else:
-            return 0
 
     @property
     def is_stage_0(self):
@@ -1551,7 +1547,7 @@ class DocServiceFeeSchedule(models.Model):
         default=0
     )
 
-    def calc_admin_cost(self):
+    def get_admin_cost(self):
         # Method to calculate total administrative cost
         total = 0
         fields = [
@@ -1572,19 +1568,19 @@ class DocServiceFeeSchedule(models.Model):
             total += field if field else 0
         return total
 
-    def calc_placement_fee(self):
+    def get_placement_fee(self):
         # Method to calculate placement fee
         return self.b3_agency_fee + self.employer_doc.fdw_loan
 
-    def calc_total_fee(self):
+    def get_total_fee(self):
         # Method to calculate total fee
-        return self.calc_admin_cost() + self.calc_placement_fee()
+        return self.get_admin_cost() + self.get_placement_fee()
 
-    def calc_bal(self):
+    def get_balance(self):
         # Method to calculate outstanding balance owed by employer
         balance = (
-            self.calc_admin_cost()
-            + self.calc_placement_fee()
+            self.get_admin_cost()
+            + self.get_placement_fee()
             - self.ca_deposit_amount
         )
         return balance
@@ -1597,31 +1593,31 @@ class DocServiceFeeSchedule(models.Model):
             self.fdw_replaced_passport_tag,
         )
 
-    def generate_receipt_no(self):
+    def get_receipt_no(self):
         receipt_master = ReceiptMaster()
         running_receipt_no = receipt_master.get_running_number()
-        receipt_master.increment_running_number()
+        receipt_master.set_increment_running_number()
         month = datetime.now().strftime('%m')
         year = datetime.now().strftime('%Y')
         invoice_number = f'{running_receipt_no}/{month}/{year}'
         return invoice_number
 
-    def generate_invoice(self, invoice_type):
+    def set_invoice(self, invoice_type):
         if invoice_type == 'Deposit':
             self.ca_deposit_date = timezone.now()
-            self.ca_deposit_receipt_no = self.generate_receipt_no()
+            self.ca_deposit_receipt_no = self.get_receipt_no()
         else:
             self.ca_remaining_payment_date = timezone.now()
-            self.ca_remaining_payment_amount = self.calc_bal()
-            # self.ca_remaining_payment_receipt_no = self.generate_receipt_no()
+            self.ca_remaining_payment_amount = self.get_balance()
+            # self.ca_remaining_payment_receipt_no = self.get_receipt_no()
 
         self.save()
 
-    def generate_deposit_invoice(self):
-        self.generate_invoice(invoice_type='Deposit')
+    def set_deposit_invoice(self):
+        self.set_invoice(invoice_type='Deposit')
 
-    def generate_remaining_invoice(self):
-        self.generate_invoice(invoice_type='Remaining Amount')
+    def set_remaining_invoice(self):
+        self.set_invoice(invoice_type='Remaining Amount')
 
 
 class DocServAgmtEmpCtr(models.Model):
@@ -1959,7 +1955,7 @@ class CaseSignature(models.Model):
         else:
             return self.employer_signature_1
 
-    def erase_signatures(self):
+    def set_erase_signatures(self):
         self.employer_signature_1 = None if self.employer_signature_1 else self.employer_signature_1
         self.fdw_signature = None if self.fdw_signature else self.fdw_signature
         self.agency_staff_signature = None if self.agency_staff_signature else self.agency_staff_signature

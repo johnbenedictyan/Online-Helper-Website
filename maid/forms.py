@@ -363,7 +363,7 @@ class MaidForm(forms.ModelForm):
                     fdw=self.instance
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
             elif 'email' in self.changed_data:
                 self.instance.set_fdw_account_relation(
                     self.cleaned_data.get(

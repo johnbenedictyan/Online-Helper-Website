@@ -97,7 +97,7 @@ class PdfHtmlViewMixin:
         BASIC_SALARY = self.object.fdw_salary
 
         # Off day constants
-        PER_OFF_DAY_COMPENSATION = self.object.per_off_day_compensation()
+        PER_OFF_DAY_COMPENSATION = self.object.get_per_off_day_compensation()
         FDW_OFF_DAYS_PER_MONTH = self.object.fdw_off_days
         OFF_DAY_OF_WEEK = int(self.object.fdw_off_day_of_week)
 

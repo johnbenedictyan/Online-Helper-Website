@@ -395,7 +395,7 @@ class DocServiceFeeScheduleCreateView(
         return super().form_valid(form)
 
     def get_success_url(self):
-        self.object.generate_deposit_invoice()
+        self.object.set_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -869,7 +869,7 @@ class DocServiceFeeScheduleUpdateView(
         return kwargs
 
     def get_success_url(self):
-        self.object.generate_deposit_invoice()
+        self.object.set_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -1233,7 +1233,7 @@ class EmployerHouseholdDetailsFormView(
             pk=self.kwargs.get(
                 self.pk_url_kwarg
             )
-        ).has_income_obj()
+        ).get_income_obj()
         if income_obj:
             context.update({
                 'income_obj': income_obj
@@ -1482,7 +1482,7 @@ class HandoverFormView(FormView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         ed = self.object.employer_doc
-        missing_details = ed.details_missing_case_pre_signing_2()
+        missing_details = ed.get_details_missing_case_pre_signing_2()
         if missing_details:
             for md in missing_details:
                 messages.warning(
@@ -1516,7 +1516,7 @@ class HandoverFormView(FormView):
         self.object.save()
 
         try:
-            self.object.employer_doc.archive()
+            self.object.employer_doc.set_archive()
         except Exception as e:
             print(e)
         else:
@@ -1582,7 +1582,7 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        self.object.generate_remaining_invoice()
+        self.object.set_remaining_invoice()
         success_url = reverse_lazy('case_detail_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })

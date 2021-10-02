@@ -723,7 +723,7 @@ class AgencyEmployeeForm(forms.ModelForm):
                         employer__agency_employee=self.instance
                     )
                     for employer_doc in employer_doc_qs:
-                        employer_doc.increment_version_number()
+                        employer_doc.set_increment_version_number()
 
         else:
             try:
@@ -836,7 +836,7 @@ class AgencyBranchForm(forms.ModelForm):
                     employer__agency_employee__agency=self.agency
                 )
                 for employer_doc in employer_doc_qs:
-                    employer_doc.increment_version_number()
+                    employer_doc.set_increment_version_number()
 
         return super().save(*args, **kwargs)
 
