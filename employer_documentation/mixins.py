@@ -85,10 +85,10 @@ class PdfHtmlViewMixin:
         return HTML(
             string=html_template,
             base_url=request.build_absolute_uri()
-            ).write_pdf(
-                # Load separate CSS stylesheet from static folder
-                stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
-            )
+        ).write_pdf(
+            # Load separate CSS stylesheet from static folder
+            stylesheets=[CSS(settings.STATIC_URL + 'css/pdf.css')]
+        )
 
     def calc_repayment_schedule(self):
         repayment_table = {}

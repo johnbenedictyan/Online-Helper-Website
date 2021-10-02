@@ -273,11 +273,11 @@ class PotentialEmployerCreationFormTest(TestCase):
             'email': 'asd@asd.com',
             'password': 'Password123!',
             'contact_number': '81234567'
-            }
+        }
 
         test_form = EmployerCreationForm(
             data=test_form_data
-            )
+        )
         self.assertFalse(
             test_form.is_valid()
         )
@@ -290,7 +290,7 @@ class PotentialEmployerCreationFormTest(TestCase):
             'form',
             'name',
             'This field is required.'
-            )
+        )
 
     def testMissingLastNameErrorMessage(self):
         test_form_data = {

@@ -719,10 +719,10 @@ class EmployerForm(forms.ModelForm):
                 )
         else:
             self.instance.set_potential_employer_relation(
-                    self.cleaned_data.get(
-                        'employer_email'
-                    )
+                self.cleaned_data.get(
+                    'employer_email'
                 )
+            )
         return super().save()
 
 
@@ -1232,7 +1232,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     _("""
                         Sponsor 1 spouse residential status field cannot be
                         empty""")
-                    )
+                )
         else:
             return None
 
@@ -2207,7 +2207,8 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('household_id_num')
         error_msg = validate_nric(cleaned_field)
         if error_msg:
-            raise ValidationError(_('Invalid NRIC or birth certificate number'))
+            raise ValidationError(
+                _('Invalid NRIC or birth certificate number'))
         else:
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
@@ -2404,7 +2405,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
         passport_num = self.instance.get_fdw_replaced_passport_full()
         self.initial.update({
             'fdw_replaced_passport_num': passport_num
-            })
+        })
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -3532,8 +3533,8 @@ class TokenChallengeForm(forms.Form):
         else:
             error_msg = _('Invalid Credentials')
             raise ValidationError(
-                    error_msg,
-                    code='invalid',
+                error_msg,
+                code='invalid',
             )
 
 

@@ -29,14 +29,14 @@
 {% block js %}
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 {% if case_type == 'SINGLE' %}
-    {% include 'snippets/signature_snippet_js.html' with signature_pad_id="employer-signature-pad" signature_input_id="id_employer_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+{% include 'snippets/signature_snippet_js.html' with signature_pad_id="employer-signature-pad" signature_input_id="id_employer_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% elif case_type == 'SPOUSE' %}
-    {% include 'snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="employer-spouse-signature-pad" signature_input_2_id="id_employer_spouse_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+{% include 'snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="employer-spouse-signature-pad" signature_input_2_id="id_employer_spouse_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% elif case_type == 'SPONSR1' %}
-    {% include 'snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="sponsor-1-signature-pad" signature_input_2_id="id_employer_sponsor1_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+{% include 'snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="sponsor-1-signature-pad" signature_input_2_id="id_employer_sponsor1_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% elif case_type == 'SPONSR2' %}
-    {% include 'snippets/signature_snippet_tri_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="sponsor-1-signature-pad" signature_input_2_id="id_employer_sponsor1_signature" signature_pad_3_id="sponsor-2-signature-pad" signature_input_3_id="id_employer_sponsor2_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+{% include 'snippets/signature_snippet_tri_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="sponsor-1-signature-pad" signature_input_2_id="id_employer_sponsor1_signature" signature_pad_3_id="sponsor-2-signature-pad" signature_input_3_id="id_employer_sponsor2_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% elif case_type == 'JNT_AP' %}
-    {% include 'snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="joint-application-signature-pad" signature_input_2_id="id_joint_applicant_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
+{% include 'snippets/signature_snippet_dual_js.html' with signature_pad_1_id="employer-signature-pad" signature_input_1_id="id_employer_signature" signature_pad_2_id="joint-application-signature-pad" signature_input_2_id="id_joint_applicant_signature" signature_submit_button_id="signature-form-submit-button" signature_clear_button_id="signature-form-clear-button" %}
 {% endif %}
 {% endblock js %}

@@ -7,7 +7,7 @@ register = template.Library()
 @stringfilter
 def format_contact_number(value):
     l = len(value)//2
-    return value[:l] + ' ' +value[l:]
+    return value[:l] + ' ' + value[l:]
 
 
 @stringfilter

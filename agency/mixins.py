@@ -41,14 +41,14 @@ class AgencyLoginRequiredMixin(LoginRequiredMixin):
 
 
 class AgencyOwnerRequiredMixin(GroupRequiredMixin):
-    group_required = u"Agency Owners"
+    group_required = AG_OWNERS
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You are required to login using an Agency
                                 owners account to perform this action'''
 
 
 class AgencyAdministratorRequiredMixin(GroupRequiredMixin):
-    group_required = u"Agency Administrators"
+    group_required = AG_ADMINS
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You are required to login using an Agency
                                 administrator account to perform this
@@ -56,7 +56,7 @@ class AgencyAdministratorRequiredMixin(GroupRequiredMixin):
 
 
 class AgencyManagerRequiredMixin(GroupRequiredMixin):
-    group_required = u"Agency Managers"
+    group_required = AG_MANAGERS
     login_url = reverse_lazy('agency_sign_in')
     permission_denied_message = '''You are required to login using an Agency
                                 managers account to perform this action'''

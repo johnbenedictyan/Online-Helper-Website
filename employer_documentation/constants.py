@@ -142,19 +142,19 @@ monthly_income_label_map = {
     EmployerTypeOfApplicantChoices.SINGLE: [
         'Employer Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ],
+    ],
     EmployerTypeOfApplicantChoices.SPOUSE: [
         'Employer and Spouse Combined Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ],
+    ],
     EmployerTypeOfApplicantChoices.SPONSOR: [
         'Sponsor(s) Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ],
+    ],
     EmployerTypeOfApplicantChoices.JOINT_APPLICANT: [
         'Employer and Joint Applicant Combined Monthly Income',
         'Have you worked in Singapore for the last 2 Years?'
-        ]
+    ]
 }
 
 
