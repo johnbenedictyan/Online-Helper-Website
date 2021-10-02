@@ -1,17 +1,12 @@
-# Django Imports
+from agency.models import AgencyEmployee
 from django.db.models import Q
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
 from django_filters import CharFilter as DjangoFiltersCharFilter
 from django_filters import ChoiceFilter as DjangoFiltersChoiceFilter
-from django_filters import ModelChoiceFilter as DjangoFilterModelChoiceFilter
 from django_filters import FilterSet as DjangoFiltersFilterSet
-
-# App Imports
-from agency.models import AgencyEmployee
-from employer_documentation.models import Employer, CaseStatus, EmployerDoc
+from django_filters import ModelChoiceFilter as DjangoFilterModelChoiceFilter
+from employer_documentation.models import CaseStatus, Employer, EmployerDoc
 from maid.constants import MaidStatusChoices
 from maid.models import Maid
 from onlinemaid.constants import AG_MANAGERS, AG_SALES

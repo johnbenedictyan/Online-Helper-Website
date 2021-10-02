@@ -1,23 +1,16 @@
-# Global Imports
 import stripe
-
-# Django Imports
-from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator, URLValidator
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-# Project Apps Imports
 from onlinemaid.fields import NullableCharField
 from onlinemaid.helper_functions import get_sg_region
-from onlinemaid.validators import validate_ea_personnel_number
 from onlinemaid.storage_backends import PublicMediaStorage
+from onlinemaid.validators import validate_ea_personnel_number
 
-# App Imports
-from .constants import (
-    AreaChoices, AgencyEmployeeRoleChoices, OpeningHoursTypeChoices,
-)
+from .constants import (AgencyEmployeeRoleChoices, AreaChoices,
+                        OpeningHoursTypeChoices)
 from .fields import OpeningHoursField
 from .validators import validate_postcode
 

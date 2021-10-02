@@ -1,21 +1,15 @@
-# Django Imports
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView
-
-# Project Apps Imports
+from django.views.generic.edit import CreateView
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 
-# App Imports
 from .filters import AgencyFilter
 from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
+from .mixins import GetAuthorityMixin, OMStaffRequiredMixin
 from .models import Agency, AgencyOwner, PotentialAgency
-from .mixins import (
-    GetAuthorityMixin, OMStaffRequiredMixin, AgencyOwnerRequiredMixin,
-)
 
 # Start of Views
 

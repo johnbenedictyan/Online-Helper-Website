@@ -1,14 +1,10 @@
-# Django Imports
 from django.db.models import Q
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
 from django_filters import CharFilter as DjangoFiltersCharFilter
 from django_filters import ChoiceFilter as DjangoFiltersChoiceFilter
 from django_filters import FilterSet as DjangoFiltersFilterSet
 
-# App Imports
 from .constants import AreaChoices
 from .models import Agency
 

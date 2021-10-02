@@ -1,31 +1,22 @@
-#  Django Imports
+from agency.models import Agency, AgencyEmployee
+from crispy_forms.bootstrap import PrependedText, StrictButton
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (HTML, Button, Column, Field, Hidden, Layout,
+                                 Row, Submit)
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
-
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import (
-    Layout, Field, Submit, Row, Column, HTML, Hidden, Button
-)
-from crispy_forms.bootstrap import PrependedText, StrictButton
-
-# Project Apps Imports
+from maid.models import Maid
 from onlinemaid import constants as om_constants
 from onlinemaid.helper_functions import encrypt_string
-from onlinemaid.validators import (
-    validate_ea_personnel_number, validate_passport, validate_nric,
-    validate_fin
-)
-from agency.models import Agency, AgencyEmployee
-from maid.models import Maid
+from onlinemaid.validators import (validate_ea_personnel_number, validate_fin,
+                                   validate_nric, validate_passport)
 
-# App Imports
-from .helper_functions import is_local, is_foreigner
-from . import models, constants
+from . import constants, models
+from .helper_functions import is_foreigner, is_local
 
 # Start of Forms
 

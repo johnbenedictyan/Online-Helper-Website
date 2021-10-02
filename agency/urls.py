@@ -2,9 +2,8 @@
 from django.urls import include, path
 
 # App Imports
-from .views import (
-    AgencySignUp, AgencyList, AgencyDetail, AgencyCreate, AgencyOwnerCreate
-)
+from .views import (AgencyCreate, AgencyDetail, AgencyList, AgencyOwnerCreate,
+                    AgencySignUp)
 
 # Start of Urls
 

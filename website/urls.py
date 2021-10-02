@@ -2,13 +2,12 @@
 from django.urls import include, path
 
 # App Imports
-from .views import (
-    AboutUsView, AdminPanelEnquiryListView, AdminPanelView, ContactUsView,
-    Error403View, Error404View, Error500View, FAQView, HomeView,
-    HowItWorksView, PrivacyPolicyView, RobotsTxt, SitemapView,
-    TermsAndConditionsAgencyView, TermsAndConditionsUserView, UsefulLinksView,
-    LoaderIOView
-)
+from .views import (AboutUsView, AdminPanelEnquiryListView, AdminPanelView,
+                    ContactUsView, Error403View, Error404View, Error500View,
+                    FAQView, HomeView, HowItWorksView, LoaderIOView,
+                    PrivacyPolicyView, RobotsTxt, SitemapView,
+                    TermsAndConditionsAgencyView, TermsAndConditionsUserView,
+                    UsefulLinksView)
 
 # Start of Urls
 

@@ -1,39 +1,31 @@
-# Django
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.http.response import HttpResponse
-from django.urls import reverse, reverse_lazy, resolve
-from django.http import FileResponse, HttpResponseRedirect, JsonResponse
-from django.views.generic import RedirectView
-from django.views.generic.list import View
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import (
-    CreateView, UpdateView, DeleteView, FormView
-)
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import FileResponse, HttpResponseRedirect, JsonResponse
+from django.http.response import HttpResponse
 from django.shortcuts import redirect
+from django.urls import resolve, reverse, reverse_lazy
+from django.views.generic import RedirectView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import (CreateView, DeleteView, FormView,
+                                       UpdateView)
+from django.views.generic.list import View
 
-from agency.models import Agency
 from agency.mixins import GetAuthorityMixin
+from agency.models import Agency
 from maid.helper_functions import is_maid_new
 from onlinemaid.constants import AG_SALES
 
 # From our apps
-from . import models, forms
-from .constants import (
-    monthly_income_label_map, ERROR_MESSAGES_VERBOSE_NAME_MAP
-)
-from .formset import (
-    EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper,
-    MaidInventoryFormSet, MaidInventoryFormSetHelper
-)
-from .helper_functions import (
-    is_applicant_joint_applicant, is_applicant_sponsor
-)
-from .mixins import (
-    EmployerDocAccessMixin, PdfHtmlViewMixin,
-    AgencyAccessToEmployerDocAppMixin, OwnerAccessToEmployerDocAppMixin
-)
+from . import forms, models
+from .constants import (ERROR_MESSAGES_VERBOSE_NAME_MAP,
+                        monthly_income_label_map)
+from .formset import (EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper,
+                      MaidInventoryFormSet, MaidInventoryFormSetHelper)
+from .helper_functions import (is_applicant_joint_applicant,
+                               is_applicant_sponsor)
+from .mixins import (AgencyAccessToEmployerDocAppMixin, EmployerDocAccessMixin,
+                     OwnerAccessToEmployerDocAppMixin, PdfHtmlViewMixin)
 
 # Detail Views
 

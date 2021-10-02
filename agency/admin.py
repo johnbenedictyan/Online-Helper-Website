@@ -2,10 +2,8 @@
 from django.contrib import admin
 
 # App Imports
-from .models import (
-    Agency, AgencyEmployee, AgencyBranch, AgencyOpeningHours, AgencyPlan,
-    AgencyOwner
-)
+from .models import (Agency, AgencyBranch, AgencyEmployee, AgencyOpeningHours,
+                     AgencyOwner, AgencyPlan)
 
 # Start of Admin
 

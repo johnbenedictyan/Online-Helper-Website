@@ -1,31 +1,25 @@
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
-# Django Imports
-from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
+from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-# Foreign Apps Imports
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from enquiry.constants import EnquiryStatusChoices
 from enquiry.models import MaidShortlistedEnquiryIM
 from maid.models import Maid
-from onlinemaid.constants import AUTHORITY_GROUPS, AG_OWNERS, T
+from onlinemaid.constants import AG_OWNERS, AUTHORITY_GROUPS, T
 from onlinemaid.mixins import SuccessMessageMixin
 
-# Imports from local app
-from .forms import (
-    EmployerCreationForm, SignInForm, AgencySignInForm,
-    CustomPasswordResetForm, EmailUpdateForm, FDWAccountCreationForm
-)
-from .models import FDWAccount, PotentialEmployer
+from .forms import (AgencySignInForm, CustomPasswordResetForm, EmailUpdateForm,
+                    EmployerCreationForm, FDWAccountCreationForm, SignInForm)
 from .mixins import PotentialEmployerGrpRequiredMixin
+from .models import FDWAccount, PotentialEmployer
 
 # Start of Views
 

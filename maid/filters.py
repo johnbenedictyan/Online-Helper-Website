@@ -1,26 +1,22 @@
 # Global Imports
 from datetime import timedelta
 
+# Project Apps Imports
+from agency.models import Agency
 # Django Imports
 from django import forms
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
 # Foreign Apps Imports
-from django_filters import (
-    CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter,
-    ModelMultipleChoiceFilter, RangeFilter
-)
-
-# Project Apps Imports
-from agency.models import Agency
+from django_filters import (CharFilter, ChoiceFilter, FilterSet,
+                            ModelChoiceFilter, ModelMultipleChoiceFilter,
+                            RangeFilter)
 from onlinemaid.constants import MaritalStatusChoices
 
 # App Imports
-from .constants import (
-    TypeOfMaidChoices, MaidCountryOfOrigin, MaidCreatedOnChoices
-)
-from .models import Maid, MaidResponsibility, MaidLanguage
+from .constants import (MaidCountryOfOrigin, MaidCreatedOnChoices,
+                        TypeOfMaidChoices)
+from .models import Maid, MaidLanguage, MaidResponsibility
 from .widgets import CustomRangeWidget
 
 # Start of Filters

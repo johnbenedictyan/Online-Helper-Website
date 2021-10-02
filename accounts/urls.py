@@ -1,14 +1,11 @@
-# Django Imports
-from django.urls import include, path
 from django.contrib.auth import views as auth_views
+from django.urls import include, path
 
-# App Imports
-from .views import (
-    SignInView, AgencySignInView, SignOutView, PotentialEmployerDetail,
-    PotentialEmployerCreate, PotentialEmployerUpdate, PotentialEmployerDelete,
-    CustomPasswordResetView, UserEmailUpdate, FDWAccountCreate,
-    FDWAccountDetail
-)
+from .views import (AgencySignInView, CustomPasswordResetView,
+                    FDWAccountCreate, FDWAccountDetail,
+                    PotentialEmployerCreate, PotentialEmployerDelete,
+                    PotentialEmployerDetail, PotentialEmployerUpdate,
+                    SignInView, SignOutView, UserEmailUpdate)
 
 # Start of Urls
 

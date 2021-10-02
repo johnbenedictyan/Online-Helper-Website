@@ -1,33 +1,32 @@
 # Django Imports
-from django.db import models
+# Project Apps Imports
+from accounts.models import FDWAccount
+from agency.models import Agency
 from django.conf import settings
-from django.core.validators import RegexValidator
+from django.core.validators import (MaxValueValidator, MinValueValidator,
+                                    RegexValidator)
+from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import MinValueValidator, MaxValueValidator
-
 # Imports from project
-from onlinemaid.constants import TrueFalseChoices, MaritalStatusChoices
+from onlinemaid.constants import MaritalStatusChoices, TrueFalseChoices
 from onlinemaid.fields import CustomBinaryField, NullableEmailField
 from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
-# Project Apps Imports
-from accounts.models import FDWAccount
-from agency.models import Agency
-
 # App Imports
-from .constants import (
-    CookingRemarksChoices, DisabledCareRemarksChoices,
-    ElderlyCareRemarksChoices, GeneralHouseworkRemarksChoices,
-    InfantChildCareRemarksChoices, TypeOfMaidChoices, MaidAssessmentChoices,
-    MaidDietaryRestrictionChoices, MaidEducationLevelChoices,
-    MaidEmploymentCountry, MaidExperienceChoices, MaidFoodPreferenceChoices,
-    MaidLanguageChoices, MaidLanguageProficiencyChoices,
-    MaidLoanDescriptionChoices, MaidNationalityChoices,
-    MaidPassportStatusChoices, MaidReligionChoices, MaidResponsibilityChoices,
-    MaidStatusChoices
-)
+from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
+                        ElderlyCareRemarksChoices,
+                        GeneralHouseworkRemarksChoices,
+                        InfantChildCareRemarksChoices, MaidAssessmentChoices,
+                        MaidDietaryRestrictionChoices,
+                        MaidEducationLevelChoices, MaidEmploymentCountry,
+                        MaidExperienceChoices, MaidFoodPreferenceChoices,
+                        MaidLanguageChoices, MaidLanguageProficiencyChoices,
+                        MaidLoanDescriptionChoices, MaidNationalityChoices,
+                        MaidPassportStatusChoices, MaidReligionChoices,
+                        MaidResponsibilityChoices, MaidStatusChoices,
+                        TypeOfMaidChoices)
 from .helper_functions import is_able_to_speak
 
 # Start of Models

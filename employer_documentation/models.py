@@ -1,49 +1,41 @@
-# Global Imports
 import os
 import uuid
-from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
+from decimal import ROUND_HALF_UP, Decimal
 
-# Django Imports
-from django.db import models
+from accounts.models import PotentialEmployer
+from agency.models import AgencyEmployee
 from django.conf import settings
-from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, RegexValidator
+from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
-# Project Apps Imports
-from accounts.models import PotentialEmployer
+from maid.constants import TypeOfMaidChoices
+from maid.models import Maid
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.fields import (
-    CustomBinaryField, NullableCharField, NullableBooleanField,
-    GenderCharField, NullableGenderCharField, NationalityCharField,
-    NullableNationalityCharField, NullableDateField,
-    MaritalStatusCharField, NullableMaritalStatusCharField
-)
+from onlinemaid.fields import (CustomBinaryField, GenderCharField,
+                               MaritalStatusCharField, NationalityCharField,
+                               NullableBooleanField, NullableCharField,
+                               NullableDateField, NullableGenderCharField,
+                               NullableMaritalStatusCharField,
+                               NullableNationalityCharField)
 from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
-from agency.models import AgencyEmployee
-from maid.models import Maid
-from maid.constants import TypeOfMaidChoices
 
 # App Imports
-from .constants import (
-    EmployerTypeOfApplicantChoices, RelationshipChoices,
-    ResidentialStatusPartialChoices, IncomeChoices, HouseholdIdTypeChoices,
-    DayChoices, DayOfWeekChoices, MonthChoices, WeekChoices, CaseStatusChoices,
-    NUMBER_OF_WORK_DAYS_IN_MONTH
-)
-from .fields import (
-    CustomMoneyDecimalField, ResidentialStatusCharField,
-    NullableResidentialStatusCharField
-)
-from .helper_functions import (
-    is_local, is_applicant_joint_applicant, is_applicant_sponsor,
-    is_applicant_spouse
-)
+from .constants import (NUMBER_OF_WORK_DAYS_IN_MONTH, CaseStatusChoices,
+                        DayChoices, DayOfWeekChoices,
+                        EmployerTypeOfApplicantChoices, HouseholdIdTypeChoices,
+                        IncomeChoices, MonthChoices, RelationshipChoices,
+                        ResidentialStatusPartialChoices, WeekChoices)
+from .fields import (CustomMoneyDecimalField,
+                     NullableResidentialStatusCharField,
+                     ResidentialStatusCharField)
+from .helper_functions import (is_applicant_joint_applicant,
+                               is_applicant_sponsor, is_applicant_spouse,
+                               is_local)
 
 # Utiliy Classes and Functions
 

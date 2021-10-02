@@ -1,16 +1,11 @@
-# Django Imports
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
+from onlinemaid.constants import (AG_ADMINS, AG_MANAGERS, AG_OWNERS,
+                                  AUTHORITY_GROUPS, EMPLOYERS, FDW)
+from onlinemaid.mixins import (GroupRequiredMixin, LoginRequiredMixin,
+                               SuperUserRequiredMixin)
 
-# Project Apps Imports
 from agency.models import Agency
-from onlinemaid.constants import (
-    AUTHORITY_GROUPS, AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES, EMPLOYERS,
-    FDW
-)
-from onlinemaid.mixins import (
-    LoginRequiredMixin, SuperUserRequiredMixin, GroupRequiredMixin
-)
 
 # App Imports
 

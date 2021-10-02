@@ -1,7 +1,6 @@
 # App Imports
-from .constants import (
-    ResidentialStatusFullChoices, EmployerTypeOfApplicantChoices
-)
+from .constants import (EmployerTypeOfApplicantChoices,
+                        ResidentialStatusFullChoices)
 
 
 def is_local(rs):

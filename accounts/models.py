@@ -1,11 +1,9 @@
 from itertools import chain
 
-# Django Imports
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-# App Imports
 from .managers import CustomUserManager
 
 # Start of Models

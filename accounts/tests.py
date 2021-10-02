@@ -1,14 +1,9 @@
-# Django Imports
 from django.contrib.auth.models import Group, Permission
 from django.test import TestCase
 from django.urls import reverse_lazy
+from onlinemaid.helper_functions import (create_test_user, r_contact_number,
+                                         r_string)
 
-# Foreign Apps Imports
-from onlinemaid.helper_functions import (
-    r_string, r_contact_number, create_test_user
-)
-
-# App Imports
 from .forms import EmployerCreationForm
 from .models import Employer
 

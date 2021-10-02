@@ -5,13 +5,13 @@ import random
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+# App Imports
+from .models import (Maid, MaidCooking, MaidDisabledCare, MaidElderlyCare,
+                     MaidGeneralHousework, MaidInfantChildCare,
+                     MaidResponsibility)
+
 # Project Apps Imports
 
-# App Imports
-from .models import (
-    Maid, MaidInfantChildCare, MaidElderlyCare, MaidDisabledCare,
-    MaidGeneralHousework, MaidCooking, MaidResponsibility
-)
 
 # Utiliy Classes and Functions
 

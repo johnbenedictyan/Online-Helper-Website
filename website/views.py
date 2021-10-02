@@ -1,14 +1,14 @@
 # Django Imports
 from itertools import chain
-from django.views.generic.base import TemplateView
-from django.views.generic.list import ListView
 
 # Project Apps Imports
 from agency.mixins import OMStaffRequiredMixin
 from agency.models import Agency
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
-from payment.models import SubscriptionProduct
 from maid.filters import MiniMaidFilter
+from payment.models import SubscriptionProduct
 
 # Start of Views
 

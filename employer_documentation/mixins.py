@@ -1,27 +1,18 @@
-# Global Imports
 import calendar
 import datetime
 
-# Django Imports
+from agency.mixins import AgencyLoginRequiredMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.urls.base import reverse_lazy
-
-# Foreign Apps Imports
-from weasyprint import HTML, CSS
-
-# Project Apps Imports
-from agency.mixins import AgencyLoginRequiredMixin
 from maid.constants import COUNTRY_LANGUAGE_MAP
-from onlinemaid.constants import (
-    AG_OWNERS, AG_ADMINS, AG_MANAGERS, AG_SALES
-)
+from onlinemaid.constants import AG_ADMINS, AG_MANAGERS, AG_OWNERS, AG_SALES
 from onlinemaid.helper_functions import intervening_weekdays
 from onlinemaid.mixins import GroupRequiredMixin
+from weasyprint import CSS, HTML
 
-# App Imports
 from .models import EmployerDoc
 
 # Start of mixins

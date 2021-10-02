@@ -1,22 +1,16 @@
-# Django Imports
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Column, Div, Layout, Row, Submit
 from django import forms
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
-from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
-
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Div
-
-# Project Apps Imports
+from django.utils.translation import ugettext_lazy as _
 from onlinemaid.constants import AG_OWNERS, EMPLOYERS, FDW
 
-# App Imports
-from .models import PotentialEmployer, FDWAccount
+from .models import FDWAccount, PotentialEmployer
 
 # Start of Forms
 

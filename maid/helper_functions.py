@@ -1,4 +1,4 @@
-from .constants import TypeOfMaidChoices, MaidLanguageProficiencyChoices
+from .constants import MaidLanguageProficiencyChoices, TypeOfMaidChoices
 
 
 def is_maid_new(maid_type):
