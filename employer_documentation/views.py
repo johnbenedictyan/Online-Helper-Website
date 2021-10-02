@@ -1382,7 +1382,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
 class SignatureFormView(EmployerDocAccessMixin, FormView):
     slug_url_kwarg = 'slug'
     http_method_names = ['get', 'post']
-    template_name = 'signature_form_token.html'
+    template_name = 'signature_form.html'
     pk_url_kwarg = 'level_1_pk'
     form_type = None
 
@@ -1395,6 +1395,7 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
         context = super().get_context_data(**kwargs)
         context.update({
             'object': self.object,
+            'case_type': self.object.get_case_type()
         })
         return context
 
