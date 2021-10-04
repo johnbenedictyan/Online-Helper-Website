@@ -1,20 +1,24 @@
+from typing import Any, Dict, Optional, Type
+
+from agency.mixins import GetAuthorityMixin
+from agency.models import Agency
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.query import QuerySet as QS
 from django.http import FileResponse, HttpResponseRedirect, JsonResponse
+from django.http.request import HttpRequest
 from django.http.response import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import resolve, reverse, reverse_lazy
 from django.views.generic import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import (CreateView, DeleteView, FormView,
                                        UpdateView)
 from django.views.generic.list import View
-
-from agency.mixins import GetAuthorityMixin
-from agency.models import Agency
 from maid.helper_functions import is_maid_new
 from onlinemaid.constants import AG_SALES
+from onlinemaid.types import T, _FormT
 
 # From our apps
 from . import forms, models
@@ -49,7 +53,7 @@ class EmployerDocDetailView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'detail/dashboard-case-detail.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'agency_name': Agency.objects.get(
@@ -70,7 +74,7 @@ class EmployerCreateView(
     form_class = forms.EmployerForm
     template_name = 'crispy_form.html'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -79,12 +83,12 @@ class EmployerCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         if self.authority == AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if is_applicant_sponsor(self.object.applicant_type):
             success_url = reverse_lazy(
                 'employer_sponsor_create_route',
@@ -122,12 +126,12 @@ class EmployerSponsorCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -135,7 +139,7 @@ class EmployerSponsorCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if not is_applicant_sponsor(self.object.applicant_type):
             return HttpResponseRedirect(
@@ -158,7 +162,7 @@ class EmployerSponsorCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -168,11 +172,11 @@ class EmployerSponsorCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer = self.get_object()
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
@@ -188,12 +192,12 @@ class EmployerJointApplicantCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -201,7 +205,7 @@ class EmployerJointApplicantCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if not is_applicant_joint_applicant(self.object.applicant_type):
             return HttpResponseRedirect(
@@ -224,7 +228,7 @@ class EmployerJointApplicantCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -234,11 +238,11 @@ class EmployerJointApplicantCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer = self.get_object()
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy('employer_incomedetails_create_route', kwargs={
             'level_0_pk': self.object.employer.pk
         })
@@ -254,12 +258,12 @@ class EmployerIncomeDetailsCreateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -267,7 +271,7 @@ class EmployerIncomeDetailsCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_income_employer'):
             return HttpResponseRedirect(
@@ -281,7 +285,7 @@ class EmployerIncomeDetailsCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         type_of_applicant = self.get_object().applicant_type
         monthly_income_label = monthly_income_label_map.get(
@@ -296,11 +300,11 @@ class EmployerIncomeDetailsCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer = self.get_object()
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if self.object.employer.household_details_required:
             return reverse_lazy('employer_householddetails_route', kwargs={
                 'level_0_pk': self.object.employer.pk,
@@ -318,7 +322,7 @@ class EmployerDocCreateView(
     form_class = forms.EmployerDocForm
     template_name = 'crispy_form.html'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -328,7 +332,7 @@ class EmployerDocCreateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         success_url = reverse_lazy('servicefee_create_route', kwargs={
             'level_1_pk': self.object.pk
         })
@@ -345,12 +349,12 @@ class DocServiceFeeScheduleCreateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -358,7 +362,7 @@ class DocServiceFeeScheduleCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_servicefeeschedule_ed'):
             return HttpResponseRedirect(
@@ -372,7 +376,7 @@ class DocServiceFeeScheduleCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -382,11 +386,11 @@ class DocServiceFeeScheduleCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         self.object.set_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
@@ -404,12 +408,12 @@ class DocServAgmtEmpCtrCreateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -417,7 +421,7 @@ class DocServAgmtEmpCtrCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_serviceagreement_ed'):
             return HttpResponseRedirect(
@@ -431,7 +435,7 @@ class DocServAgmtEmpCtrCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -441,11 +445,11 @@ class DocServAgmtEmpCtrCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if is_maid_new(self.object.employer_doc.fdw.maid_type):
             success_url = reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
@@ -467,12 +471,12 @@ class DocSafetyAgreementCreateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -480,7 +484,7 @@ class DocSafetyAgreementCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_safetyagreement_ed'):
             return HttpResponseRedirect(
@@ -494,7 +498,7 @@ class DocSafetyAgreementCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -504,12 +508,12 @@ class DocSafetyAgreementCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer_doc = self.get_object()
 
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         success_url = reverse_lazy('docupload_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -526,12 +530,12 @@ class DocUploadCreateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -539,7 +543,7 @@ class DocUploadCreateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_docupload_ed'):
             return HttpResponseRedirect(
@@ -553,7 +557,7 @@ class DocUploadCreateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -562,11 +566,11 @@ class DocUploadCreateView(
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy('dashboard_case_list')
 
 # Update Views
@@ -582,7 +586,7 @@ class EmployerUpdateView(
     template_name = 'crispy_form.html'
     pk_url_kwarg = 'level_0_pk'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -591,7 +595,7 @@ class EmployerUpdateView(
 
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -600,7 +604,7 @@ class EmployerUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if is_applicant_sponsor(self.object.applicant_type):
             success_url = reverse_lazy(
                 'employer_sponsor_create_route',
@@ -635,12 +639,12 @@ class EmployerSponsorUpdateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.object.employer.pk,
@@ -648,7 +652,7 @@ class EmployerSponsorUpdateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if not is_applicant_sponsor(self.object.employer.applicant_type):
             return HttpResponseRedirect(
@@ -662,7 +666,7 @@ class EmployerSponsorUpdateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -672,7 +676,7 @@ class EmployerSponsorUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         success_url = reverse_lazy(
             'employer_incomedetails_create_route',
             kwargs={
@@ -692,12 +696,12 @@ class EmployerDocJointApplicantUpdateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -705,7 +709,7 @@ class EmployerDocJointApplicantUpdateView(
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         if not is_applicant_joint_applicant(
             self.object.employer.applicant_type
@@ -721,7 +725,7 @@ class EmployerDocJointApplicantUpdateView(
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -731,7 +735,7 @@ class EmployerDocJointApplicantUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         success_url = reverse_lazy(
             'employer_incomedetails_create_route',
             kwargs={
@@ -751,12 +755,12 @@ class EmployerIncomeDetailsUpdateView(
     pk_url_kwarg = 'level_0_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -764,7 +768,7 @@ class EmployerIncomeDetailsUpdateView(
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         type_of_applicant = self.object.employer.applicant_type
         monthly_income_label = monthly_income_label_map.get(
@@ -779,7 +783,7 @@ class EmployerIncomeDetailsUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if self.object.employer.household_details_required:
             success_url = reverse_lazy(
                 'employer_householddetails_route',
@@ -802,7 +806,7 @@ class EmployerDocUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -810,7 +814,7 @@ class EmployerDocUpdateView(
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -820,7 +824,7 @@ class EmployerDocUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         success_url = reverse_lazy('servicefee_create_route', kwargs={
             'level_1_pk': self.object.pk
         })
@@ -837,12 +841,12 @@ class DocServiceFeeScheduleUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -850,7 +854,7 @@ class DocServiceFeeScheduleUpdateView(
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -860,7 +864,7 @@ class DocServiceFeeScheduleUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         self.object.set_deposit_invoice()
         success_url = reverse_lazy('serviceagreement_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
@@ -878,12 +882,12 @@ class DocServAgmtEmpCtrUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -891,7 +895,7 @@ class DocServAgmtEmpCtrUpdateView(
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -901,7 +905,7 @@ class DocServAgmtEmpCtrUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if is_maid_new(self.object.employer_doc.fdw.maid_type):
             success_url = reverse_lazy('safetyagreement_create_route', kwargs={
                 'level_1_pk': self.object.employer_doc.pk
@@ -923,12 +927,12 @@ class DocSafetyAgreementUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -936,7 +940,7 @@ class DocSafetyAgreementUpdateView(
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -946,7 +950,7 @@ class DocSafetyAgreementUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         success_url = reverse_lazy('docupload_create_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
@@ -963,12 +967,12 @@ class DocUploadUpdateView(
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -976,7 +980,7 @@ class DocUploadUpdateView(
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -985,7 +989,7 @@ class DocUploadUpdateView(
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse('dashboard_case_list')
 
 
@@ -995,12 +999,12 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
     pk_url_kwarg = 'level_1_pk'
     template_name = 'crispy_form.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(self.pk_url_kwarg),
@@ -1008,7 +1012,7 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'user_pk': self.request.user.pk,
@@ -1017,7 +1021,7 @@ class CaseStatusUpdateView(GetAuthorityMixin, UpdateView):
         })
         return kwargs
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         referer_url = self.request.headers['Referer'].replace(
             self.request.headers['Origin'],
             ''
@@ -1072,7 +1076,7 @@ class SignatureUpdateByAgentView(
     model_field_name = None
     form_fields = None
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         ed = self.object.employer_doc
         missing_details = ed.get_missing_case_dets_pre_signing_1()
@@ -1094,12 +1098,12 @@ class SignatureUpdateByAgentView(
 
         return super().get(request, *args, **kwargs)
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'model_field_name': self.model_field_name,
@@ -1107,7 +1111,7 @@ class SignatureUpdateByAgentView(
         })
         return kwargs
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         model_field_verbose_name = models.CaseSignature._meta.get_field(
             self.model_field_name
@@ -1117,7 +1121,7 @@ class SignatureUpdateByAgentView(
         })
         return context
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy('case_detail_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk,
         })
@@ -1134,7 +1138,7 @@ class HtmlToRenderPdfAgencyView(
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         context = self.get_context_data()
 
@@ -1158,7 +1162,7 @@ class HtmlToRenderPdfEmployerView(
     model = models.EmployerDoc
     pk_url_kwarg = 'level_1_pk'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         context = self.get_context_data()
 
@@ -1184,10 +1188,10 @@ class UploadedPdfAgencyView(
     filename = 'document.pdf'
     field_name = None
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         try:
             return FileResponse(
@@ -1225,12 +1229,12 @@ class EmployerHouseholdDetailsFormView(
     employer_id = ''
     success_message = 'Household details updated'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.Employer.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'employer_id': self.employer_id,
@@ -1273,7 +1277,7 @@ class EmployerHouseholdDetailsFormView(
             pk=self.employer_id
         )
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'instance': self.get_instance_object()
@@ -1289,7 +1293,7 @@ class EmployerHouseholdDetailsFormView(
             **self.get_form_kwargs()
         )
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -1320,12 +1324,12 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
     employer_id = ''
     success_message = 'Maid inventory updated'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'level_1_pk': self.kwargs.get(
@@ -1354,7 +1358,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
             pk=self.employer_doc_id
         )
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'instance': self.get_instance_object()
@@ -1370,7 +1374,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
             **self.get_form_kwargs()
         )
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -1394,18 +1398,17 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
 
 
 class SignatureFormView(EmployerDocAccessMixin, FormView):
-    slug_url_kwarg = 'slug'
     http_method_names = ['get', 'post']
     template_name = 'signature_form.html'
     pk_url_kwarg = 'level_1_pk'
     form_type = None
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.EmployerDoc.objects.get(
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'object': self.object,
@@ -1413,11 +1416,7 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
         })
         return context
 
-    def get(self, request, *args, **kwargs):
-        # self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
-
-    def get_form_class(self):
+    def get_form_class(self) -> Type[_FormT]:
         self.object = self.get_object()
         case_type_form_class_map = {
             'SINGLE': forms.EmployerSignatureForm,
@@ -1428,7 +1427,7 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
         }
         return case_type_form_class_map[self.object.get_case_type()]
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse(
             'employer_document_detail', kwargs={
                 'level_1_pk': self.kwargs.get(
@@ -1483,19 +1482,19 @@ class HandoverFormView(FormView):
     http_method_names = ['get', 'post']
     template_name = 'signature_form_handover.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(
             employer_doc__pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'object': self.object
         })
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         ed = self.object.employer_doc
         missing_details = ed.get_missing_case_dets_pre_signing_2()
@@ -1517,10 +1516,10 @@ class HandoverFormView(FormView):
 
         return super().get(request, *args, **kwargs)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy('dashboard_case_list')
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         self.object = self.get_object()
         self.object.employer_signature_2 = form.cleaned_data.get(
             'employer_signature'
@@ -1547,12 +1546,12 @@ class ArchiveCase(RedirectView):
     http_method_names = ['get']
     pattern_name = 'dashboard_case_list'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         return super().get_redirect_url(*args, **kwargs)
 
 
 class CaseStatusAPIView(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         data = {}
         try:
             case_status = models.CaseStatus.objects.get(
@@ -1580,14 +1579,14 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
     template_name = 'crispy_form.html'
     success_url = reverse_lazy('dashboard_sales_list')
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return models.DocServiceFeeSchedule.objects.get(
             employer_doc__pk=self.kwargs.get(
                 self.pk_url_kwarg
             )
         )
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return models.DocServiceFeeSchedule.objects.get(
             employer_doc__pk=self.kwargs.get(
                 self.pk_url_kwarg
@@ -1597,9 +1596,40 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
     def form_valid(self, form: forms.RemainingAmountDetailForm):
         return super().form_valid(form)
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         self.object.set_remaining_invoice()
         success_url = reverse_lazy('case_detail_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk
         })
         return success_url
+
+
+class ChallengeFormView(SuccessMessageMixin, FormView):
+    model = models.EmployerDoc
+    form_class = forms.TokenChallengeForm
+    slug_url_kwarg = 'level_1_pk'
+    template_name = 'signature_challenge_form.html'
+    success_url = 'potential_employer_detail'
+
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
+        return get_object_or_404(
+            models.EmployerDoc,
+            pk=self.kwargs.get(self.pk_url_kwarg)
+        )
+
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'object': self.object
+        })
+        return kwargs
+
+    def get_success_url(self) -> str:
+        if self.next_page:
+            return self.next_page
+        else:
+            return super().get_success_url()

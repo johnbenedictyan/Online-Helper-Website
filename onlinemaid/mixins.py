@@ -2,17 +2,22 @@
 import datetime
 import inspect
 import re
+from typing import Any, Dict
 
 import six
-# Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import logout_then_login, redirect_to_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
+from django.db.models.query import QuerySet as QS
 from django.http import (Http404, HttpResponse, HttpResponsePermanentRedirect,
                          HttpResponseRedirect, StreamingHttpResponse)
+from django.http.request import HttpRequest
+from django.http.response import HttpResponseBase
 from django.shortcuts import resolve_url
+
+from onlinemaid.types import T
 
 try:
     from django.utils.encoding import force_str as force_string
@@ -25,7 +30,7 @@ from django.utils.timezone import now
 
 
 class SuccessMessageMixin:
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         if self.success_message:
             messages.success(
                 self.request,
@@ -84,10 +89,10 @@ class ListFilteredMixin(object):
             self.constructed_filter = f
             return f
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return self.get_constructed_filter().qs
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs.update({'filter': self.get_constructed_filter()})
         return super(ListFilteredMixin, self).get_context_data(**kwargs)
 
@@ -162,7 +167,7 @@ class LoginRequiredMixin(AccessMixin):
         combined with CsrfExemptMixin - which in that case should
         be the left-most mixin.
     """
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if not request.user.is_authenticated:
             return self.handle_no_permission(request)
 
@@ -186,7 +191,7 @@ class AnonymousRequiredMixin(object):
     """
     authenticated_redirect_url = settings.LOGIN_REDIRECT_URL
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if request.user.is_authenticated:
             return HttpResponseRedirect(self.get_authenticated_redirect_url())
         return super(AnonymousRequiredMixin, self).dispatch(
@@ -265,7 +270,7 @@ class PermissionRequiredMixin(AccessMixin):
             )
         return has_permission
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         """
         Check to see if the user in the request has the required
         permission.
@@ -401,7 +406,7 @@ class GroupRequiredMixin(AccessMixin):
         user_groups = self.request.user.groups.values_list("name", flat=True)
         return set(groups).intersection(set(user_groups))
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         self.request = request
         in_group = False
         if request.user.is_authenticated:
@@ -435,7 +440,7 @@ class UserPassesTestMixin(AccessMixin):
     def get_test_func(self):
         return getattr(self, "test_func")
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         user_test_result = self.get_test_func()(request.user)
 
         if not user_test_result:
@@ -449,7 +454,7 @@ class SuperUserRequiredMixin(AccessMixin):
     """
     Mixin allows you to require a user with `is_superuser` set to True.
     """
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if not request.user.is_superuser:
             return self.handle_no_permission(request)
 
@@ -461,7 +466,7 @@ class StaffuserRequiredMixin(AccessMixin):
     """
     Mixin allows you to require a user with `is_staff` set to True.
     """
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if not request.user.is_staff:
             return self.handle_no_permission(request)
 
@@ -476,7 +481,7 @@ class SSLRequiredMixin(object):
     """
     raise_exception = False  # Default whether to raise an exception to none
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if getattr(settings, 'DEBUG', False):
             return super(SSLRequiredMixin, self).dispatch(
                 request, *args, **kwargs)
@@ -502,7 +507,7 @@ class RecentLoginRequiredMixin(LoginRequiredMixin):
     """
     max_last_login_delta = 1800  # Defaults to 30 minutes
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         resp = super(RecentLoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 

@@ -1,16 +1,16 @@
 # Django Imports
+# Foreign Apps Imports
+from agency.models import Agency
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet as QS
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-# Foreign Apps Imports
-from agency.models import Agency
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from onlinemaid.types import T
 
 # Imports from local app
 from .forms import AdvertisementCreationForm
-
 from .models import Advertisement
 
 # Start of Views
@@ -28,7 +28,7 @@ class AdvertisementList(ListView):
     model = Advertisement
     template_name = 'advertisement-list.html'
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return Advertisement.objects.filter(
             agency=Agency.objects.get(
                 pk=self.request.user.pk

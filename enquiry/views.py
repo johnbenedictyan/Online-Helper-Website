@@ -1,22 +1,23 @@
 from typing import Any, Optional
 
-# Django Imports
+from accounts.mixins import PotentialEmployerGrpRequiredMixin
+from accounts.models import PotentialEmployer
+from agency.mixins import OMStaffRequiredMixin
 from django.contrib import messages
+from django.db.models.query import QuerySet as QS
+from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
-
-# Project Apps Imports
-from accounts.models import PotentialEmployer
-from accounts.mixins import PotentialEmployerGrpRequiredMixin
-from agency.mixins import OMStaffRequiredMixin
 from onlinemaid.mixins import SuccessMessageMixin
+from onlinemaid.types import T
 
 # App Imports
 from .forms import GeneralEnquiryForm
-from .models import GeneralEnquiry, MaidShortlistedEnquiryIM, ShortlistedEnquiry
+from .models import (GeneralEnquiry, MaidShortlistedEnquiryIM,
+                     ShortlistedEnquiry)
 
 # Start of Views
 
@@ -30,7 +31,7 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('home')
     success_message = 'General Enquiry created'
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         if self.request.user:
             form.instance.potential_employer = PotentialEmployer.objects.get(
                 user=self.request.user
@@ -45,7 +46,7 @@ class DeactivateGeneralEnquiryView(PotentialEmployerGrpRequiredMixin,
     pattern_name = None
     pk_url_kwarg = 'pk'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         try:
             selected_enquiry = GeneralEnquiry.objects.get(
                 pk=kwargs.get(
@@ -79,7 +80,7 @@ class ToggleApproveEnquiryView(OMStaffRequiredMixin, RedirectView):
     pattern_name = 'admin_panel_enquiry_list'
     pk_url_kwarg = 'pk'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         try:
             selected_enquiry = GeneralEnquiry.objects.get(
                 pk=kwargs.get(
@@ -106,7 +107,7 @@ class EnquiryListView(PotentialEmployerGrpRequiredMixin, ListView):
     model = GeneralEnquiry
     template_name = 'list/enquiry-list.html'
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return GeneralEnquiry.objects.filter(
             potential_employer__user=self.request.user
         )
@@ -121,7 +122,7 @@ class BaseApproveEnquiryView(RedirectView):
     object_class = None
     pk_url_kwarg = 'pk'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return get_object_or_404(
             self.object_class,
             pk=self.kwargs.get(
@@ -130,7 +131,7 @@ class BaseApproveEnquiryView(RedirectView):
             approved=False
         )
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         enquiry = self.get_object()
         enquiry.approve(user=self.request.user)
         kwargs.pop(self.pk_url_kwarg)
@@ -150,7 +151,7 @@ class ApproveShortlistedlEnquiryView(BaseApproveEnquiryView):
 class RejectGeneralEnquiryView(BaseApproveEnquiryView):
     object_class = GeneralEnquiry
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         enquiry = self.get_object()
         enquiry.reject()
         kwargs.pop(self.pk_url_kwarg)
@@ -162,7 +163,7 @@ class RejectGeneralEnquiryView(BaseApproveEnquiryView):
 class RejectShortlistedEnquiryView(BaseApproveEnquiryView):
     object_class = ShortlistedEnquiry
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         enquiry = self.get_object()
         enquiry.reject()
         kwargs.pop(self.pk_url_kwarg)

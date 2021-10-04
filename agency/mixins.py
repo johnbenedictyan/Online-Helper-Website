@@ -1,4 +1,8 @@
+from typing import Any, Dict
+
 from django.core.exceptions import ImproperlyConfigured
+from django.http.request import HttpRequest
+from django.http.response import HttpResponseBase
 from django.urls import reverse_lazy
 from onlinemaid.constants import (AG_ADMINS, AG_MANAGERS, AG_OWNERS,
                                   AUTHORITY_GROUPS, EMPLOYERS, FDW)
@@ -21,7 +25,7 @@ class OMStaffRequiredMixin(SuperUserRequiredMixin):
 class AgencyLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         # Superuser should not have the permssion to access agency views.
         # It will also mess up the get authority mixin
         if request.user.is_superuser:
@@ -96,7 +100,7 @@ class GetAuthorityMixin:
             'agency_id': agency_id
         }
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if not self.authority and self.authority != '':
             raise ImproperlyConfigured(
                 '{0} is missing the authority attribute'
@@ -111,7 +115,7 @@ class GetAuthorityMixin:
         self.agency_id = self.get_authority()['agency_id']
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         if self.agency_id != '':
             context.update({

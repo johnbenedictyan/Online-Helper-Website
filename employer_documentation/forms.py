@@ -3464,32 +3464,14 @@ class TokenChallengeForm(forms.Form):
     def clean_nric_fin(self):
         cleaned_field = self.cleaned_data.get('nric_fin', '').upper()
         valid = False
-        if self.stakeholder == 'employer_1':
-            obj = self.object.employer_doc.employer
-            if is_local(obj.employer_residential_status):
-                if cleaned_field == obj.get_employer_nric_partial(
-                    padded=False
-                ):
-                    valid = True
-            else:
-                if cleaned_field == obj.get_employer_fin_partial(padded=False):
-                    valid = True
-
-        elif self.stakeholder == 'sponsor_1':
-            obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if cleaned_field == obj.get_sponsor_1_nric_partial(padded=False):
-                valid = True
-
-        elif self.stakeholder == 'sponsor_2':
-            obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if cleaned_field == obj.get_sponsor_2_nric_partial(padded=False):
-                valid = True
-
-        elif self.stakeholder == 'joint_applicant':
-            obj = self.object.employer_doc.employer.rn_ja_employer
-            if cleaned_field == obj.get_joint_applicant_nric_partial(
+        obj = self.object.employer
+        if is_local(obj.employer_residential_status):
+            if cleaned_field == obj.get_employer_nric_partial(
                 padded=False
             ):
+                valid = True
+        else:
+            if cleaned_field == obj.get_employer_fin_partial(padded=False):
                 valid = True
 
         return cleaned_field if valid else None
@@ -3497,20 +3479,9 @@ class TokenChallengeForm(forms.Form):
     def clean_mobile(self):
         cleaned_field = self.cleaned_data.get('mobile')
         valid = False
-        if self.stakeholder == 'employer_1':
-            obj = self.object.employer_doc.employer
-            if cleaned_field == obj.employer_mobile_number:
-                valid = True
-
-        elif self.stakeholder == 'sponsor_1':
-            obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if cleaned_field == obj.sponsor_1_mobile_number:
-                valid = True
-
-        elif self.stakeholder == 'sponsor_2':
-            obj = self.object.employer_doc.employer.rn_sponsor_employer
-            if cleaned_field == obj.sponsor_2_mobile_number:
-                valid = True
+        obj = self.object.employer
+        if cleaned_field == obj.employer_mobile_number:
+            valid = True
 
         return cleaned_field if valid else None
 

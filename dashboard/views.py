@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timedelta
+from typing import Any, Dict, Optional
 
 from agency.forms import (AgencyEmployeeForm, AgencyOpeningHoursForm,
                           AgencyUpdateForm)
@@ -10,9 +11,12 @@ from agency.models import (Agency, AgencyBranch, AgencyEmployee,
                            AgencyOpeningHours, AgencyPlan)
 from django.conf import settings
 from django.contrib import messages
+from django.db.models.query import QuerySet as QS
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
-from django.http.response import HttpResponseRedirect
+from django.http.request import HttpRequest
+from django.http.response import (HttpResponse, HttpResponseBase,
+                                  HttpResponseRedirect)
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -35,6 +39,7 @@ from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidInfantChildCare, MaidLanguageProficiency)
 from onlinemaid.constants import AG_ADMINS, AG_MANAGERS, AG_OWNERS, AG_SALES
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
+from onlinemaid.types import T
 
 from .filters import (DashboardCaseFilter, DashboardEmployerFilter,
                       DashboardMaidFilter, DashboardSalesFilter,
@@ -55,7 +60,7 @@ class BaseFilteredListView(AgencyLoginRequiredMixin, GetAuthorityMixin,
     agency_id = ''
     paginate_by = settings.DASHBOARD_PAGINATE_BY
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'order_by': self.request.GET.get('order-by')
@@ -69,7 +74,7 @@ class CaseList(BaseFilteredListView):
     template_name = 'list/dashboard-case-list.html'
     filter_set = DashboardCaseFilter
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs = EmployerDoc.objects.filter(
                 employer__agency_employee__agency__pk=self.agency_id
@@ -109,7 +114,7 @@ class EmployerList(BaseFilteredListView):
     template_name = 'list/dashboard-employer-list.html'
     filter_set = DashboardEmployerFilter
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         order_by = self.request.GET.get('order-by')
         qs = super().get_queryset()
         qs = qs.filter(
@@ -157,7 +162,7 @@ class MaidList(BaseFilteredListView):
     template_name = 'list/dashboard-maid-list.html'
     filter_set = DashboardMaidFilter
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs = super().get_context_data()
         agency = Agency.objects.get(pk=self.agency_id)
         kwargs.update({
@@ -168,7 +173,7 @@ class MaidList(BaseFilteredListView):
         })
         return kwargs
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         qs = super().get_queryset()
         order_by = self.request.GET.get('order-by')
         maid_order_by_map = {
@@ -200,7 +205,7 @@ class SalesList(BaseFilteredListView):
     template_name = 'list/dashboard-sales-list.html'
     filter_set = DashboardSalesFilter
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         qs = super().get_queryset()
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs.filter(employer__agency_employee__agency__pk=self.agency_id)
@@ -225,7 +230,7 @@ class StatusList(BaseFilteredListView):
     template_name = 'list/dashboard-status-list.html'
     filter_set = DashboardStatusFilter
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         qs = super().get_queryset()
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             agency_id = self.agency_id
@@ -260,7 +265,7 @@ class AccountList(BaseListView):
     model = AgencyEmployee
     template_name = 'list/dashboard-account-list.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs = super().get_context_data()
         agency = Agency.objects.get(
             pk=self.agency_id
@@ -273,7 +278,7 @@ class AccountList(BaseListView):
         })
         return kwargs
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         if self.authority == AG_OWNERS or self.authority == AG_ADMINS:
             qs = AgencyEmployee.objects.filter(
                 agency__pk=self.agency_id
@@ -307,7 +312,7 @@ class AgencyBranchList(BaseListView):
     model = AgencyBranch
     template_name = 'list/dashboard-agency-branch-list.html'
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return AgencyBranch.objects.filter(
             agency__pk=self.agency_id
         )
@@ -329,12 +334,12 @@ class ShortlistedEnquiriesList(BaseEnquiriesListView):
     template_name = 'list/dashboard-shortlisted-enquiries-list.html'
     queryset = ShortlistedEnquiry.objects.filter(approved=True)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return super().get_queryset().filter(
             maids__agency__pk=self.agency_id
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'agency_id': self.agency_id
@@ -355,14 +360,14 @@ class MaidInformationCreate(BaseCreateView):
     template_name = 'form/maid-create-form.html'
     success_message = 'Maid created'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'new_maid': True
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'agency_id': self.agency_id,
@@ -387,7 +392,7 @@ class AgencyEmployeeCreate(BaseCreateView):
     success_url = reverse_lazy('dashboard_account_list')
     success_message = 'Agency employee created'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'agency_id': self.agency_id,
@@ -396,7 +401,7 @@ class AgencyEmployeeCreate(BaseCreateView):
         })
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         agency = Agency.objects.get(
             pk=self.agency_id
         )
@@ -423,7 +428,7 @@ class AgencyDetail(BaseDetailView):
     model = Agency
     template_name = 'detail/dashboard-agency-detail.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         agency = get_object_or_404(
             Agency,
             pk=self.agency_id
@@ -436,7 +441,7 @@ class MaidDetail(BaseDetailView):
     model = Maid
     template_name = 'detail/dashboard-maid-detail.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return Maid.objects.get(
             pk=self.kwargs.get(
                 self.pk_url_kwarg
@@ -454,14 +459,14 @@ class DashboardMaidSubFormView(BaseDashboardView, SuccessMessageMixin,
     agency_id = ''
     maid_id = ''
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'maid_id': self.maid_id
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'maid_id': self.maid_id
@@ -475,7 +480,7 @@ class DashboardMaidSubFormView(BaseDashboardView, SuccessMessageMixin,
         )
         return initial
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.save()
         return super().form_valid(form)
 
@@ -693,7 +698,7 @@ class BaseFormView(BaseDashboardView, SuccessMessageMixin, FormView):
 class BaseFormsetView(BaseFormView):
     form_class_helper = None
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         helper = self.form_class_helper()
         helper.form_tag = False
@@ -702,7 +707,7 @@ class BaseFormsetView(BaseFormView):
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'instance': self.get_instance_object()
@@ -725,7 +730,7 @@ class BaseMaidFormsetView(BaseFormsetView):
     success_url = reverse_lazy('dashboard_maid_list')
     template_name = 'form/maid-formset.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'maid_id': self.maid_id
@@ -746,7 +751,7 @@ class BaseMaidFormsetView(BaseFormsetView):
             pk=self.maid_id
         )
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -801,7 +806,7 @@ class AgencyOutletDetailsFormView(BaseFormsetView):
             pk=self.agency_id
         )
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -842,7 +847,7 @@ class AgencyEmployeeUpdate(BaseUpdateView):
 
         return initial
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'agency_id': self.agency_id,
@@ -890,7 +895,7 @@ class MaidInformationUpdate(BaseUpdateView):
     template_name = 'form/maid-create-form.html'
     success_message = 'Maid updated'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         self.maid_id = self.kwargs.get(
             self.pk_url_kwarg
@@ -901,7 +906,7 @@ class MaidInformationUpdate(BaseUpdateView):
         })
         return context
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'agency_id': self.agency_id,
@@ -1093,7 +1098,7 @@ class DataProviderView(View):
         }
     ]
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         request_data = json.loads(request.body.decode('utf-8'))
         chart = request_data.get('chart')
         # authority = request_data.get('authority')
@@ -1510,7 +1515,7 @@ class HomePage(BaseDashboardView, TemplateView):
     authority = ''
     agency_id = ''
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs = super().get_context_data()
         agency = Agency.objects.get(
             pk=self.agency_id

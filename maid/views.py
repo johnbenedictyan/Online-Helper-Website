@@ -1,21 +1,25 @@
 # Global Imports
 import json
 from random import shuffle
+from typing import Any, Dict, Optional
 
+from agency.mixins import GetAuthorityMixin
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet as QS
 from django.http import JsonResponse
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse, HttpResponseBase
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView, UpdateView
-
-from agency.mixins import GetAuthorityMixin
 from employer_documentation.mixins import PdfHtmlViewMixin
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
+from onlinemaid.types import T
 
 # App Imports
 from .constants import MaidStatusChoices
@@ -29,7 +33,7 @@ from .models import Maid, MaidLoanTransaction
 class BaseMaidRedirectView(RedirectView):
     pk_url_kwarg = 'pk'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return get_object_or_404(
             Maid,
             pk=self.kwargs.get(
@@ -41,7 +45,7 @@ class BaseMaidRedirectView(RedirectView):
 class MaidTogglePublished(BaseMaidRedirectView):
     pk_url_kwarg = 'pk'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         maid = super().get_object()
         maid.toggle_published()
         kwargs.pop(self.pk_url_kwarg)
@@ -53,7 +57,7 @@ class MaidTogglePublished(BaseMaidRedirectView):
 class MaidToggleFeatured(BaseMaidRedirectView):
     pk_url_kwarg = 'pk'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         maid = super().get_object()
         err_msg = maid.toggle_featured()
         if err_msg:
@@ -85,7 +89,7 @@ class MaidDetail(LoginRequiredMixin, DetailView):
     model = Maid
     template_name = 'detail/maid-detail.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs = super().get_context_data()
         country_of_origin = self.object.country_of_origin
         languages = self.object.languages.all()
@@ -110,14 +114,14 @@ class MaidLoanTransactionUpdate(SuccessMessageMixin, UpdateView):
     template_name = 'update/maid-agency-fee-transaction-update.html'
     success_message = 'Maid agency fee transaction updated'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return MaidLoanTransaction.objects.get(
             pk=self.kwargs.get('loan_transaction_pk'),
             maid=self.kwargs.get('pk'),
             maid__agency=self.request.user.agency_owner.agency
         )
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy(
             'dashboard_maid_detail',
             kwargs={
@@ -134,7 +138,7 @@ class MaidDelete(SuccessMessageMixin, DeleteView):
     check_type = 'maid'
     success_message = 'Maid deleted'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return Maid.objects.get(
             pk=self.kwargs.get(
                 self.pk_url_kwarg
@@ -146,7 +150,7 @@ class MaidDelete(SuccessMessageMixin, DeleteView):
 class MaidProfileView(View):
     http_method_names = ['post']
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         try:
             selected_maid = Maid.objects.get(
                 pk=self.kwargs.get('pk')
@@ -178,7 +182,7 @@ class MaidProfileView(View):
 class FeaturedMaidListView(View):
     http_method_names = ['post']
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         request_data = json.loads(request.body.decode('utf-8'))
         nationality = request_data.get('nationality')
         featured_maids = Maid.objects.filter(
@@ -213,7 +217,7 @@ class PdfMaidBiodataView(LoginRequiredMixin, PdfHtmlViewMixin, DetailView):
     model = Maid
     template_name = 'detail/pdf-biodata-detail.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
         context = self.get_context_data()
 

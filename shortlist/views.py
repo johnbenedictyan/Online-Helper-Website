@@ -1,23 +1,25 @@
-# Django Imports
+from typing import Any, Dict, Optional
+
+from django.http.request import HttpRequest
+
+from accounts.models import PotentialEmployer
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseBase
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.base import RedirectView
-
-# Foreign Apps Imports
-from accounts.models import PotentialEmployer
 from enquiry.forms import ShortlistedEnquiryForm
 from enquiry.models import ShortlistedEnquiry
 from maid.models import Maid
 
-
 # Start of Views
+
 
 class AddTo(RedirectView):
     pattern_name = 'maid_list'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         current_shortlist = self.request.session.get('shortlist', [])
         try:
             selected_maid = Maid.objects.get(
@@ -51,7 +53,7 @@ class AddTo(RedirectView):
 class RemoveFrom(RedirectView):
     pattern_name = 'maid_list'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         current_shortlist = self.request.session.get('shortlist', [])
         try:
             selected_maid = Maid.objects.get(
@@ -85,11 +87,11 @@ class ViewShortlist(CreateView):
     template_name = "shortlist.html"
     current_shortlist = []
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         self.current_shortlist = self.request.session.get('shortlist', [])
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
             'shortlist': Maid.objects.filter(
@@ -98,7 +100,7 @@ class ViewShortlist(CreateView):
         })
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.potential_employer = PotentialEmployer.objects.get(
             user=self.request.user
         )

@@ -1,10 +1,15 @@
+from typing import Optional
+
 from django.conf import settings
+from django.db.models.query import QuerySet as QS
+from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
+from onlinemaid.types import T
 
 from .filters import AgencyFilter
 from .forms import AgencyForm, AgencyOwnerCreationForm, PotentialAgencyForm
@@ -33,7 +38,7 @@ class AgencyDetail(DetailView):
     model = Agency
     template_name = 'detail/agency-detail.html'
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         try:
             pk = int(
                 self.kwargs.get(
@@ -73,7 +78,7 @@ class AgencyOwnerCreate(OMStaffRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('admin_panel')
     success_message = 'Agency owner created'
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.agency = Agency.objects.get(
             pk=self.kwargs.get(
                 self.pk_url_kwarg

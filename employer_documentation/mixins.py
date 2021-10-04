@@ -1,10 +1,14 @@
 import calendar
 import datetime
+from typing import Any, Dict
 
 from agency.mixins import AgencyLoginRequiredMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
+from django.http.request import HttpRequest
+from django.http.response import HttpResponseBase
 from django.template.loader import render_to_string
 from django.urls.base import reverse_lazy
 from maid.constants import COUNTRY_LANGUAGE_MAP
@@ -23,7 +27,7 @@ class PdfHtmlViewMixin:
     content_disposition = None
     use_repayment_table = False
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         # DO NOT FORMAT TO PEP8, IT WILL BREAK
         version_explainer_text = '''This document version supersedes all previous versions with the same Case #, if any.'''
         context = super().get_context_data()
@@ -259,7 +263,7 @@ class EmployerRequiredMixin(GroupRequiredMixin):
 class EmployerDocAccessMixin(EmployerRequiredMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
@@ -279,6 +283,18 @@ class EmployerDocAccessMixin(EmployerRequiredMixin):
                 required_user = test_obj.employer.potential_employer.user
                 access_granted = test_user == required_user
 
+            uuid_list = request.session[make_password(required_user.pk)]
+
+            if uuid_list:
+                if test_obj.key_uuid in uuid_list:
+                    access_granted = True
+                else:
+                    self.login_url = reverse_lazy('employer_doc_challenge')
+                    access_granted = False
+            else:
+                self.login_url = reverse_lazy('employer_doc_challenge')
+                access_granted = False
+
         # If URL does not have pk, then fall back to inherited dispatch handler
         else:
             access_granted = True
@@ -292,7 +308,7 @@ class EmployerDocAccessMixin(EmployerRequiredMixin):
 class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
@@ -348,7 +364,7 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
 class OwnerAccessToEmployerDocAppMixin(AgencyAccessToEmployerDocAppMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         handler = super().dispatch(request, *args, **kwargs)
         if self.authority == AG_OWNERS:
             return handler

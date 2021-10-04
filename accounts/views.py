@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.core.exceptions import ImproperlyConfigured
-from django.db import models
+from django.db.models.query import QuerySet as QS
+from django.http.response import HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
@@ -13,7 +14,8 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from enquiry.constants import EnquiryStatusChoices
 from enquiry.models import MaidShortlistedEnquiryIM
 from maid.models import Maid
-from onlinemaid.constants import AG_OWNERS, AUTHORITY_GROUPS, T
+from onlinemaid.constants import AG_OWNERS, AUTHORITY_GROUPS
+from onlinemaid.types import T
 from onlinemaid.mixins import SuccessMessageMixin
 
 from .forms import (AgencySignInForm, CustomPasswordResetForm, EmailUpdateForm,
@@ -27,7 +29,7 @@ from .models import FDWAccount, PotentialEmployer
 class BaseLoginView(SuccessMessageMixin, LoginView):
     success_message = 'Successful Login'
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         url = self.get_redirect_url()
         if url:
             return url
@@ -44,7 +46,7 @@ class SignInView(BaseLoginView):
     authentication_form = SignInForm
     success_url = reverse_lazy('home')
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs = super().get_context_data()
         next_hop_maid_string = 'next=' + reverse('maid_list')
         if next_hop_maid_string in self.request.META.get('QUERY_STRING'):
@@ -59,7 +61,7 @@ class AgencySignInView(BaseLoginView):
     authentication_form = AgencySignInForm
     success_url = reverse_lazy('dashboard_home')
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
@@ -80,7 +82,7 @@ class CustomPasswordResetView(PasswordResetView):
 class SignOutView(LoginRequiredMixin, RedirectView):
     pattern_name = 'home'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         logout(self.request)
         messages.success(
             self.request,
@@ -97,7 +99,7 @@ class PotentialEmployerDetail(PotentialEmployerGrpRequiredMixin, DetailView):
     template_name = 'detail/employer-detail.html'
     potential_employer = None
 
-    def get_object(self, queryset: Optional[models.query.QuerySet] = ...) -> T:
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         self.potential_employer = PotentialEmployer.objects.get(
             user=self.request.user
         )
@@ -122,7 +124,7 @@ class PotentialEmployerCreate(SuccessMessageMixin, CreateView):
     form_type = 'CREATE'
     success_message = 'Account created'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'form_type': self.form_type
@@ -141,7 +143,7 @@ class PotentialEmployerUpdate(SuccessMessageMixin,
     form_type = 'UPDATE'
     success_message = 'Account details updated'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'form_type': self.form_type,
@@ -169,7 +171,7 @@ class FDWAccountCreate(SuccessMessageMixin, CreateView):
     form_type = 'CREATE'
     success_message = 'Account created'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'form_type': self.form_type
@@ -208,12 +210,12 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'update/email-update.html'
     success_url = reverse_lazy('dashboard_home')
 
-    def get_object(self):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return get_user_model().objects.get(
             pk=self.request.user.pk
         )
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name

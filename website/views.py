@@ -1,5 +1,6 @@
 # Django Imports
 from itertools import chain
+from typing import Any, Dict
 
 # Project Apps Imports
 from agency.mixins import OMStaffRequiredMixin
@@ -20,7 +21,7 @@ class BaseTemplateView(TemplateView):
 class HomeView(BaseTemplateView):
     template_name = 'home.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs = super().get_context_data()
         kwargs.update({
             'filter': MiniMaidFilter()
@@ -93,7 +94,7 @@ class AdminPanelView(OMStaffRequiredMixin, ListView):
     context_object_name = 'agencies'
     ordering = ['name']
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data()
         context.update({
             'subscription_products': SubscriptionProduct.objects.all(),

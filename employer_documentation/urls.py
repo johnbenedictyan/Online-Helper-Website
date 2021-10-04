@@ -431,6 +431,11 @@ urlpatterns = [
                         'view-documents/',
                         views.EmployerDocumentDetailView.as_view(),
                         name='employer_document_detail'
+                    ),
+                    path(
+                        'verify/',
+                        views.ChallengeFormView.as_view(),
+                        name='employer_doc_challenge'
                     )
                 ]),
             ),

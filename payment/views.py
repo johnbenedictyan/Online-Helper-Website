@@ -1,16 +1,15 @@
-# Global Imports
 from datetime import datetime
+from typing import Any, Dict, Optional
 
-# Foreign Apps Imports
 import stripe
-# Project Apps Imports
 from agency.mixins import (AgencyOwnerRequiredMixin, GetAuthorityMixin,
                            OMStaffRequiredMixin)
-# Django Imports
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http.response import HttpResponse, JsonResponse
+from django.db.models.query import QuerySet as QS
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse, HttpResponseBase, JsonResponse
 from django.shortcuts import get_list_or_404, redirect
 from django.urls.base import reverse_lazy
 from django.utils import timezone
@@ -22,6 +21,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
 from onlinemaid.mixins import SuccessMessageMixin
+from onlinemaid.types import T
 
 # App Imports
 from .constants import (SubscriptionLimitMap, SubscriptionStatusChoices,
@@ -41,7 +41,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class ViewCart(TemplateView):
     template_name = 'base/cart.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         current_cart = self.request.session.get('cart', [])
         self.request.session['cart'] = current_cart
@@ -57,7 +57,7 @@ class CustomerPortal(AgencyOwnerRequiredMixin, GetAuthorityMixin,
     authority = ''
     agency_id = ''
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         stripe.api_key = settings.STRIPE_SECRET_KEY
         customer_id = Customer.objects.get(
             agency__pk=self.agency_id
@@ -75,7 +75,7 @@ class CheckoutSuccess(RedirectView):
     http_method_names = ['get']
     pattern_name = 'dashboard_home'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         self.request.session['cart'] = []
         messages.success(
             self.request,
@@ -89,7 +89,7 @@ class CheckoutCancel(RedirectView):
     http_method_names = ['get']
     pattern_name = 'view_cart'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         messages.info(
             self.request,
             'Payment Cancelled',
@@ -102,7 +102,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
     http_method_names = ['get']
     pk_url_kwarg = 'pk'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         try:
             subscription_prod = SubscriptionProduct.objects.get(
                 pk=self.kwargs.get(
@@ -135,7 +135,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
 class AddToCart(View):
     pattern_name = 'view_cart'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if (
             request.POST.get('agencySubscriptionPlan')
             or request.POST.get('advertisementPlan')
@@ -191,7 +191,7 @@ class AddToCart(View):
 class RemoveFromCart(RedirectView):
     pattern_name = 'view_cart'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         current_cart = self.request.session.get('cart', [])
         try:
             select_product_price = SubscriptionProductPrice.objects.get(
@@ -223,7 +223,7 @@ class InvoiceList(LoginRequiredMixin, ListView):
     model = Invoice
     template_name = 'invoice-list.html'
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return Invoice.objects.filter(
             agency__pk=self.request.user.pk
         )
@@ -242,7 +242,7 @@ class SubscriptionProductImageList(OMStaffRequiredMixin, ListView):
     model = SubscriptionProductImage
     template_name = 'list/subscription-product-image-list.html'
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return get_list_or_404(
             SubscriptionProductImage,
             subscription_product__pk=self.kwargs.get('pk')
@@ -255,7 +255,7 @@ class SubscriptionProductPriceList(OMStaffRequiredMixin, ListView):
     model = SubscriptionProductPrice
     template_name = 'list/subscription-product-price-list.html'
 
-    def get_queryset(self):
+    def get_queryset(self) -> QS[T]:
         return get_list_or_404(
             SubscriptionProductPrice,
             subscription_product__pk=self.kwargs.get('pk')
@@ -279,7 +279,7 @@ class SubscriptionProductCreate(OMStaffRequiredMixin,
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product created'
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         cleaned_data = form.cleaned_data
         subscription_product_name = cleaned_data.get('name')
         subscription_product_description = cleaned_data.get('description')
@@ -307,7 +307,7 @@ class SubscriptionProductImageCreate(OMStaffRequiredMixin,
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product Image created'
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'subscription_product_id': self.kwargs.get(
@@ -327,7 +327,7 @@ class SubscriptionProductPriceCreate(OMStaffRequiredMixin,
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product Price created'
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         cleaned_data = form.cleaned_data
         subscription_product = SubscriptionProduct.objects.get(
             pk=self.kwargs.get(
@@ -403,7 +403,7 @@ class SubscriptionProductImageDelete(OMStaffRequiredMixin,
 class CheckoutSession(View):
     http_method_names = ['post']
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         if self.request.user.is_authenticated:
             if self.request.user.groups.filter(
                 name='Agency Owners'
@@ -467,10 +467,10 @@ class StripeWebhookView(View):
     endpoint_secret = 'whsec_7VRZrfVz3dwOCo49n2uLdIyibwXpOdeo'
 
     @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         payload = request.body
         sig_header = request.META['HTTP_STRIPE_SIGNATURE']
         event = None
