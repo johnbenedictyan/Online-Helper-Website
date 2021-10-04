@@ -1,5 +1,5 @@
-# Django Imports
-# Foreign Apps Imports
+from typing import Optional
+
 from agency.models import Agency
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet as QS
@@ -9,17 +9,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from onlinemaid.types import T
 
-# Imports from local app
 from .forms import AdvertisementCreationForm
 from .models import Advertisement
-
-# Start of Views
-
-# Template Views
-
-# Redirect Views
-
-# List Views
 
 
 class AdvertisementList(ListView):
@@ -67,7 +58,7 @@ class AdvertisementUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'advertisement-update.html'
     success_url = reverse_lazy('')
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return Advertisement.objects.get(
             agency=Agency.objects.get(
                 pk=self.request.user.pk
@@ -84,7 +75,7 @@ class AdvertisementDelete(LoginRequiredMixin, DeleteView):
     template_name = 'advertisement-delete.html'
     success_url = reverse_lazy('')
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return Advertisement.objects.get(
             agency=Agency.objects.get(
                 pk=self.request.user.pk

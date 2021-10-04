@@ -868,7 +868,7 @@ class AgencyInformationUpdate(BaseUpdateView):
     success_url = reverse_lazy('dashboard_agency_outlet_details_update')
     success_message = 'Agency details updated'
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return Agency.objects.get(
             pk=self.agency_id
         )
@@ -882,7 +882,7 @@ class AgencyOpeningHoursUpdate(BaseUpdateView):
     success_url = reverse_lazy('dashboard_agency_detail')
     success_message = 'Agency details updated'
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return AgencyOpeningHours.objects.get(
             agency__pk=self.agency_id
         )

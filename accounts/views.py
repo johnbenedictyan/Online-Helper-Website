@@ -185,7 +185,7 @@ class FDWAccountDetail(DetailView):
     model = FDWAccount
     template_name = 'detail/fdw-account-detail.html'
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset: Optional[QS] = ...) -> T:
         return FDWAccount.objects.get(
             user=self.request.user
         )
