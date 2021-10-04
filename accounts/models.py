@@ -64,6 +64,14 @@ class PotentialEmployer(models.Model):
             )
         )
 
+    def set_employer_relation(self):
+        from employer_documentation.models import PotentialEmployer
+        potential_employers = PotentialEmployer.objects.filter(
+            employer_email=self.user.email
+        )
+        for pe in potential_employers:
+            pe.set_potential_employer_relation(self.user.email)
+
     class Meta:
         verbose_name = 'Potential Employer'
         verbose_name_plural = 'Potential Employers'

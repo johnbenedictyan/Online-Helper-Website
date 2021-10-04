@@ -1,4 +1,5 @@
 from django.contrib.auth.signals import user_logged_in, user_login_failed
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
@@ -29,3 +30,9 @@ def user_login_failed_callback(sender, credentials, **kwargs):
             None
         )
     )
+
+
+@receiver(post_save)
+def user_try_employer_relation(sender, instance, created, **kwargs):
+    if created:
+        instance.set_employer_relation()

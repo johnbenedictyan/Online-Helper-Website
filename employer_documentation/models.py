@@ -1410,7 +1410,7 @@ class EmployerDoc(models.Model):
         self.status = CaseStatusChoices.WAITING_TO_HANDOVER
         self.save()
 
-    def set_status_archvied(self):
+    def set_status_archived(self):
         self.status = CaseStatusChoices.ARCHIVED
         self.save()
 
