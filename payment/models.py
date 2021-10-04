@@ -1,23 +1,21 @@
-# Global Imports
 
-# Django Imports
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # Imports from project
 from onlinemaid.storage_backends import PublicMediaStorage
 
-# Project Apps Imports
 from agency.models import Agency
 
-# App Imports
+
 from .constants import (
     SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
 )
 
-# Utiliy Classes and Functions
 
-# Start of Models
+
+
 
 
 class Invoice(models.Model):

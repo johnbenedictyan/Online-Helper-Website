@@ -6,7 +6,7 @@ from .constants import SubscriptionLimitMap, SubscriptionStatusChoices
 from .models import Subscription
 
 
-# Start of Signals
+
 @receiver(post_save, sender=Subscription)
 def provision_subscription(sender, instance, created, **kwargs):
     agency = instance.customer.agency

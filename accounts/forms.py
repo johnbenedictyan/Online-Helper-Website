@@ -12,8 +12,6 @@ from onlinemaid.constants import AG_OWNERS, EMPLOYERS, FDW
 
 from .models import FDWAccount, PotentialEmployer
 
-# Start of Forms
-
 
 class SignInForm(AuthenticationForm):
     # This is done because the success_url in the loginview does not seem

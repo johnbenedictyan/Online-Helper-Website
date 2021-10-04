@@ -1,7 +1,7 @@
-# Django Imports
+
 from django.urls import include, path
 
-# Foreign Apps Imports
+
 
 # Imports from local app
 
@@ -34,7 +34,7 @@ from .views import SubscriptionProductImageDelete
 # Generic Views
 from .views import StripeWebhookView, CheckoutSession
 
-# Start of Urls
+
 
 urlpatterns = [
     path(

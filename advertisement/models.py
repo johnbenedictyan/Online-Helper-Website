@@ -1,12 +1,7 @@
-# Django Imports
+from agency.models import Agency
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-# Project Apps Imports
-from agency.models import Agency
 from onlinemaid.storage_backends import PublicMediaStorage
-
-# Start of Models
 
 
 class AdvertisementLocation(models.Model):

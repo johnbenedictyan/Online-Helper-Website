@@ -1,7 +1,5 @@
-# Django Imports
 from django.contrib import admin
 
-# App Imports
 from .models import (Agency, AgencyBranch, AgencyEmployee, AgencyOpeningHours,
                      AgencyOwner, AgencyPlan)
 

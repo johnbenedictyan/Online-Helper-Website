@@ -5,7 +5,7 @@ from accounts.models import PotentialEmployer
 from agency.mixins import OMStaffRequiredMixin
 from django.contrib import messages
 from django.db.models.query import QuerySet as QS
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse as RES
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, RedirectView
@@ -14,12 +14,12 @@ from django.views.generic.edit import CreateView
 from onlinemaid.mixins import SuccessMessageMixin
 from onlinemaid.types import T
 
-# App Imports
+
 from .forms import GeneralEnquiryForm
 from .models import (GeneralEnquiry, MaidShortlistedEnquiryIM,
                      ShortlistedEnquiry)
 
-# Start of Views
+
 
 
 class GeneralEnquiryView(SuccessMessageMixin, CreateView):
@@ -31,7 +31,7 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('home')
     success_message = 'General Enquiry created'
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         if self.request.user:
             form.instance.potential_employer = PotentialEmployer.objects.get(
                 user=self.request.user

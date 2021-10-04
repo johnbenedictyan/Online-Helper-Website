@@ -1,11 +1,7 @@
-# Django Imports
 from django.urls import include, path
 
-# App Imports
 from .views import (AgencyCreate, AgencyDetail, AgencyList, AgencyOwnerCreate,
                     AgencySignUp)
-
-# Start of Urls
 
 urlpatterns = [
     path(

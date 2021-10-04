@@ -8,8 +8,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet as QS
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse, HttpResponseBase, JsonResponse
+from django.http.request import HttpRequest as REQ
+from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponseBase as RESBASE
+from django.http.response import JsonResponse
 from django.shortcuts import get_list_or_404, redirect
 from django.urls.base import reverse_lazy
 from django.utils import timezone
@@ -23,7 +25,7 @@ from django.views.generic.edit import CreateView, DeleteView
 from onlinemaid.mixins import SuccessMessageMixin
 from onlinemaid.types import T
 
-# App Imports
+
 from .constants import (SubscriptionLimitMap, SubscriptionStatusChoices,
                         SubscriptionTypeChoices)
 from .forms import (SubscriptionProductCreationForm,
@@ -35,7 +37,7 @@ from .models import (Customer, Invoice, Subscription, SubscriptionProduct,
 # Stripe Settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# Start of Views
+
 
 
 class ViewCart(TemplateView):
@@ -135,7 +137,7 @@ class ToggleSubscriptionProductArchive(RedirectView):
 class AddToCart(View):
     pattern_name = 'view_cart'
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def post(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         if (
             request.POST.get('agencySubscriptionPlan')
             or request.POST.get('advertisementPlan')
@@ -279,7 +281,7 @@ class SubscriptionProductCreate(OMStaffRequiredMixin,
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product created'
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         cleaned_data = form.cleaned_data
         subscription_product_name = cleaned_data.get('name')
         subscription_product_description = cleaned_data.get('description')
@@ -327,7 +329,7 @@ class SubscriptionProductPriceCreate(OMStaffRequiredMixin,
     success_url = reverse_lazy('admin_panel')
     success_message = 'Subscription Product Price created'
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         cleaned_data = form.cleaned_data
         subscription_product = SubscriptionProduct.objects.get(
             pk=self.kwargs.get(
@@ -403,7 +405,7 @@ class SubscriptionProductImageDelete(OMStaffRequiredMixin,
 class CheckoutSession(View):
     http_method_names = ['post']
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def post(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         if self.request.user.is_authenticated:
             if self.request.user.groups.filter(
                 name='Agency Owners'
@@ -467,10 +469,10 @@ class StripeWebhookView(View):
     endpoint_secret = 'whsec_7VRZrfVz3dwOCo49n2uLdIyibwXpOdeo'
 
     @method_decorator(csrf_exempt)
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def post(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         payload = request.body
         sig_header = request.META['HTTP_STRIPE_SIGNATURE']
         event = None

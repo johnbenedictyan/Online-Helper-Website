@@ -1,7 +1,7 @@
-# Django Imports
+
 from django.urls import include, path
 
-# App Imports
+
 from .views import (AboutUsView, AdminPanelEnquiryListView, AdminPanelView,
                     ContactUsView, Error403View, Error404View, Error500View,
                     FAQView, HomeView, HowItWorksView, LoaderIOView,
@@ -9,7 +9,7 @@ from .views import (AboutUsView, AdminPanelEnquiryListView, AdminPanelView,
                     TermsAndConditionsAgencyView, TermsAndConditionsUserView,
                     UsefulLinksView)
 
-# Start of Urls
+
 
 urlpatterns = [
     path(

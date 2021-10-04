@@ -1,8 +1,6 @@
 from django.urls import reverse_lazy
 from onlinemaid.mixins import GroupRequiredMixin
 
-# Start of Mixins
-
 
 class PotentialEmployerGrpRequiredMixin(GroupRequiredMixin):
     group_required = u"Employers"

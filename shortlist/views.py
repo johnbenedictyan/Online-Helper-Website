@@ -1,11 +1,12 @@
 from typing import Any, Dict, Optional
 
-from django.http.request import HttpRequest
+from django.http.request import HttpRequest as REQ
 
 from accounts.models import PotentialEmployer
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.http.response import HttpResponse, HttpResponseBase
+from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponseBase as RESBASE
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.base import RedirectView
@@ -13,7 +14,7 @@ from enquiry.forms import ShortlistedEnquiryForm
 from enquiry.models import ShortlistedEnquiry
 from maid.models import Maid
 
-# Start of Views
+
 
 
 class AddTo(RedirectView):
@@ -87,7 +88,7 @@ class ViewShortlist(CreateView):
     template_name = "shortlist.html"
     current_shortlist = []
 
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         self.current_shortlist = self.request.session.get('shortlist', [])
         return super().dispatch(request, *args, **kwargs)
 
@@ -100,7 +101,7 @@ class ViewShortlist(CreateView):
         })
         return context
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         form.instance.potential_employer = PotentialEmployer.objects.get(
             user=self.request.user
         )

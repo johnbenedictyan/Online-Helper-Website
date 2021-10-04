@@ -12,8 +12,6 @@ from .views import (AccountList, AgencyBranchList, AgencyDetail,
                     MaidLanguagesAndFHPDRFormView, MaidList, MaidLoanFormView,
                     SalesList, ShortlistedEnquiriesList, StatusList)
 
-# Start of Urls
-
 urlpatterns = [
     path(
         'data/',

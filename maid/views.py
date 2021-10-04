@@ -1,4 +1,3 @@
-# Global Imports
 import json
 from random import shuffle
 from typing import Any, Dict, Optional
@@ -9,8 +8,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet as QS
 from django.http import JsonResponse
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse, HttpResponseBase
+from django.http.request import HttpRequest as REQ
+from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponseBase as RESBASE
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -21,13 +21,10 @@ from employer_documentation.mixins import PdfHtmlViewMixin
 from onlinemaid.mixins import ListFilteredMixin, SuccessMessageMixin
 from onlinemaid.types import T
 
-# App Imports
 from .constants import MaidStatusChoices
 from .filters import MaidFilter
 from .forms import MaidLoanTransactionForm
 from .models import Maid, MaidLoanTransaction
-
-# Start of Views
 
 
 class BaseMaidRedirectView(RedirectView):
@@ -150,7 +147,7 @@ class MaidDelete(SuccessMessageMixin, DeleteView):
 class MaidProfileView(View):
     http_method_names = ['post']
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def post(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         try:
             selected_maid = Maid.objects.get(
                 pk=self.kwargs.get('pk')
@@ -182,7 +179,7 @@ class MaidProfileView(View):
 class FeaturedMaidListView(View):
     http_method_names = ['post']
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def post(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         request_data = json.loads(request.body.decode('utf-8'))
         nationality = request_data.get('nationality')
         featured_maids = Maid.objects.filter(
@@ -217,7 +214,7 @@ class PdfMaidBiodataView(LoginRequiredMixin, PdfHtmlViewMixin, DetailView):
     model = Maid
     template_name = 'detail/pdf-biodata-detail.html'
 
-    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
         self.object = self.get_object()
         context = self.get_context_data()
 

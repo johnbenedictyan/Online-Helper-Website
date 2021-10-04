@@ -24,7 +24,6 @@ from onlinemaid.fields import (CustomBinaryField, GenderCharField,
 from onlinemaid.helper_functions import decrypt_string, is_married
 from onlinemaid.storage_backends import EmployerDocumentationStorage
 
-# App Imports
 from .constants import (NUMBER_OF_WORK_DAYS_IN_MONTH, CaseStatusChoices,
                         DayChoices, DayOfWeekChoices,
                         EmployerTypeOfApplicantChoices, HouseholdIdTypeChoices,
@@ -36,8 +35,6 @@ from .fields import (CustomMoneyDecimalField,
 from .helper_functions import (is_applicant_joint_applicant,
                                is_applicant_sponsor, is_applicant_spouse,
                                is_local)
-
-# Utiliy Classes and Functions
 
 
 class OverwriteStorage(FileSystemStorage):
@@ -62,7 +59,7 @@ def generate_archive_path(instance, filename):
     # return the whole path to the file
     return os.path.join(relative_path, filename_split[-1])
 
-# Start of Models
+
 
 
 class ReceiptMaster(models.Model):

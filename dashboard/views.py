@@ -14,9 +14,10 @@ from django.contrib import messages
 from django.db.models.query import QuerySet as QS
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
-from django.http.request import HttpRequest
-from django.http.response import (HttpResponse, HttpResponseBase,
-                                  HttpResponseRedirect)
+from django.http.request import HttpRequest as REQ
+from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponseBase as RESBASE
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -44,8 +45,6 @@ from onlinemaid.types import T
 from .filters import (DashboardCaseFilter, DashboardEmployerFilter,
                       DashboardMaidFilter, DashboardSalesFilter,
                       DashboardStatusFilter)
-
-# Start of Views
 
 
 class BaseDashboardView(AgencyLoginRequiredMixin, GetAuthorityMixin):
@@ -401,7 +400,7 @@ class AgencyEmployeeCreate(BaseCreateView):
         })
         return kwargs
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         agency = Agency.objects.get(
             pk=self.agency_id
         )
@@ -480,7 +479,7 @@ class DashboardMaidSubFormView(BaseDashboardView, SuccessMessageMixin,
         )
         return initial
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         form.save()
         return super().form_valid(form)
 
@@ -751,7 +750,7 @@ class BaseMaidFormsetView(BaseFormsetView):
             pk=self.maid_id
         )
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -806,7 +805,7 @@ class AgencyOutletDetailsFormView(BaseFormsetView):
             pk=self.agency_id
         )
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -1098,7 +1097,7 @@ class DataProviderView(View):
         }
     ]
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def post(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         request_data = json.loads(request.body.decode('utf-8'))
         chart = request_data.get('chart')
         # authority = request_data.get('authority')

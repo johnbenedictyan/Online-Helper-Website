@@ -1,11 +1,10 @@
-# Global Imports
 from urllib.parse import quote_plus
 
-# Django Imports
+
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-# App Imports
+
 from accounts.models import PotentialEmployer
 
 

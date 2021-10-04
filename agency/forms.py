@@ -16,7 +16,7 @@ from .constants import AgencyEmployeeRoleChoices, OpeningHoursTypeChoices
 from .models import (Agency, AgencyBranch, AgencyEmployee, AgencyOpeningHours,
                      AgencyOwner, PotentialAgency)
 
-# Start of Forms
+
 
 
 class AgencyForm(forms.ModelForm):

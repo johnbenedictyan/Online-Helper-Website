@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.query import QuerySet as QS
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse as RES
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
@@ -15,15 +15,13 @@ from enquiry.constants import EnquiryStatusChoices
 from enquiry.models import MaidShortlistedEnquiryIM
 from maid.models import Maid
 from onlinemaid.constants import AG_OWNERS, AUTHORITY_GROUPS
-from onlinemaid.types import T
 from onlinemaid.mixins import SuccessMessageMixin
+from onlinemaid.types import T
 
 from .forms import (AgencySignInForm, CustomPasswordResetForm, EmailUpdateForm,
                     EmployerCreationForm, FDWAccountCreationForm, SignInForm)
 from .mixins import PotentialEmployerGrpRequiredMixin
 from .models import FDWAccount, PotentialEmployer
-
-# Start of Views
 
 
 class BaseLoginView(SuccessMessageMixin, LoginView):
@@ -215,7 +213,7 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
             pk=self.request.user.pk
         )
 
-    def form_valid(self, form) -> HttpResponse:
+    def form_valid(self, form) -> RES:
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name

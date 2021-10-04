@@ -1,8 +1,8 @@
-# Django Imports
+
 from django.urls import path
 from django.urls.conf import include
 
-# App Imports
+
 from .views import (
     DeactivateGeneralEnquiryView, ToggleApproveEnquiryView,
     SuccessfulEnquiryView, EnquiryListView, GeneralEnquiryView,
@@ -11,7 +11,7 @@ from .views import (
     AcceptShortlistedEnquiry, RejectShortlistedEnquiry
 )
 
-# Start of Urls
+
 
 urlpatterns = [
     path(

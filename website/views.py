@@ -1,8 +1,7 @@
-# Django Imports
+
 from itertools import chain
 from typing import Any, Dict
 
-# Project Apps Imports
 from agency.mixins import OMStaffRequiredMixin
 from agency.models import Agency
 from django.views.generic.base import TemplateView
@@ -11,7 +10,7 @@ from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.filters import MiniMaidFilter
 from payment.models import SubscriptionProduct
 
-# Start of Views
+
 
 
 class BaseTemplateView(TemplateView):

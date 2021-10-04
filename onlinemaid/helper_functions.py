@@ -13,7 +13,7 @@ from django.contrib.auth.models import Group
 from django.utils.crypto import get_random_string
 from slugify import slugify
 
-# App Imports
+
 from .constants import MaritalStatusChoices
 
 UserModel = get_user_model()

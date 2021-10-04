@@ -16,16 +16,16 @@ Including another URLconf
 # Imports from system
 import os
 
-# Django Imports
+
 from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Foreign Apps Imports
+
 from django_otp.admin import OTPAdminSite
 
-# App Imports
+
 from accounts.urls import urlpatterns as accounts_urls
 from advertisement.urls import urlpatterns as advertisement_urls
 from agency.urls import urlpatterns as agency_urls
@@ -58,7 +58,7 @@ USE_2FA = os.environ.get('USE_2FA') == 'TRUE'
 if USE_2FA:
     admin.site.__class__ = OTPAdminSite
 
-# Start of Urls
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include(accounts_urls)),

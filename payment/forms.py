@@ -1,21 +1,21 @@
-# Django Imports
+
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-# Foreign Apps Imports
+
 import stripe
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
-# App Imports
+
 from .models import (
     SubscriptionProduct, SubscriptionProductImage, SubscriptionProductPrice
 )
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# Start of Forms
+
 
 
 class SubscriptionProductCreationForm(forms.ModelForm):

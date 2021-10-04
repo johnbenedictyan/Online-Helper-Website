@@ -6,8 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from .managers import CustomUserManager
 
-# Start of Models
-
 
 class User(AbstractUser):
     username = None

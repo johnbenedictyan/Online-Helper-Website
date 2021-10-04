@@ -11,8 +11,6 @@ from maid.constants import MaidStatusChoices
 from maid.models import Maid
 from onlinemaid.constants import AG_MANAGERS, AG_SALES
 
-# Start of Filters
-
 
 class DashboardMaidFilter(DjangoFiltersFilterSet):
     name = DjangoFiltersCharFilter(

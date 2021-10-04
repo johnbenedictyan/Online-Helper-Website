@@ -1,22 +1,8 @@
-# Django Imports
 from django.urls import include, path
 
-# List Views
-from .views import AdvertisementList
-
-# Detail Views
-from .views import AdvertisementDetail
-
-# Create Views
-from .views import AdvertisementCreate
-
-# Update Views
-from .views import AdvertisementUpdate
-
-# Delete Views
-from .views import AdvertisementDelete
-
-# Start of Urls
+from .views import (AdvertisementCreate, AdvertisementDelete,
+                    AdvertisementDetail, AdvertisementList,
+                    AdvertisementUpdate)
 
 urlpatterns = [
     path(

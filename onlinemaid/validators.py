@@ -1,7 +1,6 @@
-# Global Imports
 import re
 
-# Django Imports
+
 from django.utils.translation import ugettext_lazy as _
 
 # Start of Validators

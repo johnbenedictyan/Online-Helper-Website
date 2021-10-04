@@ -1,5 +1,4 @@
-# Django Imports
-# Project Apps Imports
+
 from accounts.models import FDWAccount
 from agency.models import Agency
 from django.conf import settings
@@ -14,7 +13,7 @@ from onlinemaid.fields import CustomBinaryField, NullableEmailField
 from onlinemaid.helper_functions import decrypt_string, humanise_time_duration
 from onlinemaid.storage_backends import PublicMediaStorage
 
-# App Imports
+
 from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
                         ElderlyCareRemarksChoices,
                         GeneralHouseworkRemarksChoices,
@@ -29,7 +28,7 @@ from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
                         TypeOfMaidChoices)
 from .helper_functions import is_able_to_speak
 
-# Start of Models
+
 
 
 class MaidResponsibility(models.Model):

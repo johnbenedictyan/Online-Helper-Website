@@ -8,8 +8,6 @@ from payment.models import Customer
 
 from .models import Agency, AgencyEmployee, PotentialAgency
 
-# Start of Signals
-
 
 @receiver(post_save, sender=Agency)
 def agency_created(sender, instance, created, **kwargs):

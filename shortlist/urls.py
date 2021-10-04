@@ -1,10 +1,10 @@
-# Django Imports
+
 from django.urls import path
 
-# App Imports
+
 from .views import AddTo, RemoveFrom, ViewShortlist
 
-# Start of Urls
+
 
 urlpatterns = [
     path(

@@ -7,8 +7,6 @@ from .views import (AgencySignInView, CustomPasswordResetView,
                     PotentialEmployerDetail, PotentialEmployerUpdate,
                     SignInView, SignOutView, UserEmailUpdate)
 
-# Start of Urls
-
 urlpatterns = [
     path(
         'create/',

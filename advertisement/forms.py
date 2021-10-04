@@ -1,18 +1,10 @@
-# Django Imports
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Column, Layout, Row, Submit
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
-# Foreign Apps Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
-
-# App Imports
 from .models import Advertisement
-
-# Start of Forms
-
-# Model Forms
 
 
 class AdvertisementCreationForm(forms.ModelForm):

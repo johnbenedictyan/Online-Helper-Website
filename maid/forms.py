@@ -1,12 +1,8 @@
-# Global Imports
 from decimal import Decimal
 
-# Project Apps Imports
 from agency.models import Agency
-# Foreign Apps Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Div, Field, Layout, Row, Submit
-# Django Imports
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -17,7 +13,6 @@ from onlinemaid.helper_functions import encrypt_string
 from onlinemaid.validators import validate_fin, validate_passport
 from onlinemaid.widgets import OMCustomTextarea
 
-# App Imports
 from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
                         ElderlyCareRemarksChoices,
                         GeneralHouseworkRemarksChoices,
@@ -31,10 +26,6 @@ from .models import (Maid, MaidCooking, MaidDietaryRestriction,
                      MaidInfantChildCare, MaidLanguageProficiency,
                      MaidLoanTransaction)
 from .widgets import CustomDateInput
-
-# Start of Forms
-
-# Model Forms
 
 
 class MaidForm(forms.ModelForm):

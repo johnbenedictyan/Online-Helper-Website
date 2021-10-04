@@ -14,10 +14,6 @@ from .constants import (AgencyEmployeeRoleChoices, AreaChoices,
 from .fields import OpeningHoursField
 from .validators import validate_postcode
 
-# Utiliy Classes and Functions
-
-# Start of Models
-
 
 class Agency(models.Model):
     name = models.CharField(

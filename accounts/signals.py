@@ -5,8 +5,6 @@ from django.utils import timezone
 
 from .models import AuditEntry
 
-# Start of Signals
-
 
 @receiver(user_logged_in)
 def set_last_login(sender, user, request, **kwargs):

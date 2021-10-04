@@ -18,8 +18,6 @@ from onlinemaid.validators import (validate_ea_personnel_number, validate_fin,
 from . import constants, models
 from .helper_functions import is_foreigner, is_local
 
-# Start of Forms
-
 
 class EmployerForm(forms.ModelForm):
     class Meta:
@@ -3419,7 +3417,7 @@ class SignatureForm(forms.ModelForm):
             return cleaned_data
 
 
-class TokenChallengeForm(forms.Form):
+class ChallengeForm(forms.Form):
     nric_fin = forms.CharField(
         label='Last Four Characters of NRIC/FIN',
         max_length=4

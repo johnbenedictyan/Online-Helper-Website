@@ -1,19 +1,17 @@
-# Global Imports
 from datetime import date
 
-# Django Imports
+
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-# Foreign Apps Imports
+
 # from .validators import validate_links, validate_obscene_language
 
-# Project Apps Imports
 from accounts.models import PotentialEmployer, User
 from maid.models import Maid, MaidResponsibility, MaidLanguage
 
-# App Imports
+
 from .constants import (
     PROPERTY_CHOICES, PROPERTY_2_ROOM_HDB, MAID_NATIONALITY_CHOICES,
     MAID_TYPE_CHOICES, NO_PREFERENCE, EnquiryStatusChoices
@@ -21,7 +19,7 @@ from .constants import (
 from .validators import validate_links
 
 
-# Start of Models
+
 class GeneralEnquiry(models.Model):
     potential_employer = models.ForeignKey(
         PotentialEmployer,

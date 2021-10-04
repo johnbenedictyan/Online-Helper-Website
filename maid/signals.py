@@ -1,19 +1,11 @@
-# Global Imports
 import random
 
-# Django Imports
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# App Imports
 from .models import (Maid, MaidCooking, MaidDisabledCare, MaidElderlyCare,
                      MaidGeneralHousework, MaidInfantChildCare,
                      MaidResponsibility)
-
-# Project Apps Imports
-
-
-# Utiliy Classes and Functions
 
 
 def maid_main_responsibility(maid):
@@ -79,7 +71,7 @@ def maid_main_responsibility(maid):
             )
         )
 
-# Start of Signals
+
 
 
 @receiver(post_save, sender=Maid)

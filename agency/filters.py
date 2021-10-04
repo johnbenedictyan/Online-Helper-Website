@@ -8,7 +8,7 @@ from django_filters import FilterSet as DjangoFiltersFilterSet
 from .constants import AreaChoices
 from .models import Agency
 
-# Start of Filters
+
 
 
 class AgencyFilter(DjangoFiltersFilterSet):

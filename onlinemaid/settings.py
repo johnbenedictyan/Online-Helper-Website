@@ -20,7 +20,7 @@ import dj_database_url
 # import sentry_sdk
 # from sentry_sdk.integrations.django import DjangoIntegration
 
-# Django Imports
+
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

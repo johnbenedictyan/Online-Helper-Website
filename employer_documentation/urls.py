@@ -1,16 +1,34 @@
-# Django Imports
+
 from django.urls import include, path
 
-from . import views
+from .views import (CaseStatusAPIView, CaseStatusUpdateView, ChallengeFormView,
+                    DocSafetyAgreementCreateView, DocSafetyAgreementUpdateView,
+                    DocServAgmtEmpCtrCreateView, DocServAgmtEmpCtrUpdateView,
+                    DocServiceFeeScheduleCreateView,
+                    DocServiceFeeScheduleUpdateView, DocUploadCreateView,
+                    DocUploadUpdateView, EmployerCreateView,
+                    EmployerDeleteView, EmployerDetailView,
+                    EmployerDocCreateView, EmployerDocDeleteView,
+                    EmployerDocDetailView, EmployerDocJointApplicantUpdateView,
+                    EmployerDocumentDetailView, EmployerDocUpdateView,
+                    EmployerHouseholdDetailsFormView,
+                    EmployerIncomeDetailsCreateView,
+                    EmployerIncomeDetailsUpdateView,
+                    EmployerJointApplicantCreateView,
+                    EmployerSponsorCreateView, EmployerSponsorUpdateView,
+                    EmployerUpdateView, GenerateRemainingAmountDepositReceipt,
+                    HandoverFormView, HtmlToRenderPdfAgencyView,
+                    HtmlToRenderPdfEmployerView, MaidInventoryFormView,
+                    SignatureFormView, SignatureUpdateByAgentView,
+                    UploadedPdfAgencyView)
 
-# Start of Urls
 urlpatterns = [
     path(
         'employers/',
         include([
             path(
                 'create/',
-                views.EmployerCreateView.as_view(),
+                EmployerCreateView.as_view(),
                 name='employer_create_route'
             ),
             path(
@@ -18,52 +36,52 @@ urlpatterns = [
                 include([
                     path(
                         'detail/',
-                        views.EmployerDetailView.as_view(),
+                        EmployerDetailView.as_view(),
                         name='employer_detail_route'
                     ),
                     path(
                         'update/',
-                        views.EmployerUpdateView.as_view(),
+                        EmployerUpdateView.as_view(),
                         name='employer_update_route'
                     ),
                     path(
                         'delete/',
-                        views.EmployerDeleteView.as_view(),
+                        EmployerDeleteView.as_view(),
                         name='employer_delete_route'
                     ),
                     path(
                         'sponsor/create/',
-                        views.EmployerSponsorCreateView.as_view(),
+                        EmployerSponsorCreateView.as_view(),
                         name='employer_sponsor_create_route'
                     ),
                     path(
                         'sponsor/update/',
-                        views.EmployerSponsorUpdateView.as_view(),
+                        EmployerSponsorUpdateView.as_view(),
                         name='employer_sponsor_update_route'
                     ),
                     path(
                         'joint-applicant/create/',
-                        views.EmployerJointApplicantCreateView.as_view(),
+                        EmployerJointApplicantCreateView.as_view(),
                         name='employer_jointapplicant_create_route'
                     ),
                     path(
                         'joint-applicant/update/',
-                        views.EmployerDocJointApplicantUpdateView.as_view(),
+                        EmployerDocJointApplicantUpdateView.as_view(),
                         name='employer_jointapplicant_update_route'
                     ),
                     path(
                         'income-details/create/',
-                        views.EmployerIncomeDetailsCreateView.as_view(),
+                        EmployerIncomeDetailsCreateView.as_view(),
                         name='employer_incomedetails_create_route'
                     ),
                     path(
                         'income-details/update/',
-                        views.EmployerIncomeDetailsUpdateView.as_view(),
+                        EmployerIncomeDetailsUpdateView.as_view(),
                         name='employer_incomedetails_update_route'
                     ),
                     path(
                         'household-details/',
-                        views.EmployerHouseholdDetailsFormView.as_view(),
+                        EmployerHouseholdDetailsFormView.as_view(),
                         name='employer_householddetails_route'
                     )
                 ]),
@@ -75,7 +93,7 @@ urlpatterns = [
         include([
             path(
                 'create/',
-                views.EmployerDocCreateView.as_view(),
+                EmployerDocCreateView.as_view(),
                 name='case_create_route'
             ),
             path(
@@ -83,77 +101,77 @@ urlpatterns = [
                 include([
                     path(
                         'detail/',
-                        views.EmployerDocDetailView.as_view(),
+                        EmployerDocDetailView.as_view(),
                         name='case_detail_route'
                     ),
                     path(
                         'update/',
-                        views.EmployerDocUpdateView.as_view(),
+                        EmployerDocUpdateView.as_view(),
                         name='case_update_route'
                     ),
                     path(
                         'delete/',
-                        views.EmployerDocDeleteView.as_view(),
+                        EmployerDocDeleteView.as_view(),
                         name='case_delete_route'
                     ),
                     path(
                         'service-fee/create/',
-                        views.DocServiceFeeScheduleCreateView.as_view(),
+                        DocServiceFeeScheduleCreateView.as_view(),
                         name='servicefee_create_route'
                     ),
                     path(
                         'service-fee/update/',
-                        views.DocServiceFeeScheduleUpdateView.as_view(),
+                        DocServiceFeeScheduleUpdateView.as_view(),
                         name='servicefee_update_route'
                     ),
                     path(
                         'service-agreement/create/',
-                        views.DocServAgmtEmpCtrCreateView.as_view(),
+                        DocServAgmtEmpCtrCreateView.as_view(),
                         name='serviceagreement_create_route'
                     ),
                     path(
                         'service-agreement/update/',
-                        views.DocServAgmtEmpCtrUpdateView.as_view(),
+                        DocServAgmtEmpCtrUpdateView.as_view(),
                         name='serviceagreement_update_route'
                     ),
                     path(
                         'safety-agreement/create/',
-                        views.DocSafetyAgreementCreateView.as_view(),
+                        DocSafetyAgreementCreateView.as_view(),
                         name='safetyagreement_create_route'
                     ),
                     path(
                         'safety-agreement/update/',
-                        views.DocSafetyAgreementUpdateView.as_view(),
+                        DocSafetyAgreementUpdateView.as_view(),
                         name='safetyagreement_update_route'
                     ),
                     path(
                         'maid-inventory/',
-                        views.MaidInventoryFormView.as_view(),
+                        MaidInventoryFormView.as_view(),
                         name='maid_inventory_route'
                     ),
                     path(
                         'upload-doc/create/',
-                        views.DocUploadCreateView.as_view(),
+                        DocUploadCreateView.as_view(),
                         name='docupload_create_route'
                     ),
                     path(
                         'upload-doc/update/',
-                        views.DocUploadUpdateView.as_view(),
+                        DocUploadUpdateView.as_view(),
                         name='docupload_update_route'
                     ),
                     path(
                         'status/view/',
-                        views.CaseStatusAPIView.as_view(),
+                        CaseStatusAPIView.as_view(),
                         name='case_status_api_route'
                     ),
                     path(
                         'status/update/',
-                        views.CaseStatusUpdateView.as_view(),
+                        CaseStatusUpdateView.as_view(),
                         name='case_status_update_route'
                     ),
                     path(
                         'remaining-amount/update/',
-                        views.GenerateRemainingAmountDepositReceipt.as_view(),
+                        GenerateRemainingAmountDepositReceipt.as_view(),
                         name='servicefee_update_remaining_amount'
                     ),
                     path(
@@ -165,7 +183,7 @@ urlpatterns = [
                                     # HTML to PDF - First signing event
                                     path(
                                         'service-fees/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/01-service-fee-schedule.html',
                                             content_disposition='inline; filename="service_fee_schedule.pdf"',
                                         ),
@@ -173,7 +191,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'service-agreement/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/03-service-agreement.html',
                                             content_disposition='inline; filename="service_agreement.pdf"',
                                         ),
@@ -181,7 +199,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'employment-contract/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/04-employment-contract.html',
                                             content_disposition='inline; filename="employment-contract.pdf"',
                                         ),
@@ -189,7 +207,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'repayment-schedule/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/05-repayment-schedule.html',
                                             content_disposition='inline; filename="repayment-schedule.pdf"',
                                             use_repayment_table=True
@@ -198,7 +216,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'rest-day-agreement/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/06-rest-day-agreement.html',
                                             content_disposition='inline; filename="rest-day-agreement.pdf"',
                                         ),
@@ -206,7 +224,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'transfer-consent/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/09-transfer-consent.html',
                                             content_disposition='inline; filename="transfer-consent.pdf"',
                                         ),
@@ -214,7 +232,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'work-pass-authorisation/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/10-work-pass-authorisation.html',
                                             content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                         ),
@@ -222,7 +240,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'income-tax-declaration/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/13-income-tax-declaration.html',
                                             content_disposition='inline; filename="income-tax-declaration.pdf"',
                                         ),
@@ -230,7 +248,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'safety-agreement/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/14-safety-agreement.html',
                                             content_disposition='inline; filename="safety-agreement.pdf"',
                                         ),
@@ -239,7 +257,7 @@ urlpatterns = [
                                     # HTML to PDF - Second signing event
                                     path(
                                         'handover-checklist/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/08-handover-checklist.html',
                                             content_disposition='inline; filename="handover-checklist.pdf"'
                                         ),
@@ -248,7 +266,7 @@ urlpatterns = [
                                     # File to PDF
                                     path(
                                         'job-order/',
-                                        views.UploadedPdfAgencyView.as_view(
+                                        UploadedPdfAgencyView.as_view(
                                             field_name='job_order_pdf',
                                             filename='job_order.pdf'
                                         ),
@@ -256,7 +274,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'ipa/',
-                                        views.UploadedPdfAgencyView.as_view(
+                                        UploadedPdfAgencyView.as_view(
                                             field_name='ipa_pdf',
                                             filename='ipa.pdf'
                                         ),
@@ -264,7 +282,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'medical-report/',
-                                        views.UploadedPdfAgencyView.as_view(
+                                        UploadedPdfAgencyView.as_view(
                                             field_name='medical_report_pdf',
                                             filename='medical_report.pdf'
                                         ),
@@ -272,7 +290,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'deposit-invoice/',
-                                        views.HtmlToRenderPdfAgencyView.as_view(
+                                        HtmlToRenderPdfAgencyView.as_view(
                                             template_name='pdf/deposit-invoice.html',
                                             content_disposition='inline; filename="deposit-invoice.pdf"'
                                         ),
@@ -286,7 +304,7 @@ urlpatterns = [
                                     # HTML to PDF - First signing event
                                     path(
                                         'service-fees/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/01-service-fee-schedule.html',
                                             content_disposition='inline; filename="service_fee_schedule.pdf"',
                                         ),
@@ -294,7 +312,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'service-agreement/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/03-service-agreement.html',
                                             content_disposition='inline; filename="service_agreement.pdf"',
                                         ),
@@ -302,7 +320,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'employment-contract/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/04-employment-contract.html',
                                             content_disposition='inline; filename="employment-contract.pdf"',
                                         ),
@@ -310,7 +328,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'repayment-schedule/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/05-repayment-schedule.html',
                                             content_disposition='inline; filename="repayment-schedule.pdf"',
                                             use_repayment_table=True
@@ -319,7 +337,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'rest-day-agreement/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/06-rest-day-agreement.html',
                                             content_disposition='inline; filename="rest-day-agreement.pdf"',
                                         ),
@@ -327,7 +345,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'transfer-consent/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/09-transfer-consent.html',
                                             content_disposition='inline; filename="transfer-consent.pdf"',
                                         ),
@@ -335,7 +353,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'work-pass-authorisation/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/10-work-pass-authorisation.html',
                                             content_disposition='inline; filename="work-pass-authorisation.pdf"',
                                         ),
@@ -343,7 +361,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'income-tax-declaration/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/13-income-tax-declaration.html',
                                             content_disposition='inline; filename="income-tax-declaration.pdf"',
                                         ),
@@ -351,7 +369,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'safety-agreement/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/14-safety-agreement.html',
                                             content_disposition='inline; filename="safety-agreement.pdf"',
                                         ),
@@ -360,7 +378,7 @@ urlpatterns = [
                                     # HTML to PDF - Second signing event
                                     path(
                                         'handover-checklist/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/08-handover-checklist.html',
                                             content_disposition='inline; filename="handover-checklist.pdf"'
                                         ),
@@ -369,7 +387,7 @@ urlpatterns = [
                                     # File to PDF
                                     path(
                                         'job-order/',
-                                        views.UploadedPdfAgencyView.as_view(
+                                        UploadedPdfAgencyView.as_view(
                                             field_name='job_order_pdf',
                                             filename='job_order.pdf'
                                         ),
@@ -377,7 +395,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'ipa/',
-                                        views.UploadedPdfAgencyView.as_view(
+                                        UploadedPdfAgencyView.as_view(
                                             field_name='ipa_pdf',
                                             filename='ipa.pdf'
                                         ),
@@ -385,7 +403,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'medical-report/',
-                                        views.UploadedPdfAgencyView.as_view(
+                                        UploadedPdfAgencyView.as_view(
                                             field_name='medical_report_pdf',
                                             filename='medical_report.pdf'
                                         ),
@@ -393,7 +411,7 @@ urlpatterns = [
                                     ),
                                     path(
                                         'deposit-invoice/',
-                                        views.HtmlToRenderPdfEmployerView.as_view(
+                                        HtmlToRenderPdfEmployerView.as_view(
                                             template_name='pdf/deposit-invoice.html',
                                             content_disposition='inline; filename="deposit-invoice.pdf"'
                                         ),
@@ -409,7 +427,7 @@ urlpatterns = [
                             # Agency signing
                             path(
                                 'agency-employee/',
-                                views.SignatureUpdateByAgentView.as_view(
+                                SignatureUpdateByAgentView.as_view(
                                     model_field_name='agency_staff_signature',
                                     form_fields=['agency_staff_signature'],
                                 ),
@@ -417,24 +435,24 @@ urlpatterns = [
                             ),
                             path(
                                 'handover-checklist/',
-                                views.HandoverFormView.as_view(),
+                                HandoverFormView.as_view(),
                                 name='handover_form_view'
                             ),
                             path(
                                 'employer/',
-                                views.SignatureFormView.as_view(),
+                                SignatureFormView.as_view(),
                                 name='employer_form_view'
                             )
                         ]),
                     ),
                     path(
                         'view-documents/',
-                        views.EmployerDocumentDetailView.as_view(),
+                        EmployerDocumentDetailView.as_view(),
                         name='employer_document_detail'
                     ),
                     path(
                         'verify/',
-                        views.ChallengeFormView.as_view(),
+                        ChallengeFormView.as_view(),
                         name='employer_doc_challenge'
                     )
                 ]),
@@ -449,7 +467,7 @@ urlpatterns = [
                 include([
                     path(
                         'update/',
-                        views.CaseStatusUpdateView.as_view(),
+                        CaseStatusUpdateView.as_view(),
                         name='status_update_route'
                     ),
                 ]),

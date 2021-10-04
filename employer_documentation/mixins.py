@@ -7,8 +7,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
-from django.http.request import HttpRequest
-from django.http.response import HttpResponseBase
+from django.http.request import HttpRequest as REQ
+from django.http.response import HttpResponseBase as RESBASE
 from django.template.loader import render_to_string
 from django.urls.base import reverse_lazy
 from maid.constants import COUNTRY_LANGUAGE_MAP
@@ -18,8 +18,6 @@ from onlinemaid.mixins import GroupRequiredMixin
 from weasyprint import CSS, HTML
 
 from .models import EmployerDoc
-
-# Start of mixins
 
 
 class PdfHtmlViewMixin:
@@ -263,7 +261,7 @@ class EmployerRequiredMixin(GroupRequiredMixin):
 class EmployerDocAccessMixin(EmployerRequiredMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
@@ -308,7 +306,7 @@ class EmployerDocAccessMixin(EmployerRequiredMixin):
 class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
@@ -364,7 +362,7 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
 class OwnerAccessToEmployerDocAppMixin(AgencyAccessToEmployerDocAppMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
+    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
         handler = super().dispatch(request, *args, **kwargs)
         if self.authority == AG_OWNERS:
             return handler

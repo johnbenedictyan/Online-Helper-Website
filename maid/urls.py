@@ -1,4 +1,3 @@
-# Django Imports
 from django.urls import include, path
 
 from .views import (FeaturedMaidListView, MaidDelete, MaidDetail, MaidList,
@@ -6,7 +5,7 @@ from .views import (FeaturedMaidListView, MaidDelete, MaidDetail, MaidList,
                     MaidToggleFeatured, MaidTogglePublished,
                     PdfMaidBiodataView)
 
-# Start of Urls
+
 
 urlpatterns = [
     path(
