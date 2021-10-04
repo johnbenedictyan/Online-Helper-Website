@@ -63,8 +63,8 @@ class PotentialEmployer(models.Model):
         )
 
     def set_employer_relation(self):
-        from employer_documentation.models import PotentialEmployer
-        potential_employers = PotentialEmployer.objects.filter(
+        from employer_documentation.models import Employer
+        potential_employers = Employer.objects.filter(
             employer_email=self.user.email
         )
         for pe in potential_employers:

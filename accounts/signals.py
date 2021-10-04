@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from .models import AuditEntry
+from .models import AuditEntry, PotentialEmployer
 
 
 @receiver(user_logged_in)
@@ -30,7 +30,7 @@ def user_login_failed_callback(sender, credentials, **kwargs):
     )
 
 
-@receiver(post_save)
+@receiver(post_save, sender=PotentialEmployer)
 def user_try_employer_relation(sender, instance, created, **kwargs):
     if created:
         instance.set_employer_relation()
