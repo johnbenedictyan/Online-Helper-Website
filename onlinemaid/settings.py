@@ -333,5 +333,8 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 3600
 
+# Account UUID V5 Name and Namespace
+ACCOUNT_UUID_NAMESPACE = os.environ.get('ACCOUNT_UUID_NAMESPACE')
+
 # Django Other Settings
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

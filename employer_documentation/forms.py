@@ -3435,7 +3435,6 @@ class ChallengeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.object = kwargs.pop('object')
-        self.stakeholder = kwargs.pop('stakeholder')
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(

@@ -1,11 +1,14 @@
+import uuid
 from typing import Any, Dict, Optional, Type
 
 from agency.mixins import GetAuthorityMixin
 from agency.models import Agency
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet as QS
+from django.forms.forms import BaseForm
 from django.http import FileResponse, HttpResponseRedirect, JsonResponse
 from django.http.request import HttpRequest as REQ
 from django.http.response import HttpResponse as RES
@@ -1619,7 +1622,7 @@ class GenerateRemainingAmountDepositReceipt(UpdateView):
 class ChallengeFormView(SuccessMessageMixin, FormView):
     model = EmployerDoc
     form_class = ChallengeForm
-    slug_url_kwarg = 'level_1_pk'
+    pk_url_kwarg = 'level_1_pk'
     template_name = 'signature_challenge_form.html'
     success_url = 'potential_employer_detail'
 
@@ -1634,6 +1637,7 @@ class ChallengeFormView(SuccessMessageMixin, FormView):
         return super().get(request, *args, **kwargs)
 
     def get_form_kwargs(self) -> Dict[str, Any]:
+        self.object = self.get_object()
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'object': self.object
@@ -1641,7 +1645,24 @@ class ChallengeFormView(SuccessMessageMixin, FormView):
         return kwargs
 
     def get_success_url(self) -> str:
-        if self.next_page:
-            return self.next_page
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
         else:
             return super().get_success_url()
+
+    def form_valid(self, form: BaseForm) -> RES:
+        index_uuid = str(uuid.uuid5(
+            uuid.UUID(settings.ACCOUNT_UUID_NAMESPACE),
+            str(self.request.user.pk)
+        ))
+        if self.request.session.get(
+            index_uuid,
+            None
+        ):
+            old_list = self.request.session[index_uuid]
+            new_list = old_list.append(str(self.object.key_uuid))
+            self.request.session[index_uuid] = new_list
+        else:
+            self.request.session[index_uuid] = list()
+            self.request.session[index_uuid].append(str(self.object.key_uuid))
+        return super().form_valid(form)

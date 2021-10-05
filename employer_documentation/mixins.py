@@ -1,11 +1,11 @@
 import calendar
 import datetime
+import uuid
 from typing import Any, Dict
 
 from agency.mixins import AgencyLoginRequiredMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from django.http.request import HttpRequest as REQ
 from django.http.response import HttpResponseBase as RESBASE
@@ -49,7 +49,8 @@ class PdfHtmlViewMixin:
             SAFETY_AGREEMENT_SNIPPETS_URI = '''pdf/safety_agreement_snippets'''
             for i in range(1, 4):
                 # DO NOT FORMAT TO PEP8, IT WILL BREAK
-                context['lang_snippet_0' + str(i)] = f'''{SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html'''
+                context['lang_snippet_0' + str(
+                    i)] = f'''{SAFETY_AGREEMENT_SNIPPETS_URI}/{preferred_language}_snippet_0{str(i)}.html'''
 
         return context
 
@@ -221,36 +222,6 @@ class PdfHtmlViewMixin:
         return repayment_table
 
 
-class GetObjFromSigSlugMixin:
-    def get_object_from_slug(self, slug):
-        obj = None
-        try:
-            if self.stakeholder == 'employer_1':
-                obj = self.model.objects.get(
-                    sigslug_employer_1=slug
-                )
-            elif self.stakeholder == 'employer_spouse':
-                obj = self.model.objects.get(
-                    sigslug_employer_spouse=slug
-                )
-            elif self.stakeholder == 'sponsor_1':
-                obj = self.model.objects.get(
-                    sigslug_sponsor_1=slug
-                )
-            elif self.stakeholder == 'sponsor_2':
-                obj = self.model.objects.get(
-                    sigslug_sponsor_2=slug
-                )
-            elif self.stakeholder == 'joint_applicant':
-                obj = self.model.objects.get(
-                    sigslug_joint_applicant=slug
-                )
-        except self.model.DoesNotExist:
-            pass
-        finally:
-            return obj
-
-
 class EmployerRequiredMixin(GroupRequiredMixin):
     group_required = u"Employers"
     login_url = reverse_lazy('sign_in')
@@ -281,16 +252,28 @@ class EmployerDocAccessMixin(EmployerRequiredMixin):
                 required_user = test_obj.employer.potential_employer.user
                 access_granted = test_user == required_user
 
-            uuid_list = request.session[make_password(required_user.pk)]
+            uuid_list = request.session.get(
+                str(uuid.uuid5(
+                    uuid.UUID(settings.ACCOUNT_UUID_NAMESPACE),
+                    str(self.request.user.pk)
+                )),
+                None
+            )
 
             if uuid_list:
-                if test_obj.key_uuid in uuid_list:
+                if str(test_obj.key_uuid) in uuid_list:
                     access_granted = True
                 else:
-                    self.login_url = reverse_lazy('employer_doc_challenge')
+                    self.login_url = reverse_lazy('employer_doc_challenge',
+                                                  kwargs={
+                                                      'level_1_pk': test_obj.pk
+                                                  })
                     access_granted = False
             else:
-                self.login_url = reverse_lazy('employer_doc_challenge')
+                self.login_url = reverse_lazy('employer_doc_challenge',
+                                              kwargs={
+                                                  'level_1_pk': test_obj.pk
+                                              })
                 access_granted = False
 
         # If URL does not have pk, then fall back to inherited dispatch handler
